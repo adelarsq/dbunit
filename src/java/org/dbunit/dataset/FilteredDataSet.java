@@ -22,6 +22,8 @@
 
 package org.dbunit.dataset;
 
+import java.util.Arrays;
+
 
 /**
  * Decorates a dataset and exposes only some tables from it.
@@ -29,7 +31,7 @@ package org.dbunit.dataset;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class FilteredDataSet extends AbstractDataSet
+public class FilteredDataSet implements IDataSet
 {
     private final IDataSet _dataSet;
     private final String[] _tableNames;
@@ -44,14 +46,42 @@ public class FilteredDataSet extends AbstractDataSet
         _dataSet = dataSet;
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-    // AbstractDataSet class
-
-    protected ITable[] getTables() throws DataSetException
+    protected void assertValidTableName(String tableName) throws NoSuchTableException
     {
-        return DataSetUtils.getTables(_tableNames, _dataSet);
+        for (int i = 0; i < _tableNames.length; i++)
+        {
+            if (tableName.equals(_tableNames[i]))
+            {
+                return;
+            }
+        }
+
+        throw new NoSuchTableException(tableName);
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // IDataSet interface
+
+    public String[] getTableNames() throws DataSetException
+    {
+        return (String[])_tableNames.clone();
+    }
+
+    public ITableMetaData getTableMetaData(String tableName)
+            throws DataSetException
+    {
+        assertValidTableName(tableName);
+        return _dataSet.getTableMetaData(tableName);
+    }
+
+    public ITable getTable(String tableName) throws DataSetException
+    {
+        assertValidTableName(tableName);
+        return _dataSet.getTable(tableName);
+    }
+
 }
+
 
 
 

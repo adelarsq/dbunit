@@ -49,7 +49,79 @@ public class FilteredDataSetTest extends AbstractDataSetTest
                 dataSet.getTableNames().length);
         return new FilteredDataSet(getExpectedNames(), dataSet);
     }
+
+    public void testGetFilteredTableNames() throws Exception
+    {
+        String[] originalNames = getExpectedNames();
+        String expectedName = originalNames[0];
+        IDataSet dataSet = createDataSet();
+        assertTrue("original count", dataSet.getTableNames().length > 1);
+
+        IDataSet filteredDataSet = new FilteredDataSet(new String[]{expectedName}, dataSet);
+        assertEquals("filtered count", 1, filteredDataSet.getTableNames().length);
+        assertEquals("filtered names", expectedName, filteredDataSet.getTableNames()[0]);
+    }
+
+    public void testGetFilteredTable() throws Exception
+    {
+        String[] originalNames = getExpectedNames();
+        IDataSet filteredDataSet = new FilteredDataSet(
+                new String[]{originalNames[0]}, createDataSet());
+
+
+        for (int i = 0; i < originalNames.length; i++)
+        {
+            String name = originalNames[i];
+            if (i == 0)
+            {
+                assertEquals("table " + i, name,
+                        filteredDataSet.getTable(name).getTableMetaData().getTableName());
+            }
+            else
+            {
+                try
+                {
+                    filteredDataSet.getTable(name);
+                    fail("Should throw a NoSuchTableException");
+                }
+                catch (NoSuchTableException e)
+                {
+                }
+            }
+        }
+    }
+
+    public void testGetFilteredTableMetaData() throws Exception
+    {
+        String[] originalNames = getExpectedNames();
+        IDataSet filteredDataSet = new FilteredDataSet(
+                new String[]{originalNames[0]}, createDataSet());
+
+
+        for (int i = 0; i < originalNames.length; i++)
+        {
+            String name = originalNames[i];
+            if (i == 0)
+            {
+                assertEquals("table " + i, name,
+                        filteredDataSet.getTableMetaData(name).getTableName());
+            }
+            else
+            {
+                try
+                {
+                    filteredDataSet.getTableMetaData(name);
+                    fail("Should throw a NoSuchTableException");
+                }
+                catch (NoSuchTableException e)
+                {
+                }
+            }
+        }
+    }
+
 }
+
 
 
 
