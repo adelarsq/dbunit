@@ -23,6 +23,8 @@
 package org.dbunit.operation;
 
 import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.*;
@@ -71,11 +73,30 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
                 continue;
             }
 
-            // use database metadata
-            ITableMetaData metaData = databaseDataSet.getTableMetaData(tableName);
+            // use database columns metadata
+            ITableMetaData databaseMetaData = databaseDataSet.getTableMetaData(tableName);
+//            Column[] datasetColumns = dataSet.getTableMetaData(tableName).getColumns();
+//            Column[] databaseColumns = databaseMetaData.getColumns();
+//
+//            List columnList = new ArrayList();
+//            for (int j = 0; j < datasetColumns.length; j++)
+//            {
+//                Column columns = DataSetUtils.getColumn(
+//                        datasetColumns[j].getColumnName(), databaseColumns);
+//                if (columns != null)
+//                {
+//                    columnList.add(columns);
+//                }
+//            }
+//
+//            ITableMetaData metaData = new DefaultTableMetaData(tableName,
+//                    (Column[])columnList.toArray(new Column[0]),
+//                    databaseMetaData.getPrimaryKeys());
+//            OperationData operationData = getOperationData(
+//                    connection.getSchema(), metaData);
 
-            OperationData operationData = getOperationData(connection.getSchema(),
-                    databaseDataSet.getTableMetaData(tableName));
+            OperationData operationData = getOperationData(
+                    connection.getSchema(), databaseMetaData);
             IPreparedBatchStatement statement = factory.createPreparedBatchStatement(
                     operationData.getSql(), connection);
 
@@ -106,6 +127,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 
