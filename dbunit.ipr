@@ -1,7 +1,15 @@
 <?xml version="1.0"?>
 
 <project version="2">
-  <component class="com.intellij.ant.AntConfiguration" />
+  <component class="com.intellij.ant.AntConfiguration">
+    <buildFile url="file://$PROJECT_DIR$/build.xml">
+      <useEmacsModeOutput value="true" />
+      <useCustomJdk value="false" />
+      <useJavaw value="false" />
+      <includeProjectClasspath value="false" />
+      <maximumHeapSize value="128" />
+    </buildFile>
+  </component>
   <component class="com.intellij.ant.AntManager">
     <option name="OPEN_IN_TEXT_VIEW" value="false" />
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -15,6 +23,7 @@
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="HIDE_WARNINGS" value="true" />
     <excludeFromCompile>
+      <directory path="K:/(softwares)/jakarta-cactus-1.2/src/framework/servlet22" includeSubdirectories="true" />
       <directory path="K:/java/projects/hsqldb_v.1.61" includeSubdirectories="true" />
       <directory path="K:/java/projects/hsqldb_v.1.61" includeSubdirectories="true" />
     </excludeFromCompile>
@@ -209,7 +218,7 @@
   <component class="com.intellij.execution.RunManager">
     <option name="SHOW_SETTINGS_BEFORE_RUNNING" value="false" />
     <option name="COMPILE_BEFORE_RUNNING" value="true" />
-    <activeType name="JUnit" />
+    <activeType name="Application" />
     <configuration name="&lt;template&gt;" type="Application" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" />
@@ -237,7 +246,7 @@
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5000" />
     </configuration>
-    <configuration name="QueryTool" type="Application" default="false" selected="true">
+    <configuration name="QueryTool" type="Application" default="false" selected="false">
       <option name="MAIN_CLASS_NAME" value="org.hsqldb.util.QueryTool" />
       <option name="VM_PARAMETERS" value="-Ddatabase=demowin, -Dtest=false" />
       <option name="PROGRAM_PARAMETERS" />
@@ -285,13 +294,19 @@
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="TEST_RUNNER" value="Text" />
     </configuration>
+    <configuration name="Main" type="Application" default="false" selected="true">
+      <option name="MAIN_CLASS_NAME" value="org.dbunit.Main" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
   </component>
   <component class="com.intellij.ide.SelectInManager">
+    <target name="Classpath View" />
     <target name="Source" />
     <target name="CVS View" />
     <target name="Project" />
     <target name="File Structure" />
-    <target name="Classpath View" />
     <target name="Commander" />
   </component>
   <component class="com.intellij.ide.bookmarks.BookmarkManager" />
@@ -302,21 +317,20 @@
   </component>
   <component class="com.intellij.ide.desktop.IdeDocumentManager">
     <recent_files>
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/TransactionOperation.java" column="55" line="51" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/AllTests.java" column="27" line="36" />
-      <file_info url="file://$PROJECT_DIR$/profile.properties" column="0" line="4" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseConnection.java" column="0" line="61" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/CloseConnectionOperation.java" column="0" line="52" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/CompositeOperation.java" column="32" line="53" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/DatabaseEnvironment.java" column="36" line="75" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/CloseConnectionOperationTest.java" column="39" line="54" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/CompositeOperationTest.java" column="0" line="59" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/DatabaseTestCase.java" column="0" line="3" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/IDatabaseConnection.java" column="0" line="58" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/AbstractDatabaseTest.java" column="0" line="86" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseDataSet.java" column="15" line="72" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/TypeCastException.java" column="1" line="18" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/DatabaseUnitException.java" column="0" line="2" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseDataSet.java" column="13" line="35" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/ResultSetTable.java" column="17" line="56" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/CachedResultSetTable.java" column="13" line="35" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/HypersonicEnvironment.java" column="11" line="30" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/DatabaseEnvironment.java" column="0" line="49" />
+      <file_info url="jar://$PROJECT_DIR$/lib/oracle-jdbc.jar!/oracle/jdbc/pool/OracleDataSource.class" column="13" line="15" />
+      <file_info url="jar://$PROJECT_DIR$/lib/oracle-jdbc.jar!/oracle/jdbc/pool/OraclePooledConnection.class" column="13" line="11" />
+      <file_info url="jar://$PROJECT_DIR$/lib/oracle-jdbc.jar!/oracle/jdbc/pool/OracleConnectionPoolDataSource.class" column="19" line="9" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/Main.java" column="12" line="54" />
+      <file_info url="file://$PROJECT_DIR$/profile.properties" column="76" line="23" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseDataSource.java" column="27" line="38" />
     </recent_files>
   </component>
   <component class="com.intellij.ide.hierarchy.HierarchyBrowserManager">
@@ -327,22 +341,26 @@
   <component class="com.intellij.ide.impl.ProjectWorkspace" />
   <component class="com.intellij.ide.navigator.impl.ProjectNavigatorSettings">
     <navigator id="ClasspathNavigator" flattenPackages="false" showMembers="false">
-      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/" />
-      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/electric" />
       <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/electric/xml" />
+      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/electric" />
+      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/" />
     </navigator>
     <navigator id="ProjectNavigator" flattenPackages="false" showMembers="false">
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/xml" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/docs" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/xml" />
     </navigator>
     <navigator id="SourcepathNavigator" flattenPackages="false" showMembers="true">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/database" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
+      <expanded_node type="class" url="org.dbunit.HypersonicEnvironment" />
     </navigator>
   </component>
   <component class="com.intellij.ide.structureView.StructureViewFactory">
@@ -353,7 +371,9 @@
     <option name="SHOW_METHODS" value="true" />
     <option name="SHOW_FIELDS" value="true" />
   </component>
-  <component class="com.intellij.ide.util.PropertiesComponent" />
+  <component class="com.intellij.ide.util.PropertiesComponent">
+    <property name="GoToClass.includeLibraries" value="true" />
+  </component>
   <component class="com.intellij.javadoc.JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" />
@@ -391,16 +411,10 @@
     <root file="jar://$PROJECT_DIR$/lib/hsqldb.jar!/">
       <property name="type" value="classPathEntry" />
     </root>
-    <root file="jar://$PROJECT_DIR$/lib/mm.mysql-2.0.11-bin.jar!/">
-      <property name="type" value="classPathEntry" />
-    </root>
     <root file="file://$PROJECT_DIR$">
       <property name="type" value="projectFiles" />
     </root>
     <root file="file://K:/java/projects/hsqldb_v.1.61/src">
-      <property name="type" value="projectFiles" />
-    </root>
-    <root file="file://K:/java/projects/torque">
       <property name="type" value="projectFiles" />
     </root>
     <root file="file://$PROJECT_DIR$/src/java">

@@ -22,8 +22,7 @@
 
 package org.dbunit;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;

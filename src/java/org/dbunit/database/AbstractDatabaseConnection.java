@@ -34,6 +34,9 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 {
     private IDataSet _dataSet = null;
 
+    ////////////////////////////////////////////////////////////////////////////
+    // IDatabaseConnection interface
+
     public IDataSet createDataSet() throws SQLException
     {
         if (_dataSet == null)
@@ -88,3 +91,4 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
 
 }
+
