@@ -137,7 +137,7 @@ public class DataSetUtils
     public static String getSqlValueString(Object value, DataType dataType)
             throws TypeCastException
     {
-        if (value == null)
+        if (value == null || value == ITable.NO_VALUE)
         {
             return "NULL";
         }

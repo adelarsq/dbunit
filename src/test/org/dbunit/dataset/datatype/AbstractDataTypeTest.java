@@ -44,6 +44,8 @@ public abstract class AbstractDataTypeTest extends TestCase
 
     public abstract void testTypeCast() throws Exception;
 
+    public abstract void testTypeCastNone() throws Exception;
+
     public abstract void testTypeCastInvalid() throws Exception;
 
     public abstract void testSqlType() throws Exception;

@@ -21,6 +21,8 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.dbunit.dataset.ITable;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,7 +45,7 @@ public class DateDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
-        if (value == null)
+        if (value == null || value == ITable.NO_VALUE)
         {
             return null;
         }

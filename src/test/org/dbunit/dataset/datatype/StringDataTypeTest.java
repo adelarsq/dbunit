@@ -22,6 +22,7 @@
 package org.dbunit.dataset.datatype;
 
 import org.dbunit.database.ExtendedMockSingleRowResultSet;
+import org.dbunit.dataset.ITable;
 
 import java.sql.Types;
 
@@ -112,6 +113,15 @@ public class StringDataTypeTest extends AbstractDataTypeTest
                 assertEquals("typecast " + j, expected[j],
                         TYPES[i].typeCast(values[j]));
             }
+        }
+    }
+
+    public void testTypeCastNone() throws Exception
+    {
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            DataType type = TYPES[i];
+            assertEquals("typecast " + type, null, type.typeCast(ITable.NO_VALUE));
         }
     }
 

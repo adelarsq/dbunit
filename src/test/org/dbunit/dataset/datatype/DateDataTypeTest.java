@@ -22,6 +22,7 @@
 package org.dbunit.dataset.datatype;
 
 import org.dbunit.database.ExtendedMockSingleRowResultSet;
+import org.dbunit.dataset.ITable;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -95,6 +96,11 @@ public class DateDataTypeTest extends AbstractDataTypeTest
             assertEquals("typecast " + i, expected[i],
                     THIS_TYPE.typeCast(values[i]));
         }
+    }
+
+    public void testTypeCastNone() throws Exception
+    {
+        assertEquals("typecast", null, THIS_TYPE.typeCast(ITable.NO_VALUE));
     }
 
     public void testTypeCastInvalid() throws Exception

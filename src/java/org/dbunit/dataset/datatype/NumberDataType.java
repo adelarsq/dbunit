@@ -21,6 +21,8 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.dbunit.dataset.ITable;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,7 +48,7 @@ public class NumberDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
-        if (value == null)
+        if (value == null || value == ITable.NO_VALUE)
         {
             return null;
         }

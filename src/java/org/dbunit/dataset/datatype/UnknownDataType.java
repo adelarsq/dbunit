@@ -21,6 +21,8 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.dbunit.dataset.ITable;
+
 import java.sql.Types;
 
 /**
@@ -39,6 +41,11 @@ public class UnknownDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
+        if (value == ITable.NO_VALUE)
+        {
+            return null;
+        }
+
         return value;
     }
 

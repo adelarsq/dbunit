@@ -23,6 +23,7 @@ package org.dbunit.database.statement;
 
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
+import org.dbunit.dataset.ITable;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -52,7 +53,7 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
             throws TypeCastException, SQLException
     {
         // Special NULL handling
-        if (value == null)
+        if (value == null || value == ITable.NO_VALUE)
         {
             _statement.setNull(++_index, dataType.getSqlType());
             return;
