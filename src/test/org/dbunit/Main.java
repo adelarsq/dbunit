@@ -23,20 +23,12 @@
 package org.dbunit;
 
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.excel.XlsDataSet;
-import org.dbunit.operation.DatabaseOperation;
-
-import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-
-import java.io.*;
-import java.util.Date;
 
 import electric.xml.Document;
+
+import java.io.FileWriter;
+import java.io.Writer;
 
 /**
  * This class is a scratchpad used to try new features.
