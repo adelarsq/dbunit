@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.dataset;
+package org.dbunit.dataset.stream;
 
 import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.dataset.AbstractTable;
@@ -27,8 +27,6 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.RowOutOfBoundsException;
-import org.dbunit.dataset.IDataSetConsumer;
-import org.dbunit.dataset.IDataSetProducer;
 
 import org.dbunit.util.concurrent.BoundedBuffer;
 import org.dbunit.util.concurrent.Channel;

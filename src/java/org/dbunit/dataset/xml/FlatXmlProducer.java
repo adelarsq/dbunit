@@ -28,11 +28,11 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.DefaultConsumer;
+import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.IDataSetConsumer;
-import org.dbunit.dataset.IDataSetProducer;
+import org.dbunit.dataset.stream.IDataSetConsumer;
+import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
 import org.xml.sax.Attributes;

@@ -18,13 +18,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.dataset;
+package org.dbunit.dataset.stream;
 
-import org.dbunit.dataset.DataSetProducerAdapter;
+import org.dbunit.dataset.stream.DataSetProducerAdapter;
 import org.dbunit.dataset.ForwardOnlyDataSetTest;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.IDataSetProducer;
-import org.dbunit.dataset.StreamingDataSet;
+import org.dbunit.dataset.stream.IDataSetProducer;
+import org.dbunit.dataset.stream.StreamingDataSet;
 import org.dbunit.dataset.xml.FlatXmlProducer;
 
 import org.xml.sax.InputSource;

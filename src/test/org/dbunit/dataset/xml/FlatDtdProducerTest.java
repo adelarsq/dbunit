@@ -20,10 +20,10 @@
  */
 package org.dbunit.dataset.xml;
 
-import org.dbunit.dataset.AbstractProducerTest;
+import org.dbunit.dataset.stream.AbstractProducerTest;
 import org.dbunit.dataset.Column;
-import org.dbunit.dataset.IDataSetProducer;
-import org.dbunit.dataset.MockDataSetConsumer;
+import org.dbunit.dataset.stream.IDataSetProducer;
+import org.dbunit.dataset.stream.MockDataSetConsumer;
 
 import org.xml.sax.InputSource;
 

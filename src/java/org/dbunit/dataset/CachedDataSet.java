@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset;
 
+import org.dbunit.dataset.stream.IDataSetProducer;
+import org.dbunit.dataset.stream.IDataSetConsumer;
+
 import java.util.ArrayList;
 import java.util.List;
 

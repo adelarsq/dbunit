@@ -18,9 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.dataset;
+package org.dbunit.dataset.stream;
 
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.stream.IDataSetProducer;
+import org.dbunit.dataset.stream.MockDataSetConsumer;
+import org.dbunit.dataset.Column;
 
 import junit.framework.TestCase;
 

@@ -37,6 +37,7 @@ public class AllTests
         suite.addTest(org.dbunit.dataset.datatype.AllTests.suite());
         suite.addTest(org.dbunit.dataset.excel.AllTests.suite());
         suite.addTest(org.dbunit.dataset.filter.AllTests.suite());
+        suite.addTest(org.dbunit.dataset.stream.AllTests.suite());
         suite.addTest(org.dbunit.dataset.xml.AllTests.suite());
         suite.addTest(new TestSuite(CaseInsensitiveDataSetTest.class));
         suite.addTest(new TestSuite(CaseInsensitiveTableTest.class));
@@ -59,8 +60,6 @@ public class AllTests
         suite.addTest(new TestSuite(ReplacementTableTest.class));
         suite.addTest(new TestSuite(SortedDataSetTest.class));
         suite.addTest(new TestSuite(SortedTableTest.class));
-        suite.addTest(new TestSuite(StreamingDataSetTest.class));
-        suite.addTest(new TestSuite(StreamingTableTest.class));
 
         return suite;
     }

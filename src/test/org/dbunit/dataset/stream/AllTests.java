@@ -1,6 +1,7 @@
 /*
+ * AllTests.java   Feb 18, 2002
  *
- * The DbUnit Database Testing Framework
+ * DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
  * This library is free software; you can redistribute it and/or
@@ -18,34 +19,29 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.dataset;
 
-import java.io.File;
+package org.dbunit.dataset.stream;
 
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.stream.IDataSetProducer;
-import org.dbunit.dataset.stream.DataSetProducerAdapter;
-import org.dbunit.dataset.stream.AbstractProducerTest;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author Manuel Laflamme
- * @since Apr 17, 2003
  * @version $Revision$
  */
-public class DataSetProducerAdapterTest extends AbstractProducerTest
+public class AllTests
 {
-    private static final File DATASET_FILE =
-            new File("src/xml/flatXmlProducerTest.xml");
-
-    public DataSetProducerAdapterTest(String s)
+    public static Test suite()
     {
-        super(s);
-    }
+        TestSuite suite = new TestSuite();
+        suite.addTest(new TestSuite(StreamingDataSetTest.class));
+        suite.addTest(new TestSuite(StreamingTableTest.class));
 
-    protected IDataSetProducer createProducer() throws Exception
-    {
-        FlatXmlDataSet dataSet = new FlatXmlDataSet(DATASET_FILE);
-        return new DataSetProducerAdapter(dataSet);
+        return suite;
     }
-
 }
+
+
+
+
+

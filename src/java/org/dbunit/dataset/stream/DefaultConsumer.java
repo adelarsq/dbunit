@@ -18,28 +18,44 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.dataset;
+package org.dbunit.dataset.stream;
 
+import org.dbunit.dataset.stream.IDataSetConsumer;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITableMetaData;
 
 /**
- * Interface for reading a dataset using callback.
+ * This class provides no op implementations for all of the callbacks in the
+ * {@link org.dbunit.dataset.stream.IDataSetConsumer} interface.
  *
  * @author Manuel Laflamme
- * @since Apr 17, 2003
+ * @since Apr 29, 2003
  * @version $Revision$
  */
-public interface IDataSetProducer
+public class DefaultConsumer implements IDataSetConsumer
 {
-    public void setConsumer(IDataSetConsumer consumer) throws DataSetException;
+    public void startDataSet() throws DataSetException
+    {
+        // no op
+    }
 
-    /**
-     * Process this dataset source. During the processing, the IDataSetProducer
-     * will provide information about the dataset through the specified event
-     * listener.
-     * <p>
-     * This method is synchronous: it will not return until processing has ended.
-     * If a client application wants to terminate parsing early, it should
-     * throw an exception from the listener.
-     */
-    public void produce() throws DataSetException;
+    public void endDataSet() throws DataSetException
+    {
+        // no op
+    }
+
+    public void startTable(ITableMetaData metaData) throws DataSetException
+    {
+        // no op
+    }
+
+    public void endTable() throws DataSetException
+    {
+        // no op
+    }
+
+    public void row(Object[] values) throws DataSetException
+    {
+        // no op
+    }
 }
