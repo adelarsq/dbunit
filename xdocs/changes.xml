@@ -24,7 +24,7 @@
      	Ability to import external file for binary data types like BLOB; the value can be either a qualified URL or a file path name.
      </action>         
      <action dev="" type="update">
-     	Do not omit NULL values anymore in INSERT statements. Now only XmlDataSet's <none/> tag are omitted. With FlatXmlDataSet you must use the ReplacementDataSet to achieve the same behavior.
+     	Do not omit NULL values anymore in INSERT statements. Now only XmlDataSet's &lt;none/&gt; tag are omitted. With FlatXmlDataSet you must use the ReplacementDataSet to achieve the same behavior.
      </action>         
      <action dev="" type="fix">
      	937732 - XlsDataSet now use UTF-16 encoding to support Asian characters. Patch submitted by Shuhei Kondo.
