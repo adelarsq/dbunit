@@ -160,11 +160,13 @@ public class DatabaseExportSample
       <p>
       Yes. By default DbUnit is configured to only recognize normal tables. Modify the 
       <a href="properties.html#tabletype">table type property</a> to work with other table types.
-      </p>
-      <p>
       For example, use <code>{"TABLE", "VIEW"}</code> for views.
       </p>
-
+      <p>
+      Be aware that REFRESH, DELETE and UPDATE operations are not compatible with tables without 
+      primary keys, thus are not usable with views. CLEAN_INSERT, INSERT and DELETE_ALL 
+      operations are compatible with views.
+      </p>
       </answer>
     </faq>  
     
