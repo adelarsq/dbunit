@@ -12,7 +12,7 @@
   
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-dev -->
-  <currentVersion>1.6-dev</currentVersion>
+  <currentVersion>2.0-rc1</currentVersion>
   
   <!-- details about the organization that 'owns' the project -->
   <organization>
@@ -110,6 +110,11 @@
       <version>3.8.1</version>      
     </dependency>     
     <dependency>
+      <id>jdbc</id>
+      <version>2.0</version>      
+      <url>http://java.sun.com/products/jdbc/download.html#spec</url> 
+    </dependency>     
+    <dependency>
      <id>hsqldb</id>
      <version>1.7.1</version>      
     </dependency>       
@@ -131,10 +136,12 @@
      <artifactId>mockobjects-jdk1.3</artifactId>
      <version>0.07</version>
     </dependency>
+    <!--
     <dependency>
      <id>mm-mysql</id>
      <version>2.0.13-bin</version>      
     </dependency>           
+    -->
   </dependencies>
   
   <!-- build information for the project -->
