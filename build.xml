@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<project name="dbunit" default="package" basedir=".">
+	<!-- =================================================================== -->
+	<!-- Defines variables used by the other targets                         -->
+	<!-- =================================================================== -->
+	<property file="./build.properties"/>
+	<property name="extra.lib.dir" value=""/>
+	<path id="project.classpath">
+		<fileset dir="./lib">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${extra.lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<target name="init">
+		<echo>Building ${Name}...</echo>
+		<tstamp>
+			<format property="today.date" pattern="yyyy-MM-dd"/>
+		</tstamp>
+		<property name="year" value="2002"/>
+		<!-- <property name="build.compiler" value="classic"/> -->
+		<property name="debug" value="on"/>
+		<property name="src.dir" value="./src/java"/>
+		<property name="lib.dir" value="./lib"/>
+		<property name="bin.dir" value="./src/bin"/>
+		<property name="build.dir" value="./build"/>
+		<!-- <property name = "build.src" value = "./build/src"/> -->
+		<property name="build.src" value="${src.dir}"/>
+		<property name="build.dest" value="${build.dir}/classes"/>
+		<property name="build.lib" value="${build.dir}/lib"/>
+		<property name="build.docs" value="${build.dir}/docs"/>
+		<property name="build.apidocs" value="${build.dir}/docs/api"/>
+		<property name="build.packagenames" value="org.dbunit.*"/>
+		<property name="release.dir" value="${build.dir}/release"/>
+		<property name="release.lib.dir" value="${release.dir}/lib"/>
+		<property name="release.bin.dir" value="${release.dir}/bin"/>
+		<property name="packages" value="com.karat.*"/>
+<!--		<property name="manifest" value="./src/etc/manifest"/>  -->
+		<property name="tests.dir" value="./src/test"/>
+		<property name="tests.src" value="${tests.dir}"/>
+		<property name="build.tests" value="${build.dir}/test"/>
+		<property name="junit.testsuite" value="org.dbunit.AllTests"/>
+	</target>
+	<!-- =================================================================== -->
+	<!-- Prepares the build directories                  -->
+	<!-- =================================================================== -->
+	<target name="prepare" depends="init">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.dest}"/>
+		<!-- Copy over the ressource files                  -->
+		<filter token="DATE" value="${today.date}"/>
+		<copy todir="${build.dest}" includeEmptyDirs="no" filtering="on">
+			<fileset dir="${build.src}">
+				<exclude name="**/*.scc"/>
+				<exclude name="**/*.java"/>
+				<exclude name="**/*.jpg"/>
+				<exclude name="**/*.gif"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dest}" includeEmptyDirs="no">
+			<fileset dir="${build.src}">
+				<exclude name="**/*.scc"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+		<!-- Prepare testcases                   -->
+		<mkdir dir="${build.tests}"/>
+		<copy todir="${build.tests}" includeEmptyDirs="no">
+			<fileset dir="${tests.src}">
+				<exclude name="**/*.scc"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+	<!-- =================================================================== -->
+	<!-- Compiles the main source tree                                            -->
+	<!-- =================================================================== -->
+	<target name="compile" depends="prepare">
+		<javac srcdir="${build.src}" destdir="${build.dest}" debug="${debug}">
+			<classpath refid="project.classpath"/>
+		</javac>
+	</target>
+	<!-- =================================================================== -->
+	<!-- Creates the JAR                                                            -->
+	<!-- =================================================================== -->
+	<target name="package" depends="compile">
+		<!-- Copy over the bin folder                  -->
+		<!--
+        <copy todir="${release.bin.dir}" includeEmptyDirs="no">
+			<fileset dir="${bin.dir}">
+				<exclude name="**/*.scc"/>
+			</fileset>
+		</copy>
+        -->
+		<!-- Copy over the lib folder                  -->
+		<mkdir dir="${release.lib.dir}"/>
+		<copy todir="${release.lib.dir}" includeEmptyDirs="no">
+			<fileset dir="${lib.dir}">
+				<exclude name="**/*.scc"/>
+				<exclude name="**/oracle-jdbc.jar"/>
+				<exclude name="**/parser.jar"/>
+				<exclude name="**/jaxp.jar"/>
+			</fileset>
+		</copy>
+		<jar jarfile="${release.lib.dir}/${name}.jar" basedir="${build.dest}"/>
+	</target>
+	<!-- =================================================================== -->
+	<!-- Creates the API documentation                                       -->
+	<!-- =================================================================== -->
+	<target name="javadocs" depends="init">
+		<mkdir dir="${build.apidocs}"/>
+		<javadoc package="true" sourcepath="${build.src}" destdir="${build.apidocs}" author="true" version="true" use="true" packagenames="${build.packagenames}" classpathref="project.classpath" windowtitle="${Name}" doctitle="${Name}" bottom="Copyright © ${year} Karat JVF Project. All Rights Reserved."/>
+	</target>
+	<!-- =================================================================== -->
+	<!-- Compiles the tests source tree                                            -->
+	<!-- =================================================================== -->
+	<target name="compiletests" depends="package">
+		<mkdir dir="${build.tests}"/>
+		<javac srcdir="${tests.src}" destdir="${build.tests}" debug="${debug}">
+			<classpath refid="project.classpath"/>
+			<classpath location="${release.lib.dir}/${name}.jar"/>
+		</javac>
+	</target>
+	<!-- =================================================================== -->
+	<!-- Run test cases 							-->
+	<!-- =================================================================== -->
+	<target name="runtests" depends="compiletests">
+		<java fork="yes" classname="junit.textui.TestRunner" taskname="junit" failonerror="true">
+			<arg value="${junit.testsuite}"/>
+			<classpath refid="project.classpath"/>
+			<classpath location="${build.tests}"/>
+			<classpath location="${release.lib.dir}/${name}.jar"/>
+		</java>
+	</target>
+	<!-- =================================================================== -->
+	<!-- Cleans everything                                                   -->
+	<!-- =================================================================== -->
+	<target name="clean" depends="init">
+		<delete dir="${build.dir}"/>
+	</target>
+</project>
