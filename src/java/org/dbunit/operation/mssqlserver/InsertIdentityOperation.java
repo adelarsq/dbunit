@@ -41,6 +41,7 @@ import java.sql.*;
  * <p>
  * Thanks to <a href="mailto:epugh@upstate.com">Eric Pugh</a> for having
  * submitted the original patch and for the beta testing.
+ * Another special thanks to Jeremy Stein how have submited multiple patches.
  *
  * @author Manuel Laflamme
  * @version $Revision$
@@ -139,8 +140,8 @@ public class InsertIdentityOperation extends DatabaseOperation
                         sqlBuffer.append(tableName);
                         sqlBuffer.append(" OFF");
                         statement.execute(sqlBuffer.toString());
-                        jdbcConnection.commit();
                     }
+                    jdbcConnection.commit();
                 }
             }
         }
@@ -151,6 +152,7 @@ public class InsertIdentityOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 
