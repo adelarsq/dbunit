@@ -25,6 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.sql.Blob;
 
 /**
  * @author Manuel Laflamme
@@ -40,7 +41,12 @@ public class BlobDataType extends BytesDataType
 
     public Object getSqlValue(int column, ResultSet resultSet) throws SQLException, TypeCastException
     {
-        return typeCast(resultSet.getBlob(column));
+        Blob value = resultSet.getBlob(column);
+        if (value == null || resultSet.wasNull())
+        {
+            return null;
+        }
+        return typeCast(value);
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement) throws SQLException, TypeCastException

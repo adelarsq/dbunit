@@ -98,7 +98,12 @@ public class TimestampDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        return resultSet.getTimestamp(column);
+        Timestamp value = resultSet.getTimestamp(column);
+        if (value == null || resultSet.wasNull())
+        {
+            return null;
+        }
+        return value;
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)

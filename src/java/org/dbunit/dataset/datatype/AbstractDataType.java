@@ -97,7 +97,12 @@ public abstract class AbstractDataType extends DataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        return resultSet.getObject(column);
+        Object value = resultSet.getObject(column);
+        if (value == null || resultSet.wasNull())
+        {
+            return null;
+        }
+        return value;
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)

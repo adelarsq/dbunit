@@ -119,7 +119,12 @@ public class StringDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        return resultSet.getString(column);
+        String value = resultSet.getString(column);
+        if (value == null || resultSet.wasNull())
+        {
+            return null;
+        }
+        return value;
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)

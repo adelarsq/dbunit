@@ -82,7 +82,12 @@ public class TimeDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        return resultSet.getTime(column);
+        Time value = resultSet.getTime(column);
+        if (value == null || resultSet.wasNull())
+        {
+            return null;
+        }
+        return value;
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)
