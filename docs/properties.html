@@ -110,8 +110,8 @@
           <td>http://www.dbunit.org/properties/escapePattern</td>
         </tr>
         <tr> 
-          <td>Default</td>
-          <td><i>none</i></td>
+          <td>Type</td>
+          <td>String</td>
         </tr>
         <tr> 
           <td>Description</td>
@@ -119,6 +119,10 @@
             is an escape pattern where the ? is replaced by the name. For example, 
             the pattern "[?]" is expanded as "[MY_TABLE]" for a table named "MY_TABLE". 
           </td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td><i>none</i></td>
         </tr>
         <tr> 
           <td>Note</td>
@@ -133,14 +137,17 @@
           <td>http://www.dbunit.org/properties/datatypeFactory</td>
         </tr>
         <tr> 
-          <td>Default</td>
-          <td>org.dbunit.dataset.datatype.DefaultDataTypeFactory</td>
+          <td>Type</td>
+          <td><a href="api/org/dbunit/dataset/datatype/IDataTypeFactory.html">org.dbunit.dataset.datatype.IDataTypeFactory</a></td>
         </tr>
         <tr> 
           <td>Description</td>
           <td>Used to configure the DataType factory. You can replace the default 
             factory to add support for non-standard database vendor data types. 
-            The Object must implement <a href="api/org/dbunit/dataset/datatype/IDataTypeFactory.html">org.dbunit.dataset.datatype.IDataTypeFactory</a>.</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>org.dbunit.dataset.datatype.DefaultDataTypeFactory</td>
         </tr>
       </table>
 	  <p>
@@ -150,13 +157,16 @@
           <td>http://www.dbunit.org/properties/statementFactory</td>
         </tr>
         <tr> 
-          <td>Default</td>
-          <td>org.dbunit.database.statement.PreparedStatementFactory</td>
+          <td>Type</td>
+          <td>org.dbunit.database.statement.IStatementFactory</td>
         </tr>
         <tr> 
           <td>Description</td>
-          <td>Used to configure the statement factory. The Object must implement 
-            org.dbunit.database.statement.IStatementFactory.</td>
+          <td>Used to configure the statement factory.</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>org.dbunit.database.statement.PreparedStatementFactory</td>
         </tr>
       </table>
 	  <p>
@@ -166,13 +176,37 @@
           <td>http://www.dbunit.org/properties/resultSetTableFactory</td>
         </tr>
         <tr> 
-          <td>Default</td>
-          <td>org.dbunit.database.CachedResultSetTableFactory</td>
+          <td>Type</td>
+          <td>org.dbunit.database.IResultSetTableFactory</td>
         </tr>
         <tr> 
           <td>Description</td>
-          <td>Used to configure the ResultSet table factory. The Object must implement 
-            org.dbunit.database.IResultSetTableFactory.</td>
+          <td>Used to configure the ResultSet table factory.</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>org.dbunit.database.CachedResultSetTableFactory</td>
+        </tr>
+      </table>
+	  <p>
+      <table border="1">
+        <tr> 
+          <td>Property ID</td>
+          <td>http://www.dbunit.org/properties/tableType</td>
+        </tr>
+        <tr> 
+          <td>Type</td>
+          <td>String[]</td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Used to configure the list of table types recognized by DbUnit. 
+            See <a href="http://java.sun.com/j2se/1.3/docs/api/java/sql/DatabaseMetaData.html#getTables(java.lang.String,%20java.lang.String,%20java.lang.String,%20java.lang.String%5B%5D)">java.sql.DatabaseMetaData.getTables</a> 
+            for possible values.</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>String[]{"TABLE"}</td>
         </tr>
       </table>
       <!-- #EndEditable --> 
