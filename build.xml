@@ -1,144 +1,155 @@
 <?xml version="1.0"?>
-<project name="dbunit" default="package" basedir=".">
-	<!-- =================================================================== -->
-	<!-- Defines variables used by the other targets                         -->
-	<!-- =================================================================== -->
-	<property file="./build.properties"/>
-	<property name="extra.lib.dir" value=""/>
-	<path id="project.classpath">
-		<fileset dir="./lib">
-			<include name="*.jar"/>
-		</fileset>
-		<fileset dir="${extra.lib.dir}">
-			<include name="*.jar"/>
-		</fileset>
-	</path>
+<!-- =================================================================== -->
+<!-- DbUnit build file - $Revision$ $Date$               -->
+<!-- =================================================================== -->
+<project name="dbunit" default="test" basedir=".">
 	<target name="init">
-		<echo>Building ${Name}...</echo>
-		<tstamp>
-			<format property="today.date" pattern="yyyy-MM-dd"/>
-		</tstamp>
-		<property name="year" value="2002"/>
-		<!-- <property name="build.compiler" value="classic"/> -->
+		<!-- include common properties -->
+		<property file="build.properties"/>
+		<property name="name" value="dbunit"/>
+		<property name="Name" value="DbUnit Framework"/>
+		<!-- <property name="version" value="1.3"/> -->
+		<property name="copyright" value="Copyright &#169; 2002 Manuel Laflamme. All Rights Reserved."/>
+		<property name="package" value="org.dbunit.*"/>
 		<property name="debug" value="on"/>
-		<property name="src.dir" value="./src/java"/>
-		<property name="lib.dir" value="./lib"/>
-		<property name="bin.dir" value="./src/bin"/>
-		<property name="build.dir" value="./build"/>
-		<!-- <property name = "build.src" value = "./build/src"/> -->
-		<property name="build.src" value="${src.dir}"/>
-		<property name="build.dest" value="${build.dir}/classes"/>
-		<property name="build.lib" value="${build.dir}/lib"/>
-		<property name="build.docs" value="${build.dir}/docs"/>
-		<property name="build.apidocs" value="${build.dir}/docs/api"/>
-		<property name="build.packagenames" value="org.dbunit.*"/>
-		<property name="release.dir" value="${build.dir}/release"/>
-		<property name="release.lib.dir" value="${release.dir}/lib"/>
-		<property name="release.bin.dir" value="${release.dir}/bin"/>
-		<property name="packages" value="com.karat.*"/>
-<!--		<property name="manifest" value="./src/etc/manifest"/>  -->
-		<property name="tests.dir" value="./src/test"/>
-		<property name="tests.src" value="${tests.dir}"/>
-		<property name="build.tests" value="${build.dir}/test"/>
-		<property name="junit.testsuite" value="org.dbunit.AllTests"/>
-	</target>
-	<!-- =================================================================== -->
-	<!-- Prepares the build directories                  -->
-	<!-- =================================================================== -->
-	<target name="prepare" depends="init">
+
+		<property name="home.dir" value="."/>
+		<property name="src.dir" value="${home.dir}/src"/>
+		<property name="lib.dir" value="${home.dir}/lib"/>
+		<property name="docs.dir" value="${home.dir}/docs"/>
+
+		<!-- The destination directory for the build -->
+		<property name="build.dir" value="${home.dir}/build"/>
+		<property name="java.src.dir" value="${src.dir}/java"/>
+		<property name="java.classes.dir" value="${build.dir}/classes"/>
+		<property name="java.docs.dir" value="${build.dir}/docs/api"/>
+
+		<property name="test.src.dir" value="${src.dir}/test"/>
+		<property name="test.classes.dir" value="${build.dir}/tests"/>
+		<property name="test.suite" value="org.dbunit.AllTests"/>
+
+		<property name="dist.dir" value="${build.dir}/${name}-${version}"/>
+		<property name="dist.docs.dir" value="${dist.dir}/docs"/>
+
+		<!-- Create the build directory -->
 		<mkdir dir="${build.dir}"/>
-		<mkdir dir="${build.dest}"/>
-		<!-- Copy over the ressource files                  -->
-		<filter token="DATE" value="${today.date}"/>
-		<copy todir="${build.dest}" includeEmptyDirs="no" filtering="on">
-			<fileset dir="${build.src}">
-				<exclude name="**/*.scc"/>
-				<exclude name="**/*.java"/>
-				<exclude name="**/*.jpg"/>
-				<exclude name="**/*.gif"/>
-			</fileset>
-		</copy>
-		<copy todir="${build.dest}" includeEmptyDirs="no">
-			<fileset dir="${build.src}">
-				<exclude name="**/*.scc"/>
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
-		<!-- Prepare testcases                   -->
-		<mkdir dir="${build.tests}"/>
-		<copy todir="${build.tests}" includeEmptyDirs="no">
-			<fileset dir="${tests.src}">
-				<exclude name="**/*.scc"/>
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
 	</target>
-	<!-- =================================================================== -->
-	<!-- Compiles the main source tree                                            -->
-	<!-- =================================================================== -->
-	<target name="compile" depends="prepare">
-		<javac srcdir="${build.src}" destdir="${build.dest}" debug="${debug}">
-			<classpath refid="project.classpath"/>
-		</javac>
-	</target>
-	<!-- =================================================================== -->
-	<!-- Creates the JAR                                                            -->
-	<!-- =================================================================== -->
-	<target name="package" depends="compile">
-		<!-- Copy over the bin folder                  -->
-		<!--
-        <copy todir="${release.bin.dir}" includeEmptyDirs="no">
-			<fileset dir="${bin.dir}">
-				<exclude name="**/*.scc"/>
-			</fileset>
-		</copy>
-        -->
-		<!-- Copy over the lib folder                  -->
-		<mkdir dir="${release.lib.dir}"/>
-		<copy todir="${release.lib.dir}" includeEmptyDirs="no">
-			<fileset dir="${lib.dir}">
-				<exclude name="**/*.scc"/>
-				<exclude name="**/oracle-jdbc.jar"/>
-				<exclude name="**/parser.jar"/>
-				<exclude name="**/jaxp.jar"/>
-			</fileset>
-		</copy>
-		<jar jarfile="${release.lib.dir}/${name}.jar" basedir="${build.dest}"/>
-	</target>
-	<!-- =================================================================== -->
-	<!-- Creates the API documentation                                       -->
-	<!-- =================================================================== -->
-	<target name="javadocs" depends="init">
-		<mkdir dir="${build.apidocs}"/>
-		<javadoc package="true" sourcepath="${build.src}" destdir="${build.apidocs}" author="true" version="true" use="true" packagenames="${build.packagenames}" classpathref="project.classpath" windowtitle="${Name}" doctitle="${Name}" bottom="Copyright © ${year} Karat JVF Project. All Rights Reserved."/>
-	</target>
-	<!-- =================================================================== -->
-	<!-- Compiles the tests source tree                                            -->
-	<!-- =================================================================== -->
-	<target name="compiletests" depends="package">
-		<mkdir dir="${build.tests}"/>
-		<javac srcdir="${tests.src}" destdir="${build.tests}" debug="${debug}">
-			<classpath refid="project.classpath"/>
-			<classpath location="${release.lib.dir}/${name}.jar"/>
-		</javac>
-	</target>
-	<!-- =================================================================== -->
-	<!-- Run test cases 							-->
-	<!-- =================================================================== -->
-	<target name="runtests" depends="compiletests">
-		<java fork="yes" classname="junit.textui.TestRunner" taskname="junit" failonerror="true">
-			<arg value="${junit.testsuite}"/>
-			<classpath refid="project.classpath"/>
-			<classpath location="${build.tests}"/>
-			<classpath location="${release.lib.dir}/${name}.jar"/>
-		</java>
-	</target>
-	<!-- =================================================================== -->
-	<!-- Cleans everything                                                   -->
-	<!-- =================================================================== -->
 	<target name="clean" depends="init">
 		<delete dir="${build.dir}"/>
 	</target>
-</project>
+	<target name="compile" depends="init">
+		<mkdir dir="${java.classes.dir}"/>
+		<javac srcdir="${java.src.dir}" destdir="${java.classes.dir}" debug="${debug}">
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<jar jarfile="${build.dir}/${name}.jar" basedir="${java.classes.dir}"/>
+	</target>
+	
+	<target name="javadoc" depends="init">
+		<mkdir dir="${java.docs.dir}"/>
+		<javadoc packagenames="${package}" destdir="${java.docs.dir}" author="true" version="true" use="true" package="true" windowtitle="${Name} ${version}" doctitle="${Name} ${version} API Reference" bottom="${copyright}">
+			<sourcepath>
+				<pathelement path="${java.src.dir}"/>
+			</sourcepath>
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javadoc>
+	</target>
 
+	<target name="test" depends="compile">
+		<mkdir dir="${test.classes.dir}"/>
+		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${debug}">
+			<classpath>
+				<pathelement path="${java.classes.dir}"/>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+		<java classname="junit.textui.TestRunner" taskname="junit" fork="yes" failonerror="true">
+			<arg value="${test.suite}"/>
+			<classpath>
+				<pathelement path="${java.classes.dir}"/>
+				<pathelement path="${test.classes.dir}"/>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="dist" depends="jar, javadoc">
+
+		<!-- Copy root dist files -->
+		<mkdir dir="${dist.dir}"/>
+		<copy todir="${dist.dir}" includeEmptyDirs="no">
+			<fileset dir="${home.dir}">
+				<include name="build.properties"/>
+				<include name="build.xml"/>
+				<include name="dbunit-license.txt"/>
+				<include name="electricxml-license.txt"/>
+				<include name="profile.properties"/>
+				<include name="readme.txt"/>
+			</fileset>
+		</copy>
+
+
+		<!-- Copy html doc -->
+		<mkdir dir="${dist.dir}/docs"/>
+		<copy todir="${dist.dir}/docs" includeEmptyDirs="no">
+			<fileset dir="${docs.dir}">
+				<exclude name="**/_notes/*"/>
+				<exclude name="**/Templates/*"/>
+				<exclude name="**/*.bat"/>
+				<exclude name="**/CVS/*"/>
+			</fileset>
+		</copy>
+
+		<!-- Copy javadoc -->
+		<mkdir dir="${dist.dir}/docs/api"/>
+		<copy todir="${dist.dir}/docs/api" includeEmptyDirs="no">
+			<fileset dir="${java.docs.dir}">
+				<exclude name="**/CVS/*"/>
+			</fileset>
+		</copy>
+
+		<!-- Copy sources -->
+		<mkdir dir="${dist.dir}/src"/>
+		<copy todir="${dist.dir}/src" includeEmptyDirs="no">
+			<fileset dir="${src.dir}">
+				<exclude name="**/CVS/*"/>
+			</fileset>
+		</copy>
+
+		<!-- Copy lib -->
+		<mkdir dir="${dist.dir}/lib"/>
+		<copy todir="${dist.dir}/lib" includeEmptyDirs="no">
+			<fileset dir="${lib.dir}">
+				<include name="dtdparser.jar"/>
+				<include name="exml.jar"/>
+				<include name="junit.jar"/>
+			</fileset>
+			<fileset dir="${build.dir}">
+				<include name="${name}.jar"/>
+			</fileset>
+		</copy>
+
+		<!-- Zip dist files -->
+        <zip zipfile="${build.dir}/${name}-${version}.zip"  >
+            <zipfileset dir="${dist.dir}" prefix="${name}-${version}"/>
+        </zip>
+
+	</target>
+
+</project>
 
