@@ -61,6 +61,7 @@
             <BR>
             <H3>IDataSet</H3>
             The framework works abundantly with datasets. A dataset is a collection of data from various tables. The dbUnit framework defines the IDataSet interface and provides several implementations for it. <BR>
+            <BR>
             The IDataSet interface:<BR>
             <PRE>
 public interface IDataSet
@@ -195,7 +196,7 @@ public abstract class DatabaseOperation
             <H4>REFRESH</H4>
             This operation literally refreshes dataset contents into the database. This means that data of existing rows is updated and non-existing row get inserted. Any  rows which exist in the database but not in dataset stay unaffected. This approach is more appropriate for tests that assume other data may exist in the database. <BR>
             <BR>
-            As you understand, this is a very powerful operation. This strategy can help you deal more easily with foreign key constraints, as you don't necessarily need to insert data in a specificsequence. <BR>
+            As you understand, this is a very powerful operation. This strategy can help you deal more easily with foreign key constraints, as you don't necessarily need to insert data in a specific sequence. <BR>
             <BR>
             If they are correctly written, tests using this strategy can even be performed on a populated database like a copy of a production database. <BR>
             <BR>
