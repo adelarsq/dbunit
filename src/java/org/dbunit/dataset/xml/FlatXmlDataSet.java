@@ -88,7 +88,7 @@ public class FlatXmlDataSet extends DefaultDataSet
                     Element[] elems = (Element[])rowList.toArray(new Element[0]);
                     rowList.clear();
 
-                    tableList.add(new FlatXmlTable(elems, noneAsNull));
+                    tableList.add(new FlatXmlTable(elems));
                 }
 
                 lastTableName = rowElem.getName();
@@ -98,7 +98,7 @@ public class FlatXmlDataSet extends DefaultDataSet
             if (rowList.size() > 0)
             {
                 Element[] elems = (Element[])rowList.toArray(new Element[0]);
-                tableList.add(new FlatXmlTable(elems, noneAsNull));
+                tableList.add(new FlatXmlTable(elems));
             }
 
             return (ITable[])tableList.toArray(new ITable[0]);

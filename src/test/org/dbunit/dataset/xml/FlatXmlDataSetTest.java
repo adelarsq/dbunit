@@ -26,6 +26,7 @@ import java.io.*;
 import java.util.*;
 
 import org.dbunit.DatabaseEnvironment;
+import org.dbunit.Assertion;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.*;
 import FileAsserts;
@@ -78,7 +79,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
                     ITable table1 = dataSet.getTable(name);
                     ITable table2 = xmlDataSet2.getTable(name);
                     assertTrue("not same instance", table1 != table2);
-                    DataSetUtils.assertEquals(table1, table2);
+                    Assertion.assertEquals(table1, table2);
                 }
             }
             finally
