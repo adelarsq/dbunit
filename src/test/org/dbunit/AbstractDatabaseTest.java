@@ -34,8 +34,6 @@ import org.dbunit.operation.DatabaseOperation;
  */
 public abstract class AbstractDatabaseTest extends DatabaseTestCase
 {
-    protected IDatabaseConnection _connection;
-
     public AbstractDatabaseTest(String s)
     {
         super(s);
@@ -49,7 +47,7 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
     protected ITable createOrderedTable(String tableName, String orderByColumn)
             throws Exception
     {
-        return new SortedTable(_connection.createDataSet().getTable(tableName),
+        return new SortedTable(getConnection().createDataSet().getTable(tableName),
                 new String[]{orderByColumn});
 //        String sql = "select * from " + tableName + " order by " + orderByColumn;
 //        return _connection.createQueryTable(tableName, sql);
@@ -61,17 +59,14 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
     protected void setUp() throws Exception
     {
         super.setUp();
-
-        _connection = getEnvironment().getConnection();
     }
 
     protected void tearDown() throws Exception
     {
+        DatabaseOperation.DELETE_ALL.execute(getConnection(), getConnection().createDataSet());
+
         super.tearDown();
 
-        DatabaseOperation.DELETE_ALL.execute(_connection, _connection.createDataSet());
-
-        _connection = null;
     }
 
     ////////////////////////////////////////////////////////////////////////////
