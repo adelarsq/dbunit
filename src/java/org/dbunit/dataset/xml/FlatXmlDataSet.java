@@ -39,13 +39,48 @@ import org.dbunit.dataset.datatype.TypeCastException;
 public class FlatXmlDataSet extends DefaultDataSet
 {
     /**
-     * Creates an FlatXmlDataSet object with specifed xml input stream.
+     * Creates an FlatXmlDataSet object with the specifed xml file.
      *
-     * @param in the xml contents
+     * @param file the xml file
      */
-    public FlatXmlDataSet(InputStream in) throws IOException, DataSetException
+    public FlatXmlDataSet(File file) throws IOException, DataSetException
     {
-        super(createTables(in));
+        super(createTables(new FileInputStream(file), null));
+    }
+
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml input stream.
+     *
+     * @param stream the xml input stream
+     */
+    public FlatXmlDataSet(InputStream stream) throws IOException, DataSetException
+    {
+        super(createTables(stream, null));
+    }
+
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml and dtd input
+     * stream.
+     *
+     * @param xmlStream the xml input stream
+     * @param dtdStream the dtd input stream
+     */
+    public FlatXmlDataSet(InputStream xmlStream, InputStream dtdStream)
+            throws IOException, DataSetException
+    {
+        super(createTables(xmlStream, new FlatXmlDocType(dtdStream)));
+    }
+
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml input stream.
+     *
+     * @param xmlStream the xml input stream
+     * @param metaDataSet the dataset used as metadata source.
+     */
+    public FlatXmlDataSet(InputStream xmlStream, IDataSet metaDataSet)
+            throws IOException, DataSetException
+    {
+        super(createTables(xmlStream, metaDataSet));
     }
 
     /**
@@ -116,7 +151,7 @@ public class FlatXmlDataSet extends DefaultDataSet
         FlatXmlDocType.write(dataSet, out);
     }
 
-    private static ITable[] createTables(InputStream in)
+    private static ITable[] createTables(InputStream in, IDataSet metaDataSet)
             throws IOException, DataSetException
     {
         try
@@ -127,14 +162,14 @@ public class FlatXmlDataSet extends DefaultDataSet
 
             Document document = new Document(in);
 
-//            // Load dtd if defined
-//            FlatXmlDocType dtdDataSet = null;
-//            DocType docType = document.getDocType();
-//            if (docType != null && docType.getExternalId() != null)
-//            {
-//                dtdDataSet = new FlatXmlDocType(
-//                        new FileInputStream(docType.getExternalId()));
-//            }
+            // Create metadata from dtd if defined
+            DocType docType = document.getDocType();
+            if (metaDataSet == null && docType != null &&
+                    docType.getExternalId() != null)
+            {
+                metaDataSet = new FlatXmlDocType(new FileInputStream(
+                        parseExternalId(docType.getExternalId())));
+            }
 
             Elements rowElems = document.getElement("dataset").getElements();
             while (rowElems.hasMoreElements())
@@ -147,8 +182,7 @@ public class FlatXmlDataSet extends DefaultDataSet
                     Element[] elems = (Element[])rowList.toArray(new Element[0]);
                     rowList.clear();
 
-                    FlatXmlTable table = new FlatXmlTable(elems);
-                    tableList.add(table);
+                    tableList.add(createTable(elems, metaDataSet));
                 }
 
                 lastTableName = rowElem.getName();
@@ -158,7 +192,7 @@ public class FlatXmlDataSet extends DefaultDataSet
             if (rowList.size() > 0)
             {
                 Element[] elems = (Element[])rowList.toArray(new Element[0]);
-                tableList.add(new FlatXmlTable(elems));
+                tableList.add(createTable(elems, metaDataSet));
             }
 
             return (ITable[])tableList.toArray(new ITable[0]);
@@ -169,6 +203,42 @@ public class FlatXmlDataSet extends DefaultDataSet
         }
     }
 
+    private static ITable createTable(Element[] rows, IDataSet metaDataSet)
+            throws DataSetException
+    {
+        Element sampleRow = rows[0];
+
+        ITableMetaData metaData = null;
+        if (metaDataSet != null)
+        {
+            String tableName = sampleRow.getName();
+            metaData = metaDataSet.getTableMetaData(tableName);
+        }
+        else
+        {
+            metaData = FlatXmlTable.createMetaData(sampleRow);
+        }
+
+        // Assume empty table when only one row with no columns
+        if (rows.length == 1 && sampleRow.getAttributes().size() == 0)
+        {
+            rows = new Element[0];
+        }
+
+        return new FlatXmlTable(rows, metaData);
+    }
+
+    private static String parseExternalId(String externalId)
+    {
+        String system = "SYSTEM '";
+
+        if (externalId.startsWith(system))
+        {
+            externalId = externalId.substring(system.length(), externalId.length()-1);
+        }
+
+        return externalId;
+    }
 }
 
 

@@ -40,26 +40,18 @@ public class FlatXmlTable extends AbstractTable
     private final Element[] _rows;
 
     /**
-     * Creates a new FlatXmlTable object with specified rows.
-     *
+     * Creates a new FlatXmlTable object with specified rows and metadata.
      * @param rows the table rows
+     * @param metaData the table metadata
      */
-    public FlatXmlTable(Element[] rows)
+    FlatXmlTable(Element[] rows, ITableMetaData metaData)
     {
         // metadata
-        Element firstRow = rows[0];
-        _metaData = createMetaData(firstRow);
-
-        // rows
-        if (firstRow.getAttributes().size() == 0)
-        {
-            rows = new Element[0];
-        }
+        _metaData = metaData;
         _rows = rows;
-
     }
 
-    ITableMetaData createMetaData(Element sampleRow)
+    static ITableMetaData createMetaData(Element sampleRow)
     {
         String tableName = sampleRow.getName();
 
@@ -92,7 +84,7 @@ public class FlatXmlTable extends AbstractTable
     public Object getValue(int row, String column) throws DataSetException
     {
         assertValidRowIndex(row);
-//        assertValidColumn(column);
+        assertValidColumn(column);
 
         return _rows[row].getAttributeValue(column);
     }

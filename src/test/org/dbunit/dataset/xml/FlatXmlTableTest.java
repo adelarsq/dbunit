@@ -51,14 +51,14 @@ public class FlatXmlTableTest extends AbstractTableTest
 
     public void testGetMissingValue() throws Exception
     {
-        int row = 1;
+        int row = 0;
         Object[] expected = {"row 1 col 0", null, "row 1 col 2"};
 
         ITable table = createDataSet(false).getTable("MISSING_VALUES");
 
         Column[] columns = table.getTableMetaData().getColumns();
         assertEquals("column count", expected.length, columns.length);
-        assertEquals("row count", 2, table.getRowCount());
+        assertEquals("row count", 1, table.getRowCount());
         for (int i = 0; i < columns.length; i++)
         {
             assertEquals("value " + i, expected[i],
@@ -66,16 +66,17 @@ public class FlatXmlTableTest extends AbstractTableTest
         }
     }
 
-    public void testGetValueAndNoSuchColumn() throws Exception
-    {
-        ITable table = createTable();
-        String columnName = "Unknown";
-
-        Object value = table.getValue(0, columnName);
-        assertEquals("no value", null, value);
-    }
+//    public void testGetValueAndNoSuchColumn() throws Exception
+//    {
+//        ITable table = createTable();
+//        String columnName = "Unknown";
+//
+//        Object value = table.getValue(0, columnName);
+//        assertEquals("no value", null, value);
+//    }
 
 }
+
 
 
 
