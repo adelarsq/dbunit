@@ -36,6 +36,8 @@ import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.DataSetUtils;
 
 /**
+ * Holds collection of tables resulting from database query.
+ *
  * @author     Eric Pugh
  * @since      December 4, 2002
  * @version    $Revision$

@@ -26,7 +26,8 @@ import org.dbunit.dataset.filter.SequenceTableFilter;
 import org.dbunit.dataset.filter.ITableFilter;
 
 /**
- * Decorates a dataset and exposes only some tables from it.
+ * Decorates a dataset and exposes only some tables from it. Can be used with
+ * different filtering strategies.
  *
  * @see ITableFilter
  * @see SequenceTableFilter
@@ -43,7 +44,7 @@ public class FilteredDataSet extends AbstractDataSet
 
     /**
      * Creates a FilteredDataSet that decorates the specified dataset and
-     * exposes only the specified tables. Use the {@link SequenceTableFilter} as
+     * exposes only the specified tables using {@link SequenceTableFilter} as
      * filtering startegy.
      */
     public FilteredDataSet(String[] tableNames, IDataSet dataSet)

@@ -38,6 +38,33 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
+ * Reads and writes flat XML dataset document. Each XML element corresponds to a table row.
+ *       Each XML element name corresponds to a table name. The XML attributes
+ *       correspond to table columns.
+ * <p>
+ * Flat XML dataset document sample:
+ * <p>
+ * <pre>
+ * &lt;!DOCTYPE dataset SYSTEM "my-dataset.dtd"&gt;
+ * &lt;dataset&gt;
+ *     &lt;TEST_TABLE COL0="row 0 col 0"
+ *         COL1="row 0 col 1"
+ *         COL2="row 0 col 2"/&gt;
+ *     &lt;TEST_TABLE COL1="row 1 col 1"/&gt;
+ *     &lt;SECOND_TABLE COL0="row 0 col 0"
+ *           COL1="row 0 col 1" /&gt;
+ *     &lt;EMPTY_TABLE/&gt;
+ * &lt;/dataset&gt;</pre>
+ * <p>
+ * To specify null values, omit corresponding attribute.
+ * In the above example, missing COL0 and COL2 attributes of TEST_TABLE second row represents null values.
+ * <p>
+ * Table metadata is deduced from the first row of each table. <b>Beware that DbUnit may think
+ * a table miss some columns if the first row of that table has one or more null values.</b>
+ * Because of that, this is highly recommended to use DTD. DbUnit will use the
+ * columns declared in the DTD as table metadata. DbUnit only support external system URI.
+ * The URI can be absolute or relative.
+ *
  * @author Manuel Laflamme
  * @version $Revision$
  */

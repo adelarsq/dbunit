@@ -28,8 +28,6 @@ import java.util.Iterator;
  * This filter exposes only allowed tables from the filtered dataset. This
  * implementation do not modify the original table sequence from the filtered
  * dataset and support duplicate table names.
- * <p>
- * The pattern matching code is taken from the Apache Ant project.
  *
  * @author Manuel Laflamme
  * @since Mar 7, 2003

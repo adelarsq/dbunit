@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Hold copy of another dataset or a consumed provider content.
+ *
  * @author Manuel Laflamme
  * @since Apr 18, 2003
  * @version $Revision$
@@ -39,10 +41,16 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
     private ITableMetaData _activeMetaData;
     private List _activeRowList;
 
+    /**
+     * Default constructor.
+     */
     public CachedDataSet()
     {
     }
 
+    /**
+     * Creates a copy of the specified dataset.
+     */
     public CachedDataSet(IDataSet dataSet) throws DataSetException
     {
         List tableList = new ArrayList();
@@ -54,6 +62,9 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
         _tables = (ITable[])tableList.toArray(new ITable[0]);
     }
 
+    /**
+     * Creates a CachedDataSet that syncronously consume the specified producer.
+     */
     public CachedDataSet(IDataSetProducer producer) throws DataSetException
     {
         producer.setConsumer(this);

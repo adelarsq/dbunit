@@ -36,6 +36,7 @@ import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.operation.CompositeOperation;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.ExclusiveTransactionException;
+import org.dbunit.operation.AbstractOperation;
 
 /**
  * This class disable the MS SQL Server automatic identifier generation for
@@ -55,7 +56,7 @@ import org.dbunit.operation.ExclusiveTransactionException;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class InsertIdentityOperation extends DatabaseOperation
+public class InsertIdentityOperation extends AbstractOperation
 {
     public static final DatabaseOperation INSERT =
             new InsertIdentityOperation(DatabaseOperation.INSERT);

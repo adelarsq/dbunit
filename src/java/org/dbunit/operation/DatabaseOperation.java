@@ -22,13 +22,11 @@
 
 package org.dbunit.operation;
 
-import java.sql.SQLException;
-
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
+
+import java.sql.SQLException;
 
 /**
  * Defines the interface contract for operations performed on the database.
@@ -57,14 +55,6 @@ public abstract class DatabaseOperation
      */
     public abstract void execute(IDatabaseConnection connection,
             IDataSet dataSet) throws DatabaseUnitException, SQLException;
-
-    public static String getQualifiedName(String prefix, String name, IDatabaseConnection connection)
-    {
-        String escapePattern = (String)connection.getConfig().getProperty(
-                DatabaseConfig.PROPERTY_ESCAPE_PATTERN);
-
-        return DataSetUtils.getQualifiedName(prefix, name, escapePattern);
-    }
 
     private static class DummyOperation extends DatabaseOperation
     {

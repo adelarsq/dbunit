@@ -1,5 +1,5 @@
 /*
- * DatabaseDataSet.java   Feb 17, 2002
+ * DatabaseDataSet.java
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -42,8 +42,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * provides access
+      to a database instance as a dataset.
+
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 17, 2002
  */
 public class DatabaseDataSet extends AbstractDataSet
 {

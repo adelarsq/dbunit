@@ -28,6 +28,8 @@ import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.stream.StreamingIterator;
 
 /**
+ * Dataset that consumes producer asyncronously.
+ *
  * @author Manuel Laflamme
  * @since Apr 18, 2003
  * @version $Revision$
@@ -67,16 +69,28 @@ public class StreamingDataSet extends AbstractDataSet
     ////////////////////////////////////////////////////////////////////////////
     // IDataSet interface
 
+    /**
+     * Not supported.
+     * @throws UnsupportedOperationException
+     */
     public String[] getTableNames() throws DataSetException
     {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Not supported.
+     * @throws UnsupportedOperationException
+     */
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Not supported.
+     * @throws UnsupportedOperationException
+     */
     public ITable getTable(String tableName) throws DataSetException
     {
         throw new UnsupportedOperationException();

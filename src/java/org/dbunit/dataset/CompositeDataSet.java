@@ -1,5 +1,5 @@
 /*
- * CompositeDataSet.java   Feb 19, 2002
+ * CompositeDataSet.java
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -26,8 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Combines multiple datasets into a single logical dataset.
+ *
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 19, 2002
  */
 public class CompositeDataSet extends AbstractDataSet
 {

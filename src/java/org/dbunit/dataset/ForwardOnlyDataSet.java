@@ -21,6 +21,8 @@
 package org.dbunit.dataset;
 
 /**
+ * Decorator that allows forward only access to decorated dataset.
+ *
  * @author Manuel Laflamme
  * @since Apr 9, 2003
  * @version $Revision$

@@ -45,7 +45,7 @@ import java.sql.SQLException;
  * @version $Revision$
  * @see TruncateTableOperation
  */
-public class DeleteAllOperation extends DatabaseOperation
+public class DeleteAllOperation extends AbstractOperation
 {
     DeleteAllOperation()
     {

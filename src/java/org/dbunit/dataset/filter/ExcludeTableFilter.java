@@ -23,7 +23,7 @@ package org.dbunit.dataset.filter;
 
 /**
  * This filter hides specified tables from the filtered dataset. This
- * implementation do not modify the original table sequence from the filtered
+ * implementation do not modify the original table order from the filtered
  * dataset and support duplicate table names.
  *
  * @author Manuel Laflamme

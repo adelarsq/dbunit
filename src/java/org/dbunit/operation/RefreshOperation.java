@@ -50,7 +50,7 @@ import java.sql.SQLException;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class RefreshOperation extends DatabaseOperation
+public class RefreshOperation extends AbstractOperation
 {
     private final InsertOperation _insertOperation;
     private final UpdateOperation _updateOperation;

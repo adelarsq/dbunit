@@ -40,7 +40,7 @@ import java.math.BigInteger;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public abstract class AbstractBatchOperation extends DatabaseOperation
+public abstract class AbstractBatchOperation extends AbstractOperation
 {
     private static final BigInteger EMPTY_IGNORE_MAPPING = new BigInteger("0");
     protected boolean _reverseRowOrder = false;

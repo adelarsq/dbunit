@@ -36,9 +36,21 @@ import java.io.Reader;
 import java.io.Writer;
 
 /**
- * Provides persistence support to read from and write to the dbunit xml format.
- * This format is specified by the dataset.dtd file.
+ *     Reads and writes original XML dataset document. This format
+ *        is very verbiose and must conform to the following DTD:
+ *      <pre>
  *
+ * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+ * &lt;!ELEMENT dataset (table+)&gt;
+ * &lt;!ELEMENT table (column*, row*)&gt;
+ * &lt;!ATTLIST table
+ *    name CDATA #REQUIRED
+ * &gt;
+ * &lt;!ELEMENT column (#PCDATA)&gt;
+ * &lt;!ELEMENT row (value | null | none)*&gt;
+ * &lt;!ELEMENT value (#PCDATA)&gt;
+ * &lt;!ELEMENT null EMPTY&gt;
+ *</pre>
  * @author Manuel Laflamme
  * @version $Revision$
  */
