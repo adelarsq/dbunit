@@ -90,6 +90,22 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         assertEquals("select statement", expected, sql);
     }
 
+    public void testGetSelectStatementWithPrimaryKeys() throws Exception
+    {
+        String schemaName = "schema";
+        String tableName = "table";
+        Column[] columns = new Column[]{
+            new Column("c1", null),
+            new Column("c2", null),
+            new Column("c3", null),
+        };
+        String expected = "select c1, c2, c3 from schema.table order by c1, c2, c3";
+
+        ITableMetaData metaData = new DefaultTableMetaData(tableName, columns, columns);
+        String sql = DatabaseDataSet.getSelectStatement(schemaName, metaData);
+        assertEquals("select statement", expected, sql);
+    }
+
     public void testGetQualifiedTableNames() throws Exception
     {
         String[] expectedNames = getExpectedNames();
@@ -183,6 +199,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 //    }
 
 }
+
 
 
 

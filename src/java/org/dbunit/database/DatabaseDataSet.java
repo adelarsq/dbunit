@@ -50,6 +50,7 @@ public class DatabaseDataSet implements IDataSet
             throws DataSetException
     {
         Column[] columns = metaData.getColumns();
+        Column[] primaryKeys = metaData.getPrimaryKeys();
 
         // select
         StringBuffer sqlBuffer = new StringBuffer(128);
@@ -67,6 +68,21 @@ public class DatabaseDataSet implements IDataSet
         sqlBuffer.append(" from ");
         sqlBuffer.append(DataSetUtils.getQualifiedName(schema,
                 metaData.getTableName()));
+
+        // order by
+        for (int i = 0; i < primaryKeys.length; i++)
+        {
+            if (i == 0)
+            {
+                sqlBuffer.append(" order by ");
+            }
+            else
+            {
+                sqlBuffer.append(", ");
+            }
+            sqlBuffer.append(primaryKeys[i].getColumnName());
+
+        }
 
         return sqlBuffer.toString();
     }
@@ -187,6 +203,7 @@ public class DatabaseDataSet implements IDataSet
     }
 
 }
+
 
 
 
