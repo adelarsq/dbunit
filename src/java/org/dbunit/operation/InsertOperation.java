@@ -26,19 +26,22 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.dataset.*;
 
 /**
+ * Inserts the dataset contents into the database. This operation assumes that
+ * table data does not exist in the database and fails if this is not the case.
+ * To prevent problems with foreign keys, tables must be sequenced appropriately
+ * in dataset.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class InsertOperation extends AbstractRowOperation
+public class InsertOperation extends AbstractBatchOperation
 {
-//    private static final Object NO_VALUE = new Object();
-
     InsertOperation()
     {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // AbstractRowOperation class
+    // AbstractBatchOperation class
 
     String getOperationStatement(String schemaName, ITable table,
             int row) throws DatabaseUnitException

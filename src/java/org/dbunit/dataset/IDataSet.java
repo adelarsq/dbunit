@@ -23,13 +23,16 @@
 package org.dbunit.dataset;
 
 /**
+ * A dataset represents a collection of data from various tables.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */
 public interface IDataSet
 {
     /**
-     * Returns list of table names this dataset contains.
+     * Returns table names this dataset contains.
+     *
      */
     public String[] getTableNames() throws DataSetException;
 

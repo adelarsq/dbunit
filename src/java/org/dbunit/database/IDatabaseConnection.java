@@ -72,4 +72,3 @@ public interface IDatabaseConnection
     public BatchStatement createBatchStatement() throws SQLException;
 }
 
-

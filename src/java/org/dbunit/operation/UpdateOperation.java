@@ -26,17 +26,20 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.dataset.*;
 
 /**
+ * Updates the database from the dataset contents. This operation assumes that
+ * table data already exists in the database and fails if this is not the case.
+
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class UpdateOperation extends AbstractRowOperation
+public class UpdateOperation extends AbstractBatchOperation
 {
     UpdateOperation()
     {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // AbstractRowOperation class
+    // AbstractBatchOperation class
 
     String getOperationStatement(String schema, ITable table,
             int row) throws DatabaseUnitException

@@ -31,22 +31,47 @@ public class CompositeTable extends AbstractTable
     private final ITableMetaData _metaData;
     private final ITable[] _tables;
 
+    /**
+     * Creates a composite table that combines the specified metadata with the
+     * specified table.
+     */
     public CompositeTable(ITableMetaData metaData, ITable table)
     {
         _metaData = metaData;
         _tables = new ITable[]{table};
     }
 
+    /**
+     * Creates a composite table that combines the specified metadata with the
+     * specified tables.
+     */
     public CompositeTable(ITableMetaData metaData, ITable[] tables)
     {
         _metaData = metaData;
         _tables = tables;
     }
 
+    /**
+     * Creates a composite table that combines the specified specified tables.
+     * The metadata from the first table is used as metadata for the new table.
+     */
     public CompositeTable(ITable table1, ITable table2)
     {
         _metaData = table1.getTableMetaData();
         _tables = new ITable[]{table1, table2};
+    }
+
+    /**
+     * Creates a composite dataset that encapsulate the specified table with
+     * a new name.
+     */
+    public CompositeTable(String newName, ITable table)
+            throws DataSetException
+    {
+        ITableMetaData metaData = table.getTableMetaData();
+        _metaData = new DefaultTableMetaData(newName,
+                metaData.getColumns(), metaData.getPrimaryKeys());
+        _tables = new ITable[]{table};
     }
 
     ////////////////////////////////////////////////////////////////////////////

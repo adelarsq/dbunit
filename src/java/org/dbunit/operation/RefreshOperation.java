@@ -31,6 +31,11 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.*;
 
 /**
+ * This operation literally refreshes dataset contents into the database. This
+ * means that data of existing rows is updated and non-existing row get
+ * inserted. Any rows which exist in the database but not in dataset stay
+ * unaffected.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */

@@ -26,17 +26,21 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.dataset.*;
 
 /**
+ * Deletes only the dataset contents from the database. This operation does not
+ * delete the entire table contents but only data that are present in the
+ * dataset.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class DeleteOperation extends AbstractRowOperation
+public class DeleteOperation extends AbstractBatchOperation
 {
     DeleteOperation()
     {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // AbstractRowOperation class
+    // AbstractBatchOperation class
 
     protected String[] getTableNames(IDataSet dataSet) throws DatabaseUnitException
     {

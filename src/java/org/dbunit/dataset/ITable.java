@@ -22,7 +22,11 @@
 
 package org.dbunit.dataset;
 
+import java.sql.ResultSet;
+
 /**
+ * A table represents a collection of tabular data.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */

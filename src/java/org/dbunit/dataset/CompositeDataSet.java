@@ -31,12 +31,19 @@ import java.util.List;
  */
 public class CompositeDataSet extends DefaultDataSet
 {
+    /**
+     * Creates a composite dataset that combines the specified tables.
+     */
     public CompositeDataSet(IDataSet[] dataSets) throws DataSetException
     {
         super(combineTables(dataSets));
     }
 
-    public CompositeDataSet(IDataSet dataSet1, IDataSet dataSet2) throws DataSetException
+    /**
+     * Creates a composite dataset that combines the two specified tables.
+     */
+    public CompositeDataSet(IDataSet dataSet1, IDataSet dataSet2)
+            throws DataSetException
     {
         super(combineTables(new IDataSet[]{dataSet1, dataSet2}));
     }

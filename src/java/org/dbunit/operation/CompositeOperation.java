@@ -30,6 +30,9 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
 /**
+ * This class is a composite that combines multiple database operation in a
+ * single one.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */
@@ -37,11 +40,17 @@ public class CompositeOperation extends DatabaseOperation
 {
     private final DatabaseOperation[] _actions;
 
+    /**
+     * Creates a new composite operation combining the two specified operations.
+     */
     public CompositeOperation(DatabaseOperation action1, DatabaseOperation action2)
     {
         _actions = new DatabaseOperation[]{action1, action2};
     }
 
+    /**
+     * Creates a new composite operation combining the specified operations.
+     */
     public CompositeOperation(DatabaseOperation[] actions)
     {
         _actions = actions;
@@ -60,4 +69,3 @@ public class CompositeOperation extends DatabaseOperation
         }
     }
 }
-

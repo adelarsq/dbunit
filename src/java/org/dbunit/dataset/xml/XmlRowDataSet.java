@@ -67,22 +67,21 @@ public class XmlRowDataSet extends DefaultDataSet
             String lastTableName = null;
             Document document = new Document(in);
 
-            Elements rowElems = document.getElement("dataset").getElements();
+            Elements rowElems = document.getElement("dataset2").getElements();
             while (rowElems.hasMoreElements())
             {
                 Element rowElem = (Element)rowElems.nextElement();
 
-                if (lastTableName == null ||
-                        lastTableName.equals(rowElem.getName()))
-                {
-                    lastTableName = rowElem.getName();
-                }
-                else
+                if (lastTableName != null &&
+                        !lastTableName.equals(rowElem.getName()))
                 {
                     Element[] elems = (Element[])rowList.toArray(new Element[0]);
-                    tableList.add(new XmlRowTable(elems, noneAsNull));
                     rowList.clear();
+
+                    tableList.add(new XmlRowTable(elems, noneAsNull));
                 }
+
+                lastTableName = rowElem.getName();
                 rowList.add(rowElem);
             }
 
@@ -106,7 +105,7 @@ public class XmlRowDataSet extends DefaultDataSet
         String[] tableNames = dataSet.getTableNames();
 
         // dataset
-        Element rootElem = document.addElement("dataset");
+        Element rootElem = document.addElement("dataset2");
 
         // tables
         for (int i = 0; i < tableNames.length; i++)
@@ -118,7 +117,7 @@ public class XmlRowDataSet extends DefaultDataSet
             // table rows
             for (int j = 0; j < table.getRowCount(); j++)
             {
-                Element rowElem = document.addElement(tableName);
+                Element rowElem = rootElem.addElement(tableName);
                 for (int k = 0; k < columns.length; k++)
                 {
                     Column column = columns[k];
@@ -141,6 +140,12 @@ public class XmlRowDataSet extends DefaultDataSet
                         }
                     }
                 }
+            }
+
+            // empty table
+            if (table.getRowCount() == 0)
+            {
+                rootElem.addElement(tableName);
             }
         }
 

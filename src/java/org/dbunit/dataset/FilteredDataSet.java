@@ -24,6 +24,8 @@ package org.dbunit.dataset;
 
 
 /**
+ * Decorates a dataset and exposes only some tables from it.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */
@@ -32,6 +34,10 @@ public class FilteredDataSet extends AbstractDataSet
     private final IDataSet _dataSet;
     private final String[] _tableNames;
 
+    /**
+     * Creates a FilteredDataSet that decorates the specified dataset and
+     * exposes only the specified tables.
+     */
     public FilteredDataSet(String[] tableNames, IDataSet dataSet)
     {
         _tableNames = tableNames;
@@ -54,7 +60,7 @@ public class FilteredDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
-        return _tableNames;
+        return (String[])_tableNames.clone();
     }
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException

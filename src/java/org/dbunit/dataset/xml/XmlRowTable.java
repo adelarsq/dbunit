@@ -66,7 +66,12 @@ public class XmlRowTable extends AbstractTable
         _metaData = new DefaultTableMetaData(tableName, columns);
 
         // rows
+        if (columns.length == 0)
+        {
+            rows = new Element[0];
+        }
         _rows = rows;
+
     }
 
     ////////////////////////////////////////////////////////////////////////////

@@ -29,6 +29,11 @@ import org.dbunit.database.*;
 import org.dbunit.dataset.*;
 
 /**
+ * Deletes entire database table contents for each table contained in dataset.
+ * In other words, if a dataset does not contain a particular table, but that
+ * table exists in the database, the contents of that table is not deleted.
+ * Deletes are performed on table in reverse sequence.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */

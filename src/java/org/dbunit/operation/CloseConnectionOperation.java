@@ -30,8 +30,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.DatabaseUnitException;
 
 /**
- * This class is a decorator that close the database connection after executing
- * the decorated operation.
+ * Decorates an operation and close the database connection after executing it.
  *
  * @author Manuel Laflamme
  * @version 1.0
@@ -41,8 +40,8 @@ public class CloseConnectionOperation extends DatabaseOperation
     private final DatabaseOperation _operation;
 
     /**
-     * Creates a new CloseConnectionOperation object.
-     * @param the decorated operation
+     * Creates a CloseConnectionOperation object that decorates the specified
+     * operation.
      */
     public CloseConnectionOperation(DatabaseOperation operation)
     {

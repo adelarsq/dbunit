@@ -73,21 +73,21 @@ public abstract class AbstractTable implements ITable
     ////////////////////////////////////////////////////////////////////////////
     // Object class
 
-    public String toString()
-    {
-
-        try
-        {
-            ITableMetaData metaData = getTableMetaData();
-            String tableName = metaData.getTableName();
-            String columns = Arrays.asList(metaData.getColumns()).toString();
-
-            return "[name=" + tableName + ", rowCount=" + getRowCount() +
-                    ", columns=" + columns + "]";
-        }
-        catch (DataSetException e)
-        {
-            return super.toString();
-        }
-    }
+//    public String toString()
+//    {
+//
+//        try
+//        {
+//            ITableMetaData metaData = getTableMetaData();
+//            String tableName = metaData.getTableName();
+//            String columns = Arrays.asList(metaData.getColumns()).toString();
+//
+//            return "[name=" + tableName + ", rowCount=" + getRowCount() +
+//                    ", columns=" + columns + "]";
+//        }
+//        catch (DataSetException e)
+//        {
+//            return super.toString();
+//        }
+//    }
 }

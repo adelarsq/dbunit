@@ -1,5 +1,5 @@
 /*
- * XmlDataSetTest.java   Feb 17, 2002
+ * XmlRowDataSetTest.java   Mar 13, 2002
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
@@ -32,9 +32,9 @@ import org.dbunit.dataset.*;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class XmlDataSetTest extends AbstractDataSetTest
+public class XmlRowDataSetTest extends AbstractDataSetTest
 {
-    public XmlDataSetTest(String s)
+    public XmlRowDataSetTest(String s)
     {
         super(s);
     }
@@ -42,35 +42,35 @@ public class XmlDataSetTest extends AbstractDataSetTest
     protected IDataSet createDataSet() throws Exception
     {
         InputStream in = new FileInputStream(
-                new File("src/xml/dataSetTest.xml"));
-        return new XmlDataSet(in);
+                new File("src/xml/xmlRowDataSetTest.xml"));
+        return new XmlRowDataSet(in, true);
     }
 
     public void testWrite() throws Exception
     {
         List tableList = new ArrayList();
 
-        XmlDataSet xmlDataSet1 = (XmlDataSet)createDataSet();
-        File tempFile = File.createTempFile("dataSetTest", "xml");
+        IDataSet dataSet = createDataSet();
+        File tempFile = File.createTempFile("xmlRowDataSetTest", "xml");
         OutputStream out = new FileOutputStream(tempFile);
         try
         {
             // write dataset in temp file
-            XmlDataSet.write(xmlDataSet1, out);
+            XmlRowDataSet.write(dataSet, out);
 
             // load new dataset from temp file
-            XmlDataSet xmlDataSet2 = new XmlDataSet(new FileInputStream(tempFile));
+            XmlRowDataSet xmlDataSet2 = new XmlRowDataSet(new FileInputStream(tempFile), true);
 
             // verify table count
-            assertEquals("table count", xmlDataSet1.getTableNames().length,
+            assertEquals("table count", dataSet.getTableNames().length,
                     xmlDataSet2.getTableNames().length);
 
             // verify each table
-            String[] tableNames = xmlDataSet1.getTableNames();
+            String[] tableNames = dataSet.getTableNames();
             for (int i = 0; i < tableNames.length; i++)
             {
                 String name = tableNames[i];
-                ITable table1 = xmlDataSet1.getTable(name);
+                ITable table1 = dataSet.getTable(name);
                 ITable table2 = xmlDataSet2.getTable(name);
                 assertTrue("not same instance", table1 != table2);
                 DataSetUtils.assertEquals(table1, table2);

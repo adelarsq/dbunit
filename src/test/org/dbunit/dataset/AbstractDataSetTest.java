@@ -81,6 +81,13 @@ public abstract class AbstractDataSetTest extends TestCase
         }
     }
 
+    public void testGetTableNamesDefensiveCopy() throws Exception
+    {
+        IDataSet dataSet = createDataSet();
+        assertTrue("Should not be same intance",
+                dataSet.getTableNames() != dataSet.getTableNames());
+    }
+
     public void testGetTable() throws Exception
     {
         String[] expected = getExpectedNames();

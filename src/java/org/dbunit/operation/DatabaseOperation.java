@@ -30,6 +30,8 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
 /**
+ * Defines the interface contract for operations performed on the database.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */
@@ -44,6 +46,13 @@ public abstract class DatabaseOperation
     public static final DatabaseOperation CLEAN_INSERT = new CompositeOperation(
             DELETE_ALL, INSERT);
 
+    /**
+     * Executes this operation on the specified database using the specified
+     * dataset contents.
+     *
+     * @param connection the database connection.
+     * @param dataSet the dataset to be used by this operation.
+     */
     public abstract void execute(IDatabaseConnection connection,
             IDataSet dataSet) throws DatabaseUnitException, SQLException;
 

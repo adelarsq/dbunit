@@ -1,5 +1,5 @@
 /*
- * XmlDataSetWriteTest.java   Feb 18, 2002
+ * XmlDataSetWriteTest.java   Mar 13, 2002
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
@@ -30,47 +30,24 @@ import org.dbunit.dataset.*;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class XmlDataSetWriteTest extends XmlTableTest
+public class XmlRowDataSetWriteTest extends XmlRowTableTest
 {
-    public XmlDataSetWriteTest(String s)
+    public XmlRowDataSetWriteTest(String s)
     {
         super(s);
     }
 
-//    protected ITable createTable() throws Exception
-//    {
-//        ITable table = super.createTable();
-//        IDataSet dataSet = new DefaultDataSet(table);
-//
-//        File tempFile = File.createTempFile("xmlDataSetWriteTest", "xml");
-//        OutputStream out = new FileOutputStream(tempFile);
-//        try
-//        {
-//            // write DefaultTable in temp file
-//            XmlDataSet.write(dataSet, out);
-//
-//            // load new dataset from temp file
-//            XmlDataSet xmlDataSet2 = new XmlDataSet(new FileInputStream(tempFile));
-//            return xmlDataSet2.getTable(xmlDataSet2.getTableNames()[0]);
-//        }
-//        finally
-//        {
-//            out.close();
-//            tempFile.delete();
-//        }
-//    }
-
     protected IDataSet createDataSet() throws Exception
     {
-        File tempFile = File.createTempFile("xmlDataSetWriteTest", "xml");
+        File tempFile = File.createTempFile("xmlRowDataSetWriteTest", "xml");
         OutputStream out = new FileOutputStream(tempFile);
         try
         {
             // write DefaultTable in temp file
-            XmlDataSet.write(super.createDataSet(), out);
+            XmlRowDataSet.write(super.createDataSet(true), out);
 
             // load new dataset from temp file
-            return new XmlDataSet(new FileInputStream(tempFile));
+            return new XmlRowDataSet(new FileInputStream(tempFile), true);
         }
         finally
         {
@@ -99,10 +76,10 @@ public class XmlDataSetWriteTest extends XmlTableTest
         try
         {
             // write DefaultTable in temp file
-            XmlDataSet.write(dataSet, out);
+            XmlRowDataSet.write(dataSet, out);
 
             // load new dataset from temp file
-            XmlDataSet xmlDataSet2 = new XmlDataSet(new FileInputStream(tempFile));
+            XmlRowDataSet xmlDataSet2 = new XmlRowDataSet(new FileInputStream(tempFile), true);
 
             // verify each table
             for (int i = 0; i < tables.length; i++)

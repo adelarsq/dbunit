@@ -31,6 +31,8 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
 /**
+ * Decorates an operation and executes within the context of a transaction.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */
@@ -38,6 +40,9 @@ public class TransactionOperation extends DatabaseOperation
 {
     private final DatabaseOperation _operation;
 
+    /**
+     * Creates a TransactionOperation that decorates the specified operation.
+     */
     public TransactionOperation(DatabaseOperation operation)
     {
         _operation = operation;

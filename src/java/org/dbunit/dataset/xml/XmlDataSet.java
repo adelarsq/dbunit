@@ -32,11 +32,17 @@ import org.dbunit.dataset.datatype.TypeCastException;
 import electric.xml.*;
 
 /**
+ * Provides persistence support to read from and write to the dbunit xml format.
+ * This format is specified by the dataset.dtd file.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */
 public class XmlDataSet extends DefaultDataSet
 {
+    /**
+     * Creates an XmlDataSet with the specified xml input stream.
+     */
     public XmlDataSet(InputStream in) throws DataSetException
     {
         super(createTables(in));

@@ -66,4 +66,3 @@ public class DatabaseConnection extends AbstractDatabaseConnection
         _connection.close();
     }
 }
-

@@ -25,6 +25,8 @@ package org.dbunit.dataset;
 import org.dbunit.dataset.datatype.DataType;
 
 /**
+ * Represents a table column.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */
@@ -33,17 +35,29 @@ public class Column
     private final String _columnName;
     private final DataType _dataType;
 
+    /**
+     * Creates a Column.
+     *
+     * @param columnName the column name
+     * @param daatType the data type
+     */
     public Column(String columnName, DataType dataType)
     {
         _columnName = columnName;
         _dataType = dataType;
     }
 
+    /**
+     * Returns this column name.
+     */
     public String getColumnName()
     {
         return _columnName;
     }
 
+    /**
+     * Returns this column data type.
+     */
     public DataType getDataType()
     {
         return _dataType;
@@ -54,7 +68,7 @@ public class Column
 
     public String toString()
     {
-        return "[name=" + _columnName + ", dataType=" + _dataType.getName() + "]";
+        return _columnName;
     }
 
 }

@@ -49,6 +49,14 @@ public class DefaultTableMetaData extends AbstractTableMetaData
         _primaryKeys = getPrimaryKeys(columns, primaryKeys);
     }
 
+    public DefaultTableMetaData(String tableName, Column[] columns,
+            Column[] primaryKeys) //throws DataSetException
+    {
+        _tableName = tableName;
+        _columns = columns;
+        _primaryKeys = primaryKeys;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // ITableMetaData interface
 
