@@ -54,7 +54,30 @@ public class DataSetUtilsTest extends TestCase
 
         assertEquals("existing prefix", "prefix.name",
                 DataSetUtils.getQualifiedName("wrongPrefix", "prefix.name"));
+
+        assertEquals("escaped prefix + name", "prefix.name",
+                DataSetUtils.getQualifiedName("prefix", "name"));
+
+        System.setProperty("dbunit.name.escapePattern", "[?]");
+        assertEquals("escaped prefix + name", "[prefix].[name]",
+                DataSetUtils.getQualifiedName("prefix", "name", true));
+        System.getProperties().remove("dbunit.name.escapePattern");
+
     }
+
+    public void testGetEscapedName() throws Exception
+    {
+        assertEquals("'name'", DataSetUtils.getEscapedName("name", "'?'"));
+
+        assertEquals("[name]", DataSetUtils.getEscapedName("name", "[?]"));
+
+        assertEquals(null, DataSetUtils.getEscapedName(null, "[?]"));
+
+        assertEquals("name", DataSetUtils.getEscapedName("name", null));
+
+        assertEquals("name", DataSetUtils.getEscapedName("name", "invalid pattern!"));
+    }
+
 
     public void testGetColumn() throws Exception
     {

@@ -60,13 +60,16 @@ public class DatabaseDataSet implements IDataSet
             {
                 sqlBuffer.append(", ");
             }
-            sqlBuffer.append(columns[i].getColumnName());
+            String columnName = DataSetUtils.getQualifiedName(null,
+                    columns[i].getColumnName(), true);
+//            String columnName = columns[i].getColumnName();
+            sqlBuffer.append(columnName);
         }
 
         // from
         sqlBuffer.append(" from ");
         sqlBuffer.append(DataSetUtils.getQualifiedName(schema,
-                metaData.getTableName()));
+                metaData.getTableName(), true));
 
         // order by
         for (int i = 0; i < primaryKeys.length; i++)

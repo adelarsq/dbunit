@@ -89,6 +89,7 @@ public abstract class AbstractDataSetTest extends TestCase
         nameList.remove("CLOB_TABLE");
         nameList.remove("DBUNIT.BLOB_TABLE");
         nameList.remove("DBUNIT.CLOB_TABLE");
+//        nameList.remove("ESCAPED TABLE");
         names = (String[])nameList.toArray(new String[0]);
 
         return new FilteredDataSet(names, dataSet);

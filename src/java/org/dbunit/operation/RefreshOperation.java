@@ -90,7 +90,7 @@ public class RefreshOperation extends DatabaseOperation
         StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("select COUNT(*) from ");
         sqlBuffer.append(DataSetUtils.getQualifiedName(schemaName,
-                metaData.getTableName()));
+                metaData.getTableName(), true));
 
         // where
         sqlBuffer.append(" where ");

@@ -121,7 +121,63 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         connection.verify();
     }
 
-    public void testMockExecuteWithDuplicateTables() throws Exception
+    public void testExecuteWithEscapedName() throws Exception
+    {
+        String schemaName = "schema";
+        String tableName = "table";
+        String[] expected = {
+            "update [schema].[table] set [c2] = 1234, [c3] = 'false' where [c4] = 0 and [c1] = 'toto'",
+            "update [schema].[table] set [c2] = 123.45, [c3] = NULL where [c4] = 0 and [c1] = 'qwerty'",
+        };
+
+        List valueList = new ArrayList();
+        valueList.add(new Object[]{"toto", "1234", "false", "0"});
+        valueList.add(new Object[]{"qwerty", new Double("123.45"), null, "0"});
+        Column[] columns = new Column[]{
+            new Column("c1", DataType.VARCHAR),
+            new Column("c2", DataType.NUMERIC),
+            new Column("c3", DataType.VARCHAR),
+            new Column("c4", DataType.NUMERIC),
+        };
+        String[] primaryKeys = {"c4", "c1"};
+        ITable table = new DefaultTable(new DefaultTableMetaData(
+                tableName, columns, primaryKeys), valueList);
+        IDataSet dataSet = new DefaultDataSet(table);
+
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.addExpectedBatchStrings(expected);
+        statement.setExpectedExecuteBatchCalls(1);
+        statement.setExpectedClearBatchCalls(1);
+        statement.setExpectedCloseCalls(1);
+
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(1);
+        factory.setupStatement(statement);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupSchema(schemaName);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // execute operation
+        setEscapePattern("[?]");
+        try
+        {
+            new UpdateOperation().execute(connection, dataSet);
+        }
+        finally
+        {
+            setEscapePattern(null);
+        }
+
+        statement.verify();
+        factory.verify();
+        connection.verify();
+    }
+
+    public void testExecuteWithDuplicateTables() throws Exception
     {
         String schemaName = "schema";
         String tableName = "table";

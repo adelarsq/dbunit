@@ -62,13 +62,17 @@ public class DeleteOperation extends AbstractBatchOperation
         StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("delete from ");
         sqlBuffer.append(DataSetUtils.getQualifiedName(
-                schemaName, metaData.getTableName()));
+                schemaName, metaData.getTableName(), true));
 
         // where
         sqlBuffer.append(" where ");
         for (int i = 0; i < primaryKeys.length; i++)
         {
-            sqlBuffer.append(primaryKeys[i].getColumnName());
+            // escape column name
+            String columnName = DataSetUtils.getQualifiedName(null,
+                    primaryKeys[i].getColumnName(), true);
+            sqlBuffer.append(columnName);
+
             sqlBuffer.append(" = ?");
             if (i + 1 < primaryKeys.length)
             {

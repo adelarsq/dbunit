@@ -63,7 +63,7 @@ public class DeleteAllOperation extends DatabaseOperation
                     StringBuffer sqlBuffer = new StringBuffer(128);
                     sqlBuffer.append("delete from ");
                     sqlBuffer.append(DataSetUtils.getQualifiedName(
-                            connection.getSchema(), tableNames[i]));
+                            connection.getSchema(), tableNames[i], true));
                     statement.addBatch(sqlBuffer.toString());
                 }
 

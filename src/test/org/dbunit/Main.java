@@ -25,6 +25,8 @@ package org.dbunit;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.operation.DatabaseOperation;
 
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
@@ -37,8 +39,11 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
+        System.setProperty("dbunit.name.escapePattern", "\"?\"");
         IDatabaseConnection connection =
                 DatabaseEnvironment.getInstance().getConnection();
+        IDataSet dataSet = new XmlDataSet(new FileInputStream("dataSetTest.xml"));
+        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 
 //        String[] tableNames = connection.createDataSet().getTableNames();
 //        Arrays.sort(tableNames);
@@ -47,12 +52,11 @@ public class Main
 //                new FileOutputStream("test.dtd"));
 //
 //
-//        FlatXmlDataSet.write(new FilteredDataSet(tableNames,
-//                connection.createDataSet()),
-//                new FileOutputStream("test.xml"));
-        FlatXmlDataSet.write(new FlatXmlDataSet(
-                new FileInputStream("P:/dbunit-cvs/dbunit/src/xml/flatXmlDataSetDuplicateTest.xml")),
-                new FileOutputStream("flattest.xml"));
+        FlatXmlDataSet.write(connection.createDataSet(),
+                new FileOutputStream("test.xml"));
+//        FlatXmlDataSet.write(new FlatXmlDataSet(
+//                new FileInputStream("P:/dbunit-cvs/dbunit/src/xml/flatXmlDataSetDuplicateTest.xml")),
+//                new FileOutputStream("flattest.xml"));
 
 
 //        ////////////////////////////////

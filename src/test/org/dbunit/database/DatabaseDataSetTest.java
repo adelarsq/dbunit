@@ -36,6 +36,8 @@ import java.lang.reflect.Array;
  */
 public class DatabaseDataSetTest extends AbstractDataSetTest
 {
+    private static final String ESCAPE_PATTERN_KEY = "dbunit.name.escapePattern";
+
     private IDatabaseConnection _connection;
 
     public DatabaseDataSetTest(String s)
@@ -113,6 +115,30 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         ITableMetaData metaData = new DefaultTableMetaData(tableName, columns);
         String sql = DatabaseDataSet.getSelectStatement(schemaName, metaData);
         assertEquals("select statement", expected, sql);
+    }
+
+    public void testGetSelectStatementWithEscapedNames() throws Exception
+    {
+        String schemaName = "schema";
+        String tableName = "table";
+        Column[] columns = new Column[]{
+            new Column("c1", DataType.UNKNOWN),
+            new Column("c2", DataType.UNKNOWN),
+            new Column("c3", DataType.UNKNOWN),
+        };
+        String expected = "select 'c1', 'c2', 'c3' from 'schema'.'table'";
+
+        try
+        {
+            System.setProperty(ESCAPE_PATTERN_KEY, "'?'");
+            ITableMetaData metaData = new DefaultTableMetaData(tableName, columns);
+            String sql = DatabaseDataSet.getSelectStatement(schemaName, metaData);
+            assertEquals("select statement", expected, sql);
+        }
+        finally
+        {
+            System.getProperties().remove(ESCAPE_PATTERN_KEY);
+        }
     }
 
     public void testGetSelectStatementWithPrimaryKeys() throws Exception

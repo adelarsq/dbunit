@@ -85,12 +85,43 @@ public class DataSetUtils
      */
     public static String getQualifiedName(String prefix, String name)
     {
+        return getQualifiedName(prefix, name, false);
+    }
+
+    public static String getQualifiedName(String prefix, String name,
+            boolean escape)
+    {
+        if (escape)
+        {
+            String pattern = System.getProperty("dbunit.name.escapePattern");
+            prefix = getEscapedName(prefix, pattern);
+            name = getEscapedName(name, pattern);
+        }
+
         if (prefix == null || prefix.equals("") || name.indexOf(".") >= 0)
         {
             return name;
         }
 
         return prefix + "." + name;
+    }
+
+    public static String getEscapedName(String name, String pattern)
+    {
+        if (name == null || pattern == null)
+        {
+            return name;
+        }
+
+        int index = pattern.indexOf("?");
+        if (index >=0 )
+        {
+            String prefix = pattern.substring(0, index);
+            String suffix = pattern.substring(index + 1);
+
+            return prefix + name + suffix;
+        }
+        return name;
     }
 
     /**

@@ -59,7 +59,7 @@ public class UpdateOperation extends AbstractBatchOperation
         StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("update ");
         sqlBuffer.append(DataSetUtils.getQualifiedName(schemaName,
-                metaData.getTableName()));
+                metaData.getTableName(), true));
 
         // set
         boolean firstSet = true;
@@ -78,7 +78,10 @@ public class UpdateOperation extends AbstractBatchOperation
                 }
                 firstSet = false;
 
-                sqlBuffer.append(column.getColumnName());
+                // escape column name
+                String columnName = DataSetUtils.getQualifiedName(null,
+                        column.getColumnName(), true);
+                sqlBuffer.append(columnName);
                 sqlBuffer.append(" = ?");
                 columnList.add(column);
             }
@@ -94,7 +97,11 @@ public class UpdateOperation extends AbstractBatchOperation
             {
                 sqlBuffer.append(" and ");
             }
-            sqlBuffer.append(column.getColumnName());
+
+            // escape column name
+            String columnName = DataSetUtils.getQualifiedName(null,
+                    column.getColumnName(), true);
+            sqlBuffer.append(columnName);
             sqlBuffer.append(" = ?");
             columnList.add(column);
         }

@@ -141,7 +141,34 @@
     <expanded_paths />
   </component>
   <component class="com.intellij.debugger.Debugger">
-    <line_breakpoints />
+    <line_breakpoints>
+      <breakpoint url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseDataSet.java" line="162">
+        <option name="ENABLED" value="true" />
+        <option name="SUSPEND_VM" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CONDITION" value="tableName.equals(&quot;ESCAPED.TABLE&quot;)" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="LOG_MESSAGE" value="" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INVERSE_CLASS_FILLTERS" value="false" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseTableMetaData.java" line="197">
+        <option name="ENABLED" value="true" />
+        <option name="SUSPEND_VM" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CONDITION" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="LOG_MESSAGE" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INVERSE_CLASS_FILLTERS" value="false" />
+      </breakpoint>
+    </line_breakpoints>
     <exception_breakpoints>
       <breakpoint_any>
         <option name="ENABLED" value="false" />
@@ -266,6 +293,30 @@
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="TEST_RUNNER" value="Text" />
     </configuration>
+    <configuration name="DatabaseDataSetTest" type="JUnit" default="false" selected="false">
+      <option name="MAIN_CLASS_NAME" value="org.dbunit.database.DatabaseDataSetTest" />
+      <option name="VM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="TEST_RUNNER" value="Text" />
+    </configuration>
+    <configuration name="DeleteOperationTest" type="JUnit" default="false" selected="false">
+      <option name="MAIN_CLASS_NAME" value="org.dbunit.operation.DeleteOperationTest" />
+      <option name="VM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="TEST_RUNNER" value="Text" />
+    </configuration>
+    <configuration name="InsertOperationTest" type="JUnit" default="false" selected="false">
+      <option name="MAIN_CLASS_NAME" value="org.dbunit.operation.InsertOperationTest" />
+      <option name="VM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="TEST_RUNNER" value="Text" />
+    </configuration>
+    <configuration name="UpdateOperationTest" type="JUnit" default="false" selected="false">
+      <option name="MAIN_CLASS_NAME" value="org.dbunit.operation.UpdateOperationTest" />
+      <option name="VM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="TEST_RUNNER" value="Text" />
+    </configuration>
   </component>
   <component class="com.intellij.ide.SelectInManager">
     <target name="Classpath View" />
@@ -283,21 +334,21 @@
   </component>
   <component class="com.intellij.ide.desktop.IdeDocumentManager">
     <recent_files>
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/DeleteOperation.java" column="13" line="35" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/InsertOperationTest.java" column="40" line="129" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/AbstractBatchOperation.java" column="0" line="56" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/DeleteOperationTest.java" column="0" line="205" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/statement/IStatementFactory.java" column="17" line="32" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/DeleteAllOperationTest.java" column="41" line="89" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/DeleteAllOperation.java" column="21" line="53" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/RefreshOperationTest.java" column="9" line="88" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/mssqlserver/InsertIdentityOperation.java" column="0" line="108" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/RefreshOperation.java" column="16" line="111" />
-      <file_info url="jar://J:/jdk1.3.1_03/src.jar!/src/java/net/URL.java" column="19" line="83" />
-      <file_info url="jar://$PROJECT_DIR$/lib/exml.jar!/electric/xml/Document.class" column="11" line="25" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" column="39" line="139" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/UpdateOperationTest.java" column="50" line="123" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/ant/Export.java" column="16" line="118" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/DatabaseEnvironment.java" column="13" line="35" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/AbstractDatabaseTest.java" column="8" line="61" />
+      <file_info url="file://$PROJECT_DIR$/src/sql/hypersonic.sql" column="2" line="40" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseDataSetTest.java" column="16" line="125" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseDataSet.java" column="0" line="65" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/DeleteAllOperationTest.java" column="16" line="74" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/AbstractBatchOperation.java" column="16" line="93" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/UpdateOperationTest.java" column="75" line="120" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/InsertOperationTest.java" column="59" line="104" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/InsertOperation.java" column="0" line="80" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/DeleteOperationTest.java" column="40" line="95" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/UpdateOperation.java" column="0" line="81" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/DeleteOperation.java" column="36" line="58" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/database/statement/MockBatchStatement.java" column="22" line="89" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/mssqlserver/InsertIdentityOperation.java" column="13" line="48" />
     </recent_files>
   </component>
   <component class="com.intellij.ide.hierarchy.HierarchyBrowserManager">
@@ -312,12 +363,15 @@
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/xml" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/sql" />
     </navigator>
     <navigator id="SourcepathNavigator" flattenPackages="false" showMembers="true">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
     </navigator>
   </component>
   <component class="com.intellij.ide.structureView.StructureViewFactory">

@@ -112,7 +112,8 @@ public class InsertIdentityOperation extends DatabaseOperation
                 ITable table = tables[i];
                 ITableMetaData databaseMetaData = table.getTableMetaData();
                 String tableName = DataSetUtils.getQualifiedName(
-                        connection.getSchema(), databaseMetaData.getTableName());
+                        connection.getSchema(),
+                        databaseMetaData.getTableName(), true);
 
                 // enable identity insert
                 boolean hasIdentityColumn = hasIdentityColumn(databaseMetaData);
