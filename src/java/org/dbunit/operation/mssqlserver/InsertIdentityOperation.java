@@ -20,7 +20,7 @@
  */
 
 package org.dbunit.operation.mssqlserver;
-
+import org.dbunit.database.*;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.*;
@@ -73,6 +73,7 @@ public class InsertIdentityOperation extends DatabaseOperation
             throws DataSetException
     {
         Column[] primaryKeys = metaData.getPrimaryKeys();
+
         for (int i = 0; i < primaryKeys.length; i++)
         {
             if (primaryKeys[i].getSqlTypeName().endsWith("identity"))
@@ -110,13 +111,19 @@ public class InsertIdentityOperation extends DatabaseOperation
             for (int i = 0; i < tables.length; i++)
             {
                 ITable table = tables[i];
+
                 ITableMetaData databaseMetaData = table.getTableMetaData();
+
+                if (!(databaseMetaData instanceof DatabaseTableMetaData)){
+                    databaseMetaData = new DatabaseTableMetaData(table.getTableMetaData().getTableName(),connection);
+                }
                 String tableName = DataSetUtils.getQualifiedName(
                         connection.getSchema(),
                         databaseMetaData.getTableName(), true);
 
                 // enable identity insert
                 boolean hasIdentityColumn = hasIdentityColumn(databaseMetaData);
+
                 if (hasIdentityColumn)
                 {
                     StringBuffer sqlBuffer = new StringBuffer(128);
