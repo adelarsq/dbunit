@@ -55,3 +55,4 @@ public abstract class AbstractTableMetaData implements ITableMetaData
         return (Column[])keyList.toArray(new Column[0]);
     }
 }
+

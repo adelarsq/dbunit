@@ -93,3 +93,4 @@ public class ResultSetTable extends AbstractTable
         }
     }
 }
+

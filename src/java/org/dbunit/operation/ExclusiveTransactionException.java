@@ -49,3 +49,4 @@ public class ExclusiveTransactionException extends DatabaseUnitException
         super(e);
     }
 }
+

@@ -74,34 +74,6 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
     ////////////////////////////////////////////////////////////////////////////
     // Test methods
 
-    public void testGetPrimaryKeys() throws Exception
-    {
-        String tableName = "PK_TABLE";
-        String[] expected = {"PK0"};
-//        String[] expected = {"PK0", "PK1", "PK2"};
-
-        ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
-        Column[] columns = metaData.getPrimaryKeys();
-
-        assertEquals("pk count", expected.length, columns.length);
-        for (int i = 0; i < columns.length; i++)
-        {
-            Column column = columns[i];
-            assertEquals("name", expected[i], column.getColumnName());
-        }
-    }
-
-    public void testGetNoPrimaryKeys() throws Exception
-    {
-        String tableName = "TEST_TABLE";
-
-        ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
-        Column[] columns = metaData.getPrimaryKeys();
-
-        assertEquals("pk count", 0, columns.length);
-    }
-
-
     public void testGetSelectStatement() throws Exception
     {
         String schemaName = "schema";
@@ -119,3 +91,4 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
     }
 
 }
+

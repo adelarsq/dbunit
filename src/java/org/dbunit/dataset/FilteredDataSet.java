@@ -75,3 +75,4 @@ public class FilteredDataSet extends AbstractDataSet
         return _dataSet.getTable(tableName);
     }
 }
+

@@ -52,3 +52,4 @@ public class CompositeDataSetTest extends AbstractDataSetTest
         return new CompositeDataSet(dataSet1, dataSet2);
     }
 }
+

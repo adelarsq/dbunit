@@ -30,9 +30,9 @@ import org.dbunit.dataset.*;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class XmlRowTableTest extends AbstractTableTest
+public class FlatXmlTableTest extends AbstractTableTest
 {
-    public XmlRowTableTest(String s)
+    public FlatXmlTableTest(String s)
     {
         super(s);
     }
@@ -46,13 +46,13 @@ public class XmlRowTableTest extends AbstractTableTest
     {
         InputStream in = new FileInputStream(
                 new File("src/xml/xmlRowTableTest.xml"));
-        return new XmlRowDataSet(in, noneAsNull);
+        return new FlatXmlDataSet(in);
     }
 
     public void testGetMissingValue() throws Exception
     {
         int row = 1;
-        Object[] expected = {"row 1 col 0", ITable.NO_VALUE, "row 1 col 2"};
+        Object[] expected = {"row 1 col 0", null, "row 1 col 2"};
 
         ITable table = createDataSet(false).getTable("MISSING_VALUES");
 
@@ -67,3 +67,4 @@ public class XmlRowTableTest extends AbstractTableTest
     }
 
 }
+

@@ -25,7 +25,7 @@ package org.dbunit.dataset;
 import java.io.FileInputStream;
 
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.xml.XmlRowDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 import junit.framework.TestCase;
 import junit.framework.AssertionFailedError;
 
@@ -42,8 +42,8 @@ public class DataSetUtilsTest extends TestCase
 
     private IDataSet getDataSet() throws Exception
     {
-        return new XmlRowDataSet(new FileInputStream(
-                "src/xml/dataSetUtilsTest.xml"), true);
+        return new FlatXmlDataSet(new FileInputStream(
+                "src/xml/dataSetUtilsTest.xml"));
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -267,3 +267,4 @@ public class DataSetUtilsTest extends TestCase
     }
 
 }
+

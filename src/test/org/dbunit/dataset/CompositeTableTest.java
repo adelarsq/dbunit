@@ -44,3 +44,4 @@ public class CompositeTableTest extends DefaultTableTest
         return new CompositeTable(metaData, tables);
     }
 }
+

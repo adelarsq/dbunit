@@ -74,3 +74,4 @@ public class DefaultDataSet extends AbstractDataSet
         throw new NoSuchTableException(tableName);
     }
 }
+

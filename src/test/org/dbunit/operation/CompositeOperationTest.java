@@ -65,3 +65,4 @@ public class CompositeOperationTest extends AbstractDatabaseTest
     }
 
 }
+

@@ -34,7 +34,7 @@ public class HypersonicEnvironment extends DatabaseEnvironment
 
         // Creates required tables into the hypersonic in-memory database
         BufferedReader sqlReader = new BufferedReader(new FileReader(
-                new File("src/sql/hypersonic.sql")));
+                new File("src/sql/test.sql")));
         StringBuffer sqlBuffer = new StringBuffer();
         while (sqlReader.ready())
         {
@@ -64,3 +64,4 @@ public class HypersonicEnvironment extends DatabaseEnvironment
     }
 
 }
+

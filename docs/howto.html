@@ -1,0 +1,264 @@
+ 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- #BeginTemplate "/Templates/main.dwt" -->
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link href="stylesheet.css" rel="stylesheet" type="text/css">
+<!-- #BeginEditable "doctitle" --> 
+<title>The dbUnit framework - Howto Guides</title>
+<!-- #EndEditable --> 
+</head>
+<body>
+<table cellpadding="8" cellspacing="0">
+  <col span="1" valign="top" align="left"> <tbody> 
+  <tr> 
+    <td class="menu" nowrap valign="top"><a href="index.html">Home</a><br>
+      <br>
+      <a href="components.html">Components</a><br>
+      <a href="howto.html">Howto Guides</a><br>
+      <a href="bestpractices.html">Best Practices</a><br>
+      <a href="api/index.html">API Doc</a><br>
+      <a href="faq.html">FAQ</a><br>
+      <br>
+      <a href="changes.html">News/Changes</a><br>
+      <a href="download.html">Download</a><br>
+      <a href="contact.html">Contact</a><br>
+      <a href="ressources.html">Ressources</a><br>
+      <p> <a href="http://sourceforge.net"><img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439"></a> 
+      </p>
+    </td>
+    <td valign="top"> <!-- #BeginEditable "body" --> 
+      <h2>How to Guides</h2>
+      <ul>
+        <li><a href="#createtest">How to create a test case to setup your database</a></li>
+        <li><a href="#noextend">How to setup your database in a test case that 
+          does not extend DatabaseTestCase</a></li>
+        <li><a href="#extract">How to extract a dataset from yourdatabase</a></li>
+        <li><a href="#generatedtd">How to generate a flat xml dataset DTD from 
+          your database</a></li>
+        <li><a href="#assertdata">How to verify your database data during a test 
+          case</a></li>
+      </ul>
+      <hr>
+      <h2><a name="createtest">How to create a test case to setup your database</a></h2>
+      To write a test case, please follow the steps described below.<br>
+      <br>
+      <h4>Step 1: Create your dataset file</h4>
+      Your test will obviously need some data to work with. This means you must 
+      create a dataset. In most situations you will work with xml datasets. You 
+      can manually create an xml dataset from scratch or create one by exporting 
+      some data from your database (see export sample).<br>
+      <br>
+      <h4>Step 2: Extend the DatabaseTestCase class</h4>
+      Now you need to create a test class. The easiest way to use dbUnit is to 
+      make your test class extend the DatabaseTestCase class. DatabaseTestCase 
+      extends the JUnit TestCase class. Two template methods are required to be 
+      implemented: getConnection() to return a connection to your database and 
+      getDataSet() to return the dataset you created in step 1.<br>
+      <br>
+      Following is a sample implementation that returns a connection to a Hypersonic 
+      database and an xmldataset:<br>
+      <pre>
+public class SampleTest extends DatabaseTestCase
+{
+    public SampleTest(String name)
+    {
+        super(name);
+    }
+
+    protected IDatabaseConnection getConnection() throws Exception
+    {
+        Class driverClass = Class.forName(&quot;org.hsqldb.jdbcDriver&quot;);
+        Connection jdbcConnection = DriverManager.getConnection(
+                &quot;jdbc:hsqldb:sample&quot;, &quot;sa&quot;, &quot;&quot;);
+        return new DatabaseConnection(jdbcConnection);
+    }
+
+    protected IDataSet getDataSet() throws Exception
+    {
+        return new XmlDataSet(new FileInputStream(&quot;dataset.xml&quot;));
+    }
+}</pre>
+      <br>
+      <h4>Step 3: (Optional) Implement getSetUpOperation() and getTearDownOperation() 
+        methods</h4>
+      By default, dbUnit performs a CLEAN_INSERT operation before executing each 
+      test and performs no cleanup operation afterward. You can modify this behavior 
+      by overriding getSetUpOperation() and getTearDownOperation().<br>
+      <br>
+      The following example demonstrates how you can easily override the operation 
+      executed before or after your test.<br>
+      <br>
+      <pre>
+public class SampleTest extends DatabaseTestCase
+{
+    ...
+    protected DatabaseOperation getSetUpOperation() throws Exception
+    {
+        return DatabaseOperation.REFRESH;
+    }
+
+    protected DatabaseOperation getTearDownOperation() throws Exception
+    {
+        return DatabaseOperation.NONE;
+    }
+    ...
+}</pre>
+      <br>
+      <h4>Step 4: Implement your testXXX() methods</h4>
+      Implement your test methods as you normally would with JUnit. Your database 
+      is now initialized before and cleaned-up after each test methods according 
+      to what you did in previous steps.<br>
+      <br>
+      <h2><a name="noextend">How to setup your database in a test case that does 
+        not extend DatabaseTestCase</a></h2>
+      In order to use dbUnit you are not required to extend the DatabaseTestCase 
+      class. Simply override the standard JUnit setUp() method and execute the 
+      desired operation on your database. Do something similar in teardown() if 
+      you need to perform any clean-up.<br>
+      <br>
+      For example:<br>
+      <pre>
+public class SampleTest extends TestCase
+{
+    public SampleTest(String name)
+    {
+        super(name);
+    }
+
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+
+        // initialize your database connection here
+        IDatabaseConnection connection = null;
+        // ...
+
+        // initialize your dataset here
+        IDataSet dataSet = null;
+        // ...
+
+        try
+        {
+            DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+        }
+        finally
+        {
+            connection.close();
+        }
+    }
+    ... 
+}</pre>
+      <h2><a name="extract">How to extract a dataset from your database</a></h2>
+      Since version 1.2, the <a href="components.html#FlatXmlDataSet">flat xml 
+      dataset</a> format is the prefered way to persist a dataset in xml. The 
+      following sample demonstrates how you can export one or many tables from 
+      a database to an flat xml dataset file.<br>
+      <pre>
+public class DatabaseExportSample
+{
+    public static void main(String[] args) throws Exception
+    {
+        // database connection
+        Class driverClass = Class.forName(&quot;org.hsqldb.jdbcDriver&quot;);
+        Connection jdbcConnection = DriverManager.getConnection(
+                &quot;jdbc:hsqldb:sample&quot;, &quot;sa&quot;, &quot;&quot;);
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        // partial database export
+        String[] tableNames = {&quot;TABLE1&quot;, &quot;TABLE2&quot;, &quot;TABLE2&quot;};
+        IDataSet partialDataSet = connection.createDataSet(tableNames);
+        FlatXmlDataSet.write(partialDataSet, new FileOutputStream(&quot;partial.xml&quot;));
+
+        // full database export
+        IDataSet fullDataSet = connection.createDataSet();
+        FlatXmlDataSet.write(fullDataSet, new FileOutputStream(&quot;full.xml&quot;));
+    }
+}</pre>
+      <h2><a name="generatedtd">How to generate a flat xml dataset DTD from your 
+        database</a></h2>
+      <p>The following sample demonstrates how you can generate a flat xml dataset 
+        DTD from a database.</p>
+      <pre>
+public class DatabaseExportSample
+{
+    public static void main(String[] args) throws Exception
+    {
+        // database connection
+        Class driverClass = Class.forName(&quot;org.hsqldb.jdbcDriver&quot;);
+        Connection jdbcConnection = DriverManager.getConnection(
+                &quot;jdbc:hsqldb:sample&quot;, &quot;sa&quot;, &quot;&quot;);
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        // write DTD file
+        FlatXmlDataSet.writeDtd(connection.createDataSet(),<br>                new FileOutputStream(&quot;test.dtd&quot;));<br>    }
+}</pre>
+      <h2><a name="assertdata">How to verify your database data during a test</a> 
+        Case </h2>
+      Now that you know how to use dbunit to setup your database before executing 
+      each test, you probably wonder how to easily verify the database data when 
+      your tests run. Since version 1.2, dbunit provides support for verifying 
+      whether two tables or datasets contain identical data.<br>
+      <pre>public class DataSetUtils
+{
+    ...
+    public static void assertEquals(ITable expected, ITable actual) 
+    public static void assertEquals(IDataSet expected, IDataSet actual)
+    ...
+}</pre>
+      Therefore, you can put your expected table data into an xml dataset and 
+      during your test query the database to verify its data against expected 
+      data. In order to do thatm you will need two xml datasets. One to setup 
+      your database before each test, and another to provide the expected data 
+      during tests.<br>
+      <br>
+      The following sample, illustrate how you can do that:<br>
+      <pre>public class SampleTest extends DatabaseTestCase
+{
+    public SampleTest(String name)
+    {
+        super(name);
+    }
+
+    // Implements required setup methods here 
+    ...
+
+    public void testMe() throws Exception
+    {
+        // Execute your tested code that modify the database here
+        ...
+
+
+        // Fetch database data after executing your code 
+        ITable databaseData = getConnection().createQueryTable(
+                &quot;EXPECTED_ DATA&quot;, &quot;SELECT * FROM TABLE1, TABLE2 WHERE ...&quot;);
+        
+        // Load expected data from an xml dataset
+        IDataSet expectedDataSet = new XmlRowDataSet(
+                &quot;expectedDataSet.xml&quot;, true);
+        ITable expectedData = expectedDataSet.getTable(&quot;EXPECTED_DATA&quot;);
+
+        // Verify if database data match expected data
+        DataSetUtils.assertEquals(expectedData, databaseData);
+    }
+}
+
+
+</pre>
+      <!-- #EndEditable --> 
+      <hr>
+      <div align="center">
+        <p><font size="2">Copyright &copy;2002, Manuel Laflamme, All Rights Reserved</font></p>
+        <p><font size="1"><a href="index.html">Home</a> - <a href="components.html">Components</a> 
+          - <a href="howto.html">Howto Guides</a> - <a href="bestpractices.html">Best 
+          Practices</a> - <a href="api/index.html">API Doc</a> - <a href="faq.html">FAQ</a> 
+          - <a href="changes.html">News &amp; Changes History</a> - <a href="download.html">Download</a> 
+          - <a href="contact.html">Contact</a> - <a href="ressources.html">Ressources</a></font></p>
+      </div>
+    </td>
+  </tr>
+  </tbody> 
+</table>
+</body>
+<!-- #EndTemplate --></html>
+

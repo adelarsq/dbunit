@@ -51,7 +51,7 @@ public class XmlDataSetTest extends AbstractDataSetTest
         List tableList = new ArrayList();
 
         XmlDataSet xmlDataSet1 = (XmlDataSet)createDataSet();
-        File tempFile = File.createTempFile("dataSetTest", "xml");
+        File tempFile = File.createTempFile("dataSetTest", ".xml");
         OutputStream out = new FileOutputStream(tempFile);
         try
         {
@@ -84,3 +84,4 @@ public class XmlDataSetTest extends AbstractDataSetTest
     }
 
 }
+

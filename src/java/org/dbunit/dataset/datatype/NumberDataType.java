@@ -75,3 +75,4 @@ public class NumberDataType extends DataType
     }
 
 }
+

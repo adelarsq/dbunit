@@ -48,3 +48,4 @@ public class NoSuchTableException extends DataSetException
         super(e);
     }
 }
+

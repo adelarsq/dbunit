@@ -108,3 +108,4 @@ public abstract class DatabaseTestCase extends TestCase
         executeOperation(getTearDownOperation());
     }
 }
+

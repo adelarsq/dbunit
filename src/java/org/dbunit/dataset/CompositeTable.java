@@ -117,3 +117,4 @@ public class CompositeTable extends AbstractTable
         throw new RowOutOfBoundsException(row + " > " + totalCount);
     }
 }
+

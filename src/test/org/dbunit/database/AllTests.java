@@ -35,8 +35,10 @@ public class AllTests
     {
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(DatabaseDataSetTest.class));
-//        suite.addTest(new TestSuite(ResultsetTableTest.class));
+        suite.addTest(new TestSuite(DatabaseTableMetaDataTest.class));
+        suite.addTest(new TestSuite(ResultsetTableTest.class));
 
         return suite;
     }
 }
+

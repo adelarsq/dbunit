@@ -1,5 +1,5 @@
 /*
- * XmlRowDataSet.java   Mar 12, 2002
+ * FlatXmlDataSet.java   Mar 12, 2002
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
@@ -26,28 +26,28 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import electric.xml.*;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
-import electric.xml.*;
 
 /**
  * @author Manuel Laflamme
  * @since 1.2
  * @version 1.0
  */
-public class XmlRowDataSet extends DefaultDataSet
+public class FlatXmlDataSet extends DefaultDataSet
 {
     /**
-     * Creates an XmlRowDataSet object with specifed xml input stream.
+     * Creates an FlatXmlDataSet object with specifed xml input stream.
      *
      * @param in the xml contents
      * @param noneAsNull if <code>true</code> this specify that the absence of
      * value should be considered as a null value
      */
-    public XmlRowDataSet(InputStream in, boolean noneAsNull) throws DataSetException
+    public FlatXmlDataSet(InputStream in) throws DataSetException
     {
-        super(createTables(in, noneAsNull));
+        super(createTables(in, true));
     }
 
     /**
@@ -57,6 +57,62 @@ public class XmlRowDataSet extends DefaultDataSet
             throws IOException, DataSetException
     {
         createDocument(dataSet).write(out);
+    }
+
+    /**
+     * Write a DTD for the specified dataset to the specified output.
+     */
+    public static void writeDtd(IDataSet dataSet, OutputStream out)
+            throws IOException, DataSetException
+    {
+        PrintStream printOut = new PrintStream(out);
+        String[] tableNames = dataSet.getTableNames();
+
+        // dataset element
+        printOut.println("<!ELEMENT dataset (");
+        for (int i = 0; i < tableNames.length; i++)
+        {
+            printOut.print("    ");
+            printOut.print(tableNames[i]);
+            printOut.print("*");
+            if (i + 1 < tableNames.length)
+            {
+                printOut.println(",");
+            }
+        }
+        printOut.println(")>");
+        printOut.println();
+
+        // tables
+        for (int i = 0; i < tableNames.length; i++)
+        {
+            // table element
+            String tableName = tableNames[i];
+            printOut.print("<!ELEMENT ");
+            printOut.print(tableName);
+            printOut.println(" EMPTY>");
+
+            // column attributes
+            printOut.print("<!ATTLIST ");
+            printOut.println(tableName);
+            Column[] columns = dataSet.getTableMetaData(tableName).getColumns();
+            for (int j = 0; j < columns.length; j++)
+            {
+                Column column = columns[j];
+                printOut.print("    ");
+                printOut.print(column);
+                if (column.isNullable())
+                {
+                    printOut.println(" CDATA #IMPLIED");
+                }
+                else
+                {
+                    printOut.println(" CDATA #REQUIRED");
+                }
+            }
+            printOut.println(">");
+            printOut.println();
+        }
     }
 
     private static ITable[] createTables(InputStream in, boolean noneAsNull) throws DataSetException
@@ -79,7 +135,7 @@ public class XmlRowDataSet extends DefaultDataSet
                     Element[] elems = (Element[])rowList.toArray(new Element[0]);
                     rowList.clear();
 
-                    tableList.add(new XmlRowTable(elems, noneAsNull));
+                    tableList.add(new FlatXmlTable(elems, noneAsNull));
                 }
 
                 lastTableName = rowElem.getName();
@@ -89,7 +145,7 @@ public class XmlRowDataSet extends DefaultDataSet
             if (rowList.size() > 0)
             {
                 Element[] elems = (Element[])rowList.toArray(new Element[0]);
-                tableList.add(new XmlRowTable(elems, noneAsNull));
+                tableList.add(new FlatXmlTable(elems, noneAsNull));
             }
 
             return (ITable[])tableList.toArray(new ITable[0]);
@@ -154,3 +210,4 @@ public class XmlRowDataSet extends DefaultDataSet
     }
 
 }
+

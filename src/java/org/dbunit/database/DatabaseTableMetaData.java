@@ -3,17 +3,17 @@
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -137,12 +137,22 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                     {
                         String columnName = resultSet.getString(4);
                         int sqlType = resultSet.getInt(5);
-                        String sqlTypeName = resultSet.getString(6);
-                        int columnSize = resultSet.getInt(7);
+//                        String sqlTypeName = resultSet.getString(6);
+//                        int columnSize = resultSet.getInt(7);
                         int nullable = resultSet.getInt(11);
 
-                        Column column = new Column(columnName, DataType.forSqlType(sqlType));
-                        columnList.add(column);
+                        try
+                        {
+                            Column column = new Column(
+                                    columnName,
+                                    DataType.forSqlType(sqlType),
+                                    nullable == DatabaseMetaData.columnNullable);
+                            columnList.add(column);
+                        }
+                        catch (DataTypeException e)
+                        {
+                            // ignore unknown column datatype
+                        }
                     }
 
                     _columns = (Column[])columnList.toArray(new Column[0]);
@@ -156,11 +166,6 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             {
                 throw new DataSetException(e);
             }
-            catch (DataTypeException e)
-            {
-                throw new DataSetException(e);
-            }
-
         }
         return _columns;
     }
@@ -182,3 +187,4 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     }
 
 }
+

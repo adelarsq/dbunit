@@ -35,12 +35,13 @@ public class AllTest
     {
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(XmlDataSetTest.class));
-        suite.addTest(new TestSuite(XmlDataSetWriteTest.class));
-        suite.addTest(new TestSuite(XmlRowDataSetTest.class));
-        suite.addTest(new TestSuite(XmlRowDataSetWriteTest.class));
-        suite.addTest(new TestSuite(XmlRowTableTest.class));
+        suite.addTest(new TestSuite(XmlTableWriteTest.class));
+        suite.addTest(new TestSuite(FlatXmlDataSetTest.class));
+        suite.addTest(new TestSuite(FlatXmlTableWriteTest.class));
+        suite.addTest(new TestSuite(FlatXmlTableTest.class));
         suite.addTest(new TestSuite(XmlTableTest.class));
 
         return suite;
     }
 }
+

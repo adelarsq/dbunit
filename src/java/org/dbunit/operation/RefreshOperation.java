@@ -108,3 +108,4 @@ public class RefreshOperation extends DatabaseOperation
 
     }
 }
+

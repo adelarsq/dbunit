@@ -71,3 +71,4 @@ public class DefaultTable extends AbstractTable
     }
 
 }
+

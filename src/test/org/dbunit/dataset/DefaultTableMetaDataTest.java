@@ -104,3 +104,4 @@ public class DefaultTableMetaDataTest extends TestCase
     }
 
 }
+

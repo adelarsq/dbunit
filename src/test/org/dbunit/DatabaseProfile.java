@@ -88,3 +88,4 @@ public class DatabaseProfile
         return PrimaryKeySupport.forName(value);
     }
 }
+

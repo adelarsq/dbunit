@@ -47,3 +47,4 @@ public class AllTests
         System.exit(0);
     }
 }
+

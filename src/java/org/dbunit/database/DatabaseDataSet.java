@@ -3,17 +3,17 @@
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -23,11 +23,10 @@
 package org.dbunit.database;
 
 import java.sql.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.dbunit.dataset.*;
-import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.datatype.DataTypeException;
 
 /**
  * @author Manuel Laflamme
@@ -35,16 +34,12 @@ import org.dbunit.dataset.datatype.DataTypeException;
  */
 public class DatabaseDataSet extends AbstractDataSet
 {
-    private final Connection _c;
     private final IDatabaseConnection _connection;
-    private final String _schema;
     private Map _tableMap = null;
 
     DatabaseDataSet(IDatabaseConnection connection) throws SQLException
     {
         _connection = connection;
-        _c = connection.getConnection();
-        _schema = connection.getSchema();
     }
 
     static String getSelectStatement(String schema, ITableMetaData metaData)
@@ -72,8 +67,7 @@ public class DatabaseDataSet extends AbstractDataSet
     }
 
     /**
-     * Get all the table names in the current database that are not
-     * system tables.
+     * Get all the table names form the database that are not system tables.
      */
     private Map getTableMap() throws DataSetException
     {
@@ -84,9 +78,12 @@ public class DatabaseDataSet extends AbstractDataSet
 
         try
         {
-            DatabaseMetaData databaseMetaData = _c.getMetaData();
+            Connection jdbcConnection = _connection.getConnection();
+            String schema = _connection.getSchema();
+
+            DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
             ResultSet resultSet = databaseMetaData.getTables(
-                    _c.getCatalog(), _schema, "%", null);
+                    jdbcConnection.getCatalog(), schema, "%", null);
 
             try
             {
@@ -130,7 +127,8 @@ public class DatabaseDataSet extends AbstractDataSet
         {
             return metaData;
         }
-        else if (!getTableMap().containsKey(tableName))
+
+        if (!getTableMap().containsKey(tableName))
         {
             throw new NoSuchTableException(tableName);
         }
@@ -145,13 +143,15 @@ public class DatabaseDataSet extends AbstractDataSet
         try
         {
             ITableMetaData metaData = getTableMetaData(tableName);
-            Statement statement = _c.createStatement(
-                    ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet resultSet = statement.executeQuery(getSelectStatement(
-                    _schema, metaData));
 
-            if (resultSet.getType() == resultSet.TYPE_FORWARD_ONLY)
+            Connection jdbcConnection = _connection.getConnection();
+            String schema = _connection.getSchema();
+            Statement statement = jdbcConnection.createStatement();
+
+            try
             {
+                ResultSet resultSet = statement.executeQuery(getSelectStatement(
+                        schema, metaData));
                 try
                 {
                     return new CachedResultSetTable(metaData, resultSet);
@@ -161,7 +161,10 @@ public class DatabaseDataSet extends AbstractDataSet
                     resultSet.close();
                 }
             }
-            return new ResultSetTable(metaData, resultSet);
+            finally
+            {
+                statement.close();
+            }
         }
         catch (SQLException e)
         {
@@ -170,3 +173,4 @@ public class DatabaseDataSet extends AbstractDataSet
     }
 
 }
+

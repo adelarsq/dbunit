@@ -1,5 +1,5 @@
 /*
- * XmlRowTable.java   Mar 12, 2002
+ * FlatXmlTable.java   Mar 12, 2002
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
@@ -34,20 +34,20 @@ import electric.xml.*;
  * @since 1.2
  * @version 1.0
  */
-public class XmlRowTable extends AbstractTable
+public class FlatXmlTable extends AbstractTable
 {
     private final ITableMetaData _metaData;
     private final Element[] _rows;
     private final boolean _noneAsNull;
 
     /**
-     * Creates a new XmlRowTable object with specified rows.
+     * Creates a new FlatXmlTable object with specified rows.
      *
      * @param rows the table rows
      * @param noneAsNull if <code>true</code> the {@link getValue} method
      * return <code>null</code> if no value exist.
      */
-    public XmlRowTable(Element[] rows, boolean noneAsNull)
+    public FlatXmlTable(Element[] rows, boolean noneAsNull)
     {
         _noneAsNull = noneAsNull;
 
@@ -102,3 +102,4 @@ public class XmlRowTable extends AbstractTable
     }
 
 }
+

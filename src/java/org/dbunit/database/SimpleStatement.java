@@ -59,3 +59,4 @@ public class SimpleStatement extends BatchStatement
         _list.clear();
     }
 }
+

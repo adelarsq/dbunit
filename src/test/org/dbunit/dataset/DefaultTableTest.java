@@ -89,3 +89,4 @@ public class DefaultTableTest extends AbstractTableTest
     }
 
 }
+

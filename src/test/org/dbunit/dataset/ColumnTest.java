@@ -53,3 +53,4 @@ public class ColumnTest extends TestCase
     }
 
 }
+

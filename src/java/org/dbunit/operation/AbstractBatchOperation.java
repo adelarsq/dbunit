@@ -106,3 +106,4 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         }
     }
 }
+

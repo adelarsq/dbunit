@@ -73,3 +73,4 @@ public class CloseConnectionOperationTest extends AbstractDatabaseTest
     }
 
 }
+

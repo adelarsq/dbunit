@@ -50,3 +50,4 @@ public class FilteredDataSetTest extends AbstractDataSetTest
         return new FilteredDataSet(getExpectedNames(), dataSet);
     }
 }
+

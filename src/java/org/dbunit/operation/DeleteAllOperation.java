@@ -77,3 +77,4 @@ public class DeleteAllOperation extends DatabaseOperation
         }
     }
 }
+

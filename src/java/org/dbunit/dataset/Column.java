@@ -34,17 +34,29 @@ public class Column
 {
     private final String _columnName;
     private final DataType _dataType;
+    private final boolean _nullable;
 
     /**
-     * Creates a Column.
+     * Creates a Column object. This contructor set nullable to true.
      *
      * @param columnName the column name
-     * @param daatType the data type
+     * @param dataType the data type
      */
     public Column(String columnName, DataType dataType)
     {
         _columnName = columnName;
         _dataType = dataType;
+        _nullable = true;
+    }
+
+    /**
+     * Creates a Column object.
+     */
+    public Column(String columnName, DataType dataType, boolean nullable)
+    {
+        _columnName = columnName;
+        _dataType = dataType;
+        _nullable = nullable;
     }
 
     /**
@@ -63,6 +75,14 @@ public class Column
         return _dataType;
     }
 
+    /**
+     * Returns <code>true</code> if this column is nullable.
+     */
+    public boolean isNullable()
+    {
+        return _nullable;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // Object class
 
@@ -72,3 +92,4 @@ public class Column
     }
 
 }
+

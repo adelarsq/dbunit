@@ -54,3 +54,4 @@ public class CompoundStatement extends BatchStatement
         _buffer = new StringBuffer();
     }
 }
+
