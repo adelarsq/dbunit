@@ -59,7 +59,7 @@ public class
             }
 
             // TIMESTAMP
-            if (sqlTypeName.startsWith("TIMESTAMP"))
+            if (sqlType == Types.DATE && sqlTypeName.startsWith("TIMESTAMP"))
             {
                 return DataType.TIMESTAMP;
             }
