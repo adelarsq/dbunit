@@ -137,12 +137,11 @@ public class DatabaseExportSample
           columns?
       </question>
       <answer>
-         <p>Auto-increment columns must be disabled in order to insert the dataset 
-        values into the database. The way to disable this feature is database 
-        specific. If your database does not provide a way to disable this feature 
-        then you are out of luck and DbUnit cannot be used with it. </p>
-      <p>DbUnit support IDENTITY columns for MS SQL Server 
-        with the class <a href="components.html#IdentityInsertOperation">IdentityInsertOperation</a>. 
+         <p>
+         Many RDBMS allow IDENTITY and auto-increment columns to be overwritten with client values implicitly. DbUnit can be used with these RDBMS natively.
+Some databases, like MS SQL Server and Sybase, need to explicitly activate client values writing. The way to activate this feature is vendor specific. 
+         <br/>
+DbUnit provides this functionality for MS SQL Server with the <a href="components.html#IdentityInsertOperation">IdentityInsertOperation</a> class. 
       </p>
       </answer>
     </faq>
