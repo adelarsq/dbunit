@@ -45,6 +45,15 @@ public class DefaultDataSetTest extends AbstractDataSetTest
 
         return new DefaultDataSet(tables);
     }
+
+    protected IDataSet createDuplicateDataSet() throws Exception
+    {
+        IDataSet dataSet = new XmlDataSet(
+                new FileInputStream("src/xml/xmlDataSetDuplicateTest.xml"));
+        ITable[] tables = DataSetUtils.getTables(dataSet);
+
+        return new DefaultDataSet(tables);
+    }
 }
 
 

@@ -31,12 +31,28 @@ import java.util.List;
  */
 public class CompositeDataSet extends AbstractDataSet
 {
-    private final ITable[] _tables;
+    private ITable[] _tables;
 
     /**
      * Creates a composite dataset that combines specified datasets.
+     * Tables having the same name are merged into one table.
      */
     public CompositeDataSet(IDataSet[] dataSets) throws DataSetException
+    {
+        this(dataSets, true);
+    }
+
+    /**
+     * Creates a composite dataset that combines specified datasets.
+     *
+     * @param dataSets
+     *      list of datasets
+     * @param combine
+     *      if <code>true</code>, tables having the same name are merged into
+     *      one table.
+     */
+    public CompositeDataSet(IDataSet[] dataSets, boolean combine)
+            throws DataSetException
     {
         List tableList = new ArrayList();
         for (int i = 0; i < dataSets.length; i++)
@@ -49,11 +65,16 @@ public class CompositeDataSet extends AbstractDataSet
             }
         }
 
-        _tables = combineTables((ITable[])tableList.toArray(new ITable[0]));
+        _tables = (ITable[])tableList.toArray(new ITable[0]);
+        if (combine)
+        {
+            _tables = combineTables(_tables);
+        }
     }
 
     /**
      * Creates a composite dataset that combines the two specified datasets.
+     * Tables having the same name are merged into one table.
      */
     public CompositeDataSet(IDataSet dataSet1, IDataSet dataSet2)
             throws DataSetException
@@ -62,7 +83,25 @@ public class CompositeDataSet extends AbstractDataSet
     }
 
     /**
+     * Creates a composite dataset that combines the two specified datasets.
+     *
+     * @param dataSet1
+     *      first dataset
+     * @param dataSet2
+     *      second dataset
+     * @param combine
+     *      if <code>true</code>, tables having the same name are merged into
+     *      one table.
+     */
+    public CompositeDataSet(IDataSet dataSet1, IDataSet dataSet2, boolean combine)
+            throws DataSetException
+    {
+        this(new IDataSet[]{dataSet1, dataSet2}, combine);
+    }
+
+    /**
      * Creates a composite dataset that combines tables having identical name.
+     * Tables having the same name are merged into one table.
      */
     public CompositeDataSet(ITable[] tables) throws DataSetException
     {
@@ -112,11 +151,11 @@ public class CompositeDataSet extends AbstractDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // AbstractDataSet class
+    // IDataSet interface
 
-    protected ITable[] getTables() throws DataSetException
+    public ITable[] getTables() throws DataSetException
     {
-        return _tables;
+        return cloneTables(_tables);
     }
 }
 

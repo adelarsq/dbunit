@@ -106,16 +106,15 @@ public class InsertIdentityOperation extends DatabaseOperation
             jdbcConnection.setAutoCommit(false);
 
             // Execute decorated operation one table at a time
-            String[] tableNames = dataSet.getTableNames();
-            for (int i = 0; i < tableNames.length; i++)
+            ITable[] tables = dataSet.getTables();
+            for (int i = 0; i < tables.length; i++)
             {
-                ITable table = dataSet.getTable(tableNames[i]);
+                ITable table = tables[i];
+                ITableMetaData databaseMetaData = table.getTableMetaData();
                 String tableName = DataSetUtils.getQualifiedName(
-                        connection.getSchema(), tableNames[i]);
+                        connection.getSchema(), databaseMetaData.getTableName());
 
                 // enable identity insert
-                ITableMetaData databaseMetaData = databaseDataSet.getTableMetaData(tableNames[i]);
-
                 boolean hasIdentityColumn = hasIdentityColumn(databaseMetaData);
                 if (hasIdentityColumn)
                 {

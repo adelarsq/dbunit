@@ -1,0 +1,6 @@
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Manuel Laflamme (Java development) -->
+<dataset>
+    <DUPLICATE_TABLE COLUMN0="row 1 col 0" COLUMN1="row 1 col 1" COLUMN2="row 1 col 2" COLUMN3="row 1 col 3"/>
+	<DUPLICATE_TABLE COLUMN0="row 2 col 0" COLUMN1="row 2 col 1" COLUMN2="row 2 col 2" COLUMN3="row 2 col 3"/>
+</dataset>
+

@@ -23,6 +23,11 @@
 package org.dbunit;
 
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
 
 /**
  * @author Manuel Laflamme
@@ -45,6 +50,9 @@ public class Main
 //        FlatXmlDataSet.write(new FilteredDataSet(tableNames,
 //                connection.createDataSet()),
 //                new FileOutputStream("test.xml"));
+        FlatXmlDataSet.write(new FlatXmlDataSet(
+                new FileInputStream("P:/dbunit-cvs/dbunit/src/xml/flatXmlDataSetDuplicateTest.xml")),
+                new FileOutputStream("flattest.xml"));
 
 
 //        ////////////////////////////////

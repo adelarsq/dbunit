@@ -22,6 +22,8 @@
 
 package org.dbunit.dataset;
 
+import org.dbunit.database.AmbiguousTableNameException;
+
 import java.util.Arrays;
 
 
@@ -46,17 +48,25 @@ public class FilteredDataSet implements IDataSet
         _dataSet = dataSet;
     }
 
-    protected void assertValidTableName(String tableName) throws NoSuchTableException
+    protected void assertValidTableName(String tableName) throws DataSetException
     {
+        boolean found = false;
         for (int i = 0; i < _tableNames.length; i++)
         {
             if (tableName.equals(_tableNames[i]))
             {
-                return;
+                if (found)
+                {
+                    throw new AmbiguousTableNameException(tableName);
+                }
+                found = true;
             }
         }
 
-        throw new NoSuchTableException(tableName);
+        if (!found)
+        {
+            throw new NoSuchTableException(tableName);
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -78,6 +88,16 @@ public class FilteredDataSet implements IDataSet
     {
         assertValidTableName(tableName);
         return _dataSet.getTable(tableName);
+    }
+
+    public ITable[] getTables() throws DataSetException
+    {
+        ITable[] tables = new ITable[_tableNames.length];
+        for (int i = 0; i < tables.length; i++)
+        {
+            tables[i] = _dataSet.getTable(_tableNames[i]);
+        }
+        return tables;
     }
 
 }

@@ -202,7 +202,8 @@ public class DataSetUtils
      */
     public static ITable[] getTables(IDataSet dataSet) throws DataSetException
     {
-        return getTables(dataSet.getTableNames(), dataSet);
+//        return getTables(dataSet.getTableNames(), dataSet);
+        return dataSet.getTables();
     }
 
     /**

@@ -11,6 +11,7 @@
 package org.dbunit.dataset;
 
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 import java.io.FileInputStream;
 
@@ -29,6 +30,12 @@ public class CaseInsensitiveDataSetTest extends AbstractDataSetTest
     {
         return new CaseInsensitiveDataSet(new XmlDataSet(new FileInputStream(
                 "src/xml/caseInsensitiveDataSetTest.xml")));
+    }
+
+    protected IDataSet createDuplicateDataSet() throws Exception
+    {
+        return new CaseInsensitiveDataSet(new FlatXmlDataSet(new FileInputStream(
+                "src/xml/caseInsensitiveDataSetDuplicateTest.xml")));
     }
 
     protected void assertEqualsTableName(String mesage, String expected,

@@ -31,21 +31,40 @@ package org.dbunit.dataset;
 public interface IDataSet
 {
     /**
-     * Returns table names this dataset contains.
-     *
+     * Returns table names this dataset contains. Multiple occurence of a name
+     * may be present in the returned list if the dataset contains multiple
+     * tables having the same name.
      */
     public String[] getTableNames() throws DataSetException;
 
     /**
      * Returns the specified table metatdata.
+     *
+     * @throws AmbiguousTableNameException if dataset contains multiple tables
+     *      having the specified name. Use {@link getTables} to access
+     *      to all tables.
+     * @throws NoSuchTableException if dataset do not contains the specified
+     *      table
      */
     public ITableMetaData getTableMetaData(String tableName)
             throws DataSetException;
 
     /**
      * Returns the specified table.
+     *
+     * @throws AmbiguousTableNameException if dataset contains multiple tables
+     *      having the specified name. Use {@link getTables} to access
+     *      to all tables.
+     * @throws NoSuchTableException if dataset do not contains the specified
+     *      table
      */
     public ITable getTable(String tableName) throws DataSetException;
+
+    /**
+     * Returns tables contained by this dataset. Multiple table having the same
+     * name but different data may be returned.
+     */
+    public ITable[] getTables() throws DataSetException;
 }
 
 

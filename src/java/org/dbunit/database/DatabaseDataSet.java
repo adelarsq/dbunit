@@ -25,8 +25,7 @@ package org.dbunit.database;
 import org.dbunit.dataset.*;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Manuel Laflamme
@@ -208,6 +207,16 @@ public class DatabaseDataSet implements IDataSet
         }
     }
 
+    public ITable[] getTables() throws DataSetException
+    {
+        String[] names = getTableNames();
+        List tableList = new ArrayList(names.length);
+        for (int i = 0; i < names.length; i++)
+        {
+            tableList.add(getTable(names[i]));
+        }
+        return (ITable[])tableList.toArray(new ITable[0]);
+    }
 }
 
 

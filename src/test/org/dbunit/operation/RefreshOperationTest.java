@@ -74,6 +74,37 @@ public class RefreshOperationTest extends AbstractDatabaseTest
             Assertion.assertEquals(expectedTable, tableAfter);
         }
     }
+    public void testExecuteWithDuplicateTables() throws Exception
+    {
+        String[] tableNames = {"PK_TABLE", "ONLY_PK_TABLE"};
+        int[] tableRowCount = {3, 1};
+        String primaryKey = "PK0";
+
+        IDataSet xmlDataSet = new FlatXmlDataSet(
+                new FileInputStream("src/xml/refreshOperationDuplicateTest.xml"));
+        assertEquals("table count", xmlDataSet.getTableNames().length, 4);
+
+        // verify table before
+        assertEquals("array lenght", tableNames.length, tableRowCount.length);
+        for (int i = 0; i < tableNames.length; i++)
+        {
+            ITable tableBefore = createOrderedTable(tableNames[i], primaryKey);
+            assertEquals("row count before", tableRowCount[i], tableBefore.getRowCount());
+        }
+
+        DatabaseOperation.REFRESH.execute(_connection, xmlDataSet);
+
+        // verify table after
+        IDataSet expectedDataSet = new FlatXmlDataSet(
+                new FileInputStream("src/xml/refreshOperationTestExpected.xml"));
+
+        for (int i = 0; i < tableNames.length; i++)
+        {
+            ITable expectedTable = expectedDataSet.getTable(tableNames[i]);
+            ITable tableAfter = createOrderedTable(tableNames[i], primaryKey);
+            Assertion.assertEquals(expectedTable, tableAfter);
+        }
+    }
 
     public void testExecuteWithEmptyTable() throws Exception
     {

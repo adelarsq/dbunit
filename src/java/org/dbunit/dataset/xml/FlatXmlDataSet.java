@@ -170,16 +170,19 @@ public class FlatXmlDataSet extends AbstractDataSet
     private static Document buildDocument(IDataSet dataSet) throws DataSetException
     {
         Document document = new Document();
-        String[] tableNames = dataSet.getTableNames();
+        ITable[] tables = dataSet.getTables();
+//        String[] tableNames = dataSet.getTableNames();
 
         // dataset
         Element rootElem = document.addElement("dataset");
 
         // tables
-        for (int i = 0; i < tableNames.length; i++)
+        for (int i = 0; i < tables.length; i++)
         {
-            String tableName = tableNames[i];
-            ITable table = dataSet.getTable(tableName);
+            ITable table = tables[i];
+            ITableMetaData metaData = tables[i].getTableMetaData();
+            String tableName = metaData.getTableName();
+
             Column[] columns = table.getTableMetaData().getColumns();
 
             // table rows
@@ -300,11 +303,11 @@ public class FlatXmlDataSet extends AbstractDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // AbstractDataSet class
+    // IDataSet interface
 
-    protected ITable[] getTables() throws DataSetException
+    public ITable[] getTables() throws DataSetException
     {
-        return _tables;
+        return cloneTables(_tables);
     }
 
 }

@@ -72,6 +72,41 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
         connection.verify();
     }
 
+    public void testMockExecuteWithDuplicateTable() throws Exception
+    {
+        String schemaName = "schema";
+        String tableName = "table";
+        String expected = "delete from schema.table";
+
+        ITable table = new DefaultTable(tableName);
+        IDataSet dataSet = new DefaultDataSet(new ITable[] {table, table});
+
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.addExpectedBatchString(expected);
+        statement.addExpectedBatchString(expected);
+        statement.setExpectedExecuteBatchCalls(1);
+        statement.setExpectedClearBatchCalls(1);
+        statement.setExpectedCloseCalls(1);
+
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreateStatementCalls(1);
+        factory.setupStatement(statement);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(new DefaultDataSet(table));
+        connection.setupSchema(schemaName);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // execute operation
+        new DeleteAllOperation().execute(connection, dataSet);
+
+        statement.verify();
+        factory.verify();
+        connection.verify();
+    }
+
     public void testExecute() throws Exception
     {
         IDataSet databaseDataSet = AbstractDataSetTest.removeExtraTestTables(

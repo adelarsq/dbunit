@@ -95,21 +95,22 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
             throws DatabaseUnitException, SQLException
     {
         IStatementFactory factory = connection.getStatementFactory();
-        String[] tableNames = getTableNames(dataSet);
+        ITable[] tables = dataSet.getTables();
+//        String[] tableNames = getTableNames(dataSet);
 
         // for each table
-        for (int i = 0; i < tableNames.length; i++)
+        for (int i = 0; i < tables.length; i++)
         {
             // do not process empty table
-            String tableName = tableNames[i];
-            ITable table = dataSet.getTable(tableName);
+            ITable table = tables[i];
             if (table.getRowCount() == 0)
             {
                 continue;
             }
 
+//            String tableName = tableNames[i];
             ITableMetaData metaData = getOperationMetaData(connection,
-                    dataSet.getTableMetaData(tableName));
+                    table.getTableMetaData());
             OperationData operationData = getOperationData(
                     connection.getSchema(), metaData);
 

@@ -99,15 +99,15 @@ public class XmlDataSet extends AbstractDataSet
     private static Document buildDocument(IDataSet dataSet) throws DataSetException
     {
         Document document = new Document();
-        String[] tableNames = dataSet.getTableNames();
+        ITable[] tables = dataSet.getTables();
 
         // dataset
         Element rootElem = document.addElement("dataset");
-        for (int i = 0; i < tableNames.length; i++)
+        for (int i = 0; i < tables.length; i++)
         {
-            String tableName = tableNames[i];
-            ITable table = dataSet.getTable(tableName);
-            ITableMetaData metaData = table.getTableMetaData();
+            ITable table = tables[i];
+            ITableMetaData metaData = tables[i].getTableMetaData();
+            String tableName = metaData.getTableName();
 
             // table
             Element tableElem = rootElem.addElement("table");
@@ -174,11 +174,11 @@ public class XmlDataSet extends AbstractDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // AbstractDataSet class
+    // IDataSet interface
 
-    protected ITable[] getTables() throws DataSetException
+    public ITable[] getTables() throws DataSetException
     {
-        return _tables;
+        return cloneTables(_tables);
     }
 
 }

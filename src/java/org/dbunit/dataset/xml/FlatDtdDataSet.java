@@ -12,6 +12,7 @@ package org.dbunit.dataset.xml;
 
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.database.AmbiguousTableNameException;
 
 import java.io.*;
 import java.util.*;
@@ -144,6 +145,11 @@ public class FlatDtdDataSet implements IDataSet
 
     public ITable getTable(String tableName) throws DataSetException
     {
+        if (_tableNames.indexOf(tableName) != _tableNames.lastIndexOf(tableName))
+        {
+            throw new AmbiguousTableNameException(tableName);
+        }
+
         ITable table = (ITable)_tableMap.get(tableName);
         if (table == null)
         {
@@ -152,6 +158,26 @@ public class FlatDtdDataSet implements IDataSet
 
         return table;
     }
+
+    public ITable[] getTables() throws DataSetException
+    {
+        String[] names = (String[])_tableNames.toArray(new String[0]);
+        ITable[] tables = new ITable[names.length];
+        for (int i = 0; i < names.length; i++)
+        {
+            String tableName = names[i];
+            ITable table = (ITable)_tableMap.get(tableName);
+            if (table == null)
+            {
+                throw new NoSuchTableException(tableName);
+            }
+
+            tables[i] = table;
+        }
+
+        return tables;
+    }
+
 }
 
 

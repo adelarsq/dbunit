@@ -10,6 +10,8 @@
 
 package org.dbunit.dataset;
 
+import org.dbunit.database.AmbiguousTableNameException;
+
 /**
  * Allows access to a decorated dataset in a case insensitive way. Dataset
  * implementations provided by the framework are case sensitive. This class
@@ -29,13 +31,23 @@ public class CaseInsensitiveDataSet implements IDataSet
 
     private String getInternalTableName(String tableName) throws DataSetException
     {
+        String found = null;
         String[] names = _dataSet.getTableNames();
         for (int i = 0; i < names.length; i++)
         {
             if (tableName.equalsIgnoreCase(names[i]))
             {
-                return names[i];
+                if (found != null)
+                {
+                    throw new AmbiguousTableNameException(tableName);
+                }
+                found = names[i];
             }
+        }
+
+        if (found != null)
+        {
+            return found;
         }
 
         throw new NoSuchTableException(tableName);
@@ -59,6 +71,11 @@ public class CaseInsensitiveDataSet implements IDataSet
     {
         ITable table = _dataSet.getTable(getInternalTableName(tableName));
         return new CaseInsensitiveTable(table);
+    }
+
+    public ITable[] getTables() throws DataSetException
+    {
+        return _dataSet.getTables();
     }
 }
 

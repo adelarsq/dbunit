@@ -27,6 +27,8 @@ import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.lang.reflect.Array;
 
 /**
  * @author Manuel Laflamme
@@ -66,9 +68,32 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         return _connection.createDataSet();
     }
 
+    protected IDataSet createDuplicateDataSet() throws Exception
+    {
+        throw new UnsupportedOperationException();
+    }
+
     protected void sort(Object[] array)
     {
-        Arrays.sort(array);
+        if (ITable[].class.isInstance(array))
+        {
+            Arrays.sort(array, new TableComparator());
+        }
+        else
+        {
+            Arrays.sort(array);
+        }
+    }
+
+    private class TableComparator implements Comparator
+    {
+        public int compare(Object o1, Object o2)
+        {
+            String name1 = ((ITable)o1).getTableMetaData().getTableName();
+            String name2 = ((ITable)o2).getTableMetaData().getTableName();
+
+            return name1.compareTo(name2);
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -199,6 +224,25 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 //        metaData.
 //    }
 
+    public void testGetDuplicateTable() throws Exception
+    {
+        // Cannot test! Unsuported feature.
+    }
+
+    public void testGetDuplicateTableMetaData() throws Exception
+    {
+        // Cannot test! Unsuported feature.
+    }
+
+    public void testGetDuplicateTableNames() throws Exception
+    {
+        // Cannot test! Unsuported feature.
+    }
+
+    public void testGetDuplicateTables() throws Exception
+    {
+        // Cannot test! Unsuported feature.
+    }
 }
 
 

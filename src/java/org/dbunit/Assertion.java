@@ -26,6 +26,7 @@ import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 import junit.framework.Assert;
 

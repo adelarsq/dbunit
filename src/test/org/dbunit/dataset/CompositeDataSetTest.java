@@ -23,6 +23,7 @@
 package org.dbunit.dataset;
 
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 import java.io.FileInputStream;
 
@@ -50,6 +51,21 @@ public class CompositeDataSetTest extends AbstractDataSetTest
                 dataSet2.getTableNames().length < getExpectedNames().length);
 
         return new CompositeDataSet(dataSet1, dataSet2);
+    }
+
+    protected IDataSet createDuplicateDataSet() throws Exception
+    {
+        IDataSet dataSet1 = new FlatXmlDataSet(
+                new FileInputStream("src/xml/compositeDataSetDuplicateTest1.xml"));
+        assertTrue("count before combine (1)",
+                dataSet1.getTableNames().length < getExpectedDuplicateNames().length);
+
+        IDataSet dataSet2 = new FlatXmlDataSet(
+                new FileInputStream("src/xml/compositeDataSetDuplicateTest2.xml"));
+        assertTrue("count before combine (2)",
+                dataSet2.getTableNames().length < getExpectedDuplicateNames().length);
+
+        return new CompositeDataSet(dataSet1, dataSet2, false);
     }
 }
 

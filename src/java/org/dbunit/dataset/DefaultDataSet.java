@@ -42,11 +42,11 @@ public class DefaultDataSet extends AbstractDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // AbstractDataSet class
+    // IDataSet interface
 
-    protected ITable[] getTables() throws DataSetException
+    public ITable[] getTables() throws DataSetException
     {
-        return _tables;
+        return cloneTables(_tables);
     }
 }
 

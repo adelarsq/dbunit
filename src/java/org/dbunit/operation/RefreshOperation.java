@@ -138,19 +138,18 @@ public class RefreshOperation extends DatabaseOperation
         IDataSet databaseDataSet = connection.createDataSet();
 
         // for each table
-        ITable[] tables = DataSetUtils.getTables(dataSet);
+        ITable[] tables = dataSet.getTables();
         for (int i = 0; i < tables.length; i++)
         {
             // do not process empty table
-            String tableName = tables[i].getTableMetaData().getTableName();
-            ITable table = dataSet.getTable(tableName);
+            ITable table = tables[i];
             if (table.getRowCount() == 0)
             {
                 continue;
             }
 
             ITableMetaData metaData = AbstractBatchOperation.getOperationMetaData(
-                    connection, dataSet.getTableMetaData(tableName));
+                    connection, table.getTableMetaData());
 
             // setup select count statement
             OperationData countData = getSelectCountData(schema, metaData);

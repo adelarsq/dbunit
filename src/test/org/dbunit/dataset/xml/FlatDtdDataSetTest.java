@@ -11,11 +11,13 @@
 package org.dbunit.dataset.xml;
 
 import org.dbunit.DatabaseEnvironment;
-import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.Assertion;
+import org.dbunit.database.*;
 import org.dbunit.dataset.*;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import FileAsserts;
 
@@ -25,7 +27,10 @@ import FileAsserts;
  */
 public class FlatDtdDataSetTest extends AbstractDataSetTest
 {
-    private static final File DTD_FILE = new File("src/dtd/test.dtd");
+    private static final File DTD_FILE =
+            new File("src/dtd/flatDtdDataSetTest.dtd");
+    private static final File DUPLICATE_FILE =
+            new File("src/dtd/flatDtdDataSetDuplicateTest.dtd");
 
     public FlatDtdDataSetTest(String s)
     {
@@ -40,9 +45,38 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
         return new FlatDtdDataSet(new FileInputStream(DTD_FILE));
     }
 
+    protected IDataSet createDuplicateDataSet() throws Exception
+    {
+        return new FlatDtdDataSet(new FileInputStream(DUPLICATE_FILE));
+    }
+
     protected void sort(Object[] array)
     {
-        Arrays.sort(array);
+        if (ITable[].class.isInstance(array))
+        {
+            Arrays.sort(array, new TableComparator());
+        }
+        else
+        {
+            Arrays.sort(array);
+        }
+    }
+
+    private class TableComparator implements Comparator
+    {
+        public int compare(Object o1, Object o2)
+        {
+            String name1 = ((ITable)o1).getTableMetaData().getTableName();
+            String name2 = ((ITable)o2).getTableMetaData().getTableName();
+
+            return name1.compareTo(name2);
+        }
+    }
+
+
+    protected int[] getExpectedDuplicateRows()
+    {
+        return new int[] {0, 0, 0};
     }
 
     ////////////////////////////////////////////////////////////////////////////

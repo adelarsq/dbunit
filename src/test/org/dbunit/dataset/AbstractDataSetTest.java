@@ -22,6 +22,8 @@
 
 package org.dbunit.dataset;
 
+import org.dbunit.database.AmbiguousTableNameException;
+
 import java.util.*;
 
 import junit.framework.TestCase;
@@ -41,6 +43,12 @@ public abstract class AbstractDataSetTest extends TestCase
         "EMPTY_MULTITYPE_TABLE",
     };
 
+    private static final String[] DUPLICATE_TABLE_NAMES = {
+        "DUPLICATE_TABLE",
+        "EMPTY_TABLE",
+        "DUPLICATE_TABLE",
+    };
+
     public AbstractDataSetTest(String s)
     {
         super(s);
@@ -49,6 +57,21 @@ public abstract class AbstractDataSetTest extends TestCase
     protected static String[] getExpectedNames()
     {
         return (String[])TABLE_NAMES.clone();
+    }
+
+    protected String[] getExpectedDuplicateNames()
+    {
+        return (String[])DUPLICATE_TABLE_NAMES.clone();
+    }
+
+    protected int[] getExpectedDuplicateRows()
+    {
+        return new int[] {1, 0, 2};
+    }
+
+    protected String getDuplicateTableName()
+    {
+        return "DUPLICATE_TABLE";
     }
 
     /**
@@ -72,6 +95,8 @@ public abstract class AbstractDataSetTest extends TestCase
     }
 
     protected abstract IDataSet createDataSet() throws Exception;
+
+    protected abstract IDataSet createDuplicateDataSet() throws Exception;
 
     /**
      * Many tests in this class assume a known sequence of table. For some
@@ -175,6 +200,88 @@ public abstract class AbstractDataSetTest extends TestCase
         }
     }
 
+    public void testGetTables() throws Exception
+    {
+        String[] expected = getExpectedNames();
+        sort(expected);
+
+        IDataSet dataSet = createDataSet();
+        ITable[] tables = dataSet.getTables();
+        sort(tables);
+
+        assertEquals("table count", expected.length, tables.length);
+        for (int i = 0; i < expected.length; i++)
+        {
+            assertEqualsTableName("name " + i, expected[i],
+                    tables[i].getTableMetaData().getTableName());
+        }
+    }
+
+    public void testGetTablesDefensiveCopy() throws Exception
+    {
+        IDataSet dataSet = createDataSet();
+        assertTrue("Should not be same intance",
+                dataSet.getTables() != dataSet.getTables());
+    }
+
+    public void testGetDuplicateTables() throws Exception
+    {
+        String[] expectedNames = getExpectedDuplicateNames();
+        int[] expectedRows = getExpectedDuplicateRows();
+        assertEquals(expectedNames.length, expectedRows.length);
+
+        IDataSet dataSet = createDuplicateDataSet();
+        ITable[] tables = dataSet.getTables();
+
+        assertEquals("table count", expectedNames.length, tables.length);
+        for (int i = 0; i < expectedNames.length; i++)
+        {
+            ITable table = tables[i];
+            String name = table.getTableMetaData().getTableName();
+            assertEqualsTableName("name " + i, expectedNames[i], name);
+            assertEquals("row count", expectedRows[i], table.getRowCount());
+        }
+    }
+
+    public void testGetDuplicateTableNames() throws Exception
+    {
+        String[] expected = getExpectedDuplicateNames();
+
+        IDataSet dataSet = createDuplicateDataSet();
+        String[] names = dataSet.getTableNames();
+
+        assertEquals("table count", expected.length, names.length);
+        for (int i = 0; i < expected.length; i++)
+        {
+            assertEqualsTableName("name " + i, expected[i], names[i]);
+        }
+    }
+
+    public void testGetDuplicateTable() throws Exception
+    {
+        IDataSet dataSet = createDuplicateDataSet();
+        try
+        {
+            dataSet.getTable(getDuplicateTableName());
+            fail("Should throw AmbiguousTableNameException");
+        }
+        catch (AmbiguousTableNameException e)
+        {
+        }
+    }
+
+    public void testGetDuplicateTableMetaData() throws Exception
+    {
+        IDataSet dataSet = createDuplicateDataSet();
+        try
+        {
+            dataSet.getTableMetaData(getDuplicateTableName());
+            fail("Should throw AmbiguousTableNameException");
+        }
+        catch (AmbiguousTableNameException e)
+        {
+        }
+    }
 }
 
 

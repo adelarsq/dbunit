@@ -22,6 +22,8 @@
 
 package org.dbunit.dataset;
 
+import org.dbunit.database.AmbiguousTableNameException;
+
 import java.util.Arrays;
 
 /**
@@ -34,12 +36,15 @@ import java.util.Arrays;
  */
 public abstract class AbstractDataSet implements IDataSet
 {
-
-    /**
-     * Returns this dataset tables. This template method must be implemented by
-     * subclass.
-     */
-    protected abstract ITable[] getTables() throws DataSetException;
+    protected ITable[] cloneTables(ITable[] tables)
+    {
+        ITable[] clones = new ITable[tables.length];
+        for (int i = 0; i < tables.length; i++)
+        {
+            clones[i] = tables[i];
+        }
+        return clones;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // IDataSet interface
@@ -63,14 +68,25 @@ public abstract class AbstractDataSet implements IDataSet
 
     public ITable getTable(String tableName) throws DataSetException
     {
+        ITable found = null;
         ITable[] tables = getTables();
         for (int i = 0; i < tables.length; i++)
         {
             ITable table = tables[i];
             if (tableName.equals(table.getTableMetaData().getTableName()))
             {
-                return table;
+                if (found != null)
+                {
+                    throw new AmbiguousTableNameException(tableName);
+                }
+
+                found = table;
             }
+        }
+
+        if (found != null)
+        {
+            return found;
         }
 
         throw new NoSuchTableException(tableName);

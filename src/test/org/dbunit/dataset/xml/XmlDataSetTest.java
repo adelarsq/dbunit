@@ -23,6 +23,7 @@
 package org.dbunit.dataset.xml;
 
 import org.dbunit.dataset.*;
+import org.dbunit.Assertion;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -46,39 +47,103 @@ public class XmlDataSetTest extends AbstractDataSetTest
         return new XmlDataSet(in);
     }
 
+    protected IDataSet createDuplicateDataSet() throws Exception
+    {
+        InputStream in = new FileInputStream(
+                new File("src/xml/xmlDataSetDuplicateTest.xml"));
+        return new XmlDataSet(in);
+    }
+
     public void testWrite() throws Exception
     {
         List tableList = new ArrayList();
 
-        XmlDataSet xmlDataSet1 = (XmlDataSet)createDataSet();
+        IDataSet expectedDataSet = (XmlDataSet)createDataSet();
         File tempFile = File.createTempFile("dataSetTest", ".xml");
-        OutputStream out = new FileOutputStream(tempFile);
         try
         {
-            // write dataset in temp file
-            XmlDataSet.write(xmlDataSet1, out);
+            OutputStream out = new FileOutputStream(tempFile);
 
-            // load new dataset from temp file
-            XmlDataSet xmlDataSet2 = new XmlDataSet(new FileInputStream(tempFile));
-
-            // verify table count
-            assertEquals("table count", xmlDataSet1.getTableNames().length,
-                    xmlDataSet2.getTableNames().length);
-
-            // verify each table
-            String[] tableNames = xmlDataSet1.getTableNames();
-            for (int i = 0; i < tableNames.length; i++)
+            try
             {
-                String name = tableNames[i];
-                ITable table1 = xmlDataSet1.getTable(name);
-                ITable table2 = xmlDataSet2.getTable(name);
-                assertTrue("not same instance", table1 != table2);
-                DataSetUtils.assertEquals(table1, table2);
+                // write dataset in temp file
+                XmlDataSet.write(expectedDataSet, out);
+
+                // load new dataset from temp file
+                IDataSet actualDataSet = new XmlDataSet(new FileInputStream(tempFile));
+
+                // verify table count
+                assertEquals("table count", expectedDataSet.getTableNames().length,
+                        actualDataSet.getTableNames().length);
+
+                // verify each table
+                ITable[] expected = expectedDataSet.getTables();
+                ITable[] actual = actualDataSet.getTables();
+                assertEquals("table count", expected.length, actual.length);
+                for (int i = 0; i < expected.length; i++)
+                {
+                    String expectedName = expected[i].getTableMetaData().getTableName();
+                    String actualName = actual[i].getTableMetaData().getTableName();
+                    assertEquals("table name", expectedName, actualName);
+
+                    assertTrue("not same instance", expected[i] != actual[i]);
+                    Assertion.assertEquals(expected[i], actual[i]);
+                }
+            }
+            finally
+            {
+                out.close();
             }
         }
         finally
         {
-            out.close();
+            tempFile.delete();
+        }
+    }
+
+    public void testDuplicateWrite() throws Exception
+    {
+        List tableList = new ArrayList();
+
+        IDataSet expectedDataSet = (XmlDataSet)createDuplicateDataSet();
+        File tempFile = File.createTempFile("xmlDataSetDuplicateTest", ".xml");
+        try
+        {
+            OutputStream out = new FileOutputStream(tempFile);
+
+            try
+            {
+                // write dataset in temp file
+                XmlDataSet.write(expectedDataSet, out);
+
+                // load new dataset from temp file
+                IDataSet actualDataSet = new XmlDataSet(new FileInputStream(tempFile));
+
+                // verify table count
+                assertEquals("table count", expectedDataSet.getTableNames().length,
+                        actualDataSet.getTableNames().length);
+
+                // verify each table
+                ITable[] expected = expectedDataSet.getTables();
+                ITable[] actual = actualDataSet.getTables();
+                assertEquals("table count", expected.length, actual.length);
+                for (int i = 0; i < expected.length; i++)
+                {
+                    String expectedName = expected[i].getTableMetaData().getTableName();
+                    String actualName = actual[i].getTableMetaData().getTableName();
+                    assertEquals("table name", expectedName, actualName);
+
+                    assertTrue("not same instance", expected[i] != actual[i]);
+                    Assertion.assertEquals(expected[i], actual[i]);
+                }
+            }
+            finally
+            {
+                out.close();
+            }
+        }
+        finally
+        {
             tempFile.delete();
         }
     }
