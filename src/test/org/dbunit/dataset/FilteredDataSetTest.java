@@ -144,6 +144,19 @@ public class FilteredDataSetTest extends AbstractDataSetTest
         }
     }
 
+    public void testGetDuplicateTableNames() throws Exception
+    {
+        IDataSet dataSet = createDuplicateDataSet();
+        try
+        {
+            dataSet.getTableNames();
+            fail("Should throw AmbiguousTableNameException");
+        }
+        catch (AmbiguousTableNameException e)
+        {
+        }
+    }
+
     public void testGetDuplicateTables() throws Exception
     {
         IDataSet dataSet = createDuplicateDataSet();

@@ -22,13 +22,18 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.database.AmbiguousTableNameException;
-
-import java.util.Arrays;
-
+import org.dbunit.dataset.filter.IncludeTableFilter;
+import org.dbunit.dataset.filter.SequenceTableFilter;
+import org.dbunit.dataset.filter.ExcludeTableFilter;
+import org.dbunit.dataset.filter.ITableFilter;
 
 /**
  * Decorates a dataset and exposes only some tables from it.
+ *
+ * @see ITableFilter
+ * @see SequenceTableFilter
+ * @see IncludeTableFilter
+ * @see ExcludeTableFilter
  *
  * @author Manuel Laflamme
  * @version $Revision$
@@ -36,37 +41,30 @@ import java.util.Arrays;
 public class FilteredDataSet implements IDataSet
 {
     private final IDataSet _dataSet;
-    private final String[] _tableNames;
+    private final ITableFilter _filter;
 
     /**
      * Creates a FilteredDataSet that decorates the specified dataset and
-     * exposes only the specified tables.
+     * exposes only the specified tables. Use the {@link SequenceTableFilter} as
+     * filtering startegy.
      */
     public FilteredDataSet(String[] tableNames, IDataSet dataSet)
     {
-        _tableNames = tableNames;
+        _filter = new SequenceTableFilter(tableNames);
         _dataSet = dataSet;
     }
 
-    protected void assertValidTableName(String tableName) throws DataSetException
+    /**
+     * Creates a FilteredDataSet that decorates the specified dataset and
+     * exposes only the tables allowed by the specified filtering strategy.
+     *
+     * @param dataSet the filtered dataset
+     * @param filter the filtering strategy
+     */
+    public FilteredDataSet(ITableFilter filter, IDataSet dataSet)
     {
-        boolean found = false;
-        for (int i = 0; i < _tableNames.length; i++)
-        {
-            if (tableName.equalsIgnoreCase(_tableNames[i]))
-            {
-                if (found)
-                {
-                    throw new AmbiguousTableNameException(tableName);
-                }
-                found = true;
-            }
-        }
-
-        if (!found)
-        {
-            throw new NoSuchTableException(tableName);
-        }
+        _dataSet = dataSet;
+        _filter = filter;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -74,30 +72,33 @@ public class FilteredDataSet implements IDataSet
 
     public String[] getTableNames() throws DataSetException
     {
-        return (String[])_tableNames.clone();
+        return _filter.getTableNames(_dataSet);
     }
 
     public ITableMetaData getTableMetaData(String tableName)
             throws DataSetException
     {
-        assertValidTableName(tableName);
+        if (!_filter.isValidName(tableName))
+        {
+            throw new NoSuchTableException(tableName);
+        }
+
         return _dataSet.getTableMetaData(tableName);
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
-        assertValidTableName(tableName);
+        if (!_filter.isValidName(tableName))
+        {
+            throw new NoSuchTableException(tableName);
+        }
+
         return _dataSet.getTable(tableName);
     }
 
     public ITable[] getTables() throws DataSetException
     {
-        ITable[] tables = new ITable[_tableNames.length];
-        for (int i = 0; i < tables.length; i++)
-        {
-            tables[i] = _dataSet.getTable(_tableNames[i]);
-        }
-        return tables;
+        return _filter.getTables(_dataSet);
     }
 
 }

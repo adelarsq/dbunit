@@ -1,0 +1,56 @@
+/*
+ *
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002, Manuel Laflamme
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+package org.dbunit.dataset.filter;
+
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.*;
+
+/**
+ * Represents a strategy used by {@link FilteredDataSet} to exposes only some
+ * tables from a dataset.
+ *
+ * @author Manuel Laflamme
+ * @since Mar 7, 2003
+ * @version $Revision$
+ */
+public interface ITableFilter
+{
+    /**
+     * Returns <code>true</code> if specified table is allowed by this filter.
+     */
+    public boolean isValidName(String tableName) throws DataSetException;
+
+    /**
+     * Returns the table names allowed by this filter from the specified dataset.
+     *
+     * @param dataSet the filtered dataset
+     */
+    public String[] getTableNames(IDataSet dataSet) throws DataSetException;
+
+    /**
+     * Returns the tables allowed by this filter from the specified dataset.
+     *
+     * @param dataSet the filtered dataset
+     */
+    public ITable[] getTables(IDataSet dataSet) throws DataSetException;
+}

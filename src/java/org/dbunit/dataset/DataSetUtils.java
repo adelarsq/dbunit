@@ -246,7 +246,7 @@ public class DataSetUtils
         return reverseStringArray(dataSet.getTableNames());
     }
 
-    private static String[] reverseStringArray(String[] array)
+    public static String[] reverseStringArray(String[] array)
     {
         String[] newArray = new String[array.length];
         for (int i = 0; i < array.length; i++)
