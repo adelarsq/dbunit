@@ -1,0 +1,19 @@
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Manuel Laflamme (Java development) -->
+<dataset>
+	<table name="EMPTY_TABLE">
+		<column>COLUMN0</column>
+		<row>
+			<value>row 0 col 0</value>
+		</row>
+		<row>
+			<value>row 1 col 0</value>
+		</row>
+	</table>
+	<table name="EMPTY_MULTITYPE_TABLE">
+		<column>VARCHAR_COL</column>
+		<row>
+			<value>qwe'rty</value>
+		</row>
+	</table>
+</dataset>
+

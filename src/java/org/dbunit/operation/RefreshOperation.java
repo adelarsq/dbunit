@@ -152,8 +152,8 @@ public class RefreshOperation extends DatabaseOperation
                 continue;
             }
 
-            // use database metadata to get columns datatype
-            ITableMetaData metaData = databaseDataSet.getTableMetaData(tableName);
+            ITableMetaData metaData = AbstractBatchOperation.getOperationMetaData(
+                    connection, dataSet.getTable(tableName));
 
             // setup select count statement
             OperationData countData = getSelectCountData(schema, metaData);
@@ -195,6 +195,7 @@ public class RefreshOperation extends DatabaseOperation
 
     }
 }
+
 
 
 

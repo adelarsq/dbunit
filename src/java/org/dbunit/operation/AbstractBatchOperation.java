@@ -40,6 +40,40 @@ import org.dbunit.dataset.*;
 public abstract class AbstractBatchOperation extends DatabaseOperation
 {
     /**
+     * Returns the metadata to use in this operation.
+     *
+     * @param connection the database connection
+     * @param table the table containing operation data
+     */
+    static ITableMetaData getOperationMetaData(IDatabaseConnection connection,
+            ITable table) throws DatabaseUnitException, SQLException
+    {
+        IDataSet databaseDataSet = connection.createDataSet();
+        String tableName = table.getTableMetaData().getTableName();
+
+        ITableMetaData databaseMetaData = databaseDataSet.getTableMetaData(tableName);
+        Column[] databaseColumns = databaseMetaData.getColumns();
+        Column[] columns = table.getTableMetaData().getColumns();
+
+        List columnList = new ArrayList();
+        for (int j = 0; j < columns.length; j++)
+        {
+            String columnName = columns[j].getColumnName();
+            Column column = DataSetUtils.getColumn(
+                    columnName, databaseColumns);
+            if (column == null)
+            {
+                throw new NoSuchColumnException(columnName);
+            }
+            columnList.add(column);
+        }
+
+        return new DefaultTableMetaData(tableName,
+                (Column[])columnList.toArray(new Column[0]),
+                databaseMetaData.getPrimaryKeys());
+    }
+
+    /**
      * Returns list of table names this operation is applied to. This method
      * allow subclass to do filtering.
      */
@@ -57,8 +91,6 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        // this dataset is used to get metadata from database
-        IDataSet databaseDataSet = connection.createDataSet();
         IStatementFactory factory = connection.getStatementFactory();
         String[] tableNames = getTableNames(dataSet);
 
@@ -73,32 +105,11 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
                 continue;
             }
 
-            // use database columns metadata
-            ITableMetaData databaseMetaData = databaseDataSet.getTableMetaData(tableName);
-            Column[] datasetColumns = dataSet.getTableMetaData(tableName).getColumns();
-            Column[] databaseColumns = databaseMetaData.getColumns();
-
-            List columnList = new ArrayList();
-            for (int j = 0; j < datasetColumns.length; j++)
-            {
-                String columnName = datasetColumns[j].getColumnName();
-                Column column = DataSetUtils.getColumn(
-                        columnName, databaseColumns);
-                if (column == null)
-                {
-                    throw new NoSuchColumnException(columnName);
-                }
-                columnList.add(column);
-            }
-
-            ITableMetaData metaData = new DefaultTableMetaData(tableName,
-                    (Column[])columnList.toArray(new Column[0]),
-                    databaseMetaData.getPrimaryKeys());
+            ITableMetaData metaData = getOperationMetaData(connection,
+                    dataSet.getTable(tableName));
             OperationData operationData = getOperationData(
                     connection.getSchema(), metaData);
 
-//            OperationData operationData = getOperationData(
-//                    connection.getSchema(), databaseMetaData);
             IPreparedBatchStatement statement = factory.createPreparedBatchStatement(
                     operationData.getSql(), connection);
 
@@ -129,6 +140,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 

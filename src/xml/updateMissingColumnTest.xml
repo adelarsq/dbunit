@@ -1,0 +1,16 @@
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Manuel Laflamme (Java development) -->
+<dataset>
+	<table name="PK_TABLE">
+		<column>PK0</column>
+		<column>PK1</column>
+		<column>PK2</column>
+		<column>NORMAL1</column>
+		<row>
+			<value>1</value>
+			<value>11</value>
+			<value>111</value>
+			<value>qaz</value>
+		</row>
+	</table>
+</dataset>
+

@@ -161,10 +161,67 @@ public class InsertOperationTest extends AbstractDatabaseTest
         }
     }
 
+    public void testMissingColumns() throws Exception
+    {
+        InputStream in = new FileInputStream("src/xml/insertMissingColumnTest.xml");
+        IDataSet xmlDataSet = new XmlDataSet(in);
+
+        ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
+        DatabaseOperation.INSERT.execute(_connection, xmlDataSet);
+        ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
+
+        // verify tables before
+        for (int i = 0; i < tablesBefore.length; i++)
+        {
+            ITable table = tablesBefore[i];
+            String tableName = table.getTableMetaData().getTableName();
+            if (tableName.startsWith("EMPTY"))
+            {
+                assertEquals(tableName + " before", 0, table.getRowCount());
+            }
+        }
+
+        // verify tables after
+        for (int i = 0; i < tablesAfter.length; i++)
+        {
+            ITable databaseTable = tablesAfter[i];
+            String tableName = databaseTable.getTableMetaData().getTableName();
+
+            if (tableName.startsWith("EMPTY"))
+            {
+                Column[] columns = databaseTable.getTableMetaData().getColumns();
+                ITable xmlTable = xmlDataSet.getTable(tableName);
+
+                // verify row count
+                assertEquals("row count", xmlTable.getRowCount(),
+                        databaseTable.getRowCount());
+
+                // for each table row
+                for (int j = 0; j < databaseTable.getRowCount(); j++)
+                {
+                    // verify first column values
+                    Object expected = xmlTable.getValue(j, columns[0].getColumnName());
+                    Object actual = databaseTable.getValue(j, columns[0].getColumnName());
+
+                    assertEquals(tableName + "." + columns[0].getColumnName(),
+                            expected, actual);
+
+                    // all remaining columns should be null
+                    for (int k = 1; k < columns.length; k++)
+                    {
+                        String columnName = columns[k].getColumnName();
+                        assertEquals(tableName + "." + columnName,
+                                null, databaseTable.getValue(j, columnName));
+                    }
+                }
+            }
+        }
+
+    }
+
     public void testExecute() throws Exception
     {
-        InputStream in = new FileInputStream(
-                new File("src/xml/insertOperationTest.xml"));
+        InputStream in = new FileInputStream("src/xml/insertOperationTest.xml");
         IDataSet xmlDataSet = new XmlDataSet(in);
 
         ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
