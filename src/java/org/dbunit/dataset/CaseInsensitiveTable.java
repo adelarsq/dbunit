@@ -13,6 +13,7 @@ package org.dbunit.dataset;
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @deprecated All IDataSet implementations are case insensitive since DbUnit 1.5
  */
 public class CaseInsensitiveTable implements ITable
 {
