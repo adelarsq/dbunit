@@ -42,6 +42,12 @@ public class CachedResultSetTable extends CachedTable implements IResultSetTable
         this(new ForwardOnlyResultSetTable(metaData, resultSet));
     }
 
+    public CachedResultSetTable(ITableMetaData metaData,
+            IDatabaseConnection connection) throws SQLException, DataSetException
+    {
+        this(new ForwardOnlyResultSetTable(metaData, connection));
+    }
+
     public CachedResultSetTable(IResultSetTable table) throws DataSetException, SQLException
     {
         super(table.getTableMetaData());

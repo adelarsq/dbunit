@@ -236,27 +236,10 @@ public class DatabaseDataSet extends AbstractDataSet
         {
             ITableMetaData metaData = getTableMetaData(tableName);
 
-            Connection jdbcConnection = _connection.getConnection();
-            String schema = _connection.getSchema();
-            Statement statement = jdbcConnection.createStatement();
-
-            try
-            {
-                String sql = getSelectStatement(schema, metaData);
-                ResultSet resultSet = statement.executeQuery(sql);
-                try
-                {
-                    return new CachedResultSetTable(metaData, resultSet);
-                }
-                finally
-                {
-                    resultSet.close();
-                }
-            }
-            finally
-            {
-                statement.close();
-            }
+            // Use ForwardOnlyResultSetTable to export big tables.
+            // TODO: Make this configurable
+            return new CachedResultSetTable(metaData, _connection);
+//            return new ForwardOnlyResultSetTable(metaData, _connection);
         }
         catch (SQLException e)
         {
