@@ -73,7 +73,7 @@ public class CompositeDataSetTest extends AbstractDataSetTest
         IDataSet originaldataSet = createMultipleCaseDuplicateDataSet();
         assertEquals("table count before", 3, originaldataSet.getTableNames().length);
 
-        IDataSet combinedDataSet = new CompositeDataSet(originaldataSet, true);
+        IDataSet combinedDataSet = new CompositeDataSet(originaldataSet);
         assertEquals("table count combined", 2, combinedDataSet.getTableNames().length);
     }
 

@@ -23,6 +23,7 @@ package org.dbunit.dataset;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Combines multiple datasets into a single logical dataset.
@@ -59,19 +60,15 @@ public class CompositeDataSet extends AbstractDataSet
         List tableList = new ArrayList();
         for (int i = 0; i < dataSets.length; i++)
         {
-            ITable[] tables = DataSetUtils.getTables(dataSets[i]);
-            for (int j = 0; j < tables.length; j++)
+            IDataSet dataSet = dataSets[i];
+            ITableIterator iterator = dataSet.iterator();
+            while(iterator.next())
             {
-                ITable table = tables[j];
-                tableList.add(table);
+                addTable(iterator.getTable(), tableList, combine);
             }
         }
 
         _tables = (ITable[])tableList.toArray(new ITable[0]);
-        if (combine)
-        {
-            _tables = combineTables(_tables);
-        }
     }
 
     /**
@@ -102,13 +99,15 @@ public class CompositeDataSet extends AbstractDataSet
     }
 
     /**
-     * Creates a composite dataset that combines dsuplicate tables of the specified dataset.
+     * Creates a composite dataset that combines duplicate tables of the specified dataset.
      *
      * @param dataSet
      *      the dataset
      * @param combine
      *      if <code>true</code>, tables having the same name are merged into
      *      one table.
+     * @deprecated This constructor is useless when the combine parameter is
+     * <code>false</code>. Use overload that doesn't have the combine argument. 
      */
     public CompositeDataSet(IDataSet dataSet, boolean combine)
             throws DataSetException
@@ -117,54 +116,55 @@ public class CompositeDataSet extends AbstractDataSet
     }
 
     /**
+     * Creates a composite dataset that combines duplicate tables of the specified dataset.
+     *
+     * @param dataSet
+     *      the dataset
+     */
+    public CompositeDataSet(IDataSet dataSet) throws DataSetException
+    {
+        this(new IDataSet[]{dataSet}, true);
+    }
+
+    /**
      * Creates a composite dataset that combines tables having identical name.
      * Tables having the same name are merged into one table.
      */
     public CompositeDataSet(ITable[] tables) throws DataSetException
     {
-        _tables = combineTables(tables);
-    }
-
-    private ITable[] combineTables(ITable[] tables) //throws DataSetException
-    {
         List tableList = new ArrayList();
-
-        // process each table
-        for (int j = 0; j < tables.length; j++)
+        for (int i = 0; i < tables.length; i++)
         {
-            // search table in list
-            ITable table = tables[j];
-            int index = getTableIndex(
-                    table.getTableMetaData().getTableName(), tableList);
-
-            // not found, add new table in list
-            if (index == -1)
-            {
-                tableList.add(table);
-            }
-            // found so combine them together
-            else
-            {
-                table = new CompositeTable((ITable)tableList.get(index), table);
-                tableList.set(index, table);
-            }
+            addTable(tables[i], tableList, true);
         }
 
-        return (ITable[])tableList.toArray(new ITable[0]);
+        _tables = (ITable[])tableList.toArray(new ITable[0]);
     }
 
-    private int getTableIndex(String tableName, List list)
+    private void addTable(ITable newTable, List tableList, boolean combine)
     {
-        for (int i = 0; i < list.size(); i++)
+        // No merge required, simply add new table at then end of the list
+        if (!combine)
         {
-            ITable table = (ITable)list.get(i);
+            tableList.add(newTable);
+            return;
+        }
+
+        // Merge required, search for existing table with the same name
+        String tableName = newTable.getTableMetaData().getTableName();
+        for (ListIterator it = tableList.listIterator(); it.hasNext();)
+        {
+            ITable table = (ITable)it.next();
             if (tableName.equalsIgnoreCase(table.getTableMetaData().getTableName()))
             {
-                return i;
+                // Found existing table, merge existing and new tables together
+                it.set(new CompositeTable(table, newTable));
+                return;
             }
         }
 
-        return -1;
+        // No existing table found, add new table at the end of the list
+        tableList.add(newTable);
     }
 
     ////////////////////////////////////////////////////////////////////////////
