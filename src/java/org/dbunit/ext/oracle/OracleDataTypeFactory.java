@@ -73,6 +73,12 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
             return DataType.VARCHAR;
         }
 
+		// NCHAR
+        if (sqlTypeName.startsWith("NCHAR"))
+        {
+            return DataType.CHAR;
+        }
+
         // LONG RAW
         if (LONG_RAW.toString().equals(sqlTypeName))
         {
