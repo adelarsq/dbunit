@@ -25,8 +25,8 @@ package org.dbunit.database;
 import org.dbunit.dataset.DataSetException;
 
 /**
- * This exception is thrown by {@link DatabaseDataSet} when a multiple tables having
- * the same name are accessible. This usually occurs when the database
+ * This exception is thrown by {@link DatabaseDataSet} when a multiple tables
+ * having the same name are accessible. This usually occurs when the database
  * connection have access to multiple schemas containing identical table names.
  * <p>
  * Possible solutions:
@@ -60,3 +60,4 @@ public class AmbiguousTableNameException extends DataSetException
         super(e);
     }
 }
+

@@ -29,8 +29,7 @@ import java.util.List;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
-import org.dbunit.AbstractDatabaseTest;
-import org.dbunit.Assertion;
+import org.dbunit.*;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.*;
 
@@ -114,6 +113,48 @@ public class InsertOperationTest extends AbstractDatabaseTest
         connection.verify();
     }
 
+    public void testInsertClob() throws Exception
+    {
+        String tableName = "CLOB_TABLE";
+
+        // execute this test only if the target database support CLOB
+        String profile = DatabaseEnvironment.getInstance().getProfile().getActiveProfile();
+        if (profile.equals("oracle")
+        {
+            InputStream in = new FileInputStream(new File("src/xml/clobTest.xml"));
+            IDataSet xmlDataSet = new XmlDataSet(in);
+
+            assertEquals("count before", 0, _connection.getRowCount(tableName));
+
+            DatabaseOperation.INSERT.execute(_connection, xmlDataSet);
+
+            ITable tableAfter = _connection.createDataSet().getTable(tableName);
+            assertEquals("count after", 3, tableAfter.getRowCount());
+            Assertion.assertEquals(xmlDataSet.getTable(tableName), tableAfter);
+        }
+    }
+
+    public void testInsertBlob() throws Exception
+    {
+        String tableName = "BLOB_TABLE";
+
+        // execute this test only if the target database support CLOB
+        String profile = DatabaseEnvironment.getInstance().getProfile().getActiveProfile();
+        if (profile.equals("oracle")
+        {
+            InputStream in = new FileInputStream(new File("src/xml/blobTest.xml"));
+            IDataSet xmlDataSet = new XmlDataSet(in);
+
+            assertEquals("count before", 0, _connection.getRowCount(tableName));
+
+            DatabaseOperation.INSERT.execute(_connection, xmlDataSet);
+
+            ITable tableAfter = _connection.createDataSet().getTable(tableName);
+            assertEquals("count after", 3, tableAfter.getRowCount());
+            Assertion.assertEquals(xmlDataSet.getTable(tableName), tableAfter);
+        }
+    }
+
     public void testExecute() throws Exception
     {
         InputStream in = new FileInputStream(
@@ -150,6 +191,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
     }
 }
+
 
 
 

@@ -22,7 +22,7 @@
 
 package org.dbunit.dataset;
 
-import java.util.Arrays;
+import java.util.*;
 
 import junit.framework.TestCase;
 
@@ -81,6 +81,13 @@ public abstract class AbstractDataSetTest extends TestCase
         String[] names = dataSet.getTableNames();
         sort(names);
 
+        // exclude BLOB_TABLE and CLOB_TABLE from test since not supported by
+        // all database vendor
+        List nameList = new ArrayList(Arrays.asList(names));
+        nameList.remove("BLOB_TABLE");
+        nameList.remove("CLOB_TABLE");
+        names = (String[])nameList.toArray(new String[0]);
+
         assertEquals("table count", expected.length, names.length);
         for (int i = 0; i < expected.length; i++)
         {
@@ -98,12 +105,13 @@ public abstract class AbstractDataSetTest extends TestCase
     public void testGetTable() throws Exception
     {
         String[] expected = getExpectedNames();
-        sort(expected);
+//        sort(expected);
 
         IDataSet dataSet = createDataSet();
-        String[] names = dataSet.getTableNames();
-        sort(names);
-        assertEquals("table count", expected.length, names.length);
+//        String[] names = dataSet.getTableNames();
+//        sort(names);
+        assertEquals("table count",
+                expected.length, dataSet.getTableNames().length);
         for (int i = 0; i < expected.length; i++)
         {
             ITable table = dataSet.getTable(expected[i]);
@@ -127,12 +135,13 @@ public abstract class AbstractDataSetTest extends TestCase
     public void testGetTableMetaData() throws Exception
     {
         String[] expected = getExpectedNames();
-        sort(expected);
+//        sort(expected);
 
         IDataSet dataSet = createDataSet();
-        String[] names = dataSet.getTableNames();
-        sort(names);
-        assertEquals("table count", expected.length, names.length);
+//        String[] names = dataSet.getTableNames();
+//        sort(names);
+        assertEquals("table count",
+                expected.length, dataSet.getTableNames().length);
         for (int i = 0; i < expected.length; i++)
         {
             ITableMetaData metaData = dataSet.getTableMetaData(expected[i]);
@@ -154,6 +163,7 @@ public abstract class AbstractDataSetTest extends TestCase
     }
 
 }
+
 
 
 
