@@ -148,6 +148,12 @@ public class BytesDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
+        // Special BLOB handling
+        if (this == DataType.BLOB)
+        {
+            return typeCast(resultSet.getBlob(column));
+        }
+
         return resultSet.getBytes(column);
     }
 
