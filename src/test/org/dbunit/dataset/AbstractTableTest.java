@@ -59,8 +59,9 @@ public abstract class AbstractTableTest extends TestCase
         assertEquals("column count", COLUMN_COUNT, columns.length);
         for (int i = 0; i < columns.length; i++)
         {
-            Column column = columns[i];
-            assertEquals("column name", "COLUMN" + i, columns[i].getColumnName());
+            String expected = "COLUMN" + i;
+            String actual = columns[i].getColumnName();
+            assertEquals("column name", expected, actual);
         }
     }
 
@@ -115,6 +116,7 @@ public abstract class AbstractTableTest extends TestCase
         }
     }
 }
+
 
 
 

@@ -39,7 +39,7 @@ public class XmlTableTest extends AbstractTableTest
 
     protected ITable createTable() throws Exception
     {
-        return createDataSet().getTable("testTable");
+        return createDataSet().getTable("TEST_TABLE");
     }
 
     protected IDataSet createDataSet() throws Exception
@@ -65,6 +65,7 @@ public class XmlTableTest extends AbstractTableTest
     }
 
 }
+
 
 
 

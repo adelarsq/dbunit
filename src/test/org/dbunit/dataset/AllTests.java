@@ -36,6 +36,8 @@ public class AllTests
         TestSuite suite = new TestSuite();
         suite.addTest(org.dbunit.dataset.datatype.AllTests.suite());
         suite.addTest(org.dbunit.dataset.xml.AllTests.suite());
+        suite.addTest(new TestSuite(CaseInsensitiveDataSetTest.class));
+        suite.addTest(new TestSuite(CaseInsensitiveTableTest.class));
         suite.addTest(new TestSuite(ColumnTest.class));
         suite.addTest(new TestSuite(CompositeDataSetTest.class));
         suite.addTest(new TestSuite(CompositeTableTest.class));
@@ -48,6 +50,7 @@ public class AllTests
         return suite;
     }
 }
+
 
 
 

@@ -66,6 +66,12 @@ public abstract class AbstractDataSetTest extends TestCase
     {
     }
 
+    protected void assertEqualsTableName(String mesage, String expected,
+            String actual)
+    {
+        assertEquals(mesage, expected, actual);
+    }
+
     public void testGetTableNames() throws Exception
     {
         String[] expected = getExpectedNames();
@@ -78,7 +84,7 @@ public abstract class AbstractDataSetTest extends TestCase
         assertEquals("table count", expected.length, names.length);
         for (int i = 0; i < expected.length; i++)
         {
-            assertEquals("name " + i, expected[i], names[i]);
+            assertEqualsTableName("name " + i, expected[i], names[i]);
         }
     }
 
@@ -100,8 +106,8 @@ public abstract class AbstractDataSetTest extends TestCase
         assertEquals("table count", expected.length, names.length);
         for (int i = 0; i < expected.length; i++)
         {
-            ITable table = dataSet.getTable(names[i]);
-            assertEquals("name " + i, expected[i], table.getTableMetaData().getTableName());
+            ITable table = dataSet.getTable(expected[i]);
+            assertEqualsTableName("name " + i, expected[i], table.getTableMetaData().getTableName());
         }
     }
 
@@ -129,8 +135,8 @@ public abstract class AbstractDataSetTest extends TestCase
         assertEquals("table count", expected.length, names.length);
         for (int i = 0; i < expected.length; i++)
         {
-            ITableMetaData metaData = dataSet.getTableMetaData(names[i]);
-            assertEquals("name " + i, expected[i], metaData.getTableName());
+            ITableMetaData metaData = dataSet.getTableMetaData(expected[i]);
+            assertEqualsTableName("name " + i, expected[i], metaData.getTableName());
         }
     }
 
@@ -148,6 +154,7 @@ public abstract class AbstractDataSetTest extends TestCase
     }
 
 }
+
 
 
 
