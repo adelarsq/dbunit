@@ -22,8 +22,9 @@
 
 package org.dbunit.operation;
 
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
@@ -52,9 +53,66 @@ public class RefreshOperation extends DatabaseOperation
     {
     }
 
-    protected int executeRowOperation(IPreparedBatchStatement statement,
+    private boolean rowExist(PreparedStatement statement,
             Column[] columns, ITable table, int row)
-            throws DatabaseUnitException, SQLException
+            throws DataSetException, SQLException
+    {
+        for (int i = 0; i < columns.length; i++)
+        {
+            Object value = table.getValue(row, columns[i].getColumnName());
+            statement.setObject(i + 1, value,
+                    columns[i].getDataType().getSqlType());
+        }
+
+        ResultSet resultSet = statement.executeQuery();
+        try
+        {
+            resultSet.next();
+            return resultSet.getInt(1) > 0;
+        }
+        finally
+        {
+            resultSet.close();
+        }
+    }
+
+    public OperationData getSelectCountData(String schemaName,
+            ITableMetaData metaData) throws DataSetException
+    {
+        Column[] primaryKeys = metaData.getPrimaryKeys();
+
+        // cannot construct where clause if no primary key
+        if (primaryKeys.length == 0)
+        {
+            throw new NoPrimaryKeyException(metaData.getTableName());
+        }
+
+        // select count
+        StringBuffer sqlBuffer = new StringBuffer(128);
+        sqlBuffer.append("select COUNT(*) from ");
+        sqlBuffer.append(DataSetUtils.getQualifiedName(schemaName,
+                metaData.getTableName()));
+
+        // where
+        sqlBuffer.append(" where ");
+        for (int i = 0; i < primaryKeys.length; i++)
+        {
+            Column column = primaryKeys[i];
+
+            if (i > 0)
+            {
+                sqlBuffer.append(" and ");
+            }
+            sqlBuffer.append(column.getColumnName());
+            sqlBuffer.append(" = ?");
+        }
+
+        return new OperationData(sqlBuffer.toString(), primaryKeys);
+    }
+
+    private int executeRowOperation(IPreparedBatchStatement statement,
+            Column[] columns, ITable table, int row)
+            throws DataSetException, SQLException
     {
         for (int i = 0; i < columns.length; i++)
         {
@@ -95,6 +153,11 @@ public class RefreshOperation extends DatabaseOperation
             // use database metadata to get columns datatype
             ITableMetaData metaData = databaseDataSet.getTableMetaData(tableName);
 
+            // setup select count statement
+            OperationData countData = getSelectCountData(schema, metaData);
+            PreparedStatement countStatement =
+                    connection.getConnection().prepareStatement(countData.getSql());
+
             // setup insert statement
             OperationData insertData = INSERT.getOperationData(schema, metaData);
             IPreparedBatchStatement insertStatement =
@@ -108,20 +171,29 @@ public class RefreshOperation extends DatabaseOperation
             // refresh each table's row
             for (int j = 0; j < table.getRowCount(); j++)
             {
-                // try to update row
-                int result = executeRowOperation(updateStatement,
-                        updateData.getColumns(), table, j);
-                if (result == 0)
+                // verify if row exist
+                if (rowExist(countStatement, countData.getColumns(), table, j))
                 {
-                    // update not sucessful, try insert instead
-                    executeRowOperation(insertStatement,
-                            insertData.getColumns(), table, j);
+                    // update only if columns are not all primary keys
+                    if (metaData.getColumns().length > metaData.getPrimaryKeys().length)
+                    {
+                        // update row
+                        executeRowOperation(updateStatement, updateData.getColumns(),
+                                table, j);
+                    }
+                }
+                else
+                {
+                    // insert row
+                    executeRowOperation(insertStatement, insertData.getColumns(),
+                            table, j);
                 }
             }
         }
 
     }
 }
+
 
 
 

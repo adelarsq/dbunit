@@ -16,7 +16,7 @@
 	<PK_TABLE PK0="0" PK1="0" PK2="0" NORMAL0="row 0" NORMAL1="0 wor"/>
 	<PK_TABLE PK0="1" PK1="1" PK2="1" NORMAL0="row 1" NORMAL1="1 wor"/>
 	<PK_TABLE PK0="2" PK1="2" PK2="2" NORMAL0="row 2" NORMAL1="2 wor"/>
+	<ONLY_PK_TABLE/>
 	<EMPTY_MULTITYPE_TABLE/>
 </dataset>
-
 

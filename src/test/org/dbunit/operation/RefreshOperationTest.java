@@ -30,6 +30,7 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.Assertion;
 import org.dbunit.database.statement.MockStatementFactory;
 import org.dbunit.database.MockDatabaseConnection;
 
@@ -46,27 +47,33 @@ public class RefreshOperationTest extends AbstractDatabaseTest
 
     public void testExecute() throws Exception
     {
-        String tableName = "PK_TABLE";
-        String[] columnNames = {"PK0", "PK1", "PK2", "NORMAL0", "NORMAL1"};
-        int updatedRow = 1;
-        int insertedRow = 3;
+        String[] tableNames = {"PK_TABLE", "ONLY_PK_TABLE"};
+        int[] tableRowCount = {3, 1};
+        String primaryKey = "PK0";
 
         IDataSet xmlDataSet = new FlatXmlDataSet(
                 new FileInputStream("src/xml/refreshOperationTest.xml"));
 
         // verify table before
-        ITable tableBefore = createOrderedTable(tableName, columnNames[0]);
-        assertEquals("row count before", 3, tableBefore.getRowCount());
+        assertEquals("array lenght", tableNames.length, tableRowCount.length);
+        for (int i = 0; i < tableNames.length; i++)
+        {
+            ITable tableBefore = createOrderedTable(tableNames[i], primaryKey);
+            assertEquals("row count before", tableRowCount[i], tableBefore.getRowCount());
+        }
 
         DatabaseOperation.REFRESH.execute(_connection, xmlDataSet);
 
         // verify table after
         IDataSet expectedDataSet = new FlatXmlDataSet(
                 new FileInputStream("src/xml/refreshOperationTestExpected.xml"));
-        ITable expectedTable = expectedDataSet.getTable("PK_TABLE");
-        ITable tableAfter = createOrderedTable(tableName, columnNames[0]);
 
-        DataSetUtils.assertEquals(expectedTable, tableAfter);
+        for (int i = 0; i < tableNames.length; i++)
+        {
+            ITable expectedTable = expectedDataSet.getTable(tableNames[i]);
+            ITable tableAfter = createOrderedTable(tableNames[i], primaryKey);
+            Assertion.assertEquals(expectedTable, tableAfter);
+        }
     }
 
     public void testExecuteWithEmptyTable() throws Exception
@@ -93,6 +100,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
     }
 
 }
+
 
 
 

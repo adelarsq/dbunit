@@ -37,6 +37,7 @@ public abstract class AbstractDataSetTest extends TestCase
         "SECOND_TABLE",
         "EMPTY_TABLE",
         "PK_TABLE",
+        "ONLY_PK_TABLE",
         "EMPTY_MULTITYPE_TABLE",
     };
 
@@ -100,7 +101,7 @@ public abstract class AbstractDataSetTest extends TestCase
         for (int i = 0; i < expected.length; i++)
         {
             ITable table = dataSet.getTable(names[i]);
-            assertEquals("name", expected[i], table.getTableMetaData().getTableName());
+            assertEquals("name " + i, expected[i], table.getTableMetaData().getTableName());
         }
     }
 
@@ -129,7 +130,7 @@ public abstract class AbstractDataSetTest extends TestCase
         for (int i = 0; i < expected.length; i++)
         {
             ITableMetaData metaData = dataSet.getTableMetaData(names[i]);
-            assertEquals("name", expected[i], metaData.getTableName());
+            assertEquals("name " + i, expected[i], metaData.getTableName());
         }
     }
 
@@ -147,6 +148,7 @@ public abstract class AbstractDataSetTest extends TestCase
     }
 
 }
+
 
 
 
