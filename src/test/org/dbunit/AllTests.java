@@ -45,7 +45,7 @@ public class AllTests
 
     public static void main(String args[]) throws Exception
     {
-        new junit.textui.TestRunner().run(suite());
+        junit.textui.TestRunner.run(suite());
         System.exit(0);
     }
 }
