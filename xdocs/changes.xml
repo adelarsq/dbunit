@@ -7,6 +7,9 @@
   </properties>
 
   <body>
+    <release version="2.2-dev" date="IN CVS" description="">    
+     <action dev="dep4b" type="add" due-to="Klas Axell">new HsqldbDataTypeFactory for working with booleans in HsqlDB.</action>
+    </release>
     <release version="2.1" date="May 31, 2004" description="Multiple bugfixes and enhancements.">
      <action dev="" type="add">
      	741394 - New database compare Ant tag. See Ant task documentation.

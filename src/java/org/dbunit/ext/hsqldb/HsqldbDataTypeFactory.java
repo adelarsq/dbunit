@@ -18,26 +18,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.ext;
+package org.dbunit.ext.hsqldb;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.DataTypeException;
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+
+import java.sql.Types;
 
 /**
- * @author Manuel Laflamme
- * @since Aug 13, 2003
- * @version $Revision$
+ * Specialized factory that recognizes Hsqldb data types.
+ *
+ * @author Klas Axell
  */
-public class AllTests
+public class HsqldbDataTypeFactory extends DefaultDataTypeFactory
 {
-    public static Test suite() throws Exception
+    public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
-        TestSuite suite = new TestSuite();
-        suite.addTest(org.dbunit.ext.db2.AllTests.suite());
-        suite.addTest(org.dbunit.ext.mssql.AllTests.suite());
-        suite.addTest(org.dbunit.ext.mysql.AllTests.suite());
-        suite.addTest(org.dbunit.ext.oracle.AllTests.suite());
-        suite.addTest(org.dbunit.ext.hsqldb.AllTests.suite());
-        return suite;
+        if (sqlType == Types.BOOLEAN)
+        {
+            return DataType.BOOLEAN;
+        }
+
+        return super.createDataType(sqlType, sqlTypeName);
     }
 }

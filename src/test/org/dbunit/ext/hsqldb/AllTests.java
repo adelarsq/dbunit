@@ -18,26 +18,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.ext;
+package org.dbunit.ext.hsqldb;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * @author Manuel Laflamme
- * @since Aug 13, 2003
- * @version $Revision$
+ * @author Klas Axell
  */
 public class AllTests
 {
-    public static Test suite() throws Exception
+    public static Test suite()
     {
         TestSuite suite = new TestSuite();
-        suite.addTest(org.dbunit.ext.db2.AllTests.suite());
-        suite.addTest(org.dbunit.ext.mssql.AllTests.suite());
-        suite.addTest(org.dbunit.ext.mysql.AllTests.suite());
-        suite.addTest(org.dbunit.ext.oracle.AllTests.suite());
-        suite.addTest(org.dbunit.ext.hsqldb.AllTests.suite());
+        suite.addTest(new TestSuite(HsqldbDataTypeFactoryTest.class));
         return suite;
     }
 }
+
