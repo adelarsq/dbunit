@@ -35,7 +35,7 @@ public class OracleConnection extends DatabaseConnection
 {
     public OracleConnection(Connection connection, String schema)
     {
-        super(connection, schema);
+        super(connection, schema != null ? schema.toUpperCase() : null);
         getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
                 new OracleDataTypeFactory());
     }
