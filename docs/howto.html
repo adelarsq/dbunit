@@ -179,11 +179,11 @@ public class DatabaseExportSample
         // partial database export
         String[] tableNames = {&quot;TABLE1&quot;, &quot;TABLE2&quot;, &quot;TABLE2&quot;};
         IDataSet partialDataSet = connection.createDataSet(tableNames);
-        FlatXmlDataSet.write(partialDataSet, new FileOutputStream(&quot;partial.xml&quot;));
+        FlatDtdDataSet.write(partialDataSet, new FileOutputStream(&quot;partial.xml&quot;));
 
         // full database export
         IDataSet fullDataSet = connection.createDataSet();
-        FlatXmlDataSet.write(fullDataSet, new FileOutputStream(&quot;full.xml&quot;));
+        FlatDtdDataSet.write(fullDataSet, new FileOutputStream(&quot;full.xml&quot;));
     }
 }</pre>
       <h2><a name="generatedtd">How to generate a flat xml dataset DTD from your 

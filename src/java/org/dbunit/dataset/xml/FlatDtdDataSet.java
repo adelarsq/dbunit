@@ -1,5 +1,5 @@
 /*
- * FlatXmlDocType.java   Apr 4, 2002
+ * FlatDtdDataSet.java   Apr 4, 2002
  *
  * Copyright (c)2002 Manuel Laflamme. All Rights Reserved.
  *
@@ -22,13 +22,13 @@ import com.wutka.dtd.*;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class FlatXmlDocType implements IDataSet
+public class FlatDtdDataSet implements IDataSet
 {
     private static final List EMPTY_LIST = Arrays.asList(new Object[0]);
     private final List _tableNames = new ArrayList();
     private final Map _tableMap = new HashMap();
 
-    public FlatXmlDocType(InputStream in) throws IOException
+    public FlatDtdDataSet(InputStream in) throws IOException
     {
         DTDParser dtdParser = new DTDParser(new InputStreamReader(in));
         DTD dtd = dtdParser.parse(true);
@@ -153,5 +153,6 @@ public class FlatXmlDocType implements IDataSet
         return table;
     }
 }
+
 
 

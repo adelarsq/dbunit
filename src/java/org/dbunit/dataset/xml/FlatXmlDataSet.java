@@ -65,7 +65,7 @@ public class FlatXmlDataSet extends AbstractDataSet
                 {
                     dtdFile = new File(xmlFile.getParent(), dtdUri);
                 }
-                metaDataSet = new FlatXmlDocType(new FileInputStream(dtdFile));
+                metaDataSet = new FlatDtdDataSet(new FileInputStream(dtdFile));
             }
 
             _tables = getTables(document, metaDataSet);
@@ -96,11 +96,11 @@ public class FlatXmlDataSet extends AbstractDataSet
                 try
                 {
                     URL dtdUrl = new URL(dtdUri);
-                    metaDataSet = new FlatXmlDocType(dtdUrl.openStream());
+                    metaDataSet = new FlatDtdDataSet(dtdUrl.openStream());
                 }
                 catch (MalformedURLException e)
                 {
-                    metaDataSet = new FlatXmlDocType(new FileInputStream(dtdUri));
+                    metaDataSet = new FlatDtdDataSet(new FileInputStream(dtdUri));
                 }
             }
 
@@ -122,7 +122,7 @@ public class FlatXmlDataSet extends AbstractDataSet
     public FlatXmlDataSet(InputStream xmlStream, InputStream dtdStream)
             throws IOException, DataSetException
     {
-        this(xmlStream, new FlatXmlDocType(dtdStream));
+        this(xmlStream, new FlatDtdDataSet(dtdStream));
     }
 
     /**
@@ -158,12 +158,12 @@ public class FlatXmlDataSet extends AbstractDataSet
 
     /**
      * Write a DTD for the specified dataset to the specified output.
-     * @deprecated use {@link FlatXmlDocType#write}
+     * @deprecated use {@link FlatDtdDataSet#write}
      */
     public static void writeDtd(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
-        FlatXmlDocType.write(dataSet, out);
+        FlatDtdDataSet.write(dataSet, out);
     }
 
     private static Document buildDocument(IDataSet dataSet) throws DataSetException
@@ -307,6 +307,7 @@ public class FlatXmlDataSet extends AbstractDataSet
     }
 
 }
+
 
 
 

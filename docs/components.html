@@ -163,15 +163,31 @@ public interface IDataSet
       <p> Here is a sample dataset containing the same data than the XmlDataSet 
         <a href="#originalxmlsample">sample</a>:<br>
       </p>
-      <pre>&lt;dataset&gt;
+      <pre>
+&lt;!DOCTYPE dataset SYSTEM &quot;myDataset.dtd&quot;&gt;
+&lt;dataset&gt;
     &lt;TEST_TABLE COLUMN0=&quot;row 0 col 0&quot; COLUMN1=&quot;row 0 col 1&quot; 
                 COLUMN2=&quot;row 0 col 2&quot; COLUMN3=&quot;row 0 col 3&quot;/&gt;
     &lt;TEST_TABLE COLUMN0=&quot;row 1 col 0&quot; COLUMN3=&quot;row 1 col 3&quot;/&gt;
     &lt;SECOND_TABLE COLUMN0=&quot;row 0 col 0&quot; COLUMN1=&quot;row 0 col 1&quot; /&gt;
     &lt;SECOND_TABLE COLUMN0=&quot;row 1 col 0&quot; COLUMN1=&quot;row 1 col 1&quot; /&gt;
     &lt;EMPTY_TABLE/&gt;
-&lt;/dataset&gt;
-</pre>
+&lt;/dataset&gt;</pre>
+      <h5>Null Values</h5>
+      To specify a null value, you simply have to omit its corresponding attribute. 
+      In the above example, COLUMN1 and COLUMN2 are nulls for the second row of 
+      TEST_TABLE. 
+      <h5>Table metadata</h5>
+      DbUnit generate table metadata from the DTD pointed by the document type 
+      declaration. DbUnit only support external system URI. The URI can be absolute 
+      or relative. 
+      <p> Example of system document type declaration: 
+      <pre>&lt;!DOCTYPE dataset SYSTEM &quot;myDataset.dtd&quot;&gt;</pre>
+      <p>If the xml document does not contain a document type declaration, the 
+        metadata is generated from the first row of each table. This is highly 
+        recommended to always provide a document type declaration since DbUnit 
+        will think your table is missing some columns if the first row has one 
+        or more null values. 
       <h4><a name="DatabaseDataSet">DatabaseDataSet</a></h4>
       This is an adapter class used to access a database as a dataset.<br>
       <br>
