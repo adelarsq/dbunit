@@ -1,7 +1,7 @@
 /*
  * DeleteOperation.java   Feb 19, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  * 
  * This library is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ import org.dbunit.dataset.*;
  * dataset.
  *
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class DeleteOperation extends AbstractBatchOperation
 {
@@ -79,6 +79,7 @@ public class DeleteOperation extends AbstractBatchOperation
     }
 
 }
+
 
 
 

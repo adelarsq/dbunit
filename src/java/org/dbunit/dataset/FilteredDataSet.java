@@ -1,7 +1,7 @@
 /*
  * FilteredDataSet.java   Feb 22, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  * 
  * This library is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@ package org.dbunit.dataset;
  * Decorates a dataset and exposes only some tables from it.
  *
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class FilteredDataSet extends AbstractDataSet
 {
@@ -52,6 +52,7 @@ public class FilteredDataSet extends AbstractDataSet
         return DataSetUtils.getTables(_tableNames, _dataSet);
     }
 }
+
 
 
 

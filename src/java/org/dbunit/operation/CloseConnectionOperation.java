@@ -1,7 +1,7 @@
 /*
  * CloseConnectionOperation.java   Mar 6, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  * 
  * This library is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ import org.dbunit.DatabaseUnitException;
  * Decorates an operation and close the database connection after executing it.
  *
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class CloseConnectionOperation extends DatabaseOperation
 {
@@ -64,6 +64,7 @@ public class CloseConnectionOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 

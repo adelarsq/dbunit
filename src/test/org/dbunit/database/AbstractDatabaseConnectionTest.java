@@ -1,7 +1,7 @@
 /*
  * AbstractDatabaseConnectionTest.java   Mar 26, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  * 
  * This library is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@ import org.dbunit.AbstractDatabaseTest;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTest
 {
@@ -47,3 +47,4 @@ public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTes
         assertEquals("PK_TABLE", 1, _connection.getRowCount("PK_TABLE", "where PK0 = 0"));
     }
 }
+

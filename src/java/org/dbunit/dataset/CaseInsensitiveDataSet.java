@@ -16,8 +16,7 @@ package org.dbunit.dataset;
  * allows using them in situation where case sensitiveness is not desirable.
  *
  * @author Manuel Laflamme
- * @version 1.0
- * @since 1.3
+ * @version $Revision$
  */
 public class CaseInsensitiveDataSet implements IDataSet
 {
@@ -62,4 +61,5 @@ public class CaseInsensitiveDataSet implements IDataSet
         return new CaseInsensitiveTable(table);
     }
 }
+
 

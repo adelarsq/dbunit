@@ -1,7 +1,7 @@
 /*
  * XmlDataSet.java   Feb 17, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  * 
  * This library is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ import electric.xml.*;
  * This format is specified by the dataset.dtd file.
  *
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class XmlDataSet extends AbstractDataSet
 {
@@ -181,6 +181,7 @@ public class XmlDataSet extends AbstractDataSet
     }
 
 }
+
 
 
 

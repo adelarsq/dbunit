@@ -1,7 +1,7 @@
 /*
  * OperationData.java   Mar 16, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  * 
  * This library is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@ import org.dbunit.dataset.Column;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class OperationData
 {
@@ -49,4 +49,5 @@ public class OperationData
         return _columns;
     }
 }
+
 

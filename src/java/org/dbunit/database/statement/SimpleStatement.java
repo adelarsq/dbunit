@@ -1,7 +1,7 @@
 /*
  * CompoundStatement.java   Feb 20, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  * 
  * This library is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class SimpleStatement extends AbstractBatchStatement
 {
@@ -60,6 +60,7 @@ public class SimpleStatement extends AbstractBatchStatement
         _list.clear();
     }
 }
+
 
 
 

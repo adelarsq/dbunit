@@ -20,7 +20,7 @@ import com.wutka.dtd.*;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class FlatXmlDocType implements IDataSet
 {
@@ -153,4 +153,5 @@ public class FlatXmlDocType implements IDataSet
         return table;
     }
 }
+
 

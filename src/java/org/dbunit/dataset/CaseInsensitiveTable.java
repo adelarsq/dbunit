@@ -12,7 +12,7 @@ package org.dbunit.dataset;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class CaseInsensitiveTable implements ITable
 {
@@ -58,3 +58,4 @@ public class CaseInsensitiveTable implements ITable
         return _table.getValue(row, getInternalColumnName(column));
     }
 }
+

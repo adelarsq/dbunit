@@ -1,7 +1,7 @@
 /*
  * HypersonicEnvironment.java   Feb 18, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  * 
  * This library is free software; you can redistribute it and/or
@@ -64,6 +64,7 @@ public class HypersonicEnvironment extends DatabaseEnvironment
     }
 
 }
+
 
 
 

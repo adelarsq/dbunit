@@ -1,7 +1,7 @@
 /*
  * AssertionTest.java   Mar 22, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  * 
  * This library is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ import junit.framework.AssertionFailedError;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class AssertionTest extends TestCase
 {
@@ -134,4 +134,5 @@ public class AssertionTest extends TestCase
     }
 
 }
+
 

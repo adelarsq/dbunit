@@ -1,7 +1,7 @@
 /*
  * AllTests.java   Feb 18, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  * 
  * This library is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@ import junit.framework.TestSuite;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class AllTests
 {
@@ -48,6 +48,7 @@ public class AllTests
         System.exit(0);
     }
 }
+
 
 
 

@@ -1,7 +1,7 @@
 /*
  * FlatXmlTable.java   Mar 12, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
  * This library is free software; you can redistribute it and/or
@@ -31,8 +31,7 @@ import electric.xml.*;
 
 /**
  * @author Manuel Laflamme
- * @since 1.2
- * @version 1.0
+ * @version $Revision$
  */
 public class FlatXmlTable extends AbstractTable
 {
@@ -90,6 +89,7 @@ public class FlatXmlTable extends AbstractTable
     }
 
 }
+
 
 
 

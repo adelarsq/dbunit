@@ -1,7 +1,7 @@
 /*
  * CompositeOperation.java   Feb 18, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
  * This library is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ import org.dbunit.dataset.*;
  * Deletes are performed on table in reverse sequence.
  *
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class DeleteAllOperation extends DatabaseOperation
 {
@@ -76,6 +76,7 @@ public class DeleteAllOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 

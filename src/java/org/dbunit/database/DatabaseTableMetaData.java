@@ -1,7 +1,7 @@
 /*
  * DatabaseTableMetaData.java   Mar 8, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
  * This library is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ import org.dbunit.dataset.datatype.DataTypeException;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class DatabaseTableMetaData extends AbstractTableMetaData
 {
@@ -217,6 +217,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         }
     }
 }
+
 
 
 
