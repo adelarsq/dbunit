@@ -84,7 +84,7 @@
      */
     public ITable getTable(String tableName) throws DataSetException;
 }</pre>
-      <a name="XmlDataSet">
+      <a name="XmlDataSet"> 
       <h4>XmlDataSet </h4>
       </a> 
       <p>The <a class="code">XmlDataSet</a> class provides the persistence support 
@@ -203,7 +203,16 @@
       in situation where case sensitiveness is not desirable. <br>
       <hr>
       <h3><a name="databaseconnection">IDatabaseConnection</a></h3>
-      <p>To be documented...</p>
+      <p>As its name implies, the <a class="code">IDatabaseConnection</a> represent 
+        a connection to a database. </p>
+      <p>The DbUnit framework provides two implementations: </p>
+      <ul>
+        <li><a class="code">DatabaseConnection</a>, which is a JDBC Connection 
+          adapter.</li>
+        <li><a class="code">DatabaseDataSourceConnection</a>, which is a JDBC 
+          DataSource adapter.<br>
+        </li>
+      </ul>
       <hr>
       <h3><a name="databaseoperation">DatabaseOperation</a></h3>
       <p>The <a class="code">DatabaseOperation</a> abstract class defines operations 
@@ -220,6 +229,7 @@
         <li><a href="#none">NONE</a></li>
         <li><a href="#CompositeOperation">CompositeOperation</a></li>
         <li><a href="#TransactionOperation">TransactionOperation</a></li>
+        <li><a href="#IdentityInsertOperation">IdentityInsertOperation</a> </li>
       </ul>
       <p>The two most usefull operations are <a href="#refresh">REFRESH</a> and 
         <a href="#cleanInsert">CLEAN_INSERT</a>. As you will shortly see, they 
@@ -296,6 +306,9 @@ public abstract class DatabaseOperation
       <h4><a name="TransactionOperation">TransactionOperation</a></h4>
       <p>This operation decorates an operation and executes it within the context 
         of a transaction.</p>
+      <h4><a name="IdentityInsertOperation">IdentityInsertOperation<a ></a></a></h4>
+      <p>This operation decorates an operation and disables the MS SQL Server 
+        automatic identifier generation (IDENTITY) during its execution.</p>
       <!-- #EndEditable --> 
       <hr>
       <div align="center"> 

@@ -29,8 +29,8 @@ import org.dbunit.operation.*;
 import java.sql.*;
 
 /**
- * This class disable the MS SQL Server automatic identifier generation for
- * the execution of inserts.
+ * This operation decorates an operation and disables the MS SQL Server
+ * automatic identifier generation (IDENTITY) during its execution.
  * <p>
  * If you are using the Microsoft driver (i.e.
  * <code>com.microsoft.jdbc.sqlserver.SQLServerDriver</code>), you'll need to
@@ -40,7 +40,7 @@ import java.sql.*;
  * <code>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor</code>
  * <p>
  * Thanks to <a href="mailto:epugh@upstate.com">Eric Pugh</a> for having
- * submitted the original patch and for the beta testing.
+ * submitted the original patch and for the testing.
  *
  * @author Manuel Laflamme
  * @version $Revision$
@@ -147,6 +147,7 @@ public class InsertIdentityOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 

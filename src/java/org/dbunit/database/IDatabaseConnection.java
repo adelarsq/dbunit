@@ -29,6 +29,8 @@ import org.dbunit.dataset.*;
 import org.dbunit.database.statement.*;
 
 /**
+ * This interface represents a connection to a specific database.
+ *
  * @author Manuel Laflamme
  * @version $Revision$
  */
@@ -89,6 +91,7 @@ public interface IDatabaseConnection
 
     public IStatementFactory getStatementFactory();
 }
+
 
 
 

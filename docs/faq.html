@@ -43,6 +43,8 @@
       <h2><a name="faq">Frequently asked questions</a></h2>
       <ul>
         <li><a href="#supportedvendors">Which database system are supported?</a></li>
+        <li><a href="#identity">Can I use DbUnit with IDENTITY or auto-increment 
+          columns?</a></li>
         <li><a href="#clonedconnection">Why do I get a &quot;Can't start a cloned 
           connection&quot; exception when I use InsertIdentityOperation?</a></li>
       </ul>
@@ -50,20 +52,31 @@
       <h3><a name="supportedvendors">Which database systems are supported?</a></h3>
       <p>The Dbunit framework has been developed and tested with Oracle and HypersonicSQL. 
         It uses a fairly simple SQL syntax and should be compatible with the other 
-        database systems. <a href="support.html">Let me know</a> if you find any 
+        database systems. <a href="support.html">Let us know</a> if you find any 
         incompatibilities.</p>
       <p> 
-        <h3><a name="clonedconnection">Why do I get a &quot;Can't start a cloned 
-          connection&quot; exception when I use InsertIdentityOperation?</a></h3>
+        <h3><a name="identity">Can I use DbUnit with IDENTITY or auto-increment 
+          columns?</a></h3>
+      <p>Auto-increment columns must be disabled in order to insert the dataset 
+        values into the database. The way to disable this feature is database 
+        specific. If your database does not provide a way to disable this feature 
+        then you are out of luck and DbUnit cannot be used with it. </p>
+      <p>Since version 1.4, DbUnit support IDENTITY columns for MS SQL Server 
+        with the class <a href="components.html#IdentityInsertOperation">IdentityInsertOperation</a>. 
+        <br>
       </p>
+      <p> 
+      <h3><a name="clonedconnection">Why do I get a &quot;Can't start a cloned 
+        connection&quot; exception when I use InsertIdentityOperation?</a></h3>
+      <p></p>
       <p>If you are using the Microsoft driver (i.e. <a class=code>com.microsoft.jdbc.sqlserver.SQLServerDriver</a>), 
         you'll need to use the <a class=code>SelectMethod=cursor</a> parameter 
         in the JDBC connection string (as outlined by <a href="http://forum.java.sun.com/thread.jsp?forum=48&thread=184797">this 
-        JDC thread</a>). Your databaseUrl would look something like the following: 
+        JDC thread</a>). Your database Url would look something like the following: 
       </p>
       <p> 
-        <pre>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor</pre>
-      </p>
+      <pre>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor</pre>
+      <p></p>
       <!-- #EndEditable --> 
       <hr>
       <div align="center"> 

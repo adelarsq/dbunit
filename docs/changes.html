@@ -39,8 +39,44 @@
       <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations" 
       src="images/silphid.gif" border=0></a></div>
     </td>
-    <td class="body" valign="top"> <!-- #BeginEditable "body" --> 
-      <a name="1.3"><h2>Changes in version 1.3 from 1.2.4</h2></a>
+    <td class="body" valign="top"> <!-- #BeginEditable "body" --> <a name="1.4"> 
+      <h2>Changes in version 1.4 from 1.3</h2>
+      </a> 
+      <ul>
+        <li>Moved the Base64 class to the <a class="code">org.dbunit.util</a> 
+          package because Visual Age for Java is not able to handle classes located 
+          in the default package.</li>
+        <li>New features:</li>
+        <ul>
+          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=542034&group_id=47439&atid=449494">542034</a> 
+            - Detect ambiguous table names. </li>
+          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=542462&group_id=47439&atid=449494">542462</a> 
+            - Added a system property to disable usage of batch statement even 
+            if the target database support it.</li>
+          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=545238&group_id=47439&atid=449494">545238</a> 
+            - Sort tables prior to comparing them. DbUnit now generates an ORDER 
+            BY clause in the select statement used by <a class="code">DatabaseDataSet.getTable()</a>. 
+            Rows are sorted by primary keys.</li>
+          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=554249&group_id=47439&atid=449494">554249</a> 
+            - None column values.</li>
+          <li>Added support for BLOB and CLOB data types.</li>
+        </ul>
+        <li>Multiple bugfixes:</li>
+        <ul>
+          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=539089&group_id=47439&atid=449491">539089</a> 
+            - FlatXmlDataSet and null values. Now generate metadata from DTD if 
+            available. See <a href="components.html#FlatXmlDataSet">FlatXmlDataSet</a> 
+            documentation.</li>
+          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=545234&group_id=47439&atid=449491">545234</a> 
+            - Table names in Assertion.assertEquals(IDataSet, IDataSet).</li>
+          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=547200&group_id=47439&atid=449491">547200</a> 
+            - PreparedStatement.clearParameters() problem with oracle 8i.</li>
+          <li>DeleteAllOperation crash with empty dataset.</li>
+        </ul>
+      </ul>
+      <a name="1.3"> 
+      <h2>Changes in version 1.3 from 1.2.4</h2>
+      </a> 
       <ul>
         <li>Added support for binary data types: BINARY, VARBINARY and LONGVARBINARY. 
           Binary data is persisted in xml datasets using the base64 encoding scheme.</li>
@@ -50,29 +86,33 @@
           use Assertion.assertEquals().</li>
         <li>Multiple bugfixes:</li>
         <ul>
-          <li><a href="https://sourceforge.net/tracker/index.php?func=detail&aid=533321&group_id=47439&atid=449491">533321</a> 
+          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=533321&group_id=47439&atid=449491">533321</a> 
             - Identifiers are case sensitive. See <a href="components.html#CaseInsentiveDataSet">CaseInsentiveDataSet</a>.</li>
-          <li><a href="https://sourceforge.net/tracker/index.php?func=detail&aid=533537&group_id=47439&atid=449491">533537</a> 
+          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=533537&group_id=47439&atid=449491">533537</a> 
             - FlatXmlDataSet and null values.</li>
-          <li><a href="https://sourceforge.net/tracker/index.php?func=detail&aid=534757&group_id=47439&atid=449491">533537</a> 
+          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=534757&group_id=47439&atid=449491">533537</a> 
             - Problem with single quotes.</li>
-          <li><a href="https://sourceforge.net/tracker/index.php?func=detail&aid=534810&group_id=47439&atid=449491">534810</a> 
+          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=534810&group_id=47439&atid=449491">534810</a> 
             - Problem when primary key included all columns</li>
         </ul>
       </ul>
-      <a name="1.2.4"><h2>Changes in version 1.2.4 from 1.2</h2></a>
+      <a name="1.2.4"> 
+      <h2>Changes in version 1.2.4 from 1.2</h2>
+      </a> 
       <ul>
         <li>Added support for multiple schemas per connection. See <a href="howto.html#multipleschema">How 
           to</a> documentation.</li>
         <li>Removed element &lt;none/&gt; from dataset.dtd. This feature was incompatible 
           with future support for the binary data types. </li>
-        <li>Fixed bug <a href="https://sourceforge.net/tracker/index.php?func=detail&aid=530998&group_id=47439&atid=449491">530998</a> 
+        <li>Fixed bug <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=530998&group_id=47439&atid=449491">530998</a> 
           - DataSetUtils.AssertEquals(ITable table, ITable table).</li>
-        <li>Fixed bug <a href="https://sourceforge.net/tracker/index.php?func=detail&aid=533540&group_id=47439&atid=449491">533540</a> 
+        <li>Fixed bug <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=533540&group_id=47439&atid=449491">533540</a> 
           - Problem with DATE, TIME and TIMESTAMP.<br>
         </li>
       </ul>
-      <a name="1.2"><h2>Changes in version 1.2 from 1.1</h2></a>
+      <a name="1.2"> 
+      <h2>Changes in version 1.2 from 1.1</h2>
+      </a> 
       <ul>
         <li>Added the flat xml dataset format. See the <a href="components.html#FlatXmlDataSet">FlatXmlDataSet</a> 
           documentation.</li>
@@ -81,7 +121,9 @@
         <li>Improved java API documentation.</li>
         <li>Updated Electric XML to version 3.2.</li>
       </ul>
-      <a name="1.1"><h2>Changes in version 1.1 from 1.0</h2></a>
+      <a name="1.1"> 
+      <h2>Changes in version 1.1 from 1.0</h2>
+      </a> 
       <ul>
         <li>Changes that could break older environments: 
           <ul>
@@ -102,7 +144,7 @@
             support for accessing jdbc connections from a DataSource. Jdbc connections 
             are requested on demand from the DataSource. </li>
           <li>Improved performance. </li>
-          <li>Fixed bug <a href="https://sourceforge.net/tracker/index.php?func=detail&aid=526235&group_id=47439&atid=449491">526235</a> 
+          <li>Fixed bug <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=526235&group_id=47439&atid=449491">526235</a> 
             - Cannot export tables (jdbc-odbc with MS-SQL 7).</li>
         </ul>
       </ul>

@@ -29,6 +29,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 /**
+ * This class adapts a JDBC <code>DataSource</code> to a
+ * {@link IDatabaseConnection}.
+ *
  * @author Manuel Laflamme
  * @version $Revision$
  */
@@ -126,6 +129,7 @@ public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
         }
     }
 }
+
 
 
 

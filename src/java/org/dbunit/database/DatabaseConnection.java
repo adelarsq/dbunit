@@ -27,6 +27,9 @@ import java.sql.*;
 import org.dbunit.dataset.*;
 
 /**
+ * This class adapts a JDBC <code>Connection</code> to a
+ * {@link IDatabaseConnection}.
+ *
  * @author Manuel Laflamme
  * @version $Revision$
  */
@@ -36,12 +39,23 @@ public class DatabaseConnection extends AbstractDatabaseConnection
     private final Connection _connection;
     private final String _schema;
 
+    /**
+     * Creates a new <code>DatabaseConnection</code>.
+     *
+     * @param connection the adapted JDBC connection
+     * @param schema the database schema
+     */
     public DatabaseConnection(Connection connection, String schema)
     {
         _connection = connection;
         _schema = schema;
     }
 
+    /**
+     * Creates a new <code>DatabaseConnection</code>.
+     *
+     * @param connection the adapted JDBC connection
+     */
     public DatabaseConnection(Connection connection)
     {
         _connection = connection;
@@ -66,6 +80,7 @@ public class DatabaseConnection extends AbstractDatabaseConnection
         _connection.close();
     }
 }
+
 
 
 
