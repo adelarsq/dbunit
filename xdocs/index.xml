@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>DBUnit</title>
+    <author email="epugh@upstate.com">Eric Pugh</author>
+  </properties>
+
+  <body>
+
+  <section name="DBUnit">
+    <p>
+      DbUnit is a JUnit extension (also usable from Ant) targeted for database-driven projects that, 
+      among other things, puts your database into a known state between test runs. This is an excellent 
+      way to avoid the myriad of problems that can occur when one test case corrupts the database and 
+      causes subsequent tests to fail or exacerbate the damage.      
+    </p>
+    <p>
+      DbUnit has the ability to export and import your database (or specified tables) content to and 
+      from XML datasets. This is targeted for functional testing, so this is not the perfect tool to 
+      backup a huge production database.
+    </p>
+    <p>
+      DbUnit also provides assert facility to verify that your database content match some expected values.
+    </p>
+  </section>
+
+  <section name="News">
+    <p>
+     <ul>
+       <li>2003-10-05 - Version 1.5.6 released. See <a href="changes.html#1.5.6">changes</a>.</li>
+       <li>2003-07-16 - Federico Spinazzi joined the DbUnit developement team.</li>
+       <li>2003-07-16 - Version 1.5.5 released. See <a href="changes.html#1.5.5">changes</a>.</li>
+       <li>2003-04-04 - Version 1.5.1 released. See <a href="changes.html#1.5.1">changes</a>.</li>
+       <li>2003-03-01 - Version 1.5 released. See <a href="changes.html#1.5">changes</a>.</li>
+       <li>2002-11-07 - Eric Pugh joined the DbUnit developement team.</li>
+       <li>2002-07-17 - The java API documentation is now available <a href="api/index.html">online</a>.</li>
+       <li>2002-07-17 - Version 1.4 released. See <a href="changes.html#1.4">changes</a>.</li>
+       <li>2002-05-10 - Timothy Ruppert and Ben Cox joined the DbUnit developement 
+         team.</li>
+       <li>2002-04-04 - Version 1.3 released. See <a href="changes.html#1.3">changes</a>.</li>
+       <li>2002-04-04 - New website design done by <a href="http://www.silphid.com/">Silphid 
+         Creations</a>.</li>
+       <li>2002-03-19 - Version 1.2.4 released. See <a href="changes.html#1.2.4">changes</a>.</li>
+       <li>2002-03-19 - Added Daedalos JUnit Extensions link in the <a href="resources.html">Resources</a> 
+         page.</li>
+       <li>2002-03-17 - Added the <a href="support.html#knownissues">Known Issues</a> 
+         section in support page.</li>
+       <li>2002-03-15 - Version 1.2 released. See <a href="changes.html#1.2">changes</a>.</li>
+       <li>2002-03-10 - Modified the <a href="bestpractices.html#connections">connections 
+         management strategies</a> best practices.</li>
+       <li>2002-03-10 - Version 1.1 released. See <a href="changes.html#1.1">changes</a>.</li>
+       <li>2002-02-27 - Version 1.0 released. This is the first public release.</li>
+      </ul>
+   </p>
+  </section>
+
+</body>
+</document>
