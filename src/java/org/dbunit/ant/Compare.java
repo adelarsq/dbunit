@@ -28,6 +28,9 @@ import org.dbunit.dataset.CompositeTable;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.SortedTable;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.FilteredTableMetaData;
+import org.dbunit.dataset.filter.DefaultColumnFilter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -107,22 +110,28 @@ public class Compare extends AbstractStep
         IDataSet actualDataset = getDatabaseDataSet(connection, _tables, false);
 
         String[] tableNames = null;
-        if (_tables.size() > 0)
+        if (_tables.size() == 0)
         {
-            tableNames = actualDataset.getTableNames();
+            // No tables specified, assume must compare all tables from
+            // expected dataset
+            tableNames = expectedDataset.getTableNames();
         }
         else
         {
-            tableNames = expectedDataset.getTableNames();
+            tableNames = actualDataset.getTableNames();
         }
 
         for (int i = 0; i < tableNames.length; i++)
         {
             String tableName = tableNames[i];
             ITable expectedTable = expectedDataset.getTable(tableName);
+            ITableMetaData expectedMetaData = expectedTable.getTableMetaData();
+
+            // Only compare columns present in expected table. Extra columns
+            // are filtered out from actual database table.
             ITable actualTable = actualDataset.getTable(tableName);
-            actualTable = new CompositeTable(
-                    expectedTable.getTableMetaData(), actualTable);
+            actualTable = DefaultColumnFilter.includedColumnsTable(
+                    actualTable, expectedMetaData.getColumns());
 
             if (_sort)
             {

@@ -27,6 +27,9 @@ import org.dbunit.dataset.FilteredTableMetaData;
 import org.dbunit.dataset.DataSetException;
 
 /**
+ * Implementation of the IColumnFilter interface that exposes columns matching
+ * include patterns and not matching exclude patterns.
+ *
  * @author Manuel Laflamme
  * @since Apr 17, 2004
  * @version $Revision$
@@ -81,10 +84,10 @@ public class DefaultColumnFilter implements IColumnFilter
     }
 
     /**
-     * Returns a table backed by the specified table that only includes specified
+     * Returns a table backed by the specified table that only exposes specified
      * columns.
      */
-    public static ITable includeTableColumns(ITable table, String[] columnNames)
+    public static ITable includedColumnsTable(ITable table, String[] columnNames)
             throws DataSetException
     {
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
@@ -100,10 +103,25 @@ public class DefaultColumnFilter implements IColumnFilter
     }
 
     /**
-     * Returns a table backed by the specified table that excludes specified
+     * Returns a table backed by the specified table that only exposes specified
      * columns.
      */
-    public static ITable excludeTableColumns(ITable table, String[] columnNames)
+    public static ITable includedColumnsTable(ITable table, Column[] columns)
+            throws DataSetException
+    {
+        DefaultColumnFilter columnFilter = new DefaultColumnFilter();
+        columnFilter.includeColumns(columns);
+
+        FilteredTableMetaData metaData = new FilteredTableMetaData(
+                table.getTableMetaData(), columnFilter);
+        return new CompositeTable(metaData, table);
+    }
+
+    /**
+     * Returns a table backed by the specified table but with specified
+     * columns excluded.
+     */
+    public static ITable excludedColumnsTable(ITable table, String[] columnNames)
             throws DataSetException
     {
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
@@ -112,6 +130,21 @@ public class DefaultColumnFilter implements IColumnFilter
             String columnName = columnNames[i];
             columnFilter.excludeColumn(columnName);
         }
+
+        FilteredTableMetaData metaData = new FilteredTableMetaData(
+                table.getTableMetaData(), columnFilter);
+        return new CompositeTable(metaData, table);
+    }
+
+    /**
+     * Returns a table backed by the specified table but with specified
+     * columns excluded.
+     */
+    public static ITable excludedColumnsTable(ITable table, Column[] columns)
+            throws DataSetException
+    {
+        DefaultColumnFilter columnFilter = new DefaultColumnFilter();
+        columnFilter.excludeColumns(columns);
 
         FilteredTableMetaData metaData = new FilteredTableMetaData(
                 table.getTableMetaData(), columnFilter);
