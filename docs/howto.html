@@ -92,7 +92,7 @@ public class SampleTest extends DatabaseTestCase
 
     protected IDataSet getDataSet() throws Exception
     {
-        return new XmlDataSet(new FileInputStream(&quot;dataset.xml&quot;));
+        return new FlatXmlDataSet(new FileInputStream(&quot;dataset.xml&quot;));
     }
 }</pre>
       <br>
@@ -184,11 +184,11 @@ public class DatabaseExportSample
         // partial database export
         String[] tableNames = {&quot;TABLE1&quot;, &quot;TABLE2&quot;, &quot;TABLE2&quot;};
         IDataSet partialDataSet = connection.createDataSet(tableNames);
-        FlatDtdDataSet.write(partialDataSet, new FileOutputStream(&quot;partial.xml&quot;));
+        FlatXmlDataSet.write(partialDataSet, new FileOutputStream(&quot;partial.xml&quot;));
 
         // full database export
         IDataSet fullDataSet = connection.createDataSet();
-        FlatDtdDataSet.write(fullDataSet, new FileOutputStream(&quot;full.xml&quot;));
+        FlatXmlDataSet.write(fullDataSet, new FileOutputStream(&quot;full.xml&quot;));
     }
 }</pre>
       <a name="generatedtd"><h2>How to generate a flat xml dataset DTD from your 

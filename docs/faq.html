@@ -45,8 +45,10 @@
         <li><a href="#supportedvendors">Which database system are supported?</a></li>
         <li><a href="#identity">Can I use DbUnit with IDENTITY or auto-increment 
           columns?</a></li>
-        <li><a href="#clonedconnection">Why do I get a &quot;Can't start a cloned 
+        <li><a href="#clonedconnection">Why I get a &quot;Can't start a cloned 
           connection&quot; exception when I use InsertIdentityOperation?</a></li>
+        <li><a><a href="UnsatisfiedLinkError">Why I get an &quot;UnsatisfiedLinkError&quot; 
+          with the DB2 driver?</a></a></li>
       </ul>
       <hr>
       <h3><a name="supportedvendors">Which database systems are supported?</a></h3>
@@ -55,8 +57,8 @@
         database systems. <a href="support.html">Let us know</a> if you find any 
         incompatibilities.</p>
       <p> 
-        <h3><a name="identity">Can I use DbUnit with IDENTITY or auto-increment 
-          columns?</a></h3>
+      <h3><a name="identity">Can I use DbUnit with IDENTITY or auto-increment 
+        columns?</a></h3>
       <p>Auto-increment columns must be disabled in order to insert the dataset 
         values into the database. The way to disable this feature is database 
         specific. If your database does not provide a way to disable this feature 
@@ -66,8 +68,8 @@
         <br>
       </p>
       <p> 
-      <h3><a name="clonedconnection">Why do I get a &quot;Can't start a cloned 
-        connection&quot; exception when I use InsertIdentityOperation?</a></h3>
+      <h3><a name="clonedconnection">Why I get a &quot;Can't start a cloned connection&quot; 
+        exception when I use InsertIdentityOperation?</a></h3>
       <p></p>
       <p>If you are using the Microsoft driver (i.e. <a class=code>com.microsoft.jdbc.sqlserver.SQLServerDriver</a>), 
         you'll need to use the <a class=code>SelectMethod=cursor</a> parameter 
@@ -75,7 +77,19 @@
         JDC thread</a>). Your database Url would look something like the following: 
       </p>
       <p> 
-      <pre>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor</pre>
+      <pre>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor
+
+</pre>
+      <h3><br>
+        <a name="UnsatisfiedLinkError">Why I get an &quot;UnsatisfiedLinkError&quot; 
+        with the DB2 driver?</a></h3>
+      <p>DbUnit uses JDBC 2.0 features (batch updates). By default, DB2 installs 
+        the JDBC 1.0 driver. You have to install the JDBC 2.0 driver in order 
+        for DbUnit to work or you will get an <a class="code">UnsatisfiedLinkError</a> 
+        from the DB2 JDBC 1.0 driver.</p>
+      <p>The steps for installing the DB2 JDBC 2.0 driver are covered in the DB2 
+        documentation.<br>
+      </p>
       <p></p>
       <!-- #EndEditable --> 
       <hr>
