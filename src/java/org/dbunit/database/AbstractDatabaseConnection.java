@@ -40,12 +40,6 @@ import java.sql.Statement;
  */
 public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 {
-//    static final String STATEMENT_FACTORY = "dbunit.statement.factory";
-//    static final String DEFAULT_FACTORY =
-//            "org.dbunit.database.statement.PreparedStatementFactory";
-
-//    private final IStatementFactory _statementFactory;
-//    private final IDataTypeFactory _dataTypeFactory = new DefaultDataTypeFactory();
     private IDataSet _dataSet = null;
     private DatabaseConfig _databaseConfig;
 
