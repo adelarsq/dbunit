@@ -24,11 +24,15 @@ package org.dbunit.dataset.xml;
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import java.io.*;
+import org.xml.sax.InputSource;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 
 /**
  * Reads and writes flat XML dataset document. Each XML element corresponds to a table row.
@@ -64,8 +68,6 @@ import java.io.*;
  */
 public class FlatXmlDataSet extends CachedDataSet
 {
-    private static final String DEFAULT_ENCODING = "UTF8";
-
     /**
      * Creates an FlatXmlDataSet object with the specifed InputSource.
      */
@@ -207,8 +209,9 @@ public class FlatXmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
-        OutputStreamWriter writer = new OutputStreamWriter(out, DEFAULT_ENCODING);
-        write(dataSet, writer);
+        FlatXmlWriter datasetWriter = new FlatXmlWriter(out);
+        datasetWriter.setIncludeEmptyTable(true);
+        datasetWriter.write(dataSet);
     }
 
     /**

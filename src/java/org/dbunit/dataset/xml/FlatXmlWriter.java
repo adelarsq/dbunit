@@ -31,6 +31,8 @@ import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.util.xml.XmlWriter;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 /**
@@ -40,6 +42,7 @@ import java.io.Writer;
  */
 public class FlatXmlWriter implements IDataSetConsumer
 {
+    private static final String DEFAULT_ENCODING = "UTF8";
     private static final String DATASET = "dataset";
 
     private XmlWriter _xmlWriter;
@@ -51,6 +54,12 @@ public class FlatXmlWriter implements IDataSetConsumer
     public FlatXmlWriter(Writer writer)
     {
         _xmlWriter = new XmlWriter(writer);
+        _xmlWriter.enablePrettyPrint(true);
+    }
+
+    public FlatXmlWriter(OutputStream out) throws IOException
+    {
+        _xmlWriter = new XmlWriter(new OutputStreamWriter(out, DEFAULT_ENCODING));
         _xmlWriter.enablePrettyPrint(true);
     }
 

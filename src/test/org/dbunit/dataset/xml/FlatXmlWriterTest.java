@@ -26,8 +26,12 @@ import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.database.IDatabaseConnection;
 
 import java.io.StringWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FileOutputStream;
 
 /**
  *
@@ -129,7 +133,7 @@ public class FlatXmlWriterTest extends TestCase
         String actualOutput = stringWriter.toString();
         assertEquals("output", expectedOutput, actualOutput);
     }
-
+               
     public void testWriteIncludeEmptyTable() throws Exception
     {
         String expectedOutput =
