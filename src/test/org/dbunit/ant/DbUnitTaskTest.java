@@ -254,6 +254,49 @@ public class DbUnitTaskTest extends TaskdefsTest
                 "Should have objected to invalid format attribute.");
     }
 
+    public void testExportQuery()
+    {
+        String targetName = "test-export-query";
+        Export export = (Export)getFirstStepFromTarget(targetName);
+        assertTrue("Should have been a flat format, "
+                + "but was: " + export.getFormat(),
+                export.getFormat().equalsIgnoreCase("flat"));
+        List queries = export.getQueries();
+        assertTrue("Export should have had two sub queries, but has: "
+                + queries.size(), queries.size() == 2);
+        Query testTable = (Query)queries.get(0);
+        Query pkTable = (Query)queries.get(1);
+        assertTrue("Should have been been TABLE TEST_TABLE, but was: "
+                + testTable.getName(), testTable.getName().equals("TEST_TABLE"));
+        assertTrue("Should have been been TABLE PK_TABLE, but was: "
+                + pkTable.getName(), pkTable.getName().equals("PK_TABLE"));
+        assertTrue("Should have been been query for TABLE TEST_TABLE, but was: "
+                + testTable.getSql(), testTable.getSql().equals("SELECT * FROM TEST_TABLE"));
+        assertTrue("Should have been been query for TABLE PK_TABLE, but was: "
+                + pkTable.getSql(), pkTable.getSql().equals("SELECT * FROM PK_TABLE"));
+    }
+
+    public void testExportQueryMixed()
+    {
+        String targetName = "test-export-query-mixed";
+        Export export = (Export)getFirstStepFromTarget(targetName);
+        assertTrue("Should have been a flat format, "
+                + "but was: " + export.getFormat(),
+                export.getFormat().equalsIgnoreCase("flat"));
+        List tables = export.getTables();
+        assertTrue("Export should have had one table, but has: "
+                + tables.size(), tables.size() == 1);
+        Table testTable = (Table)tables.get(0);
+
+        List queries = export.getQueries();
+                assertTrue("Export should have had one querie, but has: "
+                        + queries.size(), queries.size() == 1);
+        Query pkTable = (Query)queries.get(0);
+        assertTrue("Should have been been a query for TABLE PK_TABLE, but was: "
+                + pkTable.getSql(), pkTable.getSql()!= null);
+
+    }
+
     protected void assertOperationType(String failMessage, String targetName, DatabaseOperation expected)
     {
         Operation oper = (Operation)getFirstStepFromTarget(targetName);
