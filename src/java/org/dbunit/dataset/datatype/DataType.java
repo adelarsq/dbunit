@@ -75,20 +75,20 @@ public abstract class DataType
             "LONGVARBINARY", Types.LONGVARBINARY);
 
     private static final DataType[] TYPES = {
-        CHAR, VARCHAR, LONGVARCHAR, NUMERIC, DECIMAL, BOOLEAN, TINYINT,
-        SMALLINT, INTEGER, BIGINT, REAL, FLOAT, DOUBLE, DATE, TIME, TIMESTAMP,
-        BINARY, VARBINARY, LONGVARBINARY,
+        VARCHAR, CHAR, LONGVARCHAR, NUMERIC, DECIMAL, BOOLEAN, INTEGER,
+        TINYINT, SMALLINT, BIGINT, REAL, DOUBLE, FLOAT, DATE, TIME, TIMESTAMP,
+        VARBINARY, BINARY, LONGVARBINARY,
     };
-
-    /**
-     * Returns the coresponding {@link java.sql.Types}.
-     */
-    public abstract int getSqlType();
 
     /**
      * Returns the specified value typecasted to this <code>DataType</code>
      */
     public abstract Object typeCast(Object value) throws TypeCastException;
+
+    /**
+     * Returns the coresponding {@link java.sql.Types}.
+     */
+    public abstract int getSqlType();
 
     /**
      * Returns the runtime class of the typecast result.
@@ -139,64 +139,19 @@ public abstract class DataType
             return UNKNOWN;
         }
 
-        if (value instanceof java.lang.Integer)
+        for (int i = 0; i < TYPES.length; i++)
         {
-            return INTEGER;
-        }
-
-        if (value instanceof java.lang.Long)
-        {
-            return BIGINT;
-        }
-
-        if (value instanceof java.lang.Float)
-        {
-            return REAL;
-        }
-
-        if (value instanceof java.lang.Double)
-        {
-            return DOUBLE;
-        }
-
-        if (value instanceof java.lang.Number)
-        {
-            return NUMERIC;
-        }
-
-        if (value instanceof java.lang.Boolean)
-        {
-            return BOOLEAN;
-        }
-
-        if (value instanceof java.lang.String)
-        {
-            return VARCHAR;
-        }
-
-        if (value instanceof java.sql.Date)
-        {
-            return DATE;
-        }
-
-        if (value instanceof java.sql.Time)
-        {
-            return TIME;
-        }
-
-        if (value instanceof java.sql.Timestamp)
-        {
-            return TIMESTAMP;
-        }
-
-        if (value instanceof byte[])
-        {
-            return VARBINARY;
+            Class typeClass = TYPES[i].getTypeClass();
+            if (typeClass.isInstance(value))
+            {
+                return TYPES[i];
+            }
         }
 
         return UNKNOWN;
     }
 }
+
 
 
 
