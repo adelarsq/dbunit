@@ -34,7 +34,7 @@ import org.dbunit.dataset.*;
 public interface IDatabaseConnection
 {
     /**
-     * Returns the wrapped JDBC database connection.
+     * Returns a JDBC database connection.
      */
     public Connection getConnection() throws SQLException;
 
@@ -49,19 +49,19 @@ public interface IDatabaseConnection
     public void close() throws SQLException;
 
     /**
-     * Creates a dataset backed by the database.
+     * Creates a dataset corresponding to the entire database.
      */
     public IDataSet createDataSet() throws SQLException;
 
     /**
-     * Creates a dataset backed by the database and only allowing access to the
-     * specified tables.
+     * Creates a dataset containing only the specified tables from
+     * the database.
      */
     public IDataSet createDataSet(String[] tableNames) throws SQLException;
 
     /**
-     * Creates a table with the result of the specified SQL statement. The table
-     * can be the result of a join statement.
+     * Creates a table with the result of the specified SQL statement. The
+     * table can be the result of a join statement.
      *
      * @param resultName The name tobe returned by {@link TableMetaData.getTableName}.
      * @param sql The SQL <code>SELECT</code> statement

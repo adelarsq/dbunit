@@ -133,8 +133,26 @@ public interface IDataSet
             &lt;value&gt;row 1 col 1&lt;/value&gt;
         &lt;/row&gt;
     &lt;/table&gt;
+    &lt;table name='EMPTY_TABLE'&gt;
+        &lt;column&gt;COLUMN0&lt;/column&gt;
+        &lt;column&gt;COLUMN1&lt;/column&gt;
+        &lt;column&gt;COLUMN2&lt;/column&gt;
+        &lt;column&gt;COLUMN3&lt;/column&gt;
+    &lt;/table&gt;
 &lt;/dataset&gt;</PRE>
-            <BR>
+            <BR>XmlRowDataSet<BR>
+<BR>
+This class provides support for the row base xml dataset format. I found that datasets authored with the original format were hard to create and to maintain. This was particularly painful for tables having several columns. The row base xml format has been introduced in version 1.2. This format has not DTD. Each xml element corresponds to a table row and is named accordingly. The columns are attributes of that element.<BR>
+<BR>
+            Here is a sample containing the same data than above:<BR>
+            <PRE>&lt;dataset2&gt;
+    &lt;TEST_TABLE COLUMN0=&quot;row 0 col 0&quot; COLUMN1=&quot;row 0 col 1&quot; 
+                COLUMN2=&quot;row 0 col 2&quot; COLUMN3=&quot;row 0 col 3&quot;/&gt;
+    &lt;TEST_TABLE COLUMN0=&quot;row 1 col 0&quot; COLUMN3=&quot;row 1 col 3&quot;/&gt;
+    &lt;SECOND_TABLE COLUMN0=&quot;row 0 col 0&quot; COLUMN1=&quot;row 0 col 1&quot; /&gt;
+    &lt;SECOND_TABLE COLUMN0=&quot;row 1 col 0&quot; COLUMN1=&quot;row 1 col 1&quot; /&gt;
+    &lt;EMPTY_TABLE/&gt;
+&lt;/dataset2&gt;</PRE>
             <H4>DatabaseDataSet</H4>
             This is an adapter class used to access a database as a dataset.<BR>
             <BR>
@@ -306,61 +324,52 @@ public class SampleTest extends TestCase
     ... 
 } </PRE>
             <BR>
-            <H3>How to extract a dataset from a database </H3>
-            <BR>
-            The following sample demonstrates how you can export one or many tables from a database to an xml dataset file.<BR>
-            <BR>
-            <PRE>
-public class DatabaseExportSample
+            <H3>How to verify the database data during a test?</H3>
+            Now you know how to use dbunit to setup your database before executing each test. Its great but now you wonder how you can easily verify the database contents when your tests run. Since version 1.2, dbunit provide supports to verify if two tables or two datasets contains identical data.<BR>
+            <PRE>public class DataSetUtils
 {
-    public static void main(String[] args) throws Exception
+    ...
+    public static void assertEquals(ITable expected, ITable actual) 
+    public static void assertEquals(IDataSet expected, IDataSet actual)
+    ...
+}</PRE>
+            So you can put your expected table data in an xml dataset and then during your test, query the database to verify its contents against expected data. You need two xml datasets to do that. One to setup your database before each test and another to provide the expected data during tests.<BR>
+<BR>
+The following sample, illustrate how you can do that:<BR>
+            <PRE>public class SampleTest extends DatabaseTestCase
+{
+    public SampleTest(String name)
     {
-        // database connection
-        Class driverClass = Class.forName(&quot;org.hsqldb.jdbcDriver&quot;);
-        Connection jdbcConnection = DriverManager.getConnection(
-                &quot;jdbc:hsqldb:sample&quot;, &quot;sa&quot;, &quot;&quot;);
-        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+        super(name);
+    }
 
-        // partial database export
-        String[] tableNames = {&quot;TABLE1&quot;, &quot;TABLE2&quot;, &quot;TABLE2&quot;};
-        IDataSet partialDataSet = connection.createDataSet(tableNames);
-        XmlDataSet.write(partialDataSet, new FileOutputStream(&quot;partial.xml&quot;));
+    // Implements required setup methods here 
+    ...
 
-        // full database export
-        IDataSet fullDataSet = connection.createDataSet();
-        XmlDataSet.write(fullDataSet, new FileOutputStream(&quot;full.xml&quot;));
+    public void testMe() throws Exception
+    {
+        // Your test code here
+        ...
+
+        // Fetch database data after executing your code 
+        ITable databaseData = getConnection().createQueryTable(
+                &quot;EXPECTED_ DATA&quot;, &quot;SELECT * FROM TABLE1, TABLE2 WHERE ...&quot;);
+        
+        // Load expected data from an xml dataset
+        IDataSet expectedDataSet = new XmlRowDataSet(
+                &quot;expectedDataSet.xml&quot;, true);
+        ITable expectedData = expectedDataSet.getTable(&quot;EXPECTED_DATA&quot;);
+
+        // Verify if database data match expected data
+        DataSetUtils.assertEquals(expectedData, databaseData);
     }
 }</PRE>
             <BR>
-            <HR>
-            <H2><A name="bestpractices">Best Practices</A></H2>
-            All existing JUnit best practices still apply to the dbUnit framework. Here is a collection of best practices specifically related to database testing and dbUnit.<BR>
-            <BR>
-            <H4>1. Use one database copy per developer</H4>
-            See introduction…<BR>
-            <BR>
-            <H4>2. Good setup for every tests do not require cleanup</H4>
-            People versed in testcase design already know that a test should never depend on results from previous tests. If you always correctly initialize your database before each test you won't need to do any clean up at all after execution.<BR>
-            <BR>
-            <H4>3. Use multiple small datasets </H4>
-            Most of your tests do not require the entire database to be re-initialized. So, instead of putting your entire database data in one large dataset, try to break it into many smaller chunks.<BR>
-            <BR>
-            Those chunks could roughly corresponding to logical units, or components. This reduces the overhead caused by initializing your database for each test. This also facilitates team development since many developers working on different components can modify datasets independently.<BR>
-            <BR>
-            For integrated testing, you can still use the CompositeDataSet implementation to combine multiple datasets into one at run time.<BR>
-            <BR>
-            <H4>4. Perform setup of stale data once for entire test class or a test suite</H4>
-            If several tests are using the same read-only data, this data could be initialized once for an entire test class or test suite. You need to be cautious and ensure you never modify this data. This can reduce the time required to run your tests but also introduces more risk. <BR>
-            <BR>
-            This feature is not yet integrated in dbUnit but may be added in the future. Something likes a DatabaseTestSuite class… <BR>
-            <BR>
-            <H4>5. Connection management strategies</H4>Here are the recommended connection management strategies depending if your testing strategy is to perform your tests from a remote client or in-container:<BR>
             <H5>Remote client with DatabaseTestCase</H5>
             You should reuse the same connection for the entire test suite to reduce the overhead of creating a new connection for each test by using a singleton. Since version 1.1, DatabaseTestCase is closing every connection in setUp() and tearDown(). Override the closeConnection() method with an empty body to modify this behavior. <BR>
             <H5>In-container with Cactus or JUnitEE</H5>
             If you use the in-container strategy you should use a DatabaseDataSourceConnection object to access the DataSource you configured for your application server. Jdbc connections are requested on demand from the DataSource. So you can rely on the built-in connection pooling capability of your application server to achieve better performance.<BR>
-            <PRE>    // initialize your database connection here 
-    IDatabaseConnection connection = new DatabaseDataSourceConnection(
+            <PRE>    IDatabaseConnection connection = new DatabaseDataSourceConnection(
             new InitialContext(), &quot;jdbc/myDataSource&quot;);</PRE>
             <BR>
             <H4>6. Table sequence in dataset</H4>

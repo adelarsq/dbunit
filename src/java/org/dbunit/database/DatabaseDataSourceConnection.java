@@ -30,6 +30,7 @@ import javax.naming.NamingException;
 
 /**
  * @author Manuel Laflamme
+ * @since 1.1
  * @version 1.0
  */
 public class DatabaseDataSourceConnection extends AbstractDatabaseConnection

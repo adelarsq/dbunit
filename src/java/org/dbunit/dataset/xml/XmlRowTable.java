@@ -31,6 +31,7 @@ import electric.xml.*;
 
 /**
  * @author Manuel Laflamme
+ * @since 1.2
  * @version 1.0
  */
 public class XmlRowTable extends AbstractTable
