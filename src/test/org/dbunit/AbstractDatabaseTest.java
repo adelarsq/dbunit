@@ -74,7 +74,11 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
 
     protected IDatabaseConnection getConnection() throws Exception
     {
-        return getEnvironment().getConnection();
+        IDatabaseConnection connection = getEnvironment().getConnection();
+        return connection;
+
+//        return new DatabaseEnvironment(getEnvironment().getProfile()).getConnection();
+//        return new DatabaseConnection(connection.getConnection(), connection.getSchema());
     }
 
     protected IDataSet getDataSet() throws Exception

@@ -35,13 +35,15 @@ import org.dbunit.dataset.datatype.DataTypeException;
  */
 public class DatabaseDataSet extends AbstractDataSet
 {
-    private final Connection _connection;
+    private final Connection _c;
+    private final IDatabaseConnection _connection;
     private final String _schema;
     private Map _tableMap = null;
 
     DatabaseDataSet(IDatabaseConnection connection) throws SQLException
     {
-        _connection = connection.getConnection();
+        _connection = connection;
+        _c = connection.getConnection();
         _schema = connection.getSchema();
     }
 
@@ -69,69 +71,6 @@ public class DatabaseDataSet extends AbstractDataSet
         return sql;
     }
 
-    private String[] getPrimaryKeys(String tableName) throws SQLException
-    {
-        DatabaseMetaData databaseMetaData = _connection.getMetaData();
-        ResultSet resultSet = databaseMetaData.getPrimaryKeys(
-                _connection.getCatalog(), _schema, tableName);
-
-        List list = new ArrayList();
-        try
-        {
-            while (resultSet.next())
-            {
-                String name = resultSet.getString(4);
-                int index = resultSet.getInt(5);
-                list.add(new PrimaryKeyData(name, index));
-            }
-        }
-        finally
-        {
-            resultSet.close();
-        }
-
-        Collections.sort(list);
-        String[] keys = new String[list.size()];
-        for (int i = 0; i < keys.length; i++)
-        {
-            PrimaryKeyData data = (PrimaryKeyData)list.get(i);
-            keys[i] = data.getName();
-        }
-
-        return keys;
-    }
-
-    private class PrimaryKeyData implements Comparable
-    {
-        private final String _name;
-        private final int _index;
-
-        public PrimaryKeyData(String name, int index)
-        {
-            _name = name;
-            _index = index;
-        }
-
-        public String getName()
-        {
-            return _name;
-        }
-
-        public int getIndex()
-        {
-            return _index;
-        }
-
-        ////////////////////////////////////////////////////////////////////////
-        // Comparable interface
-
-        public int compareTo(Object o)
-        {
-            PrimaryKeyData data = (PrimaryKeyData)o;
-            return data.getIndex() - getIndex();
-        }
-    }
-
     /**
      * Get all the table names in the current database that are not
      * system tables.
@@ -145,9 +84,9 @@ public class DatabaseDataSet extends AbstractDataSet
 
         try
         {
-            DatabaseMetaData databaseMetaData = _connection.getMetaData();
+            DatabaseMetaData databaseMetaData = _c.getMetaData();
             ResultSet resultSet = databaseMetaData.getTables(
-                    _connection.getCatalog(), _schema, "%", null);
+                    _c.getCatalog(), _schema, "%", null);
 
             try
             {
@@ -186,56 +125,19 @@ public class DatabaseDataSet extends AbstractDataSet
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
-        ITableMetaData tableMetaData = (ITableMetaData)getTableMap().get(tableName);
-        if (tableMetaData != null)
+        ITableMetaData metaData = (ITableMetaData)getTableMap().get(tableName);
+        if (metaData != null)
         {
-            return tableMetaData;
+            return metaData;
         }
         else if (!getTableMap().containsKey(tableName))
         {
             throw new NoSuchTableException(tableName);
         }
 
-        try
-        {
-            DatabaseMetaData databaseMetaData = _connection.getMetaData();
-            ResultSet resultSet = databaseMetaData.getColumns(
-                    _connection.getCatalog(), _schema, tableName, null);
-
-            try
-            {
-                List columnList = new ArrayList();
-                while (resultSet.next())
-                {
-                    String columnName = resultSet.getString(4);
-                    int sqlType = resultSet.getInt(5);
-                    String sqlTypeName = resultSet.getString(6);
-                    int columnSize = resultSet.getInt(7);
-                    int nullable = resultSet.getInt(11);
-
-                    Column column = new Column(columnName, DataType.forSqlType(sqlType));
-                    columnList.add(column);
-                }
-
-                Column[] columns = (Column[])columnList.toArray(new Column[0]);
-                tableMetaData = new DefaultTableMetaData(tableName, columns,
-                        getPrimaryKeys(tableName));
-                getTableMap().put(tableName, tableMetaData);
-                return tableMetaData;
-            }
-            finally
-            {
-                resultSet.close();
-            }
-        }
-        catch (SQLException e)
-        {
-            throw new DataSetException(e);
-        }
-        catch (DataTypeException e)
-        {
-            throw new DataSetException(e);
-        }
+        metaData = new DatabaseTableMetaData(tableName, _connection);
+        getTableMap().put(tableName, metaData);
+        return metaData;
     }
 
     public ITable getTable(String tableName) throws DataSetException
@@ -243,7 +145,7 @@ public class DatabaseDataSet extends AbstractDataSet
         try
         {
             ITableMetaData metaData = getTableMetaData(tableName);
-            Statement statement = _connection.createStatement(
+            Statement statement = _c.createStatement(
                     ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet resultSet = statement.executeQuery(getSelectStatement(
                     _schema, metaData));

@@ -83,19 +83,14 @@ public class DatabaseEnvironment
         return _connection;
     }
 
-//    public String getSchema() throws Exception
-//    {
-//        return _profile.getSchema();
-//    }
-
     public IDataSet getInitDataSet() throws Exception
     {
         return _dataSet;
     }
 
-    public PrimaryKeySupport getPrimaryKeySupport() throws Exception
+    public DatabaseProfile getProfile() throws Exception
     {
-        return _profile.getPrimaryKeySupport();
+        return _profile;
     }
 
 }

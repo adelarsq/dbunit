@@ -5,27 +5,27 @@
 	<program type="application">
 		<application
 			args=""
-			working_dir="K:\java\projects\dbunit\"
-			source_dir="K:\java\projects\dbunit\src\java;K:\java\projects\dbunit\src\test"
-			classname="com.freeborders.dbunit.AllTests">
+			working_dir="K:\java\projects\dbunit-cvs\dbunit"
+			source_dir="K:\java\projects\dbunit-cvs\dbunit\src\java;K:\java\projects\dbunit-cvs\dbunit\src\test"
+			classname="org.dbunit.AllTests">
 			<classpath>
 				<classpath.path location="%CLASSPATH%"/>
 				<classpath.archive
-					location="K:\java\projects\dbunit\lib\exml.jar"
+					location="K:\java\projects\dbunit-cvs\dbunit\lib\exml.jar"
 					type="jar"/>
 				<classpath.archive
-					location="K:\java\projects\dbunit\lib\hsqldb.jar"
+					location="K:\java\projects\dbunit-cvs\dbunit\lib\hsqldb.jar"
 					type="jar"/>
 				<classpath.archive
-					location="K:\java\projects\dbunit\lib\j2ee.jar"
+					location="K:\java\projects\dbunit-cvs\dbunit\lib\j2ee.jar"
 					type="jar"/>
 				<classpath.archive
-					location="K:\java\projects\dbunit\lib\junit.jar"
+					location="K:\java\projects\dbunit-cvs\dbunit\lib\junit.jar"
 					type="jar"/>
 				<classpath.archive
-					location="K:\java\projects\dbunit\lib\oracle-jdbc.jar"
+					location="K:\java\projects\dbunit-cvs\dbunit\lib\oracle-jdbc.jar"
 					type="jar"/>
-				<classpath.path location="K:\java\projects\dbunit\classes"/>
+				<classpath.path location="K:\java\projects\dbunit-cvs\dbunit\build\classes"/>
 			</classpath>
 		</application>
 		<applet
@@ -63,9 +63,9 @@
 	<viewer
 		socket=":4444"
 		type="local"/>
-	<analysis type="profile">
+	<analysis type="performance">
 		<performance
-			record_from_start="false"
+			record_from_start="true"
 			timing="elapsed"
 			track_natives="true"
 			final_snapshot="true"
@@ -205,3 +205,4 @@
 		</coverage>
 	</analysis>
 </jpl>
+

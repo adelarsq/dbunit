@@ -74,6 +74,23 @@ public abstract class DatabaseTestCase extends TestCase
         return DatabaseOperation.NONE;
     }
 
+    private void executeOperation(DatabaseOperation operation) throws Exception
+    {
+        if (operation != DatabaseOperation.NONE)
+        {
+            IDatabaseConnection connection = getConnection();
+            try
+            {
+                operation.execute(connection, getDataSet());
+            }
+            finally
+            {
+                closeConnection(connection);
+            }
+        }
+    }
+
+
     ////////////////////////////////////////////////////////////////////////////
     // TestCase class
 
@@ -81,29 +98,13 @@ public abstract class DatabaseTestCase extends TestCase
     {
         super.setUp();
 
-        IDatabaseConnection connection = getConnection();
-        try
-        {
-            getSetUpOperation().execute(connection, getDataSet());
-        }
-        finally
-        {
-            closeConnection(connection);
-        }
+        executeOperation(getSetUpOperation());
     }
 
     protected void tearDown() throws Exception
     {
         super.tearDown();
 
-        IDatabaseConnection connection = getConnection();
-        try
-        {
-            getTearDownOperation().execute(connection, getDataSet());
-        }
-        finally
-        {
-            closeConnection(connection);
-        }
+        executeOperation(getTearDownOperation());
     }
 }

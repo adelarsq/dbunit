@@ -43,7 +43,7 @@ public abstract class AbstractTable implements ITable
         }
     }
 
-    protected int getColumnIndex(String columnName) throws NoSuchColumnException
+    protected int getColumnIndex(String columnName) throws DataSetException
     {
         ITableMetaData metaData = getTableMetaData();
         Column[] columns = metaData.getColumns();
@@ -65,11 +65,19 @@ public abstract class AbstractTable implements ITable
 
     public String toString()
     {
-        ITableMetaData metaData = getTableMetaData();
-        String tableName = metaData.getTableName();
-        String columns = Arrays.asList(metaData.getColumns()).toString();
 
-        return "[name=" + tableName + ", rowCount=" + getRowCount() +
-                ", columns=" + columns + "]";
+        try
+        {
+            ITableMetaData metaData = getTableMetaData();
+            String tableName = metaData.getTableName();
+            String columns = Arrays.asList(metaData.getColumns()).toString();
+
+            return "[name=" + tableName + ", rowCount=" + getRowCount() +
+                    ", columns=" + columns + "]";
+        }
+        catch (DataSetException e)
+        {
+            return super.toString();
+        }
     }
 }

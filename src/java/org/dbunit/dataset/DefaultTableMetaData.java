@@ -29,7 +29,7 @@ import java.util.List;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class DefaultTableMetaData implements ITableMetaData
+public class DefaultTableMetaData extends AbstractTableMetaData
 {
     private final String _tableName;
     private final Column[] _columns;
@@ -46,26 +46,7 @@ public class DefaultTableMetaData implements ITableMetaData
     {
         _tableName = tableName;
         _columns = columns;
-
-        List primaryKeyList = new ArrayList();
-        for (int i = 0; i < primaryKeys.length; i++)
-        {
-            Column primaryKey = DataSetUtils.getColumn(primaryKeys[i], columns);
-            if (primaryKey != null)
-            {
-                primaryKeyList.add(primaryKey);
-            }
-//            else
-//            {
-//                // primary key not found in table
-//                if (_primaryKeys[i] == null)
-//                {
-//                    throw new NoPrimaryKeyException("<" + primaryKeys[i] +
-//                            "> not found in table <" + tableName + ">");
-//                }
-//            }
-        }
-        _primaryKeys = (Column[])primaryKeyList.toArray(new Column[0]);
+        _primaryKeys = getPrimaryKeys(columns, primaryKeys);
     }
 
     ////////////////////////////////////////////////////////////////////////////

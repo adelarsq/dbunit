@@ -1,5 +1,5 @@
 /*
- * CachedResultSetTable.java   Feb 20, 2002
+ * AbstractTableMetaData.java   Mar 8, 2002
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
@@ -20,44 +20,38 @@
  *
  */
 
-package org.dbunit.database;
+package org.dbunit.dataset;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-
-import org.dbunit.dataset.*;
+import java.util.ArrayList;
 
 /**
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class CachedResultSetTable extends DefaultTable
+public abstract class AbstractTableMetaData implements ITableMetaData
 {
-    public CachedResultSetTable(ITableMetaData metaData, ResultSet resultSet)
-            throws SQLException, DataSetException
+    protected Column[] getPrimaryKeys(Column[] columns, String[] keyNames)
     {
-        super(metaData, createList(metaData, resultSet));
-    }
-
-    private static List createList(ITableMetaData metaData, ResultSet resultSet)
-            throws SQLException, DataSetException
-    {
-        List list = new ArrayList();
-        Column[] columns = metaData.getColumns();
-        while (resultSet.next())
+        List keyList = new ArrayList();
+        for (int i = 0; i < keyNames.length; i++)
         {
-            Object[] row = new Object[columns.length];
-            for (int i = 0; i < columns.length; i++)
+            Column primaryKey = DataSetUtils.getColumn(keyNames[i], columns);
+            if (primaryKey != null)
             {
-                Object value = resultSet.getObject(columns[i].getColumnName());
-                row[i] = value;
+                keyList.add(primaryKey);
             }
-
-            list.add(row);
+//            else
+//            {
+//                // primary key not found in table
+//                if (_primaryKeys[i] == null)
+//                {
+//                    throw new NoPrimaryKeyException("<" + primaryKeys[i] +
+//                            "> not found in table <" + tableName + ">");
+//                }
+//            }
         }
-        return list;
-    }
 
+        return (Column[])keyList.toArray(new Column[0]);
+    }
 }

@@ -28,10 +28,19 @@ package org.dbunit.dataset;
  */
 public interface ITableMetaData
 {
+    /**
+     * Returns this table name.
+     */
     public String getTableName();
 
-    public Column[] getColumns();
+    /**
+     * Returns this table columns.
+     */
+    public Column[] getColumns() throws DataSetException;
 
-    public Column[] getPrimaryKeys();
+    /**
+     * Returns this table primary key columns.
+     */
+    public Column[] getPrimaryKeys() throws DataSetException;
 }
 
