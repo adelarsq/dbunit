@@ -23,6 +23,8 @@
 package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.*;
@@ -68,9 +70,24 @@ public class DbUnitTask extends Task
     private String password = null;
 
     /**
+     * DB schema.
+     */
+    private String schema = null;
+
+    /**
      * Steps
      */
     private List steps = new ArrayList();
+
+    /**
+     * Flag for using the qualified table names.
+     */
+    private boolean useQualifiedTableNames = false;
+
+    /**
+     * Flag for using botched statements.
+     */
+    private boolean supportBatchStatement = false;
 
     /**
      * Set the JDBC driver to be used.
@@ -102,6 +119,32 @@ public class DbUnitTask extends Task
     public void setPassword(String password)
     {
         this.password = password;
+    }
+
+    /**
+     * Set the schema for the DB connection.
+     */
+    public void setSchema(String schema)
+    {
+        this.schema = schema;
+    }
+
+    /**
+     * Set the flag for using the qualified table names.
+     */
+    public void setUseQualifiedTableNames(boolean useQualifiedTableNames)
+    {
+        this.useQualifiedTableNames = useQualifiedTableNames;
+    }
+
+    /**
+     * Set the flag for supporting batch statements.
+     * NOTE: This property cannot be used to force the usage of batch 
+     *       statement if your database does not support it.
+     */
+    public void setSupportBatchStatement(boolean supportBatchStatement)
+    {
+        this.supportBatchStatement = supportBatchStatement;
     }
 
     /**
@@ -161,8 +204,16 @@ public class DbUnitTask extends Task
         {
             throw new BuildException("Must declare at least one step in a <dbunit> task!");
         }
-        Driver driverInstance = null;
+        if (useQualifiedTableNames)
+        {
+            System.setProperty("dbunit.qualified.table.names", "true");
+        }
+        if (supportBatchStatement)
+        {
+            System.setProperty("dbunit.database.supportBatchStatement", "true");
+        }
 
+        Driver driverInstance = null;
         try
         {
             Class dc;
@@ -205,8 +256,9 @@ public class DbUnitTask extends Task
             while (stepIter.hasNext())
             {
                 DbUnitTaskStep step = (DbUnitTaskStep)stepIter.next();
+                IDatabaseConnection connection = new DatabaseConnection(conn, schema);
                 log(step.getLogMessage(), Project.MSG_INFO);
-                step.execute(conn);
+                step.execute(connection);
             }
         }
         catch (DatabaseUnitException e)

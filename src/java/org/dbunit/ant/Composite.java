@@ -23,8 +23,7 @@
 package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
-
-import java.sql.Connection;
+import org.dbunit.database.IDatabaseConnection;
 import java.util.*;
 
 /**
@@ -75,10 +74,10 @@ public class Composite extends Operation
      * Loops over the operations making up the composition, sets
      * their src and flat value, and calls execute on each one.
      *
-     * @param conn a <code>Connection</code> value
+     * @param conn a <code>IDatabaseConnection</code> value
      * @exception DatabaseUnitException if an error occurs
      */
-    public void execute(Connection conn) throws DatabaseUnitException
+    public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
         Iterator operIter = operations.listIterator();
         while (operIter.hasNext())
@@ -90,13 +89,14 @@ public class Composite extends Operation
                         + "in a <composite>'s sub-<operation>");
             }
             operation.setSrc(getSrc());
-            if (operation.getFlat() != getFlat())
+            if (operation.getRawFormat() != null 
+		&& !operation.getFormat().equalsIgnoreCase(getFormat()))
             {
-                throw new DatabaseUnitException("Cannot override 'flat' attribute "
+                throw new DatabaseUnitException("Cannot override 'format' attribute "
                         + "in a <composite>'s sub-<operation>");
             }
-            operation.setFlat(getFlat());
-            operation.execute(conn);
+            operation.setFormat(getFormat());
+            operation.execute(connection);
         }
 
     }
@@ -125,7 +125,7 @@ public class Composite extends Operation
         StringBuffer result = new StringBuffer();
         result.append("Composite: ");
         result.append("  src=" + getSrc().getAbsolutePath());
-        result.append(", flat=" + getFlat());
+	result.append(", format=" + getFormat());
         result.append(", operations=" + operations);
 
         return result.toString();

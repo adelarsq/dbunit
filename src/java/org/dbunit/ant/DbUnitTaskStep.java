@@ -23,8 +23,7 @@
 package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
-
-import java.sql.Connection;
+import org.dbunit.database.IDatabaseConnection;
 
 /**
  * The <code>DbUnitTaskStep</code> interface allows the execute method
@@ -36,7 +35,7 @@ import java.sql.Connection;
 public interface DbUnitTaskStep
 {
 
-    public void execute(Connection conn) throws DatabaseUnitException;
+    public void execute(IDatabaseConnection connection) throws DatabaseUnitException;
 
     public String getLogMessage();
 

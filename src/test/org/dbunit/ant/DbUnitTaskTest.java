@@ -120,10 +120,10 @@ public class DbUnitTaskTest extends TaskdefsTest
 
     public void testSetFlatFalse()
     {
-        String targetName = "set-flat-false";
+        String targetName = "set-format-xml";
         Operation operation = (Operation)getFirstStepFromTarget(targetName);
-        assertTrue("Operation attribute flat should have been false, but was: "
-                + operation.getFlat(), !operation.getFlat());
+        assertTrue("Operation attribute format should have been 'xml', but was: "
+                + operation.getFormat(), operation.getFormat().equalsIgnoreCase("xml"));
     }
 
     public void testResolveOperationTypes()
@@ -189,8 +189,8 @@ public class DbUnitTaskTest extends TaskdefsTest
 
     public void testInvalidCompositeOperationFlat()
     {
-        expectBuildException("invalid-composite-operation-flat",
-                "Should have objected to nested operation flat attribute "
+        expectBuildException("invalid-composite-operation-format-flat",
+                "Should have objected to nested operation format attribute "
                 + "being set.");
     }
 
@@ -198,6 +198,9 @@ public class DbUnitTaskTest extends TaskdefsTest
     {
         String targetName = "test-export-full";
         Export export = (Export)getFirstStepFromTarget(targetName);
+	assertTrue("Should have been a flat format, " 
+		   + "but was: " + export.getFormat(), 
+		   export.getFormat().equalsIgnoreCase("flat"));
         List tables = export.getTables();
         assertTrue("Should have been an empty table list "
                 + "(indicating a full dataset), but was: "
@@ -217,6 +220,39 @@ public class DbUnitTaskTest extends TaskdefsTest
                 + testTable.getName(), testTable.getName().equals("TEST_TABLE"));
         assertTrue("Should have been been TABLE PK_TABLE, but was: "
                 + pkTable.getName(), pkTable.getName().equals("PK_TABLE"));
+    }
+
+    public void testExportFlat()
+    {
+        String targetName = "test-export-format-flat";
+        Export export = (Export)getFirstStepFromTarget(targetName);
+	assertTrue("Should have been a flat format, " 
+		   + "but was: " + export.getFormat(), 
+		   export.getFormat().equalsIgnoreCase("flat"));
+    }
+
+    public void testExportXml()
+    {
+        String targetName = "test-export-format-xml";
+        Export export = (Export)getFirstStepFromTarget(targetName);
+	assertTrue("Should have been an xml format, " 
+		   + "but was: " + export.getFormat(), 
+		   export.getFormat().equalsIgnoreCase("xml"));
+    }
+
+    public void testExportDtd()
+    {
+        String targetName = "test-export-format-dtd"; 
+        Export export = (Export)getFirstStepFromTarget(targetName);
+	assertTrue("Should have been a dtd format, " 
+		   + "but was: " + export.getFormat(), 
+		   export.getFormat().equalsIgnoreCase("dtd"));
+    }
+
+    public void testInvalidExportFormat()
+    {
+        expectBuildException("invalid-export-format",
+                "Should have objected to invalid format attribute.");
     }
 
     protected void assertOperationType(String failMessage, String targetName, DatabaseOperation expected)
@@ -263,9 +299,4 @@ public class DbUnitTaskTest extends TaskdefsTest
             junit.textui.TestRunner.run(suite());
         }
     }
-
-
 }
-
-
-

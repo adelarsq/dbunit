@@ -27,6 +27,7 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 
 import java.io.*;
@@ -37,8 +38,9 @@ import java.util.List;
 
 /**
  * The <code>Export</code> class is the step that facilitates exporting
- * the contents of the database to a file.  The database can be exported
- * as a full dataset or partially if specific table names are identified.
+ * the contents of the database and/or it's corresponding dtd to a file.  
+ * The export can be performed on a full dataset or a partial one if 
+ * specific table names are identified.
  *
  * @author Timothy Ruppert && Ben Cox
  * @version $Revision$
@@ -47,17 +49,27 @@ import java.util.List;
 public class Export implements DbUnitTaskStep
 {
 
-    private boolean flat = true;
     private File dest;
+    private String format = "flat";
     private List tables = new ArrayList();
 
     public Export()
     {
     }
 
+    private String getAbsolutePath(File filename) 
+    { 
+        return filename != null ? filename.getAbsolutePath() : "null";
+    }  
+
     public File getDest()
     {
         return dest;
+    }
+
+    public String getFormat()
+    {
+        return format;
     }
 
     public List getTables()
@@ -65,14 +77,23 @@ public class Export implements DbUnitTaskStep
         return tables;
     }
 
-    public boolean getFlat()
-    {
-        return flat;
-    }
-
     public void setDest(File dest)
     {
         this.dest = dest;
+    }
+
+    public void setFormat(String format)
+    {
+	if (format.equalsIgnoreCase("flat")
+	    || format.equalsIgnoreCase("xml")
+	    || format.equalsIgnoreCase("dtd"))
+	{
+	    this.format = format;
+	}
+	else 
+	{
+	    throw new IllegalArgumentException("Type must be one of: 'flat'(default), 'xml', or 'dtd' but was: " + format);
+	}
     }
 
     public void addTable(Table table)
@@ -80,15 +101,9 @@ public class Export implements DbUnitTaskStep
         tables.add(table);
     }
 
-    public void setFlat(boolean flat)
-    {
-        this.flat = flat;
-    }
-
-    public void execute(Connection conn) throws DatabaseUnitException
+    public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
         IDataSet dataset;
-        IDatabaseConnection connection = new DatabaseConnection(conn);
         try
         {
             if (tables.size() == 0)
@@ -99,14 +114,25 @@ public class Export implements DbUnitTaskStep
             {
                 dataset = connection.createDataSet(getTableArray());
             }
-            if (flat)
+	    if (dest == null) 
             {
-                FlatXmlDataSet.write(dataset, new FileOutputStream(dest));
-            }
-            else
-            {
-                XmlDataSet.write(dataset, new FileOutputStream(dest));
-            }
+	      throw new DatabaseUnitException ("'dest' is a required attribute of the <export> step.");
+	    }
+	    else  
+	    {
+	        if (format.equalsIgnoreCase("flat"))
+		{
+                    FlatXmlDataSet.write(dataset, new FileOutputStream(dest));
+                }
+	        else if (format.equalsIgnoreCase("xml"))
+                {
+                    XmlDataSet.write(dataset, new FileOutputStream(dest));
+                }
+		else if (format.equalsIgnoreCase("dtd"))
+		{
+		    FlatDtdDataSet.write(dataset, new FileOutputStream(dest));
+		}
+	    }
 
         }
         catch (IOException e)
@@ -133,7 +159,8 @@ public class Export implements DbUnitTaskStep
     public String getLogMessage()
     {
         return "Executing export: "
-                + "\n          to   file: " + dest.getAbsolutePath();
+             + "\n      in format: " + format 
+	     + " to datafile: " + getAbsolutePath(dest);
     }
 
 
@@ -141,8 +168,8 @@ public class Export implements DbUnitTaskStep
     {
         StringBuffer result = new StringBuffer();
         result.append("Export: ");
-        result.append(" dest=" + dest.getAbsolutePath());
-        result.append(", flat=" + flat);
+        result.append(" dest=" + getAbsolutePath(dest));
+        result.append(", format= " + tables);
         result.append(", tables= " + tables);
 
         return result.toString();

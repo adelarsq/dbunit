@@ -6,6 +6,7 @@
 
   <property name="testDataSet" value="src/xml/antTestDataSet.xml"/>
   <property name="exportDataSet" value="src/xml/antExportDataSet.xml"/>
+  <property name="exportDtd" value="src/xml/antExport.dtd"/>
 
   <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>
   
@@ -53,12 +54,12 @@
     </dbunit>
   </target>
 
-  <target name="set-flat-false">
+  <target name="set-format-xml">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.connectionUrl}" 
 	    userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
-      <operation type="INSERT" src="${testDataSet}" flat="false"/>
+      <operation type="INSERT" src="${testDataSet}" format="xml"/>
     </dbunit>
   </target>
 
@@ -159,7 +160,7 @@
             url="${dbunit.profile.connectionUrl}" 
 	    userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
-      <composite src="${testDataSet}">
+      <composite src="${testDataSet}" format="xml">
         <operation type="CLEAN_INSERT"/>
         <operation type="DELETE"/>
       </composite>
@@ -171,20 +172,20 @@
             url="${dbunit.profile.connectionUrl}" 
 	    userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
-      <composite src="${testDataSet}">
+      <composite src="${testDataSet}" format="xml">
         <operation type="CLEAN_INSERT" src="${testDataSet}"/>
         <operation type="DELETE"/>
       </composite>
     </dbunit>
   </target>
 
-  <target name="invalid-composite-operation-flat">
+  <target name="invalid-composite-operation-format-xml">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.connectionUrl}" 
 	    userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <composite src="${testDataSet}">
-        <operation type="CLEAN_INSERT" flat="false"/>
+        <operation type="CLEAN_INSERT" format="xml"/>
         <operation type="DELETE"/>
       </composite>
     </dbunit>
@@ -213,14 +214,43 @@
     <delete file="${exportDataSet}"/>
   </target>
 
-  <target name="test-export-flat">
+  <target name="test-export-format-flat">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.connectionUrl}" 
 	    userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
-      <export dest="${exportDataSet}" flat="false"/>>
+      <export dest="${exportDataSet}" format="flat"/>
     </dbunit>
     <delete file="${exportDataSet}"/>
+  </target>
+
+  <target name="test-export-format-xml">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <export dest="${exportDataSet}" format="xml"/>
+    </dbunit>
+    <delete file="${exportDataSet}"/>
+  </target>
+
+  <target name="test-export-format-dtd">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <export dest="${exportDtd}" format="dtd"/>
+    </dbunit>
+    <delete file="${exportDtd}"/>
+  </target>
+
+  <target name="invalid-export-format">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <export dest="${exportDtd}" format="invalid"/>
+    </dbunit>
   </target>
 
 </project>

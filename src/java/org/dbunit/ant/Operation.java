@@ -23,7 +23,7 @@
 package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
@@ -45,9 +45,10 @@ import java.sql.SQLException;
  */
 public class Operation implements DbUnitTaskStep
 {
-
+  
     protected String type;
-    private boolean flat = true;
+    private final String DEFAULT_FORMAT = "flat";
+    private String format;
     private File src;
     private DatabaseOperation dbOperation;
 
@@ -71,14 +72,26 @@ public class Operation implements DbUnitTaskStep
         return dbOperation;
     }
 
-    public boolean getFlat()
+    public String getFormat()
     {
-        return flat;
+        return format != null ? format : DEFAULT_FORMAT;
+    }
+
+  /**
+   * This returns the actual value of the <code>format</code> field, 
+   * which makes it possible to determine whether the setFormat() method was ever called
+   * despite the fact that the <code>getFormat()</code> method returns a default.
+   * 
+   * @return a <code>String</code>, the actual value of the <code>format</code> field.
+   *         If <code>setFormat()</code> has not been called, this method will return null.
+   */
+    String getRawFormat()
+    {
+        return format;
     }
 
     public void setType(String type)
     {
-        this.type = type;
         if ("UPDATE".equals(type))
         {
             dbOperation = DatabaseOperation.UPDATE;
@@ -121,6 +134,7 @@ public class Operation implements DbUnitTaskStep
                     + " REFRESH, DELETE, DELETE_ALL, CLEAN_INSERT, MSSQL_INSERT, "
 		    + " or MSSQL_REFRESH but was: " + type);
         }
+        this.type = type;
     }
 
     public void setSrc(File src)
@@ -128,28 +142,39 @@ public class Operation implements DbUnitTaskStep
         this.src = src;
     }
 
-    public void setFlat(boolean flat)
+    public void setFormat(String format)
     {
-        this.flat = flat;
+	if (format.equalsIgnoreCase("flat")
+	    || format.equalsIgnoreCase("xml"))
+	{
+            this.format = format;
+	}
+	else
+	{
+   	    throw new IllegalArgumentException("Type must be either 'flat'(default) or 'xml' but was: " + format);
+	}
     }
 
-    public void execute(Connection conn) throws DatabaseUnitException
+    public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
         if (dbOperation != null)
         {
             try
             {
-                DatabaseConnection dbConn = new DatabaseConnection(conn);
                 IDataSet dataset;
-                if (flat)
-                {
-                    dataset = new FlatXmlDataSet(new FileInputStream(src));
-                }
-                else
+		if (format == null) 
+		{
+		    format = DEFAULT_FORMAT;
+		}
+                if (format.equalsIgnoreCase("xml"))
                 {
                     dataset = new XmlDataSet(new FileInputStream(src));
                 }
-                dbOperation.execute(dbConn, dataset);
+                else 
+                {
+                    dataset = new FlatXmlDataSet(new FileInputStream(src));
+                }
+                dbOperation.execute(connection, dataset);
             }
             catch (IOException e)
             {
@@ -169,7 +194,8 @@ public class Operation implements DbUnitTaskStep
     public String getLogMessage()
     {
         return "Executing operation: " + type
-                + "\n          on   file: " + src.getAbsolutePath();
+                + "\n          on   file: " + src.getAbsolutePath()
+	        + "\n          with format: " + format;
     }
 
 
@@ -178,7 +204,7 @@ public class Operation implements DbUnitTaskStep
         StringBuffer result = new StringBuffer();
         result.append("Operation: ");
         result.append(" type=" + type);
-        result.append(", flat=" + flat);
+        result.append(", format=" + format);
         result.append(", src=" + src.getAbsolutePath());
         result.append(", dbOperation = " + dbOperation);
 
