@@ -187,8 +187,7 @@ public class DbUnitTaskTest extends TaskdefsTest
         String targetName = "test-export-partial";
         Export export = (Export)getFirstStepFromTarget(targetName);
         List tables = export.getTables();
-        assertTrue("Export should have had two subtables, but has: "
-                + tables.size(), tables.size() == 2);
+        assertEquals("table count", 2, tables.size());
         Table testTable = (Table)tables.get(0);
         Table pkTable = (Table)tables.get(1);
         assertTrue("Should have been been TABLE TEST_TABLE, but was: "
@@ -201,9 +200,15 @@ public class DbUnitTaskTest extends TaskdefsTest
     {
         String targetName = "test-export-format-flat";
         Export export = (Export)getFirstStepFromTarget(targetName);
-        assertTrue("Should have been a flat format, "
-                + "but was: " + export.getFormat(),
-                export.getFormat().equalsIgnoreCase("flat"));
+        assertEquals("format", "flat", export.getFormat());
+    }
+
+    public void testExportFlatWithDocytpe()
+    {
+        String targetName = "test-export-format-flat-with-doctype";
+        Export export = (Export)getFirstStepFromTarget(targetName);
+        assertEquals("format", "flat", export.getFormat());
+        assertEquals("doctype", "dataset.dtd", export.getDoctype());
     }
 
     public void testExportXml()

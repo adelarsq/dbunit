@@ -147,9 +147,12 @@
                 <td>Format type of supplied destination file. Possible values 
                   are "flat", "xml" or "dtd". Defaults 
                   to <b>"flat"</b></td>
-                <td> 
                 <td>No</td>
-                </td>
+              </tr>
+              <tr> 
+                <td>doctype</td>
+                <td>If set and format is "flat", add DOCTYPE declaration referencing specified DTD to exported dataset. The DTD path can be absolute or relative. </td>
+                <td>No</td>
               </tr>
             </table>
             <h4>Parameters specified as nested elements </h4>

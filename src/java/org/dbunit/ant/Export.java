@@ -26,7 +26,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.csv.CSVDataSetWriter;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlWriter;
 import org.dbunit.dataset.xml.XmlDataSet;
 
 import java.io.File;
@@ -53,6 +53,7 @@ public class Export extends AbstractStep
 
     private File _dest;
     private String _format = FORMAT_FLAT;
+    private String _doctype = null;
     private List _tables = new ArrayList();
 
     public Export()
@@ -109,6 +110,16 @@ public class Export extends AbstractStep
         _tables.add(query);
     }
 
+    public String getDoctype()
+    {
+        return _doctype;
+    }
+
+    public void setDoctype(String doctype)
+    {
+        _doctype = doctype;
+    }
+
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
         try
@@ -132,7 +143,9 @@ public class Export extends AbstractStep
                 {
                     if (_format.equalsIgnoreCase(FORMAT_FLAT))
                     {
-                        FlatXmlDataSet.write(dataset, out);
+                        FlatXmlWriter writer = new FlatXmlWriter(out);
+                        writer.setDocType(_doctype);
+                        writer.write(dataset);
                     }
                     else if (_format.equalsIgnoreCase(FORMAT_XML))
                     {
@@ -158,7 +171,7 @@ public class Export extends AbstractStep
     public String getLogMessage()
     {
         return "Executing export: "
-                + "\n      in _format: " + _format
+                + "\n      in format: " + _format
                 + " to datafile: " + getAbsolutePath(_dest);
     }
 
@@ -167,9 +180,10 @@ public class Export extends AbstractStep
     {
         StringBuffer result = new StringBuffer();
         result.append("Export: ");
-        result.append(" _dest=" + getAbsolutePath(_dest));
-        result.append(", _format= " + _format);
-        result.append(", _tables= " + _tables);
+        result.append(" dest=" + getAbsolutePath(_dest));
+        result.append(", format= " + _format);
+        result.append(", doctype= " + _doctype);
+        result.append(", tables= " + _tables);
 
         return result.toString();
     }
