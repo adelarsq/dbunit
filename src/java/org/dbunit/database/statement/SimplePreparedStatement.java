@@ -63,7 +63,11 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
 
     public void addBatch() throws SQLException
     {
-        _result += _statement.executeUpdate();
+        boolean result = _statement.execute();
+        if (!result)
+        {
+            _result += _statement.getUpdateCount();
+        }
         _index = 0;
 //        _statement.clearParameters();
     }

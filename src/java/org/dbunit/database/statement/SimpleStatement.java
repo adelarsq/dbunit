@@ -51,7 +51,11 @@ public class SimpleStatement extends AbstractBatchStatement
         for (int i = 0; i < _list.size(); i++)
         {
             String sql = (String)_list.get(i);
-            result += _statement.executeUpdate(sql);
+            boolean r = _statement.execute(sql);
+            if(!r)
+            {
+                result += _statement.getUpdateCount();
+            }
         }
         return result;
     }
