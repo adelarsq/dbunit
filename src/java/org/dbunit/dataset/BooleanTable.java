@@ -20,12 +20,12 @@
  */
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.datatype.NumberDataType;
-import org.dbunit.dataset.datatype.DataType;
-
 import java.math.BigDecimal;
 
 /**
+ * Decorator that exposes Boolean value of the decorated table to specified
+ * replacement values.
+ *
  * @author Manuel Laflamme
  * @since Mar 14, 2003
  * @version $Revision$
@@ -39,11 +39,25 @@ public class BooleanTable implements ITable
     private final Object _trueValue;
     private final Object _falseValue;
 
+    /**
+     * Creates a BooleanTable that decorates the specified table using numbers
+     * 0 and 1 as replacement values.
+     *
+     * @param table the decorated table
+     */
     public BooleanTable(ITable table)
     {
         this(table, DEFAULT_TRUE_VALUE, DEFAULT_FALSE_VALUE);
     }
 
+    /**
+     * Creates a BooleanTable that decorates the specified table and using the
+     * specified replacement values.
+     *
+     * @param table the decorated table
+     * @param trueValue the replacement value for {@link Boolean#TRUE}
+     * @param falseValue the replacement value for {@link Boolean#FALSE}
+     */
     BooleanTable(ITable table, Object trueValue, Object falseValue)
     {
         _table = table;

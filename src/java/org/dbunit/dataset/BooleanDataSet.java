@@ -20,11 +20,13 @@
  */
 package org.dbunit.dataset;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Decorator that exposes Boolean value of the decorated dataset tables to
+ * specified replacement values.
+ *
  * @author Manuel Laflamme
  * @since Mar 14, 2003
  * @version $Revision$
@@ -35,11 +37,32 @@ public class BooleanDataSet implements IDataSet
     private final Object _trueValue;
     private final Object _falseValue;
 
+    /**
+     * Creates a BooleanDataSet that decorates the specified dataset using
+     * numbers 0 and 1 as replacement values.
+     *
+     * @param dataSet the decorated dataset
+     */
     public BooleanDataSet(IDataSet dataSet)
     {
         _dataSet = dataSet;
         _falseValue = BooleanTable.DEFAULT_FALSE_VALUE;
         _trueValue = BooleanTable.DEFAULT_TRUE_VALUE;
+    }
+
+    /**
+     * Creates a BooleanDataSet that decorates the specified dataset using
+     * specified replacement values.
+     *
+     * @param dataSet the decorated dataset.
+     * @param trueValue the replacement value for {@link Boolean#TRUE}
+     * @param falseValue the replacement value for {@link Boolean#FALSE}
+     */
+    public BooleanDataSet(IDataSet dataSet, Object trueValue, Object falseValue)
+    {
+        _dataSet = dataSet;
+        _trueValue = trueValue;
+        _falseValue = falseValue;
     }
 
     ////////////////////////////////////////////////////////////////////////////
