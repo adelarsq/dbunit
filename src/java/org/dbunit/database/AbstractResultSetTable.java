@@ -120,16 +120,16 @@ public abstract class AbstractResultSetTable extends AbstractTable
     {
         try
         {
-            if (_statement != null)
-            {
-                _statement.close();
-                _statement = null;
-            }
-
             if (_resultSet != null)
             {
                 _resultSet.close();
                 _resultSet = null;
+            }
+
+            if (_statement != null)
+            {
+                _statement.close();
+                _statement = null;
             }
         }
         catch (SQLException e)
