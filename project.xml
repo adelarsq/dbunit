@@ -137,12 +137,10 @@
 
     <unitTest>
       <includes>
-        <include>**/*Test.java</include>
-        <include>**/DbUnitTask*</include>
+        <include>org/dbunit/AllTests.java</include>
       </includes>
       <excludes>
-        <exclude>**/TaskdefsTest*</exclude>
-        <exclude>**/Abstract*Test*</exclude>        
+        <exclude>**/*Test</exclude>   
       </excludes>
     </unitTest>
 
@@ -158,7 +156,9 @@
   
   <reports>
     <report>maven-jdepend-plugin</report>
+    <!--
     <report>maven-checkstyle-plugin</report>
+    -->
     <report>maven-changes-plugin</report>
     <report>maven-changelog-plugin</report>
     <report>maven-file-activity-plugin</report>
