@@ -82,7 +82,7 @@ public class DatabaseSequenceFilterTest extends TestCase
     public void testGetTableNames() throws Exception
     {
         String[] expectedNoFilter = {"A","B","C","D","E","F","G","H",};
-        String[] expectedFiltered = {"B","C","E","A","F","D","G","H",};
+        String[] expectedFiltered = {"D","A","F","C","G","E","H","B",};
 
         HypersonicEnvironment.executeDdlFile(new File("src/sql/hypersonic_fk.sql"),
                 _jdbcConnection);

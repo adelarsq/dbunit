@@ -20,15 +20,20 @@
  */
 package org.dbunit.database;
 
-import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.filter.SequenceTableFilter;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This filter orders tables using dependency information provided by
@@ -41,6 +46,11 @@ import java.util.*;
  */
 public class DatabaseSequenceFilter extends SequenceTableFilter
 {
+  
+    /** Cache for tablename/foreign key mappings. */
+    private static Map _dependentMap;
+
+
     /**
      * Create a DatabaseSequenceFilter that only exposes specified table names.
      */
@@ -65,172 +75,125 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
      *
      * @param tableNames A string array of table names to be ordered.
      * @return The re-ordered array of table names.
-     * @throws SQLException if a database access error occurs
-     * @throws CyclicTablesDependencyException if encounter a cyclic dependency
+     * @throws DataSetException
+     * @throws SQLException If an exception is encountered in accessing the database.
      */
-    private static String[] sortTableNames(IDatabaseConnection connection,
-            String[] tableNames) throws DataSetException, SQLException
+    static String[] sortTableNames(
+        IDatabaseConnection connection,
+        String[] tableNames)
+        throws DataSetException, SQLException
+            // not sure why this throws DataSetException ? - ENP
     {
+        boolean reprocess = true;
+        List tmpTableNames = Arrays.asList(tableNames);
+        List sortedTableNames = null;
+        DatabaseSequenceFilter._dependentMap = new HashMap();
+        
+        while (reprocess) {
+            sortedTableNames = new LinkedList();
+            
+            // re-order 'tmpTableNames' into 'sortedTableNames'
+            for (Iterator i = tmpTableNames.iterator(); i.hasNext();)
+            {
+                boolean foundDependentInSortedTableNames = false;
+                String tmpTable = (String)i.next();
+                Set tmpTableDependents = getDependentTableNames(connection, tmpTable);
+                
+
+                int sortedTableIndex = -1;
+                for (Iterator k = sortedTableNames.iterator(); k.hasNext();)
+                {
+                    String sortedTable = (String)k.next();
+                    if (tmpTableDependents.contains(sortedTable))
+                    {
+                        sortedTableIndex = sortedTableNames.indexOf(sortedTable);
+                        foundDependentInSortedTableNames = true;
+                        break; // end for loop; we know the index
+                    }
+                }
+
+                
+                // add 'tmpTable' to 'sortedTableNames'.
+                // Insert it before its first dependent if there are any,
+                // otherwise append it to the end of 'sortedTableNames'
+                if (foundDependentInSortedTableNames) {
+                    if (sortedTableIndex < 0) {
+                        throw new IllegalStateException(
+                            "sortedTableIndex should be 0 or greater, but is "
+                                + sortedTableIndex);
+                    }
+                    sortedTableNames.add(sortedTableIndex, tmpTable);
+                }
+                else
+                {
+                    sortedTableNames.add(tmpTable);
+                }
+            }
+            
+            
+            
+            // don't stop processing until we have a perfect run (no re-ordering)
+            if (tmpTableNames.equals(sortedTableNames))
+            {
+                reprocess = false;
+            }
+            else
+            {
+
+                tmpTableNames = null;
+                tmpTableNames = (List)((LinkedList)sortedTableNames).clone();
+            }
+        }// end 'while (reprocess)'
+        
+        return (String[])sortedTableNames.toArray(new String[0]);
+    }
+    
+
+    /**
+     * Returns a Set containing the names of all tables which are dependent upon
+     * <code>tableName</code>'s primary key as foreign keys.
+     *
+     * @param connection An IDatabaseConnection to a database that supports
+     * referential integrity.
+     * @param tableName The table whose primary key is to be used in determining
+     * dependent foreign key tables.
+     * @return The Set of dependent foreign key table names.
+     * @throws SQLException If an exception is encountered in accessing the database.
+     */
+    private static Set getDependentTableNames(
+        IDatabaseConnection connection,
+        String tableName)
+        throws SQLException
+    {
+        if (_dependentMap.containsKey(tableName))
+        {
+            return (Set)_dependentMap.get(tableName);
+        }
+
+        DatabaseMetaData metaData = connection.getConnection().getMetaData();
+        String schema = connection.getSchema();
+
+        ResultSet resultSet = metaData.getExportedKeys(null, schema, tableName);
         try
         {
-            TableSequenceComparator tableSequenceComparator =
-                    new TableSequenceComparator(connection);
+            Set foreignTableSet = new HashSet();
 
-            tableNames = (String[])tableNames.clone();
-            Arrays.sort(tableNames, tableSequenceComparator);
-            return tableNames;
+            while (resultSet.next())
+            {
+                // TODO : add support for qualified table names
+//                    String foreignSchemaName = resultSet.getString(6);
+                String foreignTableName = resultSet.getString(7);
+
+                foreignTableSet.add(foreignTableName);
+            }
+
+            _dependentMap.put(tableName, foreignTableSet);
+            return foreignTableSet;
         }
-        catch (DatabaseUnitRuntimeException e)
+        finally
         {
-            if (e.getException() instanceof CyclicTablesDependencyException)
-            {
-                throw (CyclicTablesDependencyException)e.getException();
-            }
-            if (e.getException() instanceof SQLException)
-            {
-                throw (SQLException)e.getException();
-            }
-
-            throw e;
+            resultSet.close();
         }
-    }
-
-    private static class TableSequenceComparator implements Comparator
-    {
-        IDatabaseConnection _connection;
-        Map _dependentMap = new HashMap();
-
-        public TableSequenceComparator(IDatabaseConnection connection)
-        {
-            _connection = connection;
-        }
-
-        public int compare(Object o1, Object o2)
-        {
-            String tableName1 = (String)o1;
-            String tableName2 = (String)o2;
-
-            try
-            {
-                Set descendants1 = getDescendants(tableName1, null);
-                if (descendants1.contains(tableName1))
-                {
-                    throw new CyclicTablesDependencyException(tableName1);
-                }
-
-                if (descendants1.contains(tableName2))
-                {
-                    return -1;
-                }
-
-                Set descendants2 = getDescendants(tableName2, null);
-                if (descendants2.contains(tableName2))
-                {
-                    throw new CyclicTablesDependencyException(tableName2);
-                }
-
-                if (descendants2.contains(tableName1))
-                {
-                    return 1;
-                }
-            }
-            catch (SQLException e)
-            {
-                throw new DatabaseUnitRuntimeException(e);
-            }
-            catch (CyclicTablesDependencyException e)
-            {
-                throw new DatabaseUnitRuntimeException(e);
-            }
-
-            return tableName1.compareTo(tableName2);
-        }
-
-        /**
-         * Returns a Set containing the names of all tables which have direct
-         * and indirect depency upon specified table. This method is recursive.
-         *
-         * @param tableName The table we want to know dependant tables
-         * @param processed Set of previously processed table names. Must be null
-         * on first call.
-         * @return The Set of dependent table names.
-         * @throws SQLException if a database access error occurs
-         */
-        private Set getDescendants(String tableName, Set processed) throws SQLException
-        {
-            if (processed == null)
-            {
-                processed = new HashSet();
-            }
-
-            Set children = getChildren(tableName);
-            for (Iterator it = children.iterator(); it.hasNext();)
-            {
-                String childName = (String)it.next();
-                if (!processed.contains(childName))
-                {
-                    processed.add(childName);
-                    processed.addAll(getDescendants(childName, processed));
-                }
-            }
-            return processed;
-        }
-
-        /**
-         * Returns a Set containing the names of all tables which have first
-         * level dependency upon specified table.
-         *
-         * @param tableName The table whose primary key is to be used in determining
-         * dependent foreign key tables.
-         * @return The Set of dependent table names.
-         * @throws SQLException if a database access error occurs
-         */
-        private Set getChildren(String tableName) throws SQLException
-        {
-            if (_dependentMap.containsKey(tableName))
-            {
-                return (Set)_dependentMap.get(tableName);
-            }
-
-            boolean qualifiedNames = _connection.getConfig().getFeature(
-                    DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES);
-
-            String originalTableName = tableName;
-            String schemaName = _connection.getSchema();
-            int index = tableName.indexOf(".");
-            if (index >= 0)
-            {
-                schemaName = tableName.substring(0, index);
-                tableName = tableName.substring(index + 1);
-            }
-            DatabaseMetaData metaData = _connection.getConnection().getMetaData();
-            ResultSet resultSet = metaData.getExportedKeys(null, schemaName, tableName);
-
-            try
-            {
-                Set foreignTableSet = new HashSet();
-
-                while (resultSet.next())
-                {
-                    String foreignSchemaName = resultSet.getString(6);
-                    String foreignTableName = resultSet.getString(7);
-                    if (qualifiedNames)
-                    {
-                        foreignTableName = DataSetUtils.getQualifiedName(
-                                foreignSchemaName, foreignTableName);
-                    }
-
-                    foreignTableSet.add(foreignTableName);
-                }
-                _dependentMap.put(originalTableName, foreignTableSet);
-                return foreignTableSet;
-            }
-            finally
-            {
-                resultSet.close();
-            }
-        }
-
     }
 
 }
