@@ -1,18 +1,21 @@
-The dbUnit database testing framework
-by Manuel Laflamme
+The DbUnit database testing framework
+http://www.dbunit.org/
+---
 
---------------------------------------------------------------------------------
+DbUnit is a JUnit extension targeted for database-driven projects that, among 
+other things, puts your database into a known state between test runs. This is 
+an excellent way to avoid the myriad of problems that can occur when one test 
+case corrupts the database and causes subsequent tests to fail or exacerbate 
+the damage.
 
-The dbUnit database testing framework is a JUnit extension which sets up your 
-database in a known state before executing your tests. This framework uses xml 
-datasets (collection of data tables) and performs database operations before 
-and after each test. The dbUnit framework supports both the clean insert and 
-the refresh strategies. 
+Main features:
+* Ability to export and import your database (or specified tables) content to 
+  and from XML datasets.
+* Assert facility to verify that your database content match expected data 
+  during your tests.
+* Ant integration.
 
-Something worth noting: dbUnit is using itself in its own test suite!
 
---------------------------------------------------------------------------------
 
-Visit the dbUnit project hosted by SourceForge at http://dbunit.sourceforge.net/
 
 

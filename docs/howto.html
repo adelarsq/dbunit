@@ -223,11 +223,11 @@ public class DatabaseExportSample
     public static void assertEquals(ITable expected, ITable actual)
     public static void assertEquals(IDataSet expected, IDataSet actual)
 }</pre>
-      This can be used to verify if your database contains the expected data during
-      test. In this case, the actual dataset is a database snapshot you want to
-      verify against an expected dataset. As its name imply, the expected dataset
-      contains the expectation values that usually comes from an XML file or been
-      created in memory.
+      This can be used to verify if your database contains the expected data during 
+      your tests. In this case, the actual dataset is a database snapshot you 
+      want to verify against an expected dataset. As its name imply, the expected 
+      dataset contains the expectation values that usually comes from an XML file 
+      or have been created in memory. 
       <p>The expected dataset must be different from the one you have used to
         setup your database. Therefore you need two datasets to do that; one to
         setup your database before a test and another to provide the expected
