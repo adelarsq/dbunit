@@ -32,6 +32,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.statement.IPreparedBatchStatement;
 import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.*;
+import org.dbunit.dataset.datatype.DataType;
 
 /**
  * This operation literally refreshes dataset contents into the database. This
@@ -60,8 +61,9 @@ public class RefreshOperation extends DatabaseOperation
         for (int i = 0; i < columns.length; i++)
         {
             Object value = table.getValue(row, columns[i].getColumnName());
-            statement.setObject(i + 1, value,
-                    columns[i].getDataType().getSqlType());
+            DataType dataType = columns[i].getDataType();
+            statement.setObject(i + 1, dataType.typeCast(value),
+                    dataType.getSqlType());
         }
 
         ResultSet resultSet = statement.executeQuery();
