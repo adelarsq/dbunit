@@ -32,19 +32,45 @@ import java.sql.Types;
 public abstract class DataType
 {
     public static final DataType UNKNOWN = new UnkownDataType();
-    public static final DataType INTEGER = new IntegerDataType();
-    public static final DataType LONG = new LongDataType();
-    public static final DataType FLOAT = new FloatDataType();
-    public static final DataType DOUBLE = new DoubleDataType();
+
+    public static final DataType CHAR = new StringDataType(
+            "CHAR", Types.CHAR);
+    public static final DataType VARCHAR = new StringDataType(
+            "VARCHAR", Types.VARCHAR);
+    public static final DataType LONGVARCHAR = new StringDataType(
+            "LONGVARCHAR", Types.LONGVARCHAR);
+
+    public static final DataType NUMERIC = new NumberDataType(
+            "NUMERIC", Types.NUMERIC);
+    public static final DataType DECIMAL = new NumberDataType(
+            "DECIMAL", Types.DECIMAL);
+
     public static final DataType BOOLEAN = new BooleanDataType();
-    public static final DataType STRING = new StringDataType();
-//    public static final DataType SHORT = new ShortDataType();
-//    public static final DataType BYTE = new ByteDataType();
-    public static final DataType NUMBER = new NumberDataType();
-//    public static final DateDataType DATE = new UtilDateDataType();
-    public static final DataType DATE = new SqlDateDataType();
+
+    public static final DataType TINYINT = new IntegerDataType(
+            "TINYINT", Types.TINYINT);
+    public static final DataType SMALLINT = new IntegerDataType(
+            "SMALLINT", Types.SMALLINT);
+    public static final DataType INTEGER = new IntegerDataType(
+            "INTEGER", Types.INTEGER);
+
+    public static final DataType BIGINT = new LongDataType();
+
+    public static final DataType REAL = new FloatDataType();
+
+    public static final DataType FLOAT = new DoubleDataType(
+            "FLOAT", Types.FLOAT);
+    public static final DataType DOUBLE = new DoubleDataType(
+            "DOUBLE", Types.DOUBLE);
+
+    public static final DataType DATE = new DateDataType();
     public static final DataType TIME = new TimeDataType();
     public static final DataType TIMESTAMP = new TimestampDataType();
+
+    /**
+     * Returns the coresponding {@link java.sql.Types}.
+     */
+    public abstract int getSqlType();
 
     /**
      * Returns the specified value typecasted to this <code>DataType</code>
@@ -71,38 +97,44 @@ public abstract class DataType
     {
         switch (sqlType)
         {
-            case Types.BIT:
-                return DataType.BOOLEAN;
+            case Types.CHAR:
+                return CHAR;
 
-            case Types.TINYINT:
-            case Types.SMALLINT:
-            case Types.INTEGER:
-                return DataType.INTEGER;
-
-            case Types.BIGINT:
-                return DataType.LONG;
-
-            case Types.REAL:
-                return DataType.FLOAT;
-
-            case Types.FLOAT:
-            case Types.DOUBLE:
-                return DataType.DOUBLE;
-
-            case Types.NUMERIC:
-            case Types.DECIMAL:
-                return DataType.NUMBER;
-
-//            case Types.LONGVARBINARY:
-//            case Types.VARBINARY:
-//            case Types.BINARY:
-//                return DataType.BYTES;
+            case Types.VARCHAR:
+                return VARCHAR;
 
             case Types.LONGVARCHAR:
-            case Types.CHAR:
-            case Types.VARCHAR:
-//            case Types.OTHER:
-                return DataType.STRING;
+                return LONGVARCHAR;
+
+            case Types.NUMERIC:
+                return NUMERIC;
+
+            case Types.DECIMAL:
+                return DECIMAL;
+
+            case Types.BIT:
+                return BOOLEAN;
+
+            case Types.TINYINT:
+                return TINYINT;
+
+            case Types.SMALLINT:
+                return SMALLINT;
+
+            case Types.INTEGER:
+                return INTEGER;
+
+            case Types.BIGINT:
+                return BIGINT;
+
+            case Types.REAL:
+                return REAL;
+
+            case Types.FLOAT:
+                return FLOAT;
+
+            case Types.DOUBLE:
+                return DOUBLE;
 
             case Types.DATE:
                 return DataType.DATE;
@@ -113,13 +145,14 @@ public abstract class DataType
             case Types.TIMESTAMP:
                 return DataType.TIMESTAMP;
 
-//            case Types.NULL:
-//                return DataType.NULL;
-
+//            case Types.LONGVARBINARY:
+//            case Types.VARBINARY:
+//            case Types.BINARY:
+//                return DataType.BYTES;
         }
 
         // todo -> should returns UNKNOWN instead
-        throw new DataTypeException("Unknown sql data type" + sqlType);
+        throw new DataTypeException("Unsuported sql data type" + sqlType);
 //        return UNKNOWN;
     }
 
@@ -188,13 +221,13 @@ public abstract class DataType
         if (value instanceof java.lang.Long ||
                 value.getClass() == Long.class)
         {
-            return LONG;
+            return BIGINT;
         }
 
         if (value instanceof java.lang.Float ||
                 value.getClass() == Float.class)
         {
-            return FLOAT;
+            return REAL;
         }
 
         if (value instanceof java.lang.Double ||
@@ -205,7 +238,7 @@ public abstract class DataType
 
         if (value instanceof java.lang.Number)
         {
-            return NUMBER;
+            return NUMERIC;
         }
 
         if (value instanceof java.lang.Boolean ||
@@ -216,7 +249,7 @@ public abstract class DataType
 
         if (value instanceof java.lang.String)
         {
-            return STRING;
+            return VARCHAR;
         }
 
         if (value instanceof java.sql.Date)
@@ -240,4 +273,5 @@ public abstract class DataType
         return UNKNOWN;
     }
 }
+
 

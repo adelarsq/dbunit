@@ -2,17 +2,17 @@
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -21,30 +21,21 @@
 
 package org.dbunit.dataset.datatype;
 
-import java.net.URL;
-
 /**
  * @author Manuel Laflamme
  * @version 1.0
  * @since 1.0
  */
-public class StringDataType extends DataType
+public class StringDataType extends AbstractDataType
 {
-    public StringDataType()
+    StringDataType(String name, int sqlType)
     {
+        super(name, sqlType, String.class, false);
     }
 
-    /**
-     *
-     */
-    public String toString()
-    {
-        return "string";
-    }
+    ////////////////////////////////////////////////////////////////////////////
+    // DataType class
 
-    /**
-     *
-     */
     public Object typeCast(Object value) throws TypeCastException
     {
         if (value == null)
@@ -57,21 +48,12 @@ public class StringDataType extends DataType
             return value;
         }
 
-        if (value instanceof java.sql.Date || value instanceof java.sql.Time ||
+        if (value instanceof java.sql.Date ||
+                value instanceof java.sql.Time ||
                 value instanceof java.sql.Timestamp)
         {
             return value.toString();
         }
-
-        if (value instanceof java.util.Date)
-        {
-            return UtilDateDataType.dateFormat.format((java.util.Date)value);
-        }
-
-//        if (value instanceof URL)
-//        {
-//            return value.toString();
-//        }
 
         if (value instanceof Boolean)
         {
@@ -90,22 +72,8 @@ public class StringDataType extends DataType
             }
         }
 
-        throw new TypeCastException("Cannot typecast " +
-                value.getClass().getName() + " in string");
+        throw new TypeCastException(value.toString());
     }
-
-    /**
-     *
-     */
-    public Class getTypeClass()
-    {
-        return String.class;
-    }
-
-    public boolean isNumber()
-    {
-        return false;
-    }
-
 }
+
 

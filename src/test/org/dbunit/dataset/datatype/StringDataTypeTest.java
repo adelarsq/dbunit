@@ -18,35 +18,42 @@ import java.sql.Types;
 
 public class StringDataTypeTest extends AbstractDataTypeTest
 {
-    private final static DataType THIS_TYPE = DataType.STRING;
+    private final static DataType[] TYPES = {
+        DataType.CHAR,
+        DataType.VARCHAR,
+        DataType.LONGVARCHAR,
+    };
 
     public StringDataTypeTest(String name)
     {
         super(name);
     }
 
-    /**
-     *
-     */
     public void testToString() throws Exception
     {
-        assertEquals("name", "string", THIS_TYPE.toString());
+        String[] expected = {"CHAR", "VARCHAR", "LONGVARCHAR"};
+
+        assertEquals("type count", expected.length, TYPES.length);
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("name", expected[i], TYPES[i].toString());
+        }
     }
 
-    /**
-     *
-     */
     public void testGetTypeClass() throws Exception
     {
-        assertEquals("class", String.class, THIS_TYPE.getTypeClass());
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("class", String.class, TYPES[i].getTypeClass());
+        }
     }
 
-    /**
-     *
-     */
     public void testIsNumber() throws Exception
     {
-        assertEquals("is number", false, THIS_TYPE.isNumber());
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("is number", false, TYPES[i].isNumber());
+        }
     }
 
     /**
@@ -79,46 +86,52 @@ public class StringDataTypeTest extends AbstractDataTypeTest
 
         assertEquals("actual vs expected count", values.length, expected.length);
 
-        for (int i = 0; i < values.length; i++)
+        for (int i = 0; i < TYPES.length; i++)
         {
-            assertEquals("typecast " + i, expected[i],
-                    THIS_TYPE.typeCast(values[i]));
+            for (int j = 0; j < values.length; j++)
+            {
+                assertEquals("typecast " + j, expected[j],
+                        TYPES[i].typeCast(values[j]));
+            }
         }
     }
 
-    /**
-     *
-     */
     public void testInvalidTypeCast() throws Exception
     {
         Object[] values = {new Object()};
 
-        for (int i = 0; i < values.length; i++)
+        for (int i = 0; i < TYPES.length; i++)
         {
-            try
+            for (int j = 0; j < values.length; j++)
             {
-                THIS_TYPE.typeCast(values[i]);
-                fail("Should throw TypeCastException");
-            }
-            catch (TypeCastException e)
-            {
+                try
+                {
+                    TYPES[i].typeCast(values[j]);
+                    fail("Should throw TypeCastException");
+                }
+                catch (TypeCastException e)
+                {
+                }
             }
         }
     }
 
-    public void testForSqlType() throws Exception
+    public void testSqlType() throws Exception
     {
-        assertEquals(THIS_TYPE, DataType.forSqlType(Types.CHAR));
-        assertEquals(THIS_TYPE, DataType.forSqlType(Types.VARCHAR));
-        assertEquals(THIS_TYPE, DataType.forSqlType(Types.LONGVARCHAR));
+        int[] sqlTypes = {Types.CHAR, Types.VARCHAR, Types.LONGVARCHAR};
+
+        assertEquals("count", sqlTypes.length, TYPES.length);
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("forSqlType", TYPES[i], DataType.forSqlType(sqlTypes[i]));
+            assertEquals("getSqlType", sqlTypes[i], TYPES[i].getSqlType());
+        }
     }
 
-    /**
-     *
-     */
     public void testForObject() throws Exception
     {
-        assertEquals(THIS_TYPE, DataType.forObject(""));
+        assertEquals(DataType.VARCHAR, DataType.forObject(""));
     }
 
 }
+

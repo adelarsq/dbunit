@@ -26,10 +26,10 @@ public class AllTests
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(BooleanDataTypeTest.class));
         suite.addTest(new TestSuite(DateDataTypeTest.class));
-        suite.addTest(new TestSuite(DoubleDataTypeTest.class));
+        suite.addTest(new TestSuite(LongDataTypeTest.class));
         suite.addTest(new TestSuite(FloatDataTypeTest.class));
         suite.addTest(new TestSuite(IntegerDataTypeTest.class));
-        suite.addTest(new TestSuite(LongDataTypeTest.class));
+        suite.addTest(new TestSuite(DoubleDataTypeTest.class));
         suite.addTest(new TestSuite(NumberDataTypeTest.class));
         suite.addTest(new TestSuite(StringDataTypeTest.class));
         suite.addTest(new TestSuite(TimeDataTypeTest.class));
@@ -38,3 +38,4 @@ public class AllTests
         return suite;
     }
 }
+

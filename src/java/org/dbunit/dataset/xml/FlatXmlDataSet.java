@@ -185,7 +185,7 @@ public class FlatXmlDataSet extends DefaultDataSet
                     {
                         try
                         {
-                            String stringValue = (String)DataType.STRING.typeCast(value);
+                            String stringValue = (String)DataType.VARCHAR.typeCast(value);
                             rowElem.setAttribute(column.getColumnName(), stringValue);
                         }
                         catch (TypeCastException e)
@@ -210,6 +210,7 @@ public class FlatXmlDataSet extends DefaultDataSet
     }
 
 }
+
 
 
 

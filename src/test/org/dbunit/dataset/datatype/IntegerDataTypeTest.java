@@ -20,7 +20,11 @@ import java.math.BigInteger;
 
 public class IntegerDataTypeTest extends AbstractDataTypeTest
 {
-    private final static DataType THIS_TYPE = DataType.INTEGER;
+    private final static DataType[] TYPES = {
+        DataType.TINYINT,
+        DataType.SMALLINT,
+        DataType.INTEGER,
+    };
 
     public IntegerDataTypeTest(String name)
     {
@@ -32,28 +36,35 @@ public class IntegerDataTypeTest extends AbstractDataTypeTest
      */
     public void testToString() throws Exception
     {
-        assertEquals("name", "integer", THIS_TYPE.toString());
+        String[] expected = {
+            "TINYINT",
+            "SMALLINT",
+            "INTEGER",
+        };
+
+        assertEquals("type count", expected.length, TYPES.length);
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("name", expected[i], TYPES[i].toString());
+        }
     }
 
-    /**
-     *
-     */
     public void testGetTypeClass() throws Exception
     {
-        assertEquals("class", Integer.class, THIS_TYPE.getTypeClass());
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("class", Integer.class, TYPES[i].getTypeClass());
+        }
     }
 
-    /**
-     *
-     */
     public void testIsNumber() throws Exception
     {
-        assertEquals("is number", true, THIS_TYPE.isNumber());
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("is number", true, TYPES[i].isNumber());
+        }
     }
 
-    /**
-     *
-     */
     public void testTypeCast() throws Exception
     {
         Object[] values = {
@@ -91,38 +102,50 @@ public class IntegerDataTypeTest extends AbstractDataTypeTest
 
         assertEquals("actual vs expected count", values.length, expected.length);
 
-        for (int i = 0; i < values.length; i++)
+        for (int i = 0; i < TYPES.length; i++)
         {
-            assertEquals("typecast " + i, expected[i],
-                    THIS_TYPE.typeCast(values[i]));
+            for (int j = 0; j < values.length; j++)
+            {
+                assertEquals("typecast " + j, expected[j],
+                        TYPES[i].typeCast(values[j]));
+            }
         }
     }
 
-    /**
-     *
-     */
     public void testInvalidTypeCast() throws Exception
     {
         Object[] values = {new Object(), "bla", new java.util.Date()};
 
-        for (int i = 0; i < values.length; i++)
+        for (int i = 0; i < TYPES.length; i++)
         {
-            try
+            for (int j = 0; j < values.length; j++)
             {
-                THIS_TYPE.typeCast(values[i]);
-                fail("Should throw TypeCastException");
-            }
-            catch (TypeCastException e)
-            {
+                try
+                {
+                    TYPES[i].typeCast(values[j]);
+                    fail("Should throw TypeCastException");
+                }
+                catch (TypeCastException e)
+                {
+                }
             }
         }
     }
 
-    public void testForSqlType() throws Exception
+    public void testSqlType() throws Exception
     {
-        assertEquals(THIS_TYPE, DataType.forSqlType(Types.TINYINT));
-        assertEquals(THIS_TYPE, DataType.forSqlType(Types.SMALLINT));
-        assertEquals(THIS_TYPE, DataType.forSqlType(Types.INTEGER));
+        int[] sqlTypes = {
+            Types.TINYINT,
+            Types.SMALLINT,
+            Types.INTEGER,
+        };
+
+        assertEquals("count", sqlTypes.length, TYPES.length);
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("forSqlType", TYPES[i], DataType.forSqlType(sqlTypes[i]));
+            assertEquals("getSqlType", sqlTypes[i], TYPES[i].getSqlType());
+        }
     }
 
     /**
@@ -130,7 +153,8 @@ public class IntegerDataTypeTest extends AbstractDataTypeTest
      */
     public void testForObject() throws Exception
     {
-        assertEquals(THIS_TYPE, DataType.forObject(new Integer(1234)));
+        assertEquals(DataType.INTEGER, DataType.forObject(new Integer(1234)));
     }
 
 }
+

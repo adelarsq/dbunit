@@ -20,7 +20,7 @@ import java.math.BigInteger;
 
 public class FloatDataTypeTest extends AbstractDataTypeTest
 {
-    private final static DataType THIS_TYPE = DataType.FLOAT;
+    private final static DataType THIS_TYPE = DataType.REAL;
 
     public FloatDataTypeTest(String name)
     {
@@ -32,7 +32,7 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
      */
     public void testToString() throws Exception
     {
-        assertEquals("name", "float", THIS_TYPE.toString());
+        assertEquals("name", "REAL", THIS_TYPE.toString());
     }
 
     /**
@@ -111,9 +111,10 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
         }
     }
 
-    public void testForSqlType() throws Exception
+    public void testSqlType() throws Exception
     {
         assertEquals(THIS_TYPE, DataType.forSqlType(Types.REAL));
+        assertEquals(Types.REAL, THIS_TYPE.getSqlType());
     }
 
     /**
@@ -125,3 +126,4 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+

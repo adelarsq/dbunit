@@ -21,28 +21,23 @@
 
 package org.dbunit.dataset.datatype;
 
+import java.sql.Types;
+
 /**
  * @author Manuel Laflamme
  * @version 1.0
  * @since 1.0
  */
-public class BooleanDataType extends DataType
+public class BooleanDataType extends AbstractDataType
 {
-    public BooleanDataType()
+    BooleanDataType()
     {
+        super("BIT", Types.BIT, Boolean.class, false);
     }
 
-    /**
-     *
-     */
-    public String toString()
-    {
-        return "boolean";
-    }
+    ////////////////////////////////////////////////////////////////////////////
+    // DataType class
 
-    /**
-     *
-     */
     public Object typeCast(Object value) throws TypeCastException
     {
         if (value == null)
@@ -78,22 +73,8 @@ public class BooleanDataType extends DataType
             }
         }
 
-        throw new TypeCastException("Cannot typecast '"
-                + value.getClass().getName() + "' to 'Boolean'");
+        throw new TypeCastException(value.toString());
     }
-
-    /**
-     *
-     */
-    public Class getTypeClass()
-    {
-        return Boolean.class;
-    }
-
-    public boolean isNumber()
-    {
-        return false;
-    }
-
 }
+
 

@@ -22,29 +22,23 @@
 package org.dbunit.dataset.datatype;
 
 import java.math.BigDecimal;
+import java.sql.Types;
 
 /**
  * @author Manuel Laflamme
  * @version 1.0
  * @since 1.0
  */
-public class FloatDataType extends NumberDataType
+public class FloatDataType extends AbstractDataType
 {
-    public FloatDataType()
+    FloatDataType()
     {
+        super("REAL", Types.REAL, Float.class, true);
     }
 
-    /**
-     *
-     */
-    public String toString()
-    {
-        return "float";
-    }
+    ////////////////////////////////////////////////////////////////////////////
+    // DataType class
 
-    /**
-     *
-     */
     public Object typeCast(Object value) throws TypeCastException
     {
         if (value == null)
@@ -66,14 +60,6 @@ public class FloatDataType extends NumberDataType
             throw new TypeCastException(e);
         }
     }
-
-    /**
-     *
-     */
-    public Class getTypeClass()
-    {
-        return Float.class;
-    }
-
 }
+
 

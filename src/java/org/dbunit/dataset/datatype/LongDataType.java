@@ -22,29 +22,23 @@
 package org.dbunit.dataset.datatype;
 
 import java.math.BigDecimal;
+import java.sql.Types;
 
 /**
  * @author Manuel Laflamme
  * @version 1.0
  * @since 1.0
  */
-public class LongDataType extends NumberDataType
+public class LongDataType extends AbstractDataType
 {
-    public LongDataType()
+    LongDataType()
     {
+        super("BIGINT", Types.BIGINT, Long.class, true);
     }
 
-    /**
-     *
-     */
-    public String toString()
-    {
-        return "long";
-    }
+    ////////////////////////////////////////////////////////////////////////////
+    // DataType class
 
-    /**
-     *
-     */
     public Object typeCast(Object value) throws TypeCastException
     {
         if (value == null)
@@ -66,14 +60,6 @@ public class LongDataType extends NumberDataType
             throw new TypeCastException(e);
         }
     }
-
-    /**
-     *
-     */
-    public Class getTypeClass()
-    {
-        return Long.class;
-    }
-
 }
+
 

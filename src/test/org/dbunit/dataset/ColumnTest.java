@@ -42,7 +42,7 @@ public class ColumnTest extends TestCase
     public void testGetColumnName() throws Exception
     {
         String expected = "columnName";
-        Column column = new Column(expected, DataType.FLOAT);
+        Column column = new Column(expected, DataType.REAL);
 
         assertEquals("column name", expected, column.getColumnName());
     }
@@ -79,5 +79,6 @@ public class ColumnTest extends TestCase
     }
 
 }
+
 
 

@@ -1,4 +1,4 @@
-<!-- edited with XML Spy v3.5 (http://www.xmlspy.com) by  () -->
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Manuel Laflamme (Java development) -->
 <dataset>
 	<table name="EMPTY_TABLE">
 		<column>COLUMN0</column>
@@ -45,11 +45,16 @@
 	<table name="EMPTY_MULTITYPE_TABLE">
 		<column>VARCHAR_COL</column>
 		<column>NUMERIC_COL</column>
+		<column>DATE_COL</column>
+		<column>TIME_COL</column>
+		<column>TIMESTAMP_COL</column>
 		<row>
 			<value>value</value>
 			<value>12345</value>
+			<value>1974-06-23</value>
+			<value>23:15:00</value>
+			<value>1974-06-23 23:15:00.0</value>
 		</row>
 	</table>
 </dataset>
-
 

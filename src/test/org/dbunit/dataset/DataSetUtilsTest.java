@@ -225,16 +225,16 @@ public class DataSetUtilsTest extends TestCase
     public void testGetSqlValueString() throws Exception
     {
         ValueStringData[] values = new ValueStringData[]{
-            new ValueStringData(null, DataType.FLOAT, "NULL"),
-            new ValueStringData("1234", DataType.NUMBER, "1234"),
-            new ValueStringData("1234", DataType.STRING, "'1234'"),
-            new ValueStringData(new Float(1234.45), DataType.FLOAT, "1234.45"),
+            new ValueStringData(null, DataType.REAL, "NULL"),
+            new ValueStringData("1234", DataType.NUMERIC, "1234"),
+            new ValueStringData("1234", DataType.VARCHAR, "'1234'"),
+            new ValueStringData(new Float(1234.45), DataType.REAL, "1234.45"),
             new ValueStringData(new java.sql.Date(0L), DataType.DATE,
-                    "'" + new java.sql.Date(0L).toString() + "'"),
+                    "{d '" + new java.sql.Date(0L).toString() + "'}"),
             new ValueStringData(new Time(0L), DataType.TIME,
-                    "'" + new Time(0L).toString() + "'"),
+                    "{t '" + new Time(0L).toString() + "'}"),
             new ValueStringData(new Timestamp(0L), DataType.TIMESTAMP,
-                    "'" + new Timestamp(0L).toString() + "'"),
+                    "{ts '" + new Timestamp(0L).toString() + "'}"),
         };
 
         for (int i = 0; i < values.length; i++)
@@ -276,5 +276,6 @@ public class DataSetUtilsTest extends TestCase
     }
 
 }
+
 
 

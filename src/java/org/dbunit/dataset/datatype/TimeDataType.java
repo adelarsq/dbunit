@@ -22,28 +22,24 @@
 
 package org.dbunit.dataset.datatype;
 
+import java.sql.Types;
+import java.sql.Time;
+
 /**
  * @author Manuel Laflamme
  * @version 1.0
  * @since 1.0
  */
-public class TimeDataType extends DataType
+public class TimeDataType extends AbstractDataType
 {
-    public TimeDataType()
+    TimeDataType()
     {
+        super("TIME", Types.TIME, Time.class, false);
     }
 
-    /**
-     *
-     */
-    public String toString()
-    {
-        return "time";
-    }
+    ////////////////////////////////////////////////////////////////////////////
+    // DataType class
 
-    /**
-     *
-     */
     public Object typeCast(Object value) throws TypeCastException
     {
         if (value == null)
@@ -80,22 +76,8 @@ public class TimeDataType extends DataType
             }
         }
 
-        throw new TypeCastException(
-                "Cannot typecast " + value + " to 'time'");
+        throw new TypeCastException(value.toString());
     }
-
-    /**
-     *
-     */
-    public Class getTypeClass()
-    {
-        return java.sql.Time.class;
-    }
-
-    public boolean isNumber()
-    {
-        return false;
-    }
-
 }
+
 

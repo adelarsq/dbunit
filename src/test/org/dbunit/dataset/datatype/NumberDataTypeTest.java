@@ -9,9 +9,9 @@
 
 package org.dbunit.dataset.datatype;
 
-import java.sql.Types;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Types;
 
 /**
  * @author Manuel Laflamme
@@ -20,40 +20,40 @@ import java.math.BigInteger;
 
 public class NumberDataTypeTest extends AbstractDataTypeTest
 {
-    private final static DataType THIS_TYPE = DataType.NUMBER;
+    private final static DataType[] TYPES = {DataType.NUMERIC, DataType.DECIMAL};
 
     public NumberDataTypeTest(String name)
     {
         super(name);
     }
 
-    /**
-     *
-     */
     public void testToString() throws Exception
     {
-        assertEquals("name", "number", THIS_TYPE.toString());
+        String[] expected = {"NUMERIC", "DECIMAL"};
+
+        assertEquals("type count", expected.length, TYPES.length);
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("name", expected[i], TYPES[i].toString());
+        }
     }
 
-    /**
-     *
-     */
     public void testGetTypeClass() throws Exception
     {
-        assertEquals("class", BigDecimal.class, THIS_TYPE.getTypeClass());
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("class", BigDecimal.class, TYPES[i].getTypeClass());
+        }
     }
 
-    /**
-     *
-     */
     public void testIsNumber() throws Exception
     {
-        assertEquals("is number", true, THIS_TYPE.isNumber());
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("is number", true, TYPES[i].isNumber());
+        }
     }
 
-    /**
-     *
-     */
     public void testTypeCast() throws Exception
     {
         Object[] values = {
@@ -71,10 +71,13 @@ public class NumberDataTypeTest extends AbstractDataTypeTest
 
         assertEquals("actual vs expected count", values.length, expected.length);
 
-        for (int i = 0; i < values.length; i++)
+        for (int i = 0; i < TYPES.length; i++)
         {
-            assertEquals("typecast " + i, expected[i],
-                    THIS_TYPE.typeCast(values[i]));
+            for (int j = 0; j < values.length; j++)
+            {
+                assertEquals("typecast " + j, expected[j],
+                        TYPES[i].typeCast(values[j]));
+            }
         }
     }
 
@@ -85,32 +88,39 @@ public class NumberDataTypeTest extends AbstractDataTypeTest
     {
         Object[] values = {new Object(), "bla"};
 
-        for (int i = 0; i < values.length; i++)
+        for (int i = 0; i < TYPES.length; i++)
         {
-            try
+            for (int j = 0; j < values.length; j++)
             {
-                THIS_TYPE.typeCast(values[i]);
-                fail("Should throw TypeCastException");
-            }
-            catch (TypeCastException e)
-            {
+                try
+                {
+                    TYPES[i].typeCast(values[j]);
+                    fail("Should throw TypeCastException");
+                }
+                catch (TypeCastException e)
+                {
+                }
             }
         }
     }
 
-    public void testForSqlType() throws Exception
+    public void testSqlType() throws Exception
     {
-        assertEquals(THIS_TYPE, DataType.forSqlType(Types.NUMERIC));
-        assertEquals(THIS_TYPE, DataType.forSqlType(Types.DECIMAL));
+        int[] sqlTypes = {Types.NUMERIC, Types.DECIMAL};
+
+        assertEquals("count", sqlTypes.length, TYPES.length);
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("forSqlType", TYPES[i], DataType.forSqlType(sqlTypes[i]));
+            assertEquals("getSqlType", sqlTypes[i], TYPES[i].getSqlType());
+        }
     }
 
-    /**
-     *
-     */
     public void testForObject() throws Exception
     {
-        assertEquals(THIS_TYPE, DataType.forObject(new BigDecimal(1234)));
-        assertEquals(THIS_TYPE, DataType.forObject(new BigInteger("1234")));
+        assertEquals(DataType.NUMERIC, DataType.forObject(new BigDecimal(1234)));
     }
 
+
 }
+

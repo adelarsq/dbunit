@@ -45,22 +45,22 @@ public class Main
 
         String[] tableNames = connection.createDataSet().getTableNames();
         Arrays.sort(tableNames);
-//        FlatXmlDataSet.writeDtd(new FilteredDataSet(tableNames,
-//                connection.createDataSet()),
-//                new FileOutputStream("test2.dtd"));
+        FlatXmlDataSet.writeDtd(new FilteredDataSet(tableNames,
+                connection.createDataSet()),
+                new FileOutputStream("test2.dtd"));
 //        FlatXmlDataSet.write(new FilteredDataSet(tableNames,
 //                connection.createDataSet()),
 //                new FileOutputStream("test.xml"));
 
-        IDataSet dataSet = new FlatXmlDataSet(new FileInputStream("test.xml"));
-
-        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
-        DatabaseOperation.DELETE.execute(connection, dataSet);
-        DatabaseOperation.INSERT.execute(connection, dataSet);
-        DatabaseOperation.UPDATE.execute(connection, dataSet);
-        DatabaseOperation.REFRESH.execute(connection, dataSet);
-        DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
-        DatabaseOperation.REFRESH.execute(connection, dataSet);
+//        IDataSet dataSet = new FlatXmlDataSet(new FileInputStream("test.xml"));
+//
+//        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+//        DatabaseOperation.DELETE.execute(connection, dataSet);
+//        DatabaseOperation.INSERT.execute(connection, dataSet);
+//        DatabaseOperation.UPDATE.execute(connection, dataSet);
+//        DatabaseOperation.REFRESH.execute(connection, dataSet);
+//        DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
+//        DatabaseOperation.REFRESH.execute(connection, dataSet);
 
 
 //        FlatXmlDataSet.write(new XmlDataSet(
@@ -69,6 +69,7 @@ public class Main
     }
 
 }
+
 
 
 

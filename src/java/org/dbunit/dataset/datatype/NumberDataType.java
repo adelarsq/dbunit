@@ -29,19 +29,15 @@ import java.math.BigDecimal;
  * @version 1.0
  * @since 1.0
  */
-public class NumberDataType extends DataType
+public class NumberDataType extends AbstractDataType
 {
-    public NumberDataType()
+    NumberDataType(String name, int sqlType)
     {
+        super(name, sqlType, BigDecimal.class, true);
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // DataType class
-
-    public String toString()
-    {
-        return "number";
-    }
 
     public Object typeCast(Object value) throws TypeCastException
     {
@@ -64,17 +60,7 @@ public class NumberDataType extends DataType
             throw new TypeCastException(e);
         }
     }
-
-    public Class getTypeClass()
-    {
-        return BigDecimal.class;
-    }
-
-    public boolean isNumber()
-    {
-        return true;
-    }
-
 }
+
 
 

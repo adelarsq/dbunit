@@ -58,8 +58,8 @@ public class DeleteOperationTest extends AbstractDatabaseTest
         valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
         valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
         Column[] columns = new Column[]{
-            new Column("c1", DataType.STRING),
-            new Column("c2", DataType.NUMBER),
+            new Column("c1", DataType.VARCHAR),
+            new Column("c2", DataType.NUMERIC),
             new Column("c3", DataType.BOOLEAN),
         };
         String[] primaryKeys = {"c2", "c1"};
@@ -95,7 +95,7 @@ public class DeleteOperationTest extends AbstractDatabaseTest
 
     public void testExecuteWithEmptyTable() throws Exception
     {
-        Column[] columns = {new Column("c1", DataType.STRING)};
+        Column[] columns = {new Column("c1", DataType.VARCHAR)};
         ITable table = new DefaultTable(new DefaultTableMetaData(
                 "name", columns, columns), new ArrayList());
         IDataSet dataSet = new DefaultDataSet(table);
@@ -155,6 +155,7 @@ public class DeleteOperationTest extends AbstractDatabaseTest
     }
 
 }
+
 
 
 

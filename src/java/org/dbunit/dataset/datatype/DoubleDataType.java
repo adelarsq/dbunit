@@ -28,26 +28,16 @@ import java.math.BigDecimal;
  * @version 1.0
  * @since 1.0
  */
-public class DoubleDataType extends NumberDataType
+public class DoubleDataType extends AbstractDataType
 {
-    public DoubleDataType()
+    DoubleDataType(String name, int sqlType)
     {
+        super(name, sqlType, Double.class, true);
     }
 
     /////////////////////////////////////////////////////////////////////////////
     //  DataType methods
 
-    /**
-     *
-     */
-    public String toString()
-    {
-        return "double";
-    }
-
-    /**
-     *
-     */
     public Object typeCast(Object value) throws TypeCastException
     {
         if (value == null)
@@ -69,14 +59,6 @@ public class DoubleDataType extends NumberDataType
             throw new TypeCastException(e);
         }
     }
-
-    /**
-     *
-     */
-    public Class getTypeClass()
-    {
-        return Double.class;
-    }
-
 }
+
 

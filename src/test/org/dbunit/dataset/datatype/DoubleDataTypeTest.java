@@ -9,9 +9,9 @@
 
 package org.dbunit.dataset.datatype;
 
-import java.sql.Types;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Types;
 
 /**
  * @author Manuel Laflamme
@@ -20,40 +20,40 @@ import java.math.BigInteger;
 
 public class DoubleDataTypeTest extends AbstractDataTypeTest
 {
-    private final static DataType THIS_TYPE = DataType.DOUBLE;
+    private final static DataType[] TYPES = {DataType.FLOAT, DataType.DOUBLE};
 
     public DoubleDataTypeTest(String name)
     {
         super(name);
     }
 
-    /**
-     *
-     */
     public void testToString() throws Exception
     {
-        assertEquals("name", "double", THIS_TYPE.toString());
+        String[] expected = {"FLOAT", "DOUBLE"};
+
+        assertEquals("type count", expected.length, TYPES.length);
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("name", expected[i], TYPES[i].toString());
+        }
     }
 
-    /**
-     *
-     */
     public void testGetTypeClass() throws Exception
     {
-        assertEquals("class", Double.class, THIS_TYPE.getTypeClass());
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("class", Double.class, TYPES[i].getTypeClass());
+        }
     }
 
-    /**
-     *
-     */
     public void testIsNumber() throws Exception
     {
-        assertEquals("is number", true, THIS_TYPE.isNumber());
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("is number", true, TYPES[i].isNumber());
+        }
     }
 
-    /**
-     *
-     */
     public void testTypeCast() throws Exception
     {
         Object[] values = {
@@ -84,10 +84,13 @@ public class DoubleDataTypeTest extends AbstractDataTypeTest
 
         assertEquals("actual vs expected count", values.length, expected.length);
 
-        for (int i = 0; i < values.length; i++)
+        for (int i = 0; i < TYPES.length; i++)
         {
-            assertEquals("typecast " + i, expected[i],
-                    THIS_TYPE.typeCast(values[i]));
+            for (int j = 0; j < values.length; j++)
+            {
+                assertEquals("typecast " + j, expected[j],
+                        TYPES[i].typeCast(values[j]));
+            }
         }
     }
 
@@ -98,31 +101,39 @@ public class DoubleDataTypeTest extends AbstractDataTypeTest
     {
         Object[] values = {new Object(), "bla", new java.util.Date()};
 
-        for (int i = 0; i < values.length; i++)
+        for (int i = 0; i < TYPES.length; i++)
         {
-            try
+            for (int j = 0; j < values.length; j++)
             {
-                THIS_TYPE.typeCast(values[i]);
-                fail("Should throw TypeCastException");
-            }
-            catch (TypeCastException e)
-            {
+                try
+                {
+                    TYPES[i].typeCast(values[j]);
+                    fail("Should throw TypeCastException");
+                }
+                catch (TypeCastException e)
+                {
+                }
             }
         }
     }
 
-    public void testForSqlType() throws Exception
+    public void testSqlType() throws Exception
     {
-        assertEquals(THIS_TYPE, DataType.forSqlType(Types.FLOAT));
-        assertEquals(THIS_TYPE, DataType.forSqlType(Types.DOUBLE));
+        int[] sqlTypes = {Types.FLOAT, Types.DOUBLE};
+
+        assertEquals("count", sqlTypes.length, TYPES.length);
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("forSqlType", TYPES[i], DataType.forSqlType(sqlTypes[i]));
+            assertEquals("getSqlType", sqlTypes[i], TYPES[i].getSqlType());
+        }
     }
 
-    /**
-     *
-     */
     public void testForObject() throws Exception
     {
-        assertEquals(THIS_TYPE, DataType.forObject(new Double(1234)));
+        assertEquals(DataType.DOUBLE, DataType.forObject(new Double(1234)));
     }
 
+
 }
+

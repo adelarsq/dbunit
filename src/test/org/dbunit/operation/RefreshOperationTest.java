@@ -71,7 +71,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
 
     public void testExecuteWithEmptyTable() throws Exception
     {
-        Column[] columns = {new Column("c1", DataType.STRING)};
+        Column[] columns = {new Column("c1", DataType.VARCHAR)};
         ITable table = new DefaultTable(new DefaultTableMetaData(
                 "name", columns, columns), new ArrayList());
         IDataSet dataSet = new DefaultDataSet(table);
@@ -93,6 +93,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
     }
 
 }
+
 
 
 

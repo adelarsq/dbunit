@@ -99,7 +99,11 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
     public void testUnsupportedColumnDataType() throws Exception
     {
         String tableName = "EMPTY_MULTITYPE_TABLE";
-        String[] expectedNames = {"VARCHAR_COL", "NUMERIC_COL"};
+        String[] expectedNames = {
+            "VARCHAR_COL",
+            "NUMERIC_COL",
+            "TIMESTAMP_COL",
+        };
 
         ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
         Column[] columns = metaData.getColumns();
@@ -116,8 +120,16 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
     public void testColumnDataType() throws Exception
     {
         String tableName = "EMPTY_MULTITYPE_TABLE";
-        String[] expectedNames = {"VARCHAR_COL", "NUMERIC_COL"};
-        DataType[] expectedTypes = {DataType.STRING, DataType.NUMBER};
+        String[] expectedNames = {
+            "VARCHAR_COL",
+            "NUMERIC_COL",
+            "TIMESTAMP_COL",
+        };
+        DataType[] expectedTypes = {
+            DataType.VARCHAR,
+            DataType.NUMERIC,
+            DataType.TIMESTAMP,
+        };
 
         ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
         Column[] columns = metaData.getColumns();
@@ -134,6 +146,7 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
     }
 
 }
+
 
 
 

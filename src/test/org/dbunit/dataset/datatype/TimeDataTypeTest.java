@@ -32,7 +32,7 @@ public class TimeDataTypeTest extends AbstractDataTypeTest
      */
     public void testToString() throws Exception
     {
-        assertEquals("name", "time", THIS_TYPE.toString());
+        assertEquals("name", "TIME", THIS_TYPE.toString());
     }
 
     /**
@@ -108,9 +108,10 @@ public class TimeDataTypeTest extends AbstractDataTypeTest
         }
     }
 
-    public void testForSqlType() throws Exception
+    public void testSqlType() throws Exception
     {
         assertEquals(THIS_TYPE, DataType.forSqlType(Types.TIME));
+        assertEquals(Types.TIME, THIS_TYPE.getSqlType());
     }
 
     /**
@@ -122,3 +123,4 @@ public class TimeDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+

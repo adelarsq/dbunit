@@ -81,7 +81,7 @@ public class BatchStatementDecoratorTest extends TestCase
         for (int i = 0; i < values.length; i++)
         {
             Object value = values[i];
-            preparedStatement.addValue(value, DataType.STRING);
+            preparedStatement.addValue(value, DataType.VARCHAR);
             preparedStatement.addBatch();
         }
         assertEquals("execute result", values.length,
@@ -92,3 +92,4 @@ public class BatchStatementDecoratorTest extends TestCase
     }
 
 }
+

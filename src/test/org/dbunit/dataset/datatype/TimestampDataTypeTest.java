@@ -32,7 +32,7 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
      */
     public void testToString() throws Exception
     {
-        assertEquals("name", "timestamp", THIS_TYPE.toString());
+        assertEquals("name", "TIMESTAMP", THIS_TYPE.toString());
     }
 
     /**
@@ -108,9 +108,10 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
         }
     }
 
-    public void testForSqlType() throws Exception
+    public void testSqlType() throws Exception
     {
         assertEquals(THIS_TYPE, DataType.forSqlType(Types.TIMESTAMP));
+        assertEquals(Types.TIMESTAMP, THIS_TYPE.getSqlType());
     }
 
     /**
@@ -122,3 +123,4 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+

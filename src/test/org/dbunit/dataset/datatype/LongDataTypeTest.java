@@ -20,7 +20,7 @@ import java.math.BigInteger;
 
 public class LongDataTypeTest extends AbstractDataTypeTest
 {
-    private final static DataType THIS_TYPE = DataType.LONG;
+    private final static DataType THIS_TYPE = DataType.BIGINT;
 
     public LongDataTypeTest(String name)
     {
@@ -32,7 +32,7 @@ public class LongDataTypeTest extends AbstractDataTypeTest
      */
     public void testToString() throws Exception
     {
-        assertEquals("name", "long", THIS_TYPE.toString());
+        assertEquals("name", "BIGINT", THIS_TYPE.toString());
     }
 
     /**
@@ -117,9 +117,10 @@ public class LongDataTypeTest extends AbstractDataTypeTest
         }
     }
 
-    public void testForSqlType() throws Exception
+    public void testSqlType() throws Exception
     {
         assertEquals(THIS_TYPE, DataType.forSqlType(Types.BIGINT));
+        assertEquals(Types.BIGINT, THIS_TYPE.getSqlType());
     }
 
     /**
@@ -131,3 +132,4 @@ public class LongDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+

@@ -21,45 +21,27 @@
 
 package org.dbunit.dataset.datatype;
 
+import java.sql.Types;
+
 /**
  * @author Manuel Laflamme
  * @version 1.0
  * @since 1.0
  */
-public class UnkownDataType extends DataType
+public class UnkownDataType extends AbstractDataType
 {
-    public UnkownDataType()
+    UnkownDataType()
     {
+        super("UNKNOWN", Types.OTHER, Object.class, false);
     }
 
-    /**
-     *
-     */
-    public String toString()
-    {
-        return "unkown";
-    }
+    ////////////////////////////////////////////////////////////////////////////
+    // DataType class
 
-    /**
-     *
-     */
     public Object typeCast(Object value) throws TypeCastException
     {
         return value;
     }
-
-    /**
-     *
-     */
-    public Class getTypeClass()
-    {
-        return Object.class;
-    }
-
-    public boolean isNumber()
-    {
-        return false;
-    }
-
 }
+
 

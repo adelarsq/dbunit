@@ -22,28 +22,24 @@
 
 package org.dbunit.dataset.datatype;
 
+import java.sql.Types;
+import java.sql.Timestamp;
+
 /**
  * @author Manuel Laflamme
  * @version 1.0
  * @since 1.0
  */
-public class TimestampDataType extends DataType
+public class TimestampDataType extends AbstractDataType
 {
-    public TimestampDataType()
+    TimestampDataType()
     {
+        super("TIMESTAMP", Types.TIMESTAMP, Timestamp.class, false);
     }
 
-    /**
-     *
-     */
-    public String toString()
-    {
-        return "timestamp";
-    }
+    ////////////////////////////////////////////////////////////////////////////
+    // DataType class
 
-    /**
-     *
-     */
     public Object typeCast(Object value) throws TypeCastException
     {
         if (value == null)
@@ -80,22 +76,8 @@ public class TimestampDataType extends DataType
             }
         }
 
-        throw new TypeCastException(
-                "Cannot typecast " + value + " to 'timestamp'");
+        throw new TypeCastException(value.toString());
     }
-
-    /**
-     *
-     */
-    public Class getTypeClass()
-    {
-        return java.sql.Timestamp.class;
-    }
-
-    public boolean isNumber()
-    {
-        return false;
-    }
-
 }
+
 

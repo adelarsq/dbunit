@@ -100,3 +100,4 @@ public class BatchStatementDecorator implements IPreparedBatchStatement
         _statement.close();
     }
 }
+

@@ -48,8 +48,8 @@ public class DefaultTableMetaDataTest extends TestCase
     public void testGetColumns() throws Exception
     {
         Column[] columns = new Column[]{
-            new Column("numberColumn", DataType.NUMBER),
-            new Column("stringColumn", DataType.STRING),
+            new Column("numberColumn", DataType.NUMERIC),
+            new Column("stringColumn", DataType.VARCHAR),
             new Column("booleanColumn", DataType.BOOLEAN),
         };
 
@@ -68,8 +68,8 @@ public class DefaultTableMetaDataTest extends TestCase
     public void testGetPrimaryKeys() throws Exception
     {
         Column[] columns = new Column[]{
-            new Column("numberColumn", DataType.NUMBER),
-            new Column("stringColumn", DataType.STRING),
+            new Column("numberColumn", DataType.NUMERIC),
+            new Column("stringColumn", DataType.VARCHAR),
             new Column("booleanColumn", DataType.BOOLEAN),
         };
         String[] keyNames = new String[]{"booleanColumn", "numberColumn"};
@@ -89,8 +89,8 @@ public class DefaultTableMetaDataTest extends TestCase
     public void testGetPrimaryKeysColumnDontMatch() throws Exception
     {
         Column[] columns = new Column[]{
-            new Column("numberColumn", DataType.NUMBER),
-            new Column("stringColumn", DataType.STRING),
+            new Column("numberColumn", DataType.NUMERIC),
+            new Column("stringColumn", DataType.VARCHAR),
             new Column("booleanColumn", DataType.BOOLEAN),
         };
         String[] keyNames = new String[]{"invalidColumn"};
@@ -104,5 +104,6 @@ public class DefaultTableMetaDataTest extends TestCase
     }
 
 }
+
 
 

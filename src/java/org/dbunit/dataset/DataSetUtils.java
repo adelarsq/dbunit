@@ -149,6 +149,11 @@ public class DataSetUtils
         }
     }
 
+    private static String asString(Object value) throws TypeCastException
+    {
+        return (String)DataType.VARCHAR.typeCast(value);
+    }
+
     private static String[] getSortedColumnNames(ITableMetaData metaData)
             throws DataSetException
     {
@@ -190,7 +195,7 @@ public class DataSetUtils
     }
 
     /**
-     * Returns the specified value as a string to be use in an SQL statement.
+     * Returns the specified value as a string to be use in an SQL Statement.
      * For example the string <code>myValue</code> is returned as
      * <code>'myValue'</code>.
      *
@@ -206,18 +211,28 @@ public class DataSetUtils
             return "NULL";
         }
 
-        String stringValue = asString(value);
+        String stringValue = (String)DataType.VARCHAR.typeCast(value);
+        if (dataType == DataType.DATE)
+        {
+            return "{d '" + stringValue + "'}";
+        }
+
+        if (dataType == DataType.TIME)
+        {
+            return "{t '" + stringValue + "'}";
+        }
+
+        if (dataType == DataType.TIMESTAMP)
+        {
+            return "{ts '" + stringValue + "'}";
+        }
+
         if (!dataType.isNumber())
         {
             stringValue = "'" + stringValue + "'";
         }
 
         return stringValue;
-    }
-
-    private static String asString(Object value) throws TypeCastException
-    {
-        return (String)DataType.STRING.typeCast(value);
     }
 
     /**
@@ -289,5 +304,6 @@ public class DataSetUtils
     }
 
 }
+
 
 
