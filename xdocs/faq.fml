@@ -17,9 +17,7 @@
         How to build DbUnit?
       </question>
       <answer>
-      <p>Since version 2.0, DbUnit is build with <a href="http://maven.apache.org/">Maven 1.0-rc1</a>. See project <a href="dependencies.html">dependencies</a>. </p>
-      <p><b>NOTE:</b> There is currently one test from the DbUnit 2.0 source distribution that fails. You can safely ignore this failure when building DbUnit.
-      </p>
+      <p><a href=" http://www.dbunit.org/cgi-bin/wiki.pl?BuildingDbUnit">BuildingDbUnit</a> detailed instruction.</p>
       </answer>
     </faq>
 
@@ -28,7 +26,7 @@
      How to see SQL statements issued by DbUnit using P6Spy?
       </question>
       <answer>
-     <p><a href="http://www.p6spy.com">P6Spy</a> is a trasparent JDBC proxy-driver 
+     <p><a href="http://www.p6spy.com">P6Spy</a> is a transparent JDBC proxy-driver 
       specialized to log the statements performed against the actual driver you normally would use.
       Using p6spy would allow to log the SQL statements issued by DbUnit.
       </p>
@@ -53,6 +51,14 @@
       </answer>
     </faq>    
 
+    <faq id="knownfixedissues">
+      <question>
+        How to learn more about known and fixed issues?
+      </question>
+      <answer>
+      <p>Look at <a href="http://www.dbunit.org/cgi-bin/wiki.pl?ChangesSinceLastRelease">ChangesSinceLastRelease</a> and at <a href="http://www.dbunit.org/issue-tracking.html">Issue Tracking</a>.</p>
+      </answer>
+    </faq>
   </part>  
 
   <part id="use">
@@ -338,6 +344,29 @@ ForwardOnlyResultSetTable:
       </answer>
     </faq>  
     
+    <faq id="tableseq">
+      <question>
+        How to automatically orders tables according their foreign keys?
+      </question>
+      <answer>
+        DbUnit operations insert and update tables' rows in the same order they are found in your 
+        dataset and delete are done in reverse order. You must order your tables and rows 
+        appropriately in your datasets to prevent foreign keys constraint violation.
+        <br/>
+	Since version 2.0, the <a href="components.html#filtereddataset">DatabaseSequenceFilter</a> can now be used to automatically determine the tables order using foreign/exported keys information. 
+        <br/>
+	The following sample demonstrate how to use this class to export a flat XML dataset:
+<source>
+IDatabaseConnection conn = new DatabaseConnection(jdbcConn);
+
+ITableFilter filter = new DatabaseTableFilter(conn);
+IDataSet dataset = new FilteredDataSet(filter, 
+       conn.createDataSet());
+
+FlatXmlDataSet.write(dataset, new File(fileName));
+</source>
+      </answer>
+    </faq>    
   </part>  
 
   <part id="use">
@@ -361,27 +390,12 @@ ForwardOnlyResultSetTable:
       </answer>
     </faq>     
 
-    <faq id="tableseq">
+    <faq id="fkconstraintviolation">
       <question>
         Why I get a "Foreign keys constraint violation" error?
       </question>
       <answer>
-        DbUnit operations insert and update tables' rows in the same order they are found in your 
-        dataset and delete are done in reverse order. You must order your tables and rows 
-        appropriately in your datasets to prevent foreign keys constraint violation.
-        <br/>
-	The <a href="components.html#filtereddataset">DatabaseSequenceFilter</a> can now be used to automatically determine the tables order using foreign/exported keys information. 
-        <br/>
-	The following sample demonstrate how to use this class to export a flat XML dataset:
-<source>
-IDatabaseConnection conn = new DatabaseConnection(jdbcConn);
-
-ITableFilter filter = new DatabaseTableFilter(conn);
-IDataSet dataset = new FilteredDataSet(filter, 
-       conn.createDataSet());
-
-FlatXmlDataSet.write(dataset, new File(fileName));
-</source>
+        See <a href="#tableseq">How to automatically orders table according their foreign keys?</a>
       </answer>
     </faq>
     
