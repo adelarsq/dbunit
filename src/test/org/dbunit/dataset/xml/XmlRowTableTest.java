@@ -1,5 +1,5 @@
 /*
- * XmlTableTest.java   Feb 17, 2002
+ * XmlTableTest.java   Mar 12, 2002
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
@@ -30,37 +30,39 @@ import org.dbunit.dataset.*;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class XmlTableTest extends AbstractTableTest
+public class XmlRowTableTest extends AbstractTableTest
 {
-    public XmlTableTest(String s)
+    public XmlRowTableTest(String s)
     {
         super(s);
     }
 
     protected ITable createTable() throws Exception
     {
-        return createDataSet().getTable("testTable");
+        return createDataSet(true).getTable("TEST_TABLE");
     }
 
-    protected IDataSet createDataSet() throws Exception
+    protected IDataSet createDataSet(boolean noneAsNull) throws Exception
     {
         InputStream in = new FileInputStream(
-                new File("src/xml/xmlTableTest.xml"));
-        return new XmlDataSet(in);
+                new File("src/xml/xmlRowTableTest.xml"));
+        return new XmlRowDataSet(in, noneAsNull);
     }
 
     public void testGetMissingValue() throws Exception
     {
-        Object[] expected = {null, ITable.NO_VALUE, "value", "", "   ", ITable.NO_VALUE};
+        int row = 1;
+        Object[] expected = {"row 1 col 0", ITable.NO_VALUE, "row 1 col 2"};
 
-        ITable table = createDataSet().getTable("MISSING_AND_NULL_VALUES");
+        ITable table = createDataSet(false).getTable("MISSING_VALUES");
 
         Column[] columns = table.getTableMetaData().getColumns();
         assertEquals("column count", expected.length, columns.length);
+        assertEquals("row count", 2, table.getRowCount());
         for (int i = 0; i < columns.length; i++)
         {
             assertEquals("value " + i, expected[i],
-                    table.getValue(0, columns[i].getColumnName()));
+                    table.getValue(row, columns[i].getColumnName()));
         }
     }
 

@@ -36,6 +36,7 @@ public class AllTest
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(XmlDataSetTest.class));
         suite.addTest(new TestSuite(XmlDataSetWriteTest.class));
+        suite.addTest(new TestSuite(XmlRowTableTest.class));
         suite.addTest(new TestSuite(XmlTableTest.class));
 
         return suite;

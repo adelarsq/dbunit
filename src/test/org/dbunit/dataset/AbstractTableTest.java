@@ -108,7 +108,7 @@ public abstract class AbstractTableTest extends TestCase
         try
         {
             table.getValue(0, columnName);
-            fail("Should throw a RowOutOfBoundsException!");
+            fail("Should throw a NoSuchColumnException!");
         }
         catch (NoSuchColumnException e)
         {

@@ -91,6 +91,8 @@ public class InsertOperation extends AbstractRowOperation
             }
         }
         sql += ")";
+        
+//        System.out.println(sql);
 
         return sql;
     }

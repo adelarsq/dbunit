@@ -1,19 +1,19 @@
 /*
- * XmlDataSet.java   Feb 17, 2002
+ * XmlRowDataSet.java   Mar 12, 2002
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -35,11 +35,18 @@ import electric.xml.*;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class XmlDataSet extends DefaultDataSet
+public class XmlRowDataSet extends DefaultDataSet
 {
-    public XmlDataSet(InputStream in) throws DataSetException
+    /**
+     * Creates an XmlRowDataSet object with specifed xml input stream.
+     *
+     * @param in the xml contents
+     * @param noneAsNull if <code>true</code> this specify that the absence of
+     * value should be considered as a null value
+     */
+    public XmlRowDataSet(InputStream in, boolean noneAsNull) throws DataSetException
     {
-        super(createTables(in));
+        super(createTables(in, noneAsNull));
     }
 
     /**
@@ -51,19 +58,38 @@ public class XmlDataSet extends DefaultDataSet
         createDocument(dataSet).write(out);
     }
 
-    private static ITable[] createTables(InputStream in) throws DataSetException
+    private static ITable[] createTables(InputStream in, boolean noneAsNull) throws DataSetException
     {
         try
         {
-            Document document = new Document(in);
-            Elements tableElems = document.getElement("dataset").getElements("table");
-
             List tableList = new ArrayList();
-            while (tableElems.hasMoreElements())
+            List rowList = new ArrayList();
+            String lastTableName = null;
+            Document document = new Document(in);
+
+            Elements rowElems = document.getElement("dataset").getElements();
+            while (rowElems.hasMoreElements())
             {
-                Element tableElem = (Element)tableElems.nextElement();
-                ITable table = new XmlTable(tableElem);
-                tableList.add(table);
+                Element rowElem = (Element)rowElems.nextElement();
+
+                if (lastTableName == null ||
+                        lastTableName.equals(rowElem.getName()))
+                {
+                    lastTableName = rowElem.getName();
+                }
+                else
+                {
+                    Element[] elems = (Element[])rowList.toArray(new Element[0]);
+                    tableList.add(new XmlRowTable(elems, noneAsNull));
+                    rowList.clear();
+                }
+                rowList.add(rowElem);
+            }
+
+            if (rowList.size() > 0)
+            {
+                Element[] elems = (Element[])rowList.toArray(new Element[0]);
+                tableList.add(new XmlRowTable(elems, noneAsNull));
             }
 
             return (ITable[])tableList.toArray(new ITable[0]);
@@ -81,57 +107,37 @@ public class XmlDataSet extends DefaultDataSet
 
         // dataset
         Element rootElem = document.addElement("dataset");
+
+        // tables
         for (int i = 0; i < tableNames.length; i++)
         {
             String tableName = tableNames[i];
             ITable table = dataSet.getTable(tableName);
-            ITableMetaData metaData = table.getTableMetaData();
+            Column[] columns = table.getTableMetaData().getColumns();
 
-            // table
-            Element tableElem = rootElem.addElement("table");
-            tableElem.setAttribute("name", tableName);
-
-            // columns
-            Column[] columns = metaData.getColumns();
-            for (int j = 0; j < columns.length; j++)
-            {
-                Column column = columns[j];
-                tableElem.addElement("column").setText(column.getColumnName());
-            }
-
-            // rows
+            // table rows
             for (int j = 0; j < table.getRowCount(); j++)
             {
-                Element rowElem = tableElem.addElement("row");
+                Element rowElem = document.addElement(tableName);
                 for (int k = 0; k < columns.length; k++)
                 {
                     Column column = columns[k];
                     Object value = table.getValue(j, column.getColumnName());
 
-                    // null
-                    if (value == null)
-                    {
-                        rowElem.addElement("null");
-                    }
-                    // none
-                    else if (value == ITable.NO_VALUE)
-                    {
-                        rowElem.addElement("none");
-                    }
-                    // values
-                    else
+                    // row values
+                    if (value != null && value != ITable.NO_VALUE)
                     {
                         try
                         {
                             String stringValue = (String)DataType.STRING.typeCast(value);
-                            rowElem.addElement("value").setText(stringValue);
+                            rowElem.setAttribute(column.getColumnName(), stringValue);
                         }
                         catch (TypeCastException e)
                         {
-                            throw new DataSetException("table=" +
-                                    metaData.getTableName() + ", row=" + j +
-                                    ", column=" + column.getColumnName() +
-                                    ", value=" + value, e);
+                            throw new DataSetException("table=" + tableName +
+                                    ", row=" + j + ", column=" +
+                                    column.getColumnName() + ", value=" +
+                                    value, e);
                         }
                     }
                 }
