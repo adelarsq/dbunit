@@ -26,7 +26,14 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.AbstractDataSetTest;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.EmptyTableDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
 
 /**
  * @author Manuel Laflamme
@@ -40,6 +47,14 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
     public DeleteAllOperationTest(String s)
     {
         super(s);
+    }
+
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+
+        DatabaseOperation.CLEAN_INSERT.execute(_connection,
+                getEnvironment().getInitDataSet());
     }
 
     protected DatabaseOperation getDeleteAllOperation()
@@ -123,16 +138,20 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
     public void testExecuteWithDuplicateTables() throws Exception
     {
         String schemaName = "schema";
-        String tableName = "table";
-        String expected = getExpectedStament(schemaName + "." + tableName);
+        String tableName1 = "table1";
+        String tableName2 = "table2";
+        String expected1 = getExpectedStament(schemaName + "." + tableName1);
+        String expected2 = getExpectedStament(schemaName + "." + tableName2);
 
-        ITable table = new DefaultTable(tableName);
-        IDataSet dataSet = new DefaultDataSet(new ITable[] {table, table});
+        ITable table1 = new DefaultTable(tableName1);
+        ITable table2 = new DefaultTable(tableName2);
+        IDataSet dataSet = new DefaultDataSet(
+                new ITable[] {table1, table2, table1});
 
         // setup mock objects
         MockBatchStatement statement = new MockBatchStatement();
-        statement.addExpectedBatchString(expected);
-        statement.addExpectedBatchString(expected);
+        statement.addExpectedBatchString(expected2);
+        statement.addExpectedBatchString(expected1);
         statement.setExpectedExecuteBatchCalls(1);
         statement.setExpectedClearBatchCalls(1);
         statement.setExpectedCloseCalls(1);
@@ -142,7 +161,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
         factory.setupStatement(statement);
 
         MockDatabaseConnection connection = new MockDatabaseConnection();
-        connection.setupDataSet(new DefaultDataSet(table));
+        connection.setupDataSet(new DefaultDataSet(table1, table2));
         connection.setupSchema(schemaName);
         connection.setupStatementFactory(factory);
         connection.setExpectedCloseCalls(0);
@@ -157,10 +176,20 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
 
     public void testExecute() throws Exception
     {
+        IDataSet databaseDataSet = _connection.createDataSet();
         IDataSet dataSet = AbstractDataSetTest.removeExtraTestTables(
-                _connection.createDataSet());
+                databaseDataSet);
 
         testExecute(dataSet);
+    }
+
+    public void testExecuteEmpty() throws Exception
+    {
+        IDataSet databaseDataSet = _connection.createDataSet();
+        IDataSet dataSet = AbstractDataSetTest.removeExtraTestTables(
+                databaseDataSet);
+
+        testExecute(new EmptyTableDataSet(dataSet));
     }
 
     public void testExecuteCaseInsentive() throws Exception

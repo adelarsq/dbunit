@@ -30,22 +30,25 @@ import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
 
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
 
 /**
  * Deletes all rows of tables present in the specified dataset. If the dataset
  * does not contains a particular table, but that table exists in the database,
  * the database table is not affected. Table are truncated in
  * reverse sequence.
- * <p>
+ * <p/>
  * This operation has the same effect of as {@link TruncateTableOperation}.
  * TruncateTableOperation is faster, and it is non-logged, meaning it cannot be
  * rollback. DeleteAllOperation is more portable because not all database vendor
  * support TRUNCATE_TABLE TABLE statement.
  *
  * @author Manuel Laflamme
- * @since Feb 18, 2002
  * @version $Revision$
  * @see TruncateTableOperation
+ * @since Feb 18, 2002
  */
 public class DeleteAllOperation extends AbstractOperation
 {
@@ -67,16 +70,29 @@ public class DeleteAllOperation extends AbstractOperation
         IDataSet databaseDataSet = connection.createDataSet();
 
         DatabaseConfig databaseConfig = connection.getConfig();
-        IStatementFactory statementFactory = (IStatementFactory)databaseConfig.getProperty(
-                DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
+        IStatementFactory statementFactory = (IStatementFactory)databaseConfig.getProperty(DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
         IBatchStatement statement = statementFactory.createBatchStatement(connection);
         try
         {
             int count = 0;
-            ITableIterator iterator = dataSet.reverseIterator();
-            while(iterator.next())
+            
+            Stack tableNames = new Stack();
+            Set tablesSeen = new HashSet();
+            ITableIterator iterator = dataSet.iterator();
+            while (iterator.next())
             {
                 String tableName = iterator.getTableMetaData().getTableName();
+                if (!tablesSeen.contains(tableName))
+                {
+                    tableNames.push(tableName);
+                    tablesSeen.add(tableName);
+                }
+            }
+
+            // delete tables once each in reverse order of seeing them.
+            while (!tableNames.isEmpty())
+            {
+                String tableName = (String)tableNames.pop();
 
                 // Use database table name. Required to support case sensitive database.
                 ITableMetaData databaseMetaData =
@@ -90,7 +106,6 @@ public class DeleteAllOperation extends AbstractOperation
 
                 count++;
             }
-
 
             if (count > 0)
             {
