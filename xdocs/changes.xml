@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Changes</title>
+    <author email="epugh@upstate.com">Eric Pugh</author>
+  </properties>
+
+  <body>
+    <release version="1.5.5" date="July 16, 2003">
+      <action dev="" type="update">
+	  DatabaseDataSet improvements: faster access to metadata cache and keep original database table ordering.
+     </action>      	            
+     <action dev="" type="update">
+	Better handling of the various data types in general. <B>WARNING!</B> New abstract methods have been added to the DataType class. This change may break your environment if you have implemented your own data types. 
+     </action>         
+     <action dev="" type="add">
+	New FlatXmlDataSet constructors that take an URL.
+     </action>          
+     <action dev="" type="fix">
+        Fixed table name issue with case sensitive database. 
+     </action>          
+     <action dev="" type="fix">
+        <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=615636&amp;group_id=47439&amp;atid=449491">615636</a> &amp; <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=735095&amp;group_id=47439&amp;atid=449491">735095</a> 
+            - Incorrect XML encoding. Better handling of the XML encoding while writing and reading XML datasets. InputStream and OutputStream methods in XML dataset implementations are no more deprecated.
+     </action>        
+     <action dev="" type="fix">
+      <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=736439&amp;group_id=47439&amp;atid=449491">736439</a> 
+            - Problems with InsertOperation and triggers.
+     </action>    
+     <action dev="" type="fix">
+       <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=736967&amp;group_id=47439&amp;atid=449491">736967</a> 
+            - Wrong scale for numeric value with the jConnect driver for Sybase ASE.
+     </action>         
+    </release>
+
+  </body>
+</document>
+

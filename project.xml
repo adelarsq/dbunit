@@ -8,7 +8,7 @@
   <id>dbunit</id>
   
   <!-- a short but descriptive name for the project -->
-  <name>Maven example projects</name>
+  <name>DbUnit</name>
   
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-dev -->
@@ -118,9 +118,11 @@
     <unitTest>
       <includes>
         <include>**/*Test.java</include>
+        <include>**/DbUnitTask*</include>
       </includes>
       <excludes>
-        <exclude></exclude>
+        <exclude>**/TaskdefsTest*</exclude>
+        <exclude>**/Abstract*Test*</exclude>        
       </excludes>
     </unitTest>
 
