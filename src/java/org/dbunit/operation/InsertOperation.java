@@ -92,7 +92,7 @@ public class InsertOperation extends AbstractBatchOperation
         return new OperationData(sqlBuffer.toString(), columns);
     }
 
-    protected BigInteger getIngnoreMapping(ITable table, int row) throws DataSetException
+    protected BigInteger getIgnoreMapping(ITable table, int row) throws DataSetException
     {
         Column[] columns = table.getTableMetaData().getColumns();
         int n = columns.length;
@@ -102,7 +102,7 @@ public class InsertOperation extends AbstractBatchOperation
         for (int i = 0; i < n; i++)
         {
             Object value = table.getValue(row, columns[i].getColumnName());
-            if (value == null)
+            if (value == ITable.NO_VALUE)
             {
                 result[result.length - (i / 8) - 1] |= (1 << (i % 8));
             }
@@ -119,7 +119,7 @@ public class InsertOperation extends AbstractBatchOperation
         {
             boolean bit = ignoreMapping.testBit(i);
             Object value = table.getValue(row, columns[i].getColumnName());
-            if ((bit && value != null) || (!bit && value == null))
+            if ((bit && value != ITable.NO_VALUE) || (!bit && value == ITable.NO_VALUE))
             {
                 return false;
             }

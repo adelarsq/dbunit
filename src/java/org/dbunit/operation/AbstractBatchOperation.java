@@ -79,7 +79,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
      * Returns mapping of columns to ignore by this operation. Each bit set represent
      * a column to ignore.
      */
-    BigInteger getIngnoreMapping(ITable table, int row)
+    BigInteger getIgnoreMapping(ITable table, int row)
             throws DataSetException
     {
         return EMPTY_IGNORE_MAPPING;
@@ -150,7 +150,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                                 statement.close();
                             }
 
-                            ignoreMapping = getIngnoreMapping(table, row);
+                            ignoreMapping = getIgnoreMapping(table, row);
                             operationData = getOperationData(metaData, ignoreMapping, connection);
                             statement = factory.createPreparedBatchStatement(
                                     operationData.getSql(), connection);

@@ -199,7 +199,7 @@ public class RefreshOperation extends AbstractOperation
                     _statement.close();
                 }
 
-                _ignoreMapping = _insertOperation.getIngnoreMapping(table, row);
+                _ignoreMapping = _insertOperation.getIgnoreMapping(table, row);
                 _operationData = _insertOperation.getOperationData(_metaData,
                         _ignoreMapping, _connection);
                 _statement = new SimplePreparedStatement(_operationData.getSql(),
