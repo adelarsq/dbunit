@@ -79,9 +79,9 @@ public class DataSetUtils
      * <code>getQualifiedName("PREFIX2", "PREFIX1.NAME")</code>
      * returns <code>"PREFIX1.NAME"</code>.
      *
-     * @param schema the prefix
+     * @param prefix the prefix
      * @param name the name
-     * @returns the qualified name
+     * @return the qualified name
      */
     public static String getQualifiedName(String prefix, String name)
     {
@@ -131,7 +131,7 @@ public class DataSetUtils
      *
      * @param value the value
      * @param dataType the value data type
-     * @returns the SQL string value
+     * @return the SQL string value
      */
     public static String getSqlValueString(Object value, DataType dataType)
             throws TypeCastException
@@ -199,7 +199,7 @@ public class DataSetUtils
         for (int i = 0; i < columns.length; i++)
         {
             Column column = columns[i];
-            if (columnName.equals(columns[i].getColumnName()))
+            if (columnName.equalsIgnoreCase(columns[i].getColumnName()))
             {
                 return column;
             }

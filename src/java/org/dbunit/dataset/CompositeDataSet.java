@@ -141,7 +141,7 @@ public class CompositeDataSet extends AbstractDataSet
         for (int i = 0; i < list.size(); i++)
         {
             ITable table = (ITable)list.get(i);
-            if (tableName.equals(table.getTableMetaData().getTableName()))
+            if (tableName.equalsIgnoreCase(table.getTableMetaData().getTableName()))
             {
                 return i;
             }

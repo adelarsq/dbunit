@@ -23,10 +23,13 @@
 package org.dbunit.operation;
 
 import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
 import org.dbunit.dataset.*;
+
+import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
@@ -150,18 +153,25 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
 
     public void testExecute() throws Exception
     {
-        IDataSet databaseDataSet = AbstractDataSetTest.removeExtraTestTables(
+        IDataSet dataSet = AbstractDataSetTest.removeExtraTestTables(
                 _connection.createDataSet());
 
-        ITable[] tablesBefore = DataSetUtils.getTables(databaseDataSet);
-        DatabaseOperation.DELETE_ALL.execute(_connection, databaseDataSet);
-        ITable[] tablesAfter = DataSetUtils.getTables(databaseDataSet);
+        testExecute(dataSet);
+    }
 
+    public void testExecuteCaseInsentive() throws Exception
+    {
+        IDataSet dataSet = AbstractDataSetTest.removeExtraTestTables(
+                _connection.createDataSet());
 
-//        ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
-//        DatabaseOperation.DELETE_ALL.execute(_connection,
-//                _connection.createDataSet());
-//        ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
+        testExecute(new LowerCaseDataSet(dataSet));
+    }
+
+    private void testExecute(IDataSet dataSet) throws Exception
+    {
+        ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
+        DatabaseOperation.DELETE_ALL.execute(_connection, dataSet);
+        ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
 
         assertTrue("table count > 0", tablesBefore.length > 0);
         assertEquals("table count", tablesBefore.length, tablesAfter.length);
@@ -170,7 +180,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
             ITable table = tablesBefore[i];
             String name = table.getTableMetaData().getTableName();
 
-            if (!name.startsWith("EMPTY"))
+            if (!name.toUpperCase().startsWith("EMPTY"))
             {
                 assertTrue(name + " before", table.getRowCount() > 0);
             }
@@ -180,7 +190,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
         {
             ITable table = tablesAfter[i];
             String name = table.getTableMetaData().getTableName();
-            assertEquals(name + "after", 0, table.getRowCount());
+            assertEquals(name + " after " + i, 0, table.getRowCount());
         }
     }
 

@@ -239,11 +239,27 @@ public class DeleteOperationTest extends AbstractDatabaseTest
 
     public void testExecute() throws Exception
     {
-        String tableName = "PK_TABLE";
-        String columnName = "PK0";
         Reader in = new FileReader(
                 new File("src/xml/deleteOperationTest.xml"));
-        IDataSet xmlDataSet = new XmlDataSet(in);
+        IDataSet dataSet = new XmlDataSet(in);
+
+        testExecute(dataSet);
+
+    }
+
+    public void testExecuteCaseInsensitive() throws Exception
+    {
+        Reader in = new FileReader(
+                new File("src/xml/deleteOperationTest.xml"));
+        IDataSet dataSet = new XmlDataSet(in);
+
+        testExecute(new LowerCaseDataSet(dataSet));
+    }
+
+    private void testExecute(IDataSet dataSet) throws Exception
+    {
+        String tableName = "PK_TABLE";
+        String columnName = "PK0";
 
         // verify table before
         ITable tableBefore = createOrderedTable(tableName, columnName);
@@ -252,7 +268,7 @@ public class DeleteOperationTest extends AbstractDatabaseTest
         assertEquals("before", "1", tableBefore.getValue(1, columnName).toString());
         assertEquals("before", "2", tableBefore.getValue(2, columnName).toString());
 
-        DatabaseOperation.DELETE.execute(_connection, xmlDataSet);
+        DatabaseOperation.DELETE.execute(_connection, dataSet);
 
         ITable tableAfter = createOrderedTable(tableName, columnName);
         assertEquals("row count after", 2, tableAfter.getRowCount());

@@ -51,11 +51,18 @@ public class AssertionTest extends TestCase
     ////////////////////////////////////////////////////////////////////////////
     // Test methods
 
-    public void testAssertsTablesEquals() throws Exception
+    public void testAssertTablesEquals() throws Exception
     {
         IDataSet dataSet = getDataSet();
         Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                 dataSet.getTable("TEST_TABLE_WITH_SAME_VALUE"));
+    }
+
+    public void testAssertTablesEqualsColumnNamesCaseInsensitive() throws Exception
+    {
+        IDataSet dataSet = getDataSet();
+        Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+                dataSet.getTable("TEST_TABLE_WITH_LOWER_COLUMN_NAMES"));
     }
 
     public void testAssertTablesAndNamesNotEquals() throws Exception
@@ -139,6 +146,22 @@ public class AssertionTest extends TestCase
 
         // change table names order
         String[] names = DataSetUtils.getReverseTableNames(dataSet1);
+        IDataSet dataSet2 = new FilteredDataSet(names, dataSet1);
+
+        assertTrue("assert not same", dataSet1 != dataSet2);
+        Assertion.assertEquals(dataSet1, dataSet2);
+    }
+
+    public void testAssertDataSetsEqualsTableNamesCaseInsensitive() throws Exception
+    {
+        IDataSet dataSet1 = getDataSet();
+
+        // change table names case
+        String[] names = dataSet1.getTableNames();
+        for (int i = 0; i < names.length; i++)
+        {
+            names[i] = names[i].toLowerCase();
+        }
         IDataSet dataSet2 = new FilteredDataSet(names, dataSet1);
 
         assertTrue("assert not same", dataSet1 != dataSet2);

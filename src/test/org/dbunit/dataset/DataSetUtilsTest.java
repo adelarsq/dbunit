@@ -78,7 +78,6 @@ public class DataSetUtilsTest extends TestCase
         assertEquals("name", DataSetUtils.getEscapedName("name", "invalid pattern!"));
     }
 
-
     public void testGetColumn() throws Exception
     {
         Column[] columns = new Column[]{
@@ -86,6 +85,23 @@ public class DataSetUtilsTest extends TestCase
             new Column("c1", DataType.UNKNOWN),
             new Column("c2", DataType.UNKNOWN),
             new Column("c3", DataType.UNKNOWN),
+            new Column("c4", DataType.UNKNOWN),
+        };
+
+        for (int i = 0; i < columns.length; i++)
+        {
+            assertEquals("find column same", columns[i],
+                    DataSetUtils.getColumn("c" + i, columns));
+        }
+    }
+
+    public void testGetColumnCaseInsensitive() throws Exception
+    {
+        Column[] columns = new Column[]{
+            new Column("c0", DataType.UNKNOWN),
+            new Column("C1", DataType.UNKNOWN),
+            new Column("c2", DataType.UNKNOWN),
+            new Column("C3", DataType.UNKNOWN),
             new Column("c4", DataType.UNKNOWN),
         };
 

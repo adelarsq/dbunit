@@ -51,49 +51,27 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
                 new File("src/xml/flatXmlDataSetDuplicateTest.xml"));
     }
 
-//    public void testWrite() throws Exception
-//    {
-//        List tableList = new ArrayList();
-//
-//        IDataSet dataSet = createDataSet();
-//        File tempFile = File.createTempFile("flatXmlDataSetTest", ".xml");
-//        try
-//        {
-//            OutputStream out = new FileOutputStream(tempFile);
-//            try
-//            {
-//                // write dataset in temp file
-//                FlatXmlDataSet.write(dataSet, out);
-//
-//                // load new dataset from temp file
-//                FlatXmlDataSet xmlDataSet2 = new FlatXmlDataSet(
-//                        new FileInputStream(tempFile));
-//
-//                // verify table count
-//                assertEquals("table count", dataSet.getTableNames().length,
-//                        xmlDataSet2.getTableNames().length);
-//
-//                // verify each table
-//                String[] tableNames = dataSet.getTableNames();
-//                for (int i = 0; i < tableNames.length; i++)
-//                {
-//                    String name = tableNames[i];
-//                    ITable table1 = dataSet.getTable(name);
-//                    ITable table2 = xmlDataSet2.getTable(name);
-//                    assertTrue("not same instance", table1 != table2);
-//                    Assertion.assertEquals(table1, table2);
-//                }
-//            }
-//            finally
-//            {
-//                out.close();
-//            }
-//        }
-//        finally
-//        {
-//            tempFile.delete();
-//        }
-//    }
+    public void testMissingColumnAndEnableDtdMetadata() throws Exception
+    {
+        IDataSet dataSet = new FlatXmlDataSet(
+                new File("src/xml/flatXmlTableTest.xml"), true);
+
+        ITable table = dataSet.getTable("MISSING_VALUES");
+
+        Column[] columns = table.getTableMetaData().getColumns();
+        assertEquals("column count", 3, columns.length);
+    }
+
+    public void testMissingColumnAndDisableDtdMetadata() throws Exception
+    {
+        IDataSet dataSet = new FlatXmlDataSet(
+                new File("src/xml/flatXmlTableTest.xml"), false);
+
+        ITable table = dataSet.getTable("MISSING_VALUES");
+
+        Column[] columns = table.getTableMetaData().getColumns();
+        assertEquals("column count", 2, columns.length);
+    }
 
     public void testWrite() throws Exception
     {

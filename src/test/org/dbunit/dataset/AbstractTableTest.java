@@ -80,6 +80,21 @@ public abstract class AbstractTableTest extends TestCase
         }
     }
 
+    public void testGetValueCaseInsensitive() throws Exception
+    {
+        ITable table = createTable();
+        for (int i = 0; i < ROW_COUNT; i++)
+        {
+            for (int j = 0; j < COLUMN_COUNT; j++)
+            {
+                String columnName = "CoLUmN" + j;
+                String expected = "row " + i + " col " + j;
+                Object value = table.getValue(i, columnName);
+                assertEquals("value", expected, value);
+            }
+        }
+    }
+
     public abstract void testGetMissingValue() throws Exception;
 
     public void testGetValueRowBounds() throws Exception

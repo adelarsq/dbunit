@@ -53,16 +53,14 @@ public class Assertion
             return;
         }
 
-        String[] expectedNames = expectedDataSet.getTableNames();
-        String[] actualNames = actualDataSet.getTableNames();
+        String[] expectedNames = getSortedUpperTableNames(expectedDataSet);
+        String[] actualNames = getSortedUpperTableNames(actualDataSet);
 
         // tables count
         Assert.assertEquals("table count", expectedNames.length, actualNames.length);
 
 
         // table names in no specific order
-        Arrays.sort(expectedNames);
-        Arrays.sort(actualNames);
         for (int i = 0; i < expectedNames.length; i++)
         {
             if (!actualNames[i].equals(expectedNames[i]))
@@ -107,8 +105,8 @@ public class Assertion
 //                actualMetaData.getTableName());
 
         // column count
-        String[] expectedNames = getSortedColumnNames(expectedMetaData);
-        String[] actualNames = getSortedColumnNames(actualMetaData);
+        String[] expectedNames = getSortedUpperColumnNames(expectedMetaData);
+        String[] actualNames = getSortedUpperColumnNames(actualMetaData);
         Assert.assertEquals("column count (table=" + expectedTableName + ")",
                 expectedNames.length, actualNames.length);
 
@@ -148,14 +146,26 @@ public class Assertion
         }
     }
 
-    private static String[] getSortedColumnNames(ITableMetaData metaData)
+    private static String[] getSortedUpperColumnNames(ITableMetaData metaData)
             throws DataSetException
     {
         Column[] columns = metaData.getColumns();
         String[] names = new String[columns.length];
         for (int i = 0; i < columns.length; i++)
         {
-            names[i] = columns[i].getColumnName();
+            names[i] = columns[i].getColumnName().toUpperCase();
+        }
+        Arrays.sort(names);
+        return names;
+    }
+
+    private static String[] getSortedUpperTableNames(IDataSet dataSet)
+            throws DataSetException
+    {
+        String[] names = dataSet.getTableNames();
+        for (int i = 0; i < names.length; i++)
+        {
+            names[i] = names[i].toUpperCase();
         }
         Arrays.sort(names);
         return names;

@@ -48,11 +48,6 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         super(s);
     }
 
-//    public static Test suite()
-//    {
-//        return new UpdateOperationTest("testUpdateBlob");
-//    }
-
     ////////////////////////////////////////////////////////////////////////////
     //
 
@@ -329,19 +324,34 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
     public void testExecute() throws Exception
     {
+        Reader in = new FileReader(
+                new File("src/xml/updateOperationTest.xml"));
+        IDataSet dataSet = new XmlDataSet(in);
+
+        testExecute(dataSet);
+
+    }
+
+    public void testExecuteCaseInsensitive() throws Exception
+    {
+        Reader in = new FileReader(
+                new File("src/xml/updateOperationTest.xml"));
+        IDataSet dataSet = new XmlDataSet(in);
+
+        testExecute(new LowerCaseDataSet(dataSet));
+    }
+
+    private void testExecute(IDataSet dataSet) throws Exception
+    {
         String tableName = "PK_TABLE";
         String[] columnNames = {"PK0", "PK1", "PK2", "NORMAL0", "NORMAL1"};
         int modifiedRow = 1;
-
-        Reader in = new FileReader(
-                new File("src/xml/updateOperationTest.xml"));
-        IDataSet xmlDataSet = new XmlDataSet(in);
 
         // verify table before
         ITable tableBefore = createOrderedTable(tableName, columnNames[0]);
         assertEquals("row count before", 3, tableBefore.getRowCount());
 
-        DatabaseOperation.UPDATE.execute(_connection, xmlDataSet);
+        DatabaseOperation.UPDATE.execute(_connection, dataSet);
 
         ITable tableAfter = createOrderedTable(tableName, columnNames[0]);
         assertEquals("row count after", 3, tableAfter.getRowCount());

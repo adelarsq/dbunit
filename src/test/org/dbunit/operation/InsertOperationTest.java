@@ -34,6 +34,7 @@ import org.dbunit.dataset.xml.XmlDataSet;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
@@ -45,11 +46,6 @@ public class InsertOperationTest extends AbstractDatabaseTest
     {
         super(s);
     }
-
-//    public static Test suite()
-//    {
-//        return new InsertOperationTest("testInsertBlob");
-//    }
 
     public void testMockExecute() throws Exception
     {
@@ -331,39 +327,56 @@ public class InsertOperationTest extends AbstractDatabaseTest
     public void testExecute() throws Exception
     {
         // this won't work because of the timestamp column.
-        if (!(DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment)){
+        if (!(DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment))
+        {
             Reader in = new FileReader("src/xml/insertOperationTest.xml");
-            IDataSet xmlDataSet = new XmlDataSet(in);
+            IDataSet dataSet = new XmlDataSet(in);
 
-            ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
-            DatabaseOperation.INSERT.execute(_connection, xmlDataSet);
-            ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
+            testExecute(dataSet);
+        }
+    }
 
-            assertEquals("table count", tablesBefore.length, tablesAfter.length);
-            for (int i = 0; i < tablesBefore.length; i++)
+    public void testExecuteCaseInsensitive() throws Exception
+    {
+        // this won't work because of the timestamp column.
+        if (!(DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment))
+        {
+            Reader in = new FileReader("src/xml/insertOperationTest.xml");
+            IDataSet dataSet = new XmlDataSet(in);
+
+            testExecute(new LowerCaseDataSet(dataSet));
+        }
+    }
+
+    private void testExecute(IDataSet dataSet) throws Exception, SQLException
+    {
+        ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
+        DatabaseOperation.INSERT.execute(_connection, dataSet);
+        ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
+
+        assertEquals("table count", tablesBefore.length, tablesAfter.length);
+        for (int i = 0; i < tablesBefore.length; i++)
+        {
+            ITable table = tablesBefore[i];
+            String name = table.getTableMetaData().getTableName();
+
+
+            if (name.startsWith("EMPTY"))
             {
-                ITable table = tablesBefore[i];
-                String name = table.getTableMetaData().getTableName();
-
-
-                if (name.startsWith("EMPTY"))
-                {
-                    assertEquals(name + "before", 0, table.getRowCount());
-                }
-            }
-
-            for (int i = 0; i < tablesAfter.length; i++)
-            {
-                ITable table = tablesAfter[i];
-                String name = table.getTableMetaData().getTableName();
-
-                if (name.startsWith("EMPTY"))
-                {
-                    Assertion.assertEquals(xmlDataSet.getTable(name), table);
-                }
+                assertEquals(name + "before", 0, table.getRowCount());
             }
         }
 
+        for (int i = 0; i < tablesAfter.length; i++)
+        {
+            ITable table = tablesAfter[i];
+            String name = table.getTableMetaData().getTableName();
+
+            if (name.startsWith("EMPTY"))
+            {
+                Assertion.assertEquals(dataSet.getTable(name), table);
+            }
+        }
     }
 }
 

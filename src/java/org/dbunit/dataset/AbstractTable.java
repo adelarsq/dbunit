@@ -58,7 +58,7 @@ public abstract class AbstractTable implements ITable
         for (int i = 0; i < columns.length; i++)
         {
             Column column = columns[i];
-            if (column.getColumnName().equals(columnName))
+            if (column.getColumnName().equalsIgnoreCase(columnName))
             {
                 return i;
             }

@@ -23,7 +23,6 @@
 package org.dbunit.dataset;
 
 import org.dbunit.database.AmbiguousTableNameException;
-import org.dbunit.*;
 
 import java.util.*;
 
@@ -57,12 +56,12 @@ public abstract class AbstractDataSetTest extends TestCase
         super(s);
     }
 
-    protected static String[] getExpectedNames() throws Exception
+    protected String[] getExpectedNames() throws Exception
     {
         return (String[])TABLE_NAMES.clone();
     }
 
-    protected static String[] getExpectedLowerNames() throws Exception
+    protected String[] getExpectedLowerNames() throws Exception
     {
         String[] names = (String[])TABLE_NAMES.clone();
         for (int i = 0; i < names.length; i++)

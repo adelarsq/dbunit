@@ -68,6 +68,16 @@ public class CompositeDataSetTest extends AbstractDataSetTest
 
         return new CompositeDataSet(dataSet1, dataSet2, false);
     }
+
+    public void testCombineTables() throws Exception
+    {
+        IDataSet originaldataSet = createMultipleCaseDuplicateDataSet();
+        assertEquals("table count before", 3, originaldataSet.getTableNames().length);
+
+        IDataSet combinedDataSet = new CompositeDataSet(originaldataSet.getTables());
+        assertEquals("table count combined", 2, combinedDataSet.getTableNames().length);
+    }
+
 }
 
 

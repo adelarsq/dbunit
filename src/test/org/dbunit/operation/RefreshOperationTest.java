@@ -32,6 +32,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.Reader;
 import java.util.ArrayList;
 
 /**
@@ -47,12 +48,25 @@ public class RefreshOperationTest extends AbstractDatabaseTest
 
     public void testExecute() throws Exception
     {
+        Reader reader = new FileReader("src/xml/refreshOperationTest.xml");
+        IDataSet dataSet = new FlatXmlDataSet(reader);
+
+        testExecute(dataSet);
+    }
+
+    public void testExecuteCaseInsensitive() throws Exception
+    {
+        Reader reader = new FileReader("src/xml/refreshOperationTest.xml");
+        IDataSet dataSet = new FlatXmlDataSet(reader);
+
+        testExecute(new LowerCaseDataSet(dataSet));
+    }
+
+    private void testExecute(IDataSet dataSet) throws Exception
+    {
         String[] tableNames = {"PK_TABLE", "ONLY_PK_TABLE"};
         int[] tableRowCount = {3, 1};
         String primaryKey = "PK0";
-
-        IDataSet xmlDataSet = new FlatXmlDataSet(
-                new FileReader("src/xml/refreshOperationTest.xml"));
 
         // verify table before
         assertEquals("array lenght", tableNames.length, tableRowCount.length);
@@ -62,7 +76,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
             assertEquals("row count before", tableRowCount[i], tableBefore.getRowCount());
         }
 
-        DatabaseOperation.REFRESH.execute(_connection, xmlDataSet);
+        DatabaseOperation.REFRESH.execute(_connection, dataSet);
 
         // verify table after
         IDataSet expectedDataSet = new FlatXmlDataSet(
@@ -75,6 +89,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
             Assertion.assertEquals(expectedTable, tableAfter);
         }
     }
+
     public void testExecuteWithDuplicateTables() throws Exception
     {
         String[] tableNames = {"PK_TABLE", "ONLY_PK_TABLE"};

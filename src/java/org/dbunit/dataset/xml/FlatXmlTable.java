@@ -86,7 +86,17 @@ public class FlatXmlTable extends AbstractTable
         assertValidRowIndex(row);
         assertValidColumn(column);
 
-        return _rows[row].getAttributeValue(column);
+        Attributes attributes = _rows[row].getAttributes();
+        while (attributes.hasMoreElements())
+        {
+            Attribute attribute = (Attribute)attributes.nextElement();
+            if (column.equalsIgnoreCase(attribute.getName()))
+            {
+                return attribute.getValue();
+            }
+        }
+
+        return null;
     }
 
 }

@@ -31,7 +31,7 @@ import java.util.List;
  */
 public abstract class AbstractTableMetaData implements ITableMetaData
 {
-    protected Column[] getPrimaryKeys(Column[] columns, String[] keyNames)
+    protected static Column[] getPrimaryKeys(Column[] columns, String[] keyNames)
     {
         List keyList = new ArrayList();
         for (int i = 0; i < keyNames.length; i++)
