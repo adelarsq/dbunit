@@ -1,0 +1,10 @@
+<!-- Created by Eric Pugh (epugh@upstate.com) -->
+<dataset>
+    <TEST_IDENTITY_NOT_PK COL01='1' COL02='row 0 col 1' />
+    <TEST_IDENTITY_NOT_PK COL01='2' COL02='row 1 col 1' />
+    <TEST_IDENTITY_NOT_PK COL01='3' COL02='row 2 col 1' />
+    <TEST_IDENTITY_NOT_PK COL01='4' COL02='row 3 col 1' />
+    <TEST_IDENTITY_NOT_PK COL01='5' COL02='row 4 col 1' />
+    <TEST_IDENTITY_NOT_PK COL01='6' COL02='row 5 col 1' />
+</dataset>
+
