@@ -12,9 +12,7 @@ Features:
 
 * Alternate DTD export method using choice (OR) instead sequence (AND).
 
-* Add wildcard capability to IncludeTableFilter strategy.
-
-* Replace system properties with a DatabaseConfig class pushed to the DatabaseConnection. This is possible to replace all system properties with this class because they are all related to database connection. 
+* Replace system properties with a DatabaseConfig class pushed to the DatabaseConnection. This is possible to replace all system properties with this class because they are all related to database connection.
 
 * DisableConstrainsOperation??? The way to disable/enable database constraints is vendor specific so this is impossible to implement on all RDMS platform. Big question, is the performance acceptable???  http://sourceforge.net/mailarchive/message.php?msg_id=4148317
 

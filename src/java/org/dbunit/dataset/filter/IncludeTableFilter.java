@@ -29,8 +29,7 @@ import java.util.Iterator;
  * implementation do not modify the original table sequence from the filtered
  * dataset and support duplicate table names.
  * <p>
- * The pattern matching code is taken from the DirectoryScanner class part of
- * the Apache Ant project and authored by Arnout J. Kuiper.
+ * The pattern matching code is taken from the Apache Ant project.
  *
  * @author Manuel Laflamme
  * @since Mar 7, 2003

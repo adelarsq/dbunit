@@ -20,12 +20,16 @@
  */
 package org.dbunit.dataset.filter;
 
-import org.dbunit.database.AmbiguousTableNameException;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.DefaultTable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * @author Manuel Laflamme
@@ -34,6 +38,31 @@ import java.util.ArrayList;
  */
 public class IncludeTableFilterTest extends AbstractTableFilterTest
 {
+    static final String MATCHING_NAME = "aBcDe";
+    static final String[] MATCHING_PATTERNS = {
+        "?bcde",
+        "?bc*",
+        "*",
+        "a?cde",
+        "abcd?",
+        "*e",
+        "a*",
+        "a*e",
+        "a*d*e",
+        "a**e",
+        "abcde*",
+        "*abcde",
+        "?????",
+    };
+    static final String[] NONMATCHING_PATTERNS = {
+        "?abcde",
+        "abcde?",
+        "*f*",
+        "??????",
+        "????",
+    };
+
+
     public IncludeTableFilterTest(String s)
     {
         super(s);
@@ -244,4 +273,157 @@ public class IncludeTableFilterTest extends AbstractTableFilterTest
         assertEquals("table names",
                 Arrays.asList(expectedNames), Arrays.asList(actualNames));
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public void testIsValidNameWithPatterns() throws Exception
+    {
+        String validName = MATCHING_NAME;
+
+        String[] patterns = MATCHING_PATTERNS;
+        for (int i = 0; i < patterns.length; i++)
+        {
+            String pattern = patterns[i];
+            IncludeTableFilter filter = new IncludeTableFilter();
+            filter.includeTable(pattern);
+            assertEquals(pattern, true, filter.isValidName(validName));
+        }
+    }
+
+    public void testIsValidNameInvalidWithPatterns() throws Exception
+    {
+        String validName = MATCHING_NAME;
+
+        String[] patterns = NONMATCHING_PATTERNS;
+        for (int i = 0; i < patterns.length; i++)
+        {
+            String pattern = patterns[i];
+            IncludeTableFilter filter = new IncludeTableFilter();
+            filter.includeTable(pattern);
+            assertEquals(pattern, false, filter.isValidName(validName));
+        }
+    }
+
+    public void testGetTableNamesWithPatterns() throws Exception
+    {
+        String[] expectedNames = new String[] {MATCHING_NAME};
+        IDataSet dataSet = new DefaultDataSet(new ITable[] {
+            new DefaultTable(MATCHING_NAME),
+            new DefaultTable("toto"),
+            new DefaultTable("1234"),
+            new DefaultTable("fedcba"),
+        });
+        assertTrue("dataset names count",
+                dataSet.getTableNames().length > expectedNames.length);
+
+        String[] patterns = MATCHING_PATTERNS;
+        for (int i = 0; i < patterns.length; i++)
+        {
+            String pattern = patterns[i];
+            IncludeTableFilter filter = new IncludeTableFilter();
+            filter.includeTable(pattern);
+
+            // this pattern match everything, so ensure nothing is filtered
+            if (pattern.equals("*"))
+            {
+                String[] actualNames = filter.getTableNames(dataSet);
+                assertEquals("name count - " + pattern,
+                        dataSet.getTableNames().length, actualNames.length);
+                assertEquals("names - " + pattern,
+                        Arrays.asList(dataSet.getTableNames()),
+                        Arrays.asList(actualNames));
+            }
+            else
+            {
+                String[] actualNames = filter.getTableNames(dataSet);
+                assertEquals("name count - " + pattern,
+                        expectedNames.length, actualNames.length);
+                assertEquals("names - " + pattern,
+                        Arrays.asList(expectedNames), Arrays.asList(actualNames));
+            }
+        }
+    }
+
+    public void testGetTableNamesWithNonMatchingPatterns() throws Exception
+    {
+        IDataSet dataSet = new DefaultDataSet(new ITable[] {
+            new DefaultTable(MATCHING_NAME),
+        });
+        assertTrue("dataset names count",
+                dataSet.getTableNames().length > 0);
+
+        String[] patterns = NONMATCHING_PATTERNS;
+        for (int i = 0; i < patterns.length; i++)
+        {
+            String pattern = patterns[i];
+            IncludeTableFilter filter = new IncludeTableFilter();
+            filter.includeTable(pattern);
+
+            String[] actualNames = filter.getTableNames(dataSet);
+            assertEquals("name count - " + pattern, 0, actualNames.length);
+        }
+    }
+
+    public void testGetTablesWithPatterns() throws Exception
+    {
+        String[] expectedNames = new String[] {MATCHING_NAME};
+        IDataSet dataSet = new DefaultDataSet(new ITable[] {
+            new DefaultTable(MATCHING_NAME),
+            new DefaultTable("toto"),
+            new DefaultTable("1234"),
+            new DefaultTable("fedcba"),
+        });
+        assertTrue("dataset names count",
+                dataSet.getTableNames().length > expectedNames.length);
+
+        String[] patterns = MATCHING_PATTERNS;
+        for (int i = 0; i < patterns.length; i++)
+        {
+            String pattern = patterns[i];
+            IncludeTableFilter filter = new IncludeTableFilter();
+            filter.includeTable(pattern);
+
+            // this pattern match everything, so ensure nothing is filtered
+            if (pattern.equals("*"))
+            {
+                ITable[] actualTables = filter.getTables(dataSet);
+                String[] actualNames = new DefaultDataSet(actualTables).getTableNames();
+                assertEquals("table count - " + pattern,
+                        dataSet.getTableNames().length, actualNames.length);
+                assertEquals("table names - " + pattern,
+                        Arrays.asList(dataSet.getTableNames()),
+                        Arrays.asList(actualNames));
+            }
+            else
+            {
+                ITable[] actualTables = filter.getTables(dataSet);
+                String[] actualNames = new DefaultDataSet(actualTables).getTableNames();
+                assertEquals("table count - " + pattern,
+                        expectedNames.length, actualTables.length);
+                assertEquals("table names - " + pattern,
+                        Arrays.asList(expectedNames), Arrays.asList(actualNames));
+            }
+        }
+    }
+
+    public void testGetTablesWithNonMatchingPatterns() throws Exception
+    {
+        IDataSet dataSet = new DefaultDataSet(new ITable[] {
+            new DefaultTable(MATCHING_NAME),
+        });
+        assertTrue("dataset names count",
+                dataSet.getTableNames().length > 0);
+
+        String[] patterns = NONMATCHING_PATTERNS;
+        for (int i = 0; i < patterns.length; i++)
+        {
+            String pattern = patterns[i];
+            IncludeTableFilter filter = new IncludeTableFilter();
+            filter.includeTable(pattern);
+
+            ITable[] actualTables = filter.getTables(dataSet);
+            assertEquals("table count - " + pattern, 0, actualTables.length);
+        }
+    }
+
 }
