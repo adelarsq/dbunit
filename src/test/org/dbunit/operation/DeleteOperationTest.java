@@ -48,15 +48,18 @@ public class DeleteOperationTest extends AbstractDatabaseTest
     public void testMockExecute() throws Exception
     {
         String schemaName = "schema";
-        String tableName = "table";
+        String tableName1 = "table1";
+        String tableName2 = "table2";
         String[] expected = {
-            "delete from schema.table where c2 = 123.45 and c1 = 'qwerty'",
-            "delete from schema.table where c2 = 1234 and c1 = 'toto'",
+            "delete from schema.table2 where c2 = 1234 and c1 = 'toto'",
+            "delete from schema.table2 where c2 = 123.45 and c1 = 'qwerty'",
+            "delete from schema.table1 where c2 = 1234 and c1 = 'toto'",
+            "delete from schema.table1 where c2 = 123.45 and c1 = 'qwerty'",
         };
 
         List valueList = new ArrayList();
-        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
         valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
+        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
             new Column("c2", DataType.NUMERIC),
@@ -64,19 +67,21 @@ public class DeleteOperationTest extends AbstractDatabaseTest
         };
         String[] primaryKeys = {"c2", "c1"};
 
-        ITable table = new DefaultTable(new DefaultTableMetaData(
-                tableName, columns, primaryKeys), valueList);
-        IDataSet dataSet = new DefaultDataSet(table);
+        ITable table1 = new DefaultTable(new DefaultTableMetaData(
+                tableName1, columns, primaryKeys), valueList);
+        ITable table2 = new DefaultTable(new DefaultTableMetaData(
+                tableName2, columns, primaryKeys), valueList);
+        IDataSet dataSet = new DefaultDataSet(table1, table2);
 
         // setup mock objects
         MockBatchStatement statement = new MockBatchStatement();
         statement.addExpectedBatchStrings(expected);
-        statement.setExpectedExecuteBatchCalls(1);
-        statement.setExpectedClearBatchCalls(1);
-        statement.setExpectedCloseCalls(1);
+        statement.setExpectedExecuteBatchCalls(2);
+        statement.setExpectedClearBatchCalls(2);
+        statement.setExpectedCloseCalls(2);
 
         MockStatementFactory factory = new MockStatementFactory();
-        factory.setExpectedCreatePreparedStatementCalls(1);
+        factory.setExpectedCreatePreparedStatementCalls(2);
         factory.setupStatement(statement);
 
         MockDatabaseConnection connection = new MockDatabaseConnection();
