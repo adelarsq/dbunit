@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,6 +39,12 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
+        // Map Oracle DATE to TIMESTAMP
+        if (sqlType == Types.DATE)
+        {
+            return DataType.TIMESTAMP;
+        }
+
         if (sqlType == Types.OTHER)
         {
             // BLOB
@@ -60,7 +66,7 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
             }
 
             // TIMESTAMP
-            if (sqlType == Types.DATE || sqlTypeName.startsWith("TIMESTAMP"))
+            if (sqlTypeName.startsWith("TIMESTAMP"))
             {
                 return DataType.TIMESTAMP;
             }

@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -77,6 +77,16 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
     {
         int sqlType = Types.OTHER;
         String sqlTypeName = "TIMESTAMP(6)";
+
+        DataType expected = DataType.TIMESTAMP;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
+    public void testCreateDateDataType() throws Exception
+    {
+        int sqlType = Types.DATE;
+        String sqlTypeName = "DATE";
 
         DataType expected = DataType.TIMESTAMP;
         DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
