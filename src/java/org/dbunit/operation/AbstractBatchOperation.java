@@ -77,12 +77,12 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
     }
 
     /**
-     * Returns list of table names this operation is applied to. This method
+     * Returns list of tables this operation is applied to. This method
      * allow subclass to do filtering.
      */
-    protected String[] getTableNames(IDataSet dataSet) throws DatabaseUnitException
+    protected ITable[] getTables(IDataSet dataSet) throws DatabaseUnitException
     {
-        return dataSet.getTableNames();
+        return dataSet.getTables();
     }
 
     abstract public OperationData getOperationData(String schemaName,
@@ -95,8 +95,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
             throws DatabaseUnitException, SQLException
     {
         IStatementFactory factory = connection.getStatementFactory();
-        ITable[] tables = dataSet.getTables();
-//        String[] tableNames = getTableNames(dataSet);
+        ITable[] tables = getTables(dataSet);
 
         // for each table
         for (int i = 0; i < tables.length; i++)
