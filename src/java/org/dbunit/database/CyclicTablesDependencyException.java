@@ -29,8 +29,8 @@ import org.dbunit.dataset.DataSetException;
  */
 public class CyclicTablesDependencyException extends DataSetException
 {
-    public CyclicTablesDependencyException(String tableName1, String tableName2)
+    public CyclicTablesDependencyException(String tableName)
     {
-        super(tableName1 + ", " + tableName2);
+        super(tableName);
     }
 }

@@ -75,17 +75,10 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
         {
             TableSequenceComparator tableSequenceComparator =
                     new TableSequenceComparator(connection);
-            String[] lastNames = tableNames;
-            String[] cloneNames = tableNames;
-            do
-            {
-                lastNames = cloneNames;
-                cloneNames = (String[])lastNames.clone();
-                Arrays.sort(cloneNames,
-                        tableSequenceComparator);
-            } while(!Arrays.equals(lastNames, cloneNames));
 
-            return lastNames;
+            tableNames = (String[])tableNames.clone();
+            Arrays.sort(tableNames, tableSequenceComparator);
+            return tableNames;
         }
         catch (DatabaseUnitRuntimeException e)
         {
@@ -119,16 +112,24 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
 
             try
             {
-                if (getDependentTableNames(tableName1).contains(tableName2))
+                Set descendants1 = getDescendants(tableName1, null);
+                if (descendants1.contains(tableName1))
                 {
-                    if (getDependentTableNames(tableName2).contains(tableName1))
-                    {
-                        throw new CyclicTablesDependencyException(tableName1, tableName2);
-                    }
+                    throw new CyclicTablesDependencyException(tableName1);
+                }
+
+                if (descendants1.contains(tableName2))
+                {
                     return -1;
                 }
 
-                if (getDependentTableNames(tableName2).contains(tableName1))
+                Set descendants2 = getDescendants(tableName2, null);
+                if (descendants2.contains(tableName2))
+                {
+                    throw new CyclicTablesDependencyException(tableName2);
+                }
+
+                if (descendants2.contains(tableName1))
                 {
                     return 1;
                 }
@@ -146,16 +147,45 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
         }
 
         /**
-         * Returns a Set containing the names of all tables which are dependent upon
-         * <code>tableName</code>'s primary key as foreign keys.
+         * Returns a Set containing the names of all tables which have direct
+         * and indirect depency upon specified table. This method is recursive.
+         *
+         * @param tableName The table we want to know dependant tables
+         * @param processed Set of previously processed table names. Must be null
+         * on first call.
+         * @return The Set of dependent table names.
+         * @throws SQLException if a database access error occurs
+         */
+        private Set getDescendants(String tableName, Set processed) throws SQLException
+        {
+            if (processed == null)
+            {
+                processed = new HashSet();
+            }
+
+            Set children = getChildren(tableName);
+            for (Iterator it = children.iterator(); it.hasNext();)
+            {
+                String childName = (String)it.next();
+                if (!processed.contains(childName))
+                {
+                    processed.add(childName);
+                    processed.addAll(getDescendants(childName, processed));
+                }
+            }
+            return processed;
+        }
+
+        /**
+         * Returns a Set containing the names of all tables which have first
+         * level dependency upon specified table.
          *
          * @param tableName The table whose primary key is to be used in determining
          * dependent foreign key tables.
-         * @return The Set of dependent foreign key table names.
+         * @return The Set of dependent table names.
          * @throws SQLException if a database access error occurs
          */
-        private Set getDependentTableNames(String tableName)
-                throws SQLException
+        private Set getChildren(String tableName) throws SQLException
         {
             if (_dependentMap.containsKey(tableName))
             {
@@ -192,7 +222,6 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
 
                     foreignTableSet.add(foreignTableName);
                 }
-
                 _dependentMap.put(originalTableName, foreignTableSet);
                 return foreignTableSet;
             }
