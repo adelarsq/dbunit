@@ -34,6 +34,10 @@ import junit.framework.TestCase;
  */
 public abstract class DatabaseTestCase extends TestCase
 {
+    public DatabaseTestCase()
+    {
+    }
+
     public DatabaseTestCase(String name)
     {
         super(name);
