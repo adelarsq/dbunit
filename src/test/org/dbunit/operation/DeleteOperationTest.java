@@ -26,15 +26,21 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.NoPrimaryKeyException;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Manuel Laflamme
@@ -60,9 +66,6 @@ public class DeleteOperationTest extends AbstractDatabaseTest
             "delete from schema.table1 where c2 = 123.45 and c1 = 'qwerty'",
         };
 
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
-        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
             new Column("c2", DataType.NUMERIC),
@@ -70,10 +73,13 @@ public class DeleteOperationTest extends AbstractDatabaseTest
         };
         String[] primaryKeys = {"c2", "c1"};
 
-        ITable table1 = new DefaultTable(new DefaultTableMetaData(
-                tableName1, columns, primaryKeys), valueList);
-        ITable table2 = new DefaultTable(new DefaultTableMetaData(
-                tableName2, columns, primaryKeys), valueList);
+        DefaultTable table1 = new DefaultTable(new DefaultTableMetaData(
+                tableName1, columns, primaryKeys));
+        table1.addRow(new Object[]{"qwerty", new Double("123.45"), "true"});
+        table1.addRow(new Object[]{"toto", "1234", Boolean.FALSE});
+        DefaultTable table2 = new DefaultTable(new DefaultTableMetaData(
+                tableName2, columns, primaryKeys));
+        table2.addTableRows(table1);
         IDataSet dataSet = new DefaultDataSet(table1, table2);
 
         // setup mock objects
@@ -110,9 +116,6 @@ public class DeleteOperationTest extends AbstractDatabaseTest
             "delete from [schema].[table] where [c2] = 1234 and [c1] = 'toto'",
         };
 
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
-        valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
             new Column("c2", DataType.NUMERIC),
@@ -120,8 +123,10 @@ public class DeleteOperationTest extends AbstractDatabaseTest
         };
         String[] primaryKeys = {"c2", "c1"};
 
-        ITable table = new DefaultTable(new DefaultTableMetaData(
-                tableName, columns, primaryKeys), valueList);
+        DefaultTable table = new DefaultTable(new DefaultTableMetaData(
+                tableName, columns, primaryKeys));
+        table.addRow(new Object[]{"toto", "1234", Boolean.FALSE});
+        table.addRow(new Object[]{"qwerty", new Double("123.45"), "true"});
         IDataSet dataSet = new DefaultDataSet(table);
 
         // setup mock objects
@@ -162,9 +167,6 @@ public class DeleteOperationTest extends AbstractDatabaseTest
             "delete from schema.table where c2 = 1234 and c1 = 'toto'",
         };
 
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
-        valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
             new Column("c2", DataType.NUMERIC),
@@ -172,8 +174,10 @@ public class DeleteOperationTest extends AbstractDatabaseTest
         };
         String[] primaryKeys = {"c2", "c1"};
 
-        ITable table = new DefaultTable(new DefaultTableMetaData(
-                tableName, columns, primaryKeys), valueList);
+        DefaultTable table = new DefaultTable(new DefaultTableMetaData(
+                tableName, columns, primaryKeys));
+        table.addRow(new Object[]{"toto", "1234", Boolean.FALSE});
+        table.addRow(new Object[]{"qwerty", new Double("123.45"), "true"});
         IDataSet dataSet = new DefaultDataSet(new ITable[]{table, table});
 
         // setup mock objects
@@ -205,7 +209,7 @@ public class DeleteOperationTest extends AbstractDatabaseTest
     {
         Column[] columns = {new Column("c1", DataType.VARCHAR)};
         ITable table = new DefaultTable(new DefaultTableMetaData(
-                "name", columns, columns), new ArrayList());
+                "name", columns, columns));
         IDataSet dataSet = new DefaultDataSet(table);
 
         // setup mock objects

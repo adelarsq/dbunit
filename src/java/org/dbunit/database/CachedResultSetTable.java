@@ -35,8 +35,8 @@ import java.sql.SQLException;
  */
 public class CachedResultSetTable extends CachedTable implements IResultSetTable
 {
-    public CachedResultSetTable(ITableMetaData metaData, ResultSet resultSet
-            ) throws SQLException, DataSetException
+    public CachedResultSetTable(ITableMetaData metaData, ResultSet resultSet)
+            throws SQLException, DataSetException
     {
         this(new ForwardOnlyResultSetTable(metaData, resultSet));
     }
@@ -52,7 +52,7 @@ public class CachedResultSetTable extends CachedTable implements IResultSetTable
         super(table.getTableMetaData());
         try
         {
-            _rowList.addAll(createRowList(table));
+            addTableRows(table);
         }
         finally
         {
@@ -65,7 +65,7 @@ public class CachedResultSetTable extends CachedTable implements IResultSetTable
 
     public void close() throws DataSetException
     {
-        // nothing to do, already closed
+        // nothing to do, resultset already been closed
     }
 }
 

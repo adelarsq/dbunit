@@ -21,8 +21,7 @@
  
 package org.dbunit.dataset;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * @author Manuel Laflamme
@@ -33,38 +32,12 @@ public class CachedTable extends DefaultTable
 {
     public CachedTable(ITable table) throws DataSetException
     {
-        super(table.getTableMetaData(), createRowList(table));
+        super(table.getTableMetaData());
+        addTableRows(table);
     }
 
     protected CachedTable(ITableMetaData metaData)
     {
         super(metaData);
-    }
-
-    protected static List createRowList(ITable table) throws DataSetException
-    {
-        List rowList = new ArrayList();
-        try
-        {
-            Column[] columns = table.getTableMetaData().getColumns();
-            if (columns.length > 0)
-            {
-                for (int i = 0; ; i++)
-                {
-                    Object[] rowValues = new Object[columns.length];
-                    for (int j = 0; j < columns.length; j++)
-                    {
-                        Column column = columns[j];
-                        rowValues[j] = table.getValue(i, column.getColumnName());
-                    }
-                    rowList.add(rowValues);
-                }
-            }
-        }
-        catch(RowOutOfBoundsException e)
-        {
-            // end of table
-        }
-        return rowList;
     }
 }

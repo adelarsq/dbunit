@@ -37,8 +37,6 @@ import org.dbunit.dataset.xml.XmlDataSet;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Manuel Laflamme
@@ -89,9 +87,6 @@ public class UpdateOperationTest extends AbstractDatabaseTest
             "update schema.table set c2 = 123.45, c3 = NULL where c4 = 0 and c1 = 'qwerty'",
         };
 
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{"toto", "1234", "false", "0"});
-        valueList.add(new Object[]{"qwerty", new Double("123.45"), null, "0"});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
             new Column("c2", DataType.NUMERIC),
@@ -99,8 +94,10 @@ public class UpdateOperationTest extends AbstractDatabaseTest
             new Column("c4", DataType.NUMERIC),
         };
         String[] primaryKeys = {"c4", "c1"};
-        ITable table = new DefaultTable(new DefaultTableMetaData(
-                tableName, columns, primaryKeys), valueList);
+        DefaultTable table = new DefaultTable(new DefaultTableMetaData(
+                tableName, columns, primaryKeys));
+        table.addRow(new Object[]{"toto", "1234", "false", "0"});
+        table.addRow(new Object[]{"qwerty", new Double("123.45"), null, "0"});
         IDataSet dataSet = new DefaultDataSet(table);
 
         // setup mock objects
@@ -137,9 +134,6 @@ public class UpdateOperationTest extends AbstractDatabaseTest
             "update [schema].[table] set [c2] = 123.45, [c3] = NULL where [c4] = 0 and [c1] = 'qwerty'",
         };
 
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{"toto", "1234", "false", "0"});
-        valueList.add(new Object[]{"qwerty", new Double("123.45"), null, "0"});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
             new Column("c2", DataType.NUMERIC),
@@ -147,8 +141,10 @@ public class UpdateOperationTest extends AbstractDatabaseTest
             new Column("c4", DataType.NUMERIC),
         };
         String[] primaryKeys = {"c4", "c1"};
-        ITable table = new DefaultTable(new DefaultTableMetaData(
-                tableName, columns, primaryKeys), valueList);
+        DefaultTable table = new DefaultTable(new DefaultTableMetaData(
+                tableName, columns, primaryKeys));
+        table.addRow(new Object[]{"toto", "1234", "false", "0"});
+        table.addRow(new Object[]{"qwerty", new Double("123.45"), null, "0"});
         IDataSet dataSet = new DefaultDataSet(table);
 
         // setup mock objects
@@ -189,9 +185,6 @@ public class UpdateOperationTest extends AbstractDatabaseTest
             "update schema.table set c2 = 123.45, c3 = NULL where c4 = 0 and c1 = 'qwerty'",
         };
 
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{"toto", "1234", "false", "0"});
-        valueList.add(new Object[]{"qwerty", new Double("123.45"), null, "0"});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
             new Column("c2", DataType.NUMERIC),
@@ -199,8 +192,10 @@ public class UpdateOperationTest extends AbstractDatabaseTest
             new Column("c4", DataType.NUMERIC),
         };
         String[] primaryKeys = {"c4", "c1"};
-        ITable table = new DefaultTable(new DefaultTableMetaData(
-                tableName, columns, primaryKeys), valueList);
+        DefaultTable table = new DefaultTable(new DefaultTableMetaData(
+                tableName, columns, primaryKeys));
+        table.addRow(new Object[]{"toto", "1234", "false", "0"});
+        table.addRow(new Object[]{"qwerty", new Double("123.45"), null, "0"});
         IDataSet dataSet = new DefaultDataSet(new ITable[]{table, table});
 
         // setup mock objects
@@ -232,7 +227,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
     {
         Column[] columns = {new Column("c1", DataType.VARCHAR)};
         ITable table = new DefaultTable(new DefaultTableMetaData(
-                "name", columns, columns), new ArrayList());
+                "name", columns, columns));
         IDataSet dataSet = new DefaultDataSet(table);
 
         // setup mock objects

@@ -38,8 +38,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Manuel Laflamme
@@ -63,15 +61,14 @@ public class InsertOperationTest extends AbstractDatabaseTest
         };
 
         // setup table
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
-        valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
             new Column("c2", DataType.NUMERIC),
             new Column("c3", DataType.BOOLEAN),
         };
-        DefaultTable table = new DefaultTable(tableName, columns, valueList);
+        DefaultTable table = new DefaultTable(tableName, columns);
+        table.addRow(new Object[]{"toto", "1234", Boolean.FALSE});
+        table.addRow(new Object[]{"qwerty", new Double("123.45"), "true"});
         IDataSet dataSet = new DefaultDataSet(table);
 
         // setup mock objects
@@ -163,18 +160,17 @@ public class InsertOperationTest extends AbstractDatabaseTest
         };
 
         // setup table
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
-        valueList.add(new Object[]{ITable.NO_VALUE, new Double("123.45"), "true"});
-        valueList.add(new Object[]{"qwerty1", "1", Boolean.TRUE});
-        valueList.add(new Object[]{"qwerty2", "2", Boolean.FALSE});
-        valueList.add(new Object[]{ITable.NO_VALUE, ITable.NO_VALUE, Boolean.FALSE});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
             new Column("c2", DataType.NUMERIC),
             new Column("c3", DataType.BOOLEAN),
         };
-        DefaultTable table = new DefaultTable(tableName, columns, valueList);
+        DefaultTable table = new DefaultTable(tableName, columns);
+        table.addRow(new Object[]{"toto", "1234", Boolean.FALSE});
+        table.addRow(new Object[]{ITable.NO_VALUE, new Double("123.45"), "true"});
+        table.addRow(new Object[]{"qwerty1", "1", Boolean.TRUE});
+        table.addRow(new Object[]{"qwerty2", "2", Boolean.FALSE});
+        table.addRow(new Object[]{ITable.NO_VALUE, ITable.NO_VALUE, Boolean.FALSE});
         IDataSet dataSet = new DefaultDataSet(table);
 
         // setup mock objects
@@ -266,15 +262,14 @@ public class InsertOperationTest extends AbstractDatabaseTest
         };
 
         // setup table
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
-        valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
             new Column("c2", DataType.NUMERIC),
             new Column("c3", DataType.BOOLEAN),
         };
-        DefaultTable table = new DefaultTable(tableName, columns, valueList);
+        DefaultTable table = new DefaultTable(tableName, columns);
+        table.addRow(new Object[]{"toto", "1234", Boolean.FALSE});
+        table.addRow(new Object[]{"qwerty", new Double("123.45"), "true"});
         IDataSet dataSet = new DefaultDataSet(table);
 
         // setup mock objects
@@ -316,15 +311,14 @@ public class InsertOperationTest extends AbstractDatabaseTest
         };
 
         // setup table
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
-        valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
             new Column("c2", DataType.NUMERIC),
             new Column("c3", DataType.BOOLEAN),
         };
-        DefaultTable table = new DefaultTable(tableName, columns, valueList);
+        DefaultTable table = new DefaultTable(tableName, columns);
+        table.addRow(new Object[]{"toto", "1234", Boolean.FALSE});
+        table.addRow(new Object[]{"qwerty", new Double("123.45"), "true"});
         IDataSet dataSet = new DefaultDataSet(new ITable[]{table, table});
 
         // setup mock objects
@@ -356,7 +350,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
     {
         Column[] columns = {new Column("c1", DataType.VARCHAR)};
         ITable table = new DefaultTable(new DefaultTableMetaData(
-                "name", columns, columns), new ArrayList());
+                "name", columns, columns));
         IDataSet dataSet = new DefaultDataSet(table);
 
         // setup mock objects

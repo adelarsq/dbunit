@@ -27,8 +27,6 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -89,9 +87,8 @@ public class ReplacementTableTest extends AbstractTableTest
             "null",
         };
 
-        List actualRowList = new ArrayList();
-        actualRowList.add(actualRow);
-        ITable originalTable = new DefaultTable(tableName, columns, actualRowList);
+        DefaultTable originalTable = new DefaultTable(tableName, columns);
+        originalTable.addRow(actualRow);
         ReplacementTable actualTable = new ReplacementTable(originalTable);
         actualTable.addReplacementObject(Boolean.TRUE, trueObject);
         actualTable.addReplacementObject(Boolean.FALSE, falseObject);
@@ -111,9 +108,8 @@ public class ReplacementTableTest extends AbstractTableTest
             null,
         };
 
-        List expectedRowList = new ArrayList();
-        expectedRowList.add(expectedRow);
-        ITable expectedTable = new DefaultTable(tableName, columns, expectedRowList);
+        DefaultTable expectedTable = new DefaultTable(tableName, columns);
+        expectedTable.addRow(expectedRow);
 
         Assertion.assertEquals(expectedTable, actualTable);
     }
@@ -145,9 +141,8 @@ public class ReplacementTableTest extends AbstractTableTest
             null,
         };
 
-        List actualRowList = new ArrayList();
-        actualRowList.add(actualRow);
-        ITable originalTable = new DefaultTable(tableName, columns, actualRowList);
+        DefaultTable originalTable = new DefaultTable(tableName, columns);
+        originalTable.addRow(actualRow);
         ReplacementTable actualTable = new ReplacementTable(originalTable);
         actualTable.addReplacementSubstring("substring", "replacement");
 
@@ -163,9 +158,8 @@ public class ReplacementTableTest extends AbstractTableTest
             null,
         };
 
-        List expectedRowList = new ArrayList();
-        expectedRowList.add(expectedRow);
-        ITable expectedTable = new DefaultTable(tableName, columns, expectedRowList);
+        DefaultTable expectedTable = new DefaultTable(tableName, columns);
+        expectedTable.addRow(expectedRow);
 
         Assertion.assertEquals(expectedTable, actualTable);
     }
@@ -223,9 +217,8 @@ public class ReplacementTableTest extends AbstractTableTest
             "${}",
         };
 
-        List actualRowList = new ArrayList();
-        actualRowList.add(actualRow);
-        ITable originalTable = new DefaultTable(tableName, columns, actualRowList);
+        DefaultTable originalTable = new DefaultTable(tableName, columns);
+        originalTable.addRow(actualRow);
         ReplacementTable actualTable = new ReplacementTable(originalTable);
         actualTable.addReplacementSubstring("substring", "replacement");
         actualTable.setSubstringDelimiters("${", "}");
@@ -255,9 +248,8 @@ public class ReplacementTableTest extends AbstractTableTest
             "${}",
         };
 
-        List expectedRowList = new ArrayList();
-        expectedRowList.add(expectedRow);
-        ITable expectedTable = new DefaultTable(tableName, columns, expectedRowList);
+        DefaultTable expectedTable = new DefaultTable(tableName, columns);
+        expectedTable.addRow(expectedRow);
 
         Assertion.assertEquals(expectedTable, actualTable);
     }
@@ -311,9 +303,8 @@ public class ReplacementTableTest extends AbstractTableTest
             "!!",
         };
 
-        List actualRowList = new ArrayList();
-        actualRowList.add(actualRow);
-        ITable originalTable = new DefaultTable(tableName, columns, actualRowList);
+        DefaultTable originalTable = new DefaultTable(tableName, columns);
+        originalTable.addRow(actualRow);
         ReplacementTable actualTable = new ReplacementTable(originalTable);
         actualTable.addReplacementSubstring("substring", "replacement");
         actualTable.setSubstringDelimiters("!", "!");
@@ -341,9 +332,8 @@ public class ReplacementTableTest extends AbstractTableTest
             "!!",
         };
 
-        List expectedRowList = new ArrayList();
-        expectedRowList.add(expectedRow);
-        ITable expectedTable = new DefaultTable(tableName, columns, expectedRowList);
+        DefaultTable expectedTable = new DefaultTable(tableName, columns);
+        expectedTable.addRow(expectedRow);
 
         Assertion.assertEquals(expectedTable, actualTable);
     }

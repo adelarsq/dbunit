@@ -32,8 +32,12 @@ import java.util.List;
 public class DefaultTable extends AbstractTable
 {
     private final ITableMetaData _metaData;
-    protected final List _rowList;
+    private final List _rowList;
 
+    /**
+     * Creates a new empty table with specified metadata and values.
+     * @deprecated Use public mutators to initialize table values instead
+     */
     public DefaultTable(ITableMetaData metaData, List list)
     {
         _metaData = metaData;
@@ -49,41 +53,100 @@ public class DefaultTable extends AbstractTable
         _rowList = new ArrayList();
     }
 
+    /**
+     * Creates a new empty table with specified metadata and values.
+     * @deprecated Use public mutators to initialize table values instead
+     */
     public DefaultTable(String tableName, Column[] columns, List list)
     {
         _metaData = new DefaultTableMetaData(tableName, columns);
         _rowList = list;
     }
 
+    /**
+     * Creates a new empty table with specified metadata.
+     */
     public DefaultTable(String tableName, Column[] columns)
     {
         _metaData = new DefaultTableMetaData(tableName, columns);
         _rowList = new ArrayList();
     }
 
-    protected DefaultTable(ITableMetaData metaData)
+    public DefaultTable(ITableMetaData metaData)
     {
         _metaData = metaData;
         _rowList = new ArrayList();
     }
 
+    /**
+     * Inserts a new empty row. You can add values with {@link #setValue}.
+     */
     public void addRow() throws DataSetException
     {
         int columnCount = _metaData.getColumns().length;
         _rowList.add(new Object[columnCount]);
     }
 
+    /**
+     * Inserts a new row initialized with specified array of values.
+     * @param values The array of values. Each value correspond to the column at the
+     * same index from {@link ITableMetaData#getColumns}.
+     * @see #getTableMetaData
+     */
     public void addRow(Object[] values) throws DataSetException
     {
         _rowList.add(values);
     }
 
-    public void setValue(int row, String column, Object value) throws DataSetException
+    /**
+     * Inserts all rows from the specified table.
+     * @param table The source table.
+     */
+    public void addTableRows(ITable table) throws DataSetException
+    {
+        try
+        {
+            Column[] columns = _metaData.getColumns();
+            if (columns.length > 0)
+            {
+                for (int i = 0; ; i++)
+                {
+                    Object[] rowValues = new Object[columns.length];
+                    for (int j = 0; j < columns.length; j++)
+                    {
+                        Column column = columns[j];
+                        rowValues[j] = table.getValue(i, column.getColumnName());
+                    }
+                    _rowList.add(rowValues);
+                }
+            }
+        }
+        catch(RowOutOfBoundsException e)
+        {
+            // end of table
+        }
+    }
+
+    /**
+     * Replaces the value at the specified position in this table with the specified value.
+     * @param row The row index
+     * @param column The column name
+     * @param value The value to store at the specified location
+     * @return the value previously at the specified location
+     * @throws RowOutOfBoundsException if the row index is out of range
+     * @throws NoSuchColumnException if the column does not exist
+     * @throws DataSetException if an unexpected error occurs
+     */
+    public Object setValue(int row, String column, Object value)
+            throws RowOutOfBoundsException, NoSuchColumnException, DataSetException
     {
         assertValidRowIndex(row);
 
         Object[] rowValues = (Object[])_rowList.get(row);
-        rowValues[getColumnIndex(column)] = value;
+        int columnIndex = getColumnIndex(column);
+        Object oldValue = rowValues[columnIndex];
+        rowValues[columnIndex] = value;
+        return oldValue;
     }
 
     ////////////////////////////////////////////////////////////////////////////

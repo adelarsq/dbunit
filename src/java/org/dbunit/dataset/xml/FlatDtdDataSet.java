@@ -36,8 +36,6 @@ import java.util.*;
  */
 public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 {
-    private static final List EMPTY_LIST = Arrays.asList(new Object[0]);
-
     private final List _tableNames = new ArrayList();
     private final Map _tableMap = new HashMap();
     private boolean _ready = false;
@@ -176,7 +174,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
     {
         String tableName = metaData.getTableName();
         _tableNames.add(tableName);
-        _tableMap.put(tableName.toUpperCase(), new DefaultTable(metaData, EMPTY_LIST));
+        _tableMap.put(tableName.toUpperCase(), new DefaultTable(metaData));
     }
 
     public void endTable() throws DataSetException

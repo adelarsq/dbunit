@@ -32,7 +32,6 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 import java.io.FileReader;
 import java.io.Reader;
-import java.util.ArrayList;
 
 /**
  * @author Manuel Laflamme
@@ -158,7 +157,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
     {
         Column[] columns = {new Column("c1", DataType.VARCHAR)};
         ITable table = new DefaultTable(new DefaultTableMetaData(
-                "name", columns, columns), new ArrayList());
+                "name", columns, columns));
         IDataSet dataSet = new DefaultDataSet(table);
 
         // setup mock objects

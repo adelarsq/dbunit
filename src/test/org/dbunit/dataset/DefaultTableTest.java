@@ -23,9 +23,6 @@ package org.dbunit.dataset;
 
 import org.dbunit.dataset.datatype.DataType;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Manuel Laflamme
  * @version $Revision$
@@ -46,7 +43,7 @@ public class DefaultTableTest extends AbstractTableTest
     protected ITable createTable(int columnCount, int rowCount, int startRow)
             throws Exception
     {
-        List list = new ArrayList();
+        DefaultTable table = new DefaultTable(createTableMetaData(columnCount));
         for (int i = 0; i < rowCount; i++)
         {
             Object[] rowValues = new Object[columnCount];
@@ -54,11 +51,9 @@ public class DefaultTableTest extends AbstractTableTest
             {
                 rowValues[j] = "row " + (i + startRow) + " col " + j;
             }
-
-            list.add(rowValues);
+            table.addRow(rowValues);
         }
-
-        return new DefaultTable(createTableMetaData(columnCount), list);
+        return table;
     }
 
     protected ITableMetaData createTableMetaData(int columnCount) throws Exception
@@ -77,12 +72,9 @@ public class DefaultTableTest extends AbstractTableTest
         String columnName = "COLUMN0";
         Object expected = ITable.NO_VALUE;
 
-        List list = new ArrayList();
-        list.add(new Object[]{
-            ITable.NO_VALUE, ITable.NO_VALUE, ITable.NO_VALUE,
-            ITable.NO_VALUE, ITable.NO_VALUE, ITable.NO_VALUE});
-
-        ITable table = new DefaultTable(createTableMetaData(COLUMN_COUNT), list);
+        DefaultTable table = new DefaultTable(createTableMetaData(COLUMN_COUNT));
+        table.addRow(new Object[]{ITable.NO_VALUE, ITable.NO_VALUE, ITable.NO_VALUE,
+                                  ITable.NO_VALUE, ITable.NO_VALUE, ITable.NO_VALUE});
         Column[] columns = table.getTableMetaData().getColumns();
         assertNotNull(DataSetUtils.getColumn(columnName, columns));
         assertEquals("no value", expected, table.getValue(0, columnName));

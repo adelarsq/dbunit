@@ -39,8 +39,7 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
     private ITable[] _tables;
 
     private List _tableList;
-    private ITableMetaData _activeMetaData;
-    private List _activeRowList;
+    private DefaultTable _activeTable;
 
     /**
      * Default constructor.
@@ -98,21 +97,19 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public void startTable(ITableMetaData metaData) throws DataSetException
     {
-        _activeMetaData = metaData;
-        _activeRowList = new ArrayList();
+        _activeTable = new DefaultTable(metaData);
 //        System.out.println("START " + _activeMetaData.getTableName());
     }
 
     public void endTable() throws DataSetException
     {
 //         System.out.println("END " + _activeMetaData.getTableName());
-        _tableList.add(new DefaultTable(_activeMetaData, _activeRowList));
-        _activeRowList = null;
-        _activeMetaData = null;
+        _tableList.add(_activeTable);
+        _activeTable = null;
     }
 
     public void row(Object[] values) throws DataSetException
     {
-        _activeRowList.add(values);
+        _activeTable.addRow(values);
     }
 }

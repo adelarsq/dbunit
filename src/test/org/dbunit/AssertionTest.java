@@ -21,16 +21,23 @@
 
 package org.dbunit;
 
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.CompositeDataSet;
+import org.dbunit.dataset.CompositeTable;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
+
 import java.io.FileReader;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Manuel Laflamme
@@ -153,10 +160,9 @@ public class AssertionTest extends TestCase
         Object[] actualRow = new Object[] {
             Boolean.TRUE,
         };
-        List actualRowList = new ArrayList();
-        actualRowList.add(actualRow);
-        ITable actualTable = new DefaultTable(tableName,
-                actualColumns, actualRowList);
+        DefaultTable actualTable = new DefaultTable(tableName,
+                actualColumns);
+        actualTable.addRow(actualRow);
 
         // Setup expected table
         Column[] expectedColumns = new Column[] {
@@ -165,10 +171,10 @@ public class AssertionTest extends TestCase
         Object[] expectedRow = new Object[] {
             "1",
         };
-        List expectedRowList = new ArrayList();
-        expectedRowList.add(expectedRow);
-        ITable expectedTable = new DefaultTable(tableName,
-                expectedColumns, expectedRowList);
+        DefaultTable expectedTable = new DefaultTable(tableName,
+                expectedColumns);
+        expectedTable.addRow(expectedRow);
+
 
         try
         {
@@ -199,10 +205,10 @@ public class AssertionTest extends TestCase
             "0",
             new BigDecimal("123.4"),
         };
-        List actualRowList = new ArrayList();
-        actualRowList.add(actualRow);
-        ITable actualTable = new DefaultTable(tableName,
-                actualColumns, actualRowList);
+        DefaultTable actualTable = new DefaultTable(tableName,
+                actualColumns);
+        actualTable.addRow(actualRow);
+
 
         // Setup expected table
         Column[] expectedColumns = new Column[] {
@@ -217,10 +223,9 @@ public class AssertionTest extends TestCase
             new Integer("0"),
             "123.4000",
         };
-        List expectedRowList = new ArrayList();
-        expectedRowList.add(expectedRow);
-        ITable expectedTable = new DefaultTable(tableName,
-                expectedColumns, expectedRowList);
+        DefaultTable expectedTable = new DefaultTable(tableName,
+                expectedColumns);
+        expectedTable.addRow(expectedRow);
 
         Assertion.assertEquals(expectedTable, actualTable);
     }

@@ -27,6 +27,7 @@ import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.stream.AbstractProducerTest;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.stream.MockDataSetConsumer;
+
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -34,7 +35,6 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
 
 /**
  * @author Manuel Laflamme
@@ -149,8 +149,7 @@ public class FlatXmlProducerTest extends AbstractProducerTest
                 "</dataset>";
         InputSource source = new InputSource(new StringReader(content));
         DefaultDataSet metaDataSet = new DefaultDataSet();
-        metaDataSet.addTable(
-                new DefaultTable(tableName, expectedColumns, new ArrayList()));
+        metaDataSet.addTable(new DefaultTable(tableName, expectedColumns));
         IDataSetProducer producer = new FlatXmlProducer(source, metaDataSet);
         producer.setConsumer(consumer);
 

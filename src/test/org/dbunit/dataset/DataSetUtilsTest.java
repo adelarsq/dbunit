@@ -113,10 +113,10 @@ public class DataSetUtilsTest extends TestCase
     {
         String[] expected = {"t0", "t1", "t2", "t3"};
         ITable[] testTables = new ITable[]{
-            new DefaultTable(new DefaultTableMetaData("t0", null), null),
-            new DefaultTable(new DefaultTableMetaData("t1", null), null),
-            new DefaultTable(new DefaultTableMetaData("t2", null), null),
-            new DefaultTable(new DefaultTableMetaData("t3", null), null),
+            new DefaultTable("t0"),
+            new DefaultTable("t1"),
+            new DefaultTable("t2"),
+            new DefaultTable("t3"),
         };
 
         ITable[] tables = DataSetUtils.getTables(new DefaultDataSet(testTables));
@@ -132,10 +132,10 @@ public class DataSetUtilsTest extends TestCase
     {
         String[] expected = {"t0", "t2"};
         ITable[] testTables = new ITable[]{
-            new DefaultTable(new DefaultTableMetaData("t0", null), null),
-            new DefaultTable(new DefaultTableMetaData("t1", null), null),
-            new DefaultTable(new DefaultTableMetaData("t2", null), null),
-            new DefaultTable(new DefaultTableMetaData("t3", null), null),
+            new DefaultTable("t0"),
+            new DefaultTable("t1"),
+            new DefaultTable("t2"),
+            new DefaultTable("t3"),
         };
 
         ITable[] tables = DataSetUtils.getTables(expected,
@@ -152,10 +152,10 @@ public class DataSetUtilsTest extends TestCase
     {
         String[] expected = {"t3", "t2", "t1", "t0"};
         ITable[] testTables = new ITable[]{
-            new DefaultTable(new DefaultTableMetaData("t0", null), null),
-            new DefaultTable(new DefaultTableMetaData("t1", null), null),
-            new DefaultTable(new DefaultTableMetaData("t2", null), null),
-            new DefaultTable(new DefaultTableMetaData("t3", null), null),
+            new DefaultTable("t0"),
+            new DefaultTable("t1"),
+            new DefaultTable("t2"),
+            new DefaultTable("t3"),
         };
 
         String[] names = DataSetUtils.getReverseTableNames(new DefaultDataSet(testTables));
