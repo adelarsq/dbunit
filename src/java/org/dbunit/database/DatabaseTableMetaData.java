@@ -25,6 +25,8 @@ import org.dbunit.dataset.AbstractTableMetaData;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.NoColumnsFoundException;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 
@@ -32,6 +34,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,6 +57,38 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     {
         _tableName = tableName;
         _connection = connection;
+    }
+
+    public static ITableMetaData createMetaData(String tableName,
+            ResultSet resultSet, IDataTypeFactory dataTypeFactory)
+            throws DataSetException, SQLException
+    {
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        Column[] columns = new Column[metaData.getColumnCount()];
+        for (int i = 0; i < columns.length; i++)
+        {
+            int columnType = metaData.getColumnType(i + 1);
+            String columnTypeName = metaData.getColumnTypeName(i + 1);
+            DataType dataType = dataTypeFactory.createDataType(
+                    columnType, columnTypeName);
+            columns[i] = new Column(
+                    metaData.getColumnName(i + 1),
+                    dataType,
+                    columnTypeName,
+                    Column.nullableValue(metaData.isNullable(i + 1)));
+        }
+
+        return new DefaultTableMetaData(tableName, columns);
+    }
+
+    public static ITableMetaData createMetaData(String tableName,
+            ResultSet resultSet, IDatabaseConnection connection)
+            throws SQLException, DataSetException
+    {
+        DatabaseConfig config = connection.getConfig();
+        IDataTypeFactory typeFactory = (IDataTypeFactory)config.getProperty(
+                DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
+        return createMetaData(tableName, resultSet, typeFactory);
     }
 
     private String[] getPrimaryKeyNames() throws SQLException

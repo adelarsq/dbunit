@@ -78,7 +78,7 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
             {
                 IDataTypeFactory typeFactory = (IDataTypeFactory)_databaseConfig.getProperty(
                         DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
-                ITableMetaData metaData = AbstractResultSetTable.createTableMetaData(
+                ITableMetaData metaData = DatabaseTableMetaData.createMetaData(
                         resultName, resultSet, typeFactory);
                 return new CachedResultSetTable(metaData, resultSet);
             }
