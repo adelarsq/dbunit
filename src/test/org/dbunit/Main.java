@@ -39,4 +39,10 @@ public class Main
                 connection.createDataSet()),
                 new FileOutputStream("test2.dtd"));
     }
+
+    public void test() throws Exception
+    {
+    }
+
 }
+

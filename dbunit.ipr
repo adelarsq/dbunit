@@ -144,19 +144,6 @@
   </component>
   <component class="com.intellij.debugger.Debugger">
     <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseTableMetaDataTest.java" line="91">
-        <option name="ENABLED" value="true" />
-        <option name="SUSPEND_VM" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CONDITION" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="LOG_MESSAGE" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INVERSE_CLASS_FILLTERS" value="false" />
-      </breakpoint>
       <breakpoint url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseTableMetaDataTest.java" line="109">
         <option name="ENABLED" value="true" />
         <option name="SUSPEND_VM" value="true" />
@@ -336,13 +323,7 @@
   </component>
   <component class="com.intellij.ide.desktop.IdeDocumentManager">
     <recent_files>
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseTableMetaData.java" column="25" line="131" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/AbstractDataSetTest.java" column="9" line="39" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/database/ResultsetTableTest.java" column="16" line="48" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/database/AllTests.java" column="15" line="36" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/HypersonicEnvironment.java" column="38" line="36" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/AbstractBatchOperation.java" column="0" line="92" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseTableMetaDataTest.java" column="20" line="107" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/InsertOperationTest.java" column="0" line="113" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/InsertOperation.java" column="13" line="36" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/UpdateOperation.java" column="13" line="34" />
@@ -351,6 +332,12 @@
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseDataSourceConnection.java" column="27" line="42" />
       <file_info url="file://$PROJECT_DIR$/profile.properties" column="0" line="5" />
       <file_info url="file://$PROJECT_DIR$/src/sql/test.sql" column="9" line="48" />
+      <file_info url="jar://D:/jdk1.3.1/src.jar!/src/java/sql/DatabaseMetaData.java" column="18" line="1473" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/Main.java" column="69" line="36" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseTableMetaDataTest.java" column="53" line="82" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseTableMetaData.java" column="0" line="148" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" column="0" line="103" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/Column.java" column="87" line="96" />
     </recent_files>
   </component>
   <component class="com.intellij.ide.hierarchy.HierarchyBrowserManager">
@@ -361,24 +348,22 @@
   <component class="com.intellij.ide.impl.ProjectWorkspace" />
   <component class="com.intellij.ide.navigator.impl.ProjectNavigatorSettings">
     <navigator id="ClasspathNavigator" flattenPackages="false" showMembers="false">
-      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/electric/xml" />
       <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/" />
       <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/electric" />
+      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/electric/xml" />
     </navigator>
     <navigator id="ProjectNavigator" flattenPackages="false" showMembers="false">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
     </navigator>
     <navigator id="SourcepathNavigator" flattenPackages="false" showMembers="true">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/operation" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit/database" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/database" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
     </navigator>
   </component>
   <component class="com.intellij.ide.structureView.StructureViewFactory">
@@ -393,17 +378,17 @@
     <property name="GoToClass.includeLibraries" value="true" />
   </component>
   <component class="com.intellij.javadoc.JavadocGenerationManager">
-    <option name="OUTPUT_DIRECTORY" />
-    <option name="OPTION_SCOPE" />
+    <option name="OUTPUT_DIRECTORY" value="K:/java/projects/dbunit-cvs/__dbunit/docs/api" />
+    <option name="OPTION_SCOPE" value="protected" />
     <option name="OPTION_HIERARCHY" value="false" />
     <option name="OPTION_NAVIGATOR" value="false" />
     <option name="OPTION_INDEX" value="false" />
     <option name="OPTION_SEPARATE_INDEX" value="false" />
     <option name="OPTION_USE_1_1" value="false" />
     <option name="OPTION_DOCUMENT_TAG_USE" value="false" />
-    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="false" />
-    <option name="OPTION_DOCUMENT_TAG_VERSION" value="false" />
-    <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="true" />
+    <option name="OPTION_DOCUMENT_TAG_VERSION" value="true" />
+    <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="true" />
     <option name="OPTION_DEPRECATED_LIST" value="false" />
     <option name="OTHER_OPTIONS" />
     <option name="HEAP_SIZE" />

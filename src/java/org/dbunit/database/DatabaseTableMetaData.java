@@ -146,7 +146,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                             Column column = new Column(
                                     columnName,
                                     DataType.forSqlType(sqlType),
-                                    nullable == DatabaseMetaData.columnNullable);
+                                    Column.nullableValue(nullable));
                             columnList.add(column);
                         }
                         catch (DataTypeException e)
@@ -187,4 +187,5 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     }
 
 }
+
 

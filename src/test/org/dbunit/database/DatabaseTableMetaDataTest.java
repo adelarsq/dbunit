@@ -73,14 +73,14 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         for (int i = 0; i < notNullable.length; i++)
         {
             Column column = DataSetUtils.getColumn(notNullable[i], columns);
-            assertEquals(notNullable[i], false, column.isNullable());
+            assertEquals(notNullable[i],  Column.NO_NULLS, column.getNullable());
         }
 
         // nullable
         for (int i = 0; i < nullable.length; i++)
         {
             Column column = DataSetUtils.getColumn(nullable[i], columns);
-            assertEquals(nullable[i], true, column.isNullable());
+            assertEquals(nullable[i], Column.NULLABLE, column.getNullable());
         }
     }
 
@@ -121,3 +121,4 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         }
     }
 }
+
