@@ -46,6 +46,8 @@ public class DatabaseConfig
             "http://www.dbunit.org/properties/escapePattern";
     public static final String PROPERTY_TABLE_TYPE =
             "http://www.dbunit.org/properties/tableType";
+    public static final String PROPERTY_PRIMARY_KEY_FILTER =
+            "http://www.dbunit.org/properties/primaryKeyFilter";
 
     public static final String FEATURE_QUALIFIED_TABLE_NAMES =
             "http://www.dbunit.org/features/qualifiedTableNames";

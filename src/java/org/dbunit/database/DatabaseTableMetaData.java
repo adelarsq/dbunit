@@ -22,6 +22,7 @@
 package org.dbunit.database;
 
 import org.dbunit.dataset.*;
+import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 
@@ -246,7 +247,19 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         {
             try
             {
-                _primaryKeys = getPrimaryKeys(getColumns(), getPrimaryKeyNames());
+                DatabaseConfig config = _connection.getConfig();
+                IColumnFilter primaryKeysFilter = (IColumnFilter)config.getProperty(
+                        DatabaseConfig.PROPERTY_PRIMARY_KEY_FILTER);
+                if (primaryKeysFilter != null)
+                {
+                    _primaryKeys = getPrimaryKeys(getTableName(), getColumns(),
+                            primaryKeysFilter);
+                }
+                else
+                {
+                    _primaryKeys = getPrimaryKeys(getColumns(),
+                            getPrimaryKeyNames());
+                }
             }
             catch (SQLException e)
             {

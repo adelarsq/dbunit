@@ -21,6 +21,8 @@
 
 package org.dbunit.dataset;
 
+import org.dbunit.dataset.filter.IColumnFilter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,15 +50,22 @@ public abstract class AbstractTableMetaData implements ITableMetaData
             {
                 keyList.add(primaryKey);
             }
-//            else
-//            {
-//                // primary key not found in table
-//                if (_primaryKeys[i] == null)
-//                {
-//                    throw new NoPrimaryKeyException("<" + primaryKeys[i] +
-//                            "> not found in table <" + tableName + ">");
-//                }
-//            }
+        }
+
+        return (Column[])keyList.toArray(new Column[0]);
+    }
+
+    protected static Column[] getPrimaryKeys(String tableName, Column[] columns,
+            IColumnFilter columnFilter)
+    {
+        List keyList = new ArrayList();
+        for (int i = 0; i < columns.length; i++)
+        {
+            Column column = columns[i];
+            if (columnFilter.accept(tableName, column))
+            {
+                keyList.add(column);
+            }
         }
 
         return (Column[])keyList.toArray(new Column[0]);

@@ -23,6 +23,7 @@ package org.dbunit.database;
 
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.dataset.*;
+import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.datatype.DataType;
 
 /**
@@ -177,6 +178,31 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
                 _connection.getConnection(), _connection.getSchema());
         connection.getConfig().setFeature(
                 DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, true);
+
+        ITableMetaData metaData = connection.createDataSet().getTableMetaData(tableName);
+        Column[] columns = metaData.getPrimaryKeys();
+
+        assertEquals("column count", expected.length, columns.length);
+        for (int i = 0; i < columns.length; i++)
+        {
+            assertEquals("column name", expected[i], columns[i].getColumnName());
+        }
+    }
+
+    public void testGetPrimaryKeysWithColumnFilters() throws Exception
+    {
+        String tableName = DataSetUtils.getQualifiedName(
+                _connection.getSchema(), "PK_TABLE");
+        String[] expected = {"PK0", "PK2"};
+
+        DefaultColumnFilter filter = new DefaultColumnFilter();
+        filter.includeColumn("PK0");
+        filter.includeColumn("PK2");
+
+        IDatabaseConnection connection = new DatabaseConnection(
+                _connection.getConnection(), _connection.getSchema());
+        connection.getConfig().setProperty(
+                DatabaseConfig.PROPERTY_PRIMARY_KEY_FILTER, filter);
 
         ITableMetaData metaData = connection.createDataSet().getTableMetaData(tableName);
         Column[] columns = metaData.getPrimaryKeys();
