@@ -28,6 +28,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.operation.mssqlserver.InsertIdentityOperation;
 
 import java.io.*;
 import java.sql.Connection;
@@ -102,11 +103,23 @@ public class Operation implements DbUnitTaskStep
         {
             dbOperation = DatabaseOperation.CLEAN_INSERT;
         }
-        else
-        {
-            throw new IllegalArgumentException("Type must be one of: UPDATE, INSERT,"
-                    + " REFRESH, DELETE, DELETE_ALL, or CLEAN_INSERT,"
-                    + " but was: " + type);
+        else if ("MSSQL_CLEAN_INSERT".equals(type)) 
+	{
+	    dbOperation = InsertIdentityOperation.CLEAN_INSERT;
+	}
+	else if ("MSSQL_INSERT".equals(type)) 
+	{
+	    dbOperation = InsertIdentityOperation.INSERT;
+	} 
+	else if ("MSSQL_REFRESH".equals(type)) 
+	{
+	    dbOperation = InsertIdentityOperation.REFRESH;
+	} 
+	else 
+	{
+	    throw new IllegalArgumentException("Type must be one of: UPDATE, INSERT,"
+                    + " REFRESH, DELETE, DELETE_ALL, CLEAN_INSERT, MSSQL_INSERT, "
+		    + " or MSSQL_REFRESH but was: " + type);
         }
     }
 

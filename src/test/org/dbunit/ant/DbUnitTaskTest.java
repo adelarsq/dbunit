@@ -22,15 +22,17 @@
 
 package org.dbunit.ant;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.operation.mssqlserver.InsertIdentityOperation;
 
 import java.io.File;
 import java.sql.SQLException;
 import java.util.*;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Target;
 import org.apache.tools.ant.taskdefs.TaskdefsTest;
@@ -40,12 +42,11 @@ import org.apache.tools.ant.taskdefs.TaskdefsTest;
  *
  * @author Timothy Ruppert && Ben Cox
  * @version $Revision$
- * @see org.apache.tools.ant.taskdefs.TaskdefsTest
+ * @see org.dbunit.ant.AntTest
  */
 public class DbUnitTaskTest extends TaskdefsTest
 {
-
-    protected static Class classUnderTest = DbUnitTaskTest.class;
+    static protected Class classUnderTest = DbUnitTaskTest.class;
 
     public DbUnitTaskTest(String name)
     {
@@ -135,10 +136,16 @@ public class DbUnitTaskTest extends TaskdefsTest
                 "set-type-update", DatabaseOperation.UPDATE);
         assertOperationType("Should have been an REFRESH operation",
                 "set-type-refresh", DatabaseOperation.REFRESH);
-        assertOperationType("Should have been an DELETE operation",
-                "set-type-delete", DatabaseOperation.DELETE);
         assertOperationType("Should have been an CLEAN_INSERT operation",
                 "set-type-clean-insert", DatabaseOperation.CLEAN_INSERT);
+        assertOperationType("Should have been an DELETE operation",
+                "set-type-delete", DatabaseOperation.DELETE);
+        assertOperationType("Should have been an MSSQL_INSERT operation",
+                "set-type-mssql-insert", InsertIdentityOperation.INSERT);
+        assertOperationType("Should have been an MSSQL_REFRESH operation",
+                "set-type-mssql-refresh", InsertIdentityOperation.REFRESH);
+        assertOperationType("Should have been an MSSQL_CLEAN_INSERT operation",
+                "set-type-mssql-clean-insert", InsertIdentityOperation.CLEAN_INSERT);
     }
 
     public void testCompositeOrder()
@@ -212,14 +219,14 @@ public class DbUnitTaskTest extends TaskdefsTest
                 + pkTable.getName(), pkTable.getName().equals("PK_TABLE"));
     }
 
-    private void assertOperationType(String failMessage, String targetName, DatabaseOperation expected)
+    protected void assertOperationType(String failMessage, String targetName, DatabaseOperation expected)
     {
         Operation oper = (Operation)getFirstStepFromTarget(targetName);
         DatabaseOperation dbOper = oper.getDbOperation();
         assertTrue(failMessage + ", but was: " + dbOper, expected.equals(dbOper));
     }
 
-    private DbUnitTaskStep getFirstStepFromTarget(String targetName)
+    protected DbUnitTaskStep getFirstStepFromTarget(String targetName)
     {
         DbUnitTaskStep result = null;
         Hashtable targets = project.getTargets();
@@ -256,6 +263,8 @@ public class DbUnitTaskTest extends TaskdefsTest
             junit.textui.TestRunner.run(suite());
         }
     }
+
+
 }
 
 

@@ -5,6 +5,7 @@
   <property file="profile.properties"/>
 
   <property name="testDataSet" value="src/xml/antTestDataSet.xml"/>
+  <property name="exportDataSet" value="src/xml/antExportDataSet.xml"/>
 
   <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>
   
@@ -115,6 +116,33 @@
     </dbunit>
   </target>
 
+  <target name="set-type-mssql-insert">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="MSSQL_INSERT" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="set-type-mssql-refresh">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="MSSQL_REFRESH" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="set-type-mssql-clean-insert">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="MSSQL_CLEAN_INSERT" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
   <target name="invalid-type">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.connectionUrl}" 
@@ -167,8 +195,9 @@
             url="${dbunit.profile.connectionUrl}" 
 	    userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
-      <export dest="exportFullDataSet.xml"/>
+      <export dest="${exportDataSet}"/>
     </dbunit>
+    <delete file="${exportDataSet}"/>
   </target>
 
   <target name="test-export-partial">
@@ -176,11 +205,12 @@
             url="${dbunit.profile.connectionUrl}" 
 	    userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
-      <export dest="exportPartialDataSet.xml">
+      <export dest="${exportDataSet}">
         <table name="TEST_TABLE"/>
         <table name="PK_TABLE"/>
       </export>
     </dbunit>
+    <delete file="${exportDataSet}"/>
   </target>
 
   <target name="test-export-flat">
@@ -188,8 +218,9 @@
             url="${dbunit.profile.connectionUrl}" 
 	    userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
-      <export dest="exportDataSet.xml" flat="false"/>>
+      <export dest="${exportDataSet}" flat="false"/>>
     </dbunit>
+    <delete file="${exportDataSet}"/>
   </target>
 
 </project>
