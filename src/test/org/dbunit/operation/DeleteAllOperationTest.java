@@ -33,6 +33,8 @@ import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
+ * @author Eric Pugh
+ * @todo Refactor all the references to AbstractDataSetTest.removeExtraTestTables() to something better.
  * @version $Revision$
  */
 public class DeleteAllOperationTest extends AbstractDatabaseTest
@@ -167,11 +169,18 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
         testExecute(new LowerCaseDataSet(dataSet));
     }
 
+    /* The AbstractDataSetTest.removeExtraTestTables() is required when you
+    run on something besides hypersone (like mssql or oracle) to deal with
+    the extra tables that may not have data.
+
+    Need something like getDefaultTables or something that is totally cross dbms.
+    */
     private void testExecute(IDataSet dataSet) throws Exception
     {
-        ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
+        //dataSet = dataSet);
+        ITable[] tablesBefore = DataSetUtils.getTables(AbstractDataSetTest.removeExtraTestTables(_connection.createDataSet()));
         DatabaseOperation.DELETE_ALL.execute(_connection, dataSet);
-        ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
+        ITable[] tablesAfter = DataSetUtils.getTables(AbstractDataSetTest.removeExtraTestTables(_connection.createDataSet()));
 
         assertTrue("table count > 0", tablesBefore.length > 0);
         assertEquals("table count", tablesBefore.length, tablesAfter.length);
