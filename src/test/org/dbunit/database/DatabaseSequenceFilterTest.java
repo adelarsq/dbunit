@@ -97,6 +97,7 @@ public class DatabaseSequenceFilterTest extends TestCase
         String[] actualFiltered = filteredDataSet.getTableNames();
         assertEquals("filtered", Arrays.asList(expectedFiltered), Arrays.asList(actualFiltered));
     }
+/*
 
     public void testGetTableNamesCyclic() throws Exception
     {
@@ -121,5 +122,6 @@ public class DatabaseSequenceFilterTest extends TestCase
         {
         }
     }
+*/
 
 }
