@@ -34,8 +34,8 @@ import org.dbunit.dataset.*;
  */
 public class DatabaseDataSet extends AbstractDataSet
 {
-    static final String QUALIFIED_DATABASE_NAMES =
-            "dbunit.qualified.database.names";
+    static final String QUALIFIED_TABLE_NAMES =
+            "dbunit.qualified.table.names";
     private static final String[] TABLE_TYPE = {"TABLE"};
 
     private final IDatabaseConnection _connection;
@@ -73,7 +73,7 @@ public class DatabaseDataSet extends AbstractDataSet
 
     private String getQualifiedName(String prefix, String name)
     {
-        if (System.getProperty(QUALIFIED_DATABASE_NAMES, "false").equals("true"))
+        if (System.getProperty(QUALIFIED_TABLE_NAMES, "false").equals("true"))
         {
             return DataSetUtils.getQualifiedName(prefix, name);
         }
@@ -185,6 +185,7 @@ public class DatabaseDataSet extends AbstractDataSet
     }
 
 }
+
 
 
 

@@ -96,7 +96,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 
         try
         {
-            System.setProperty(DatabaseDataSet.QUALIFIED_DATABASE_NAMES, "true");
+            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "true");
 
             IDatabaseConnection connection = new DatabaseConnection(
                     _connection.getConnection(), _connection.getSchema());
@@ -115,7 +115,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         }
         finally
         {
-            System.setProperty(DatabaseDataSet.QUALIFIED_DATABASE_NAMES, "false");
+            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "false");
         }
     }
 
@@ -127,7 +127,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 
         try
         {
-            System.setProperty(DatabaseDataSet.QUALIFIED_DATABASE_NAMES, "true");
+            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "true");
 
             IDatabaseConnection connection = new DatabaseConnection(
                     _connection.getConnection(), _connection.getSchema());
@@ -143,7 +143,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         }
         finally
         {
-            System.setProperty(DatabaseDataSet.QUALIFIED_DATABASE_NAMES, "false");
+            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "false");
         }
     }
 
@@ -155,7 +155,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 
         try
         {
-            System.setProperty(DatabaseDataSet.QUALIFIED_DATABASE_NAMES, "true");
+            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "true");
 
             IDatabaseConnection connection = new DatabaseConnection(
                     _connection.getConnection(), _connection.getSchema());
@@ -171,11 +171,12 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         }
         finally
         {
-            System.setProperty(DatabaseDataSet.QUALIFIED_DATABASE_NAMES, "false");
+            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "false");
         }
     }
 
 }
+
 
 
 
