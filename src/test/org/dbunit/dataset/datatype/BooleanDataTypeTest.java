@@ -100,7 +100,7 @@ public class BooleanDataTypeTest extends AbstractDataTypeTest
         }
     }
 
-    public void testInvalidTypeCast() throws Exception
+    public void testTypeCastInvalid() throws Exception
     {
         Object[] values = {"bla"};
 
@@ -114,6 +114,93 @@ public class BooleanDataTypeTest extends AbstractDataTypeTest
             catch (TypeCastException e)
             {
             }
+        }
+    }
+
+    public void testCompareEquals() throws Exception
+    {
+        Object[] values1 = {
+            null,
+            "1",
+            "0",
+            Boolean.TRUE,
+            Boolean.FALSE,
+        };
+        Object[] values2 = {
+            null,
+            Boolean.TRUE,
+            Boolean.FALSE,
+            "true",
+            "false",
+        };
+
+        assertEquals("values count", values1.length, values2.length);
+
+        for (int i = 0; i < values1.length; i++)
+        {
+            assertEquals("compare1 " + i,
+                    0, THIS_TYPE.compare(values1[i], values2[i]));
+            assertEquals("compare2 " + i,
+                    0, THIS_TYPE.compare(values2[i], values1[i]));
+        }
+    }
+
+    public void testCompareInvalid() throws Exception
+    {
+        Object[] values1 = {
+            "bla",
+            Boolean.FALSE,
+        };
+        Object[] values2 = {
+            Boolean.TRUE,
+            "bla",
+        };
+
+        assertEquals("values count", values1.length, values2.length);
+
+        for (int i = 0; i < values1.length; i++)
+        {
+            try
+            {
+                THIS_TYPE.compare(values1[i], values2[i]);
+                fail("Should have throw TypeCastException");
+            }
+            catch (TypeCastException e)
+            {
+
+            }
+
+            try
+            {
+                THIS_TYPE.compare(values2[i], values1[i]);
+                fail("Should have throw TypeCastException");
+            }
+            catch (TypeCastException e)
+            {
+
+            }
+        }
+    }
+
+    public void testCompareDifferent() throws Exception
+    {
+        Object[] less = {
+            null,
+            null,
+            Boolean.FALSE,
+        };
+        Object[] greater = {
+            Boolean.TRUE,
+            Boolean.FALSE,
+            Boolean.TRUE,
+        };
+
+        assertEquals("values count", less.length, greater.length);
+
+        for (int i = 0; i < less.length; i++)
+        {
+            assertTrue("less " + i, THIS_TYPE.compare(less[i], greater[i]) < 0);
+            assertTrue("greater " + i, THIS_TYPE.compare(greater[i], less[i]) > 0);
         }
     }
 

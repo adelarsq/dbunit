@@ -89,6 +89,17 @@ public abstract class DataType
     public abstract Object typeCast(Object value) throws TypeCastException;
 
     /**
+     * Returns a negative integer, zero, or a positive integer as the first
+     * argument is less than, equal to, or greater than the second.
+     * <p>
+     * The two values are typecast to this DataType before being compared.
+     *
+     * @throws TypeCastException  if the arguments' types prevent them from
+     * being compared by this Comparator.
+     */
+    public abstract int compare(Object o1, Object o2) throws TypeCastException;
+
+    /**
      * Returns the coresponding {@link java.sql.Types}.
      */
     public abstract int getSqlType();

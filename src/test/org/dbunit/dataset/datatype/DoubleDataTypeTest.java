@@ -105,12 +105,12 @@ public class DoubleDataTypeTest extends AbstractDataTypeTest
         }
     }
 
-    /**
-     *
-     */
-    public void testInvalidTypeCast() throws Exception
+    public void testTypeCastInvalid() throws Exception
     {
-        Object[] values = {new Object(), "bla", new java.util.Date()};
+        Object[] values = {
+            new Object(),
+            "bla",
+            new java.util.Date()};
 
         for (int i = 0; i < TYPES.length; i++)
         {
@@ -124,6 +124,112 @@ public class DoubleDataTypeTest extends AbstractDataTypeTest
                 catch (TypeCastException e)
                 {
                 }
+            }
+        }
+    }
+
+    public void testCompareEquals() throws Exception
+    {
+        Object[] values1 = {
+            null,
+            "5.555",
+            new Float(Float.MAX_VALUE),
+            new Double(Double.MIN_VALUE),
+            "-7500",
+            "2.34E23",
+            new Double(0.666),
+            new Double(5.49879),
+            "-99.9",
+            new BigDecimal(1234),
+        };
+
+        Object[] values2 = {
+            null,
+            new Double(5.555),
+            new Double(Float.MAX_VALUE),
+            new Double(Double.MIN_VALUE),
+            new Double(-7500),
+            Double.valueOf("2.34E23"),
+            new Double(0.666),
+            new Double(5.49879),
+            new Double(-99.9),
+            new Double(1234),
+        };
+
+        assertEquals("values count", values1.length, values2.length);
+
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            for (int j = 0; j < values1.length; j++)
+            {
+                assertEquals("compare1 " + j, 0, TYPES[i].compare(values1[j], values2[j]));
+                assertEquals("compare2 " + j, 0, TYPES[i].compare(values2[j], values1[j]));
+            }
+        }
+    }
+
+    public void testCompareInvalid() throws Exception
+    {
+        Object[] values1 = {
+            new Object(),
+            "bla",
+            new java.util.Date()
+        };
+        Object[] values2 = {
+            null,
+            null,
+            null
+        };
+
+        assertEquals("values count", values1.length, values2.length);
+
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            for (int j = 0; j < values1.length; j++)
+            {
+                try
+                {
+                    TYPES[i].compare(values1[j], values2[j]);
+                    fail("Should throw TypeCastException");
+                }
+                catch (TypeCastException e)
+                {
+                }
+
+                try
+                {
+                    TYPES[i].compare(values2[j], values1[j]);
+                    fail("Should throw TypeCastException");
+                }
+                catch (TypeCastException e)
+                {
+                }
+            }
+        }
+    }
+
+    public void testCompareDifferent() throws Exception
+    {
+        Object[] less = {
+            null,
+            "-7500",
+            new Double(Float.MIN_VALUE),
+        };
+
+        Object[] greater = {
+            "0",
+            "5.555",
+            new Float(Float.MAX_VALUE),
+        };
+
+        assertEquals("values count", less.length, greater.length);
+
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            for (int j = 0; j < less.length; j++)
+            {
+                assertTrue("less " + j, TYPES[i].compare(less[j], greater[j]) < 0);
+                assertTrue("greater " + j, TYPES[i].compare(greater[j], less[j]) > 0);
             }
         }
     }

@@ -41,6 +41,11 @@ public class UnknownDataType extends AbstractDataType
     {
         return value;
     }
+
+    public int compare(Object o1, Object o2) throws TypeCastException
+    {
+        return super.compare(asString(o1), asString(o2));
+    }
 }
 
 

@@ -45,6 +45,36 @@ abstract class AbstractDataType extends DataType
     ////////////////////////////////////////////////////////////////////////////
     // DataType class
 
+    public int compare(Object o1, Object o2) throws TypeCastException
+    {
+        try
+        {
+            Comparable value1 = (Comparable)typeCast(o1);
+            Comparable value2 = (Comparable)typeCast(o2);
+
+            if (value1 == null && value2 == null)
+            {
+                return 0;
+            }
+
+            if (value1 == null && value2 != null)
+            {
+                return -1;
+            }
+
+            if (value1 != null && value2 == null)
+            {
+                return 1;
+            }
+
+            return value1.compareTo(value2);
+        }
+        catch (ClassCastException e)
+        {
+            throw new TypeCastException(e);
+        }
+    }
+
     public int getSqlType()
     {
         return _sqlType;

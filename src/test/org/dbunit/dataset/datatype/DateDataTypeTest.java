@@ -90,7 +90,7 @@ public class DateDataTypeTest extends AbstractDataTypeTest
         }
     }
 
-    public void testInvalidTypeCast() throws Exception
+    public void testTypeCastInvalid() throws Exception
     {
         Object[] values = {
             new Integer(1234),
@@ -111,6 +111,98 @@ public class DateDataTypeTest extends AbstractDataTypeTest
             }
         }
     }
+    public void testCompareEquals() throws Exception
+    {
+        Object[] values1 = {
+            null,
+            new java.sql.Date(1234),
+            new Time(1234),
+            new Timestamp(1234),
+            new java.sql.Date(1234).toString(),
+            new java.util.Date(1234),
+            "2003-01-30"
+        };
+
+        Object[] values2 = {
+            null,
+            new java.sql.Date(1234),
+            new java.sql.Date(new Time(1234).getTime()),
+            new java.sql.Date(new Timestamp(1234).getTime()),
+            java.sql.Date.valueOf(new java.sql.Date(1234).toString()),
+            new java.sql.Date(1234),
+            java.sql.Date.valueOf("2003-01-30"),
+        };
+
+        assertEquals("values count", values1.length, values2.length);
+
+        for (int i = 0; i < values1.length; i++)
+        {
+            assertEquals("compare1 " + i, 0, THIS_TYPE.compare(values1[i], values2[i]));
+            assertEquals("compare2 " + i, 0, THIS_TYPE.compare(values2[i], values1[i]));
+        }
+    }
+
+    public void testCompareInvalid() throws Exception
+    {
+        Object[] values1 = {
+            new Integer(1234),
+            new Object(),
+            "bla",
+            "2000.05.05",
+        };
+        Object[] values2 = {
+            null,
+            null,
+            null,
+            null,
+        };
+
+        assertEquals("values count", values1.length, values2.length);
+
+        for (int i = 0; i < values1.length; i++)
+        {
+            try
+            {
+                THIS_TYPE.compare(values1[i], values2[i]);
+                fail("Should throw TypeCastException - " + i);
+            }
+            catch (TypeCastException e)
+            {
+            }
+
+            try
+            {
+                THIS_TYPE.compare(values1[i], values2[i]);
+                fail("Should throw TypeCastException - " + i);
+            }
+            catch (TypeCastException e)
+            {
+            }
+        }
+    }
+
+    public void testCompareDifferent() throws Exception
+    {
+        Object[] less = {
+            null,
+            new java.sql.Date(0),
+            "1974-23-06"
+        };
+
+        Object[] greater = {
+            new java.sql.Date(1234),
+            new java.sql.Date(System.currentTimeMillis()),
+            java.sql.Date.valueOf("2003-01-30"),
+        };
+
+        assertEquals("values count", less.length, greater.length);
+
+        for (int i = 0; i < less.length; i++)
+        {
+            assertTrue("less " + i, THIS_TYPE.compare(less[i], greater[i]) < 0);
+            assertTrue("greater " + i, THIS_TYPE.compare(greater[i], less[i]) > 0);
+        }
+    }
 
     public void testSqlType() throws Exception
     {
@@ -119,9 +211,6 @@ public class DateDataTypeTest extends AbstractDataTypeTest
         assertEquals(Types.DATE, THIS_TYPE.getSqlType());
     }
 
-    /**
-     *
-     */
     public void testForObject() throws Exception
     {
         assertEquals(THIS_TYPE, DataType.forObject(new java.sql.Date(1234)));

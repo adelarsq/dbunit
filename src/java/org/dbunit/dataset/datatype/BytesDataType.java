@@ -74,6 +74,74 @@ public class BytesDataType extends AbstractDataType
 
         throw new TypeCastException(value.toString());
     }
+
+    public int compare(Object o1, Object o2) throws TypeCastException
+    {
+        try
+        {
+            byte[] value1 = (byte[])typeCast(o1);
+            byte[] value2 = (byte[])typeCast(o2);
+
+            if (value1 == null && value2 == null)
+            {
+                return 0;
+            }
+
+            if (value1 == null && value2 != null)
+            {
+                return -1;
+            }
+
+            if (value1 != null && value2 == null)
+            {
+                return 1;
+            }
+
+            return compare(value1, value2);
+        }
+        catch (ClassCastException e)
+        {
+            throw new TypeCastException(e);
+        }
+    }
+
+    public int compare(byte[] v1, byte[] v2) throws TypeCastException
+    {
+        int len1 = v1.length;
+        int len2 = v2.length;
+        int n = Math.min(len1, len2);
+        int i = 0;
+        int j = 0;
+
+        if (i == j)
+        {
+            int k = i;
+            int lim = n + i;
+            while (k < lim)
+            {
+                byte c1 = v1[k];
+                byte c2 = v2[k];
+                if (c1 != c2)
+                {
+                    return c1 - c2;
+                }
+                k++;
+            }
+        }
+        else
+        {
+            while (n-- != 0)
+            {
+                byte c1 = v1[i++];
+                byte c2 = v2[j++];
+                if (c1 != c2)
+                {
+                    return c1 - c2;
+                }
+            }
+        }
+        return len1 - len2;
+    }
 }
 
 

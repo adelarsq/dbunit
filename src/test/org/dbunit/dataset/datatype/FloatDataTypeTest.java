@@ -38,33 +38,21 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
         super(name);
     }
 
-    /**
-     *
-     */
     public void testToString() throws Exception
     {
         assertEquals("name", "REAL", THIS_TYPE.toString());
     }
 
-    /**
-     *
-     */
     public void testGetTypeClass() throws Exception
     {
         assertEquals("class", Float.class, THIS_TYPE.getTypeClass());
     }
 
-    /**
-     *
-     */
     public void testIsNumber() throws Exception
     {
         assertEquals("is number", true, THIS_TYPE.isNumber());
     }
 
-    /**
-     *
-     */
     public void testTypeCast() throws Exception
     {
         Object[] values = {
@@ -102,10 +90,7 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
         }
     }
 
-    /**
-     *
-     */
-    public void testInvalidTypeCast() throws Exception
+    public void testTypeCastInvalid() throws Exception
     {
         Object[] values = {new Object(), "bla", new java.util.Date()};
 
@@ -122,6 +107,103 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
         }
     }
 
+    public void testCompareEquals() throws Exception
+    {
+        Object[] values1 = {
+            null,
+            "5.555",
+            new Double(Float.MAX_VALUE),
+            new Double(Float.MIN_VALUE),
+            "-7500",
+            "2.34E3",
+            new Double(0.666),
+            new Double(5.49879),
+            "-99.9",
+            new BigDecimal(1234),
+        };
+
+        Float[] values2 = {
+            null,
+            new Float(5.555),
+            new Float(Float.MAX_VALUE),
+            new Float(Float.MIN_VALUE),
+            new Float(-7500),
+            Float.valueOf("2.34E3"),
+            new Float(0.666),
+            new Float(5.49879),
+            new Float(-99.9),
+            new Float(1234),
+        };
+
+        assertEquals("values count", values1.length, values2.length);
+
+        for (int i = 0; i < values1.length; i++)
+        {
+            assertEquals("compare1 " + i, 0, THIS_TYPE.compare(values1[i], values2[i]));
+            assertEquals("compare2 " + i, 0, THIS_TYPE.compare(values2[i], values1[i]));
+        }
+    }
+
+    public void testCompareInvalid() throws Exception
+    {
+        Object[] values1 = {
+            new Object(),
+            "bla",
+            new java.util.Date()
+        };
+        Object[] values2 = {
+            null,
+            null,
+            null
+        };
+
+        assertEquals("values count", values1.length, values2.length);
+
+        for (int i = 0; i < values1.length; i++)
+        {
+            try
+            {
+                THIS_TYPE.compare(values1[i], values2[i]);
+                fail("Should throw TypeCastException");
+            }
+            catch (TypeCastException e)
+            {
+            }
+
+            try
+            {
+                THIS_TYPE.compare(values2[i], values1[i]);
+                fail("Should throw TypeCastException");
+            }
+            catch (TypeCastException e)
+            {
+            }
+        }
+    }
+
+    public void testCompareDifferent() throws Exception
+    {
+        Object[] less = {
+            null,
+            "-7500",
+            new Double(Float.MIN_VALUE),
+        };
+
+        Object[] greater = {
+            "0",
+            "5.555",
+            new Float(Float.MAX_VALUE),
+        };
+
+        assertEquals("values count", less.length, greater.length);
+
+        for (int i = 0; i < less.length; i++)
+        {
+            assertTrue("less " + i, THIS_TYPE.compare(less[i], greater[i]) < 0);
+            assertTrue("greater " + i, THIS_TYPE.compare(greater[i], less[i]) > 0);
+        }
+    }
+
     public void testSqlType() throws Exception
     {
         assertEquals(THIS_TYPE, DataType.forSqlType(Types.REAL));
@@ -129,9 +211,6 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
         assertEquals(Types.REAL, THIS_TYPE.getSqlType());
     }
 
-    /**
-     *
-     */
     public void testForObject() throws Exception
     {
         assertEquals(THIS_TYPE, DataType.forObject(new Float(1234)));

@@ -98,9 +98,12 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
         }
     }
 
-    public void testInvalidTypeCast() throws Exception
+    public void testTypeCastInvalid() throws Exception
     {
-        Object[] values = {new Object(), new Integer(1234)};
+        Object[] values = {
+            new Object(),
+            new Integer(1234)
+        };
 
         for (int i = 0; i < TYPES.length; i++)
         {
@@ -114,6 +117,97 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
                 catch (TypeCastException e)
                 {
                 }
+            }
+        }
+    }
+
+    public void testCompareEquals() throws Exception
+    {
+        Object[] values1 = {
+            null,
+            "",
+            "YWJjZA==",
+            new byte[]{0, 1, 2, 3, 4, 5},
+        };
+
+        byte[][] values2 = {
+            null,
+            new byte[0],
+            new byte[]{'a', 'b', 'c', 'd'},
+            new byte[]{0, 1, 2, 3, 4, 5},
+        };
+
+        assertEquals("values count", values1.length, values2.length);
+
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            for (int j = 0; j < values1.length; j++)
+            {
+                assertEquals("compare1 " + j, 0, TYPES[i].compare(values1[j], values2[j]));
+                assertEquals("compare2 " + j, 0, TYPES[i].compare(values2[j], values1[j]));
+            }
+        }
+    }
+
+    public void testCompareInvalid() throws Exception
+    {
+        Object[] values1 = {
+            new Object(),
+            new java.util.Date()
+        };
+        Object[] values2 = {
+            null,
+            null
+        };
+
+        assertEquals("values count", values1.length, values2.length);
+
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            for (int j = 0; j < values1.length; j++)
+            {
+                try
+                {
+                    TYPES[i].compare(values1[j], values2[j]);
+                    fail("Should throw TypeCastException");
+                }
+                catch (TypeCastException e)
+                {
+                }
+
+                try
+                {
+                    TYPES[i].compare(values2[j], values1[j]);
+                    fail("Should throw TypeCastException");
+                }
+                catch (TypeCastException e)
+                {
+                }
+            }
+        }
+    }
+
+    public void testCompareDifferent() throws Exception
+    {
+        Object[] less = {
+            null,
+            new byte[]{'a', 'a', 'c', 'd'},
+            new byte[]{0, 1, 2, 3, 4, 5},
+        };
+        Object[] greater = {
+            new byte[0],
+            new byte[]{'a', 'b', 'c', 'd'},
+            new byte[]{0, 1, 2, 3, 4, 5, 6},
+        };
+
+        assertEquals("values count", less.length, greater.length);
+
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            for (int j = 0; j < less.length; j++)
+            {
+                assertTrue("less " + j, TYPES[i].compare(less[j], greater[j]) < 0);
+                assertTrue("greater " + j, TYPES[i].compare(greater[j], less[j]) > 0);
             }
         }
     }
