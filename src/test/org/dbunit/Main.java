@@ -28,8 +28,7 @@ import java.util.Arrays;
 import electric.xml.*;
 
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.FilteredDataSet;
-import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 
@@ -41,8 +40,15 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-//        IDatabaseConnection connection =
-//                DatabaseEnvironment.getInstance().getConnection();
+        IDatabaseConnection connection =
+                DatabaseEnvironment.getInstance().getConnection();
+        ITable[] tables = DataSetUtils.getTables(connection.createDataSet());
+        for (int i = 0; i < tables.length; i++)
+        {
+            ITable table = tables[i];
+            table.toString();
+        }
+
 //
 //        String[] tableNames = connection.createDataSet().getTableNames();
 //        Arrays.sort(tableNames);
@@ -69,14 +75,15 @@ public class Main
 //            System.out.println("decl = " + decl + ", class: " + type);
 //        }
 
-        IDataSet dataSet = new FlatXmlDataSet(
-                new FileInputStream("flatXmlDataSetTest.xml"));
+//        IDataSet dataSet = new FlatXmlDataSet(
+//                new FileInputStream("flatXmlDataSetTest.xml"));
 //        FlatDtdDataSet.write(new FlatXmlDataSet(
 //                new FileInputStream("src/xml/flatXmlDataSetTest.xml")),
 //                new FileOutputStream("src/dtd/flatXmlDataSetTest.dtd"));
     }
 
 }
+
 
 
 

@@ -25,6 +25,7 @@ package org.dbunit.database;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.IOException;
 
 import org.dbunit.dataset.*;
 
@@ -125,6 +126,12 @@ public class DatabaseDataSet implements IDataSet
                     String tableType = resultSet.getString(4);
 //                    System.out.println("schema=" + schemaName + ", table=" + tableName + ", type=" + tableType + "");
                     tableName = getQualifiedName(schemaName, tableName);
+
+                    // prevent table name conflict
+                    if (tableMap.containsKey(tableName))
+                    {
+                        throw new AmbiguousTableNameException(tableName);
+                    }
                     tableMap.put(tableName, null);
                 }
 
@@ -203,6 +210,7 @@ public class DatabaseDataSet implements IDataSet
     }
 
 }
+
 
 
 
