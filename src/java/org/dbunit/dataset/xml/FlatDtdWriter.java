@@ -34,11 +34,21 @@ import java.io.Writer;
  */
 public class FlatDtdWriter //implements IDataSetConsumer
 {
+    public static final ContentModel SEQUENCE = new SequenceModel();
+    public static final ContentModel CHOICE = new ChoiceModel();
+
     private Writer _writer;
+    private ContentModel _contentModel;
 
     public FlatDtdWriter(Writer writer)
     {
         _writer = writer;
+        _contentModel = SEQUENCE;
+    }
+
+    public void setContentModel(ContentModel contentModel)
+    {
+        _contentModel = contentModel;
     }
 
     public void write(IDataSet dataSet) throws DataSetException
@@ -47,19 +57,13 @@ public class FlatDtdWriter //implements IDataSetConsumer
         String[] tableNames = dataSet.getTableNames();
 
         // dataset element
-        printOut.println("<!ELEMENT dataset (");
+        printOut.print("<!ELEMENT dataset (\n");
         for (int i = 0; i < tableNames.length; i++)
         {
-            printOut.print("    ");
-            printOut.print(tableNames[i]);
-            printOut.print("*");
-            if (i + 1 < tableNames.length)
-            {
-                printOut.println(",");
-            }
+            _contentModel.write(printOut, tableNames[i], i, tableNames.length);
         }
-        printOut.println(")>");
-        printOut.println();
+        printOut.print(")>\n");
+        printOut.print("\n");
 
         // tables
         for (int i = 0; i < tableNames.length; i++)
@@ -68,30 +72,103 @@ public class FlatDtdWriter //implements IDataSetConsumer
             String tableName = tableNames[i];
             printOut.print("<!ELEMENT ");
             printOut.print(tableName);
-            printOut.println(" EMPTY>");
+            printOut.print(" EMPTY>\n");
 
             // column attributes
             printOut.print("<!ATTLIST ");
-            printOut.println(tableName);
+            printOut.print(tableName);
+            printOut.print("\n");
             Column[] columns = dataSet.getTableMetaData(tableName).getColumns();
             for (int j = 0; j < columns.length; j++)
             {
                 Column column = columns[j];
                 printOut.print("    ");
                 printOut.print(column.getColumnName());
-                if (column.getNullable() == Column.NULLABLE)
+                if (column.getNullable() == Column.NO_NULLS)
                 {
-                    printOut.println(" CDATA #IMPLIED");
+                    printOut.print(" CDATA #REQUIRED\n");
                 }
                 else
                 {
-                    printOut.println(" CDATA #REQUIRED");
+                    printOut.print(" CDATA #IMPLIED\n");
                 }
             }
-            printOut.println(">");
-            printOut.println();
+            printOut.print(">\n");
+            printOut.print("\n");
         }
 
         printOut.flush();
+    }
+
+    public static abstract class ContentModel
+    {
+        private final String _name;
+
+        private ContentModel(String name)
+        {
+            _name = name;
+        }
+
+        public String toString()
+        {
+            return _name;
+        }
+
+        public abstract void write(PrintWriter writer, String tableName,
+                int tableIndex, int tableCount);
+    }
+
+    public static class SequenceModel extends ContentModel
+    {
+        private SequenceModel()
+        {
+            super("sequence");
+        }
+
+        public void write(PrintWriter writer, String tableName, int tableIndex, int tableCount)
+        {
+            boolean last = (tableIndex + 1) == tableCount;
+
+            writer.print("    ");
+            writer.print(tableName);
+            writer.print("*");
+            if (!last)
+            {
+                writer.print(",\n");
+            }
+        }
+    }
+
+    public static class ChoiceModel extends ContentModel
+    {
+        private ChoiceModel()
+        {
+            super("sequence");
+        }
+
+        public void write(PrintWriter writer, String tableName, int tableIndex, int tableCount)
+        {
+            boolean first = tableIndex == 0;
+            boolean last = (tableIndex + 1) == tableCount;
+
+            if (first)
+            {
+                writer.print("   (");
+            }
+            else
+            {
+                writer.print("    ");
+            }
+            writer.print(tableName);
+
+            if (!last)
+            {
+                writer.print("|\n");
+            }
+            else
+            {
+                writer.print(")*");
+            }
+        }
     }
 }

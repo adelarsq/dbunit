@@ -35,6 +35,7 @@ public class AllTests
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(FlatDtdDataSetTest.class));
         suite.addTest(new TestSuite(FlatDtdProducerTest.class));
+        suite.addTest(new TestSuite(FlatDtdWriterTest.class));
         suite.addTest(new TestSuite(FlatXmlDataSetTest.class));
         suite.addTest(new TestSuite(FlatXmlProducerTest.class));
         suite.addTest(new TestSuite(FlatXmlTableTest.class));
