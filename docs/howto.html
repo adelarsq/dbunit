@@ -1,25 +1,25 @@
- 
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><!-- #BeginTemplate "/Templates/main.dwt" -->
 <head>
 <meta http-equiv="Content-Style-Type" content="text/css">
 <link href="stylesheet.css" rel="stylesheet" type="text/css">
-<!-- #BeginEditable "doctitle" --> 
+<!-- #BeginEditable "doctitle" -->
 <title>The Dbunit Framework - Howto Guides</title>
-<!-- #EndEditable --> 
+<!-- #EndEditable -->
 </head>
 <body>
 <table cellspadding = 0 cellspacing = 0 border = 0 width="100%">
-  <tr height="100"> 
+  <tr height="100">
     <td class="logo" width = 200><img src="images/logo.jpg" width=200 height=100></td>
     <td class="header"></td>
   </tr>
   </table>
   <table cellspadding = 0 cellspacing = 0 border = 0>
-    <tr> 
-      
-    <td class="menu" nowrap valign="top" > 
-	  <p><a href="index.html">Home</a><br>
+    <tr>
+
+    <td class="menu" nowrap valign="top" >
+      <p><a href="index.html">Home</a><br>
         <br>
         <a href="intro.html">Introduction</a><br>
         <a href="components.html">Core classes</a><br>
@@ -36,25 +36,26 @@
         <a href="resources.html">Resources</a><br>
         <br>
       </p>
-      <div align="center"><a href="http://sourceforge.net"> <img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439"> 
+      <div align="center"><a href="http://sourceforge.net"> <img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439">
         </a></div>
       <br>
-      <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations" 
+      <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations"
       src="images/silphid.gif" border=0></a></div>
     </td>
-    <td class="body" valign="top"> <!-- #BeginEditable "body" --> 
+    <td class="body" valign="top"> <!-- #BeginEditable "body" -->
       <h2>How-to Guides</h2>
       <ul>
         <li><a href="#createtest">How to create a test case to setup your database</a></li>
-        <li><a href="#noextend">How to setup your database in a test case that 
+        <li><a href="#noextend">How to setup your database in a test case that
           does not extend DatabaseTestCase</a></li>
         <li><a href="#extract">How to extract a dataset from yourdatabase</a></li>
-        <li><a href="#generatedtd">How to generate a flat xml dataset DTD from 
+        <li><a href="#generatedtd">How to generate a flat xml dataset DTD from
           your database</a></li>
-        <li><a href="#assertdata">How to verify your database data during a test 
+        <li><a href="#assertdata">How to verify your database data during a test
           case</a></li>
-        <li><a href="#multipleschema">How to export data from or import data to 
+        <li><a href="#multipleschema">How to export data from or import data to
           multiple database schemas</a></li>
+        <li><a href="#dtdsupport">How to associate a DTD with your schema to support NULL values in columns</a></li>
       </ul>
       <hr>
       <a name="createtest">
@@ -62,20 +63,20 @@
       </a> To write a test case, please follow the steps described below.<br>
       <br>
       <h4>Step 1: Create your dataset file</h4>
-      Your test will obviously need some data to work with. This means you must 
-      create a dataset. In most situations you will work with xml datasets. You 
-      can manually create an xml dataset from scratch or create one by exporting 
+      Your test will obviously need some data to work with. This means you must
+      create a dataset. In most situations you will work with xml datasets. You
+      can manually create an xml dataset from scratch or create one by exporting
       some data from your database (see <a href="#extract">how-to export</a>).<br>
       <br>
       <h4>Step 2: Extend the DatabaseTestCase class</h4>
-      Now you need to create a test class. The easiest way to use Dbunit is to 
-      make your test class extend the DatabaseTestCase class. DatabaseTestCase 
-      extends the JUnit TestCase class. Two template methods are required to be 
-      implemented: <a class="code">getConnection()</a> to return a connection 
-      to your database and <a class="code">getDataSet()</a> to return the dataset 
+      Now you need to create a test class. The easiest way to use Dbunit is to
+      make your test class extend the DatabaseTestCase class. DatabaseTestCase
+      extends the JUnit TestCase class. Two template methods are required to be
+      implemented: <a class="code">getConnection()</a> to return a connection
+      to your database and <a class="code">getDataSet()</a> to return the dataset
       you created in step 1.<br>
       <br>
-      Following is a sample implementation that returns a connection to a Hypersonic 
+      Following is a sample implementation that returns a connection to a Hypersonic
       database and an xml dataset:<br>
       <pre>
 public class SampleTest extends DatabaseTestCase
@@ -99,13 +100,13 @@ public class SampleTest extends DatabaseTestCase
     }
 }</pre>
       <br>
-      <h4>Step 3: (Optional) Implement getSetUpOperation() and getTearDownOperation() 
+      <h4>Step 3: (Optional) Implement getSetUpOperation() and getTearDownOperation()
         methods</h4>
-      <p>By default, Dbunit performs a <a href="components.html#cleanInsert">CLEAN_INSERT</a> 
-        operation before executing each test and performs no cleanup operation 
-        afterward. You can modify this behavior by overriding <a class="code">getSetUpOperation()</a> 
+      <p>By default, Dbunit performs a <a href="components.html#cleanInsert">CLEAN_INSERT</a>
+        operation before executing each test and performs no cleanup operation
+        afterward. You can modify this behavior by overriding <a class="code">getSetUpOperation()</a>
         and <a class="code">getTearDownOperation()</a>.</p>
-      <p>The following example demonstrates how you can easily override the operation 
+      <p>The following example demonstrates how you can easily override the operation
         executed before or after your test.<br>
       </p>
       <pre>
@@ -124,15 +125,15 @@ public class SampleTest extends DatabaseTestCase
     ...
 }</pre>
       <h4>Step 4: Implement your testXXX() methods</h4>
-      Implement your test methods as you normally would with JUnit. Your database 
-      is now initialized before and cleaned-up after each test methods according 
+      Implement your test methods as you normally would with JUnit. Your database
+      is now initialized before and cleaned-up after each test methods according
       to what you did in previous steps.<br>
       <br>
       <a name="noextend">
       <h2>How to setup your database in a test case that does not extend DatabaseTestCase</h2>
-      </a> In order to use Dbunit you are not required to extend the DatabaseTestCase 
-      class. Simply override the standard JUnit setUp() method and execute the 
-      desired operation on your database. Do something similar in teardown() if 
+      </a> In order to use Dbunit you are not required to extend the DatabaseTestCase
+      class. Simply override the standard JUnit setUp() method and execute the
+      desired operation on your database. Do something similar in teardown() if
       you need to perform any clean-up.<br>
       <br>
       For example:<br>
@@ -165,13 +166,13 @@ public class SampleTest extends TestCase
             connection.close();
         }
     }
-    ... 
+    ...
 }</pre>
       <a name="extract">
       <h2>How to extract a dataset from your database</h2>
-      </a> Since version 1.2, the <a href="components.html#FlatXmlDataSet">flat 
-      xml dataset</a> format is the prefered way to persist a dataset in xml. 
-      The following sample demonstrates how you can export one or many tables 
+      </a> Since version 1.2, the <a href="components.html#FlatXmlDataSet">flat
+      xml dataset</a> format is the prefered way to persist a dataset in xml.
+      The following sample demonstrates how you can export one or many tables
       from a database to an flat xml dataset file.<br>
       <pre>
 public class DatabaseExportSample
@@ -194,9 +195,9 @@ public class DatabaseExportSample
         FlatXmlDataSet.write(fullDataSet, new FileOutputStream(&quot;full.xml&quot;));
     }
 }</pre>
-      <a name="generatedtd"><h2>How to generate a flat xml dataset DTD from your 
+      <a name="generatedtd"><h2>How to generate a flat xml dataset DTD from your
         database</h2></a>
-      <p>The following sample demonstrates how you can generate a flat xml dataset 
+      <p>The following sample demonstrates how you can generate a flat xml dataset
         DTD from a database.</p>
       <pre>
 public class DatabaseExportSample
@@ -214,19 +215,19 @@ public class DatabaseExportSample
 }</pre>
       <a name="assertdata">
       <h2>How to verify your database data during a test Case</h2>
-      </a> Now that you know how to use Dbunit to setup your database before executing 
-      each test, you probably wonder how to easily verify the database data when 
-      your tests run. Dbunit provides support for verifying whether two tables 
+      </a> Now that you know how to use Dbunit to setup your database before executing
+      each test, you probably wonder how to easily verify the database data when
+      your tests run. Dbunit provides support for verifying whether two tables
       or datasets contain identical data.<br>
       <pre>public class Assertion
 {
-    public static void assertEquals(ITable expected, ITable actual) 
+    public static void assertEquals(ITable expected, ITable actual)
     public static void assertEquals(IDataSet expected, IDataSet actual)
 }</pre>
-      Therefore, you can put your expected table data into an xml dataset and 
-      during your test query the database to verify its data against expected 
-      data. In order to do that you will need two xml datasets. One to setup your 
-      database before each test, and another to provide the expected data during 
+      Therefore, you can put your expected table data into an xml dataset and
+      during your test query the database to verify its data against expected
+      data. In order to do that you will need two xml datasets. One to setup your
+      database before each test, and another to provide the expected data during
       tests.<br>
       <br>
       The following sample, illustrate how you can do that:<br>
@@ -237,7 +238,7 @@ public class DatabaseExportSample
         super(name);
     }
 
-    // Implements required setup methods here 
+    // Implements required setup methods here
     ...
 
     public void testMe() throws Exception
@@ -246,10 +247,10 @@ public class DatabaseExportSample
         ...
 
 
-        // Fetch database data after executing your code 
+        // Fetch database data after executing your code
         ITable databaseData = getConnection().createQueryTable(
                 &quot;EXPECTED_ DATA&quot;, &quot;SELECT * FROM TABLE1, TABLE2 WHERE ...&quot;);
-        
+
         // Load expected data from an xml dataset
         IDataSet expectedDataSet = new XmlRowDataSet(
                 &quot;expectedDataSet.xml&quot;, true);
@@ -259,34 +260,128 @@ public class DatabaseExportSample
         Assertion.assertEquals(expectedData, databaseData);
     }
 }</pre>
-      <a name="multipleschema"> 
+      <a name="multipleschema">
       <h2>How to export data from or import data to multiple database schemas</h2>
-      </a> Dbunit support multiple schemas per connection since version 1.2.3. 
-      To enable multiple schemas support, set the following system property before 
-      the creation of your database connection. 
+      </a> Dbunit support multiple schemas per connection since version 1.2.3.
+      To enable multiple schemas support, set the following system property before
+      the creation of your database connection.
       <pre>
-	  System.setProperty(&quot;dbunit.qualified.table.names&quot;, &quot;true&quot;);</pre>
-      <p>This tells to Dbunit to work with table names qualified by their schema 
-        name. If this mode is enabled, all table names are assumed to have this 
+      System.setProperty(&quot;dbunit.qualified.table.names&quot;, &quot;true&quot;);</pre>
+      <p>This tells to Dbunit to work with table names qualified by their schema
+        name. If this mode is enabled, all table names are assumed to have this
         format: SCHEMA.TABLE. <br>
       </p>
-      <p>Example of flat xml dataset exported or imported when qualified table 
+      <p>Example of flat xml dataset exported or imported when qualified table
         names mode is enabled:</p>
       <pre>&lt;dataset&gt;
     &lt;SCHEMA1.TABLE1 COLUMN0=&quot;row 0 col 0&quot; COLUMN1=&quot;row 0 col 1&quot;/&
     &lt;SCHEMA1.TABLE1 COLUMN0=&quot;row 1 col 0&quot; COLUMN1=&quot;row 1 col 1&quot;/&gt;
     &lt;SCHEMA2.TABLE2 COLUMN0=&quot;row 0 col 0&quot; COLUMN1=&quot;row 0 col 1&quot; COLUMN2=&quot;row 0 col 2&quot;/&gt;
 &lt;/dataset&gt;</pre>
-      <!-- #EndEditable --> 
+  <a name="dtdsupport">
+      <h2>How to associate a DTD with your schema to support NULL values in columns</h2>
+      </a> New to Dbunit 1.4 is the ability to associate a DTD with your schema.  If you don't associate a
+      dtd with your xml schema, then the first row of a flat xml file defines the tables schema.
+      The below text is taken from an email by Brian Brooks:<BR>
+      <OL>
+      <li> Generate a .dtd file for your database test case.
+      <li> Generate a .xml FlatXmlDataSet dataset file for
+      your database test case.
+      <li> Edit the .xml file from #2, to make it reference
+      the DOCTYPE defined in the .dtd from #1.
+      <li> Include the new JAR file
+      /cvsroot/dbunit/lib/dtdparser.jar.
+      </ol>
+      Here is an example...<br>
+
+      To a accomplish #1 and #2 Use either the Ant tasks or code like<br>
+      <pre>
+        // partial database export
+        String[] tableNames = {"SERVICE"};
+        IDataSet partialDataSet =
+      connection.createDataSet(tableNames);
+        FlatXmlDataSet.write( partialDataSet,
+          new FileOutputStream("SERVICE.xml"));
+        FlatXmlDocType.write( partialDataSet,
+          new FileOutputStream("SERVICE.dtd"));
+      </pre>
+
+      This will produce two files like
+      <br>
+      <pre>
+        &LT;!-- SERVICE.dtd --&GT;
+        &LT;!ELEMENT dataset (
+            SERVICE*)&GT;
+
+        &LT;!ELEMENT SERVICE EMPTY&GT;
+        &LT;!ATTLIST SERVICE
+            CUSTOMERID CDATA #IMPLIED
+            OPERATORID CDATA #IMPLIED
+            SERVICECODE CDATA #IMPLIED
+            SUBSERVICE CDATA #IMPLIED
+        &GT;
+      </pre>
+      and
+      <pre>
+        &lt;!-- SERVICE.xml - Note the first row of this
+                 FlatXmlDataSet file contains NULL values
+                 for columns OPERATORID and SUBSERVICEID
+                 Dbunit versions 1.2.4 and 1.3 produce
+                 junit.framework.AssertionFailedError:
+                 column count (table=SERVICE) expected:&lt;2&GT;
+                 but was:&lt;4&GT; That's what defect #539089 was
+                 all about.  But with the code Manuel Laflamme has
+                 in CVS now, this works!!! --&GT;
+
+                &lt;dataset&GT;
+                  &lt;SERVICE CUSTOMERID='1' SERVICECODE='PSW'/&GT;
+                  &lt;SERVICE CUSTOMERID='100' SERVICECODE='PSW'/&GT;
+                  &lt;SERVICE CUSTOMERID='1000' SERVICECODE='GMTS'/&GT;
+                  &lt;SERVICE CUSTOMERID='1000' SERVICECODE='PCBM'/&GT;
+                  &lt;SERVICE CUSTOMERID='1000' SERVICECODE='PCEM'/&GT;
+                  &lt;SERVICE CUSTOMERID='1000' SERVICECODE='PCEW'/&GT;
+                  &lt;SERVICE CUSTOMERID='1000' SERVICECODE='PSW'/&GT;
+                  &lt;SERVICE CUSTOMERID='1000' OPERATORID='DG1'
+              SERVICECODE='GMTS'/&GT;
+                  &lt;SERVICE CUSTOMERID='1000' OPERATORID='DG1'
+                     SERVICECODE='PSW' SUBSERVICE='AUD'/&GT;
+        &lt;/dataset&GT;
+      </pre>
+      <br>
+      To a accomplish #3 edit SERVICE.xml and add a line
+      like
+      <pre>
+        &lt;!DOCTYPE dataset SYSTEM "SERVICE.dtd"&GT;
+      </pre>
+      to the top of the file.  Now you can run a database
+      test case with code like (or Ant tasks!)
+      <pre>
+        // Fetch database data after executing your code
+        IDataSet databaseDataSet = getDataSet();
+        ITable databaseData =
+      databaseDataSet.getTable("SERVICE");
+
+        // Load expected data from an xml dataset
+        IDataSet expectedDataSet = new FlatXmlDataSet(
+            new FileInputStream("SERVICE.xml") );
+        ITable expectedData =
+      expectedDataSet.getTable("SERVICE");
+
+        // Verify if database data match expected data
+        Assertion.assertEquals(expectedData, databaseData);
+      </pre>
+
+
+      <!-- #EndEditable -->
       <hr>
-      <div align="center"> 
+      <div align="center">
         <p><font size="2">Copyright &copy;2002, Manuel Laflamme, All Rights Reserved</font></p>
-        <p><font size="1"><a href="index.html">Home</a> - <a href="intro.html">Introduction</a> 
-          - <a href="components.html">Core Classes</a> - <a href="anttask.html">Ant 
-          Task</a> - <a href="howto.html">How-to Guides</a> - <a href="bestpractices.html">Best 
-          Practices</a> - <a href="properties.html">Properties</a> - <a href="api/index.html">API 
-          Reference</a> - <a href="faq.html">FAQ</a> - <a href="changes.html">Changes 
-          History</a> - <a href="download.html">Download</a> - <a href="support.html">Support</a> 
+        <p><font size="1"><a href="index.html">Home</a> - <a href="intro.html">Introduction</a>
+          - <a href="components.html">Core Classes</a> - <a href="anttask.html">Ant
+          Task</a> - <a href="howto.html">How-to Guides</a> - <a href="bestpractices.html">Best
+          Practices</a> - <a href="properties.html">Properties</a> - <a href="api/index.html">API
+          Reference</a> - <a href="faq.html">FAQ</a> - <a href="changes.html">Changes
+          History</a> - <a href="download.html">Download</a> - <a href="support.html">Support</a>
           - <a href="resources.html">Resources</a></font></p>
         <font size="1">$Revision$ $Date$</font> </div>
   </tr>

@@ -1,25 +1,25 @@
- 
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><!-- #BeginTemplate "/Templates/main.dwt" -->
 <head>
 <meta http-equiv="Content-Style-Type" content="text/css">
 <link href="stylesheet.css" rel="stylesheet" type="text/css">
-<!-- #BeginEditable "doctitle" --> 
+<!-- #BeginEditable "doctitle" -->
 <title>The Dbunit Framework - Ant Task</title>
-<!-- #EndEditable --> 
+<!-- #EndEditable -->
 </head>
 <body>
 <table cellspadding = 0 cellspacing = 0 border = 0 width="100%">
-  <tr height="100"> 
+  <tr height="100">
     <td class="logo" width = 200><img src="images/logo.jpg" width=200 height=100></td>
     <td class="header"></td>
   </tr>
   </table>
   <table cellspadding = 0 cellspacing = 0 border = 0>
-    <tr> 
-      
-    <td class="menu" nowrap valign="top" > 
-	  <p><a href="index.html">Home</a><br>
+    <tr>
+
+    <td class="menu" nowrap valign="top" >
+      <p><a href="index.html">Home</a><br>
         <br>
         <a href="intro.html">Introduction</a><br>
         <a href="components.html">Core classes</a><br>
@@ -36,65 +36,65 @@
         <a href="resources.html">Resources</a><br>
         <br>
       </p>
-      <div align="center"><a href="http://sourceforge.net"> <img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439"> 
+      <div align="center"><a href="http://sourceforge.net"> <img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439">
         </a></div>
       <br>
-      <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations" 
+      <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations"
       src="images/silphid.gif" border=0></a></div>
     </td>
-    <td class="body" valign="top"> <!-- #BeginEditable "body" --> 
+    <td class="body" valign="top"> <!-- #BeginEditable "body" -->
       <h2>Ant Integration</h2>
       <h3>Installation</h3>
-      The steps required to add the DbUnit task to your system are: 
+      The steps required to add the DbUnit task to your system are:
       <ol>
         <li>Add the DbUnit jar to Ant's classpath. </li>
-        <li>Add a &lt;taskdef&gt; element to your build script as follows: 
+        <li>Add a &lt;taskdef&gt; element to your build script as follows:
           <pre class=code>&lt;taskdef name=&quot;dbunit&quot; classname=&quot;org.dbunit.ant.DbUnitTask&quot;/&gt;</pre>
         </li>
         <li>Use the task in the rest of the buildfile. </li>
       </ol>
       <h3>Usage </h3>
-      <p>Executes either a single transaction, or a group of transactions, under 
+      <p>Executes either a single transaction, or a group of transactions, under
         the DbUnit database testing framework.</p>
       <h4>Parameters</h4>
       <table border="1">
-        <tr> 
+        <tr>
           <td><b>Attribute</b></td>
           <td><b>Description</b></td>
           <td><b>Required</b></td>
         </tr>
-        <tr> 
+        <tr>
           <td>driver</td>
           <td>Class name of the jdbc driver</td>
           <td>Yes</td>
         </tr>
-        <tr> 
+        <tr>
           <td>url</td>
           <td>Database connection url</td>
           <td>Yes</td>
         </tr>
-        <tr> 
+        <tr>
           <td>userid</td>
           <td>Database username</td>
           <td>Yes</td>
         </tr>
-        <tr> 
+        <tr>
           <td>password</td>
           <td>Database password</td>
           <td>Yes</td>
         </tr>
-        <tr> 
+        <tr>
           <td>schema </td>
           <td>Database schema</td>
           <td>No</td>
         </tr>
-        <tr> 
+        <tr>
           <td>useQualifiedTableNames</td>
           <td>Set System.property dbunit.qualified.table.names <br>
             equal to supplied boolean value</td>
           <td>No</td>
         </tr>
-        <tr> 
+        <tr>
           <td>supportBatchStatement</td>
           <td>Set System.property<br>
             dbunit.support.batch.statement<br>
@@ -104,19 +104,19 @@
       </table>
       <h4>Parameters specified as nested elements</h4>
       <table cellspadding = 0 border = 1 >
-        <tr> 
+        <tr>
           <td>operation</td>
-          <td> 
-            <p>Use nested &lt;operation&gt; elements to specify which DbUnit operation 
+          <td>
+            <p>Use nested &lt;operation&gt; elements to specify which DbUnit operation
               to perform on the particular file. <br>
             </p>
             <table border="1">
-              <tr> 
+              <tr>
                 <td><b>Attribute</b></td>
                 <td><b>Description</b></td>
                 <td><b>Required</b></td>
               </tr>
-              <tr> 
+              <tr>
                 <td>type</td>
                 <td>Type of Database operation to perform. Supported types are<br>
                   UPDATE, INSERT, DELETE, <br>
@@ -125,16 +125,16 @@
                   MSSQL_REFRESH, MSSQL_CLEAN_INSERT.</td>
                 <td>Yes</td>
               </tr>
-              <tr> 
+              <tr>
                 <td>src</td>
                 <td>The xml source upon which the operation is to be performed</td>
                 <td>Yes</td>
               </tr>
-              <tr> 
+              <tr>
                 <td>format</td>
-                <td>Format type of supplied source file. Possible values are &quot;flat&quot; 
+                <td>Format type of supplied source file. Possible values are &quot;flat&quot;
                   or &quot;xml&quot;. Defaults to <a class="code">&quot;flat&quot;</a></td>
-                <td> 
+                <td>
                   <p>No</p>
                 </td>
               </tr>
@@ -142,93 +142,117 @@
           </td>
         </tr>
         <!--
-        <tr> 
+        <tr>
           <td>composite</td>
-          <td> 
-            <p>Use nested <a class="code">&lt;composite&gt;</a> operation elements 
-              to combine multiple <a class="code">&lt;operation&gt;</a>s (on the 
+          <td>
+            <p>Use nested <a class="code">&lt;composite&gt;</a> operation elements
+              to combine multiple <a class="code">&lt;operation&gt;</a>s (on the
               same file) into a single one.</p>
             <table border="1">
-              <tr> 
+              <tr>
                 <td><b>Attribute</b></td>
                 <td><b>Description</b></td>
                 <td><b>Required</b></td>
               </tr>
-              <tr> 
+              <tr>
                 <td>src</td>
                 <td>The xml source upon which the operation is to be performed</td>
                 <td>Yes</td>
               </tr>
-              <tr> 
+              <tr>
                 <td>flat</td>
-                <td>If true, use <a class="code">FlatXmlDataSet</a> type in the 
-                  supplied src file. Otherwise use <a class="code">XmlDataSet</a>. 
+                <td>If true, use <a class="code">FlatXmlDataSet</a> type in the
+                  supplied src file. Otherwise use <a class="code">XmlDataSet</a>.
                   Defaults to <a class="code">true</a></td>
-                <td> 
+                <td>
                   <p>No</p>
                 </td>
               </tr>
             </table>
             <h4>Parameters specified as nested elements </h4>
             <table border="1">
-              <tr> 
+              <tr>
                 <td>operation</td>
-                <td>See above definition for details. The src and flat attributes 
-                  are supplied as attributes to the <a class="code">&lt;composite&gt;</a> 
-                  step and should not be attempted to be overridden by the nested 
+                <td>See above definition for details. The src and flat attributes
+                  are supplied as attributes to the <a class="code">&lt;composite&gt;</a>
+                  step and should not be attempted to be overridden by the nested
                   <a class="code">&lt;operation&gt;</a> step.</td>
               </tr>
             </table>
           </td>
         </tr>
     -->
-        <tr> 
+        <tr>
           <td>export</td>
-          <td> 
-            <p>Use nested <a class="code">&lt;export&gt;</a> operation elements 
-              to export the database to the supplied filename. The default operation 
-              is to <a class="code">&lt;export&gt;</a> the entire database to 
-              the destination filename with the supplied dataset type. You can 
-              specify individual tables to<br>
-              <a class="code">&lt;export&gt;</a> by nesting them under the &lt;export&gt; 
+          <td>
+            <p>Use nested <a class="code">&lt;export&gt;</a> operation elements
+              to export the database to the supplied filename. The default operation
+              is to <a class="code">&lt;export&gt;</a> the entire database to
+              the destination filename with the supplied dataset type. You can
+              specify individual tables or queries to<br>
+              <a class="code">&lt;export&gt;</a> by nesting them under the &lt;export&gt;
               step.</p>
             <table width="100%" border="1">
-              <tr> 
+              <tr>
                 <td><b>Attribute</b></td>
                 <td><b>Description</b></td>
                 <td><b>Required</b></td>
               </tr>
-              <tr> 
+              <tr>
                 <td>dest</td>
                 <td>The xml destination filename</td>
                 <td>Yes</td>
               </tr>
-              <tr> 
+              <tr>
                 <td>format</td>
-                <td>Format type of supplied destination file. Possible values 
-                  are &quot;flat&quot;, &quot;xml&quot; or &quot;dtd&quot;. Defaults 
+                <td>Format type of supplied destination file. Possible values
+                  are &quot;flat&quot;, &quot;xml&quot; or &quot;dtd&quot;. Defaults
                   to <a class="code">&quot;flat&quot;</a></td>
-                <td> 
+                <td>
                   <p>No</p>
                 </td>
               </tr>
             </table>
             <h4>Parameters specified as nested elements </h4>
             <table  border="1">
-              <tr> 
+              <tr>
                 <td>table</td>
-                <td> 
-                  <p>Use nested <a class=code>&lt;table&gt;</a> elements to <a class=code>&lt;export&gt;</a> 
+                <td>
+                  <p>Use nested <a class=code>&lt;table&gt;</a> elements to <a class=code>&lt;export&gt;</a>
                     specific tables. </p>
                   <table border="1">
-                    <tr> 
+                    <tr>
                       <td><b>Attribute</b></td>
                       <td><b>Description</b></td>
                       <td><b>Required</b></td>
                     </tr>
-                    <tr> 
+                    <tr>
                       <td>name</td>
                       <td>Name of the database table to export.</td>
+                      <td>No</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td>query</td>
+                <td>
+                  <p>Use nested <a class=code>&lt;query&gt;</a> elements to <a class=code>&lt;export&gt;</a>
+                    data according to a sql statement. </p>
+                   <table border="1">
+                    <tr>
+                      <td><b>Attribute</b></td>
+                      <td><b>Description</b></td>
+                      <td><b>Required</b></td>
+                    </tr>
+                    <tr>
+                      <td>name</td>
+                      <td>Name to reference the sql statement.</td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                      <td>sql</td>
+                      <td>The sql to execute.  You can use either SELECT * from Mytable or SELECT col1, col4 from MyTable</td>
                       <td>No</td>
                     </tr>
                   </table>
@@ -240,56 +264,62 @@
       </table>
       <h3>Examples</h3>
       <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;operation type=&quot;UPDATE&quot; src=&quot;updateFile.xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
-        and executes the UPDATE operation contained within the FlatXmlDataSet 
+      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver
+        and executes the UPDATE operation contained within the FlatXmlDataSet
         file updateFile.xml.</p>
       <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;operation type=&quot;INSERT&quot; src=&quot;insertFile.xml&quot;/&gt;<br>    &lt;operation type=&quot;UPDATE&quot; src=&quot;updateFile.xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver. 
-        It then executes the INSERT operation contained within the FlatXmlDataSet 
+      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver.
+        It then executes the INSERT operation contained within the FlatXmlDataSet
         file insertFile.xml <br>
-        followed by the execution of the UPDATE operation contained within the 
+        followed by the execution of the UPDATE operation contained within the
         FlatXmlDataSet file updateFile.xml.</p>
       <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;operation type=&quot;UPDATE&quot; src=&quot;updateFile.xml&quot; flat=&quot;false&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
-        and executes the UPDATE operation contained within the XmlDataSet file 
+      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver
+        and executes the UPDATE operation contained within the XmlDataSet file
         updateFile.xml.</p>
       <!--
       <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;composite src=&quot;compositeFile.xml&quot;&gt;<br>      &lt;operation type=&quot;DELETE&quot;/&gt;<br>      &lt;operation type=&quot;INSERT&quot;/&gt;<br>    &lt;/composite&gt;<br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver. 
-        It then executes the CompositeOperation, DELETE and then UPDATE, contained 
+      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver.
+        It then executes the CompositeOperation, DELETE and then UPDATE, contained
         within the FlatXmlDataSet file updateFile.xml.</p>
       <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;composite src=&quot;compositeFile.xml&quot; flat=&quot;false&quot;&gt;<br>      &lt;operation type=&quot;INSERT&quot;/&gt;<br>      &lt;operation type=&quot;UPDATE&quot;/&gt;<br>    &lt;/composite&gt;<br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver. 
-        It then executes the CompositeOperation, DELETE and then UPDATE, contained 
+      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver.
+        It then executes the CompositeOperation, DELETE and then UPDATE, contained
         within the XmlDataSet file updateFile.xml.</p>
         -->
       <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;export dest=&quot;exportFile.xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
-        and exports the database to the given destination file as a FlatXmlDataSet. 
+      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver
+        and exports the database to the given destination file as a FlatXmlDataSet.
       </p>
       <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;export dest=&quot;exportNonFlatFile.xml&quot; format=&quot;xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
-        and exports the database to the given destination file as an XmlDataSet. 
+      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver
+        and exports the database to the given destination file as an XmlDataSet.
       </p>
       <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;export dest=&quot;export.dtd&quot; format=&quot;dtd&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
+      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver
         and <br>
         exports the document type definition (dtd) describing the flat xml format.</p>
       <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;export dest=&quot;exportFile.xml&quot;&gt;<br>      &lt;table name=&quot;FOO&quot;/&gt;<br>      &lt;table name=&quot;BAR&quot;/&gt;<br>    &lt;/export&gt;<br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
-        and exports the contents of the provided tables to the given destination 
+      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver
+        and exports the contents of the provided tables to the given destination
         file as an FlatXmlDataSet. <br>
       </p>
-      <!-- #EndEditable --> 
+      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;export dest=&quot;exportFile.xml&quot;&gt;<br>      &lt;table name=&quot;FOO&quot;/&gt;<br>      &lt;query name=&quot;BAR&quot; sql=&quot;SELECT COL1, COL2, COL3 as 'COLSPECIAL' FROM BAR WHERE COL1=4&quot;/&gt;<br>    &lt;/export&gt;<br>  &lt;/dbunit&gt;</pre>
+            <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver
+              and exports the contents of the provided tables to the given destination file as an FlatXmlDataSet.  The contents
+              of the BAR table are only shown where col1 is equal to 4.  Col3 is renamed COLSPECIAL as well.
+              <br>
+      </p>
+      <!-- #EndEditable -->
       <hr>
-      <div align="center"> 
+      <div align="center">
         <p><font size="2">Copyright &copy;2002, Manuel Laflamme, All Rights Reserved</font></p>
-        <p><font size="1"><a href="index.html">Home</a> - <a href="intro.html">Introduction</a> 
-          - <a href="components.html">Core Classes</a> - <a href="anttask.html">Ant 
-          Task</a> - <a href="howto.html">How-to Guides</a> - <a href="bestpractices.html">Best 
-          Practices</a> - <a href="properties.html">Properties</a> - <a href="api/index.html">API 
-          Reference</a> - <a href="faq.html">FAQ</a> - <a href="changes.html">Changes 
-          History</a> - <a href="download.html">Download</a> - <a href="support.html">Support</a> 
+        <p><font size="1"><a href="index.html">Home</a> - <a href="intro.html">Introduction</a>
+          - <a href="components.html">Core Classes</a> - <a href="anttask.html">Ant
+          Task</a> - <a href="howto.html">How-to Guides</a> - <a href="bestpractices.html">Best
+          Practices</a> - <a href="properties.html">Properties</a> - <a href="api/index.html">API
+          Reference</a> - <a href="faq.html">FAQ</a> - <a href="changes.html">Changes
+          History</a> - <a href="download.html">Download</a> - <a href="support.html">Support</a>
           - <a href="resources.html">Resources</a></font></p>
         <font size="1">$Revision$ $Date$</font> </div>
   </tr>
