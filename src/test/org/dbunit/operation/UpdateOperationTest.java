@@ -116,7 +116,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         connection.verify();
     }
 
-    public void testGetOperationStatementsAndNoPrimaryKey() throws Exception
+    public void testExecuteAndNoPrimaryKey() throws Exception
     {
         IDataSet dataSet = _connection.createDataSet();
         ITableMetaData metaData = dataSet.getTableMetaData("TEST_TABLE");
@@ -181,6 +181,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
 
 }
+
 
 
 

@@ -22,8 +22,7 @@
 
 package org.dbunit.dataset;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 
 import junit.framework.Assert;
 
@@ -68,7 +67,6 @@ public class DataSetUtils
     {
         Assertion.assertEquals(expectedTable, actualTable);
     }
-
 
 
     /**
@@ -132,7 +130,29 @@ public class DataSetUtils
 
         if (!dataType.isNumber())
         {
-            stringValue = "'" + stringValue + "'";
+            // no single quotes
+            if (stringValue.indexOf("'") < 0)
+            {
+                return stringValue = "'" + stringValue + "'";
+            }
+
+            // escaping single quotes
+            StringBuffer buffer = new StringBuffer(stringValue.length() * 2);
+            StringTokenizer tokenizer = new StringTokenizer(stringValue, "'", true);
+
+            buffer.append("'");
+            while (tokenizer.hasMoreTokens())
+            {
+                String token = tokenizer.nextToken();
+                buffer.append(token);
+                if (token.equals("'"))
+                {
+                    buffer.append("'");
+                }
+            }
+            buffer.append("'");
+            return buffer.toString();
+
         }
 
         return stringValue;
@@ -207,6 +227,7 @@ public class DataSetUtils
     }
 
 }
+
 
 
 

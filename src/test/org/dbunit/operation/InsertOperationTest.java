@@ -30,6 +30,7 @@ import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.Assertion;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.*;
 
@@ -143,12 +144,13 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
             if (name.startsWith("EMPTY"))
             {
-                assertTrue(name + " after", table.getRowCount() > 0);
+                Assertion.assertEquals(xmlDataSet.getTable(name), table);
             }
         }
 
     }
 }
+
 
 
 

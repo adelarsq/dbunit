@@ -145,6 +145,10 @@ public class DataSetUtilsTest extends TestCase
                     "{t '" + new Time(0L).toString() + "'}"),
             new ValueStringData(new Timestamp(0L), DataType.TIMESTAMP,
                     "{ts '" + new Timestamp(0L).toString() + "'}"),
+            new ValueStringData("12'34", DataType.VARCHAR, "'12''34'"),
+            new ValueStringData("'1234", DataType.VARCHAR, "'''1234'"),
+            new ValueStringData("1234'", DataType.VARCHAR, "'1234'''"),
+            new ValueStringData("'12'34'", DataType.VARCHAR, "'''12''34'''"),
         };
 
         for (int i = 0; i < values.length; i++)
@@ -186,6 +190,7 @@ public class DataSetUtilsTest extends TestCase
     }
 
 }
+
 
 
 

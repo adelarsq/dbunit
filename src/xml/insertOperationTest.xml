@@ -48,7 +48,7 @@
 		<column>TIMESTAMP_COL</column>
 		<column>VARBINARY_COL</column>
 		<row>
-			<value>value</value>
+			<value>qwe'rty</value>
 			<value>12345</value>
 			<value>1974-06-23 23:15:00.0</value>
 			<value>YWJjZA==</value>
