@@ -25,7 +25,6 @@ package org.dbunit.database.statement;
 import org.dbunit.database.IDatabaseConnection;
 
 import java.sql.SQLException;
-import java.sql.Connection;
 
 /**
  * @author Manuel Laflamme
@@ -59,6 +58,7 @@ public class PreparedStatementFactory extends AbstractStatementFactory
         }
     }
 }
+
 
 
 

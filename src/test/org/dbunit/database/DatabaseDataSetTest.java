@@ -22,12 +22,11 @@
 
 package org.dbunit.database;
 
-import java.util.Arrays;
-import java.sql.DatabaseMetaData;
-
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
+
+import java.util.Arrays;
 
 /**
  * @author Manuel Laflamme
@@ -201,6 +200,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 //    }
 
 }
+
 
 
 

@@ -22,16 +22,17 @@
 
 package org.dbunit.dataset.xml;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.net.URL;
-import java.net.MalformedURLException;
-
-import electric.xml.*;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import electric.xml.*;
 
 /**
  * @author Manuel Laflamme
@@ -307,6 +308,7 @@ public class FlatXmlDataSet extends AbstractDataSet
     }
 
 }
+
 
 
 

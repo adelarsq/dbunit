@@ -22,15 +22,15 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.dataset.*;
 import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.database.MockDatabaseConnection;
+import org.dbunit.dataset.*;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class DeleteAllOperationTest extends AbstractDatabaseTest
 {
@@ -114,6 +114,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
     }
 
 }
+
 
 
 

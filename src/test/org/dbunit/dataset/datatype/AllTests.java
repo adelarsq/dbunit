@@ -22,14 +22,12 @@
 
 package org.dbunit.dataset.datatype;
 
-import org.dbunit.dataset.*;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class AllTests
 {
@@ -51,6 +49,7 @@ public class AllTests
         return suite;
     }
 }
+
 
 
 

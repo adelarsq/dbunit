@@ -22,17 +22,14 @@
 
 package org.dbunit.operation;
 
-import java.sql.*;
-import java.util.List;
-import java.util.ArrayList;
-
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.statement.IPreparedBatchStatement;
 import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
+
+import java.sql.*;
 
 /**
  * This operation literally refreshes dataset contents into the database. This
@@ -195,6 +192,7 @@ public class RefreshOperation extends DatabaseOperation
 
     }
 }
+
 
 
 

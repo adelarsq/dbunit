@@ -22,13 +22,11 @@
 
 package org.dbunit.dataset;
 
-import java.util.*;
-
-import junit.framework.Assert;
-
+import org.dbunit.Assertion;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
-import org.dbunit.Assertion;
+
+import java.util.StringTokenizer;
 
 /**
  * This class contains various methods for manipulating datasets.
@@ -227,6 +225,7 @@ public class DataSetUtils
     }
 
 }
+
 
 
 

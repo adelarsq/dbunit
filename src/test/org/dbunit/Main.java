@@ -22,15 +22,7 @@
 
 package org.dbunit;
 
-import java.io.*;
-import java.util.Arrays;
-
-import electric.xml.*;
-
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatDtdDataSet;
 
 /**
  * @author Manuel Laflamme
@@ -76,6 +68,7 @@ public class Main
     }
 
 }
+
 
 
 

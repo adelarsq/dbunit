@@ -22,11 +22,12 @@
 
 package org.dbunit.dataset.xml;
 
+import org.dbunit.dataset.*;
+import org.dbunit.dataset.datatype.DataType;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.datatype.DataType;
 import electric.xml.*;
 
 /**
@@ -89,6 +90,7 @@ public class FlatXmlTable extends AbstractTable
     }
 
 }
+
 
 
 

@@ -10,14 +10,14 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.xml.XmlTableTest;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.XmlTableTest;
 
 import java.io.*;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class CaseInsensitiveTableTest extends XmlTableTest
 {
@@ -53,3 +53,4 @@ public class CaseInsensitiveTableTest extends XmlTableTest
         }
     }
 }
+

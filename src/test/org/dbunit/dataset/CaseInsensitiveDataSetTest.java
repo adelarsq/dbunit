@@ -16,7 +16,7 @@ import java.io.FileInputStream;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class CaseInsensitiveDataSetTest extends AbstractDataSetTest
 {
@@ -40,4 +40,5 @@ public class CaseInsensitiveDataSetTest extends AbstractDataSetTest
         }
     }
 }
+
 

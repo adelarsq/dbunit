@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 
 public abstract class AbstractDataTypeTest extends TestCase
@@ -52,6 +52,7 @@ public abstract class AbstractDataTypeTest extends TestCase
 
     public abstract void testAsString() throws Exception;
 }
+
 
 
 

@@ -22,7 +22,6 @@
 
 package org.dbunit.dataset;
 
-import java.util.Arrays;
 
 /**
  * @author Manuel Laflamme
@@ -89,6 +88,7 @@ public abstract class AbstractTable implements ITable
 //        }
 //    }
 }
+
 
 
 

@@ -22,9 +22,9 @@
 
 package org.dbunit.dataset;
 
-import java.sql.DatabaseMetaData;
-
 import org.dbunit.dataset.datatype.DataType;
+
+import java.sql.DatabaseMetaData;
 
 /**
  * Represents a table column.
@@ -178,6 +178,7 @@ public class Column
     }
 
 }
+
 
 
 

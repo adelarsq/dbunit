@@ -22,12 +22,10 @@
 package org.dbunit.dataset.datatype;
 
 import java.sql.*;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 
 public class TimeDataTypeTest extends AbstractDataTypeTest
@@ -155,6 +153,7 @@ public class TimeDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+
 
 
 

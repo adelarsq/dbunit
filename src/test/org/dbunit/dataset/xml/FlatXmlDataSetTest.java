@@ -22,18 +22,16 @@
 
 package org.dbunit.dataset.xml;
 
-import java.io.*;
-import java.util.*;
-
-import org.dbunit.DatabaseEnvironment;
 import org.dbunit.Assertion;
-import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.*;
-import FileAsserts;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class FlatXmlDataSetTest extends AbstractDataSetTest
 {
@@ -93,6 +91,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
 
 }
+
 
 
 

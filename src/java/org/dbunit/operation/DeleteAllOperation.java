@@ -22,13 +22,13 @@
 
 package org.dbunit.operation;
 
-import java.sql.SQLException;
-
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.statement.IBatchStatement;
 import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.*;
+
+import java.sql.SQLException;
 
 /**
  * Deletes entire database table contents for each table contained in dataset.
@@ -80,6 +80,7 @@ public class DeleteAllOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 

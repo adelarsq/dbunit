@@ -22,12 +22,11 @@
 
 package org.dbunit.database;
 
-import java.sql.*;
-import java.util.*;
-
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.datatype.DataTypeException;
+
+import java.sql.*;
+import java.util.*;
 
 /**
  * @author Manuel Laflamme
@@ -227,6 +226,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         }
     }
 }
+
 
 
 

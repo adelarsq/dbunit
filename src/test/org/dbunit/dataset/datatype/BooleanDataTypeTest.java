@@ -25,7 +25,7 @@ import java.sql.Types;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 
 public class BooleanDataTypeTest extends AbstractDataTypeTest
@@ -153,6 +153,7 @@ public class BooleanDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+
 
 
 

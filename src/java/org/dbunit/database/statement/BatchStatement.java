@@ -22,7 +22,8 @@
 
 package org.dbunit.database.statement;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
@@ -57,6 +58,7 @@ public class BatchStatement extends AbstractBatchStatement
     }
 
 }
+
 
 
 

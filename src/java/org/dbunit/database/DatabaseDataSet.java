@@ -22,12 +22,11 @@
 
 package org.dbunit.database;
 
+import org.dbunit.dataset.*;
+
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.IOException;
-
-import org.dbunit.dataset.*;
 
 /**
  * @author Manuel Laflamme
@@ -210,6 +209,7 @@ public class DatabaseDataSet implements IDataSet
     }
 
 }
+
 
 
 

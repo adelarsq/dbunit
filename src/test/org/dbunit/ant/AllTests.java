@@ -1,7 +1,7 @@
 /*
- * DataSetException.java   Feb 17, 2002
+ * AllTests.java   Jun 13, 2002
  *
- * The DbUnit Database Testing Framework
+ * DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
  * This library is free software; you can redistribute it and/or
@@ -20,33 +20,23 @@
  *
  */
 
-package org.dbunit.dataset;
+package org.dbunit.ant;
 
-import org.dbunit.DatabaseUnitException;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class DataSetException extends DatabaseUnitException
+public class AllTests
 {
-    public DataSetException()
+    public static Test suite()
     {
-    }
+        TestSuite suite = new TestSuite();
+        suite.addTest(new TestSuite(DbUnitTaskTest.class));
 
-    public DataSetException(String msg)
-    {
-        super(msg);
-    }
-
-    public DataSetException(String msg, Throwable e)
-    {
-        super(msg, e);
-    }
-
-    public DataSetException(Throwable e)
-    {
-        super(e);
+        return suite;
     }
 }
 

@@ -10,9 +10,9 @@
 
 package org.dbunit.dataset.xml;
 
-import org.dbunit.dataset.*;
-import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.DatabaseEnvironment;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.*;
 
 import java.io.*;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import FileAsserts;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class FlatDtdDataSetTest extends AbstractDataSetTest
 {
@@ -115,6 +115,7 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
 
 
 }
+
 
 
 

@@ -25,7 +25,7 @@ import java.sql.Types;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 
 public class StringDataTypeTest extends AbstractDataTypeTest
@@ -84,7 +84,7 @@ public class StringDataTypeTest extends AbstractDataTypeTest
             new Integer(1234),
             new Long(1234),
             new Double(12.34),
-            new byte[] {'a', 'b', 'c', 'd'},
+            new byte[]{'a', 'b', 'c', 'd'},
         };
         String[] expected = {
             null,
@@ -168,6 +168,7 @@ public class StringDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+
 
 
 

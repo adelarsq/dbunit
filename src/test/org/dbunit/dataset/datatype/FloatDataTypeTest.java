@@ -21,13 +21,12 @@
 
 package org.dbunit.dataset.datatype;
 
-import java.sql.Types;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.sql.Types;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 
 public class FloatDataTypeTest extends AbstractDataTypeTest
@@ -159,6 +158,7 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+
 
 
 

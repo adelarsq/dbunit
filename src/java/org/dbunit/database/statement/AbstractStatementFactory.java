@@ -9,10 +9,9 @@
 
 package org.dbunit.database.statement;
 
-import java.sql.SQLException;
-
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.DataSetUtils;
+
+import java.sql.SQLException;
 
 public abstract class AbstractStatementFactory implements IStatementFactory
 {
@@ -32,3 +31,4 @@ public abstract class AbstractStatementFactory implements IStatementFactory
         return false;
     }
 }
+

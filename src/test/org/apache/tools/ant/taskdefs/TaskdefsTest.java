@@ -54,48 +54,56 @@
 
 package org.apache.tools.ant.taskdefs;
 
-import junit.framework.*;
+import java.io.File;
+import java.io.PrintStream;
+
+import junit.framework.TestCase;
 import org.apache.tools.ant.*;
-import java.io.*;
 
 /**
- * @author Nico Seessle <nico@seessle.de> 
+ * @author Nico Seessle <nico@seessle.de>
  */
-public abstract class TaskdefsTest extends TestCase { 
-    
+public abstract class TaskdefsTest extends TestCase
+{
+
     protected Project project;
-    
+
     private StringBuffer logBuffer;
     private StringBuffer fullLogBuffer;
     private StringBuffer outBuffer;
     private StringBuffer errBuffer;
     private BuildException buildException;
-    
-    public TaskdefsTest(String name) {
+
+    public TaskdefsTest(String name)
+    {
         super(name);
     }
-    
-    protected String getLog() { 
+
+    protected String getLog()
+    {
         return logBuffer.toString();
     }
 
-    protected String getFullLog() { 
+    protected String getFullLog()
+    {
         return fullLogBuffer.toString();
     }
 
-    
 
-    protected void expectBuildException(String taskname, String cause) { 
+    protected void expectBuildException(String taskname, String cause)
+    {
         expectSpecificBuildException(taskname, cause, null);
     }
 
-    protected void expectOutput(String taskname, String output) { 
+    protected void expectOutput(String taskname, String output)
+    {
         executeTarget(taskname);
         String realOutput = getOutput();
         assertEquals(output, realOutput);
     }
 
-    protected void expectOutputAndError(String taskname, String output, String error) { 
+    protected void expectOutputAndError(String taskname, String output, String error)
+    {
         executeTarget(taskname);
         String realOutput = getOutput();
         assertEquals(output, realOutput);
@@ -103,58 +111,73 @@ public abstract class TaskdefsTest extends TestCase {
         assertEquals(error, realError);
     }
 
-    protected void expectLog(String taskname, String log) { 
+    protected void expectLog(String taskname, String log)
+    {
         executeTarget(taskname);
         String realLog = getLog();
         assertEquals(log, realLog);
     }
 
-    
-    protected String getOutput() {
+
+    protected String getOutput()
+    {
         return cleanBuffer(outBuffer);
     }
-     
-    protected String getError() {
+
+    protected String getError()
+    {
         return cleanBuffer(errBuffer);
     }
-        
-    private String cleanBuffer(StringBuffer buffer) {
+
+    private String cleanBuffer(StringBuffer buffer)
+    {
         StringBuffer cleanedBuffer = new StringBuffer();
         boolean cr = false;
-        for (int i = 0; i < buffer.length(); i++) { 
+        for (int i = 0; i < buffer.length(); i++)
+        {
             char ch = buffer.charAt(i);
-            if (ch == '\r') {
+            if (ch == '\r')
+            {
                 cr = true;
                 continue;
             }
 
-            if (!cr) { 
+            if (!cr)
+            {
                 cleanedBuffer.append(ch);
-            } else { 
-                if (ch == '\n') {
+            }
+            else
+            {
+                if (ch == '\n')
+                {
                     cleanedBuffer.append(ch);
-                } else {
+                }
+                else
+                {
                     cleanedBuffer.append('\r').append(ch);
                 }
             }
         }
         return cleanedBuffer.toString();
     }
-    
-    protected void configureProject(String filename) { 
+
+    protected void configureProject(String filename)
+    {
         logBuffer = new StringBuffer();
         fullLogBuffer = new StringBuffer();
         project = new Project();
         project.init();
-        project.setUserProperty( "ant.file" , new File(filename).getAbsolutePath() );
+        project.setUserProperty("ant.file", new File(filename).getAbsolutePath());
         project.addBuildListener(new AntTestListener());
         ProjectHelper.configureProject(project, new File(filename));
     }
-    
-    protected void executeTarget(String targetName) { 
+
+    protected void executeTarget(String targetName)
+    {
         PrintStream sysOut = System.out;
         PrintStream sysErr = System.err;
-        try { 
+        try
+        {
             sysOut.flush();
             sysErr.flush();
             outBuffer = new StringBuffer();
@@ -167,39 +190,52 @@ public abstract class TaskdefsTest extends TestCase {
             fullLogBuffer = new StringBuffer();
             buildException = null;
             project.executeTarget(targetName);
-        } finally { 
+        }
+        finally
+        {
             System.setOut(sysOut);
             System.setErr(sysErr);
         }
-        
+
     }
-    
-    protected File getProjectDir() {
+
+    protected File getProjectDir()
+    {
         return project.getBaseDir();
     }
 
-    protected void expectSpecificBuildException(String taskname, String cause, String msg) { 
-        try {
+    protected void expectSpecificBuildException(String taskname, String cause, String msg)
+    {
+        try
+        {
             executeTarget(taskname);
-        } catch (org.apache.tools.ant.BuildException ex) {
-            if ((null != msg) && (ex.getMessage() != msg)) {
+        }
+        catch (org.apache.tools.ant.BuildException ex)
+        {
+            if ((null != msg) && (ex.getMessage() != msg))
+            {
                 fail("Should throw BuildException because '" + cause + "' with message '" + msg + "' (received message '" + ex.getMessage() + "' instead)");
             }
             return;
         }
         fail("Should throw BuildException because: " + cause);
     }
-    private class AntOutputStream extends java.io.OutputStream { 
-        public void write(int b) { 
+
+    private class AntOutputStream extends java.io.OutputStream
+    {
+        public void write(int b)
+        {
             outBuffer.append((char)b);
         }
     }
-    
-    private class AntTestListener implements BuildListener { 
+
+    private class AntTestListener implements BuildListener
+    {
         /**
          *  Fired before any targets are started.
          */
-        public void buildStarted(BuildEvent event) {
+        public void buildStarted(BuildEvent event)
+        {
         }
 
         /**
@@ -208,7 +244,8 @@ public abstract class TaskdefsTest extends TestCase {
          *
          *  @see BuildEvent#getException()
          */
-        public void buildFinished(BuildEvent event) {
+        public void buildFinished(BuildEvent event)
+        {
         }
 
         /**
@@ -216,7 +253,8 @@ public abstract class TaskdefsTest extends TestCase {
          *
          *  @see BuildEvent#getTarget()
          */
-        public void targetStarted(BuildEvent event) {
+        public void targetStarted(BuildEvent event)
+        {
             //System.out.println("targetStarted " + event.getTarget().getName());
         }
 
@@ -226,7 +264,8 @@ public abstract class TaskdefsTest extends TestCase {
          *
          *  @see BuildEvent#getException()
          */
-        public void targetFinished(BuildEvent event) {
+        public void targetFinished(BuildEvent event)
+        {
             //System.out.println("targetFinished " + event.getTarget().getName());
         }
 
@@ -235,7 +274,8 @@ public abstract class TaskdefsTest extends TestCase {
          *
          *  @see BuildEvent#getTask()
          */
-        public void taskStarted(BuildEvent event) {
+        public void taskStarted(BuildEvent event)
+        {
             //System.out.println("taskStarted " + event.getTask().getTaskName());
         }
 
@@ -245,7 +285,8 @@ public abstract class TaskdefsTest extends TestCase {
          *
          *  @see BuildEvent#getException()
          */
-        public void taskFinished(BuildEvent event) {
+        public void taskFinished(BuildEvent event)
+        {
             //System.out.println("taskFinished " + event.getTask().getTaskName());
         }
 
@@ -255,15 +296,16 @@ public abstract class TaskdefsTest extends TestCase {
          *  @see BuildEvent#getMessage()
          *  @see BuildEvent#getPriority()
          */
-        public void messageLogged(BuildEvent event) {
+        public void messageLogged(BuildEvent event)
+        {
             if (event.getPriority() == Project.MSG_INFO ||
-                event.getPriority() == Project.MSG_WARN ||
-                event.getPriority() == Project.MSG_ERR)
+                    event.getPriority() == Project.MSG_WARN ||
+                    event.getPriority() == Project.MSG_ERR)
             {
                 logBuffer.append(event.getMessage());
             }
             fullLogBuffer.append(event.getMessage());
-            
+
         }
     }
 

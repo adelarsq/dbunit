@@ -24,9 +24,9 @@ package org.dbunit.database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import javax.sql.*;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 /**
  * This class adapts a JDBC <code>DataSource</code> to a
@@ -129,6 +129,7 @@ public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
         }
     }
 }
+
 
 
 

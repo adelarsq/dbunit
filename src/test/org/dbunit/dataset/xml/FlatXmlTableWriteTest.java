@@ -22,13 +22,14 @@
 
 package org.dbunit.dataset.xml;
 
-import java.io.*;
-
+import org.dbunit.Assertion;
 import org.dbunit.dataset.*;
+
+import java.io.*;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class FlatXmlTableWriteTest extends FlatXmlTableTest
 {
@@ -86,7 +87,7 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
             for (int i = 0; i < tables.length; i++)
             {
                 ITable table = tables[i];
-                DataSetUtils.assertEquals(table, xmlDataSet2.getTable(xmlDataSet2.getTableNames()[i]));
+                Assertion.assertEquals(table, xmlDataSet2.getTable(xmlDataSet2.getTableNames()[i]));
             }
         }
         finally
@@ -98,6 +99,7 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
     }
 
 }
+
 
 
 

@@ -22,12 +22,11 @@
 package org.dbunit.dataset.datatype;
 
 import java.sql.Types;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 
 public class BytesDataTypeTest extends AbstractDataTypeTest
@@ -77,14 +76,14 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
             null,
             "",
             "YWJjZA==",
-            new byte[] {0, 1, 2, 3, 4, 5},
+            new byte[]{0, 1, 2, 3, 4, 5},
         };
 
         byte[][] expected = {
             null,
             new byte[0],
-            new byte[] {'a', 'b', 'c', 'd'},
-            new byte[] {0, 1, 2, 3, 4, 5},
+            new byte[]{'a', 'b', 'c', 'd'},
+            new byte[]{0, 1, 2, 3, 4, 5},
         };
 
         assertEquals("actual vs expected count", values.length, expected.length);
@@ -141,7 +140,7 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
     {
         byte[][] values = {
             new byte[0],
-            new byte[] {'a', 'b', 'c', 'd'},
+            new byte[]{'a', 'b', 'c', 'd'},
         };
 
         String[] expected = {
@@ -157,6 +156,7 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
         }
     }
 }
+
 
 
 

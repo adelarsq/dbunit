@@ -3,17 +3,17 @@
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Timothy Ruppert && Ben Cox
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -22,11 +22,10 @@
 
 package org.dbunit.ant;
 
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import org.dbunit.DatabaseUnitException;
+
+import java.sql.Connection;
+import java.util.*;
 
 /**
  * The <code>Composite</code> class executes nested <code>Operation</code> steps.
@@ -35,29 +34,31 @@ import org.dbunit.DatabaseUnitException;
  * @version $Revision$
  * @see org.dbunit.ant.Operation
  */
-public class Composite extends Operation {
- 
+public class Composite extends Operation
+{
+
     private List operations = new ArrayList();
 
-    public Composite () 
+    public Composite()
     {
         type = "COMPOSITE";
     }
 
     /**
-     * Throw an <code>IllegalStateException</code> if the <code>type</code> is 
+     * Throw an <code>IllegalStateException</code> if the <code>type</code> is
      * attempted to be changed.
      *
      * @param type a <code>String</code> value
      */
-    public void setType(String type) {
+    public void setType(String type)
+    {
         throw new IllegalStateException("Cannot set type of a <composite>!");
     }
 
     /**
      * Gets the Operations.
      */
-    public List getOperations () 
+    public List getOperations()
     {
         return operations;
     }
@@ -65,7 +66,7 @@ public class Composite extends Operation {
     /**
      * Adds an Operation.
      */
-    public void addOperation(Operation operation) 
+    public void addOperation(Operation operation)
     {
         operations.add(operation);
     }
@@ -77,27 +78,27 @@ public class Composite extends Operation {
      * @param conn a <code>Connection</code> value
      * @exception DatabaseUnitException if an error occurs
      */
-    public void execute(Connection conn) throws DatabaseUnitException 
+    public void execute(Connection conn) throws DatabaseUnitException
     {
         Iterator operIter = operations.listIterator();
-	while (operIter.hasNext()) 
+        while (operIter.hasNext())
         {
-	    Operation operation = (Operation)operIter.next();
-	    if (operation.getSrc() != null) 
+            Operation operation = (Operation)operIter.next();
+            if (operation.getSrc() != null)
             {
-   	        throw new DatabaseUnitException("Cannot set 'src' attribute "
-						+ "in a <composite>'s sub-<operation>");
-	    } 
+                throw new DatabaseUnitException("Cannot set 'src' attribute "
+                        + "in a <composite>'s sub-<operation>");
+            }
             operation.setSrc(getSrc());
-	    if (operation.getFlat() != getFlat()) 
+            if (operation.getFlat() != getFlat())
             {
-   	        throw new DatabaseUnitException("Cannot override 'flat' attribute "
-						+ "in a <composite>'s sub-<operation>");
-	    } 
+                throw new DatabaseUnitException("Cannot override 'flat' attribute "
+                        + "in a <composite>'s sub-<operation>");
+            }
             operation.setFlat(getFlat());
             operation.execute(conn);
-	}                              
-              
+        }
+
     }
 
     /**
@@ -105,31 +106,32 @@ public class Composite extends Operation {
      *
      * @return a <code>String</code> value
      */
-    public String getLogMessage () 
+    public String getLogMessage()
     {
         StringBuffer result = new StringBuffer();
         result.append("Executing composite: ");
-	result.append("\n          on   file: " + getSrc().getAbsolutePath());
-	Iterator operIter = operations.listIterator();
-	while (operIter.hasNext()) 
-	{  
-  	    Operation operation = (Operation)operIter.next();
-	    result.append("\n    operation: " + type);
-	}
-	return result.toString();
-    }	
+        result.append("\n          on   file: " + getSrc().getAbsolutePath());
+        Iterator operIter = operations.listIterator();
+        while (operIter.hasNext())
+        {
+            Operation operation = (Operation)operIter.next();
+            result.append("\n    operation: " + type);
+        }
+        return result.toString();
+    }
 
-    public String toString() 
+    public String toString()
     {
         StringBuffer result = new StringBuffer();
-	result.append("Composite: ");
-	result.append("  src=" + getSrc().getAbsolutePath());
-	result.append(", flat=" + getFlat());
-	result.append(", operations=" + operations);
+        result.append("Composite: ");
+        result.append("  src=" + getSrc().getAbsolutePath());
+        result.append(", flat=" + getFlat());
+        result.append(", operations=" + operations);
 
-	return result.toString();
+        return result.toString();
     }
 }
+
 
 
 

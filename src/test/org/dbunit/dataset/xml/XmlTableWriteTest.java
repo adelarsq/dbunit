@@ -22,13 +22,13 @@
 
 package org.dbunit.dataset.xml;
 
-import java.io.*;
-
 import org.dbunit.dataset.*;
+
+import java.io.*;
 
 /**
  * @author Manuel Laflamme
- * @version 1.0
+ * @version $Revision$
  */
 public class XmlTableWriteTest extends XmlTableTest
 {
@@ -120,6 +120,7 @@ public class XmlTableWriteTest extends XmlTableTest
     }
 
 }
+
 
 
 

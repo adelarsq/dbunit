@@ -22,12 +22,10 @@
 
 package org.dbunit.dataset.datatype;
 
-import java.net.URLEncoder;
-import java.net.URLDecoder;
+import org.dbunit.util.Base64;
+
 import java.sql.Blob;
 import java.sql.SQLException;
-
-import org.dbunit.util.Base64;
 
 /**
  * @author Manuel Laflamme
@@ -77,6 +75,7 @@ public class BytesDataType extends AbstractDataType
         throw new TypeCastException(value.toString());
     }
 }
+
 
 
 

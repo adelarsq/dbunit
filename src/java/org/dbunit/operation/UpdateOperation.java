@@ -22,11 +22,10 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.DatabaseUnitException;
 import org.dbunit.dataset.*;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Updates the database from the dataset contents. This operation assumes that
@@ -105,6 +104,7 @@ public class UpdateOperation extends AbstractBatchOperation
     }
 
 }
+
 
 
 
