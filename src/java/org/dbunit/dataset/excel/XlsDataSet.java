@@ -80,7 +80,7 @@ public class XlsDataSet extends AbstractDataSet
             HSSFSheet sheet = workbook.createSheet(metaData.getTableName());
 
             // write table metadata i.e. first row in sheet
-            workbook.setSheetName(index, metaData.getTableName());
+            workbook.setSheetName(index, metaData.getTableName(), HSSFWorkbook.ENCODING_UTF_16);
 
             HSSFRow headerRow = sheet.createRow(0);
             Column[] columns = metaData.getColumns();
@@ -88,6 +88,7 @@ public class XlsDataSet extends AbstractDataSet
             {
                 Column column = columns[j];
                 HSSFCell cell = headerRow.createCell((short)j);
+                cell.setEncoding(HSSFCell.ENCODING_UTF_16);
                 cell.setCellValue(column.getColumnName());
             }
 
@@ -102,6 +103,7 @@ public class XlsDataSet extends AbstractDataSet
                     if (value != null)
                     {
                         HSSFCell cell = row.createCell((short)k);
+                        cell.setEncoding(HSSFCell.ENCODING_UTF_16);
                         cell.setCellValue(DataType.asString(value));
                     }
                 }
