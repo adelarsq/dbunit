@@ -63,9 +63,18 @@
     </dbunit>
   </target>
 
-  <target name="set-type-insert">
+  <target name="set-type-none">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.connectionUrl}" 
+        userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="NONE" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="set-type-insert">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}"
         userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="INSERT" src="${testDataSet}"/>
@@ -302,6 +311,26 @@
       </classpath>
     </dbunit>
   </target>
+
+    <target name="test-datatypefactory">
+      <dbunit driver="${dbunit.profile.driverClass}"
+              datatypeFactory="org.dbunit.ext.oracle.OracleDataTypeFactory"
+              url="${dbunit.profile.connectionUrl}"
+              userid="${dbunit.profile.user}"
+              password="${dbunit.profile.password}">
+          <operation type="NONE"/>
+      </dbunit>
+    </target>
+
+    <target name="test-escapepattern">
+      <dbunit driver="${dbunit.profile.driverClass}"
+              escapePattern="[?]"
+              url="${dbunit.profile.connectionUrl}"
+              userid="${dbunit.profile.user}"
+              password="${dbunit.profile.password}">
+          <operation type="NONE" src="${testDataSet}"/>
+      </dbunit>
+    </target>
 
 </project>
 

@@ -23,6 +23,10 @@
 package org.dbunit.ant;
 
 import org.dbunit.DatabaseEnvironment;
+import org.dbunit.ext.oracle.OracleDataTypeFactory;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.mssqlserver.InsertIdentityOperation;
 
@@ -127,6 +131,8 @@ public class DbUnitTaskTest extends TaskdefsTest
 
     public void testResolveOperationTypes()
     {
+        assertOperationType("Should have been an DELETE_ALL operation",
+                "set-type-none", DatabaseOperation.NONE);
         assertOperationType("Should have been an DELETE_ALL operation",
                 "set-type-delete-all", DatabaseOperation.DELETE_ALL);
         assertOperationType("Should have been an INSERT operation",
@@ -290,6 +296,32 @@ public class DbUnitTaskTest extends TaskdefsTest
         assertEquals("name", "PK_TABLE", pkTable.getName());
     }
 
+    public void testDataTypeFactory() throws Exception
+    {
+        String targetName = "test-datatypefactory";
+        DbUnitTask task = getFirstTargetTask(targetName);
+
+        IDatabaseConnection connection = task.createConnection();
+        IDataTypeFactory factory = (IDataTypeFactory)connection.getConfig().getProperty(
+                        DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
+
+        Class expectedClass = OracleDataTypeFactory.class;
+        assertEquals("factory", expectedClass, factory.getClass());
+    }
+
+    public void testEscapePattern() throws Exception
+    {
+        String targetName = "test-escapepattern";
+        DbUnitTask task = getFirstTargetTask(targetName);
+
+        IDatabaseConnection connection = task.createConnection();
+        String actualPattern = (String)connection.getConfig().getProperty(
+                        DatabaseConfig.PROPERTY_ESCAPE_PATTERN);
+
+        String expectedPattern = "[?]";
+        assertEquals("factory", expectedPattern, actualPattern);
+    }
+
     public void testClasspath() throws Exception
     {
         String targetName = "test-classpath";
@@ -362,10 +394,7 @@ public class DbUnitTaskTest extends TaskdefsTest
     protected DbUnitTaskStep getFirstStepFromTarget(String targetName)
     {
         DbUnitTaskStep result = null;
-        Hashtable targets = project.getTargets();
-        executeTarget(targetName);
-        Target target = (Target)targets.get(targetName);
-        DbUnitTask task = (DbUnitTask)target.getTasks()[0];
+        DbUnitTask task = getFirstTargetTask(targetName);
         List steps = task.getSteps();
         if (steps != null && steps.size() > 0)
         {
@@ -376,6 +405,15 @@ public class DbUnitTaskTest extends TaskdefsTest
             fail("Can't get a dbunit <step> from the target: " + targetName);
         }
         return result;
+    }
+
+    private DbUnitTask getFirstTargetTask(String targetName)
+    {
+        Hashtable targets = project.getTargets();
+        executeTarget(targetName);
+        Target target = (Target)targets.get(targetName);
+        DbUnitTask task = (DbUnitTask)target.getTasks()[0];
+        return task;
     }
 
     public static Test suite()

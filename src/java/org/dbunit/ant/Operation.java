@@ -117,6 +117,10 @@ public class Operation implements DbUnitTaskStep
         {
             dbOperation = DatabaseOperation.CLEAN_INSERT;
         }
+        else if ("NONE".equals(type))
+        {
+            dbOperation = DatabaseOperation.NONE;
+        }
         else if ("MSSQL_CLEAN_INSERT".equals(type))
         {
             dbOperation = InsertIdentityOperation.CLEAN_INSERT;
@@ -158,44 +162,47 @@ public class Operation implements DbUnitTaskStep
 
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
-        if (dbOperation != null)
-        {
-            try
-            {
-                IDataSet dataset;
-                if (format == null)
-                {
-                    format = DEFAULT_FORMAT;
-                }
-                if (format.equalsIgnoreCase("xml"))
-                {
-                    dataset = new XmlDataSet(new FileReader(src));
-                }
-                else
-                {
-                    dataset = new FlatXmlDataSet(src);
-                }
-                dbOperation.execute(connection, dataset);
-            }
-            catch (IOException e)
-            {
-                throw new DatabaseUnitException(e);
-            }
-            catch (SQLException e)
-            {
-                throw new DatabaseUnitException(e);
-            }
-        }
-        else
+        if (dbOperation == null)
         {
             throw new DatabaseUnitException("Operation.execute(): setType(String) must be called before execute()!");
+        }
+
+        if (dbOperation == DatabaseOperation.NONE)
+        {
+            return;
+        }
+
+        try
+        {
+            IDataSet dataset;
+            if (format == null)
+            {
+                format = DEFAULT_FORMAT;
+            }
+            if (format.equalsIgnoreCase("xml"))
+            {
+                dataset = new XmlDataSet(new FileReader(src));
+            }
+            else
+            {
+                dataset = new FlatXmlDataSet(src);
+            }
+            dbOperation.execute(connection, dataset);
+        }
+        catch (IOException e)
+        {
+            throw new DatabaseUnitException(e);
+        }
+        catch (SQLException e)
+        {
+            throw new DatabaseUnitException(e);
         }
     }
 
     public String getLogMessage()
     {
         return "Executing operation: " + type
-                + "\n          on   file: " + src.getAbsolutePath()
+                + "\n          on   file: " + ((src == null) ? null : src.getAbsolutePath())
                 + "\n          with format: " + format;
     }
 
@@ -206,7 +213,7 @@ public class Operation implements DbUnitTaskStep
         result.append("Operation: ");
         result.append(" type=" + type);
         result.append(", format=" + format);
-        result.append(", src=" + src.getAbsolutePath());
+        result.append(", src=" + src == null ? null : src.getAbsolutePath());
         result.append(", dbOperation = " + dbOperation);
 
         return result.toString();
