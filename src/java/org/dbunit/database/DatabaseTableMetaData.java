@@ -178,6 +178,11 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                         }
                     }
 
+                    if (columnList.size() == 0)
+                    {
+                        throw new NoColumnsFoundException(tableName);
+                    }
+
                     _columns = (Column[])columnList.toArray(new Column[0]);
                 }
                 finally

@@ -74,7 +74,7 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
 //        String[] expected = {"PK0"};
         String[] expected = {"PK0", "PK1", "PK2"};
 
-        ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
+        ITableMetaData metaData = new DatabaseTableMetaData(tableName, getConnection());
         Column[] columns = metaData.getPrimaryKeys();
 
         assertEquals("pk count", expected.length, columns.length);
@@ -89,10 +89,35 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
     {
         String tableName = "TEST_TABLE";
 
-        ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
+        ITableMetaData metaData = new DatabaseTableMetaData(tableName, getConnection());
         Column[] columns = metaData.getPrimaryKeys();
 
         assertEquals("pk count", 0, columns.length);
+    }
+
+    public void testGetNoColumns() throws Exception
+    {
+        String tableName = "UNKNOWN_TABLE";
+
+        ITableMetaData metaData = new DatabaseTableMetaData(tableName, getConnection());
+        try
+        {
+            metaData.getColumns();
+            fail("Should not be here!");
+        }
+        catch (NoColumnsFoundException e)
+        {
+        }
+
+        // try a second times to ensure error is consistent
+        try
+        {
+            metaData.getColumns();
+            fail("Should not be here!");
+        }
+        catch (NoColumnsFoundException e)
+        {
+        }
     }
 
     public void testColumnIsNullable() throws Exception
@@ -101,7 +126,7 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         String[] notNullable = {"PK0", "PK1", "PK2"};
         String[] nullable = {"NORMAL0", "NORMAL1"};
 
-        ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
+        ITableMetaData metaData = new DatabaseTableMetaData(tableName, getConnection());
         Column[] columns = metaData.getColumns();
 
         assertEquals("column count", nullable.length + notNullable.length,
@@ -155,7 +180,7 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         };
         DataType[] expectedTypes = getExpectedDataTypes();
 
-        ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
+        ITableMetaData metaData = new DatabaseTableMetaData(tableName, getConnection());
         Column[] columns = metaData.getColumns();
 
         assertEquals("expected columns", expectedNames.length, expectedTypes.length);
