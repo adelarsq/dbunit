@@ -42,7 +42,7 @@ public class ExcludeTableFilterTest extends AbstractTableFilterTest
         super(s);
     }
 
-    public void testIsValidName() throws Exception
+    public void testAccept() throws Exception
     {
         String[] validNames = getExpectedNames();
         ExcludeTableFilter filter = new ExcludeTableFilter();
@@ -51,7 +51,7 @@ public class ExcludeTableFilterTest extends AbstractTableFilterTest
         for (int i = 0; i < validNames.length; i++)
         {
             String validName = validNames[i];
-            assertEquals(validName, true, filter.isValidName(validName));
+            assertEquals(validName, true, filter.accept(validName));
         }
     }
 
@@ -64,7 +64,7 @@ public class ExcludeTableFilterTest extends AbstractTableFilterTest
         for (int i = 0; i < validNames.length; i++)
         {
             String validName = validNames[i];
-            assertEquals(validName, true, filter.isValidName(validName));
+            assertEquals(validName, true, filter.accept(validName));
         }
     }
 
@@ -79,7 +79,7 @@ public class ExcludeTableFilterTest extends AbstractTableFilterTest
         for (int i = 0; i < invalidNames.length; i++)
         {
             String invalidName = invalidNames[i];
-            assertEquals(invalidName, false, filter.isValidName(invalidName));
+            assertEquals(invalidName, false, filter.accept(invalidName));
         }
     }
 
@@ -243,7 +243,7 @@ public class ExcludeTableFilterTest extends AbstractTableFilterTest
             String pattern = patterns[i];
             ExcludeTableFilter filter = new ExcludeTableFilter();
             filter.excludeTable(pattern);
-            assertEquals(pattern, true, filter.isValidName(validName));
+            assertEquals(pattern, true, filter.accept(validName));
         }
     }
 
@@ -257,7 +257,7 @@ public class ExcludeTableFilterTest extends AbstractTableFilterTest
             String pattern = patterns[i];
             ExcludeTableFilter filter = new ExcludeTableFilter();
             filter.excludeTable(pattern);
-            assertEquals(pattern, false, filter.isValidName(validName));
+            assertEquals(pattern, false, filter.accept(validName));
         }
     }
 

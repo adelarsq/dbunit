@@ -40,7 +40,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         super(s);
     }
 
-    public void testIsValidName() throws Exception
+    public void testAccept() throws Exception
     {
         String[] validNames = getExpectedNames();
         ITableFilter filter = new SequenceTableFilter(validNames);
@@ -48,7 +48,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         for (int i = 0; i < validNames.length; i++)
         {
             String validName = validNames[i];
-            assertEquals(validName, true, filter.isValidName(validName));
+            assertEquals(validName, true, filter.accept(validName));
         }
     }
 
@@ -60,7 +60,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         for (int i = 0; i < validNames.length; i++)
         {
             String validName = validNames[i];
-            assertEquals(validName, true, filter.isValidName(validName));
+            assertEquals(validName, true, filter.accept(validName));
         }
     }
 
@@ -76,7 +76,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         for (int i = 0; i < invalidNames.length; i++)
         {
             String invalidName = invalidNames[i];
-            assertEquals(invalidName, false, filter.isValidName(invalidName));
+            assertEquals(invalidName, false, filter.accept(invalidName));
         }
     }
 

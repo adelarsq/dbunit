@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * This filter expose a specified table sequence and can be used to reorder
- * dataset table names. This implementation do not support duplicate table names.
+ * tables in a dataset. This implementation do not support duplicate table names.
  * Thus you cannot specify the same table name more than once in this filter
  * and the filtered dataset must not contains duplicate table names. This is
  * the default filter used by the {@link org.dbunit.dataset.FilteredDataSet}.
@@ -49,7 +49,7 @@ public class SequenceTableFilter implements ITableFilter
         _tableNames = tableNames;
     }
 
-    private boolean isValidName(String tableName, String[] tableNames,
+    private boolean accept(String tableName, String[] tableNames,
             boolean verifyDuplicate) throws AmbiguousTableNameException
     {
         boolean found = false;
@@ -76,9 +76,9 @@ public class SequenceTableFilter implements ITableFilter
     ////////////////////////////////////////////////////////////////////////////
     // ITableFilter interface
 
-    public boolean isValidName(String tableName) throws DataSetException
+    public boolean accept(String tableName) throws DataSetException
     {
-        return isValidName(tableName, _tableNames, true);
+        return accept(tableName, _tableNames, true);
     }
 
     public String[] getTableNames(IDataSet dataSet) throws DataSetException

@@ -22,38 +22,29 @@ package org.dbunit.dataset.filter;
 
 import org.dbunit.dataset.DataSetException;
 
-
 /**
- * This filter hides specified tables from the filtered dataset. This
- * implementation do not modify the original table order from the filtered
- * dataset and support duplicate table names.
+ * This filter exposes only tables matching include patterns and not matching
+ * exclude patterns. This implementation do not modify the original table
+ * sequence from the filtered dataset and support duplicate table names.
  *
  * @author Manuel Laflamme
- * @since Mar 7, 2003
+ * @since Apr 17, 2004
  * @version $Revision$
  */
-public class ExcludeTableFilter extends AbstractTableFilter implements ITableFilter
+public class DefaultTableFilter extends AbstractTableFilter implements ITableFilter
 {
-    private final PatternMatcher _patternMatcher = new PatternMatcher();
+    private final IncludeTableFilter _includeFilter = new IncludeTableFilter();
+    private final ExcludeTableFilter _excludeFilter = new ExcludeTableFilter();
 
     /**
-     * Create a new empty ExcludeTableFilter. Use {@link #excludeTable} to hide
-     * some tables.
+     * Add a new accepted table name pattern.
+     * The following wildcard characters are supported:
+     * '*' matches zero or more characters,
+     * '?' matches one character.
      */
-    public ExcludeTableFilter()
+    public void includeTable(String patternName)
     {
-    }
-
-    /**
-     * Create a new ExcludeTableFilter which prevent access to specified tables.
-     */
-    public ExcludeTableFilter(String[] tableNames)
-    {
-        for (int i = 0; i < tableNames.length; i++)
-        {
-            String tableName = tableNames[i];
-            excludeTable(tableName);
-        }
+        _includeFilter.includeTable(patternName);
     }
 
     /**
@@ -64,19 +55,18 @@ public class ExcludeTableFilter extends AbstractTableFilter implements ITableFil
      */
     public void excludeTable(String patternName)
     {
-        _patternMatcher.addPattern(patternName);
-    }
-
-    public boolean isEmpty()
-    {
-        return _patternMatcher.isEmpty();
+        _excludeFilter.excludeTable(patternName);
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // ITableFilter interface
+    // AbstractTableFilter interface
 
     public boolean isValidName(String tableName) throws DataSetException
     {
-        return !_patternMatcher.accept(tableName);
+        if (_includeFilter.isEmpty() || _includeFilter.accept(tableName))
+        {
+            return _excludeFilter.accept(tableName);
+        }
+        return false;
     }
 }

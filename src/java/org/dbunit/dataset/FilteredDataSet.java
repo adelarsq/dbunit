@@ -30,8 +30,7 @@ import org.dbunit.dataset.filter.SequenceTableFilter;
  *
  * @see ITableFilter
  * @see SequenceTableFilter
- * @see org.dbunit.dataset.filter.IncludeTableFilter
- * @see org.dbunit.dataset.filter.ExcludeTableFilter
+ * @see org.dbunit.dataset.filter.DefaultTableFilter
  *
  * @author Manuel Laflamme
  * @version $Revision$
@@ -55,7 +54,7 @@ public class FilteredDataSet extends AbstractDataSet
 
     /**
      * Creates a FilteredDataSet that decorates the specified dataset and
-     * exposes only the tables allowed by the specified filtering strategy.
+     * exposes only the tables allowed by the specified filter.
      *
      * @param dataSet the filtered dataset
      * @param filter the filtering strategy
@@ -86,7 +85,7 @@ public class FilteredDataSet extends AbstractDataSet
     public ITableMetaData getTableMetaData(String tableName)
             throws DataSetException
     {
-        if (!_filter.isValidName(tableName))
+        if (!_filter.accept(tableName))
         {
             throw new NoSuchTableException(tableName);
         }
@@ -96,7 +95,7 @@ public class FilteredDataSet extends AbstractDataSet
 
     public ITable getTable(String tableName) throws DataSetException
     {
-        if (!_filter.isValidName(tableName))
+        if (!_filter.accept(tableName))
         {
             throw new NoSuchTableException(tableName);
         }

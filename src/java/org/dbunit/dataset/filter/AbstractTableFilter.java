@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * This class provides a skeletal implementation of the {@link ITableFilter}
  * interface to minimize the effort required to implement a filter. Subsclasses
- * are only required to implement the {@link ITableFilter#isValidName} method.
+ * are only required to implement the {@link #isValidName} method.
  *
  * @author Manuel Laflamme
  * @since Mar 8, 2003
@@ -37,8 +37,20 @@ import java.util.List;
 public abstract class AbstractTableFilter implements ITableFilter
 {
 
+    /**
+     * Returns <code>true</code> if specified table is allowed by this filter.
+     * This legacy method, now replaced by accept, still exist for compatibily
+     * with older environment
+     */
+    public abstract boolean isValidName(String tableName) throws DataSetException;
+
     ////////////////////////////////////////////////////////////////////////////
     // ITableFilter interface
+
+    public boolean accept(String tableName) throws DataSetException
+    {
+        return isValidName(tableName);
+    }
 
     public String[] getTableNames(IDataSet dataSet) throws DataSetException
     {
@@ -47,7 +59,7 @@ public abstract class AbstractTableFilter implements ITableFilter
         for (int i = 0; i < tableNames.length; i++)
         {
             String tableName = tableNames[i];
-            if (isValidName(tableName))
+            if (accept(tableName))
             {
                 nameList.add(tableName);
             }
@@ -81,7 +93,7 @@ public abstract class AbstractTableFilter implements ITableFilter
         {
             while(_iterator.next())
             {
-                if (isValidName(_iterator.getTableMetaData().getTableName()))
+                if (accept(_iterator.getTableMetaData().getTableName()))
                 {
                     return true;
                 }

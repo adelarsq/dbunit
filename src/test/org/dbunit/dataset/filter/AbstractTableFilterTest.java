@@ -65,7 +65,7 @@ public abstract class AbstractTableFilterTest
         return dataSet;
     }
 
-    public abstract void testIsValidName() throws Exception;
+    public abstract void testAccept() throws Exception;
 
     public abstract void testIsCaseInsensitiveValidName() throws Exception;
 

@@ -37,7 +37,7 @@ public interface ITableFilter
     /**
      * Returns <code>true</code> if specified table is allowed by this filter.
      */
-    public boolean isValidName(String tableName) throws DataSetException;
+    public boolean accept(String tableName) throws DataSetException;
 
     /**
      * Returns the table names allowed by this filter from the specified dataset.

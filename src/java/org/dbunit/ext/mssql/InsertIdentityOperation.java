@@ -23,7 +23,9 @@ package org.dbunit.ext.mssql;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.dataset.*;
+import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.operation.AbstractOperation;
 import org.dbunit.operation.CompositeOperation;
 import org.dbunit.operation.DatabaseOperation;
@@ -53,6 +55,9 @@ import java.sql.Statement;
  */
 public class InsertIdentityOperation extends AbstractOperation
 {
+    public static final String IDENTITY_COLUMN_FILTER =
+            "http://www.dbunit.org/features/mssql/identityColumnFilter";
+
     public static final DatabaseOperation INSERT =
             new InsertIdentityOperation(DatabaseOperation.INSERT);
 
@@ -62,6 +67,15 @@ public class InsertIdentityOperation extends AbstractOperation
 
     public static final DatabaseOperation REFRESH =
             new InsertIdentityOperation(DatabaseOperation.REFRESH);
+
+    private static final IColumnFilter DEFAULT_IDENTITY_FILTER = new IColumnFilter()
+    {
+        public boolean accept(String tableName, Column column)
+        {
+            return column.getSqlTypeName().endsWith("identity");
+        }
+    };
+
 
     private final DatabaseOperation _operation;
 
@@ -74,15 +88,22 @@ public class InsertIdentityOperation extends AbstractOperation
         _operation = operation;
     }
 
-    protected boolean hasIdentityColumn(ITableMetaData metaData)
+    private boolean hasIdentityColumn(ITableMetaData metaData, IDatabaseConnection connection)
             throws DataSetException
     {
-        // check all columns to see if they are an identity column
-        Column[] columns = metaData.getColumns();
+        DatabaseConfig config = connection.getConfig();
+        IColumnFilter identityFilter = (IColumnFilter)config.getProperty(
+                IDENTITY_COLUMN_FILTER);
+        if (identityFilter == null)
+        {
+            identityFilter = DEFAULT_IDENTITY_FILTER;
+        }
 
+        // Verify if there is at least one identity column
+        Column[] columns = metaData.getColumns();
         for (int i = 0; i < columns.length; i++)
         {
-            if (columns[i].getSqlTypeName().endsWith("identity"))
+            if (identityFilter.accept(null, columns[i]))
             {
                 return true;
             }
@@ -124,7 +145,7 @@ public class InsertIdentityOperation extends AbstractOperation
                         databaseDataSet.getTableMetaData(tableName);
 
                 // enable identity insert
-                boolean hasIdentityColumn = hasIdentityColumn(metaData);
+                boolean hasIdentityColumn = hasIdentityColumn(metaData, connection);
 
                 if (hasIdentityColumn)
                 {
