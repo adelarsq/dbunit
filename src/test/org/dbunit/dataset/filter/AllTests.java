@@ -33,6 +33,8 @@ public class AllTests
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
+        suite.addTest(new TestSuite(ExcludeTableFilterTest.class));
+        suite.addTest(new TestSuite(IncludeTableFilterTest.class));
         suite.addTest(new TestSuite(SequenceTableFilterTest.class));
 
         return suite;

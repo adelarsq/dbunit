@@ -12,8 +12,6 @@ Features:
 
 * Alternate DTD export method using choice (OR) instead sequence (AND).
 
-* Complete tests of FilteredDataSet filtering strategy (IncludeTableFilter & ExcludeTableFilter).
-
 * Add wildcard capability to IncludeTableFilter strategy.
 
 * Replace system properties with a DatabaseConfig class pushed to the DatabaseConnection. This is possible to replace all system properties with this class because they are all related to database connection. 

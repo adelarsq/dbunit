@@ -22,6 +22,8 @@ package org.dbunit.dataset.filter;
 
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.CompositeDataSet;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.xml.XmlDataSet;
 
 import junit.framework.TestCase;
@@ -43,11 +45,14 @@ public abstract class AbstractTableFilterTest extends TestCase
         "ONLY_PK_TABLE",
         "EMPTY_MULTITYPE_TABLE",
     };
+
     private static final String[] DUPLICATE_TABLE_NAMES = {
         "DUPLICATE_TABLE",
         "EMPTY_TABLE",
         "DUPLICATE_TABLE",
     };
+
+    private static final String EXTRA_TABLE_NAME = "EXTRA_TABLE";
 
     public AbstractTableFilterTest(String s)
     {
@@ -75,12 +80,17 @@ public abstract class AbstractTableFilterTest extends TestCase
         return (String[])DUPLICATE_TABLE_NAMES.clone();
     }
 
+    public String getExtraTableName()
+    {
+        return EXTRA_TABLE_NAME;
+    }
+
     protected IDataSet createDataSet() throws Exception
     {
         IDataSet dataSet1 = new XmlDataSet(
                 new FileReader("src/xml/dataSetTest.xml"));
-        IDataSet dataSet2 = new XmlDataSet(
-                new FileReader("src/xml/filteredDataSetTest.xml"));
+        IDataSet dataSet2 = new DefaultDataSet(
+                new DefaultTable(getExtraTableName()));
 
         IDataSet dataSet = new CompositeDataSet(dataSet1, dataSet2);
         assertEquals("count before filter", getExpectedNames().length + 1,
@@ -92,8 +102,8 @@ public abstract class AbstractTableFilterTest extends TestCase
     {
         IDataSet dataSet1 = new XmlDataSet(
                 new FileReader("src/xml/xmlDataSetDuplicateTest.xml"));
-        IDataSet dataSet2 = new XmlDataSet(
-                new FileReader("src/xml/filteredDataSetTest.xml"));
+        IDataSet dataSet2 = new DefaultDataSet(
+                new DefaultTable(getExtraTableName()));
 
         IDataSet dataSet = new CompositeDataSet(dataSet1, dataSet2, false);
         assertEquals("count before filter", getExpectedDuplicateNames().length + 1,
@@ -115,6 +125,8 @@ public abstract class AbstractTableFilterTest extends TestCase
 
     public abstract void testGetReverseTableNames() throws Exception;
 
+    public abstract void testGetTableNamesAndTableNotInDecoratedDataSet() throws Exception;
+
     public abstract void testGetTables() throws Exception;
 
     public abstract void testGetDuplicateTables() throws Exception;
@@ -122,4 +134,7 @@ public abstract class AbstractTableFilterTest extends TestCase
     public abstract void testGetCaseInsensitiveTables() throws Exception;
 
     public abstract void testGetReverseTables() throws Exception;
+
+    public abstract void testGetTablesAndTableNotInDecoratedDataSet() throws Exception;
+
 }

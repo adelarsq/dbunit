@@ -20,26 +20,21 @@
  */
 package org.dbunit.dataset.filter;
 
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.database.AmbiguousTableNameException;
+import org.dbunit.dataset.*;
 
-import junit.framework.TestCase;
-
-import java.io.FileReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
 /**
  * @author Manuel Laflamme
- * @since Mar 8, 2003
+ * @since Mar 11, 2003
  * @version $Revision$
  */
-public class SequenceTableFilterTest extends AbstractTableFilterTest
+public class IncludeTableFilterTest extends AbstractTableFilterTest
 {
-
-    public SequenceTableFilterTest(String s)
+    public IncludeTableFilterTest(String s)
     {
         super(s);
     }
@@ -47,7 +42,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
     public void testIsValidName() throws Exception
     {
         String[] validNames = getExpectedNames();
-        ITableFilter filter = new SequenceTableFilter(validNames);
+        ITableFilter filter = new IncludeTableFilter(validNames);
 
         for (int i = 0; i < validNames.length; i++)
         {
@@ -59,7 +54,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
     public void testIsCaseInsensitiveValidName() throws Exception
     {
         String[] validNames = getExpectedNames();
-        ITableFilter filter = new SequenceTableFilter(validNames);
+        ITableFilter filter = new IncludeTableFilter(validNames);
 
         for (int i = 0; i < validNames.length; i++)
         {
@@ -75,7 +70,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
             "UNKNOWN_TABLE",
         };
         String[] validNames = getExpectedNames();
-        ITableFilter filter = new SequenceTableFilter(validNames);
+        ITableFilter filter = new IncludeTableFilter(validNames);
 
         for (int i = 0; i < invalidNames.length; i++)
         {
@@ -87,7 +82,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
     public void testGetTableNames() throws Exception
     {
         String[] expectedNames = getExpectedNames();
-        ITableFilter filter = new SequenceTableFilter(expectedNames);
+        ITableFilter filter = new IncludeTableFilter(expectedNames);
 
         IDataSet dataSet = createDataSet();
         assertTrue("dataset names count",
@@ -106,7 +101,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         List filterNameList = new ArrayList(Arrays.asList(expectedNames));
         filterNameList.add("UNKNOWN_TABLE");
         String[] filterNames = (String[])filterNameList.toArray(new String[0]);
-        ITableFilter filter = new SequenceTableFilter(filterNames);
+        ITableFilter filter = new IncludeTableFilter(filterNames);
 
         IDataSet dataSet = createDataSet();
         assertTrue("dataset names count",
@@ -121,27 +116,22 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
     public void testGetDuplicateTableNames() throws Exception
     {
         String[] expectedNames = getExpectedDuplicateNames();
-        ITableFilter filter = new SequenceTableFilter(expectedNames);
+        ITableFilter filter = new IncludeTableFilter(expectedNames);
 
         IDataSet dataSet = createDuplicateDataSet();
         assertTrue("dataset names count",
                 dataSet.getTableNames().length > expectedNames.length);
 
-        try
-        {
-            filter.getTableNames(dataSet);
-            fail("Should not be here!");
-        }
-        catch (AmbiguousTableNameException e)
-        {
-
-        }
+        String[] actualNames = filter.getTableNames(dataSet);
+        assertEquals("name count", expectedNames.length, actualNames.length);
+        assertEquals("names",
+                Arrays.asList(expectedNames), Arrays.asList(actualNames));
     }
 
     public void testGetCaseInsensitiveTableNames() throws Exception
     {
         String[] filterNames = getExpectedNames();
-        ITableFilter filter = new SequenceTableFilter(filterNames);
+        ITableFilter filter = new IncludeTableFilter(filterNames);
 
         String[] expectedNames = getExpectedLowerNames();
         IDataSet dataSet = new LowerCaseDataSet(createDataSet());
@@ -156,8 +146,9 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
 
     public void testGetReverseTableNames() throws Exception
     {
-        String[] expectedNames = DataSetUtils.reverseStringArray(getExpectedNames());
-        ITableFilter filter = new SequenceTableFilter(expectedNames);
+        String[] expectedNames = getExpectedNames();
+        String[] filterNames = DataSetUtils.reverseStringArray(expectedNames);
+        ITableFilter filter = new IncludeTableFilter(filterNames);
 
         IDataSet dataSet = createDataSet();
         assertTrue("dataset names count",
@@ -172,7 +163,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
     public void testGetTables() throws Exception
     {
         String[] expectedNames = getExpectedNames();
-        ITableFilter filter = new SequenceTableFilter(expectedNames);
+        ITableFilter filter = new IncludeTableFilter(expectedNames);
 
         IDataSet dataSet = createDataSet();
         assertTrue("dataset names count",
@@ -188,25 +179,22 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
     public void testGetDuplicateTables() throws Exception
     {
         String[] expectedNames = getExpectedDuplicateNames();
-        ITableFilter filter = new SequenceTableFilter(expectedNames);
+        ITableFilter filter = new IncludeTableFilter(expectedNames);
 
         IDataSet dataSet = createDuplicateDataSet();
         assertTrue("dataset names count",
                 dataSet.getTableNames().length > expectedNames.length);
 
-        try
-        {
-            filter.getTables(dataSet);
-            fail("Should not be here!");
-        }
-        catch (AmbiguousTableNameException e)
-        {
-        }
+        ITable[] actualTables = filter.getTables(dataSet);
+        String[] actualNames = new DefaultDataSet(actualTables).getTableNames();
+        assertEquals("table count", expectedNames.length, actualTables.length);
+        assertEquals("table names",
+                Arrays.asList(expectedNames), Arrays.asList(actualNames));
     }
 
     public void testGetCaseInsensitiveTables() throws Exception
     {
-        ITableFilter filter = new SequenceTableFilter(getExpectedNames());
+        ITableFilter filter = new IncludeTableFilter(getExpectedNames());
         String[] lowerNames = getExpectedLowerNames();
 
         IDataSet dataSet = new LowerCaseDataSet(createDataSet());
@@ -222,8 +210,9 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
 
     public void testGetReverseTables() throws Exception
     {
-        String[] expectedNames = DataSetUtils.reverseStringArray(getExpectedNames());
-        ITableFilter filter = new SequenceTableFilter(expectedNames);
+        String[] expectedNames = getExpectedNames();
+        String[] filterNames = DataSetUtils.reverseStringArray(expectedNames);
+        ITableFilter filter = new IncludeTableFilter(filterNames);
 
         IDataSet dataSet = createDataSet();
         assertTrue("dataset names count",
@@ -243,7 +232,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         List filterNameList = new ArrayList(Arrays.asList(expectedNames));
         filterNameList.add("UNKNOWN_TABLE");
         String[] filterNames = (String[])filterNameList.toArray(new String[0]);
-        ITableFilter filter = new SequenceTableFilter(filterNames);
+        ITableFilter filter = new IncludeTableFilter(filterNames);
 
         IDataSet dataSet = createDataSet();
         assertTrue("dataset names count",
