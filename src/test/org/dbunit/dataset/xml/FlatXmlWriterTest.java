@@ -21,17 +21,14 @@
 
 package org.dbunit.dataset.xml;
 
+import java.io.StringWriter;
+
 import junit.framework.TestCase;
+
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.database.IDatabaseConnection;
-
-import java.io.StringWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.FileOutputStream;
 
 /**
  *
