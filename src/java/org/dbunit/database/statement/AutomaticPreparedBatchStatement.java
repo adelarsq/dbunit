@@ -60,7 +60,6 @@ public class AutomaticPreparedBatchStatement implements IPreparedBatchStatement
         if (_batchCount % _threshold == 0)
         {
             _result += _statement.executeBatch();
-            System.out.println(_batchCount);
         }
     }
 
