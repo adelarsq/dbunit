@@ -51,15 +51,11 @@
         a known state before a test is run. One ways to do this is to have a separate 
         unit test database, which is under the control of the test cases: the 
         test cases clean out the database before starting any tests.<br></br>
-        <br></br>
-        [...]<br></br>
-        <br></br>
+        [...]
         Deleting and inserting data for every test may seem like a big time over 
         head, but as tests use relatively little data, I find this approach to 
         be quick enough (especially if you're running against a local test database).<br></br>
-        <br></br>
-        [...]<br></br>
-        <br></br>
+        [...]
         The downside is that you need more than one database - but remember, they 
         can all run on one server if necessary. The way I'm testing now needs 
         four databases (well, two at a pinch): <br></br>
@@ -74,7 +70,7 @@
           have in your test database. You may not strictly need this, but it's 
           reassuring to see your app work with lots of data (i.e., a copy of the 
           production database's data). </li>
-        <li>A <strong>deployment databas</strong>e, or integration database, where 
+        <li>A <strong>deployment database</strong>, or integration database, where 
           the tests are run prior to deployment to make sure any local database 
           changes have been applied. If you're working alone, you may be able 
           to live without this one, but you'll have to be sure any database structure 

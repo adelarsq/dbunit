@@ -3,13 +3,11 @@
       <h2>Ant Integration</h2>
       <h3>Installation</h3>
       The steps required to add the DbUnit task to your system are: 
-      <ol>
-        <li>Add the DbUnit jar to Ant's classpath. </li>
-        <li>Add a &lt;taskdef&gt; element to your build script as follows: 
-          <pre class="code">&lt;taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/&gt;</pre>
-        </li>
-        <li>Use the task in the rest of the buildfile. </li>
-      </ol>
+        <p>1. Add the DbUnit jar to Ant's classpath. </p>
+        <p>2. Add a &lt;taskdef&gt; element to your build script as follows: 
+          <source><![CDATA[<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>]]></source>
+        </p>
+        <p>3. Use the task in the rest of the buildfile. </p>
       <h3>Usage </h3>
       <p>Executes either a single transaction, or a group of transactions, under 
         the DbUnit database testing framework.</p>
@@ -52,16 +50,13 @@
         </tr>
         <tr> 
           <td>useQualifiedTableNames</td>
-          <td>Set System.property dbunit.qualified.table.names <br></br>
-            equal to supplied boolean value</td>
+          <td>Uses qualified table names. Defaults to false</td>
           <td>No</td>
         </tr>
         <tr> 
           <td>supportBatchStatement</td>
-          <td>Set System.property<br></br>
-            dbunit.support.batch.statement<br></br>
-            equal to supplied boolean value</td>
-          <td> No</td>
+          <td>JDBC driver supports batch statement. Defaults to false</td>
+          <td>No</td>
         </tr>
       </table>
       <h4>Parameters specified as nested elements</h4>
@@ -88,10 +83,10 @@
               </tr>
               <tr> 
                 <td>type</td>
-                <td>Type of Database operation to perform. Supported types are<br></br>
-                  UPDATE, INSERT, DELETE, <br></br>
-                  DELETE_ALL, REFRESH, <br></br>
-                  CLEAN_INSERT, MSSQL_INSERT,<br></br>
+                <td>Type of Database operation to perform. Supported types are 
+                  UPDATE, INSERT, DELETE, 
+                  DELETE_ALL, REFRESH, 
+                  CLEAN_INSERT, MSSQL_INSERT,
                   MSSQL_REFRESH, MSSQL_CLEAN_INSERT.</td>
                 <td>Yes</td>
               </tr>
@@ -103,7 +98,7 @@
               <tr> 
                 <td>format</td>
                 <td>Format type of supplied source file. Possible values are "flat" 
-                  or "xml". Defaults to <a class="code">"flat"</a></td>
+                  or "xml". Defaults to <b>"flat"</b></td>
                 <td> 
                   <p>No</p>
                 </td>
@@ -155,12 +150,12 @@
         <tr> 
           <td>export</td>
           <td> 
-            <p>Use nested <a class="code">&lt;export&gt;</a> operation elements 
+            <p>Use nested &lt;export&gt; operation elements 
               to export the database to the supplied filename. The default operation 
-              is to <a class="code">&lt;export&gt;</a> the entire database to 
+              is to &lt;export&gt; the entire database to 
               the destination filename with the supplied dataset type. You can 
-              specify individual tables or queries to<br></br>
-              <a class="code">&lt;export&gt;</a> by nesting them under the &lt;export&gt; 
+              specify individual tables or queries to
+              &lt;export&gt; by nesting them under the &lt;export&gt; 
               step.</p>
             <table width="100%" border="1">
               <tr> 
@@ -177,7 +172,7 @@
                 <td>format</td>
                 <td>Format type of supplied destination file. Possible values 
                   are "flat", "xml" or "dtd". Defaults 
-                  to <a class="code">"flat"</a></td>
+                  to <b>"flat"</b></td>
                 <td> 
                   <p>No</p>
                 </td>
@@ -188,7 +183,7 @@
               <tr> 
                 <td>table</td>
                 <td> 
-                  <p>Use nested <a class="code">&lt;table&gt;</a> elements to <a class="code">&lt;export&gt;</a> 
+                  <p>Use nested &lt;table&gt; elements to &lt;export&gt; 
                     specific tables. </p>
                   <table border="1">
                     <tr> 
@@ -234,54 +229,56 @@
         </tr>
       </table>
       <h3>Examples</h3>
-      <pre>  &lt;dbunit driver="org.hsqldb.jdbcDriver"<br></br>          url="jdbc:hsqldb:."<br></br>          userid="sa"<br></br>          password=""&gt;
-    &lt;classpath&gt;<br></br>    	&lt;pathelement location="/some/jdbc.jar"/&gt;<br></br>    &lt;/classpath&gt;<br></br>    &lt;operation type="UPDATE" src="updateFile.xml"/&gt;<br></br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver, 
-        searching it from /some/jdbc.jar as well from the system classpath, and 
-        executes the UPDATE operation contained within the FlatXmlDataSet file 
-        updateFile.xml.</p>
-      <pre>  &lt;dbunit driver="org.hsqldb.jdbcDriver"<br></br>          url="jdbc:hsqldb:."<br></br>          userid="sa"<br></br>          password=""&gt;<br></br>    &lt;operation type="INSERT" src="insertFile.xml"/&gt;<br></br>    &lt;operation type="UPDATE" src="updateFile.xml"/&gt;<br></br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver. 
-        It then executes the INSERT operation contained within the FlatXmlDataSet 
-        file insertFile.xml <br></br>
-        followed by the execution of the UPDATE operation contained within the 
-        FlatXmlDataSet file updateFile.xml.</p>
-      <pre>  &lt;dbunit driver="org.hsqldb.jdbcDriver"<br></br>          url="jdbc:hsqldb:."<br></br>          userid="sa"<br></br>          password=""&gt;<br></br>    &lt;operation type="UPDATE" src="updateFile.xml" flat="false"/&gt;<br></br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
-        and executes the UPDATE operation contained within the XmlDataSet file 
-        updateFile.xml.</p>
-      <!--
-      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;composite src=&quot;compositeFile.xml&quot;&gt;<br>      &lt;operation type=&quot;DELETE&quot;/&gt;<br>      &lt;operation type=&quot;INSERT&quot;/&gt;<br>    &lt;/composite&gt;<br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver.
-        It then executes the CompositeOperation, DELETE and then UPDATE, contained
-        within the FlatXmlDataSet file updateFile.xml.</p>
-      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;composite src=&quot;compositeFile.xml&quot; flat=&quot;false&quot;&gt;<br>      &lt;operation type=&quot;INSERT&quot;/&gt;<br>      &lt;operation type=&quot;UPDATE&quot;/&gt;<br>    &lt;/composite&gt;<br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver.
-        It then executes the CompositeOperation, DELETE and then UPDATE, contained
-        within the XmlDataSet file updateFile.xml.</p>
-        -->
-      <pre>  &lt;dbunit driver="org.hsqldb.jdbcDriver"<br></br>          url="jdbc:hsqldb:."<br></br>          userid="sa"<br></br>          password=""&gt;<br></br>    &lt;export dest="exportFile.xml"/&gt;<br></br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
-        and exports the database to the given destination file as a FlatXmlDataSet. 
-      </p>
-      <pre>  &lt;dbunit driver="org.hsqldb.jdbcDriver"<br></br>          url="jdbc:hsqldb:."<br></br>          userid="sa"<br></br>          password=""&gt;<br></br>    &lt;export dest="exportNonFlatFile.xml" format="xml"/&gt;<br></br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
-        and exports the database to the given destination file as an XmlDataSet. 
-      </p>
-      <pre>  &lt;dbunit driver="org.hsqldb.jdbcDriver"<br></br>          url="jdbc:hsqldb:."<br></br>          userid="sa"<br></br>          password=""&gt;<br></br>    &lt;export dest="export.dtd" format="dtd"/&gt;<br></br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
-        and <br></br>
-        exports the document type definition (dtd) describing the flat xml format.</p>
-      <pre>  &lt;dbunit driver="org.hsqldb.jdbcDriver"<br></br>          url="jdbc:hsqldb:."<br></br>          userid="sa"<br></br>          password=""&gt;<br></br>    &lt;export dest="exportFile.xml"&gt;<br></br>      &lt;table name="FOO"/&gt;<br></br>      &lt;table name="BAR"/&gt;<br></br>    &lt;/export&gt;<br></br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
-        and exports the contents of the provided tables to the given destination 
-        file as an FlatXmlDataSet. <br></br>
-      </p>
-      <pre>  &lt;dbunit driver="org.hsqldb.jdbcDriver"<br></br>          url="jdbc:hsqldb:."<br></br>          userid="sa"<br></br>          password=""&gt;<br></br>    &lt;export dest="exportFile.xml"&gt;<br></br>      &lt;table name="FOO"/&gt;<br></br>      &lt;query name="BAR" sql="SELECT COL1, COL2, COL3 as 'COLSPECIAL' FROM BAR WHERE COL1=4"/&gt;<br></br>    &lt;/export&gt;<br></br>  &lt;/dbunit&gt;</pre>
-      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
-        and exports the contents of the provided tables to the given destination 
-        file as an FlatXmlDataSet. The contents of the BAR table are only shown 
-        where col1 is equal to 4. Col3 is renamed COLSPECIAL as well. <br></br>
-      </p>
+      <h4>Update operation with specified JDBC driver</h4>
+	<source><![CDATA[
+<dbunit driver="org.hsqldb.jdbcDriver"          
+	url="jdbc:hsqldb:."          
+	userid="sa"          
+	password="">
+    <classpath>    	
+        <pathelement location="/some/jdbc.jar"/>    
+    </classpath>    
+    <operation type="UPDATE" src="updateFile.xml"/>  
+</dbunit>]]></source>        
+
+      <h4>Insert and update operations</h4>
+	<source><![CDATA[
+<dbunit driver="org.hsqldb.jdbcDriver"          
+        url="jdbc:hsqldb:."          
+        userid="sa"          
+        password="">    
+    <operation type="INSERT" src="insertFile.xml"/>    
+    <operation type="UPDATE" src="updateFile.xml"/>  
+</dbunit>]]></source>        
+
+      <h4>Database data export to XML</h4>
+	<source><![CDATA[
+<dbunit driver="org.hsqldb.jdbcDriver"          
+        url="jdbc:hsqldb:."          
+        userid="sa"          
+        password="">    
+    <export dest="export.xml"/> 
+</dbunit>]]></source>        
+
+      <h4>Database structure export to DTD</h4>
+	<source><![CDATA[
+<dbunit driver="org.hsqldb.jdbcDriver"          
+        url="jdbc:hsqldb:."          
+        userid="sa"          
+        password="">    
+    <export dest="export.dtd" format="dtd"/>
+</dbunit>]]></source>        
+
+      <h4>Partial database data export</h4>
+	<source><![CDATA[
+<dbunit driver="org.hsqldb.jdbcDriver"          
+        url="jdbc:hsqldb:."          
+        userid="sa"          
+        password="">    
+    <export dest="partial.xml">      
+        <table name="FOO"/>      
+        <query name="BAR" sql="SELECT COL1, COL2, COL3 as 'COLSPECIAL' FROM BAR WHERE COL1=4"/>
+    </export>
+</dbunit>]]></source>        
 
 </section></body></document>
