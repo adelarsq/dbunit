@@ -52,6 +52,7 @@ public class AllTests
         suite.addTest(new TestSuite(DefaultTableMetaDataTest.class));
         suite.addTest(new TestSuite(DefaultTableTest.class));
         suite.addTest(new TestSuite(FilteredDataSetTest.class));
+        suite.addTest(new TestSuite(FilteredTableMetaDataTest.class));
         suite.addTest(new TestSuite(ForwardOnlyDataSetTest.class));
         suite.addTest(new TestSuite(ForwardOnlyTableTest.class));
         suite.addTest(new TestSuite(LowerCaseDataSetTest.class));
