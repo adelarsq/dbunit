@@ -24,7 +24,7 @@ package org.dbunit.ant;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.csv.CSVDataSetWriter;
+import org.dbunit.dataset.csv.CsvDataSetWriter;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlWriter;
 import org.dbunit.dataset.xml.XmlDataSet;
@@ -134,7 +134,7 @@ public class Export extends AbstractStep
             // Write the dataset
             if (_format.equals(FORMAT_CSV))
             {
-                CSVDataSetWriter.write(dataset, _dest);
+                CsvDataSetWriter.write(dataset, _dest);
             }
             else
             {

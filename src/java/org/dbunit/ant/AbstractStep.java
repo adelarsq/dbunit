@@ -22,7 +22,7 @@ package org.dbunit.ant;
 
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.CachedDataSet;
-import org.dbunit.dataset.csv.CSVProducer;
+import org.dbunit.dataset.csv.CsvProducer;
 import org.dbunit.dataset.xml.XmlProducer;
 import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.dbunit.dataset.xml.FlatDtdProducer;
@@ -117,7 +117,7 @@ public abstract class AbstractStep implements DbUnitTaskStep
             }
             else if (format.equalsIgnoreCase(FORMAT_CSV))
             {
-                producer = new CSVProducer(src);
+                producer = new CsvProducer(src);
             }
             else if (format.equalsIgnoreCase(FORMAT_FLAT))
             {

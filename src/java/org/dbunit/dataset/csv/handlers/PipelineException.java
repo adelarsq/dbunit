@@ -21,9 +21,9 @@
 
 package org.dbunit.dataset.csv.handlers;
 
-import org.dbunit.dataset.csv.CSVParserException;
+import org.dbunit.dataset.csv.CsvParserException;
 
-public class PipelineException extends CSVParserException {
+public class PipelineException extends CsvParserException {
     public PipelineException(String message) {
         super(message);
     }

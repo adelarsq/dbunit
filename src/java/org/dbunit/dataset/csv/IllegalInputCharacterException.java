@@ -21,7 +21,7 @@
 
 package org.dbunit.dataset.csv;
 
-public class IllegalInputCharacterException extends CSVParserException {
+public class IllegalInputCharacterException extends CsvParserException {
     public IllegalInputCharacterException(String message) {
         super(message);
     }

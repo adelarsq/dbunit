@@ -26,7 +26,7 @@ import junit.framework.TestSuite;
 
 /**
  * Created By:   fede
- * Date:         10-mar-2004 
+ * Date:         10-mar-2004
  * Time:         10.52.00
  *
  * Last Checkin: $Author$
@@ -38,8 +38,8 @@ public class AllTests
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(CSVParserTest.class));
-        suite.addTest(new TestSuite(CSVProducerTest.class));
+        suite.addTest(new TestSuite(CsvParserTest.class));
+        suite.addTest(new TestSuite(CsvProducerTest.class));
         return suite;
     }
 }
