@@ -1,0 +1,143 @@
+
+<!--
+Sample Created by David Eric Pugh.  Free for all!
+dep4b@yahoo.com
+-->
+
+<project name="TestSuite" default="test">
+
+<!-- Allow any user specific values to override the defaults -->
+  <property file="${user.home}/build.properties" />
+
+  <property file="project.properties"/>
+  <property file="build.properties"/>
+  
+
+
+
+  <property name="resultfile" value="WebTestResults.xml"/>
+  <property name="resultfile.txt" value="WebTestResults.txt"/>
+  <property name="resultfile.html" value="WebTestResults.html"/>
+  <property name="start.page" value="menu.jsp"/>
+  <property name="base.dir" value="${basedir}"/>
+
+  <taskdef name="testSpec" classname="com.canoo.webtest.ant.TestSpecificationTask">
+    <classpath>
+      <pathelement location="${webtest.home}/classes"/>
+      <fileset dir="${webtest.home}" includes="**/lib/*.jar"/>
+    </classpath>
+  </taskdef>  
+  
+  <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask">
+      <classpath>
+          <fileset dir="${dbunit.classpath}" includes="dbunit.jar"/>
+          <fileset dir="${dbunit.classpath}" includes="exml.jar"/>
+      </classpath>
+  </taskdef>
+
+
+  <target name="test" depends="prepareResultDir,init" description="run all the tests">
+    <echo>
+      Executing ALL testcases
+      Webserver: ${web.server}
+      Database: ${sql.server}/${sql.database}
+    </echo>
+  
+    <ant antFile="TestSuiteEDM.xml"/>
+    <echo>Finished testSuiteEDM for SniffTest.</echo>
+    
+    <ant antFile="TestSuiteSeachEngineFriendlyURLs.xml"/>
+    <echo>Finished testSuiteSearchEngineFriendlyURLs for SniffTest.</echo>
+    
+    <ant antFile="TestSuiteSkuStartsWith.xml"/>
+    <echo>Finished TestSuiteSkuStartsWith for SniffTest.</echo>
+    
+    <echo>Finished All Test Suites.</echo>
+    <antcall target="CreateSummaryReport"/>
+  </target>
+
+  
+  <target name="test:single" depends="prepareResultDir,init" description="run a single test in a suite, passed in via -Dtestcase -Dsuite">
+  
+      <echo>
+      Executing testcase ${testcase} for suite ${suite}.
+      </echo>
+      <ant target="${testcase}" antFile="${suite}"/>
+      <antcall target="CreateSummaryReport"/>
+  </target>
+  
+  <target name="test:suite" depends="prepareResultDir,init" description="run a single suite, passed in via -Dsuite">
+      
+    <echo>
+    Executing suite: ${suite}
+    </echo>
+    <ant antFile="${suite}"/>
+    <antcall target="CreateSummaryReport"/>
+  </target>  
+  
+    
+  <target name="CreateSummaryReport">
+    <copy file="${webtest.home}/template/report.css" todir="${resultpath}"/>
+    <copy file="${webtest.home}/template/Services.css" todir="${resultpath}"/>
+    <copy file="${resultpath}/${resultfile}" todir="${base.dir}"/>
+    <copy file="${webtest.home}/template/WebTestReport.xml" todir="${base.dir}"/>
+    <tstamp>
+        <format property="report.time" pattern="dd.MM.yyyy hh:mm:ss"/>
+    </tstamp>
+    <ant antfile="${webtest.home}/template/ApplyXSL.xml" target="applySingle">
+        <!-- report.time  already set -->
+        <property name="resultpath" value="${base.dir}"/>
+        <property name="resultfile" value="WebTestReport.xml"/>
+        <property name="resultfile.html" value="TestResultOverview.html"/>
+        <property name="style" value="${webtest.home}/template/WebTestReport.xsl"/>
+    </ant>
+    <move file="${base.dir}/TestResultOverview.html" todir="${resultpath}"/>
+    <delete file="${base.dir}/${resultfile}" />
+    <delete file="${base.dir}/WebTestReport.xml" />
+  </target>
+
+
+  <target name="prepareResultDir">
+    <mkdir dir="${resultpath}"/>
+    <delete file="${resultpath}/${resultfile}"/>
+    <delete file="${resultpath}/_resultCore.xml"/>
+    <delete file="${resultpath}/${resultfile.txt}"/>
+    <delete file="${resultpath}/${resultfile.html}"/>
+    <delete file="${resultfile}"/>
+    <delete>
+      <fileset dir="${resultpath}" includes="*.html"/>
+    </delete>
+  </target>
+
+  <target name="com.canoo.webtest.AllTests">
+    <junit>
+      <classpath>
+    <pathelement location="${webtest.home}/classes"/>
+    <fileset dir="${webtest.home}" includes="**/lib/*.jar"/>
+      </classpath>
+      <test name="com.canoo.webtest.AllTests"/>
+    </junit>
+  </target>
+
+  <target name="com.canoo.webtest.reporting.XmlReporterTest">
+    <junit>
+      <classpath>
+    <pathelement location="${webtest.home}/classes"/>
+    <fileset dir="${webtest.home}" includes="**/lib/*.jar"/>
+    <fileset dir="${webtest.home}" includes="${lib.repo}/*.jar"/>
+      </classpath>
+      <test name="com.canoo.webtest.reporting.XmlReporterTest"/>
+    </junit>
+  </target>
+
+
+  
+  <target name="init">
+    <echo>
+    Running Tests against:
+    web.server=${web.server}
+    sql.server=${sql.server}
+    </echo>
+  </target>
+
+</project>

@@ -1,0 +1,17 @@
+<!--
+	Shared Configuration for the WebTest
+-->
+
+<config
+	host="${host}"
+	port="${port}"
+	protocol="${protocol}"
+	basepath="${basepath}"
+	summary="true"
+	verbose="true"
+	saveresponse="true"
+	resultpath="${resultpath}"
+	resultfile="${resultfile}"
+	haltonfailure="false"
+  showhtmlparseroutput="false"
+/>
