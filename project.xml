@@ -16,9 +16,9 @@
   
   <!-- details about the organization that 'owns' the project -->
   <organization>
-    <name>Apache Software Foundation</name>
-    <url>http://www.apache.org/</url>
-    <logo>http://maven.apache.org/images/jakarta-logo-blue.gif</logo>
+    <name>SourceForge</name>
+    <url>http://www.sourceforge.net/projects/dbunit</url>
+    <logo>http://sourceforge.net/sflogo.php?group_id=47439</logo>
   </organization>
   
   <!-- the year the project started -->
@@ -168,7 +168,9 @@
     <report>maven-junit-report-plugin</report>
     <report>maven-tasklist-plugin</report>
     <report>maven-pmd-plugin</report>
-    <report>maven-faq-plugin</report>    
+    <report>maven-faq-plugin</report> 
+    <report>maven-clover-plugin</report>   
+    <report>maven-jcoverage-plugin</report>    
   </reports>  
 
 
