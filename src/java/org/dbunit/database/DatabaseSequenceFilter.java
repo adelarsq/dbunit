@@ -22,6 +22,7 @@ package org.dbunit.database;
 
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.filter.SequenceTableFilter;
+import org.dbunit.DatabaseUnitRuntimeException;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -64,9 +65,26 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
     private static String[] sortTableNames(IDatabaseConnection connection,
             String[] tableNames) throws DataSetException, SQLException
     {
-        Arrays.sort((String[])tableNames.clone(),
-                new TableSequenceComparator(connection));
-        return tableNames;
+        try
+        {
+            Arrays.sort((String[])tableNames.clone(),
+                    new TableSequenceComparator(connection));
+            return tableNames;
+        }
+        catch (DatabaseUnitRuntimeException e)
+        {
+            if (e.getException() instanceof DataSetException)
+            {
+                throw (DataSetException)e.getException();
+            }
+            if (e.getException() instanceof SQLException)
+            {
+                throw (SQLException)e.getException();
+            }
+
+            throw e;
+        }
+
     }
 
     private static class TableSequenceComparator implements Comparator
@@ -97,11 +115,11 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
             }
             catch (SQLException e)
             {
-
+                throw new DatabaseUnitRuntimeException(e);
             }
             catch (CyclicTablesDependencyException e)
             {
-
+                throw new DatabaseUnitRuntimeException(e);
             }
 
             return tableName1.compareTo(tableName2);
