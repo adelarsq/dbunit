@@ -21,11 +21,7 @@
 package org.dbunit.dataset.filter;
 
 import org.dbunit.database.AmbiguousTableNameException;
-import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

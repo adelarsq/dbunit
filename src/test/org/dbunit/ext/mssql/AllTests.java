@@ -20,11 +20,10 @@
  */
 package org.dbunit.ext.mssql;
 
-import org.dbunit.DatabaseEnvironment;
-import org.dbunit.TestFeature;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.TestFeature;
 
 /**
  * @author Manuel Laflamme

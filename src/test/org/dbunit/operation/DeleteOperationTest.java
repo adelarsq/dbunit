@@ -26,15 +26,7 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.DefaultTable;
-import org.dbunit.dataset.DefaultTableMetaData;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.LowerCaseDataSet;
-import org.dbunit.dataset.NoPrimaryKeyException;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
 

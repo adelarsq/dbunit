@@ -21,9 +21,8 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.datatype.DataType;
-
 import junit.framework.TestCase;
+import org.dbunit.dataset.datatype.DataType;
 
 import java.sql.DatabaseMetaData;
 

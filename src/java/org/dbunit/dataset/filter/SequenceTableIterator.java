@@ -20,11 +20,7 @@
  */
 package org.dbunit.dataset.filter;
 
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.ITableIterator;
-import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.*;
 
 /**
  * @author Manuel Laflamme

@@ -22,12 +22,7 @@
 package org.dbunit.dataset.xml;
 
 import org.dbunit.Assertion;
-import org.dbunit.dataset.CompositeTable;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.DefaultTableMetaData;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.*;
 
 import java.io.File;
 import java.io.FileReader;

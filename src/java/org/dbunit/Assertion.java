@@ -21,15 +21,10 @@
 
 package org.dbunit;
 
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.ITableMetaData;
+import junit.framework.Assert;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.UnknownDataType;
-
-import junit.framework.Assert;
 
 import java.util.Arrays;
 import java.util.Comparator;

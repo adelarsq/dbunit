@@ -20,19 +20,14 @@
  */
 package org.dbunit.operation;
 
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.NoSuchColumnException;
-import org.dbunit.dataset.DefaultTableMetaData;
-import org.dbunit.DatabaseUnitException;
+import org.dbunit.dataset.*;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Manuel Laflamme

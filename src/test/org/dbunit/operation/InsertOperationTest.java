@@ -25,7 +25,6 @@ import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.TestFeature;
-import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;

@@ -22,11 +22,7 @@
 package org.dbunit.database;
 
 import org.dbunit.database.statement.IStatementFactory;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.FilteredDataSet;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 
 import java.sql.ResultSet;

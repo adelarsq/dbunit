@@ -24,15 +24,9 @@ package org.dbunit.dataset.xml;
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
-
 import org.xml.sax.InputSource;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 
 /**
  *     Reads and writes original XML dataset document. This format

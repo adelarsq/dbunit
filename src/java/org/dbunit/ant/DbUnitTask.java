@@ -21,19 +21,18 @@
 
 package org.dbunit.ant;
 
-import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.database.ForwardOnlyResultSetTableFactory;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
-
 import org.apache.tools.ant.AntClassLoader;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.ForwardOnlyResultSetTableFactory;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 
 import java.sql.Connection;
 import java.sql.Driver;

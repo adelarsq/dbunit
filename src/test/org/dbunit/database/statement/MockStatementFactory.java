@@ -21,10 +21,9 @@
 
 package org.dbunit.database.statement;
 
-import org.dbunit.database.IDatabaseConnection;
-
 import com.mockobjects.ExpectationCounter;
 import com.mockobjects.Verifiable;
+import org.dbunit.database.IDatabaseConnection;
 
 import java.sql.SQLException;
 

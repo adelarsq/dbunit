@@ -21,9 +21,8 @@
 
 package org.dbunit.database.statement;
 
-import org.dbunit.dataset.datatype.DataType;
-
 import junit.framework.TestCase;
+import org.dbunit.dataset.datatype.DataType;
 
 /**
  * @author Manuel Laflamme

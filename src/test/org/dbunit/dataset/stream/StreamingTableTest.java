@@ -24,7 +24,6 @@ import org.dbunit.dataset.ForwardOnlyTableTest;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.xml.FlatXmlProducer;
-
 import org.xml.sax.InputSource;
 
 import java.io.FileReader;

@@ -24,18 +24,11 @@ package org.dbunit.dataset.xml;
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
-
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 
 /**
  * Reads and writes flat XML dataset document. Each XML element corresponds to a table row.

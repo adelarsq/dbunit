@@ -20,23 +20,12 @@
  */
 package org.dbunit.dataset.xml;
 
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.DefaultTableMetaData;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLReader;
+import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.ParserConfigurationException;

@@ -21,12 +21,11 @@
 
 package org.dbunit.dataset.xml;
 
+import junit.framework.TestCase;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.datatype.DataType;
-
-import junit.framework.TestCase;
 
 import java.io.StringWriter;
 

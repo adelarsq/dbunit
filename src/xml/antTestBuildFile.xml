@@ -7,6 +7,7 @@
   <property name="testDataSet" value="src/xml/antTestDataSet.xml"/>
   <property name="exportDataSet" value="src/xml/antExportDataSet.xml"/>
   <property name="exportDtd" value="src/xml/antExport.dtd"/>
+  <property name="exportCsv" value="src/xml/antExportCsv"/>
 
   <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>
   
@@ -251,6 +252,16 @@
       <export dest="${exportDtd}" format="dtd"/>
     </dbunit>
     <delete file="${exportDtd}"/>
+  </target>
+
+  <target name="test-export-format-csv">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}"
+        userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <export dest="${exportCsv}" format="csv"/>
+    </dbunit>
+    <delete file="${exportCsv}"/>
   </target>
 
   <target name="invalid-export-format">

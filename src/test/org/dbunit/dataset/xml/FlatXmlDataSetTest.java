@@ -22,11 +22,7 @@
 package org.dbunit.dataset.xml;
 
 import org.dbunit.Assertion;
-import org.dbunit.dataset.AbstractDataSetTest;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.*;
 
 import java.io.File;
 import java.io.FileReader;

@@ -20,13 +20,12 @@
  */
 package org.dbunit.dataset.stream;
 
+import com.mockobjects.ExpectationList;
+import com.mockobjects.Verifiable;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.ITableMetaData;
-
-import com.mockobjects.ExpectationList;
-import com.mockobjects.Verifiable;
 
 import java.util.Arrays;
 

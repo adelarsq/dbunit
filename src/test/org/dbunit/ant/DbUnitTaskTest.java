@@ -21,6 +21,11 @@
 
 package org.dbunit.ant;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Target;
+import org.apache.tools.ant.taskdefs.TaskdefsTest;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
@@ -28,12 +33,6 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Target;
-import org.apache.tools.ant.taskdefs.TaskdefsTest;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -255,6 +254,14 @@ public class DbUnitTaskTest extends TaskdefsTest
         assertTrue("Should have been a dtd format, "
                 + "but was: " + export.getFormat(),
                 export.getFormat().equalsIgnoreCase("dtd"));
+    }
+
+    public void testExportCsv () {
+        String targetName = "test-export-format-csv";
+        Export export = (Export)getFirstStepFromTarget(targetName);
+        assertTrue("Should have been a csv format, "
+                + "but was: " + export.getFormat(),
+                export.getFormat().equalsIgnoreCase("csv"));
     }
 
     public void testInvalidExportFormat()

@@ -21,20 +21,11 @@
 
 package org.dbunit;
 
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.CompositeDataSet;
-import org.dbunit.dataset.CompositeTable;
-import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.DefaultTable;
-import org.dbunit.dataset.FilteredDataSet;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+import org.dbunit.dataset.*;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 import java.io.FileReader;
 import java.math.BigDecimal;

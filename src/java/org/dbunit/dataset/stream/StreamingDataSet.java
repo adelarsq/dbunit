@@ -20,11 +20,7 @@
  */
 package org.dbunit.dataset.stream;
 
-import org.dbunit.dataset.AbstractDataSet;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.ITableIterator;
-import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.*;
 
 /**
  * Dataset that consumes producer asyncronously.

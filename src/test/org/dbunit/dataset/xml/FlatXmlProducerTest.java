@@ -27,7 +27,6 @@ import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.stream.AbstractProducerTest;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.stream.MockDataSetConsumer;
-
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

@@ -20,10 +20,9 @@
  */
 package org.dbunit.dataset.stream;
 
+import junit.framework.TestCase;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.datatype.DataType;
-
-import junit.framework.TestCase;
 
 /**
  * @author Manuel Laflamme

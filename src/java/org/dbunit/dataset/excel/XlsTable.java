@@ -20,18 +20,13 @@
  */
 package org.dbunit.dataset.excel;
 
-import org.dbunit.dataset.AbstractTable;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.DefaultTableMetaData;
-import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.datatype.DataTypeException;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.dbunit.dataset.*;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.DataTypeException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

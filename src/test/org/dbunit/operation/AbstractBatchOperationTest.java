@@ -22,12 +22,7 @@
 package org.dbunit.operation;
 
 import org.dbunit.AbstractDatabaseTest;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.NoSuchColumnException;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.XmlDataSet;
 
 import java.io.FileReader;

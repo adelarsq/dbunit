@@ -26,11 +26,7 @@ import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * @author Manuel Laflamme

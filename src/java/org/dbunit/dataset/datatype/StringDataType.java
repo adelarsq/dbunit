@@ -21,14 +21,10 @@
 
 package org.dbunit.dataset.datatype;
 
-import org.dbunit.util.Base64;
 import org.dbunit.dataset.ITable;
+import org.dbunit.util.Base64;
 
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * @author Manuel Laflamme

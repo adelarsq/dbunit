@@ -21,24 +21,13 @@
 
 package org.dbunit.database;
 
-import org.dbunit.dataset.AbstractDataSet;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.ITableIterator;
-import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.NoSuchTableException;
+import org.dbunit.dataset.*;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * provides access

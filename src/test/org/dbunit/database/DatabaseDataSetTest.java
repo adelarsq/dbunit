@@ -22,12 +22,7 @@
 package org.dbunit.database;
 
 import org.dbunit.DatabaseEnvironment;
-import org.dbunit.dataset.AbstractDataSetTest;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.DefaultTableMetaData;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 
 /**

@@ -22,13 +22,13 @@
 package org.dbunit.dataset.datatype;
 
 import org.dbunit.database.ExtendedMockSingleRowResultSet;
-import org.dbunit.util.FileAsserts;
 import org.dbunit.dataset.ITable;
+import org.dbunit.util.FileAsserts;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.sql.Types;
 import java.util.Arrays;
-import java.io.File;
-import java.io.ByteArrayInputStream;
 
 /**
  * @author Manuel Laflamme

@@ -27,13 +27,7 @@ import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 

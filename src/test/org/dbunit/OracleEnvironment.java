@@ -21,11 +21,7 @@
 
 package org.dbunit;
 
-import org.dbunit.dataset.CompositeDataSet;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.DefaultTable;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.*;
 
 /**
  * @author Manuel Laflamme

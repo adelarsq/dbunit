@@ -22,7 +22,6 @@ package org.dbunit.dataset;
 
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlProducer;
-
 import org.xml.sax.InputSource;
 
 import java.io.FileReader;

@@ -38,6 +38,7 @@ public class AllTests
         suite.addTest(org.dbunit.dataset.filter.AllTests.suite());
         suite.addTest(org.dbunit.dataset.stream.AllTests.suite());
         suite.addTest(org.dbunit.dataset.xml.AllTests.suite());
+        suite.addTest(org.dbunit.dataset.csv.AllTests.suite());
         suite.addTest(new TestSuite(CaseInsensitiveDataSetTest.class));
         suite.addTest(new TestSuite(CaseInsensitiveTableTest.class));
         suite.addTest(new TestSuite(ColumnTest.class));

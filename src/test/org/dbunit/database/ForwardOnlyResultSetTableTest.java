@@ -20,15 +20,10 @@
  */
 package org.dbunit.database;
 
-import org.dbunit.DatabaseEnvironment;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.ForwardOnlyTableTest;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.MockTableMetaData;
-import org.dbunit.dataset.RowOutOfBoundsException;
-import org.dbunit.operation.DatabaseOperation;
-
 import com.mockobjects.sql.MockMultiRowResultSet;
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.dataset.*;
+import org.dbunit.operation.DatabaseOperation;
 
 /**
  * @author Manuel Laflamme

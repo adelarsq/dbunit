@@ -25,6 +25,7 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.QueryDataSet;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.csv.CSVDataSetWriter;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
@@ -52,9 +53,10 @@ import java.util.List;
  */
 public class Export implements DbUnitTaskStep
 {
-    private static final String FORMAT_FLAT = "flat";
-    private static final String FORMAT_XML = "xml";
-    private static final String FORMAT_DTD = "dtd";
+    public static final String FORMAT_FLAT = "flat";
+    public static final String FORMAT_XML = "xml";
+    public static final String FORMAT_DTD = "dtd";
+    public static final String FORMAT_CSV = "csv";
 
     private File _dest;
     private String _format = FORMAT_FLAT;
@@ -93,7 +95,8 @@ public class Export implements DbUnitTaskStep
     {
         if (format.equalsIgnoreCase(FORMAT_FLAT)
                 || format.equalsIgnoreCase(FORMAT_XML)
-                || format.equalsIgnoreCase(FORMAT_DTD))
+                || format.equalsIgnoreCase(FORMAT_DTD)
+                || format.equalsIgnoreCase(FORMAT_CSV))
         {
             _format = format;
         }
@@ -151,27 +154,30 @@ public class Export implements DbUnitTaskStep
             }
 
             // Write the dataset
-            OutputStream out = new FileOutputStream(_dest);
-            try
-            {
-                if (_format.equalsIgnoreCase(FORMAT_FLAT))
+            if (_format.equals(FORMAT_CSV)) {
+                CSVDataSetWriter.write(dataset, _dest);
+            } else {
+                OutputStream out = new FileOutputStream(_dest);
+                try
                 {
-                    FlatXmlDataSet.write(dataset, out);
+                    if (_format.equalsIgnoreCase(FORMAT_FLAT))
+                    {
+                        FlatXmlDataSet.write(dataset, out);
+                    }
+                    else if (_format.equalsIgnoreCase(FORMAT_XML))
+                    {
+                        XmlDataSet.write(dataset, out);
+                    }
+                    else if (_format.equalsIgnoreCase(FORMAT_DTD))
+                    {
+                        FlatDtdDataSet.write(dataset, out);
+                    }
                 }
-                else if (_format.equalsIgnoreCase(FORMAT_XML))
+                finally
                 {
-                    XmlDataSet.write(dataset, out);
-                }
-                else if (_format.equalsIgnoreCase(FORMAT_DTD))
-                {
-                    FlatDtdDataSet.write(dataset, out);
+                    out.close();
                 }
             }
-            finally
-            {
-                out.close();
-            }
-
         }
         catch (IOException e)
         {

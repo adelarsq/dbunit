@@ -21,11 +21,10 @@
 
 package org.dbunit;
 
+import junit.framework.TestCase;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
-
-import junit.framework.TestCase;
 
 /**
  * @author Manuel Laflamme

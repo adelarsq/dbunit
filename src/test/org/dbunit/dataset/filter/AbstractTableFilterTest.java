@@ -20,11 +20,7 @@
  */
 package org.dbunit.dataset.filter;
 
-import org.dbunit.dataset.AbstractTest;
-import org.dbunit.dataset.CompositeDataSet;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.DefaultTable;
-import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.XmlDataSet;
 
 import java.io.FileReader;

@@ -23,11 +23,7 @@ package org.dbunit.ext.mssql;
 
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
-import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.ForwardOnlyDataSet;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 

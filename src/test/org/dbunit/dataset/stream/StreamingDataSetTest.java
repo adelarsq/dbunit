@@ -23,7 +23,6 @@ package org.dbunit.dataset.stream;
 import org.dbunit.dataset.ForwardOnlyDataSetTest;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlProducer;
-
 import org.xml.sax.InputSource;
 
 import java.io.FileReader;

@@ -20,13 +20,12 @@
  */
 package org.dbunit.database;
 
+import com.mockobjects.ExpectationCounter;
+import com.mockobjects.Verifiable;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.ITableMetaData;
-
-import com.mockobjects.ExpectationCounter;
-import com.mockobjects.Verifiable;
 
 /**
  * @author Manuel Laflamme

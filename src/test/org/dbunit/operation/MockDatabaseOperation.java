@@ -21,12 +21,11 @@
 
 package org.dbunit.operation;
 
+import com.mockobjects.ExpectationCounter;
+import com.mockobjects.Verifiable;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
-
-import com.mockobjects.ExpectationCounter;
-import com.mockobjects.Verifiable;
 
 import java.sql.SQLException;
 

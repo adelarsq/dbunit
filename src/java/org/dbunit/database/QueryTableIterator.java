@@ -20,11 +20,7 @@
  */
 package org.dbunit.database;
 
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.ITableIterator;
-import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.*;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -25,13 +25,13 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.csv.CSVProducer;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.stream.StreamingDataSet;
 import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.dbunit.dataset.xml.XmlProducer;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.operation.DatabaseOperation;
-
 import org.xml.sax.InputSource;
 
 import java.io.File;
@@ -51,7 +51,7 @@ import java.sql.SQLException;
  */
 public class Operation implements DbUnitTaskStep
 {
-    private static final String DEFAULT_FORMAT = "flat";
+    private static final String DEFAULT_FORMAT = Export.FORMAT_FLAT;
 
     protected String type = "CLEAN_INSERT";
     private String format;
@@ -160,14 +160,16 @@ public class Operation implements DbUnitTaskStep
 
     public void setFormat(String format)
     {
-        if (format.equalsIgnoreCase("flat")
-                || format.equalsIgnoreCase("xml"))
+        if (format.equalsIgnoreCase(Export.FORMAT_FLAT)
+                || format.equalsIgnoreCase(Export.FORMAT_XML)
+                || format.equalsIgnoreCase(Export.FORMAT_CSV)
+        )
         {
             this.format = format;
         }
         else
         {
-            throw new IllegalArgumentException("Type must be either 'flat'(default) or 'xml' but was: " + format);
+            throw new IllegalArgumentException("Type must be either 'flat'(default) csv or 'xml' but was: " + format);
         }
     }
 
@@ -191,9 +193,12 @@ public class Operation implements DbUnitTaskStep
             }
 
             IDataSetProducer producer = null;
-            if (format.equalsIgnoreCase("xml"))
+            if (format.equalsIgnoreCase(Export.FORMAT_XML))
             {
                 producer = new XmlProducer(new InputSource(src.toURL().toString()));
+            }
+            else if (format.equalsIgnoreCase(Export.FORMAT_CSV)) {
+                producer = new CSVProducer(src);
             }
             else
             {

@@ -26,13 +26,7 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.AbstractDataSetTest;
-import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.DefaultTable;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.*;
 
 /**
  * @author Manuel Laflamme

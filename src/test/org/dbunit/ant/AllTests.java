@@ -34,6 +34,7 @@ public class AllTests
     {
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(DbUnitTaskTest.class));
+        suite.addTest(new TestSuite(ExportTest.class));
 
         return suite;
     }

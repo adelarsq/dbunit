@@ -21,15 +21,10 @@
 
 package org.dbunit.database;
 
-import org.dbunit.database.statement.IStatementFactory;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.FilteredDataSet;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-
 import com.mockobjects.ExpectationCounter;
 import com.mockobjects.Verifiable;
+import org.dbunit.database.statement.IStatementFactory;
+import org.dbunit.dataset.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;

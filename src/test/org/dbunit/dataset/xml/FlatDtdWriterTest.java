@@ -1,11 +1,10 @@
 package org.dbunit.dataset.xml;
 
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DefaultTable;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.datatype.DataType;
-
 import junit.framework.TestCase;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.datatype.DataType;
 
 import java.io.StringWriter;
 
