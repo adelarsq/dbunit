@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -59,7 +59,7 @@ public class AbstractDataTypeFactoryTest extends TestCase
             DataType.REAL,
             DataType.FLOAT,
             DataType.DOUBLE,
-            DataType.DATE,
+//            DataType.DATE,
             DataType.TIME,
             DataType.TIMESTAMP,
             DataType.BINARY,
@@ -75,6 +75,16 @@ public class AbstractDataTypeFactoryTest extends TestCase
             DataType actual = factory.createDataType(expected.getSqlType(), expected.toString());
             assertSame("type", expected,  actual);
         }
+    }
+
+    public void testCreateDateDataType() throws Exception
+    {
+        int sqlType = Types.DATE;
+        String sqlTypeName = "DATE";
+
+        DataType expected = DataType.DATE;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
     }
 
 }
