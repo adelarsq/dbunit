@@ -1,7 +1,6 @@
 /*
- * AllTests.java   Mar 17, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
  * This library is free software; you can redistribute it and/or
@@ -19,14 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
-package org.dbunit.dataset.datatype;
+package org.dbunit.ext.oracle;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
  * @author Manuel Laflamme
+ * @since Aug 13, 2003
  * @version $Revision$
  */
 public class AllTests
@@ -34,23 +33,7 @@ public class AllTests
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(BooleanDataTypeTest.class));
-        suite.addTest(new TestSuite(BytesDataTypeTest.class));
-        suite.addTest(new TestSuite(DateDataTypeTest.class));
-        suite.addTest(new TestSuite(DefaultDataTypeFactoryTest.class));
-        suite.addTest(new TestSuite(DoubleDataTypeTest.class));
-        suite.addTest(new TestSuite(FloatDataTypeTest.class));
-        suite.addTest(new TestSuite(IntegerDataTypeTest.class));
-        suite.addTest(new TestSuite(LongDataTypeTest.class));
-        suite.addTest(new TestSuite(NumberDataTypeTest.class));
-        suite.addTest(new TestSuite(StringDataTypeTest.class));
-        suite.addTest(new TestSuite(TimeDataTypeTest.class));
-        suite.addTest(new TestSuite(TimestampDataTypeTest.class));
-
+        suite.addTest(new TestSuite(OracleDataTypeFactoryTest.class));
         return suite;
     }
 }
-
-
-
-

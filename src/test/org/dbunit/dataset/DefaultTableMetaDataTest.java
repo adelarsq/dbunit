@@ -37,11 +37,17 @@ public class DefaultTableMetaDataTest extends TestCase
         super(s);
     }
 
+    protected ITableMetaData createMetaData(String tableName,
+            Column[] columns, String[] keyNames) throws Exception
+    {
+        return new DefaultTableMetaData(
+                        tableName, columns, keyNames);
+    }
+
     public void testGetTableName() throws Exception
     {
         String expected = "tableName";
-        ITableMetaData metaData = new DefaultTableMetaData(
-                expected, null);
+        ITableMetaData metaData = createMetaData(expected, null, null);
 
         assertEquals("table name", expected, metaData.getTableName());
     }
@@ -54,8 +60,7 @@ public class DefaultTableMetaDataTest extends TestCase
             new Column("booleanColumn", DataType.BOOLEAN),
         };
 
-        ITableMetaData metaData = new DefaultTableMetaData(
-                "toto", columns);
+        ITableMetaData metaData = createMetaData("toto", columns, null);
 
         assertEquals("column count", columns.length, metaData.getColumns().length);
         for (int i = 0; i < columns.length; i++)
@@ -76,8 +81,7 @@ public class DefaultTableMetaDataTest extends TestCase
         String[] keyNames = new String[]{"booleanColumn", "numberColumn"};
 
 
-        ITableMetaData metaData = new DefaultTableMetaData(
-                "toto", columns, keyNames);
+        ITableMetaData metaData = createMetaData("toto", columns, keyNames);
 
         Column[] keys = metaData.getPrimaryKeys();
         assertEquals("key count", keyNames.length, keys.length);
@@ -97,13 +101,11 @@ public class DefaultTableMetaDataTest extends TestCase
         String[] keyNames = new String[]{"invalidColumn"};
 
 
-        ITableMetaData metaData = new DefaultTableMetaData(
-                "toto", columns, keyNames);
+        ITableMetaData metaData = createMetaData("toto", columns, keyNames);
 
         Column[] keys = metaData.getPrimaryKeys();
         assertEquals("key count", 0, keys.length);
     }
-
 }
 
 

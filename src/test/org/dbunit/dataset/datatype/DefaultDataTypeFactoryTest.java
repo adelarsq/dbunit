@@ -1,7 +1,6 @@
 /*
- * AllTests.java   Feb 18, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
  * This library is free software; you can redistribute it and/or
@@ -19,27 +18,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+package org.dbunit.dataset.datatype;
 
-package org.dbunit.ext.db2;
+import junit.framework.TestCase;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.sql.Types;
 
 /**
  * @author Manuel Laflamme
+ * @since Aug 13, 2003
  * @version $Revision$
  */
-public class AllTests
+public class DefaultDataTypeFactoryTest extends AbstractDataTypeFactoryTest
 {
-    public static Test suite()
+    public DefaultDataTypeFactoryTest(String s)
     {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(Db2DataTypeFactoryTest.class));
-        return suite;
+        super(s);
+    }
+
+    public IDataTypeFactory createFactory() throws Exception
+    {
+        return new DefaultDataTypeFactory();
     }
 }
-
-
-
-
-
