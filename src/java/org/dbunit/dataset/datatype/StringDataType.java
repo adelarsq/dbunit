@@ -23,7 +23,7 @@ package org.dbunit.dataset.datatype;
 
 import java.net.URLEncoder;
 
-import Base64;
+import org.dbunit.util.Base64;
 
 /**
  * @author Manuel Laflamme
@@ -83,6 +83,7 @@ public class StringDataType extends AbstractDataType
         throw new TypeCastException(value.toString());
     }
 }
+
 
 
 

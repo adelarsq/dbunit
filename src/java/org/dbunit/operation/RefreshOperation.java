@@ -54,7 +54,7 @@ public class RefreshOperation extends DatabaseOperation
         _updateOperation = (UpdateOperation)DatabaseOperation.UPDATE;
     }
 
-    RefreshOperation(InsertOperation insertOperation,
+    public RefreshOperation(InsertOperation insertOperation,
             UpdateOperation updateOperation)
     {
         _insertOperation = insertOperation;
@@ -202,6 +202,7 @@ public class RefreshOperation extends DatabaseOperation
 
     }
 }
+
 
 
 

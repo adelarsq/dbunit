@@ -1,13 +1,11 @@
-
+package org.dbunit.util;
 
 /**
- *
- *
  * <p>
  * I am placing this code in the Public Domain. Do with it as you will.
  * This software comes with no guarantees or warranties but with
  * plenty of well-wishing instead!
- * Please visit <a href="http://iharder.net/xmlizable">http://iharder.net/xmlizable</a>
+ * Please visit <a href="http://iharder.net/base64">http://iharder.net/base64</a>
  * periodically to check for updates or to contribute improvements.
  * </p>
  *
@@ -118,7 +116,7 @@ public class Base64
         try
         {
             java.io.FileInputStream fis = new java.io.FileInputStream( "c:\\abcd.txt" );
-            Base64.InputStream b64is = new Base64.InputStream( fis, DECODE );
+            InputStream b64is = new InputStream( fis, DECODE );
             int ib = 0;
             while( (ib = b64is.read()) > 0 )
             {   //System.out.print( new String( ""+(char)ib ) );
@@ -256,7 +254,7 @@ public class Base64
         try
         {
             baos  = new java.io.ByteArrayOutputStream();
-            b64os = new Base64.OutputStream( baos, Base64.ENCODE );
+            b64os = new OutputStream( baos, Base64.ENCODE );
             oos   = new java.io.ObjectOutputStream( b64os );
             
             oos.writeObject( serializableObject );
@@ -495,7 +493,7 @@ public class Base64
             e.printStackTrace();
             return null;
         }   // end catch
-        catch( java.lang.ClassNotFoundException e )
+        catch( ClassNotFoundException e )
         {
             e.printStackTrace();
             return null;
@@ -904,4 +902,5 @@ public class Base64
     
     
 }   // end class Base64
+
 

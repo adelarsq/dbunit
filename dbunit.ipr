@@ -289,27 +289,22 @@
   </component>
   <component class="com.intellij.ide.desktop.IdeDocumentManager">
     <recent_files>
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/AbstractDataSet.java" column="27" line="30" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/Main.java" column="0" line="71" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/xml/AllTests.java" column="0" line="43" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseDataSetTest.java" column="0" line="72" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/AbstractDataSetTest.java" column="0" line="104" />
-      <file_info url="file://$PROJECT_DIR$/profile.properties" column="1" line="5" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/xml/FlatDtdDataSetTest.java" column="36" line="130" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlTable.java" column="0" line="33" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/xml/FlatXmlDataSetTest.java" column="29" line="81" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" column="23" line="162" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatDtdDataSet.java" column="13" line="24" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/RefreshOperation.java" column="11" line="56" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/OperationData.java" column="13" line="30" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/InsertIdentityOperation.java" column="37" line="18" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/util/Base64.java" column="47" line="8" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/RefreshOperation.java" column="11" line="56" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/InsertOperation.java" column="0" line="38" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/mssqlserver/InsertIdentityOperation.java" column="7" line="40" />
+      <file_info url="file://$PROJECT_DIR$/profile.properties" column="0" line="4" />
     </recent_files>
-    <open_files>
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/InsertIdentityOperation.java" column="37" line="18" />
-      <active_file url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/InsertIdentityOperation.java" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/RefreshOperation.java" column="11" line="56" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/OperationData.java" column="13" line="30" />
-    </open_files>
   </component>
   <component class="com.intellij.ide.hierarchy.HierarchyBrowserManager">
     <option name="SHOW_PACKAGES" value="false" />
@@ -320,20 +315,19 @@
   <component class="com.intellij.ide.navigator.impl.ProjectNavigatorSettings">
     <navigator id="ClasspathNavigator" flattenPackages="false" showMembers="false">
       <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/electric/xml" />
-      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/" />
       <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/electric" />
+      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/" />
     </navigator>
     <navigator id="ProjectNavigator" flattenPackages="false" showMembers="false">
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/dtd" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
     </navigator>
     <navigator id="SourcepathNavigator" flattenPackages="false" showMembers="true">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/operation" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
     </navigator>
   </component>
   <component class="com.intellij.ide.structureView.StructureViewFactory">

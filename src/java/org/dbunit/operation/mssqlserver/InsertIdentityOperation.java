@@ -19,11 +19,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package org.dbunit.operation;
+package org.dbunit.operation.mssqlserver;
 
 import java.sql.*;
 
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.operation.*;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.*;
 
@@ -77,4 +78,5 @@ public class InsertIdentityOperation extends InsertOperation
     }
 
 }
+
 
