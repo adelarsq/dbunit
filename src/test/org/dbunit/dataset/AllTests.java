@@ -54,6 +54,8 @@ public class AllTests
         suite.addTest(new TestSuite(FilteredDataSetTest.class));
         suite.addTest(new TestSuite(LowerCaseDataSetTest.class));
         suite.addTest(new TestSuite(LowerCaseTableMetaDataTest.class));
+        suite.addTest(new TestSuite(ReplacementDataSetTest.class));
+        suite.addTest(new TestSuite(ReplacementTableTest.class));
         suite.addTest(new TestSuite(SortedDataSetTest.class));
         suite.addTest(new TestSuite(SortedTableTest.class));
 
