@@ -30,6 +30,8 @@ import java.sql.*;
 import java.util.*;
 
 import org.apache.tools.ant.*;
+import org.apache.tools.ant.types.Path;
+import org.apache.tools.ant.types.Reference;
 
 /**
  * <code>DbUnitTask</code> is the task definition for an Ant
@@ -78,6 +80,10 @@ public class DbUnitTask extends Task
      * Steps
      */
     private List steps = new ArrayList();
+
+    private Path classpath;
+
+    private AntClassLoader loader;
 
     /**
      * Flag for using the qualified table names.
@@ -139,12 +145,47 @@ public class DbUnitTask extends Task
 
     /**
      * Set the flag for supporting batch statements.
-     * NOTE: This property cannot be used to force the usage of batch 
+     * NOTE: This property cannot be used to force the usage of batch
      *       statement if your database does not support it.
      */
     public void setSupportBatchStatement(boolean supportBatchStatement)
     {
         this.supportBatchStatement = supportBatchStatement;
+    }
+
+    /**
+     * Set the classpath for loading the driver.
+     */
+    public void setClasspath(Path classpath)
+    {
+        if (this.classpath == null)
+        {
+            this.classpath = classpath;
+        }
+        else
+        {
+            this.classpath.append(classpath);
+        }
+    }
+
+    /**
+     * Create the classpath for loading the driver.
+     */
+    public Path createClasspath()
+    {
+        if (this.classpath == null)
+        {
+            this.classpath = new Path(project);
+        }
+        return this.classpath.createPath();
+    }
+
+    /**
+     * Set the classpath for loading the driver using the classpath reference.
+     */
+    public void setClasspathRef(Reference r)
+    {
+        createClasspath().setRefid(r);
     }
 
     /**
@@ -217,8 +258,19 @@ public class DbUnitTask extends Task
         try
         {
             Class dc;
-            log("Loading " + driver + " using system loader.", Project.MSG_VERBOSE);
-            dc = Class.forName(driver);
+            if (classpath != null)
+            {
+                log("Loading " + driver + " using AntClassLoader with classpath " + classpath,
+                        Project.MSG_VERBOSE);
+
+                loader = new AntClassLoader(project, classpath);
+                dc = loader.loadClass(driver);
+            }
+            else
+            {
+                log("Loading " + driver + " using system loader.", Project.MSG_VERBOSE);
+                dc = Class.forName(driver);
+            }
             driverInstance = (Driver)dc.newInstance();
         }
         catch (ClassNotFoundException e)

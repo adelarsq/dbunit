@@ -72,11 +72,12 @@ public class InsertIdentityOperation extends DatabaseOperation
     private boolean hasIdentityColumn(ITableMetaData metaData)
             throws DataSetException
     {
-        Column[] primaryKeys = metaData.getColumns(); // check all columns to see if they are an identity column
+        // check all columns to see if they are an identity column
+        Column[] columns = metaData.getColumns();
 
-        for (int i = 0; i < primaryKeys.length; i++)
+        for (int i = 0; i < columns.length; i++)
         {
-            if (primaryKeys[i].getSqlTypeName().endsWith("identity"))
+            if (columns[i].getSqlTypeName().endsWith("identity"))
             {
                 return true;
             }
