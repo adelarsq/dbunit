@@ -1,0 +1,378 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Style-Type" content="text/css">
+<LINK href="stylesheet.css" rel="stylesheet" type="text/css">
+<TITLE>The dbUnit database testing framework</TITLE>
+</HEAD>
+<BODY>
+<TABLE cellpadding="8" cellspacing="0">
+    <COL span="1" valign="top" align="left">
+    <TBODY>
+        <TR>
+            <TD class="menu" nowrap><A href="#introduction">Introduction</A><BR>
+            <A href="#components">Componets</A><BR>
+            <A href="#howto">How to guides</A><BR>
+            <A href="#bestpractices">Best practices</A><BR>
+            <A href="#faq">Faq</A><BR>
+            <A href="http://sourceforge.net/project/showfiles.php?group_id=47439">Download</A><BR>
+            <A href="#contact">Contact</A><BR>
+            <A href="#ressources">Ressources</A><BR>
+            <P>
+            <A href="http://sourceforge.net"><IMG alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439"></A>
+            </P>
+            </TD>
+            <TD>
+            <H1>The dbUnit database testing framework</H1>
+            The dbUnit database testing framework is a JUnit extension which sets up your database in a known state before executing your tests. This framework uses xml datasets (collection of data tables) and performs database operations before and after each test. The dbUnit framework supports both the clean insert and the refresh strategies. <BR>
+            <BR>
+            Something worth noting: dbUnit is using itself in its own test suite!<BR>
+            <BR>
+            <HR>
+            <H2 ><A name="introduction">Introduction</A></H2>
+            <A href="http://www.dallaway.com/acad/dbunit.html">Richard Dallaway, notes about database unit testing:</A><BR>
+            <BR>
+            <CITE>&quot;A good test set is self-sufficient and creates all the data it needs. Testing can be simplified if you can get the database in a known state before a test is run. One ways to do this is to have a separate unit test database, which is under the control of the test cases: the test cases clean out the database before starting any tests.<BR>
+            <BR>
+            [...]<BR>
+            <BR>
+            Deleting and inserting data for every test may seem like a big time over head, but as tests use relatively little data, I find this approach to be quick enough (especially if you're running against a local test database).<BR>
+            <BR>
+            [...]<BR>
+            <BR>
+            The downside is that you need more than one database - but remember, they can all run on one server if necessary. The way I'm testing now needs four databases (well, two at a pinch): <BR>
+            </CITE>
+            <OL>
+                <LI><CITE>The <STRONG>production database</STRONG>. Live data. No testing on this database. </CITE></LI>
+                <LI><CITE>Your <STRONG>local development database</STRONG>, which is where most of the testing is carried out. </CITE></LI>
+                <LI><CITE>A <STRONG>populated development database</STRONG>, possibly shared by all developers so you can run your application and see it work with realistic amounts of data, rather than the hand full of records you have in your test database. You may not strictly need this, but it's reassuring to see your app work with lots of data (i.e., a copy of the production database's data). </CITE></LI>
+                <LI><CITE>A <STRONG>deployment databas</STRONG>e, or integration database, where the tests are run prior to deployment to make sure any local database changes have been applied. If you're working alone, you may be able to live without this one, but you'll have to be sure any database structure or stored procedure changes have been made to the production database before you go live with your code. </CITE></LI>
+            </OL>
+            <CITE><BR>
+            With multiple database you have to make sure you keep the structure of the databases in sync: if you change a table definition or a stored procedure on your test machine, you'll have to remember to make those changes on the live server. The deployment database should act as a reminder to make those changes.&quot;</CITE><BR>
+            <BR>
+            <HR>
+            <H2><A name="components">Components</A></H2>
+            Here is an introduction to the two major dbUnit components: IDataSet and DatabaseOperation.<BR>
+            <BR>
+            <H3>IDataSet</H3>
+            The framework works abundantly with datasets. A dataset is a collection of data from various tables. The dbUnit framework defines the IDataSet interface and provides several implementations for it. <BR>
+            The IDataSet interface:<BR>
+            <PRE>
+public interface IDataSet
+{
+    /**
+     * Returns list of table names this dataset contains.
+     */
+    public String[] getTableNames() throws DataSetException;
+
+    /**
+     * Returns the specified table metatdata.
+     */
+    public ITableMetaData getTableMetaData(String tableName)
+            throws DataSetException;
+
+    /**
+     * Returns the specified table.
+     */
+    public ITable getTable(String tableName) throws DataSetException;
+}</PRE>
+            <H4>XmlDataSet </H4>
+            dbUnit uses a simple dataset xml format. The XmlDataSet class provides the persistence support to read from and write to this format. <BR>
+            <BR>
+            The dbUnit dataset dtd:<BR>
+            <PRE>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!ELEMENT dataset (table+)&gt;
+&lt;!ELEMENT table (column*, row*)&gt;
+&lt;!ATTLIST table
+    name CDATA #REQUIRED
+&gt;
+&lt;!ELEMENT column (#PCDATA)&gt;
+&lt;!ELEMENT row (value | null | none)*&gt;
+&lt;!ELEMENT value (#PCDATA)&gt;
+&lt;!ELEMENT null EMPTY&gt;
+&lt;!ELEMENT none EMPTY&gt;</PRE>
+            <BR>
+            And here is a sample instance of xml dataset:<BR>
+            <PRE>
+&lt;!DOCTYPE dataset SYSTEM &quot;dataset.dtd&quot;&gt;
+&lt;dataset&gt;
+    &lt;table name=&quot;TEST_TABLE&quot;&gt;
+        &lt;column&gt;COLUMN0&lt;/column&gt;
+        &lt;column&gt;COLUMN1&lt;/column&gt;
+        &lt;column&gt;COLUMN2&lt;/column&gt;
+        &lt;column&gt;COLUMN3&lt;/column&gt;
+        &lt;row&gt;
+            &lt;value&gt;row 0 col 0&lt;/value&gt;
+            &lt;value&gt;row 0 col 1&lt;/value&gt;
+            &lt;value&gt;row 0 col 2&lt;/value&gt;
+            &lt;value&gt;row 0 col 3&lt;/value&gt;
+        &lt;/row&gt;
+        &lt;row&gt;
+            &lt;value&gt;row 1 col 0&lt;/value&gt;
+            &lt;null/&gt;
+            &lt;null/&gt;
+            &lt;value&gt;row 1 col 3&lt;/value&gt;
+        &lt;/row&gt;
+    &lt;/table&gt;
+    &lt;table name=&quot;SECOND_TABLE&quot;&gt;
+        &lt;column&gt;COLUMN0&lt;/column&gt;
+        &lt;column&gt;COLUMN1&lt;/column&gt;
+        &lt;row&gt;
+            &lt;value&gt;row 0 col 0&lt;/value&gt;
+            &lt;value&gt;row 0 col 1&lt;/value&gt;
+        &lt;/row&gt;
+        &lt;row&gt;
+            &lt;value&gt;row 1 col 0&lt;/value&gt;
+            &lt;value&gt;row 1 col 1&lt;/value&gt;
+        &lt;/row&gt;
+    &lt;/table&gt;
+&lt;/dataset&gt;</PRE>
+            <BR>
+            <H4>DatabaseDataSet</H4>
+            This is an adapter class used to access a database as a dataset.<BR>
+            <BR>
+            <H4>DefaultDataSet</H4>
+            This class is backed by a List and is used to create datasets programmatically. <BR>
+            <BR>
+            <H4>CompositeDataSet</H4>
+            This class combines multiple datasets into a single one at runtime.<BR>
+            <!-- 
+            <BR>
+            <H4>TorqueDataSet</H4>
+            This class provides support for Torque xml datasets. See the resources section for more information about Torque. <BR>
+            <BR>
+            -->
+            <H4>FilteredDataSet</H4>
+            This is a decorator class which exposes only some tables from the decorated dataset.<BR>
+            <BR>
+            <H3>DatabaseOperation</H3>
+            The dbUnit framework uses dataset contents to perform operations on the database before and after each test. The DatabaseOperation abstract class defines such operations. Again, the framework provides several implementations. <BR>
+            <BR>
+            The DatabaseOperation class:
+            <PRE>
+public abstract class DatabaseOperation
+{
+    public static final DatabaseOperation NONE = new DummyAction();
+    public static final DatabaseOperation UPDATE = new UpdateOperation();
+    public static final DatabaseOperation INSERT = new InsertOperation();
+    public static final DatabaseOperation REFRESH = new RefreshOperation();
+    public static final DatabaseOperation DELETE = new DeleteOperation();
+    public static final DatabaseOperation DELETE_ALL = new DeleteAllOperation();
+    public static final DatabaseOperation CLEAN_INSERT = new CompositeOperation(
+            DELETE_ALL, INSERT);
+
+    public abstract void execute(DatabaseConnection connection,
+            IDataSet dataSet) throws DatabaseUnitException, SQLException;
+
+    private static class DummyAction extends DatabaseOperation
+    {
+        public void execute(DatabaseConnection connection, IDataSet dataSet)
+        {
+        }
+    }
+}</PRE>
+            <BR>
+            The two most important operations are REFRESH and CLEAN_INSERT. As you will shortly understand, they are the ones you will deal with most of the time. They represent two opposite testing strategies with different benefits and tradeoffs. <BR>
+            <BR>
+            <H4>UPDATE</H4>
+            Updates the database from the dataset contents. This operation assumes that table data already exists in the database and fails if this is not the case.<BR>
+            <BR>
+            <H4>INSERT</H4>
+            Inserts the dataset contents into the database. This operation assumes that table data does not exist in the database and fails if this is not the case. To prevent problems with foreign keys, tables must be sequenced appropriately in dataset. <BR>
+            <BR>
+            <H4>DELETE</H4>
+            Deletes only the dataset contents from the database. This operation does not delete the entire table contents but only data that are present in the dataset. <BR>
+            <BR>
+            <H4>DELETE_ALL</H4>
+            Deletes entire database table contents for each table contained in dataset. In other words, if a dataset does not contain a particular table, but that table exists in the database, the contents of that table is not deleted. Deletes are performed on table in reverse sequence.<BR>
+            <BR>
+            <H4>REFRESH</H4>
+            This operation literally refreshes dataset contents into the database. This means that data of existing rows is updated and non-existing row get inserted. Any  rows which exist in the database but not in dataset stay unaffected. This approach is more appropriate for tests that assume other data may exist in the database. <BR>
+            <BR>
+            As you understand, this is a very powerful operation. This strategy can help you deal more easily with foreign key constraints, as you don't necessarily need to insert data in a specificsequence. <BR>
+            <BR>
+            If they are correctly written, tests using this strategy can even be performed on a populated database like a copy of a production database. <BR>
+            <BR>
+            <H4>CLEAN_INSERT</H4>
+            This is a composite operation that performs a DELETE_ALL operation followed by an INSERT operation. This ensures that the database is in a known state.  This approach is more appropriate for tests that require the database to only contain a specific set of data.<BR>
+            <BR>
+            <H4>NONE</H4>
+            This operation does absolutely nothing with the database.<BR>
+            <BR>
+            <H4>CompositeOperation</H4>
+            Combines multiple operations into a single one.<BR>
+            <BR>
+            <H4>TransactionOperation</H4>
+            Decorates an operation and executes within the context of a transaction.<BR>
+            <BR>
+            <HR>
+            <H2><A name="howto">How to guides</A></H2>
+            <H3>How to create a dbUnit test case</H3>
+            To write a test case, please follow the steps described below.<BR>
+            <BR>
+            <H4>Step 1: Create your dataset file</H4>
+            Your test will obviously need some data to work with. This means you must create a dataset. In most situations you will work with xml datasets. You can manually create an xml dataset from scratch or create one by exporting some data from your database (see export sample).<BR>
+            <BR>
+            <H4>Step 2: Extend the DatabaseTestCase class</H4>
+            Now you need to create a test class. The easiest way to use dbUnit is to make your test class extend the DatabaseTestCase class. DatabaseTestCase extends the JUnit TestCase class. Two template methods are required to be implemented: getConnection() to return a connection to your database and getDataSet() to return the dataset you created in step 1.<BR>
+            <BR>
+            Following is a sample implementation that returns a connection to a Hypersonic database and an xmldataset:<BR>
+            <PRE>
+public class SampleTest extends DatabaseTestCase
+{
+    public SampleTest(String name)
+    {
+        super(name);
+    }
+
+    protected DatabaseConnection getConnection() throws Exception
+    {
+        Class driverClass = Class.forName(&quot;org.hsqldb.jdbcDriver&quot;);
+        Connection jdbcConnection = DriverManager.getConnection(
+                &quot;jdbc:hsqldb:sample&quot;, &quot;sa&quot;, &quot;&quot;);
+        return new DatabaseConnection(jdbcConnection);
+    }
+
+    protected IDataSet getDataSet() throws Exception
+    {
+        return new XmlDataSet(new FileInputStream(&quot;dataset.xml&quot;));
+    }
+}</PRE>
+            <BR>
+            <H4>Step 3: (Optional) Implement getSetUpOperation() and getTearDownOperation() methods</H4>
+            By default, dbUnit performs a CLEAN_INSERT operation before executing each test and performs no cleanup operation afterward. You can modify this behavior by overriding getSetUpOperation() and getTearDownOperation().<BR>
+            <BR>
+            The following example demonstrates how you can easily override the operation executed before or after your test.<BR>
+            <BR>
+            <PRE>
+public class SampleTest extends DatabaseTestCase
+{
+    ...
+    protected DatabaseOperation getSetUpOperation() throws Exception
+    {
+        return DatabaseOperation.REFRESH;
+    }
+
+    protected DatabaseOperation getTearDownOperation() throws Exception
+    {
+        return DatabaseOperation.NONE;
+    }
+    ...
+}</PRE>
+            <BR>
+            <H4>Step 4: Implement your testXXX() methods</H4>
+            Implement your test methods as you normally would with JUnit. Your database is now initialized before and cleaned-up after each test methods according to what you did in previous steps.<BR>
+            <BR>
+            How to use dbUnit in a test case that does not extend DatabaseTestCase<BR>
+            <BR>
+            In order to use dbUnit you are not required to extend the DatabaseTestCase class. Simply override the standard JUnit setUp() method and execute the desired operation on your database. Do something similar in teardown() if you need to perform any clean-up.<BR>
+            <BR>
+            For example:<BR>
+            <PRE>
+public class SampleTest extends TestCase
+{
+    public SampleTest(String name)
+    {
+        super(name);
+    }
+
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+
+        // initialize your database connection here
+        DatabaseConnection connection = null;
+        // ...
+
+        // initialize your dataset here
+        IDataSet dataSet = null;
+        // ...
+
+        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+    }
+    ... 
+} </PRE>
+            <BR>
+            <H3>How to extract a dataset from a database </H3>
+            <BR>
+            The following sample demonstrates how you can export one or many tables from a database to an xml dataset file.<BR>
+            <BR>
+            <PRE>
+public class DatabaseExportSample
+{
+    public static void main(String[] args) throws Exception
+    {
+        // database connection
+        Class driverClass = Class.forName(&quot;org.hsqldb.jdbcDriver&quot;);
+        Connection jdbcConnection = DriverManager.getConnection(
+                &quot;jdbc:hsqldb:sample&quot;, &quot;sa&quot;, &quot;&quot;);
+        DatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        // partial database export
+        String[] tableNames = {&quot;TABLE1&quot;, &quot;TABLE2&quot;, &quot;TABLE2&quot;};
+        IDataSet partialDataSet = connection.createDataSet(tableNames);
+        XmlDataSet.write(partialDataSet, new FileOutputStream(&quot;partial.xml&quot;));
+
+        // full database export
+        IDataSet fullDataSet = connection.createDataSet();
+        XmlDataSet.write(fullDataSet, new FileOutputStream(&quot;full.xml&quot;));
+    }
+}</PRE>
+            <BR>
+            <HR>
+            <H2><A name="bestpractices">Best Practices</A></H2>
+            All existing JUnit best practices still apply to the dbUnit framework. Here is a collection of best practices specifically related to database testing and dbUnit.<BR>
+            <BR>
+            <H4>1. Use one database copy per developer</H4>
+            See introduction…<BR>
+            <BR>
+            <H4>2. Good setup for every tests do not require cleanup</H4>
+            People versed in testcase design already know that a test should never depend on results from previous tests. If you always correctly initialize your database before each test you won't need to do any clean up at all after execution.<BR>
+            <BR>
+            <H4>3. Use multiple small datasets </H4>
+            Most of your tests do not require the entire database to be re-initialized. So, instead of putting your entire database data in one large dataset, try to break it into many smaller chunks.<BR>
+            <BR>
+            Those chunks could roughly corresponding to logical units, or components. This reduces the overhead caused by initializing your database for each test. This also facilitates team development since many developers working on different components can modify datasets independently.<BR>
+            <BR>
+            For integrated testing, you can still use the CompositeDataSet implementation to combine multiple datasets into one at run time.<BR>
+            <BR>
+            <H4>4. Perform setup of stale data once for entire test class or a test suite</H4>
+            If several tests are using the same read-only data, this data could be initialized once for an entire test class or test suite. You need to be cautious and ensure you never modify this data. This can reduce the time required to run your tests but also introduces more risk. <BR>
+            <BR>
+            This feature is not yet integrated in dbUnit but may be added in the future. Something likes a DatabaseTestSuite class… <BR>
+            <BR>
+            <H4>5. Reuse same DatabaseConnection for every test</H4>
+            One way to speed up execution of your tests is to reuse the same DatabaseConnection for all you tests. dbUnit caches database metadata in this object and therefore does not require to fetch them repeatedly from the database.<BR>
+            <BR>
+            <H4>6. Table sequence in dataset</H4>
+            To prevent problems with foreign keys, tables must be sequenced appropriately in dataset. The framework executes INSERT, UPDATE and REFRESH operations using the same sequence while DELETE and DELETE_ALL are executed in reserve order.<BR>
+            <BR>
+            <HR>
+            <H2><A name="faq">Frequently asked questions</A></H2>
+            <H4>Which database systems does dbUnit support?</H4>
+            The dbUnit framework has been developed and tested with Hypersonic SQL and Oracle. It uses a fairly simple SQL syntax and should be compatible with the other database systems. Let me know if you find any incompatibilities.<BR>
+            <BR>
+            <HR>
+            <H2><A name="contact">Contact information</A></H2>
+            Visit the <A href="http://sourceforge.net/projects/dbunit">dbUnit project</A> hosted by SourceForge.<BR>
+            <BR>
+            <HR>
+            <H2><A name="ressources">Ressources</A></H2>
+            <A href="http://www.junit.org">JUnit, Testing Resources for Extreme Programming</A><BR>
+            The home of the Java JUnit software.<BR>
+            <BR>
+            <A href="http://www.dallaway.com/acad/dbunit.html">Unit testing database code</A><BR>
+            Richard Dallaway notes about database unit testing. <BR>
+            <!-- 
+            <BR>
+            <A href="http://jakarta.apache.org/turbine/torque/index.html">Torque persistence layer</A><BR>
+            Torque generates all database-related classes and resources required by your application and provides a runtime environment to run the generated classes.  Torque was developed as part of the Turbine Framework. It is now decoupled from it and can be used by itself. <BR>
+            -->
+            </TD>
+        </TR>
+    </TBODY>
+</TABLE>
+</BODY>
+</HTML>

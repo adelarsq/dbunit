@@ -1,0 +1,32 @@
+TO DO - dbunit
+
+////////////////////////////////////////////////////////////////////////////////
+// Enhancements
+
+* Create Ant build file. <ML-2/22/2 10:05AM>
+
+* Add support for torque (TorqueDataSet/TorqueTable). <ML-2/22/2 10:06AM>
+
+* Add support for DataSource (DatabaseDataSource extends DatabaseConnection) 
+  <ML-3/4/2 9:36AM>
+
+* Add support for caching DatabaseConnection <ML-3/4/2 9:36AM>
+
+////////////////////////////////////////////////////////////////////////////////
+// Tests
+
+* Test case for all supported sql data types in select/insert statements.
+  <ML-2/22/2 10:06AM>
+
+* AbstractTableTest -> test empty tables. <ML-2/22/2 10:06AM>
+
+* ResultSetTableTest -> testCreateTableMetaData() <ML-2/22/2 10:06AM>
+
+* Test suite for datatype package <ML-2/24/2 06:53AM>
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Bugs
+
+* DatabaseDataSet crash on columns which data type is unsupported (like CLOB, 
+  BINARY, VARBINARY). Should simply ignore those columns. <ML-3/4/2 9:36AM>
