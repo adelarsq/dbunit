@@ -55,8 +55,8 @@ import java.sql.Statement;
  */
 public class InsertIdentityOperation extends AbstractOperation
 {
-    public static final String IDENTITY_COLUMN_FILTER =
-            "http://www.dbunit.org/features/mssql/identityColumnFilter";
+    public static final String PROPERTY_IDENTITY_COLUMN_FILTER =
+            "http://www.dbunit.org/properties/mssql/identityColumnFilter";
 
     public static final DatabaseOperation INSERT =
             new InsertIdentityOperation(DatabaseOperation.INSERT);
@@ -93,7 +93,7 @@ public class InsertIdentityOperation extends AbstractOperation
     {
         DatabaseConfig config = connection.getConfig();
         IColumnFilter identityFilter = (IColumnFilter)config.getProperty(
-                IDENTITY_COLUMN_FILTER);
+                PROPERTY_IDENTITY_COLUMN_FILTER);
         if (identityFilter == null)
         {
             identityFilter = DEFAULT_IDENTITY_FILTER;
