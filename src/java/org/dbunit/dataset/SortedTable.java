@@ -29,6 +29,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
+ * This is a ITable decorator that provide a sorted view of the decorated table.
+ * This implementation does not keep a separate copy of the decorated table data.
+ *
  * @author Manuel Laflamme
  * @version $Revision$
  */
@@ -69,10 +72,10 @@ public class SortedTable extends AbstractTable
     {
         if (_indexes == null)
         {
-            _indexes = new Integer[getRowCount()];
+            Integer[] indexes = new Integer[getRowCount()];
             for (int i = 0; i < _indexes.length; i++)
             {
-                _indexes[i] = new Integer(i);
+                indexes[i] = new Integer(i);
             }
 
             try
@@ -83,6 +86,8 @@ public class SortedTable extends AbstractTable
             {
                 throw (DataSetException)e.getException();
             }
+
+            _indexes = indexes;
         }
 
         return _indexes[row].intValue();
