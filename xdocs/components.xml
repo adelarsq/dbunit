@@ -60,12 +60,10 @@ public interface IDataSet
       </ul>
 </p>      
       <h4><a name="FlatXmlDataSet">FlatXmlDataSet</a></h4>
-      <p>The FlatXmlDataSet class has been introduced in version 
-        1.2. I found that generic XML datasets were hard to write and to maintain. 
-        This was particularly painful for tables having a lot of columns. </p>
       <p>In the flat XML format, each XML element corresponds to a table row. 
         Each XML element name corresponds to a table name. The XML attributes 
-        correspond to table columns. Here is an example dataset containing the 
+        correspond to table columns.</p>
+      <p> Here is an example dataset containing the 
         same data than the XmlDataSet <a href="#originalxmlsample">example</a>:
       <source><![CDATA[
 <!DOCTYPE dataset SYSTEM "my-dataset.dtd">
@@ -78,26 +76,19 @@ public interface IDataSet
     <EMPTY_TABLE/>
 </dataset>]]></source>
       </p>
-      <p>Learn how to export your database data to this format <a href="howto.html#extract">here</a> 
-      and how to generate a DTD representing your database schema <a href="howto.html#generatedtd">here</a>. 
-      <b>Note that DbUnit does not automatically add a reference to your DTD when 
-      you export a dataset. You must edit the output file to manually add the 
-      DOCTYPE declaration.</b></p> 
-      <h5>Null Values</h5>
       <p>To specify a null value, you simply have to omit its corresponding attribute. 
       In the above example, COLUMN1 and COLUMN2 are nulls for the second row of 
-      TEST_TABLE. </p>
-      <h5>Table metadata</h5>
-      <p>DbUnit use the DTD referenced by the document type declaration as metadata. 
-      DbUnit only support external system URI. The URI can be absolute or relative.</p> 
-      <p> Example of system document type declaration: 
-      <source><![CDATA[<!DOCTYPE dataset SYSTEM "my-dataset.dtd">]]></source>
-      </p><p>If the xml document does not contain a document type declaration, the 
-        metadata is generated from the first row of each table. This is highly 
-        recommended to always provide a document type declaration since DbUnit 
-        will think your table is missing some columns if the first row has one 
-        or more null values. 
-      </p>
+      TEST_TABLE.</p>
+      <p>Table metadata is deduced from the first row of each table. <b>Beware that DbUnit may think 
+      a table miss some columns if the first row of that table has one or more null values.</b></p>
+      <p>For this kind of situation, this is highly recommended to use DTD. DbUnit will use the 
+      columns declared in the DTD as table metadata. DbUnit only support external system URI. 
+      The URI can be absolute or relative.</p> 
+      <p>Learn how to export your database data to this format <a href="howto.html#extract">here</a> 
+      and how to generate a DTD representing your database schema <a href="howto.html#generatedtd">here</a>. 
+      Note that DbUnit does not automatically add a reference to your DTD when 
+      you export a dataset. You must edit the output file to manually add the 
+      DOCTYPE declaration.</p> 
       <a name="XmlDataSet"> 
       <h4>XmlDataSet </h4>
       </a> 
