@@ -1,5 +1,5 @@
 /*
- *  QueryDataSet.java   Feb 17, 2002
+ *  QueryDataSet.java   Dec 4, 2002
  *
  *  The DbUnit Database Testing Framework
  *  Copyright (C)2002, Manuel Laflamme
@@ -38,7 +38,7 @@ public class QueryDataSet implements IDataSet {
 
 
     /**
-     *Create a QueryDataSet by passing in the connection to the database to use.
+     * Create a QueryDataSet by passing in the connection to the database to use.
      *
      * @param  connection        The connection object to the database.
      * @exception  SQLException  Description of the Exception

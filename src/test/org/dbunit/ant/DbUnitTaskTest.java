@@ -258,43 +258,36 @@ public class DbUnitTaskTest extends TaskdefsTest
     {
         String targetName = "test-export-query";
         Export export = (Export)getFirstStepFromTarget(targetName);
-        assertTrue("Should have been a flat format, "
-                + "but was: " + export.getFormat(),
-                export.getFormat().equalsIgnoreCase("flat"));
-        List queries = export.getQueries();
-        assertTrue("Export should have had two sub queries, but has: "
-                + queries.size(), queries.size() == 2);
+        assertEquals("format", "flat", export.getFormat());
+
+        List queries = export.getTables();
+        assertEquals("query count", 2, getQueryCount(queries));
+
         Query testTable = (Query)queries.get(0);
+        assertEquals("name", "TEST_TABLE", testTable.getName());
+        assertEquals("sql", "SELECT * FROM TEST_TABLE", testTable.getSql());
+
         Query pkTable = (Query)queries.get(1);
-        assertTrue("Should have been been TABLE TEST_TABLE, but was: "
-                + testTable.getName(), testTable.getName().equals("TEST_TABLE"));
-        assertTrue("Should have been been TABLE PK_TABLE, but was: "
-                + pkTable.getName(), pkTable.getName().equals("PK_TABLE"));
-        assertTrue("Should have been been query for TABLE TEST_TABLE, but was: "
-                + testTable.getSql(), testTable.getSql().equals("SELECT * FROM TEST_TABLE"));
-        assertTrue("Should have been been query for TABLE PK_TABLE, but was: "
-                + pkTable.getSql(), pkTable.getSql().equals("SELECT * FROM PK_TABLE"));
+        assertEquals("name", "PK_TABLE", pkTable.getName());
+        assertEquals("sql", "SELECT * FROM PK_TABLE", pkTable.getSql());
     }
 
     public void testExportQueryMixed()
     {
         String targetName = "test-export-query-mixed";
         Export export = (Export)getFirstStepFromTarget(targetName);
-        assertTrue("Should have been a flat format, "
-                + "but was: " + export.getFormat(),
-                export.getFormat().equalsIgnoreCase("flat"));
+        assertEquals("format", "flat", export.getFormat());
+
         List tables = export.getTables();
-        assertTrue("Export should have had one table, but has: "
-                + tables.size(), tables.size() == 1);
+        assertEquals("total count", 2, tables.size());
+        assertEquals("table count", 1, getTableCount(tables));
+        assertEquals("query count", 1, getQueryCount(tables));
+
         Table testTable = (Table)tables.get(0);
+        assertEquals("name", "TEST_TABLE", testTable.getName());
 
-        List queries = export.getQueries();
-                assertTrue("Export should have had one querie, but has: "
-                        + queries.size(), queries.size() == 1);
-        Query pkTable = (Query)queries.get(0);
-        assertTrue("Should have been been a query for TABLE PK_TABLE, but was: "
-                + pkTable.getSql(), pkTable.getSql()!= null);
-
+        Query pkTable = (Query)tables.get(1);
+        assertEquals("name", "PK_TABLE", pkTable.getName());
     }
 
     protected void assertOperationType(String failMessage, String targetName, DatabaseOperation expected)
@@ -302,6 +295,34 @@ public class DbUnitTaskTest extends TaskdefsTest
         Operation oper = (Operation)getFirstStepFromTarget(targetName);
         DatabaseOperation dbOper = oper.getDbOperation();
         assertTrue(failMessage + ", but was: " + dbOper, expected.equals(dbOper));
+    }
+
+    protected int getQueryCount(List tables)
+    {
+        int count = 0;
+        for (Iterator it = tables.iterator(); it.hasNext();)
+        {
+            if (it.next() instanceof Query)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    protected int getTableCount(List tables)
+    {
+        int count = 0;
+        for (Iterator it = tables.iterator(); it.hasNext();)
+        {
+            if (it.next() instanceof Table)
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     protected DbUnitTaskStep getFirstStepFromTarget(String targetName)

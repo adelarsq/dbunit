@@ -33,7 +33,6 @@ public class Table
 {
 
     private String name;
-    private String query;
 
     public Table()
     {
@@ -55,20 +54,8 @@ public class Table
         StringBuffer result = new StringBuffer();
         result.append("Table: ");
         result.append(" name=" + name);
-        result.append(" query=" + query);
-
 
         return result.toString();
-    }
-
-    public String getQuery()
-    {
-        return query;
-    }
-
-    public void setQuery(String query)
-    {
-        this.query = query;
     }
 }
 

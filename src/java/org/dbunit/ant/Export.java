@@ -24,15 +24,16 @@ package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.QueryDataSet;
-import org.dbunit.dataset.CompositeDataSet;
-import org.dbunit.dataset.xml.*;
+import org.dbunit.dataset.*;
+import org.dbunit.dataset.xml.FlatDtdDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.XmlDataSet;
 
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * The <code>Export</code> class is the step that facilitates exporting
@@ -42,15 +43,15 @@ import java.util.List;
  *
  * @author Timothy Ruppert && Ben Cox
  * @version $Revision$
- * @see org.dbunit.ant.DbUnitTaskStep
+ * @see DbUnitTaskStep
  */
 public class Export implements DbUnitTaskStep
 {
 
-    private File dest;
-    private String format = "flat";
-    private List tables = new ArrayList();
-    private List queries = new ArrayList();
+    private File _dest;
+    private String _format = "flat";
+    private List _tables = new ArrayList();
+//    private List queries = new ArrayList();
 
     public Export()
     {
@@ -63,27 +64,22 @@ public class Export implements DbUnitTaskStep
 
     public File getDest()
     {
-        return dest;
+        return _dest;
     }
 
     public String getFormat()
     {
-        return format;
+        return _format;
     }
 
     public List getTables()
     {
-        return tables;
-    }
-
-    public List getQueries()
-    {
-        return queries;
+        return _tables;
     }
 
     public void setDest(File dest)
     {
-        this.dest = dest;
+        _dest = dest;
     }
 
     public void setFormat(String format)
@@ -92,7 +88,7 @@ public class Export implements DbUnitTaskStep
                 || format.equalsIgnoreCase("xml")
                 || format.equalsIgnoreCase("dtd"))
         {
-            this.format = format;
+            _format = format;
         }
         else
         {
@@ -102,67 +98,63 @@ public class Export implements DbUnitTaskStep
 
     public void addTable(Table table)
     {
-        tables.add(table);
+        _tables.add(table);
     }
 
     public void addQuery(Query query)
     {
-        queries.add(query);
+        _tables.add(query);
     }
 
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
-        IDataSet dataset = null;
         try
         {
+            IDataSet dataset = null;
 
-            if (dest == null)
+            if (_dest == null)
             {
-                throw new DatabaseUnitException("'dest' is a required attribute of the <export> step.");
+                throw new DatabaseUnitException("'_dest' is a required attribute of the <export> step.");
             }
-            // retrieve the dataset if no tables or queries specifedid.
-            if (tables.size() == 0 && queries.size()==0)
+
+            // retrieve the complete database if no tables or queries specified.
+            if (_tables.size() == 0)
             {
                 dataset = connection.createDataSet();
             }
             else
             {
-                if (tables.size() > 0) {
-                    dataset = connection.createDataSet(getTableArray());
+                List tableList = new ArrayList();
+                for (Iterator it = _tables.iterator(); it.hasNext();)
+                {
+                    Object table = it.next();
+                    if (table instanceof Query)
+                    {
+                        tableList.add(createTable((Query)table, connection));
+                    }
+                    else
+                    {
+                        tableList.add(createTable((Table)table, connection));
+                    }
                 }
-                if (queries.size() > 0) {
-                    QueryDataSet queryDataSet = new QueryDataSet(connection);
-                    for (int i = 0; i < queries.size(); i++){
-                        Query query = (Query)queries.get(i);
-                        if (query.getSql() == null){
-                            throw new DatabaseUnitException("'sql' is a required attribute of the <query> step.");
-                        }
-                        queryDataSet.addTable(query.getName(),query.getSql());
 
-                    }
-                    //crummy merge!
-                    if(dataset != null) {
-                        dataset = new CompositeDataSet(queryDataSet,dataset);
-                    }
-                    else {
-                        dataset = queryDataSet;
-                    }
-                }
+                ITable[] tables = (ITable[])tableList.toArray(new ITable[0]);
+                dataset = new DefaultDataSet(tables);
 
             }
             // save the dataset
-            OutputStream out = new FileOutputStream(dest);
+            Writer out = new FileWriter(_dest);
             try
             {
-                if (format.equalsIgnoreCase("flat"))
+                if (_format.equalsIgnoreCase("flat"))
                 {
                     FlatXmlDataSet.write(dataset, out);
                 }
-                else if (format.equalsIgnoreCase("xml"))
+                else if (_format.equalsIgnoreCase("xml"))
                 {
                     XmlDataSet.write(dataset, out);
                 }
-                else if (format.equalsIgnoreCase("dtd"))
+                else if (_format.equalsIgnoreCase("dtd"))
                 {
                     FlatDtdDataSet.write(dataset, out);
                 }
@@ -183,32 +175,34 @@ public class Export implements DbUnitTaskStep
         }
     }
 
+    private ITable createTable(Table table, IDatabaseConnection connection)
+           throws DataSetException, SQLException
+    {
+        return connection.createDataSet().getTable(table.getName());
+    }
+
+    private ITable createTable(Query query, IDatabaseConnection connection)
+            throws DataSetException, SQLException
+    {
+        return connection.createQueryTable(query.getName(), query.getSql());
+    }
+
     private String[] getTableArray()
     {
-        String[] result = new String[tables.size()];
-        for (int i = 0; i < tables.size(); i++)
+        String[] result = new String[_tables.size()];
+        for (int i = 0; i < _tables.size(); i++)
         {
-            Table table = (Table)tables.get(i);
+            Table table = (Table)_tables.get(i);
             result[i] = table.getName();
         }
         return result;
     }
 
-//    private String[] convertListToStringArray(List list){
-//        String []strArray = new String[list.size()];
-//        for (int i = 0; i < list.size(); i++)
-//        {
-//            Table table = (Table)list.get(i);
-//            strArray[i] = table.getName();
-//        }
-//        return strArray;
-//    }
-//
     public String getLogMessage()
     {
         return "Executing export: "
-                + "\n      in format: " + format
-                + " to datafile: " + getAbsolutePath(dest);
+                + "\n      in _format: " + _format
+                + " to datafile: " + getAbsolutePath(_dest);
     }
 
 
@@ -216,10 +210,9 @@ public class Export implements DbUnitTaskStep
     {
         StringBuffer result = new StringBuffer();
         result.append("Export: ");
-        result.append(" dest=" + getAbsolutePath(dest));
-        result.append(", format= " + format);
-        result.append(", tables= " + tables);
-        result.append(", queries= " + queries);
+        result.append(" _dest=" + getAbsolutePath(_dest));
+        result.append(", _format= " + _format);
+        result.append(", _tables= " + _tables);
 
         return result.toString();
     }
