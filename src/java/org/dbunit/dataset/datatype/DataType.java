@@ -67,9 +67,18 @@ public abstract class DataType
     public static final DataType TIME = new TimeDataType();
     public static final DataType TIMESTAMP = new TimestampDataType();
 
+    public static final DataType BINARY = new BytesDataType(
+            "BINARY", Types.BINARY);
+    public static final DataType VARBINARY = new BytesDataType(
+            "VARBINARY", Types.VARBINARY);
+    public static final DataType LONGVARBINARY = new BytesDataType(
+            "LONGVARBINARY", Types.LONGVARBINARY);
+
     private static final DataType[] TYPES = {
         CHAR, VARCHAR, LONGVARCHAR, NUMERIC, DECIMAL, BOOLEAN, TINYINT,
-        SMALLINT, INTEGER, BIGINT, REAL, FLOAT, DOUBLE, DATE, TIME, TIMESTAMP};
+        SMALLINT, INTEGER, BIGINT, REAL, FLOAT, DOUBLE, DATE, TIME, TIMESTAMP,
+//        BINARY, VARBINARY, LONGVARBINARY,
+    };
 
     /**
      * Returns the coresponding {@link java.sql.Types}.
@@ -172,9 +181,15 @@ public abstract class DataType
             return TIMESTAMP;
         }
 
+        if (value instanceof byte[])
+        {
+            return VARBINARY;
+        }
+
         return UNKNOWN;
     }
 }
+
 
 
 

@@ -22,15 +22,8 @@
 
 package org.dbunit;
 
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.util.Arrays;
-
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.XmlDataSet;
-import org.dbunit.dataset.*;
-import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.dataset.datatype.DataType;
 
 /**
  * @author Manuel Laflamme
@@ -40,10 +33,13 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
+        String s = (String)DataType.VARCHAR.typeCast(new byte[1000]);
+        System.out.println(s);
+
         IDatabaseConnection connection =
                 DatabaseEnvironment.getInstance().getConnection();
 
-        System.out.println(connection.createDataSet().getTableMetaData("EMPTY_MULTITYPE_TABLE"));
+//        System.out.println(connection.createDataSet().getTableMetaData("EMPTY_MULTITYPE_TABLE"));
 //        String[] tableNames = connection.createDataSet().getTableNames();
 //        Arrays.sort(tableNames);
 //        FlatXmlDataSet.writeDtd(new FilteredDataSet(tableNames,
@@ -70,6 +66,7 @@ public class Main
     }
 
 }
+
 
 
 

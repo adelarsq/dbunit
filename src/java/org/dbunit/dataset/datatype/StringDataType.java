@@ -21,6 +21,10 @@
 
 package org.dbunit.dataset.datatype;
 
+import java.net.URLEncoder;
+
+import HTTPClient.Codecs;
+
 /**
  * @author Manuel Laflamme
  * @version 1.0
@@ -72,8 +76,16 @@ public class StringDataType extends AbstractDataType
             }
         }
 
+        if (value instanceof byte[])
+        {
+            String stringValue = new String(Codecs.uuencode((byte[])value));
+            return stringValue;
+//            return stringValue.substring(0, stringValue.lastIndexOf("\n\r"));
+        }
+
         throw new TypeCastException(value.toString());
     }
 }
+
 
 
