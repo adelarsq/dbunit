@@ -22,8 +22,9 @@ import com.wutka.dtd.*;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class FlatXmlDocType extends AbstractDataSet
+public class FlatXmlDocType implements IDataSet
 {
+    private static final List EMPTY_LIST = Arrays.asList(new Object[0]);
     private final List _tableNames = new ArrayList();
     private final Map _tableMap = new HashMap();
 
@@ -49,7 +50,8 @@ public class FlatXmlDocType extends AbstractDataSet
             DTDAttlist attrList = (DTDAttlist)attrLists.elementAt(i);
             if (_tableNames.contains(attrList.getName()))
             {
-                _tableMap.put(attrList.getName(), createTableMetaData(attrList));
+                _tableMap.put(attrList.getName(), new DefaultTable(
+                        createTableMetaData(attrList), EMPTY_LIST));
             }
         }
     }
@@ -134,20 +136,21 @@ public class FlatXmlDocType extends AbstractDataSet
         return (String[])_tableNames.toArray(new String[0]);
     }
 
-    public ITable getTable(String tableName) throws DataSetException
-    {
-        throw new UnsupportedOperationException();
-    }
-
     public ITableMetaData getTableMetaData(String tableName)
             throws DataSetException
     {
-        ITableMetaData metaData = (ITableMetaData)_tableMap.get(tableName);
-        if (metaData == null)
+        return getTable(tableName).getTableMetaData();
+    }
+
+    public ITable getTable(String tableName) throws DataSetException
+    {
+        ITable table = (ITable)_tableMap.get(tableName);
+        if (table == null)
         {
             throw new NoSuchTableException(tableName);
         }
 
-        return metaData;
+        return table;
     }
 }
+

@@ -44,9 +44,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        InputStream in = new FileInputStream(
-                new File("src/xml/flatXmlDataSetTest.xml"));
-        return new FlatXmlDataSet(in);
+        return new FlatXmlDataSet(new FileInputStream("src/xml/flatXmlDataSetTest.xml"));
     }
 
     public void testWrite() throws Exception
@@ -95,6 +93,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
 
 }
+
 
 
 

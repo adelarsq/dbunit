@@ -44,37 +44,15 @@ public class FilteredDataSet extends AbstractDataSet
         _dataSet = dataSet;
     }
 
-    private void assertValidTableName(String tableName) throws NoSuchTableException
-    {
-        for (int i = 0; i < _tableNames.length; i++)
-        {
-            if (_tableNames[i].equals(tableName)) ;
-            return;
-        }
-
-        throw new NoSuchTableException(tableName);
-    }
-
     ////////////////////////////////////////////////////////////////////////////
-    // IDataSet interface
+    // AbstractDataSet class
 
-    public String[] getTableNames() throws DataSetException
+    protected ITable[] getTables() throws DataSetException
     {
-        return (String[])_tableNames.clone();
-    }
-
-    public ITableMetaData getTableMetaData(String tableName) throws DataSetException
-    {
-        assertValidTableName(tableName);
-        return _dataSet.getTableMetaData(tableName);
-    }
-
-    public ITable getTable(String tableName) throws DataSetException
-    {
-        assertValidTableName(tableName);
-        return _dataSet.getTable(tableName);
+        return DataSetUtils.getTables(_tableNames, _dataSet);
     }
 }
+
 
 
 

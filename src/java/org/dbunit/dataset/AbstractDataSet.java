@@ -23,13 +23,63 @@
 package org.dbunit.dataset;
 
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
 /**
+ * This abstract class provides the basic implementation of the IDataSet
+ * interface. Subclass are only required to implement the {@link getTables}
+ * method.
+ *
  * @author Manuel Laflamme
  * @version 1.0
  */
 public abstract class AbstractDataSet implements IDataSet
 {
+
+    /**
+     * Returns this dataset tables. This template method must be implemented by
+     * subclass.
+     */
+    protected abstract ITable[] getTables() throws DataSetException;
+
+    ////////////////////////////////////////////////////////////////////////////
+    // IDataSet interface
+
+    public String[] getTableNames() throws DataSetException
+    {
+        ITable[] tables = getTables();
+        String[] tableNames = new String[tables.length];
+        for (int i = 0; i < tables.length; i++)
+        {
+            ITable table = tables[i];
+            tableNames[i] = table.getTableMetaData().getTableName();
+        }
+        return tableNames;
+    }
+
+    public ITableMetaData getTableMetaData(String tableName) throws DataSetException
+    {
+        return getTable(tableName).getTableMetaData();
+    }
+
+    public ITable getTable(String tableName) throws DataSetException
+    {
+        ITable[] tables = getTables();
+        for (int i = 0; i < tables.length; i++)
+        {
+            ITable table = tables[i];
+            if (tableName.equals(table.getTableMetaData().getTableName()))
+            {
+                return table;
+            }
+        }
+
+        throw new NoSuchTableException(tableName);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Object class
+
     public String toString()
     {
         try
@@ -42,6 +92,7 @@ public abstract class AbstractDataSet implements IDataSet
         }
     }
 }
+
 
 
 

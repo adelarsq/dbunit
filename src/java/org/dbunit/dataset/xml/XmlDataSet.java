@@ -38,26 +38,14 @@ import electric.xml.*;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class XmlDataSet extends DefaultDataSet
+public class XmlDataSet extends AbstractDataSet
 {
+    private final ITable[] _tables;
+
     /**
      * Creates an XmlDataSet with the specified xml input stream.
      */
     public XmlDataSet(InputStream in) throws DataSetException
-    {
-        super(createTables(in));
-    }
-
-    /**
-     * Write the specified dataset to the specified output as xml.
-     */
-    public static void write(IDataSet dataSet, OutputStream out)
-            throws IOException, DataSetException
-    {
-        createDocument(dataSet).write(out);
-    }
-
-    private static ITable[] createTables(InputStream in) throws DataSetException
     {
         try
         {
@@ -72,7 +60,7 @@ public class XmlDataSet extends DefaultDataSet
                 tableList.add(table);
             }
 
-            return (ITable[])tableList.toArray(new ITable[0]);
+            _tables = (ITable[])tableList.toArray(new ITable[0]);
         }
         catch (ParseException e)
         {
@@ -80,7 +68,34 @@ public class XmlDataSet extends DefaultDataSet
         }
     }
 
-    private static Document createDocument(IDataSet dataSet) throws DataSetException
+    private ITable[] getTables(Document document) throws DataSetException
+    {
+            Elements tableElems = document.getElement("dataset").getElements("table");
+
+            List tableList = new ArrayList();
+            while (tableElems.hasMoreElements())
+            {
+                Element tableElem = (Element)tableElems.nextElement();
+                ITable table = new XmlTable(tableElem);
+                tableList.add(table);
+            }
+
+            return (ITable[])tableList.toArray(new ITable[0]);
+    }
+
+    /**
+     * Write the specified dataset to the specified output as xml.
+     */
+    public static void write(IDataSet dataSet, OutputStream out)
+            throws IOException, DataSetException
+    {
+        Document document = buildDocument(dataSet);
+
+        // write xml document
+        document.write(out);
+    }
+
+    private static Document buildDocument(IDataSet dataSet) throws DataSetException
     {
         Document document = new Document();
         String[] tableNames = dataSet.getTableNames();
@@ -154,11 +169,19 @@ public class XmlDataSet extends DefaultDataSet
                 }
             }
         }
-
         return document;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    // AbstractDataSet class
+
+    protected ITable[] getTables() throws DataSetException
+    {
+        return _tables;
+    }
+
 }
+
 
 
 

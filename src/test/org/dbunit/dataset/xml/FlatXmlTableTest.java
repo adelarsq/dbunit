@@ -44,9 +44,7 @@ public class FlatXmlTableTest extends AbstractTableTest
 
     protected IDataSet createDataSet(boolean noneAsNull) throws Exception
     {
-        InputStream in = new FileInputStream(
-                new File("src/xml/flatXmlTableTest.xml"));
-        return new FlatXmlDataSet(in);
+        return new FlatXmlDataSet(new File("src/xml/flatXmlTableTest.xml"));
     }
 
     public void testGetMissingValue() throws Exception
@@ -76,6 +74,7 @@ public class FlatXmlTableTest extends AbstractTableTest
 //    }
 
 }
+
 
 
 

@@ -25,6 +25,8 @@ package org.dbunit.dataset.xml;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 import electric.xml.*;
 import org.dbunit.dataset.*;
@@ -36,26 +38,79 @@ import org.dbunit.dataset.datatype.TypeCastException;
  * @since 1.2
  * @version 1.0
  */
-public class FlatXmlDataSet extends DefaultDataSet
+public class FlatXmlDataSet extends AbstractDataSet
 {
+    private static final String SYSTEM = "SYSTEM '";
+
+    private final ITable[] _tables;
+
     /**
      * Creates an FlatXmlDataSet object with the specifed xml file.
+     * Relative DOCTYPE uri are resolved from the xml file path.
      *
      * @param file the xml file
      */
-    public FlatXmlDataSet(File file) throws IOException, DataSetException
+    public FlatXmlDataSet(File xmlFile) throws IOException, DataSetException
     {
-        super(createTables(new FileInputStream(file), null));
+        try
+        {
+            Document document = new Document(new FileInputStream(xmlFile));
+
+            // Create metadata from dtd if defined
+            IDataSet metaDataSet = null;
+            String dtdUri = getDocTypeUri(document);
+            if (dtdUri != null)
+            {
+                File dtdFile = new File(dtdUri);
+                if (!dtdFile.isAbsolute())
+                {
+                    dtdFile = new File(xmlFile.getParent(), dtdUri);
+                }
+                metaDataSet = new FlatXmlDocType(new FileInputStream(dtdFile));
+            }
+
+            _tables = getTables(document, metaDataSet);
+        }
+        catch (ParseException e)
+        {
+            throw new DataSetException(e);
+        }
     }
 
     /**
      * Creates an FlatXmlDataSet object with the specifed xml input stream.
+     * Relative DOCTYPE uri are resolved from the current working dicrectory.
      *
      * @param stream the xml input stream
      */
     public FlatXmlDataSet(InputStream stream) throws IOException, DataSetException
     {
-        super(createTables(stream, null));
+        try
+        {
+            Document document = new Document(stream);
+
+            // Create metadata from dtd if defined
+            IDataSet metaDataSet = null;
+            String dtdUri = getDocTypeUri(document);
+            if (dtdUri != null)
+            {
+                try
+                {
+                    URL dtdUrl = new URL(dtdUri);
+                    metaDataSet = new FlatXmlDocType(dtdUrl.openStream());
+                }
+                catch (MalformedURLException e)
+                {
+                    metaDataSet = new FlatXmlDocType(new FileInputStream(dtdUri));
+                }
+            }
+
+            _tables = getTables(document, metaDataSet);
+        }
+        catch (ParseException e)
+        {
+            throw new DataSetException(e);
+        }
     }
 
     /**
@@ -68,7 +123,7 @@ public class FlatXmlDataSet extends DefaultDataSet
     public FlatXmlDataSet(InputStream xmlStream, InputStream dtdStream)
             throws IOException, DataSetException
     {
-        super(createTables(xmlStream, new FlatXmlDocType(dtdStream)));
+        this(xmlStream, new FlatXmlDocType(dtdStream));
     }
 
     /**
@@ -80,7 +135,14 @@ public class FlatXmlDataSet extends DefaultDataSet
     public FlatXmlDataSet(InputStream xmlStream, IDataSet metaDataSet)
             throws IOException, DataSetException
     {
-        super(createTables(xmlStream, metaDataSet));
+        try
+        {
+            _tables = getTables(new Document(xmlStream), metaDataSet);
+        }
+        catch (ParseException e)
+        {
+            throw new DataSetException(e);
+        }
     }
 
     /**
@@ -88,6 +150,24 @@ public class FlatXmlDataSet extends DefaultDataSet
      */
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
+    {
+        Document document = buildDocument(dataSet);
+
+        // write xml document
+        document.write(out);
+    }
+
+    /**
+     * Write a DTD for the specified dataset to the specified output.
+     * @deprecated use {@link FlatXmlDocType#write}
+     */
+    public static void writeDtd(IDataSet dataSet, OutputStream out)
+            throws IOException, DataSetException
+    {
+        FlatXmlDocType.write(dataSet, out);
+    }
+
+    private static Document buildDocument(IDataSet dataSet) throws DataSetException
     {
         Document document = new Document();
         String[] tableNames = dataSet.getTableNames();
@@ -137,73 +217,44 @@ public class FlatXmlDataSet extends DefaultDataSet
             }
         }
 
-        // write xml document
-        document.write(out);
+        return document;
     }
 
-    /**
-     * Write a DTD for the specified dataset to the specified output.
-     * @deprecated use {@link FlatXmlDocType#write}
-     */
-    public static void writeDtd(IDataSet dataSet, OutputStream out)
+    private ITable[] getTables(Document document, IDataSet metaDataSet)
             throws IOException, DataSetException
     {
-        FlatXmlDocType.write(dataSet, out);
-    }
+        List tableList = new ArrayList();
+        List rowList = new ArrayList();
+        String lastTableName = null;
 
-    private static ITable[] createTables(InputStream in, IDataSet metaDataSet)
-            throws IOException, DataSetException
-    {
-        try
+        Elements rowElems = document.getElement("dataset").getElements();
+        while (rowElems.hasMoreElements())
         {
-            List tableList = new ArrayList();
-            List rowList = new ArrayList();
-            String lastTableName = null;
+            Element rowElem = (Element)rowElems.nextElement();
 
-            Document document = new Document(in);
-
-            // Create metadata from dtd if defined
-            DocType docType = document.getDocType();
-            if (metaDataSet == null && docType != null &&
-                    docType.getExternalId() != null)
-            {
-                metaDataSet = new FlatXmlDocType(new FileInputStream(
-                        parseExternalId(docType.getExternalId())));
-            }
-
-            Elements rowElems = document.getElement("dataset").getElements();
-            while (rowElems.hasMoreElements())
-            {
-                Element rowElem = (Element)rowElems.nextElement();
-
-                if (lastTableName != null &&
-                        !lastTableName.equals(rowElem.getName()))
-                {
-                    Element[] elems = (Element[])rowList.toArray(new Element[0]);
-                    rowList.clear();
-
-                    tableList.add(createTable(elems, metaDataSet));
-                }
-
-                lastTableName = rowElem.getName();
-                rowList.add(rowElem);
-            }
-
-            if (rowList.size() > 0)
+            if (lastTableName != null &&
+                    !lastTableName.equals(rowElem.getName()))
             {
                 Element[] elems = (Element[])rowList.toArray(new Element[0]);
+                rowList.clear();
+
                 tableList.add(createTable(elems, metaDataSet));
             }
 
-            return (ITable[])tableList.toArray(new ITable[0]);
+            lastTableName = rowElem.getName();
+            rowList.add(rowElem);
         }
-        catch (ParseException e)
+
+        if (rowList.size() > 0)
         {
-            throw new DataSetException(e);
+            Element[] elems = (Element[])rowList.toArray(new Element[0]);
+            tableList.add(createTable(elems, metaDataSet));
         }
+
+        return (ITable[])tableList.toArray(new ITable[0]);
     }
 
-    private static ITable createTable(Element[] rows, IDataSet metaDataSet)
+    private ITable createTable(Element[] rows, IDataSet metaDataSet)
             throws DataSetException
     {
         Element sampleRow = rows[0];
@@ -228,18 +279,36 @@ public class FlatXmlDataSet extends DefaultDataSet
         return new FlatXmlTable(rows, metaData);
     }
 
-    private static String parseExternalId(String externalId)
+    /**
+     * Returns this document type uri or <code>null</code> if none is defined.
+     */
+    private String getDocTypeUri(Document document)
     {
-        String system = "SYSTEM '";
-
-        if (externalId.startsWith(system))
+        DocType docType = document.getDocType();
+        if (docType != null && docType.getExternalId() != null)
         {
-            externalId = externalId.substring(system.length(), externalId.length()-1);
+            String externalId = docType.getExternalId();
+            if (externalId.startsWith(SYSTEM))
+            {
+                externalId = externalId.substring(SYSTEM.length(), externalId.length() - 1);
+            }
+
+            return externalId;
         }
 
-        return externalId;
+        return null;
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // AbstractDataSet class
+
+    protected ITable[] getTables() throws DataSetException
+    {
+        return _tables;
+    }
+
 }
+
 
 
 

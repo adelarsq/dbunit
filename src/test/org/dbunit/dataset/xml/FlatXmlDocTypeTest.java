@@ -45,37 +45,6 @@ public class FlatXmlDocTypeTest extends AbstractDataSetTest
         Arrays.sort(array);
     }
 
-    public void testGetTable() throws Exception
-    {
-        IDataSet dataSet = createDataSet();
-        String[] names = dataSet.getTableNames();
-        for (int i = 0; i < names.length; i++)
-        {
-            try
-            {
-                dataSet.getTable(names[i]);
-                fail("Should throw an UnsupportedOperationException");
-            }
-            catch (UnsupportedOperationException e)
-            {
-            }
-
-        }
-    }
-
-    public void testGetUnknownTable() throws Exception
-    {
-        IDataSet dataSet = createDataSet();
-        try
-        {
-            dataSet.getTable("UNKNOWN_TABLE");
-            fail("Should throw an UnsupportedOperationException");
-        }
-        catch (UnsupportedOperationException e)
-        {
-        }
-    }
-
     ////////////////////////////////////////////////////////////////////////////
     // Test methods
 
@@ -146,3 +115,4 @@ public class FlatXmlDocTypeTest extends AbstractDataSetTest
 
 
 }
+

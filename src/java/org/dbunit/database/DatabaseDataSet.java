@@ -32,7 +32,7 @@ import org.dbunit.dataset.*;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class DatabaseDataSet extends AbstractDataSet
+public class DatabaseDataSet implements IDataSet
 {
     static final String QUALIFIED_TABLE_NAMES =
             "dbunit.qualified.table.names";
@@ -187,6 +187,7 @@ public class DatabaseDataSet extends AbstractDataSet
     }
 
 }
+
 
 
 

@@ -29,14 +29,16 @@ import java.util.List;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class CompositeDataSet extends DefaultDataSet
+public class CompositeDataSet extends AbstractDataSet
 {
+    private final ITable[] _tables;
+
     /**
      * Creates a composite dataset that combines the specified tables.
      */
     public CompositeDataSet(IDataSet[] dataSets) throws DataSetException
     {
-        super(combineTables(dataSets));
+        _tables = combineTables(dataSets);
     }
 
     /**
@@ -45,11 +47,10 @@ public class CompositeDataSet extends DefaultDataSet
     public CompositeDataSet(IDataSet dataSet1, IDataSet dataSet2)
             throws DataSetException
     {
-        super(combineTables(new IDataSet[]{dataSet1, dataSet2}));
+        _tables = combineTables(new IDataSet[] {dataSet1, dataSet2});
     }
 
-    private static ITable[] combineTables(IDataSet[] dataSets)
-            throws DataSetException
+    private ITable[] combineTables(IDataSet[] dataSets) throws DataSetException
     {
         List tableList = new ArrayList();
 
@@ -83,7 +84,7 @@ public class CompositeDataSet extends DefaultDataSet
         return (ITable[])tableList.toArray(new ITable[0]);
     }
 
-    private static int getTableIndex(String tableName, List list)
+    private int getTableIndex(String tableName, List list)
     {
         for (int i = 0; i < list.size(); i++)
         {
@@ -96,7 +97,16 @@ public class CompositeDataSet extends DefaultDataSet
 
         return -1;
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // AbstractDataSet class
+
+    protected ITable[] getTables() throws DataSetException
+    {
+        return _tables;
+    }
 }
+
 
 
 

@@ -42,38 +42,14 @@ public class DefaultDataSet extends AbstractDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // IDataSet interface
+    // AbstractDataSet class
 
-    public String[] getTableNames() throws DataSetException
+    protected ITable[] getTables() throws DataSetException
     {
-        String[] tableNames = new String[_tables.length];
-        for (int i = 0; i < _tables.length; i++)
-        {
-            ITable table = _tables[i];
-            tableNames[i] = table.getTableMetaData().getTableName();
-        }
-        return tableNames;
-    }
-
-    public ITableMetaData getTableMetaData(String tableName) throws DataSetException
-    {
-        return getTable(tableName).getTableMetaData();
-    }
-
-    public ITable getTable(String tableName) throws DataSetException
-    {
-        for (int i = 0; i < _tables.length; i++)
-        {
-            ITable table = _tables[i];
-            if (tableName.equals(table.getTableMetaData().getTableName()))
-            {
-                return table;
-            }
-        }
-
-        throw new NoSuchTableException(tableName);
+        return _tables;
     }
 }
+
 
 
 

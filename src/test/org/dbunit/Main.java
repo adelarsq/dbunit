@@ -69,12 +69,15 @@ public class Main
 //            System.out.println("decl = " + decl + ", class: " + type);
 //        }
 
-        FlatXmlDocType.write(new FlatXmlDataSet(
-                new FileInputStream("src/xml/flatXmlTableTest.xml")),
-                new FileOutputStream("src/dtd/flatXmlTableTest.dtd"));
+        IDataSet dataSet = new FlatXmlDataSet(
+                new FileInputStream("flatXmlDataSetTest.xml"));
+//        FlatXmlDocType.write(new FlatXmlDataSet(
+//                new FileInputStream("src/xml/flatXmlDataSetTest.xml")),
+//                new FileOutputStream("src/dtd/flatXmlDataSetTest.dtd"));
     }
 
 }
+
 
 
 
