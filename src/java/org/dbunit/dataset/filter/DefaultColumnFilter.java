@@ -21,6 +21,10 @@
 package org.dbunit.dataset.filter;
 
 import org.dbunit.dataset.Column;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.CompositeTable;
+import org.dbunit.dataset.FilteredTableMetaData;
+import org.dbunit.dataset.DataSetException;
 
 /**
  * @author Manuel Laflamme
@@ -74,6 +78,44 @@ public class DefaultColumnFilter implements IColumnFilter
         {
             _excludeMatcher.addPattern(columns[i].getColumnName());
         }
+    }
+
+    /**
+     * Returns a table backed by the specified table that only includes specified
+     * columns.
+     */
+    public static ITable includeTableColumns(ITable table, String[] columnNames)
+            throws DataSetException
+    {
+        DefaultColumnFilter columnFilter = new DefaultColumnFilter();
+        for (int i = 0; i < columnNames.length; i++)
+        {
+            String columnName = columnNames[i];
+            columnFilter.includeColumn(columnName);
+        }
+
+        FilteredTableMetaData metaData = new FilteredTableMetaData(
+                table.getTableMetaData(), columnFilter);
+        return new CompositeTable(metaData, table);
+    }
+
+    /**
+     * Returns a table backed by the specified table that excludes specified
+     * columns.
+     */
+    public static ITable excludeTableColumns(ITable table, String[] columnNames)
+            throws DataSetException
+    {
+        DefaultColumnFilter columnFilter = new DefaultColumnFilter();
+        for (int i = 0; i < columnNames.length; i++)
+        {
+            String columnName = columnNames[i];
+            columnFilter.excludeColumn(columnName);
+        }
+
+        FilteredTableMetaData metaData = new FilteredTableMetaData(
+                table.getTableMetaData(), columnFilter);
+        return new CompositeTable(metaData, table);
     }
 
     ////////////////////////////////////////////////////////////////////////////
