@@ -110,7 +110,7 @@ public class BytesDataType extends AbstractDataType
             }
             catch (IOException e)
             {
-                throw new TypeCastException(e);
+                throw new TypeCastException(value, this, e);
             }
         }
 
@@ -123,7 +123,7 @@ public class BytesDataType extends AbstractDataType
             }
             catch (SQLException e)
             {
-                throw new TypeCastException(e);
+                throw new TypeCastException(value, this, e);
             }
         }
 
@@ -135,7 +135,7 @@ public class BytesDataType extends AbstractDataType
             }
             catch (IOException e)
             {
-                throw new TypeCastException(e);
+                throw new TypeCastException(value, this, e);
             }
         }
 
@@ -149,11 +149,11 @@ public class BytesDataType extends AbstractDataType
             }
             catch (IOException e)
             {
-                throw new TypeCastException(e);
+                throw new TypeCastException(value, this, e);
             }
         }
 
-        throw new TypeCastException(value.toString());
+        throw new TypeCastException(value, this);
     }
 
     public int compare(Object o1, Object o2) throws TypeCastException

@@ -28,15 +28,15 @@ package org.dbunit.dataset.datatype;
  */
 public class TypeCastException extends DataTypeException
 {
-    public TypeCastException()
-    {
-        super();
-    }
-
-    public TypeCastException(String msg)
-    {
-        super(msg);
-    }
+//    public TypeCastException()
+//    {
+//        super();
+//    }
+//
+//    public TypeCastException(String msg)
+//    {
+//        super(msg);
+//    }
 
     public TypeCastException(Throwable e)
     {
@@ -47,6 +47,18 @@ public class TypeCastException extends DataTypeException
     {
         super(msg, e);
     }
+
+    public TypeCastException(Object value, DataType dataType)
+    {
+        super("Unable to typecast value <" + value + "> of type <" +
+                value.getClass().getName() + "> to " + dataType);
+    }
+
+    public TypeCastException(Object value, DataType dataType, Throwable e)
+    {
+        super("Error typecasting value <" + value + "> to " + dataType, e);
+    }
+
 }
 
 

@@ -95,27 +95,27 @@ public class OracleClobDataType extends ClobDataType
         catch (IllegalAccessException e)
         {
             freeTemporaryClob(tempClob);
-            throw new TypeCastException(e);
+            throw new TypeCastException(value, this, e);
         }
         catch (NoSuchMethodException e)
         {
             freeTemporaryClob(tempClob);
-            throw new TypeCastException(e);
+            throw new TypeCastException(value, this, e);
         }
         catch (IOException e)
         {
             freeTemporaryClob(tempClob);
-            throw new TypeCastException(e);
+            throw new TypeCastException(value, this, e);
         }
         catch (InvocationTargetException e)
         {
             freeTemporaryClob(tempClob);
-            throw new TypeCastException(e.getTargetException());
+            throw new TypeCastException(value, this, e.getTargetException());
         }
         catch (ClassNotFoundException e)
         {
             freeTemporaryClob(tempClob);
-            throw new TypeCastException(e);
+            throw new TypeCastException(value, this, e);
         }
 
         return tempClob;
@@ -136,15 +136,15 @@ public class OracleClobDataType extends ClobDataType
         }
         catch (NoSuchMethodException e)
         {
-            throw new TypeCastException(e);
+            throw new TypeCastException("Error freeing Oracle CLOB", e);
         }
         catch (IllegalAccessException e)
         {
-            throw new TypeCastException(e);
+            throw new TypeCastException("Error freeing Oracle CLOB", e);
         }
         catch (InvocationTargetException e)
         {
-            throw new TypeCastException(e);
+            throw new TypeCastException("Error freeing Oracle CLOB", e.getTargetException());
         }
     }
 

@@ -95,27 +95,27 @@ public class OracleBlobDataType extends BlobDataType
         catch (IllegalAccessException e)
         {
             freeTemporaryBlob(tempBlob);
-            throw new TypeCastException(e);
+            throw new TypeCastException(value, this, e);
         }
         catch (NoSuchMethodException e)
         {
             freeTemporaryBlob(tempBlob);
-            throw new TypeCastException(e);
+            throw new TypeCastException(value, this, e);
         }
         catch (IOException e)
         {
             freeTemporaryBlob(tempBlob);
-            throw new TypeCastException(e);
+            throw new TypeCastException(value, this, e);
         }
         catch (InvocationTargetException e)
         {
             freeTemporaryBlob(tempBlob);
-            throw new TypeCastException(e.getTargetException());
+            throw new TypeCastException(value, this, e);
         }
         catch (ClassNotFoundException e)
         {
             freeTemporaryBlob(tempBlob);
-            throw new TypeCastException(e);
+            throw new TypeCastException(value, this, e);
         }
 
         return tempBlob;
@@ -136,15 +136,15 @@ public class OracleBlobDataType extends BlobDataType
         }
         catch (NoSuchMethodException e)
         {
-            throw new TypeCastException(e);
+            throw new TypeCastException("Error freeing Oracle BLOB", e);
         }
         catch (IllegalAccessException e)
         {
-            throw new TypeCastException(e);
+            throw new TypeCastException("Error freeing Oracle BLOB", e);
         }
         catch (InvocationTargetException e)
         {
-            throw new TypeCastException(e);
+            throw new TypeCastException("Error freeing Oracle BLOB", e.getTargetException());
         }
     }
 

@@ -72,7 +72,7 @@ public class StringDataType extends AbstractDataType
             }
             catch (java.lang.NumberFormatException e)
             {
-                throw new TypeCastException(e);
+                throw new TypeCastException(value, this, e);
             }
         }
 
@@ -91,7 +91,7 @@ public class StringDataType extends AbstractDataType
             }
             catch (SQLException e)
             {
-                throw new TypeCastException(e);
+                throw new TypeCastException(value, this, e);
             }
         }
 
@@ -109,11 +109,11 @@ public class StringDataType extends AbstractDataType
             }
             catch (SQLException e)
             {
-                throw new TypeCastException(e);
+                throw new TypeCastException(value, this, e);
             }
         }
 
-        throw new TypeCastException(value.toString());
+        throw new TypeCastException(value, this);
     }
 
     public Object getSqlValue(int column, ResultSet resultSet)

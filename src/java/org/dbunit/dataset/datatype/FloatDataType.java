@@ -61,7 +61,7 @@ public class FloatDataType extends AbstractDataType
         }
         catch (java.lang.NumberFormatException e)
         {
-            throw new TypeCastException(e);
+            throw new TypeCastException(value, this, e);
         }
     }
 

@@ -77,7 +77,7 @@ public class BooleanDataType extends AbstractDataType
             }
         }
 
-        throw new TypeCastException(value.toString());
+        throw new TypeCastException(value, this);
     }
 
     public int compare(Object o1, Object o2) throws TypeCastException

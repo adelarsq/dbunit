@@ -92,11 +92,11 @@ public class DateDataType extends AbstractDataType
             }
             catch (IllegalArgumentException e)
             {
-                throw new TypeCastException(stringValue, e);
+                throw new TypeCastException(value, this, e);
             }
         }
 
-        throw new TypeCastException(value.toString());
+        throw new TypeCastException(value, this);
     }
 
     public Object getSqlValue(int column, ResultSet resultSet)
