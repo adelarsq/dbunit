@@ -2,7 +2,7 @@
 <!-- =================================================================== -->
 <!-- DbUnit build file - $Revision$ $Date$               -->
 <!-- =================================================================== -->
-<project name="dbunit" default="test" basedir=".">
+<project name="dbunit" default="jar" basedir=".">
 	<target name="init">
 		<!-- include common properties -->
 		<property file="build.properties"/>
@@ -39,7 +39,7 @@
 	</target>
 	<target name="compile" depends="init">
 		<mkdir dir="${java.classes.dir}"/>
-		<javac srcdir="${java.src.dir}" destdir="${java.classes.dir}" debug="${debug}">
+		<javac srcdir="${java.src.dir}" destdir="${java.classes.dir}" debug="${debug}" >
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<include name="*.jar"/>
