@@ -22,8 +22,7 @@
 
 package org.dbunit.operation;
 
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
@@ -66,22 +65,41 @@ public class InsertIdentityOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        Statement statement = connection.getConnection().createStatement();
+        // SQL Server do not like to be queried for metadata inside a
+        // transaction. Following code ensure that metadata is cached before
+        // the transaction.
+        ITable[] tables = DataSetUtils.getTables(dataSet.getTableNames(),
+                connection.createDataSet());
+        for (int i = 0; i < tables.length; i++)
+        {
+            ITable table = tables[i];
+            table.getTableMetaData().getPrimaryKeys();
+        }
 
+        // Execute decorated operation one table at a time
+        Statement statement = connection.getConnection().createStatement();
         try
         {
-            ITable[] tables = DataSetUtils.getTables(dataSet);
             for (int i = 0; i < tables.length; i++)
             {
                 ITable table = tables[i];
-                String name = DataSetUtils.getQualifiedName(
+                String tableName = DataSetUtils.getQualifiedName(
                         connection.getSchema(),
                         table.getTableMetaData().getTableName());
+
+                // INSERT_IDENTITY need to be enabled/disabled inside the
+                // same transaction
+                Connection jdbcConnection = connection.getConnection();
+                if (jdbcConnection.getAutoCommit() == false)
+                {
+                    throw new ExclusiveTransactionException();
+                }
+                jdbcConnection.setAutoCommit(false);
 
                 // enable identity insert
                 StringBuffer sqlBuffer = new StringBuffer(128);
                 sqlBuffer.append("SET IDENTITY_INSERT ");
-                sqlBuffer.append(name);
+                sqlBuffer.append(tableName);
                 sqlBuffer.append(" ON");
                 statement.execute(sqlBuffer.toString());
 
@@ -94,9 +112,11 @@ public class InsertIdentityOperation extends DatabaseOperation
                     // disable identity insert
                     sqlBuffer = new StringBuffer(128);
                     sqlBuffer.append("SET IDENTITY_INSERT ");
-                    sqlBuffer.append(name);
+                    sqlBuffer.append(tableName);
                     sqlBuffer.append(" OFF");
                     statement.execute(sqlBuffer.toString());
+                    jdbcConnection.commit();
+                    connection.getConnection().setAutoCommit(true);
                 }
             }
         }
