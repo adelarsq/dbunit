@@ -25,8 +25,9 @@ package org.dbunit.operation;
 import java.sql.SQLException;
 
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.*;
-import org.dbunit.database.statement.*;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.statement.IBatchStatement;
+import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.*;
 
 /**
@@ -55,20 +56,23 @@ public class DeleteAllOperation extends DatabaseOperation
         try
         {
             String[] tableNames = DataSetUtils.getReverseTableNames(dataSet);
-            for (int i = 0; i < tableNames.length; i++)
+            if (tableNames.length > 0)
             {
-                String name = tableNames[i];
-                ITableMetaData metaData = dataSet.getTableMetaData(name);
+                for (int i = 0; i < tableNames.length; i++)
+                {
+                    String name = tableNames[i];
+                    ITableMetaData metaData = dataSet.getTableMetaData(name);
 
-                StringBuffer sqlBuffer = new StringBuffer(128);
-                sqlBuffer.append("delete from ");
-                sqlBuffer.append(DataSetUtils.getQualifiedName(
-                        connection.getSchema(), metaData.getTableName()));
-                statement.addBatch(sqlBuffer.toString());
+                    StringBuffer sqlBuffer = new StringBuffer(128);
+                    sqlBuffer.append("delete from ");
+                    sqlBuffer.append(DataSetUtils.getQualifiedName(
+                            connection.getSchema(), metaData.getTableName()));
+                    statement.addBatch(sqlBuffer.toString());
+                }
+
+                statement.executeBatch();
+                statement.clearBatch();
             }
-
-            statement.executeBatch();
-            statement.clearBatch();
         }
         finally
         {
@@ -76,6 +80,7 @@ public class DeleteAllOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 

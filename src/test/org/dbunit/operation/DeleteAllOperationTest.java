@@ -106,10 +106,15 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
             String name = table.getTableMetaData().getTableName();
             assertEquals(name + "after", 0, table.getRowCount());
         }
+    }
 
+    public void testExecuteWithEmptyDataset() throws Exception
+    {
+        DatabaseOperation.DELETE_ALL.execute(_connection, new DefaultDataSet(new ITable[0]));
     }
 
 }
+
 
 
 
