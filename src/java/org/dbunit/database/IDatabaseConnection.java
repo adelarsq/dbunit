@@ -66,7 +66,7 @@ public interface IDatabaseConnection
      * Creates a table with the result of the specified SQL statement. The
      * table can be the result of a join statement.
      *
-     * @param resultName The name tobe returned by {@link TableMetaData.getTableName}.
+     * @param resultName The name to be returned by {@link ITableMetaData#getTableName}.
      * @param sql The SQL <code>SELECT</code> statement
      */
     public ITable createQueryTable(String resultName, String sql)
