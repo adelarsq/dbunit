@@ -86,8 +86,8 @@ public class Assertion
 
     /**
      * Asserts that the two specified tables are equals. This method ignore the
-     * table names, the columns order, the columns data type and the primary
-     * keys.
+     * table names, the columns order, the columns data type and which columns
+     * are composing the primary keys.
      */
     public static void assertEquals(ITable expectedTable, ITable actualTable)
             throws DatabaseUnitException
