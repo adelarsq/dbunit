@@ -45,13 +45,20 @@ import org.dbunit.dataset.datatype.DataType;
  */
 public class RefreshOperation extends DatabaseOperation
 {
-    private static final InsertOperation INSERT =
-            (InsertOperation)DatabaseOperation.INSERT;
-    private static final UpdateOperation UPDATE =
-            (UpdateOperation)DatabaseOperation.UPDATE;
+    private final InsertOperation _insertOperation;
+    private final UpdateOperation _updateOperation;
 
     RefreshOperation()
     {
+        _insertOperation = (InsertOperation)DatabaseOperation.INSERT;
+        _updateOperation = (UpdateOperation)DatabaseOperation.UPDATE;
+    }
+
+    RefreshOperation(InsertOperation insertOperation,
+            UpdateOperation updateOperation)
+    {
+        _insertOperation = insertOperation;
+        _updateOperation = updateOperation;
     }
 
     private boolean rowExist(PreparedStatement statement,
@@ -161,12 +168,12 @@ public class RefreshOperation extends DatabaseOperation
                     connection.getConnection().prepareStatement(countData.getSql());
 
             // setup insert statement
-            OperationData insertData = INSERT.getOperationData(schema, metaData);
+            OperationData insertData = _insertOperation.getOperationData(schema, metaData);
             IPreparedBatchStatement insertStatement =
                     factory.createPreparedBatchStatement(insertData.getSql(), connection);
 
             // setup update statement
-            OperationData updateData = UPDATE.getOperationData(schema, metaData);
+            OperationData updateData = _updateOperation.getOperationData(schema, metaData);
             IPreparedBatchStatement updateStatement =
                     factory.createPreparedBatchStatement(updateData.getSql(), connection);
 
@@ -195,6 +202,7 @@ public class RefreshOperation extends DatabaseOperation
 
     }
 }
+
 
 
 

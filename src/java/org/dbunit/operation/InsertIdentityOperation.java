@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
  */
 
 package org.dbunit.operation;
@@ -29,100 +28,53 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.*;
 
 /**
- * This class is a decorator that disable the MS SQL Server automatic
- * identifier generation during the execution of the decorated operation.
+ * This class disable the MS SQL Server automatic identifier generation for
+ * the execution of inserts.
  * <p>
- * I don't have access to a SQL Server database and this class has not been
- * tested by me.
+ * Thanks to <a href="mailto:epugh@upstate.com">Eric Pugh</a> for having
+ * submitted the original patch and for the beta testing.
  *
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class InsertIdentityOperation extends DatabaseOperation
+public class InsertIdentityOperation extends InsertOperation
 {
     public static final DatabaseOperation INSERT =
-            new InsertIdentityOperation(DatabaseOperation.INSERT);
+            new InsertIdentityOperation();
+
     public static final DatabaseOperation CLEAN_INSERT =
-            new CompositeOperation(DatabaseOperation.DELETE_ALL,
-                    new InsertIdentityOperation(DatabaseOperation.INSERT));
+            new CompositeOperation(DatabaseOperation.DELETE_ALL, INSERT);
+
     public static final DatabaseOperation REFRESH =
-            new InsertIdentityOperation(DatabaseOperation.REFRESH);
-
-    private final DatabaseOperation _operation;
-
-    /**
-     * Creates a new InsertIdentityOperation object that decorates the
-     * specified operation.
-     */
-    public InsertIdentityOperation(DatabaseOperation operation)
-    {
-        _operation = operation;
-    }
+            new RefreshOperation((InsertOperation)INSERT,
+                    (UpdateOperation)DatabaseOperation.UPDATE);
 
     ////////////////////////////////////////////////////////////////////////////
-    // DatabaseOperation class
+    // AbstractBatchOperation class
 
-    public void execute(IDatabaseConnection connection, IDataSet dataSet)
-            throws DatabaseUnitException, SQLException
+    public OperationData getOperationData(String schemaName,
+            ITableMetaData metaData) throws DataSetException
     {
-        // SQL Server do not like to be queried for metadata inside a
-        // transaction. Following code ensure that metadata is cached before
-        // the transaction.
-        ITable[] tables = DataSetUtils.getTables(dataSet.getTableNames(),
-                connection.createDataSet());
-        for (int i = 0; i < tables.length; i++)
-        {
-            ITable table = tables[i];
-            table.getTableMetaData().getPrimaryKeys();
-        }
+        OperationData data = super.getOperationData(schemaName, metaData);
+        String tableName = DataSetUtils.getQualifiedName(
+                schemaName, metaData.getTableName());
 
-        // Execute decorated operation one table at a time
-        Statement statement = connection.getConnection().createStatement();
-        try
-        {
-            for (int i = 0; i < tables.length; i++)
-            {
-                ITable table = tables[i];
-                String tableName = DataSetUtils.getQualifiedName(
-                        connection.getSchema(),
-                        table.getTableMetaData().getTableName());
+        // enable IDENTITY_INSERT
+        StringBuffer sqlBuffer = new StringBuffer(256);
+        sqlBuffer.append("SET IDENTITY_INSERT ");
+        sqlBuffer.append(tableName);
+        sqlBuffer.append(" ON ");
 
-                // INSERT_IDENTITY need to be enabled/disabled inside the
-                // same transaction
-                Connection jdbcConnection = connection.getConnection();
-                if (jdbcConnection.getAutoCommit() == false)
-                {
-                    throw new ExclusiveTransactionException();
-                }
-                jdbcConnection.setAutoCommit(false);
+        // original insert statement
+        sqlBuffer.append(data.getSql());
 
-                // enable identity insert
-                StringBuffer sqlBuffer = new StringBuffer(128);
-                sqlBuffer.append("SET IDENTITY_INSERT ");
-                sqlBuffer.append(tableName);
-                sqlBuffer.append(" ON");
-                statement.execute(sqlBuffer.toString());
+        // disable IDENTITY_INSERT
+        sqlBuffer.append(" SET IDENTITY_INSERT ");
+        sqlBuffer.append(tableName);
+        sqlBuffer.append(" OFF");
 
-                try
-                {
-                    _operation.execute(connection, new DefaultDataSet(table));
-                }
-                finally
-                {
-                    // disable identity insert
-                    sqlBuffer = new StringBuffer(128);
-                    sqlBuffer.append("SET IDENTITY_INSERT ");
-                    sqlBuffer.append(tableName);
-                    sqlBuffer.append(" OFF");
-                    statement.execute(sqlBuffer.toString());
-                    jdbcConnection.commit();
-                    connection.getConnection().setAutoCommit(true);
-                }
-            }
-        }
-        finally
-        {
-            statement.close();
-        }
+        return new OperationData(sqlBuffer.toString(), data.getColumns());
     }
+
 }
+
