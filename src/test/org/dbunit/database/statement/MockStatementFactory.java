@@ -81,11 +81,12 @@ public class MockStatementFactory implements IStatementFactory, Verifiable
         return _batchStatement;
     }
 
-    public IPreparedBatchStatement createPreparedStatement(String sql,
+    public IPreparedBatchStatement createPreparedBatchStatement(String sql,
             IDatabaseConnection connection) throws SQLException
     {
         _createPreparedStatementCalls.inc();
         return new BatchStatementDecorator(sql, _batchStatement);
     }
 }
+
 

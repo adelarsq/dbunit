@@ -31,35 +31,34 @@ import java.sql.Connection;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class PreparedStatementFactory implements IStatementFactory
+public class PreparedStatementFactory extends AbstractStatementFactory
 {
     public IBatchStatement createBatchStatement(IDatabaseConnection connection)
             throws SQLException
     {
-        Connection jdbcConnection = connection.getConnection();
-        if (jdbcConnection.getMetaData().supportsBatchUpdates())
+        if (supportBatchStatement(connection))
         {
-            return new BatchStatement(jdbcConnection);
+            return new BatchStatement(connection.getConnection());
         }
         else
         {
-            return new SimpleStatement(jdbcConnection);
+            return new SimpleStatement(connection.getConnection());
         }
     }
 
-    public IPreparedBatchStatement createPreparedStatement(String sql,
+    public IPreparedBatchStatement createPreparedBatchStatement(String sql,
             IDatabaseConnection connection) throws SQLException
     {
-        Connection jdbcConnection = connection.getConnection();
-        if (jdbcConnection.getMetaData().supportsBatchUpdates())
+        if (supportBatchStatement(connection))
         {
-            return new PreparedBatchStatement(sql, jdbcConnection);
+            return new PreparedBatchStatement(sql, connection.getConnection());
         }
         else
         {
-            return new SimplePreparedStatement(sql, jdbcConnection);
+            return new SimplePreparedStatement(sql, connection.getConnection());
         }
     }
 }
+
 
 

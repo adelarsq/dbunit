@@ -23,9 +23,12 @@
 package org.dbunit.database;
 
 import java.sql.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import org.dbunit.dataset.*;
 import org.dbunit.database.statement.*;
+import org.dbunit.DatabaseUnitRuntimeException;
 
 /**
  * @author Manuel Laflamme
@@ -33,13 +36,50 @@ import org.dbunit.database.statement.*;
  */
 public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 {
+    static final String STATEMENT_FACTORY = "dbunit.statement.factory";
+    static final String DEFAULT_FACTORY =
+            "org.dbunit.database.statement.PreparedStatementFactory";
+
     private final IStatementFactory _statementFactory;
     private IDataSet _dataSet = null;
 
     public AbstractDatabaseConnection()
     {
-        _statementFactory = new PreparedStatementFactory();
-//        _statementFactory = new StatementFactory();
+        String className = System.getProperty(STATEMENT_FACTORY, DEFAULT_FACTORY);
+        try
+        {
+            Constructor constructor = Class.forName(className).getConstructor(new Class[0]);
+            _statementFactory = (IStatementFactory)constructor.newInstance(new Object[0]);
+        }
+        catch (NoSuchMethodException e)
+        {
+            throw new DatabaseUnitRuntimeException(e);
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new DatabaseUnitRuntimeException(e);
+        }
+        catch (InstantiationException e)
+        {
+            throw new DatabaseUnitRuntimeException(e);
+        }
+        catch (IllegalAccessException e)
+        {
+            throw new DatabaseUnitRuntimeException(e);
+        }
+        catch (IllegalArgumentException e)
+        {
+            throw new DatabaseUnitRuntimeException(e);
+        }
+        catch (InvocationTargetException e)
+        {
+            throw new DatabaseUnitRuntimeException(e);
+        }
+    }
+
+    public AbstractDatabaseConnection(IStatementFactory factory)
+    {
+        _statementFactory = factory;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -127,6 +167,7 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
     }
 
 }
+
 
 
 

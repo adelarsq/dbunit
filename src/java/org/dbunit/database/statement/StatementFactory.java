@@ -31,28 +31,28 @@ import org.dbunit.database.IDatabaseConnection;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class StatementFactory implements IStatementFactory
+public class StatementFactory extends AbstractStatementFactory
 {
     public IBatchStatement createBatchStatement(IDatabaseConnection connection)
             throws SQLException
     {
-        Connection jdbcConnection = connection.getConnection();
-        if (jdbcConnection.getMetaData().supportsBatchUpdates())
+        if (supportBatchStatement(connection))
         {
-            return new BatchStatement(jdbcConnection);
+            return new BatchStatement(connection.getConnection());
         }
         else
         {
-            return new SimpleStatement(jdbcConnection);
+            return new SimpleStatement(connection.getConnection());
         }
     }
 
-    public IPreparedBatchStatement createPreparedStatement(String sql,
+    public IPreparedBatchStatement createPreparedBatchStatement(String sql,
             IDatabaseConnection connection) throws SQLException
     {
         return new BatchStatementDecorator(sql, createBatchStatement(connection));
     }
 
 }
+
 
 

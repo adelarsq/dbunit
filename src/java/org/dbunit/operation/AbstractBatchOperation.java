@@ -76,7 +76,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
 
             OperationData operationData = getOperationData(connection.getSchema(),
                     databaseDataSet.getTableMetaData(tableName));
-            IPreparedBatchStatement statement = factory.createPreparedStatement(
+            IPreparedBatchStatement statement = factory.createPreparedBatchStatement(
                     operationData.getSql(), connection);
 
             try
@@ -106,6 +106,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 

@@ -163,12 +163,12 @@ public class RefreshOperation extends DatabaseOperation
             // setup insert statement
             OperationData insertData = INSERT.getOperationData(schema, metaData);
             IPreparedBatchStatement insertStatement =
-                    factory.createPreparedStatement(insertData.getSql(), connection);
+                    factory.createPreparedBatchStatement(insertData.getSql(), connection);
 
             // setup update statement
             OperationData updateData = UPDATE.getOperationData(schema, metaData);
             IPreparedBatchStatement updateStatement =
-                    factory.createPreparedStatement(updateData.getSql(), connection);
+                    factory.createPreparedBatchStatement(updateData.getSql(), connection);
 
             // refresh each table's row
             for (int j = 0; j < table.getRowCount(); j++)
@@ -195,6 +195,7 @@ public class RefreshOperation extends DatabaseOperation
 
     }
 }
+
 
 
 
