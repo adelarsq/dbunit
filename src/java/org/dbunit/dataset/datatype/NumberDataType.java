@@ -1,8 +1,8 @@
 /*
  * NumberDataType.java   Feb 17, 2002
  *
- * The dbUnit database testing framework.
- * Copyright (C) 2002   Manuel Laflamme
+ * DbUnit Database Testing Framework
+ * Copyright (C)2002, Manuel Laflamme
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -61,6 +61,7 @@ public class NumberDataType extends AbstractDataType
         }
     }
 }
+
 
 
 

@@ -394,9 +394,6 @@
   </component>
   <component class="com.intellij.ide.desktop.IdeDocumentManager">
     <recent_files>
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/datatype/NumberDataTypeTest.java" column="13" line="32" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/datatype/LongDataTypeTest.java" column="13" line="32" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/datatype/FloatDataTypeTest.java" column="19" line="147" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/datatype/IntegerDataTypeTest.java" column="24" line="176" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/datatype/DoubleDataTypeTest.java" column="19" line="156" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/datatype/StringDataTypeTest.java" column="23" line="81" />
@@ -406,9 +403,12 @@
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/DataSetUtils.java" column="41" line="209" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseTableMetaDataTest.java" column="0" line="101" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/FloatDataType.java" column="13" line="31" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/BytesDataType.java" column="4" line="23" />
       <file_info url="file://$PROJECT_DIR$/src/java/Base64.java" column="73" line="200" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/DataType.java" column="22" line="31" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/BooleanDataType.java" column="0" line="18" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/BytesDataType.java" column="81" line="13" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/statement/BatchStatement.java" column="31" line="7" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/statement/PreparedStatementFactory.java" column="36" line="3" />
     </recent_files>
   </component>
   <component class="com.intellij.ide.hierarchy.HierarchyBrowserManager">
@@ -419,23 +419,21 @@
   <component class="com.intellij.ide.impl.ProjectWorkspace" />
   <component class="com.intellij.ide.navigator.impl.ProjectNavigatorSettings">
     <navigator id="ClasspathNavigator" flattenPackages="false" showMembers="false">
-      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/com/mockobjects" />
-      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/com" />
       <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/" />
+      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/com/mockobjects" />
       <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/com/mockobjects/sql" />
+      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/com" />
     </navigator>
     <navigator id="ProjectNavigator" flattenPackages="false" showMembers="false">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/dtd" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/sql" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$" />
     </navigator>
     <navigator id="SourcepathNavigator" flattenPackages="false" showMembers="true">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
     </navigator>
   </component>
