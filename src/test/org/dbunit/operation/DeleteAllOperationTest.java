@@ -49,7 +49,6 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
 
         // setup mock objects
         MockBatchStatement statement = new MockBatchStatement();
-        statement.setupExecuteBatchResult(1);
         statement.addExpectedBatchString(expected);
         statement.setExpectedExecuteBatchCalls(1);
         statement.setExpectedClearBatchCalls(1);
@@ -65,7 +64,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
         connection.setupStatementFactory(factory);
         connection.setExpectedCloseCalls(0);
 
-        // invoke operation
+        // execute operation
         new DeleteAllOperation().execute(connection, dataSet);
 
         statement.verify();

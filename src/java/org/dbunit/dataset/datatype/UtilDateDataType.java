@@ -28,19 +28,20 @@ import java.util.Date;
 /**
  * @author Manuel Laflamme
  * @version 1.0
+ * @since 1.0
  */
-public class DateDataType extends DataType
+public class UtilDateDataType extends DataType
 {
     protected static final DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss.sss z");
 
-    public DateDataType()
+    public UtilDateDataType()
     {
     }
 
     /**
      *
      */
-    public String getName()
+    public String toString()
     {
         return "date";
     }

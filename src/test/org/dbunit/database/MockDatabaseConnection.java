@@ -40,7 +40,7 @@ import com.mockobjects.Verifiable;
 public class MockDatabaseConnection implements IDatabaseConnection, Verifiable
 {
     private ExpectationCounter _closeCalls =
-            new ExpectationCounter("MockBatchStatement.close");;
+            new ExpectationCounter("MockDatabaseConnection.close");;
 
     private Connection _connection;
     private String _schema;

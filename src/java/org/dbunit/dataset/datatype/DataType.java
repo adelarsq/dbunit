@@ -27,28 +27,24 @@ import java.sql.Types;
 /**
  * @author Manuel Laflamme
  * @version 1.0
+ * @since 1.0
  */
 public abstract class DataType
 {
-    public static final DataType UNKNOWN = new ObjectDataType();
+    public static final DataType UNKNOWN = new UnkownDataType();
     public static final DataType INTEGER = new IntegerDataType();
     public static final DataType LONG = new LongDataType();
     public static final DataType FLOAT = new FloatDataType();
     public static final DataType DOUBLE = new DoubleDataType();
     public static final DataType BOOLEAN = new BooleanDataType();
     public static final DataType STRING = new StringDataType();
-    public static final DataType SHORT = new ShortDataType();
-    public static final DataType BYTE = new ByteDataType();
+//    public static final DataType SHORT = new ShortDataType();
+//    public static final DataType BYTE = new ByteDataType();
     public static final DataType NUMBER = new NumberDataType();
-//    public static final DateDataType DATE = new DateDataType();
+//    public static final DateDataType DATE = new UtilDateDataType();
     public static final DataType DATE = new SqlDateDataType();
     public static final DataType TIME = new TimeDataType();
     public static final DataType TIMESTAMP = new TimestampDataType();
-
-    /**
-     * Returns the name of this <code>DataType</code>
-     */
-    public abstract String getName();
 
     /**
      * Returns the specified value typecasted to this <code>DataType</code>
@@ -79,16 +75,12 @@ public abstract class DataType
                 return DataType.BOOLEAN;
 
             case Types.TINYINT:
-                return DataType.BYTE;
+            case Types.SMALLINT:
+            case Types.INTEGER:
+                return DataType.INTEGER;
 
             case Types.BIGINT:
                 return DataType.LONG;
-
-            case Types.SMALLINT:
-                return DataType.SHORT;
-
-            case Types.INTEGER:
-                return DataType.INTEGER;
 
             case Types.REAL:
                 return DataType.FLOAT;
@@ -175,17 +167,17 @@ public abstract class DataType
             return UNKNOWN;
         }
 
-        if (value instanceof java.lang.Short ||
-                value.getClass() == Short.class)
-        {
-            return SHORT;
-        }
-
-        if (value instanceof java.lang.Byte ||
-                value.getClass() == Byte.class)
-        {
-            return BYTE;
-        }
+//        if (value instanceof java.lang.Short ||
+//                value.getClass() == Short.class)
+//        {
+//            return SHORT;
+//        }
+//
+//        if (value instanceof java.lang.Byte ||
+//                value.getClass() == Byte.class)
+//        {
+//            return BYTE;
+//        }
 
         if (value instanceof java.lang.Integer ||
                 value.getClass() == Integer.class)
@@ -209,6 +201,11 @@ public abstract class DataType
                 value.getClass() == Double.class)
         {
             return DOUBLE;
+        }
+
+        if (value instanceof java.lang.Number)
+        {
+            return NUMBER;
         }
 
         if (value instanceof java.lang.Boolean ||

@@ -75,7 +75,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
 
             try
             {
-                Column[] columns = operationData.getParams();
+                Column[] columns = operationData.getColumns();
                 ITable table = dataSet.getTable(name);
 
                 // for each row

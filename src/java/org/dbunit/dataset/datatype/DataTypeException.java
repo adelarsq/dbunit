@@ -26,6 +26,7 @@ import org.dbunit.dataset.DataSetException;
 /**
  * @author Manuel Laflamme
  * @version 1.0
+ * @since 1.0
  */
 
 public class DataTypeException extends DataSetException

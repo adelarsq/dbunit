@@ -25,8 +25,9 @@ package org.dbunit.dataset.datatype;
 /**
  * @author Manuel Laflamme
  * @version 1.0
+ * @since 1.0
  */
-public class TimeDataType extends DateDataType
+public class TimeDataType extends DataType
 {
     public TimeDataType()
     {
@@ -35,7 +36,7 @@ public class TimeDataType extends DateDataType
     /**
      *
      */
-    public String getName()
+    public String toString()
     {
         return "time";
     }
@@ -89,6 +90,11 @@ public class TimeDataType extends DateDataType
     public Class getTypeClass()
     {
         return java.sql.Time.class;
+    }
+
+    public boolean isNumber()
+    {
+        return false;
     }
 
 }

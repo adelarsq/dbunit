@@ -31,12 +31,12 @@ import org.dbunit.dataset.Column;
 public class OperationData
 {
     private final String _sql;
-    private final Column[] _params;
+    private final Column[] _columns;
 
-    public OperationData(String sql, Column[] params)
+    public OperationData(String sql, Column[] columns)
     {
         _sql = sql;
-        _params = params;
+        _columns = columns;
     }
 
     public String getSql()
@@ -44,8 +44,8 @@ public class OperationData
         return _sql;
     }
 
-    public Column[] getParams()
+    public Column[] getColumns()
     {
-        return _params;
+        return _columns;
     }
 }

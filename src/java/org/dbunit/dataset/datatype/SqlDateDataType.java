@@ -25,8 +25,9 @@ package org.dbunit.dataset.datatype;
 /**
  * @author Manuel Laflamme
  * @version 1.0
+ * @since 1.0
  */
-public class SqlDateDataType extends DateDataType
+public class SqlDateDataType extends DataType
 {
     public SqlDateDataType()
     {
@@ -35,7 +36,7 @@ public class SqlDateDataType extends DateDataType
     /**
      *
      */
-    public String getName()
+    public String toString()
     {
         return "date";
     }
@@ -89,6 +90,11 @@ public class SqlDateDataType extends DateDataType
     public Class getTypeClass()
     {
         return java.sql.Date.class;
+    }
+
+    public boolean isNumber()
+    {
+        return false;
     }
 
 }

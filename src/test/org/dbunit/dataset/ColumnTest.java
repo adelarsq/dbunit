@@ -23,6 +23,9 @@
 package org.dbunit.dataset;
 
 import org.dbunit.dataset.datatype.DataType;
+
+import java.sql.DatabaseMetaData;
+
 import junit.framework.TestCase;
 
 /**
@@ -47,9 +50,32 @@ public class ColumnTest extends TestCase
     public void testGetDataType() throws Exception
     {
         DataType expected = DataType.DATE;
-        Column column = new Column(expected.getName(), expected);
+        Column column = new Column(expected.toString(), expected);
 
         assertEquals("data type", expected, column.getDataType());
+    }
+
+    public void testNullableValue() throws Exception
+    {
+        assertEquals("nullable", Column.NULLABLE,
+                Column.nullableValue(DatabaseMetaData.columnNullable));
+
+        assertEquals("not nullable", Column.NO_NULLS,
+                Column.nullableValue(DatabaseMetaData.columnNoNulls));
+
+        assertEquals("nullable unknown", Column.NULLABLE_UNKNOWN,
+                Column.nullableValue(DatabaseMetaData.columnNullableUnknown));
+
+
+        try
+        {
+            Column.nullableValue(12345);
+            fail("Should throw an IllegalArgumentException");
+        }
+        catch (IllegalArgumentException e)
+        {
+        }
+
     }
 
 }

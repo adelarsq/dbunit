@@ -1,5 +1,4 @@
 /*
- * AllTests.java   Feb 18, 2002
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
@@ -20,29 +19,47 @@
  *
  */
 
-package org.dbunit.dataset.xml;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
+package org.dbunit.dataset.datatype;
 
 /**
  * @author Manuel Laflamme
  * @version 1.0
+ * @since 1.0
  */
-public class AllTest
+public class UnkownDataType extends DataType
 {
-    public static Test suite()
+    public UnkownDataType()
     {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(XmlDataSetTest.class));
-        suite.addTest(new TestSuite(XmlTableWriteTest.class));
-        suite.addTest(new TestSuite(FlatXmlDataSetTest.class));
-        suite.addTest(new TestSuite(FlatXmlTableWriteTest.class));
-        suite.addTest(new TestSuite(FlatXmlTableTest.class));
-        suite.addTest(new TestSuite(XmlTableTest.class));
-
-        return suite;
     }
-}
 
+    /**
+     *
+     */
+    public String toString()
+    {
+        return "unkown";
+    }
+
+    /**
+     *
+     */
+    public Object typeCast(Object value) throws TypeCastException
+    {
+        return value;
+    }
+
+    /**
+     *
+     */
+    public Class getTypeClass()
+    {
+        return Object.class;
+    }
+
+    public boolean isNumber()
+    {
+        return false;
+    }
+
+}
 

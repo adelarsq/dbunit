@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Style-Type" content="text/css">
 <link href="stylesheet.css" rel="stylesheet" type="text/css">
 <!-- #BeginEditable "doctitle" --> 
-<title>The dbUnit framework - Howto Guides</title>
+<title>The Dbunit Framework - Howto Guides</title>
 <!-- #EndEditable --> 
 </head>
 <body>
@@ -17,12 +17,12 @@
       <a href="components.html">Components</a><br>
       <a href="howto.html">Howto Guides</a><br>
       <a href="bestpractices.html">Best Practices</a><br>
-      <a href="api/index.html">API Doc</a><br>
+      <a href="api/index.html">API Reference</a><br>
       <a href="faq.html">FAQ</a><br>
       <br>
       <a href="changes.html">News/Changes</a><br>
       <a href="download.html">Download</a><br>
-      <a href="contact.html">Contact</a><br>
+      <a href="support.html">Support</a><br>
       <a href="resources.html">Resources</a><br>
       <p> <a href="http://sourceforge.net"><img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439"></a> 
       </p>
@@ -50,7 +50,7 @@
       some data from your database (see export sample).<br>
       <br>
       <h4>Step 2: Extend the DatabaseTestCase class</h4>
-      Now you need to create a test class. The easiest way to use dbUnit is to 
+      Now you need to create a test class. The easiest way to use Dbunit is to 
       make your test class extend the DatabaseTestCase class. DatabaseTestCase 
       extends the JUnit TestCase class. Two template methods are required to be 
       implemented: getConnection() to return a connection to your database and 
@@ -82,7 +82,7 @@ public class SampleTest extends DatabaseTestCase
       <br>
       <h4>Step 3: (Optional) Implement getSetUpOperation() and getTearDownOperation() 
         methods</h4>
-      By default, dbUnit performs a CLEAN_INSERT operation before executing each 
+      By default, Dbunit performs a CLEAN_INSERT operation before executing each 
       test and performs no cleanup operation afterward. You can modify this behavior 
       by overriding getSetUpOperation() and getTearDownOperation().<br>
       <br>
@@ -112,7 +112,7 @@ public class SampleTest extends DatabaseTestCase
       <br>
       <h2><a name="noextend">How to setup your database in a test case that does 
         not extend DatabaseTestCase</a></h2>
-      In order to use dbUnit you are not required to extend the DatabaseTestCase 
+      In order to use Dbunit you are not required to extend the DatabaseTestCase 
       class. Simply override the standard JUnit setUp() method and execute the 
       desired operation on your database. Do something similar in teardown() if 
       you need to perform any clean-up.<br>
@@ -195,9 +195,9 @@ public class DatabaseExportSample
 }</pre>
       <h2><a name="assertdata">How to verify your database data during a test</a> 
         Case </h2>
-      Now that you know how to use dbunit to setup your database before executing 
+      Now that you know how to use Dbunit to setup your database before executing 
       each test, you probably wonder how to easily verify the database data when 
-      your tests run. Since version 1.2, dbunit provides support for verifying 
+      your tests run. Since version 1.2, Dbunit provides support for verifying 
       whether two tables or datasets contain identical data.<br>
       <pre>public class DataSetUtils
 {
@@ -251,9 +251,9 @@ public class DatabaseExportSample
         <p><font size="2">Copyright &copy;2002, Manuel Laflamme, All Rights Reserved</font></p>
         <p><font size="1"><a href="index.html">Home</a> - <a href="components.html">Components</a> 
           - <a href="howto.html">Howto Guides</a> - <a href="bestpractices.html">Best 
-          Practices</a> - <a href="api/index.html">API Doc</a> - <a href="faq.html">FAQ</a> 
+          Practices</a> - <a href="api/index.html">API Reference</a> - <a href="faq.html">FAQ</a> 
           - <a href="changes.html">News &amp; Changes History</a> - <a href="download.html">Download</a> 
-          - <a href="contact.html">Contact</a> - <a href="resources.html">Resources</a></font></p>
+          - <a href="support.html">Contact</a> - <a href="resources.html">Resources</a></font></p>
       </div>
     </td>
   </tr>
@@ -261,5 +261,4 @@ public class DatabaseExportSample
 </table>
 </body>
 <!-- #EndTemplate --></html>
-
 

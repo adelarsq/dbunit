@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 /**
  * @author Manuel Laflamme
  * @version 1.0
+ * @since 1.0
  */
 public class NumberDataType extends DataType
 {
@@ -37,7 +38,7 @@ public class NumberDataType extends DataType
     ////////////////////////////////////////////////////////////////////////////
     // DataType class
 
-    public String getName()
+    public String toString()
     {
         return "number";
     }

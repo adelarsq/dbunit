@@ -23,6 +23,8 @@
 package org.dbunit.dataset;
 
 import java.io.FileInputStream;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -227,9 +229,12 @@ public class DataSetUtilsTest extends TestCase
             new ValueStringData("1234", DataType.NUMBER, "1234"),
             new ValueStringData("1234", DataType.STRING, "'1234'"),
             new ValueStringData(new Float(1234.45), DataType.FLOAT, "1234.45"),
-//            new ValueStringData(new java.sql.Date(0L), DataType.DATE, "'1970-01-01'"),
-//            new ValueStringData(new java.sql.Time(0L), DataType.TIME, "'00:00:00'"),
-//            new ValueStringData(new java.sql.Timestamp(0L), DataType.TIMESTAMP, "'1970-01-01 00:00:00.0'"),
+            new ValueStringData(new java.sql.Date(0L), DataType.DATE,
+                    "'" + new java.sql.Date(0L).toString() + "'"),
+            new ValueStringData(new Time(0L), DataType.TIME,
+                    "'" + new Time(0L).toString() + "'"),
+            new ValueStringData(new Timestamp(0L), DataType.TIMESTAMP,
+                    "'" + new Timestamp(0L).toString() + "'"),
         };
 
         for (int i = 0; i < values.length; i++)

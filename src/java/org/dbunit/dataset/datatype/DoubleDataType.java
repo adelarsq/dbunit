@@ -21,9 +21,12 @@
 
 package org.dbunit.dataset.datatype;
 
+import java.math.BigDecimal;
+
 /**
  * @author Manuel Laflamme
  * @version 1.0
+ * @since 1.0
  */
 public class DoubleDataType extends NumberDataType
 {
@@ -37,7 +40,7 @@ public class DoubleDataType extends NumberDataType
     /**
      *
      */
-    public String getName()
+    public String toString()
     {
         return "double";
     }
@@ -52,9 +55,14 @@ public class DoubleDataType extends NumberDataType
             return null;
         }
 
+        if (value instanceof Number)
+        {
+            return new Double(((Number)value).doubleValue());
+        }
+
         try
         {
-            return Double.valueOf(value.toString());
+            return typeCast(new BigDecimal(value.toString()));
         }
         catch (java.lang.NumberFormatException e)
         {

@@ -70,7 +70,6 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
         // setup mock objects
         MockBatchStatement statement = new MockBatchStatement();
-        statement.setupExecuteBatchResult(2);
         statement.addExpectedBatchStrings(expected);
         statement.setExpectedExecuteBatchCalls(1);
         statement.setExpectedClearBatchCalls(1);
@@ -86,6 +85,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         connection.setupStatementFactory(factory);
         connection.setExpectedCloseCalls(0);
 
+        // execute operation
         new UpdateOperation().execute(connection, dataSet);
 
         statement.verify();

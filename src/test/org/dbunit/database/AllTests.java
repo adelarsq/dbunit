@@ -34,6 +34,7 @@ public class AllTests
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
+        suite.addTest(org.dbunit.database.statement.AllTests.suite());
         suite.addTest(new TestSuite(DatabaseDataSetTest.class));
         suite.addTest(new TestSuite(DatabaseTableMetaDataTest.class));
         suite.addTest(new TestSuite(ResultsetTableTest.class));

@@ -26,6 +26,7 @@ import java.net.URL;
 /**
  * @author Manuel Laflamme
  * @version 1.0
+ * @since 1.0
  */
 public class StringDataType extends DataType
 {
@@ -36,7 +37,7 @@ public class StringDataType extends DataType
     /**
      *
      */
-    public String getName()
+    public String toString()
     {
         return "string";
     }
@@ -64,13 +65,13 @@ public class StringDataType extends DataType
 
         if (value instanceof java.util.Date)
         {
-            return DateDataType.dateFormat.format((java.util.Date)value);
+            return UtilDateDataType.dateFormat.format((java.util.Date)value);
         }
 
-        if (value instanceof URL)
-        {
-            return value.toString();
-        }
+//        if (value instanceof URL)
+//        {
+//            return value.toString();
+//        }
 
         if (value instanceof Boolean)
         {

@@ -43,7 +43,6 @@ public class BatchStatementDecoratorTest extends TestCase
         Object[] values = new Object[] {null, "value", new Integer(1234)};
 
         MockBatchStatement mockStatement = new MockBatchStatement();
-        mockStatement.setupExecuteBatchResult(1);
         mockStatement.addExpectedBatchString(expected);
         mockStatement.setExpectedExecuteBatchCalls(1);
         mockStatement.setExpectedClearBatchCalls(1);
@@ -71,7 +70,6 @@ public class BatchStatementDecoratorTest extends TestCase
         String[] values = {"Manuel", "not here", "fine"};
 
         MockBatchStatement mockStatement = new MockBatchStatement();
-        mockStatement.setupExecuteBatchResult(1);
         mockStatement.addExpectedBatchStrings(expected);
         mockStatement.setExpectedExecuteBatchCalls(1);
         mockStatement.setExpectedClearBatchCalls(1);
@@ -86,7 +84,8 @@ public class BatchStatementDecoratorTest extends TestCase
             preparedStatement.addValue(value, DataType.STRING);
             preparedStatement.addBatch();
         }
-        mockStatement.executeBatch();
+        assertEquals("execute result", values.length,
+                preparedStatement.executeBatch());
         mockStatement.clearBatch();
         mockStatement.close();
         mockStatement.verify();

@@ -40,7 +40,7 @@ public class MockBatchStatement implements IBatchStatement, Verifiable
             new ExpectationCounter("MockBatchStatement.close");;
     private ExpectationList _batchStrings =
             new ExpectationList("MockBatchStatement.batchStrings");
-    private int _executeBatchResult = 1;
+    private int _addBatchCalls = 0;
 
     public MockBatchStatement()
     {
@@ -59,11 +59,6 @@ public class MockBatchStatement implements IBatchStatement, Verifiable
     public void setExpectedExecuteBatchCalls(int callsCount)
     {
         _executeBatchCalls.setExpected(callsCount);
-    }
-
-    public void setupExecuteBatchResult(int result)
-    {
-        _executeBatchResult = result;
     }
 
     public void setExpectedClearBatchCalls(int callsCount)
@@ -93,17 +88,19 @@ public class MockBatchStatement implements IBatchStatement, Verifiable
     public void addBatch(String sql) throws SQLException
     {
         _batchStrings.addActual(sql);
+        _addBatchCalls++;
     }
 
     public int executeBatch() throws SQLException
     {
         _executeBatchCalls.inc();
-        return _executeBatchResult;
+        return _addBatchCalls;
     }
 
     public void clearBatch() throws SQLException
     {
         _clearBatchCalls.inc();
+        _addBatchCalls = 0;
     }
 
     public void close() throws SQLException

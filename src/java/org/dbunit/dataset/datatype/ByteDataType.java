@@ -21,9 +21,12 @@
 
 package org.dbunit.dataset.datatype;
 
+import java.math.BigDecimal;
+
 /**
  * @author Manuel Laflamme
  * @version 1.0
+ * @since 1.0
  */
 public class ByteDataType extends NumberDataType
 {
@@ -46,7 +49,7 @@ public class ByteDataType extends NumberDataType
     /**
      *
      */
-    public String getName()
+    public String toString()
     {
         return "byte";
     }
@@ -68,7 +71,7 @@ public class ByteDataType extends NumberDataType
 
         try
         {
-            return typeCast(Double.valueOf(value.toString()));
+            return typeCast(new BigDecimal(value.toString()));
         }
         catch (java.lang.NumberFormatException e)
         {

@@ -43,14 +43,16 @@ import org.dbunit.dataset.*;
  */
 public class RefreshOperation extends DatabaseOperation
 {
-    private static final InsertOperation INSERT = new InsertOperation();
-    private static final UpdateOperation UPDATE = new UpdateOperation();
+    private static final InsertOperation INSERT =
+            (InsertOperation)DatabaseOperation.INSERT;
+    private static final UpdateOperation UPDATE =
+            (UpdateOperation)DatabaseOperation.UPDATE;
 
     RefreshOperation()
     {
     }
 
-    private int executeRowOperation(IPreparedBatchStatement statement,
+    protected int executeRowOperation(IPreparedBatchStatement statement,
             Column[] columns, ITable table, int row)
             throws DatabaseUnitException, SQLException
     {
@@ -86,7 +88,7 @@ public class RefreshOperation extends DatabaseOperation
             String tableName = tables[i].getTableMetaData().getTableName();
             ITableMetaData metaData = databaseDataSet.getTableMetaData(tableName);
 
-            // setup insert statement
+            // setup insert statement    <
             OperationData insertData = INSERT.getOperationData(schema, metaData);
             IPreparedBatchStatement insertStatement =
                     factory.createPreparedStatement(insertData.getSql(), connection);
@@ -102,12 +104,12 @@ public class RefreshOperation extends DatabaseOperation
             {
                 // try to update row
                 int result = executeRowOperation(updateStatement,
-                        updateData.getParams(), table, j);
+                        updateData.getColumns(), table, j);
                 if (result == 0)
                 {
                     // update not sucessful, try insert instead
                     executeRowOperation(insertStatement,
-                            insertData.getParams(), table, j);
+                            insertData.getColumns(), table, j);
                 }
             }
         }

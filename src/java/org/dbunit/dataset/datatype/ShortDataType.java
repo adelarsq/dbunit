@@ -21,6 +21,8 @@
 
 package org.dbunit.dataset.datatype;
 
+import java.math.BigDecimal;
+
 public class ShortDataType extends NumberDataType
 {
 
@@ -42,7 +44,7 @@ public class ShortDataType extends NumberDataType
     /**
      *
      */
-    public String getName()
+    public String toString()
     {
         return "short";
     }
@@ -53,13 +55,18 @@ public class ShortDataType extends NumberDataType
     public Object typeCast(Object value) throws TypeCastException
     {
         if (value == null)
+        {
             return null;
+        }
+
         if (value instanceof Number)
+        {
             return new Short(((Number)value).shortValue());
+        }
 
         try
         {
-            return typeCast(Double.valueOf(value.toString()));
+            return typeCast(new BigDecimal(value.toString()));
         }
         catch (java.lang.NumberFormatException e)
         {

@@ -24,6 +24,7 @@ package org.dbunit.dataset.datatype;
 /**
  * @author Manuel Laflamme
  * @version 1.0
+ * @since 1.0
  */
 public class BooleanDataType extends DataType
 {
@@ -34,7 +35,7 @@ public class BooleanDataType extends DataType
     /**
      *
      */
-    public String getName()
+    public String toString()
     {
         return "boolean";
     }
@@ -68,17 +69,12 @@ public class BooleanDataType extends DataType
             String string = (String)value;
 
             if (string.equalsIgnoreCase("true") || string.equalsIgnoreCase("false"))
+            {
                 return Boolean.valueOf(string);
+            }
             else
             {
-                try
-                {
-                    return typeCast(DataType.INTEGER.typeCast(string));
-                }
-                catch (TypeCastException e)
-                {
-                    throw new TypeCastException(e);
-                }
+                return typeCast(DataType.INTEGER.typeCast(string));
             }
         }
 
