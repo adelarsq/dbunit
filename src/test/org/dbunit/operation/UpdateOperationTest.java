@@ -121,7 +121,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         connection.verify();
     }
 
-    public void testMockExecuteWithDuplicateTable() throws Exception
+    public void testMockExecuteWithDuplicateTables() throws Exception
     {
         String schemaName = "schema";
         String tableName = "table";

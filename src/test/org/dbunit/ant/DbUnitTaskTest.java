@@ -22,9 +22,6 @@
 
 package org.dbunit.ant;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.mssqlserver.InsertIdentityOperation;
@@ -33,6 +30,8 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.*;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Target;
 import org.apache.tools.ant.taskdefs.TaskdefsTest;
@@ -198,9 +197,9 @@ public class DbUnitTaskTest extends TaskdefsTest
     {
         String targetName = "test-export-full";
         Export export = (Export)getFirstStepFromTarget(targetName);
-	assertTrue("Should have been a flat format, " 
-		   + "but was: " + export.getFormat(), 
-		   export.getFormat().equalsIgnoreCase("flat"));
+        assertTrue("Should have been a flat format, "
+                + "but was: " + export.getFormat(),
+                export.getFormat().equalsIgnoreCase("flat"));
         List tables = export.getTables();
         assertTrue("Should have been an empty table list "
                 + "(indicating a full dataset), but was: "
@@ -226,27 +225,27 @@ public class DbUnitTaskTest extends TaskdefsTest
     {
         String targetName = "test-export-format-flat";
         Export export = (Export)getFirstStepFromTarget(targetName);
-	assertTrue("Should have been a flat format, " 
-		   + "but was: " + export.getFormat(), 
-		   export.getFormat().equalsIgnoreCase("flat"));
+        assertTrue("Should have been a flat format, "
+                + "but was: " + export.getFormat(),
+                export.getFormat().equalsIgnoreCase("flat"));
     }
 
     public void testExportXml()
     {
         String targetName = "test-export-format-xml";
         Export export = (Export)getFirstStepFromTarget(targetName);
-	assertTrue("Should have been an xml format, " 
-		   + "but was: " + export.getFormat(), 
-		   export.getFormat().equalsIgnoreCase("xml"));
+        assertTrue("Should have been an xml format, "
+                + "but was: " + export.getFormat(),
+                export.getFormat().equalsIgnoreCase("xml"));
     }
 
     public void testExportDtd()
     {
-        String targetName = "test-export-format-dtd"; 
+        String targetName = "test-export-format-dtd";
         Export export = (Export)getFirstStepFromTarget(targetName);
-	assertTrue("Should have been a dtd format, " 
-		   + "but was: " + export.getFormat(), 
-		   export.getFormat().equalsIgnoreCase("dtd"));
+        assertTrue("Should have been a dtd format, "
+                + "but was: " + export.getFormat(),
+                export.getFormat().equalsIgnoreCase("dtd"));
     }
 
     public void testInvalidExportFormat()

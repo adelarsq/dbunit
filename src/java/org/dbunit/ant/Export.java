@@ -23,23 +23,19 @@
 package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatDtdDataSet;
-import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.*;
 
 import java.io.*;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The <code>Export</code> class is the step that facilitates exporting
- * the contents of the database and/or it's corresponding dtd to a file.  
- * The export can be performed on a full dataset or a partial one if 
+ * the contents of the database and/or it's corresponding dtd to a file.
+ * The export can be performed on a full dataset or a partial one if
  * specific table names are identified.
  *
  * @author Timothy Ruppert && Ben Cox
@@ -57,10 +53,10 @@ public class Export implements DbUnitTaskStep
     {
     }
 
-    private String getAbsolutePath(File filename) 
-    { 
+    private String getAbsolutePath(File filename)
+    {
         return filename != null ? filename.getAbsolutePath() : "null";
-    }  
+    }
 
     public File getDest()
     {
@@ -84,16 +80,16 @@ public class Export implements DbUnitTaskStep
 
     public void setFormat(String format)
     {
-	if (format.equalsIgnoreCase("flat")
-	    || format.equalsIgnoreCase("xml")
-	    || format.equalsIgnoreCase("dtd"))
-	{
-	    this.format = format;
-	}
-	else 
-	{
-	    throw new IllegalArgumentException("Type must be one of: 'flat'(default), 'xml', or 'dtd' but was: " + format);
-	}
+        if (format.equalsIgnoreCase("flat")
+                || format.equalsIgnoreCase("xml")
+                || format.equalsIgnoreCase("dtd"))
+        {
+            this.format = format;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Type must be one of: 'flat'(default), 'xml', or 'dtd' but was: " + format);
+        }
     }
 
     public void addTable(Table table)
@@ -114,25 +110,33 @@ public class Export implements DbUnitTaskStep
             {
                 dataset = connection.createDataSet(getTableArray());
             }
-	    if (dest == null) 
+            if (dest == null)
             {
-	      throw new DatabaseUnitException ("'dest' is a required attribute of the <export> step.");
-	    }
-	    else  
-	    {
-	        if (format.equalsIgnoreCase("flat"))
-		{
-                    FlatXmlDataSet.write(dataset, new FileOutputStream(dest));
-                }
-	        else if (format.equalsIgnoreCase("xml"))
+                throw new DatabaseUnitException("'dest' is a required attribute of the <export> step.");
+            }
+            else
+            {
+                OutputStream out = new FileOutputStream(dest);
+                try
                 {
-                    XmlDataSet.write(dataset, new FileOutputStream(dest));
+                    if (format.equalsIgnoreCase("flat"))
+                    {
+                        FlatXmlDataSet.write(dataset, out);
+                    }
+                    else if (format.equalsIgnoreCase("xml"))
+                    {
+                        XmlDataSet.write(dataset, out);
+                    }
+                    else if (format.equalsIgnoreCase("dtd"))
+                    {
+                        FlatDtdDataSet.write(dataset, out);
+                    }
                 }
-		else if (format.equalsIgnoreCase("dtd"))
-		{
-		    FlatDtdDataSet.write(dataset, new FileOutputStream(dest));
-		}
-	    }
+                finally
+                {
+                    out.close();
+                }
+            }
 
         }
         catch (IOException e)
@@ -159,8 +163,8 @@ public class Export implements DbUnitTaskStep
     public String getLogMessage()
     {
         return "Executing export: "
-             + "\n      in format: " + format 
-	     + " to datafile: " + getAbsolutePath(dest);
+                + "\n      in format: " + format
+                + " to datafile: " + getAbsolutePath(dest);
     }
 
 

@@ -260,98 +260,8 @@
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="AllTests" type="JUnit" default="false" selected="false">
+    <configuration name="AllTests" type="JUnit" default="false" selected="true">
       <option name="MAIN_CLASS_NAME" value="org.dbunit.AllTests" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="DbUnitTaskTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.ant.DbUnitTaskTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="FilteredDataSetTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.FilteredDataSetTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="FlatDtdDataSetTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.xml.FlatDtdDataSetTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="FlatXmlDataSetTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.xml.FlatXmlDataSetTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="XmlDataSetTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.xml.XmlDataSetTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="FlatXmlTableWriteTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.xml.FlatXmlTableWriteTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="CaseInsensitiveDataSetTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.CaseInsensitiveDataSetTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="CompositeDataSetTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.CompositeDataSetTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="DefaultDataSetTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.DefaultDataSetTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="DatabaseDataSetTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.database.DatabaseDataSetTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="DeleteOperationTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.operation.DeleteOperationTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="InsertOperationTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.operation.InsertOperationTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="UpdateOperationTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.operation.UpdateOperationTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="DeleteAllOperationTest" type="JUnit" default="false" selected="false">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.operation.DeleteAllOperationTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_RUNNER" value="Text" />
-    </configuration>
-    <configuration name="RefreshOperationTest" type="JUnit" default="false" selected="true">
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.operation.RefreshOperationTest" />
       <option name="VM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="TEST_RUNNER" value="Text" />
@@ -373,11 +283,6 @@
   </component>
   <component class="com.intellij.ide.desktop.IdeDocumentManager">
     <recent_files>
-      <file_info url="file://$PROJECT_DIR$/src/xml/flatXmlDataSetDuplicateTest.xml" column="5" line="2" />
-      <file_info url="file://$PROJECT_DIR$/src/xml/compositeDataSetDuplicateTest1.xml" column="5" line="2" />
-      <file_info url="file://$PROJECT_DIR$/src/xml/caseInsensitiveDataSetDuplicateTest.xml" column="14" line="2" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/AbstractDataSet.java" column="29" line="65" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/UpdateOperationTest.java" column="32" line="160" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/DeleteOperation.java" column="13" line="35" />
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/InsertOperationTest.java" column="40" line="129" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/AbstractBatchOperation.java" column="0" line="56" />
@@ -388,6 +293,11 @@
       <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/RefreshOperationTest.java" column="9" line="88" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/mssqlserver/InsertIdentityOperation.java" column="0" line="108" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/operation/RefreshOperation.java" column="16" line="111" />
+      <file_info url="jar://J:/jdk1.3.1_03/src.jar!/src/java/net/URL.java" column="19" line="83" />
+      <file_info url="jar://$PROJECT_DIR$/lib/exml.jar!/electric/xml/Document.class" column="11" line="25" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" column="39" line="139" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/UpdateOperationTest.java" column="50" line="123" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/ant/Export.java" column="16" line="118" />
     </recent_files>
   </component>
   <component class="com.intellij.ide.hierarchy.HierarchyBrowserManager">
@@ -399,12 +309,14 @@
   <component class="com.intellij.ide.navigator.impl.ProjectNavigatorSettings">
     <navigator id="ClasspathNavigator" flattenPackages="false" showMembers="false" />
     <navigator id="ProjectNavigator" flattenPackages="false" showMembers="false">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/xml" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
     </navigator>
     <navigator id="SourcepathNavigator" flattenPackages="false" showMembers="true">
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
     </navigator>
   </component>
