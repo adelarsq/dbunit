@@ -127,6 +127,47 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
         }
 
     }
+
+    /* test case was added to validate the bug that tables with Identity columns that are not
+    one of the primary keys are able to figure out if an IDENTITY_INSERT is needed.
+    Thanks to Gaetano Di Gregorio for finding the bug.
+    */
+   public void testIdentityInsertNoPK() throws Exception
+    {
+        if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
+            InputStream in = new FileInputStream("src/xml/insertIdentityOperationTestNoPK.xml");
+            IDataSet xmlDataSet = new FlatXmlDataSet(in);
+
+            ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
+            InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
+            ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
+
+            assertEquals("table count", tablesBefore.length, tablesAfter.length);
+            for (int i = 0; i < tablesBefore.length; i++)
+            {
+                ITable table = tablesBefore[i];
+                String name = table.getTableMetaData().getTableName();
+
+
+                if (name.equals("TEST_IDENTITY_NOT_PK"))
+                {
+
+                    assertTrue("Should have either 0 or 6", table.getRowCount()==0 | table.getRowCount()==6);
+                }
+            }
+
+            for (int i = 0; i < tablesAfter.length; i++)
+            {
+                ITable table = tablesAfter[i];
+                String name = table.getTableMetaData().getTableName();
+                if (name.equals("TEST_IDENTITY_NOT_PK"))
+                {
+                    Assertion.assertEquals(xmlDataSet.getTable(name), table);
+                }
+            }
+        }
+
+    }
 }
 
 
