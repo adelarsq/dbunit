@@ -252,6 +252,7 @@ public class DbUnitTask extends Task
      */
     public void addExport(Export export)
     {
+    	export.setParentTask(this);
         steps.add(export);
     }
 

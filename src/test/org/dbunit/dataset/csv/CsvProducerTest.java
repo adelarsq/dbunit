@@ -48,7 +48,7 @@ public class CsvProducerTest extends TestCase {
     private String user;
     private String password;
     private IDatabaseConnection connection;
-    private static final int ORDERS_ROWS_NUMBER = 4;
+    private static final int ORDERS_ROWS_NUMBER = 5;
     private static final int ORDERS_ROW_ROWS_NUMBER = 3;
     private static final String THE_DIRECTORY = "src/csv/orders";
 

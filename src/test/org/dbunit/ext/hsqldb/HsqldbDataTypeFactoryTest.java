@@ -43,7 +43,7 @@ public class HsqldbDataTypeFactoryTest extends AbstractDataTypeFactoryTest
 
     public void testCreateBooleanDataType() throws Exception
     {
-        int sqlType = Types.BOOLEAN;
+        int sqlType = Types.BIT;
         String sqlTypeName = "BOOLEAN";
 
         DataType expected = DataType.BOOLEAN;

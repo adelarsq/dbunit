@@ -21,9 +21,11 @@
 
 package org.dbunit.ant;
 
+import org.apache.tools.ant.Project;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.csv.CsvDataSet;
 import org.dbunit.dataset.csv.CsvDataSetWriter;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlWriter;
@@ -33,6 +35,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +113,12 @@ public class Export extends AbstractStep
         _tables.add(query);
     }
 
-    public String getDoctype()
+	public void addQuerySet(QuerySet querySet) {
+		_tables.add(querySet);
+	}
+	
+    
+	public String getDoctype()
     {
         return _doctype;
     }
@@ -129,12 +137,14 @@ public class Export extends AbstractStep
                 throw new DatabaseUnitException("'_dest' is a required attribute of the <export> step.");
             }
 
-            IDataSet dataset = getDatabaseDataSet(connection, _tables, true);
+            IDataSet dataset = getDatabaseDataSet(connection, _tables, false);
 
+			log("dataset tables: " + Arrays.asList(dataset.getTableNames()), Project.MSG_VERBOSE);
+			
             // Write the dataset
             if (_format.equals(FORMAT_CSV))
             {
-                CsvDataSetWriter.write(dataset, _dest);
+                CsvDataSet.write(dataset, _dest);
             }
             else
             {
@@ -154,13 +164,15 @@ public class Export extends AbstractStep
                     else if (_format.equalsIgnoreCase(FORMAT_DTD))
                     {
                         FlatDtdDataSet.write(dataset, out);
-                    }
+                    } 
+                    
                 }
                 finally
                 {
                     out.close();
                 }
             }
+            
         }
         catch (IOException e)
         {

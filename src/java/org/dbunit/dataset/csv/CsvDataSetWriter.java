@@ -42,7 +42,7 @@ public class CsvDataSetWriter implements IDataSetConsumer {
      * todo: customizable separators (field, lines), manage the writers opened for each table
      */
 
-    private static final String NULL = "null";
+    public static final String NULL = "null";
     private static final String NONE = "none";
     private static final String FIELD_SEPARATOR = ", ";
     private static final String QUOTE = "\"";

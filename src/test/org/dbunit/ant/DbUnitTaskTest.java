@@ -181,7 +181,7 @@ public class DbUnitTaskTest extends TaskdefsTest
                 + "(indicating a full dataset), but was: "
                 + tables, tables.size() == 0);
     }
-
+	
     public void testExportPartial()
     {
         String targetName = "test-export-partial";
@@ -202,7 +202,7 @@ public class DbUnitTaskTest extends TaskdefsTest
         Export export = (Export)getFirstStepFromTarget(targetName);
         assertEquals("format", "flat", export.getFormat());
     }
-
+    
     public void testExportFlatWithDocytpe()
     {
         String targetName = "test-export-format-flat-with-doctype";
@@ -220,6 +220,14 @@ public class DbUnitTaskTest extends TaskdefsTest
                 export.getFormat().equalsIgnoreCase("xml"));
     }
 
+	public void testExportCsv() {
+		String targetName = "test-export-format-csv";
+		Export export = (Export)getFirstStepFromTarget(targetName);
+		assertTrue("Should have been a csv format, "
+				+ "but was: " + export.getFormat(),
+				export.getFormat().equalsIgnoreCase("csv")); 
+	}
+	
     public void testExportDtd()
     {
         String targetName = "test-export-format-dtd";
@@ -228,16 +236,6 @@ public class DbUnitTaskTest extends TaskdefsTest
                 + "but was: " + export.getFormat(),
                 export.getFormat().equalsIgnoreCase("dtd"));
     }
-
-/*
-    public void testExportCsv () {
-        String targetName = "test-export-format-csv";
-        Export export = (Export)getFirstStepFromTarget(targetName);
-        assertTrue("Should have been a csv format, "
-                + "but was: " + export.getFormat(),
-                export.getFormat().equalsIgnoreCase("csv"));
-    }
-*/
 
     public void testInvalidExportFormat()
     {
@@ -263,8 +261,71 @@ public class DbUnitTaskTest extends TaskdefsTest
         assertEquals("sql", "SELECT * FROM pk_table", pkTable.getSql());
     }
 
-    public void testExportQueryMixed()
-    {
+	public void testExportWithQuerySet() {
+		String targetName = "test-export-with-queryset";
+		Export export = (Export)getFirstStepFromTarget(targetName);
+		assertEquals("format", "csv", export.getFormat());
+		
+		List queries = export.getTables();
+		
+		assertEquals("query count", 1, getQueryCount(queries));
+		assertEquals("table count", 1, getTableCount(queries));	
+		assertEquals("queryset count", 2, getQuerySetCount(queries));
+		
+		Query secondTable = (Query)queries.get(0);
+		assertEquals("name", "SECOND_TABLE", secondTable.getName());
+		assertEquals("sql", "SELECT * FROM SECOND_TABLE", secondTable.getSql());
+			
+		QuerySet queryset1 = (QuerySet)queries.get(1);
+		
+		Query testTable = (Query)queryset1.getQueries().get(0);
+		
+		assertEquals("name", "TEST_TABLE", testTable.getName());
+		
+		QuerySet queryset2 = (QuerySet)queries.get(2);
+		
+		Query pkTable = (Query)queryset2.getQueries().get(0);
+		Query testTable2 = (Query)queryset2.getQueries().get(1);
+		
+		assertEquals("name", "PK_TABLE", pkTable.getName());
+		assertEquals("name", "TEST_TABLE", testTable2.getName());
+		
+		Table emptyTable = (Table)queries.get(3);
+		
+		assertEquals("name", "EMPTY_TABLE", emptyTable.getName());
+	}
+	
+	public void testWithBadQuerySet() {
+		expectBuildException("invalid-queryset",
+			"Cannot specify 'id' and 'refid' attributes together in queryset.");
+	}
+	
+	public void testWithReferenceQuerySet() {
+		String targetName = "test-queryset-reference";
+		
+		Export export = (Export)getFirstStepFromTarget(targetName);
+		
+		List tables = export.getTables();
+		
+		assertEquals("total count", 1, tables.size());
+		
+		QuerySet queryset = (QuerySet)tables.get(0);
+		Query testTable = (Query)queryset.getQueries().get(0);
+		Query secondTable = (Query)queryset.getQueries().get(1);
+		
+		assertEquals("name", "TEST_TABLE", testTable.getName());
+		assertEquals("sql", "SELECT * FROM TEST_TABLE WHERE COLUMN0 = 'row0 col0'", 
+					testTable.getSql());
+					
+		assertEquals("name", "SECOND_TABLE", secondTable.getName());	
+		assertEquals("sql", 
+			"SELECT B.* FROM TEST_TABLE A, SECOND_TABLE B " +
+			"WHERE A.COLUMN0 = 'row0 col0' AND B.COLUMN0 = A.COLUMN0",
+			secondTable.getSql());
+		
+	}
+	
+    public void testExportQueryMixed() {
         String targetName = "test-export-query-mixed";
         Export export = (Export)getFirstStepFromTarget(targetName);
         assertEquals("format", "flat", export.getFormat());
@@ -339,8 +400,7 @@ public class DbUnitTaskTest extends TaskdefsTest
             assertEquals("nested exception type", ClassNotFoundException.class, e.getException().getClass());
         }
     }
-
-
+	
     protected void assertOperationType(String failMessage, String targetName, DatabaseOperation expected)
     {
         Operation oper = (Operation)getFirstStepFromTarget(targetName);
@@ -376,6 +436,17 @@ public class DbUnitTaskTest extends TaskdefsTest
         return count;
     }
 
+	protected int getQuerySetCount(List tables) {
+		int count = 0;
+		for (Iterator it = tables.iterator(); it.hasNext();) {
+			if (it.next() instanceof QuerySet) {
+				count++;
+			}
+		}
+
+		return count;
+	}
+	
     protected DbUnitTaskStep getFirstStepFromTarget(String targetName)
     {
         DbUnitTaskStep result = null;
@@ -397,7 +468,16 @@ public class DbUnitTaskTest extends TaskdefsTest
         Hashtable targets = project.getTargets();
         executeTarget(targetName);
         Target target = (Target)targets.get(targetName);
-        DbUnitTask task = (DbUnitTask)target.getTasks()[0];
+        
+        DbUnitTask task = null;
+        
+        Object[] tasks = target.getTasks();
+        for(int i = 0; i < tasks.length; i++) {
+        	if(tasks[i] instanceof DbUnitTask) {
+        		task = (DbUnitTask)tasks[i];
+        	}
+        }
+        
         return task;
     }
 

@@ -10,8 +10,9 @@
   <property name="exportDtd" value="src/xml/antExport.dtd"/>
   <property name="exportCsv" value="src/xml/antExportCsv"/>
 
-  <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>
-
+  <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" loaderref="dbunit"/>
+  <typedef name="queryset" classname="org.dbunit.ant.QuerySet" loaderref="dbunit"/>
+  
   <target name="all" depends="no-driver, no-db-url, no-userid, no-password"/>
 
   <target name="no-driver">
@@ -235,14 +236,75 @@
   <target name="test-export-format-csv" depends="test-type-clean-insert">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.connectionUrl}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <export dest="${exportCsv}" format="csv"/>
       <compare src="${exportCsv}" format="csv"/>
     </dbunit>
+    <delete dir="${exportCsv}" failonerror="false" />
+  </target>
+  
+  <target name="test-export-with-queryset" depends="test-type-clean-insert">
+  	
+  	<dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}"
+        userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+            
+      <export dest="${exportCsv}" format="csv">
+      	 <query name="SECOND_TABLE" sql="SELECT * FROM SECOND_TABLE"/>
+      	 <queryset>
+      	 	<query name="TEST_TABLE" 
+      	 		sql="SELECT * FROM TEST_TABLE WHERE COLUMN0 = 'row 0 col 0'"/>
+      	 </queryset>
+      	 <queryset>
+      	 	<query name="PK_TABLE" sql="SELECT * FROM PK_TABLE"/>
+      	 	<query name="TEST_TABLE" 
+      	 		sql="SELECT * FROM TEST_TABLE WHERE COLUMN0 = 'row 1 col 0'"/>
+      	 </queryset>
+      	 <table name="EMPTY_TABLE"/>
+      </export>
+    </dbunit>
     <delete dir="${exportCsv}"/>
   </target>
 
+  <target name="invalid-queryset">
+  	<dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}"
+        userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <export dest="${exporDataSet}" format="flat">
+      		<queryset id="someid" refid="someid"/>
+      </export>
+    </dbunit>
+    <delete file="${exportDataSet}"/>
+  </target>
+  
+  <target name="test-queryset-reference">
+  
+  	<queryset id="queryset-id">
+  		<query name="TEST_TABLE" 
+  			sql="SELECT * FROM TEST_TABLE WHERE COLUMN0 = '@colValue@'"/>
+  		<query name="SECOND_TABLE" 
+  			sql="SELECT B.* FROM TEST_TABLE A, SECOND_TABLE B WHERE A.COLUMN0 = '@colValue@' AND B.COLUMN0 = A.COLUMN0"/>
+  	</queryset>
+  		
+  	<dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}"
+        	userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <export dest="${exportDataSet}" format="flat">
+      		<queryset refid="queryset-id">
+      			<filterset>
+      				<filter token="colValue" value="row0 col0"/>
+      			</filterset>
+      		</queryset>
+      </export>
+    </dbunit>
+    <delete file="${exportDataSet}"/>
+  </target>
+
+  
   <target name="invalid-export-format">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.connectionUrl}"

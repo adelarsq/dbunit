@@ -20,29 +20,20 @@
  */
 package org.dbunit.ant;
 
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.CachedDataSet;
-import org.dbunit.dataset.csv.CsvProducer;
-import org.dbunit.dataset.xml.XmlProducer;
-import org.dbunit.dataset.xml.FlatXmlProducer;
-import org.dbunit.dataset.xml.FlatDtdProducer;
-import org.dbunit.dataset.stream.IDataSetProducer;
-import org.dbunit.dataset.stream.StreamingDataSet;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.database.IResultSetTableFactory;
-import org.dbunit.database.ForwardOnlyResultSetTableFactory;
-import org.dbunit.database.CachedResultSetTableFactory;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.QueryDataSet;
-import org.dbunit.DatabaseUnitException;
-
-import org.xml.sax.InputSource;
-
-import java.util.List;
-import java.util.Iterator;
-import java.sql.SQLException;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.*;
+
+import org.apache.tools.ant.Task;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.*;
+import org.dbunit.dataset.*;
+import org.dbunit.dataset.csv.CsvProducer;
+import org.dbunit.dataset.stream.IDataSetProducer;
+import org.dbunit.dataset.stream.StreamingDataSet;
+import org.dbunit.dataset.xml.*;
+import org.xml.sax.InputSource;
 
 /**
  * @author Manuel Laflamme
@@ -56,6 +47,9 @@ public abstract class AbstractStep implements DbUnitTaskStep
     public static final String FORMAT_DTD = "dtd";
     public static final String FORMAT_CSV = "csv";
 
+	// Needed a path to Project for logging and references.
+	private Task parentTask;
+	
     protected IDataSet getDatabaseDataSet(IDatabaseConnection connection,
             List tables, boolean forwardonly) throws DatabaseUnitException
     {
@@ -81,23 +75,37 @@ public abstract class AbstractStep implements DbUnitTaskStep
                 return connection.createDataSet();
             }
 
-            QueryDataSet queryDataset = new QueryDataSet(connection);
+			List queryDataSets = new ArrayList();
+			
+            QueryDataSet queryDataSet = new QueryDataSet(connection);
+            
             for (Iterator it = tables.iterator(); it.hasNext();)
             {
                 Object item = it.next();
-                if (item instanceof Query)
+                if(item instanceof QuerySet) {
+					if(queryDataSet.getTableNames().length > 0) 
+                		queryDataSets.add(queryDataSet);
+					queryDataSets.add
+						(getQueryDataSetForQuerySet(connection, (QuerySet)item));
+					queryDataSet = new QueryDataSet(connection);
+                }
+                else if (item instanceof Query)
                 {
                     Query queryItem = (Query)item;
-                    queryDataset.addTable(queryItem.getName(), queryItem.getSql());
+                    queryDataSet.addTable(queryItem.getName(), queryItem.getSql());
                 }
                 else
                 {
                     Table tableItem = (Table)item;
-                    queryDataset.addTable(tableItem.getName());
+                    queryDataSet.addTable(tableItem.getName());
                 }
             }
+            
+            if(queryDataSet.getTableNames().length > 0) 
+            	queryDataSets.add(queryDataSet);
 
-            return queryDataset;
+			IDataSet[] dataSetsArray = new IDataSet[queryDataSets.size()];
+            return new CompositeDataSet((IDataSet[])queryDataSets.toArray(dataSetsArray));
         }
         catch (SQLException e)
         {
@@ -105,7 +113,8 @@ public abstract class AbstractStep implements DbUnitTaskStep
         }
     }
 
-    protected IDataSet getSrcDataSet(File src, String format,
+   
+	protected IDataSet getSrcDataSet(File src, String format,
             boolean forwardonly) throws DatabaseUnitException
     {
         try
@@ -143,4 +152,42 @@ public abstract class AbstractStep implements DbUnitTaskStep
             throw new DatabaseUnitException(e);
         }
     }
+    
+	private QueryDataSet getQueryDataSetForQuerySet
+		(IDatabaseConnection connection, QuerySet querySet) throws SQLException {
+		
+		//incorporate queries from referenced queryset
+		String refid = querySet.getRefid();
+		if(refid != null) {
+			QuerySet referenced = (QuerySet)
+				getParentTask().getProject().getReference(refid);
+			querySet.copyQueriesFrom(referenced);
+		}
+		
+		QueryDataSet partialDataSet = new QueryDataSet(connection);
+		
+		Iterator queriesIter = querySet.getQueries().iterator();
+		while(queriesIter.hasNext()) {
+			Query query = (Query)queriesIter.next();
+			partialDataSet.addTable(query.getName(), query.getSql());
+		}
+		
+		return partialDataSet;
+		
+	}
+
+	
+	public Task getParentTask() {
+		return parentTask;
+	}
+
+	public void setParentTask(Task task) {
+		parentTask = task;
+	}
+	
+	public void log(String msg, int level) {
+		if(parentTask != null)
+			parentTask.log(msg, level);
+	}
+
 }
