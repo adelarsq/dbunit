@@ -98,6 +98,7 @@ public class InsertIdentityOperation extends DatabaseOperation
         try
         {
             IDataSet databaseDataSet = connection.createDataSet();
+            String schemaName = connection.getSchema();
 
             // INSERT_IDENTITY need to be enabled/disabled inside the
             // same transaction
@@ -112,21 +113,20 @@ public class InsertIdentityOperation extends DatabaseOperation
             while(iterator.next())
             {
                 ITable table = iterator.getTable();
-                String tableName = DataSetUtils.getQualifiedName(
-                        connection.getSchema(),
-                        table.getTableMetaData().getTableName(), true);
+                String tableName = table.getTableMetaData().getTableName();
 
-                ITableMetaData databaseMetaData =
+                ITableMetaData metaData =
                         databaseDataSet.getTableMetaData(tableName);
 
                 // enable identity insert
-                boolean hasIdentityColumn = hasIdentityColumn(databaseMetaData);
+                boolean hasIdentityColumn = hasIdentityColumn(metaData);
 
                 if (hasIdentityColumn)
                 {
                     StringBuffer sqlBuffer = new StringBuffer(128);
                     sqlBuffer.append("SET IDENTITY_INSERT ");
-                    sqlBuffer.append(tableName);
+                    sqlBuffer.append(DataSetUtils.getQualifiedName(
+                            schemaName, metaData.getTableName(), true));
                     sqlBuffer.append(" ON");
                     statement.execute(sqlBuffer.toString());
                 }
@@ -142,7 +142,8 @@ public class InsertIdentityOperation extends DatabaseOperation
                     {
                         StringBuffer sqlBuffer = new StringBuffer(128);
                         sqlBuffer.append("SET IDENTITY_INSERT ");
-                        sqlBuffer.append(tableName);
+                        sqlBuffer.append(DataSetUtils.getQualifiedName(
+                                schemaName, metaData.getTableName(), true));
                         sqlBuffer.append(" OFF");
                         statement.execute(sqlBuffer.toString());
                     }
