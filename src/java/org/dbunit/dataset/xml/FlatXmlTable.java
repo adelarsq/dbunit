@@ -91,7 +91,7 @@ public class FlatXmlTable extends AbstractTable
     public Object getValue(int row, String column) throws DataSetException
     {
         assertValidRowIndex(row);
-        assertValidColumn(column);
+//        assertValidColumn(column);
 
         Object value = _rows[row].getAttributeValue(column);
         if (value == null && !_noneAsNull)
@@ -102,6 +102,7 @@ public class FlatXmlTable extends AbstractTable
     }
 
 }
+
 
 
 
