@@ -62,7 +62,6 @@ public class DatabaseDataSet implements IDataSet
             }
             String columnName = DataSetUtils.getQualifiedName(null,
                     columns[i].getColumnName(), true);
-//            String columnName = columns[i].getColumnName();
             sqlBuffer.append(columnName);
         }
 
