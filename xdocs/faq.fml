@@ -121,7 +121,7 @@ public class DatabaseExportSample
         Can I work with multiple database schemas having tables with identical name?
       </question>
       <answer>
-        Yes, see the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature.
+        Yes, see <a href="#AmbiguousTableNameException">Why I get a "AmbiguousTableNameException"?</a>.
       </answer>
     </faq>
 
@@ -348,12 +348,12 @@ ForwardOnlyResultSetTable:
      Why I get a "AmbiguousTableNameException"?
       </question>
       <answer>
-      <p>This situation occurs when no schema is specified and that DbUnit detect 
+      <p>This error occurs when no schema is specified and that DbUnit detect 
         that it is getting columns information from multiple tables having the 
         same name and located in different schemas.</p>
       <p>You can solve this problem in three different ways:
       <ol>
-        <li>Provide the schema name when creating the database connection. Note that for Oracle you must specify a all uppercase schema name.</li>
+        <li>Provide the schema name when creating the database connection. <b>Note that for Oracle you must specify the schema name in uppercase.</b></li>
         <li>Ensure that the connection is restricted to access only one schema.</li>
         <li>Enable the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature.</li>
       </ol>

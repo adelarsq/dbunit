@@ -25,6 +25,10 @@
   <section name="News">
       <table border="1">
         <tr> 
+          <td>2004-04-28</td>
+          <td>DeveloperWorks article: <a href="http://www-106.ibm.com/developerworks/library/j-dbunit.html?ca=drs-j1604">Control your test-environement with DbUnit and Anthill</a>.</td>
+        </tr>
+        <tr> 
           <td>2004-03-16</td>
           <td>The <a href="http://www.dbunit.org/wiki/">DbUnit Wiki</a> is now officially online. Please contribute to the <a href=" http://www.dbunit.org/cgi-bin/wiki.pl?SupportedRDBMS">SupportedRDBMS</a> page.</td>
         </tr>
