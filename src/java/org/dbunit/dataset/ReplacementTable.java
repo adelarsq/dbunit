@@ -102,24 +102,13 @@ public class ReplacementTable implements ITable
         Object objectValue = _table.getValue(row, column);
 
         // Object replacement
-        for (Iterator it = _objectMap.entrySet().iterator(); it.hasNext();)
+        if (_objectMap.containsKey(objectValue))
         {
-            Map.Entry entry = (Map.Entry)it.next();
-            Object original = entry.getKey();
-            Object replacement = entry.getValue();
-
-            if (objectValue == null && original == null)
-            {
-                return replacement;
-            }
-
-            if (objectValue != null && objectValue.equals(original))
-            {
-                return replacement;
-            }
+            return _objectMap.get(objectValue);
         }
 
-        if (!(objectValue instanceof String))
+        // Stop here if substring replacement not applicable
+        if (_substringMap.size() == 0 || !(objectValue instanceof String))
         {
             return objectValue;
         }
