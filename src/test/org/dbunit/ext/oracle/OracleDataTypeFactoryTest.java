@@ -48,7 +48,7 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         int sqlType = Types.OTHER;
         String sqlTypeName = "BLOB";
 
-        DataType expected = DataType.BLOB;
+        DataType expected = OracleDataTypeFactory.ORACLE_BLOB;
         DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
         assertSame("type", expected, actual);
     }

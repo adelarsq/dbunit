@@ -35,6 +35,7 @@ import java.sql.Types;
  */
 public class OracleDataTypeFactory extends DefaultDataTypeFactory
 {
+    public static final DataType ORACLE_BLOB = new OracleBlobDataType();
     public static final DataType ORACLE_CLOB = new OracleClobDataType();
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
@@ -50,7 +51,7 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
             // BLOB
             if ("BLOB".equals(sqlTypeName))
             {
-                return DataType.BLOB;
+                return ORACLE_BLOB;
             }
 
             // CLOB
