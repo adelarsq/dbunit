@@ -85,7 +85,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
      * Returns mapping of columns to ignore by this operation. Each bit set represent
      * a column to ignore.
      */
-    BigInteger getIngnoreMapping(ITable table, int row)
+    BigInteger getIgnoreMapping(ITable table, int row)
             throws DataSetException
     {
         return EMPTY_IGNORE_MAPPING;
@@ -128,7 +128,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
 
             ITableMetaData metaData = getOperationMetaData(connection,
                     table.getTableMetaData());
-            BigInteger ignoreMapping = null;
+            BigInteger noneMapping = null;
             OperationData operationData = null;
             IPreparedBatchStatement statement = null;
 
@@ -144,9 +144,9 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                     {
                         int row = i;
 
-                        // If current row have a diffrent ignore value mapping than
+                        // If current row have a diffrent NONE value mapping than
                         // previous one, we generate a new statement
-                        if (ignoreMapping == null || !equalsIgnoreMapping(ignoreMapping, table, row))
+                        if (noneMapping == null || !equalsIgnoreMapping(noneMapping, table, row))
                         {
                             // Execute and close previous statement
                             if (statement != null)
@@ -156,8 +156,8 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                                 statement.close();
                             }
 
-                            ignoreMapping = getIngnoreMapping(table, row);
-                            operationData = getOperationData(metaData, ignoreMapping, connection);
+                            noneMapping = getIgnoreMapping(table, row);
+                            operationData = getOperationData(metaData, noneMapping, connection);
                             statement = factory.createPreparedBatchStatement(
                                     operationData.getSql(), connection);
                         }
@@ -168,7 +168,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                         for (int j = 0; j < columns.length; j++)
                         {
                             // Bind value only if not in ignore mapping
-                            if (!ignoreMapping.testBit(j))
+                            if (!noneMapping.testBit(j))
                             {
                                 Column column = columns[j];
                                 statement.addValue(table.getValue(row,
@@ -188,7 +188,10 @@ public abstract class AbstractBatchOperation extends AbstractOperation
             }
             finally
             {
-                statement.close();
+                if (statement != null)
+                {
+                    statement.close();
+                }
             }
         }
     }
