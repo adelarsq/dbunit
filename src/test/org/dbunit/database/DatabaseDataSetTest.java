@@ -23,6 +23,7 @@
 package org.dbunit.database;
 
 import java.util.Arrays;
+import java.sql.DatabaseMetaData;
 
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.dataset.*;
@@ -175,7 +176,14 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         }
     }
 
+//    public void testGetTableNamesAndCaseSensitive() throws Exception
+//    {
+//        DatabaseMetaData metaData = _connection.getConnection().getMetaData();
+//        metaData.
+//    }
+
 }
+
 
 
 

@@ -85,6 +85,42 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         }
     }
 
+    public int getRowCount(String tableName) throws SQLException
+    {
+        return getRowCount(tableName, null);
+    }
+
+    public int getRowCount(String tableName, String whereClause) throws SQLException
+    {
+        StringBuffer sqlBuffer = new StringBuffer(128);
+        sqlBuffer.append("select count(*) from ");
+        sqlBuffer.append(tableName);
+        if (whereClause != null)
+        {
+            sqlBuffer.append(" ");
+            sqlBuffer.append(whereClause);
+        }
+
+        Statement statement = getConnection().createStatement();
+        try
+        {
+            ResultSet resultSet = statement.executeQuery(sqlBuffer.toString());
+            try
+            {
+                resultSet.next();
+                return resultSet.getInt(1);
+            }
+            finally
+            {
+                resultSet.close();
+            }
+        }
+        finally
+        {
+            statement.close();
+        }
+    }
+
     public IStatementFactory getStatementFactory()
     {
         return _statementFactory;

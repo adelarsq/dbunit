@@ -1,5 +1,5 @@
 /*
- * AllTests.java   Feb 19, 2002
+ * AbstractDatabaseConnectionTest.java   Mar 26, 2002
  *
  * DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -17,33 +17,33 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
  *
  */
 
 package org.dbunit.database;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.dbunit.AbstractDatabaseTest;
 
 /**
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class AllTests
+public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTest
 {
-    public static Test suite()
+    public AbstractDatabaseConnectionTest(String s)
     {
-        TestSuite suite = new TestSuite();
-        suite.addTest(org.dbunit.database.statement.AllTests.suite());
-        suite.addTest(new TestSuite(DatabaseConnectionTest.class));
-        suite.addTest(new TestSuite(DatabaseDataSetTest.class));
-        suite.addTest(new TestSuite(DatabaseTableMetaDataTest.class));
-        suite.addTest(new TestSuite(ResultsetTableTest.class));
+        super(s);
+    }
 
-        return suite;
+    public final void testGetRowCount() throws Exception
+    {
+        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("EMPTY_TABLE", null));
+        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("EMPTY_TABLE"));
+
+        assertEquals("TEST_TABLE", 6, _connection.getRowCount("TEST_TABLE", null));
+        assertEquals("TEST_TABLE", 6, _connection.getRowCount("TEST_TABLE"));
+
+        assertEquals("PK_TABLE", 1, _connection.getRowCount("PK_TABLE", "where PK0 = 0"));
     }
 }
-
-
-
-

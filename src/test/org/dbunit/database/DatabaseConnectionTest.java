@@ -1,5 +1,5 @@
 /*
- * AllTests.java   Feb 19, 2002
+ * DatabaseConnectionTest.java   Mar 26, 2002
  *
  * DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -17,33 +17,23 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
  *
  */
 
 package org.dbunit.database;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.dbunit.AbstractDatabaseTest;
 
 /**
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class AllTests
+public class DatabaseConnectionTest extends AbstractDatabaseConnectionTest
 {
-    public static Test suite()
+    public DatabaseConnectionTest(String s)
     {
-        TestSuite suite = new TestSuite();
-        suite.addTest(org.dbunit.database.statement.AllTests.suite());
-        suite.addTest(new TestSuite(DatabaseConnectionTest.class));
-        suite.addTest(new TestSuite(DatabaseDataSetTest.class));
-        suite.addTest(new TestSuite(DatabaseTableMetaDataTest.class));
-        suite.addTest(new TestSuite(ResultsetTableTest.class));
-
-        return suite;
+        super(s);
     }
+
 }
-
-
-
-

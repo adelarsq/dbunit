@@ -70,8 +70,26 @@ public interface IDatabaseConnection
     public ITable createQueryTable(String resultName, String sql)
             throws DataSetException, SQLException;
 
+    /**
+     * Returns the specified table row count.
+     *
+     * @param tableName the table name
+     * @return the row count
+     */
+    public int getRowCount(String tableName) throws SQLException;
+
+    /**
+     * Returns the specified table row count according specified where clause.
+     *
+     * @param tableName the table name
+     * @param whereClause the where clause
+     * @return the row count
+     */
+    public int getRowCount(String tableName, String whereClause) throws SQLException;
+
     public IStatementFactory getStatementFactory();
 }
+
 
 
 

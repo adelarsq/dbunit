@@ -124,9 +124,20 @@ public class MockDatabaseConnection implements IDatabaseConnection, Verifiable
         throw new UnsupportedOperationException();
     }
 
+    public int getRowCount(String tableName) throws SQLException
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public int getRowCount(String tableName, String whereClause) throws SQLException
+    {
+        throw new UnsupportedOperationException();
+    }
+
     public IStatementFactory getStatementFactory()
     {
         return _statementFactory;
     }
 }
+
 
