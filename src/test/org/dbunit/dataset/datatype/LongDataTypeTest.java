@@ -21,6 +21,8 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.dbunit.database.ExtendedMockSingleRowResultSet;
+
 import java.math.BigDecimal;
 import java.sql.Types;
 
@@ -260,8 +262,27 @@ public class LongDataTypeTest extends AbstractDataTypeTest
         }
     }
 
+    public void testGetSqlValue() throws Exception
+    {
+        Long[] expected = {
+            null,
+            new Long(5),
+            new Long(1234),
+            new Long(Long.MAX_VALUE),
+            new Long(Long.MIN_VALUE),
+            new Long(-7500),
+            new Long(0),
+        };
+
+        ExtendedMockSingleRowResultSet resultSet = new ExtendedMockSingleRowResultSet();
+        resultSet.addExpectedIndexedValues(expected);
+
+        for (int i = 0; i < expected.length; i++)
+        {
+            Object expectedValue = expected[i];
+            Object actualValue = THIS_TYPE.getSqlValue(i + 1, resultSet);
+            assertEquals("value", expectedValue, actualValue);
+        }
+    }
+
 }
-
-
-
-

@@ -21,7 +21,12 @@
 
 package org.dbunit.dataset.datatype;
 
-import java.sql.*;
+import org.dbunit.database.ExtendedMockSingleRowResultSet;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.sql.Types;
 
 /**
  * @author Manuel Laflamme
@@ -233,7 +238,26 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
         }
     }
 
+    public void testGetSqlValue() throws Exception
+    {
+        Timestamp[] expected = {
+            null,
+            new Timestamp(1234),
+        };
+
+        ExtendedMockSingleRowResultSet resultSet = new ExtendedMockSingleRowResultSet();
+        resultSet.addExpectedIndexedValues(expected);
+
+        for (int i = 0; i < expected.length; i++)
+        {
+            Object expectedValue = expected[i];
+            Object actualValue = THIS_TYPE.getSqlValue(i + 1, resultSet);
+            assertEquals("value", expectedValue, actualValue);
+        }
+    }
+
 }
+
 
 
 

@@ -21,6 +21,8 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.dbunit.database.ExtendedMockSingleRowResultSet;
+
 import java.math.BigDecimal;
 import java.sql.Types;
 
@@ -272,8 +274,35 @@ public class DoubleDataTypeTest extends AbstractDataTypeTest
         }
     }
 
+    public void testGetSqlValue() throws Exception
+    {
+        Double[] expected = {
+            null,
+            new Double(5.555),
+            new Double(Float.MAX_VALUE),
+            new Double(Double.MIN_VALUE),
+            new Double(-7500),
+            Double.valueOf("2.34E23"),
+            new Double(0.666),
+            new Double(5.49879),
+            new Double(-99.9),
+            new Double(1234),
+        };
+
+        ExtendedMockSingleRowResultSet resultSet = new ExtendedMockSingleRowResultSet();
+        resultSet.addExpectedIndexedValues(expected);
+
+        for (int i = 0; i < expected.length; i++)
+        {
+            Object expectedValue = expected[i];
+
+            for (int j = 0; j < TYPES.length; j++)
+            {
+                DataType dataType = TYPES[j];
+                Object actualValue = dataType.getSqlValue(i + 1, resultSet);
+                assertEquals("value " + j, expectedValue, actualValue);
+            }
+        }
+    }
+
 }
-
-
-
-

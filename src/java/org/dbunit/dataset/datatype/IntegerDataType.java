@@ -65,7 +65,12 @@ public class IntegerDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        return new Integer(resultSet.getInt(column));
+        int value = resultSet.getInt(column);
+        if (resultSet.wasNull())
+        {
+            return null;
+        }
+        return new Integer(value);
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)

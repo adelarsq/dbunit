@@ -66,7 +66,12 @@ public class FloatDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        return new Float(resultSet.getFloat(column));
+        float value = resultSet.getFloat(column);
+        if (resultSet.wasNull())
+        {
+            return null;
+        }
+        return new Float(value);
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)

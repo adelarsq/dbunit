@@ -66,7 +66,12 @@ public class LongDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        return new Long(resultSet.getLong(column));
+        long value = resultSet.getLong(column);
+        if (resultSet.wasNull())
+        {
+            return null;
+        }
+        return new Long(value);
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)

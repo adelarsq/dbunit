@@ -21,6 +21,8 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.dbunit.database.ExtendedMockSingleRowResultSet;
+
 import java.sql.*;
 
 /**
@@ -232,8 +234,26 @@ public class TimeDataTypeTest extends AbstractDataTypeTest
         }
     }
 
+    public void testGetSqlValue() throws Exception
+    {
+        java.sql.Time[] expected = {
+            null,
+            new Time(1234),
+            new Time(new java.sql.Date(1234).getTime()),
+            new Time(new Timestamp(1234).getTime()),
+            Time.valueOf(new Time(1234).toString()),
+            new Time(1234),
+        };
+
+        ExtendedMockSingleRowResultSet resultSet = new ExtendedMockSingleRowResultSet();
+        resultSet.addExpectedIndexedValues(expected);
+
+        for (int i = 0; i < expected.length; i++)
+        {
+            Object expectedValue = expected[i];
+            Object actualValue = THIS_TYPE.getSqlValue(i + 1, resultSet);
+            assertEquals("value", expectedValue, actualValue);
+        }
+    }
+
 }
-
-
-
-

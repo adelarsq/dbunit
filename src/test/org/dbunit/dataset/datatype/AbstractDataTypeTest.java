@@ -52,24 +52,12 @@ public abstract class AbstractDataTypeTest extends TestCase
 
     public abstract void testAsString() throws Exception;
 
-//    public abstract void testCompareEquals() throws Exception
-//    public abstract void testCompareDifferent() throws Exception;
-//    public abstract void testCompareInvalid() throws Exception;
+    public abstract void testCompareEquals() throws Exception;
+    public abstract void testCompareDifferent() throws Exception;
+    public abstract void testCompareInvalid() throws Exception;
 
-    public void testCompareEquals() throws Exception
-    {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
+    public abstract void testGetSqlValue() throws Exception;
 
-    public void testCompareDifferent() throws Exception
-    {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    public void testCompareInvalid() throws Exception
-    {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
 }
 
 

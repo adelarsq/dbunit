@@ -114,7 +114,12 @@ public class BooleanDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        return resultSet.getBoolean(column) ? Boolean.TRUE : Boolean.FALSE;
+        boolean value = resultSet.getBoolean(column);
+        if (resultSet.wasNull())
+        {
+            return null;
+        }
+        return value ? Boolean.TRUE : Boolean.FALSE;
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)

@@ -21,6 +21,8 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.dbunit.database.ExtendedMockSingleRowResultSet;
+
 import java.sql.Types;
 import java.util.Arrays;
 
@@ -249,9 +251,29 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
             assertEquals("asString " + i, expected[i], DataType.asString(values[i]));
         }
     }
+
+    public void testGetSqlValue() throws Exception
+    {
+        byte[][] expected = {
+            null,
+            new byte[0],
+            new byte[]{'a', 'b', 'c', 'd'},
+            new byte[]{0, 1, 2, 3, 4, 5},
+        };
+
+        ExtendedMockSingleRowResultSet resultSet = new ExtendedMockSingleRowResultSet();
+        resultSet.addExpectedIndexedValues(expected);
+
+        for (int i = 0; i < expected.length; i++)
+        {
+            Object expectedValue = expected[i];
+
+            for (int j = 0; j < TYPES.length; j++)
+            {
+                DataType dataType = TYPES[j];
+                Object actualValue = dataType.getSqlValue(i + 1, resultSet);
+                assertEquals("value " + j, expectedValue, actualValue);
+            }
+        }
+    }
 }
-
-
-
-
-

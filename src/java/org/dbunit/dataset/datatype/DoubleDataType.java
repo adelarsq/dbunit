@@ -65,7 +65,12 @@ public class DoubleDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        return new Double(resultSet.getDouble(column));
+        double value = resultSet.getDouble(column);
+        if (resultSet.wasNull())
+        {
+            return null;
+        }
+        return new Double(value);
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)
