@@ -19,7 +19,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import FileAsserts;
+import org.dbunit.util.FileAsserts;
 
 /**
  * @author Manuel Laflamme
@@ -105,7 +105,7 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
                 out.close();
             }
 
-            FileAsserts.assertEquals(
+            org.dbunit.util.FileAsserts.assertEquals(
                     new BufferedReader(new FileReader(DTD_FILE)),
                     new BufferedReader(new FileReader(tempFile)));
         }
@@ -141,7 +141,7 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
                 out.close();
             }
 
-            FileAsserts.assertEquals(
+            org.dbunit.util.FileAsserts.assertEquals(
                     new BufferedReader(new FileReader(DTD_FILE)),
                     new BufferedReader(new FileReader(tempFile)));
         }

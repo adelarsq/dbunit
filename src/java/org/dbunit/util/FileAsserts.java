@@ -1,5 +1,7 @@
+package org.dbunit.util;
+
 /*
- * From  "Dale E Martin" <dmartin@cliftonlabs.com>
+ * From  "Dale E Martin" <dmartin@c..>
  * Date  Thursday, March 14, 2002 2:42 pm
  * To  junit@yahoogroups.com
  * Subject  [junit] file assert, a starting point

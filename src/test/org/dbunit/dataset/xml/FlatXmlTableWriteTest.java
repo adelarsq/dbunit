@@ -53,9 +53,8 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
         finally
         {
             out.close();
-            tempFile.delete();
+//            tempFile.delete();
         }
-
     }
 
     public void testWriteMultipleTable() throws Exception
@@ -95,7 +94,6 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
             out.close();
             tempFile.delete();
         }
-
     }
 
 }
