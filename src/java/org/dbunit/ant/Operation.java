@@ -23,19 +23,11 @@ package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.csv.CSVProducer;
-import org.dbunit.dataset.stream.IDataSetProducer;
-import org.dbunit.dataset.stream.StreamingDataSet;
-import org.dbunit.dataset.xml.FlatXmlProducer;
-import org.dbunit.dataset.xml.XmlProducer;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.operation.DatabaseOperation;
-import org.xml.sax.InputSource;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -49,24 +41,24 @@ import java.sql.SQLException;
  * @since Jun 10, 2002
  * @see org.dbunit.ant.DbUnitTaskStep
  */
-public class Operation implements DbUnitTaskStep
+public class Operation extends AbstractStep
 {
-    private static final String DEFAULT_FORMAT = Export.FORMAT_FLAT;
+    private static final String DEFAULT_FORMAT = FORMAT_FLAT;
 
-    protected String type = "CLEAN_INSERT";
-    private String format;
-    private File src;
+    protected String _type = "CLEAN_INSERT";
+    private String _format;
+    private File _src;
     private DatabaseOperation _operation;
     private boolean _forwardOperation = true;
 
     public String getType()
     {
-        return type;
+        return _type;
     }
 
     public File getSrc()
     {
-        return src;
+        return _src;
     }
 
     public DatabaseOperation getDbOperation()
@@ -76,20 +68,7 @@ public class Operation implements DbUnitTaskStep
 
     public String getFormat()
     {
-        return format != null ? format : DEFAULT_FORMAT;
-    }
-
-    /**
-     * This returns the actual value of the <code>format</code> field,
-     * which makes it possible to determine whether the setFormat() method was ever called
-     * despite the fact that the <code>getFormat()</code> method returns a default.
-     *
-     * @return a <code>String</code>, the actual value of the <code>format</code> field.
-     *         If <code>setFormat()</code> has not been called, this method will return null.
-     */
-    String getRawFormat()
-    {
-        return format;
+        return _format != null ? _format : DEFAULT_FORMAT;
     }
 
     public void setType(String type)
@@ -150,26 +129,26 @@ public class Operation implements DbUnitTaskStep
                     + " REFRESH, DELETE, DELETE_ALL, CLEAN_INSERT, MSSQL_INSERT, "
                     + " or MSSQL_REFRESH but was: " + type);
         }
-        this.type = type;
+        _type = type;
     }
 
     public void setSrc(File src)
     {
-        this.src = src;
+        _src = src;
     }
 
     public void setFormat(String format)
     {
-        if (format.equalsIgnoreCase(Export.FORMAT_FLAT)
-                || format.equalsIgnoreCase(Export.FORMAT_XML)
-                || format.equalsIgnoreCase(Export.FORMAT_CSV)
+        if (format.equalsIgnoreCase(FORMAT_FLAT)
+                || format.equalsIgnoreCase(FORMAT_XML)
+                || format.equalsIgnoreCase(FORMAT_CSV)
         )
         {
-            this.format = format;
+            _format = format;
         }
         else
         {
-            throw new IllegalArgumentException("Type must be either 'flat'(default) csv or 'xml' but was: " + format);
+            throw new IllegalArgumentException("Type must be either 'flat'(default), 'xml' or 'csv' but was: " + format);
         }
     }
 
@@ -187,39 +166,9 @@ public class Operation implements DbUnitTaskStep
 
         try
         {
-            if (format == null)
-            {
-                format = DEFAULT_FORMAT;
-            }
-
-            IDataSetProducer producer = null;
-            if (format.equalsIgnoreCase(Export.FORMAT_XML))
-            {
-                producer = new XmlProducer(new InputSource(src.toURL().toString()));
-            }
-            else if (format.equalsIgnoreCase(Export.FORMAT_CSV)) {
-                producer = new CSVProducer(src);
-            }
-            else
-            {
-                producer = new FlatXmlProducer(new InputSource(src.toURL().toString()));
-            }
-
-            IDataSet dataset = null;
-            if (_forwardOperation)
-            {
-                dataset = new StreamingDataSet(producer);
-            }
-            else
-            {
-                dataset = new CachedDataSet(producer);
-            }
-
+            IDataSet dataset = getSrcDataSet(getSrc(),
+                    getFormat(), _forwardOperation);
             _operation.execute(connection, dataset);
-        }
-        catch (IOException e)
-        {
-            throw new DatabaseUnitException(e);
         }
         catch (SQLException e)
         {
@@ -229,9 +178,9 @@ public class Operation implements DbUnitTaskStep
 
     public String getLogMessage()
     {
-        return "Executing operation: " + type
-                + "\n          on   file: " + ((src == null) ? null : src.getAbsolutePath())
-                + "\n          with format: " + format;
+        return "Executing operation: " + _type
+                + "\n          on   file: " + ((_src == null) ? null : _src.getAbsolutePath())
+                + "\n          with format: " + _format;
     }
 
 
@@ -239,10 +188,10 @@ public class Operation implements DbUnitTaskStep
     {
         StringBuffer result = new StringBuffer();
         result.append("Operation: ");
-        result.append(" type=" + type);
-        result.append(", format=" + format);
-        result.append(", src=" + src == null ? null : src.getAbsolutePath());
-        result.append(", _operation = " + _operation);
+        result.append(" type=" + _type);
+        result.append(", format=" + _format);
+        result.append(", src=" + _src == null ? null : _src.getAbsolutePath());
+        result.append(", operation = " + _operation);
 
         return result.toString();
     }

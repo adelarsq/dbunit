@@ -47,7 +47,7 @@ public class Assertion
      * the tables order.
      */
     public static void assertEquals(IDataSet expectedDataSet,
-            IDataSet actualDataSet) throws Exception
+            IDataSet actualDataSet) throws DatabaseUnitException
     {
         // do not continue if same instance
         if (expectedDataSet == actualDataSet)
@@ -90,7 +90,7 @@ public class Assertion
      * keys.
      */
     public static void assertEquals(ITable expectedTable, ITable actualTable)
-            throws Exception
+            throws DatabaseUnitException
     {
         // Do not continue if same instance
         if (expectedTable == actualTable)

@@ -240,11 +240,11 @@ public class DbUnitTask extends Task
     }
 
     /**
-     * Adds a Composite to the steps List.
+     * Adds a Compare to the steps List.
      */
-    public void addComposite(Composite composite)
+    public void addCompare(Compare compare)
     {
-        steps.add(composite);
+        steps.add(compare);
     }
 
     /**

@@ -121,47 +121,6 @@
             </table>
           </td>
         </tr>
-        <!--
-        <tr>
-          <td>composite</td>
-          <td>
-            <p>Use nested <a class="code">&lt;composite&gt;</a> operation elements
-              to combine multiple <a class="code">&lt;operation&gt;</a>s (on the
-              same file) into a single one.</p>
-            <table border="1">
-              <tr>
-                <th>Attribute</th>
-                <th>Description</th>
-                <th>Required</th>
-              </tr>
-              <tr>
-                <td>src</td>
-                <td>The xml source upon which the operation is to be performed</td>
-                <td>Yes</td>
-              </tr>
-              <tr>
-                <td>flat</td>
-                <td>If true, use <a class="code">FlatXmlDataSet</a> type in the
-                  supplied src file. Otherwise use <a class="code">XmlDataSet</a>.
-                  Defaults to <a class="code">true</a></td>
-                <td>
-                  <p>No</p>
-                </td>
-              </tr>
-            </table>
-            <h4>Parameters specified as nested elements </h4>
-            <table border="1">
-              <tr>
-                <td>operation</td>
-                <td>See above definition for details. The src and flat attributes
-                  are supplied as attributes to the <a class="code">&lt;composite&gt;</a>
-                  step and should not be attempted to be overridden by the nested
-                  <a class="code">&lt;operation&gt;</a> step.</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-    -->
         <tr> 
           <td>export</td>
           <td> 
@@ -189,7 +148,7 @@
                   are "flat", "xml" or "dtd". Defaults 
                   to <b>"flat"</b></td>
                 <td> 
-                  <p>No</p>
+                <td>No</td>
                 </td>
               </tr>
             </table>
@@ -198,7 +157,7 @@
               <tr> 
                 <td>table</td>
                 <td> 
-                  <p>Use nested &lt;table&gt; elements to &lt;export&gt; 
+                  <p>Use nested &lt;table&gt; elements to export 
                     specific tables. </p>
                   <table border="1">
                     <tr> 
@@ -217,7 +176,7 @@
               <tr> 
                 <td>query</td>
                 <td> 
-                  <p>Use nested <a class="code">&lt;query&gt;</a> elements to <a class="code">&lt;export&gt;</a> 
+                  <p>Use nested <a class="code">&lt;query&gt;</a> elements to export 
                     data according to a sql statement. </p>
                   <table border="1">
                     <tr> 
@@ -228,6 +187,83 @@
                     <tr> 
                       <td>name</td>
                       <td>Name to reference the sql statement.</td>
+                      <td>Yes</td>
+                    </tr>
+                    <tr> 
+                      <td>sql</td>
+                      <td>The sql to execute. You can use either SELECT * from 
+                        Mytable or SELECT col1, col4 from MyTable</td>
+                      <td>Yes</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr> 
+          <td>compare</td>
+          <td> 
+            <p>Use nested &lt;compare&gt; elements to validate the content of the database against the specified dataset file.
+            </p>
+            <table border="1">
+              <tr> 
+                <th>Attribute</th>
+                <th>Description</th>
+                <th>Required</th>
+              </tr>
+              <tr> 
+                <td>src</td>
+                <td>The xml source upon which the comparison is to be performed</td>
+                <td>Yes</td>
+              </tr>
+              <tr> 
+                <td>format</td>
+                <td>Format type of supplied source file. Possible values are "flat" 
+                  or "xml". Defaults to <b>"flat"</b></td>
+                <td>No</td>
+              </tr>
+              <tr> 
+                <td>sort</td>
+                <td>Sorts tables prior comparison. Defaults to <b>"false".</b></td>
+                <td>No</td>
+              </tr>
+            </table>
+            <h4>Parameters specified as nested elements </h4>
+            <table border="1">
+              <tr> 
+                <td>table</td>
+                <td> 
+                  <p>Use nested &lt;table&gt; elements to compare
+                    specific tables. </p>
+                  <table border="1">
+                    <tr> 
+                      <th>Attribute</th>
+                      <th>Description</th>
+                      <th>Required</th>
+                    </tr>
+                    <tr> 
+                      <td>name</td>
+                      <td>Name of the database table to compare.</td>
+                      <td>Yes</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td>query</td>
+                <td> 
+                  <p>Use nested <a class="code">&lt;query&gt;</a> elements to compare 
+                    data according to a sql statement. </p>
+                  <table border="1">
+                    <tr> 
+                      <th>Attribute</th>
+                      <th>Description</th>
+                      <th>Required</th>
+                    </tr>
+                    <tr> 
+                      <td>name</td>
+                      <td>Name of the database table to compare.</td>
                       <td>Yes</td>
                     </tr>
                     <tr> 
@@ -285,17 +321,37 @@
 </dbunit>]]></source>        
 
       <h4><a name="partialexport">Partial database data export</a></h4>
-      <p>Export two tables: FOO, resulting from specified query and BAR, resulting from generated query "SELECT * FROM BAR"</p>
+      <p>Export two tables: FOO, resulting from specified query and BAR entire content</p>
 	<source><![CDATA[
 <dbunit driver="com.vendor.jdbc.Driver"          
         url="jdbc:vendor:mydatabase"          
         userid="user"          
         password="password">    
     <export dest="partial.xml">      
-        <query name="FOO" sql="SELECT COL1, COL2, COL3 as 'COLSPECIAL' 
-                               FROM BAR WHERE COL1=4"/>
+        <query name="FOO" sql="SELECT COL1, COL2 FROM FOO WHERE COL1=4"/>
         <table name="BAR"/>      
     </export>
+</dbunit>]]></source>        
+
+      <h4>Database data comparison</h4>
+	<source><![CDATA[
+<dbunit driver="com.vendor.jdbc.Driver"          
+        url="jdbc:vendor:mydatabase"          
+        userid="user"          
+        password="password">    
+    <compare src="expectedData.xml"/>    
+</dbunit>]]></source>        
+
+      <h4><a name="partialcompare">Partial database data comparison</a></h4>
+	<source><![CDATA[
+<dbunit driver="com.vendor.jdbc.Driver"          
+        url="jdbc:vendor:mydatabase"          
+        userid="user"          
+        password="password">    
+    <compare src="expectedData.xml">      
+        <query name="FOO" sql="SELECT COL1, COL2 FROM FOO WHERE COL1=4"/>
+        <table name="BAR"/>      
+    </compare>
 </dbunit>]]></source>        
 
 </section></body></document>

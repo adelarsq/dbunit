@@ -21,11 +21,6 @@
 
 package org.dbunit.ant;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Target;
-import org.apache.tools.ant.taskdefs.TaskdefsTest;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
@@ -34,7 +29,12 @@ import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 
-import java.io.File;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Target;
+import org.apache.tools.ant.taskdefs.TaskdefsTest;
+
 import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -134,57 +134,25 @@ public class DbUnitTaskTest extends TaskdefsTest
     public void testResolveOperationTypes()
     {
         assertOperationType("Should have been an DELETE_ALL operation",
-                "set-type-none", DatabaseOperation.NONE);
+                "test-type-none", DatabaseOperation.NONE);
         assertOperationType("Should have been an DELETE_ALL operation",
-                "set-type-delete-all", DatabaseOperation.DELETE_ALL);
+                "test-type-delete-all", DatabaseOperation.DELETE_ALL);
         assertOperationType("Should have been an INSERT operation",
-                "set-type-insert", DatabaseOperation.INSERT);
+                "test-type-insert", DatabaseOperation.INSERT);
         assertOperationType("Should have been an UPDATE operation",
-                "set-type-update", DatabaseOperation.UPDATE);
+                "test-type-update", DatabaseOperation.UPDATE);
         assertOperationType("Should have been an REFRESH operation",
-                "set-type-refresh", DatabaseOperation.REFRESH);
+                "test-type-refresh", DatabaseOperation.REFRESH);
         assertOperationType("Should have been an CLEAN_INSERT operation",
-                "set-type-clean-insert", DatabaseOperation.CLEAN_INSERT);
+                "test-type-clean-insert", DatabaseOperation.CLEAN_INSERT);
         assertOperationType("Should have been an DELETE operation",
-                "set-type-delete", DatabaseOperation.DELETE);
+                "test-type-delete", DatabaseOperation.DELETE);
         assertOperationType("Should have been an MSSQL_INSERT operation",
-                "set-type-mssql-insert", InsertIdentityOperation.INSERT);
+                "test-type-mssql-insert", InsertIdentityOperation.INSERT);
         assertOperationType("Should have been an MSSQL_REFRESH operation",
-                "set-type-mssql-refresh", InsertIdentityOperation.REFRESH);
+                "test-type-mssql-refresh", InsertIdentityOperation.REFRESH);
         assertOperationType("Should have been an MSSQL_CLEAN_INSERT operation",
-                "set-type-mssql-clean-insert", InsertIdentityOperation.CLEAN_INSERT);
-    }
-
-    public void testCompositeOrder()
-    {
-        String targetName = "composite-tests";
-        Composite composite = (Composite)getFirstStepFromTarget(targetName);
-        List operations = composite.getOperations();
-        assertTrue("Composite should have had two suboperations, but has: "
-                + operations.size(), operations.size() == 2);
-        Operation cleanInsert = (Operation)operations.get(0);
-        Operation delete = (Operation)operations.get(1);
-        assertTrue("Should have been a CLEAN_INSERT, but was: " + cleanInsert.getType(),
-                cleanInsert.getType().equals("CLEAN_INSERT"));
-        assertTrue("Should have been a DELETE, but was: " + delete.getType(),
-                delete.getType().equals("DELETE"));
-    }
-
-    public void testCompositeSrc()
-    {
-        String targetName = "composite-tests";
-        Composite composite = (Composite)getFirstStepFromTarget(targetName);
-        List operations = composite.getOperations();
-        Iterator operIter = operations.listIterator();
-        while (operIter.hasNext())
-        {
-            Operation operation = (Operation)operIter.next();
-            File src = operation.getSrc();
-            assertNotNull("Operation shouldn't have a null src!", src);
-            assertTrue("Operation should have src from composite: " + composite.getSrc()
-                    + ", but was: " + src,
-                    src.equals(composite.getSrc()));
-        }
+                "test-type-mssql-clean-insert", InsertIdentityOperation.CLEAN_INSERT);
     }
 
     public void testInvalidCompositeOperationSrc()
@@ -281,7 +249,7 @@ public class DbUnitTaskTest extends TaskdefsTest
 
         Query testTable = (Query)queries.get(0);
         assertEquals("name", "TEST_TABLE", testTable.getName());
-        assertEquals("sql", "SELECT * FROM test_table", testTable.getSql());
+        assertEquals("sql", "SELECT * FROM test_table ORDER BY column0 DESC", testTable.getSql());
 
         Query pkTable = (Query)queries.get(1);
         assertEquals("name", "PK_TABLE", pkTable.getName());

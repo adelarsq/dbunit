@@ -23,7 +23,6 @@ package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.database.QueryDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.csv.CSVDataSetWriter;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
@@ -34,9 +33,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -45,18 +42,14 @@ import java.util.List;
  * The export can be performed on a full dataset or a partial one if
  * specific table names are identified.
  *
- * @author Timothy Ruppert 
+ * @author Timothy Ruppert
  * @author Ben Cox
  * @version $Revision$
  * @since Jun 10, 2002
  * @see DbUnitTaskStep
  */
-public class Export implements DbUnitTaskStep
+public class Export extends AbstractStep
 {
-    public static final String FORMAT_FLAT = "flat";
-    public static final String FORMAT_XML = "xml";
-    public static final String FORMAT_DTD = "dtd";
-    public static final String FORMAT_CSV = "csv";
 
     private File _dest;
     private String _format = FORMAT_FLAT;
@@ -120,43 +113,20 @@ public class Export implements DbUnitTaskStep
     {
         try
         {
-            IDataSet dataset = null;
-
             if (_dest == null)
             {
                 throw new DatabaseUnitException("'_dest' is a required attribute of the <export> step.");
             }
 
-            // Retrieve the complete database if no tables or queries specified.
-            if (_tables.size() == 0)
+            IDataSet dataset = getDatabaseDataSet(connection, _tables, true);
+
+            // Write the dataset
+            if (_format.equals(FORMAT_CSV))
             {
-                dataset = connection.createDataSet();
+                CSVDataSetWriter.write(dataset, _dest);
             }
             else
             {
-                QueryDataSet queryDataset = new QueryDataSet(connection);
-                for (Iterator it = _tables.iterator(); it.hasNext();)
-                {
-                    Object item = it.next();
-                    if (item instanceof Query)
-                    {
-                        Query queryItem = (Query)item;
-                        queryDataset.addTable(queryItem.getName(), queryItem.getSql());
-                    }
-                    else
-                    {
-                        Table tableItem = (Table)item;
-                        queryDataset.addTable(tableItem.getName());
-                    }
-                }
-
-                dataset = queryDataset;
-            }
-
-            // Write the dataset
-            if (_format.equals(FORMAT_CSV)) {
-                CSVDataSetWriter.write(dataset, _dest);
-            } else {
                 OutputStream out = new FileOutputStream(_dest);
                 try
                 {
@@ -180,10 +150,6 @@ public class Export implements DbUnitTaskStep
             }
         }
         catch (IOException e)
-        {
-            throw new DatabaseUnitException(e);
-        }
-        catch (SQLException e)
         {
             throw new DatabaseUnitException(e);
         }

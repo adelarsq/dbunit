@@ -26,6 +26,7 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.ant.Export;
 import org.dbunit.ant.Operation;
 import org.dbunit.ant.Query;
+import org.dbunit.ant.AbstractStep;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.CachedDataSet;
@@ -94,7 +95,7 @@ public class CSVProducerTest extends TestCase {
 
     public void testInsertOperationWithCsvFormat() throws SQLException, DatabaseUnitException {
         Operation operation = new Operation();
-        operation.setFormat(Export.FORMAT_CSV);
+        operation.setFormat(AbstractStep.FORMAT_CSV);
         operation.setSrc(new File(THE_DIRECTORY));
         operation.setType("INSERT");
         operation.execute(connection);
@@ -115,7 +116,7 @@ public class CSVProducerTest extends TestCase {
         deleteDirectory(dir);
 
         Export export = new Export();
-        export.setFormat(Export.FORMAT_CSV);
+        export.setFormat(AbstractStep.FORMAT_CSV);
         export.setDest(dir);
 
         Query query = new Query();
