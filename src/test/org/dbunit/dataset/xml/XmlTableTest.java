@@ -44,7 +44,7 @@ public class XmlTableTest extends AbstractTableTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        InputStream in = new FileInputStream(
+        Reader in = new FileReader(
                 new File("src/xml/xmlTableTest.xml"));
         return new XmlDataSet(in);
     }

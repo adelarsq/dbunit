@@ -26,6 +26,7 @@ import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
@@ -43,7 +44,7 @@ public class AssertionTest extends TestCase
 
     private IDataSet getDataSet() throws Exception
     {
-        return new FlatXmlDataSet(new FileInputStream(
+        return new FlatXmlDataSet(new FileReader(
                 "src/xml/assertionTest.xml"));
     }
 

@@ -42,7 +42,7 @@ public class XmlDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        InputStream in = new FileInputStream(
+        Reader in = new FileReader(
                 new File("src/xml/dataSetTest.xml"));
         return new XmlDataSet(in);
     }
@@ -70,7 +70,7 @@ public class XmlDataSetTest extends AbstractDataSetTest
                 XmlDataSet.write(expectedDataSet, out);
 
                 // load new dataset from temp file
-                IDataSet actualDataSet = new XmlDataSet(new FileInputStream(tempFile));
+                IDataSet actualDataSet = new XmlDataSet(new FileReader(tempFile));
 
                 // verify table count
                 assertEquals("table count", expectedDataSet.getTableNames().length,
@@ -117,7 +117,7 @@ public class XmlDataSetTest extends AbstractDataSetTest
                 XmlDataSet.write(expectedDataSet, out);
 
                 // load new dataset from temp file
-                IDataSet actualDataSet = new XmlDataSet(new FileInputStream(tempFile));
+                IDataSet actualDataSet = new XmlDataSet(new FileReader(tempFile));
 
                 // verify table count
                 assertEquals("table count", expectedDataSet.getTableNames().length,

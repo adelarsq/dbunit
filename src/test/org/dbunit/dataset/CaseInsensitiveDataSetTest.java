@@ -14,6 +14,7 @@ import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 
 /**
  * @author Manuel Laflamme
@@ -28,13 +29,13 @@ public class CaseInsensitiveDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        return new CaseInsensitiveDataSet(new XmlDataSet(new FileInputStream(
+        return new CaseInsensitiveDataSet(new XmlDataSet(new FileReader(
                 "src/xml/caseInsensitiveDataSetTest.xml")));
     }
 
     protected IDataSet createDuplicateDataSet() throws Exception
     {
-        return new CaseInsensitiveDataSet(new FlatXmlDataSet(new FileInputStream(
+        return new CaseInsensitiveDataSet(new FlatXmlDataSet(new FileReader(
                 "src/xml/caseInsensitiveDataSetDuplicateTest.xml")));
     }
 

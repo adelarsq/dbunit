@@ -46,7 +46,7 @@ public class TransactionOperationTest extends AbstractDatabaseTest
     public void testExecuteCommit() throws Exception
     {
         String tableName = "TEST_TABLE";
-        InputStream in = new FileInputStream(
+        Reader in = new FileReader(
                 new File("src/xml/transactionOperationTest.xml"));
         IDataSet xmlDataSet = new XmlDataSet(in);
         Connection jdbcConnection = _connection.getConnection();
@@ -69,7 +69,7 @@ public class TransactionOperationTest extends AbstractDatabaseTest
     public void testExclusiveTransaction() throws Exception
     {
         String tableName = "TEST_TABLE";
-        InputStream in = new FileInputStream(
+        Reader in = new FileReader(
                 new File("src/xml/transactionOperationTest.xml"));
         IDataSet xmlDataSet = new XmlDataSet(in);
         Connection jdbcConnection = _connection.getConnection();
@@ -105,7 +105,7 @@ public class TransactionOperationTest extends AbstractDatabaseTest
     public void testExecuteRollback() throws Exception
     {
         String tableName = "TEST_TABLE";
-        InputStream in = new FileInputStream(
+        Reader in = new FileReader(
                 new File("src/xml/transactionOperationTest.xml"));
         IDataSet xmlDataSet = new XmlDataSet(in);
         Exception[] exceptions = new Exception[]{

@@ -27,6 +27,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.database.AmbiguousTableNameException;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 
 /**
  * @author Manuel Laflamme
@@ -42,9 +43,9 @@ public class FilteredDataSetTest extends AbstractDataSetTest
     protected IDataSet createDataSet() throws Exception
     {
         IDataSet dataSet1 = new XmlDataSet(
-                new FileInputStream("src/xml/dataSetTest.xml"));
+                new FileReader("src/xml/dataSetTest.xml"));
         IDataSet dataSet2 = new XmlDataSet(
-                new FileInputStream("src/xml/filteredDataSetTest.xml"));
+                new FileReader("src/xml/filteredDataSetTest.xml"));
 
         IDataSet dataSet = new CompositeDataSet(dataSet1, dataSet2);
         assertEquals("count before filter", getExpectedNames().length + 1,
@@ -55,9 +56,9 @@ public class FilteredDataSetTest extends AbstractDataSetTest
     protected IDataSet createDuplicateDataSet() throws Exception
     {
         IDataSet dataSet1 = new XmlDataSet(
-                new FileInputStream("src/xml/xmlDataSetDuplicateTest.xml"));
+                new FileReader("src/xml/xmlDataSetDuplicateTest.xml"));
         IDataSet dataSet2 = new XmlDataSet(
-                new FileInputStream("src/xml/filteredDataSetTest.xml"));
+                new FileReader("src/xml/filteredDataSetTest.xml"));
 
         IDataSet dataSet = new CompositeDataSet(dataSet1, dataSet2, false);
         assertEquals("count before filter", getExpectedDuplicateNames().length + 1,

@@ -30,6 +30,7 @@ import org.dbunit.operation.DatabaseOperation;
 
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
+import java.io.FileReader;
 
 /**
  * @author Manuel Laflamme
@@ -42,7 +43,7 @@ public class Main
         System.setProperty("dbunit.name.escapePattern", "\"?\"");
         IDatabaseConnection connection =
                 DatabaseEnvironment.getInstance().getConnection();
-        IDataSet dataSet = new XmlDataSet(new FileInputStream("dataSetTest.xml"));
+        IDataSet dataSet = new XmlDataSet(new FileReader("dataSetTest.xml"));
         DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 
 //        String[] tableNames = connection.createDataSet().getTableNames();

@@ -81,6 +81,15 @@
       <includeParser value="true" />
       <maximumHeapSize value="128" />
       <viewClosedWhenNoErrors value="false" />
+      <targetFilters>
+        <filter targetName="init" isVisible="false" />
+        <filter targetName="clean" isVisible="false" />
+        <filter targetName="compile" isVisible="false" />
+        <filter targetName="jar" isVisible="false" />
+        <filter targetName="javadoc" isVisible="false" />
+        <filter targetName="test" isVisible="true" />
+        <filter targetName="dist" isVisible="false" />
+      </targetFilters>
     </buildFile>
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />

@@ -44,7 +44,7 @@ public class CompositeOperationTest extends AbstractDatabaseTest
     {
         String tableName = "PK_TABLE";
         String columnName = "PK0";
-        InputStream in = new FileInputStream(
+        Reader in = new FileReader(
                 new File("src/xml/compositeOperationTest.xml"));
         IDataSet xmlDataSet = new XmlDataSet(in);
 

@@ -31,6 +31,7 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 /**
@@ -51,7 +52,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
         String primaryKey = "PK0";
 
         IDataSet xmlDataSet = new FlatXmlDataSet(
-                new FileInputStream("src/xml/refreshOperationTest.xml"));
+                new FileReader("src/xml/refreshOperationTest.xml"));
 
         // verify table before
         assertEquals("array lenght", tableNames.length, tableRowCount.length);
@@ -65,7 +66,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
 
         // verify table after
         IDataSet expectedDataSet = new FlatXmlDataSet(
-                new FileInputStream("src/xml/refreshOperationTestExpected.xml"));
+                new FileReader("src/xml/refreshOperationTestExpected.xml"));
 
         for (int i = 0; i < tableNames.length; i++)
         {
@@ -81,7 +82,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
         String primaryKey = "PK0";
 
         IDataSet xmlDataSet = new FlatXmlDataSet(
-                new FileInputStream("src/xml/refreshOperationDuplicateTest.xml"));
+                new FileReader("src/xml/refreshOperationDuplicateTest.xml"));
         assertEquals("table count", xmlDataSet.getTableNames().length, 4);
 
         // verify table before
@@ -96,7 +97,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
 
         // verify table after
         IDataSet expectedDataSet = new FlatXmlDataSet(
-                new FileInputStream("src/xml/refreshOperationTestExpected.xml"));
+                new FileReader("src/xml/refreshOperationTestExpected.xml"));
 
         for (int i = 0; i < tableNames.length; i++)
         {

@@ -229,7 +229,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
         // execute this test only if the target database support CLOB
         if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
         {
-            InputStream in = new FileInputStream(new File("src/xml/clobInsertTest.xml"));
+            Reader in = new FileReader(new File("src/xml/clobInsertTest.xml"));
             IDataSet xmlDataSet = new FlatXmlDataSet(in);
 
             assertEquals("count before", 0, _connection.getRowCount(tableName));
@@ -249,7 +249,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
         // execute this test only if the target database support BLOB
         if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
         {
-            InputStream in = new FileInputStream(new File("src/xml/blobInsertTest.xml"));
+            Reader in = new FileReader(new File("src/xml/blobInsertTest.xml"));
             IDataSet xmlDataSet = new FlatXmlDataSet(in);
 
             assertEquals("count before", 0, _connection.getRowCount(tableName));
@@ -264,7 +264,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
     public void testMissingColumns() throws Exception
     {
-        InputStream in = new FileInputStream("src/xml/missingColumnTest.xml");
+        Reader in = new FileReader("src/xml/missingColumnTest.xml");
         IDataSet xmlDataSet = new XmlDataSet(in);
 
         ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
@@ -332,7 +332,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
     {
         // this won't work because of the timestamp column.
         if (!(DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment)){
-            InputStream in = new FileInputStream("src/xml/insertOperationTest.xml");
+            Reader in = new FileReader("src/xml/insertOperationTest.xml");
             IDataSet xmlDataSet = new XmlDataSet(in);
 
             ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());

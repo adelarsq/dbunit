@@ -42,12 +42,12 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        return new FlatDtdDataSet(new FileInputStream(DTD_FILE));
+        return new FlatDtdDataSet(new FileReader(DTD_FILE));
     }
 
     protected IDataSet createDuplicateDataSet() throws Exception
     {
-        return new FlatDtdDataSet(new FileInputStream(DUPLICATE_FILE));
+        return new FlatDtdDataSet(new FileReader(DUPLICATE_FILE));
     }
 
     protected void sort(Object[] array)
@@ -84,13 +84,13 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
 
     public void testWriteFromDtd() throws Exception
     {
-        IDataSet dataSet = new FlatDtdDataSet(new FileInputStream(DTD_FILE));
+        IDataSet dataSet = new FlatDtdDataSet(new FileReader(DTD_FILE));
 
         File tempFile = File.createTempFile("flatXmlDocType", ".dtd");
 
         try
         {
-            OutputStream out = new FileOutputStream(tempFile);
+            Writer out = new FileWriter(tempFile);
 
             try
             {
@@ -105,7 +105,9 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
                 out.close();
             }
 
-            FileAsserts.assertEquals(new FileInputStream(DTD_FILE), tempFile);
+            FileAsserts.assertEquals(
+                    new BufferedReader(new FileReader(DTD_FILE)),
+                    new BufferedReader(new FileReader(tempFile)));
         }
         finally
         {
@@ -124,7 +126,7 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
 
         try
         {
-            OutputStream out = new FileOutputStream(tempFile);
+            Writer out = new FileWriter(tempFile);
 
             try
             {
@@ -139,7 +141,9 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
                 out.close();
             }
 
-            FileAsserts.assertEquals(new FileInputStream(DTD_FILE), tempFile);
+            FileAsserts.assertEquals(
+                    new BufferedReader(new FileReader(DTD_FILE)),
+                    new BufferedReader(new FileReader(tempFile)));
         }
         finally
         {

@@ -25,6 +25,7 @@ package org.dbunit.dataset;
 import org.dbunit.dataset.xml.XmlDataSet;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 
 /**
  * @author Manuel Laflamme
@@ -40,7 +41,7 @@ public class DefaultDataSetTest extends AbstractDataSetTest
     protected IDataSet createDataSet() throws Exception
     {
         IDataSet dataSet = new XmlDataSet(
-                new FileInputStream("src/xml/dataSetTest.xml"));
+                new FileReader("src/xml/dataSetTest.xml"));
         ITable[] tables = DataSetUtils.getTables(dataSet);
 
         return new DefaultDataSet(tables);
@@ -49,7 +50,7 @@ public class DefaultDataSetTest extends AbstractDataSetTest
     protected IDataSet createDuplicateDataSet() throws Exception
     {
         IDataSet dataSet = new XmlDataSet(
-                new FileInputStream("src/xml/xmlDataSetDuplicateTest.xml"));
+                new FileReader("src/xml/xmlDataSetDuplicateTest.xml"));
         ITable[] tables = DataSetUtils.getTables(dataSet);
 
         return new DefaultDataSet(tables);

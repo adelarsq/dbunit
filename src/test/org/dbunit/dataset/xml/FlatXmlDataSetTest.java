@@ -42,13 +42,13 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        return new FlatXmlDataSet(new FileInputStream("src/xml/flatXmlDataSetTest.xml"));
+        return new FlatXmlDataSet(new File("src/xml/flatXmlDataSetTest.xml"));
     }
 
     protected IDataSet createDuplicateDataSet() throws Exception
     {
         return new FlatXmlDataSet(
-                new FileInputStream("src/xml/flatXmlDataSetDuplicateTest.xml"));
+                new File("src/xml/flatXmlDataSetDuplicateTest.xml"));
     }
 
 //    public void testWrite() throws Exception
@@ -111,7 +111,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
                 FlatXmlDataSet.write(expectedDataSet, out);
 
                 // load new dataset from temp file
-                IDataSet actualDataSet = new FlatXmlDataSet(new FileInputStream(tempFile));
+                IDataSet actualDataSet = new FlatXmlDataSet(new FileReader(tempFile));
 
                 // verify table count
                 assertEquals("table count", expectedDataSet.getTableNames().length,
@@ -158,7 +158,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
                 FlatXmlDataSet.write(expectedDataSet, out);
 
                 // load new dataset from temp file
-                IDataSet actualDataSet = new FlatXmlDataSet(new FileInputStream(tempFile));
+                IDataSet actualDataSet = new FlatXmlDataSet(new FileReader(tempFile));
 
                 // verify table count
                 assertEquals("table count", expectedDataSet.getTableNames().length,

@@ -48,7 +48,7 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
             FlatXmlDataSet.write(super.createDataSet(true), out);
 
             // load new dataset from temp file
-            return new FlatXmlDataSet(new FileInputStream(tempFile));
+            return new FlatXmlDataSet(new FileReader(tempFile));
         }
         finally
         {
@@ -81,7 +81,7 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
 
             // load new dataset from temp file
             FlatXmlDataSet xmlDataSet2 = new FlatXmlDataSet(
-                    new FileInputStream(tempFile));
+                    new FileReader(tempFile));
 
             // verify each table
             for (int i = 0; i < tables.length; i++)

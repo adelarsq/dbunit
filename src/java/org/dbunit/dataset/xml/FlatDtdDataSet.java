@@ -29,9 +29,17 @@ public class FlatDtdDataSet extends AbstractDataSet
     private final List _tableNames = new ArrayList();
     private final Map _tableMap = new HashMap();
 
+    /**
+     * @deprecated Use Reader overload instead
+     */
     public FlatDtdDataSet(InputStream in) throws IOException
     {
-        DTDParser dtdParser = new DTDParser(new InputStreamReader(in));
+        this(new InputStreamReader(in));
+    }
+
+    public FlatDtdDataSet(Reader in) throws IOException
+    {
+        DTDParser dtdParser = new DTDParser(in);
         DTD dtd = dtdParser.parse(true);
 
         // table names
@@ -58,12 +66,21 @@ public class FlatDtdDataSet extends AbstractDataSet
     }
 
     /**
-     * Write the specified dataset to the specified output as DTD.
+     * Write the specified dataset to the specified output stream as DTD.
      */
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
-        PrintStream printOut = new PrintStream(out);
+        write(dataSet, new OutputStreamWriter(out));
+    }
+
+    /**
+     * Write the specified dataset to the specified writer as DTD.
+     */
+    public static void write(IDataSet dataSet, Writer out)
+            throws IOException, DataSetException
+    {
+        PrintWriter printOut = new PrintWriter(out);
         String[] tableNames = dataSet.getTableNames();
 
         // dataset element

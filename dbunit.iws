@@ -11,47 +11,44 @@
   </component>
   <component name="FileEditorManager">
     <history>
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" line="309" column="15" vertical-scroll-proportion="0.33333334" horizontal-scroll-proportion="0.16773163" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/CaseInsensitiveDataSetTest.java" line="43" column="0" vertical-scroll-proportion="0.47740114" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseTableMetaData.java" line="201" column="0" vertical-scroll-proportion="0.17896679" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/XmlDataSet.java" line="41" column="13" vertical-scroll-proportion="0.3321033" horizontal-scroll-proportion="0.14536741" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/AbstractDataSet.java" line="70" column="0" vertical-scroll-proportion="0.8256705" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatDtdDataSet.java" line="139" column="47" vertical-scroll-proportion="0.33908045" horizontal-scroll-proportion="0.5280899" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseDataSet.java" line="164" column="44" vertical-scroll-proportion="0.22796935" horizontal-scroll-proportion="0.49438202" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/DefaultDataSetTest.java" line="48" column="23" vertical-scroll-proportion="0.33222592" horizontal-scroll-proportion="0.2515625" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/CompositeTable.java" line="67" column="20" vertical-scroll-proportion="0.72509223" horizontal-scroll-proportion="0.21875" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/FilteredDataSet.java" line="55" column="26" vertical-scroll-proportion="0.7066421" horizontal-scroll-proportion="0.284375" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/AbstractDataSetTest.java" line="374" column="8" vertical-scroll-proportion="0.35823753" horizontal-scroll-proportion="0.08988764" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/FilteredDataSetTest.java" line="74" column="34" vertical-scroll-proportion="0.4386973" horizontal-scroll-proportion="0.38202247" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseDataSetTest.java" line="259" column="4" vertical-scroll-proportion="0.1302682" horizontal-scroll-proportion="0.04494382" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/QueryDataSet.java" line="12" column="23" vertical-scroll-proportion="0.3908046" horizontal-scroll-proportion="0.25842696" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/QueryDataSetTest.java" line="306" column="5" vertical-scroll-proportion="0.50766283" horizontal-scroll-proportion="0.056179777" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/FilteredDataSetTest.java" line="60" column="30" vertical-scroll-proportion="0.4979424" horizontal-scroll-proportion="0.32457495" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/DefaultDataSetTest.java" line="52" column="30" vertical-scroll-proportion="0.33333334" horizontal-scroll-proportion="0.32457495" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/CompositeDataSetTest.java" line="64" column="30" vertical-scroll-proportion="0.6831276" horizontal-scroll-proportion="0.32457495" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/CaseInsensitiveDataSetTest.java" line="31" column="71" vertical-scroll-proportion="0.33333334" horizontal-scroll-proportion="0.76816076" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/Main.java" line="45" column="56" vertical-scroll-proportion="0.33333334" horizontal-scroll-proportion="0.6058733" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/AssertionTest.java" line="46" column="48" vertical-scroll-proportion="0.33333334" horizontal-scroll-proportion="0.51931995" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/InsertOperationTest.java" line="266" column="34" vertical-scroll-proportion="0.3580247" horizontal-scroll-proportion="0.36785161" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/AbstractBatchOperationTest.java" line="46" column="34" vertical-scroll-proportion="0.3580247" horizontal-scroll-proportion="0.36785161" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/util/Base64.java" line="548" column="51" vertical-scroll-proportion="0.33333334" horizontal-scroll-proportion="0.5517774" />
+      <source-position-entry url="file://$PROJECT_DIR$/build.xml" line="70" column="0" vertical-scroll-proportion="4.1463413" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/database/statement/MockBatchStatement.java" line="32" column="13" vertical-scroll-proportion="0.65313655" horizontal-scroll-proportion="0.13663663" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/FileAsserts.java" line="15" column="63" vertical-scroll-proportion="0.4704797" horizontal-scroll-proportion="0.71359223" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/xml/FlatDtdDataSetTest.java" line="107" column="12" vertical-scroll-proportion="0.30960855" horizontal-scroll-proportion="0.13592233">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlTable.java" line="58" column="60" vertical-scroll-proportion="0.9341637" horizontal-scroll-proportion="0.63106793" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" line="40" column="22" vertical-scroll-proportion="0.9074733" horizontal-scroll-proportion="0.23439878" />
     </history>
     <open-files>
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/AbstractDataSetTest.java" line="374" column="8" vertical-scroll-proportion="0.35823753" horizontal-scroll-proportion="0.08988764" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/FilteredDataSetTest.java" line="74" column="34" vertical-scroll-proportion="0.4386973" horizontal-scroll-proportion="0.38202247" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseDataSetTest.java" line="259" column="4" vertical-scroll-proportion="0.1302682" horizontal-scroll-proportion="0.04494382" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/QueryDataSet.java" line="12" column="23" vertical-scroll-proportion="0.3908046" horizontal-scroll-proportion="0.25842696" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/QueryDataSetTest.java" line="306" column="5" vertical-scroll-proportion="0.50766283" horizontal-scroll-proportion="0.056179777" selected="true" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatDtdDataSet.java" line="139" column="47" vertical-scroll-proportion="0.33908045" horizontal-scroll-proportion="0.5280899" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseDataSet.java" line="164" column="44" vertical-scroll-proportion="0.22796935" horizontal-scroll-proportion="0.49438202" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/AbstractDataSet.java" line="70" column="0" vertical-scroll-proportion="0.8256705" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" line="40" column="22" vertical-scroll-proportion="0.9074733" horizontal-scroll-proportion="0.23439878" selected="true" />
     </open-files>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1032" height="746" extended-state="6" />
-    <editor active="false" />
+    <frame x="-4" y="-4" width="1032" height="746" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="3" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.3538961" order="2" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.39935064" order="2" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="1" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="7" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="sliding" type="sliding" visible="false" weight="0.4" order="0" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.29369918" order="0" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.25914633" order="0" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.39935064" order="3" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="1" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.38311687" order="1" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.32954547" order="8" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.41233766" order="1" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.40584415" order="8" x="20" y="232" width="984" height="274" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="6" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="5" />
@@ -141,7 +138,7 @@
   </component>
   <component name="ErrorTreeViewConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
-    <option name="HIDE_WARNINGS" value="false" />
+    <option name="HIDE_WARNINGS" value="true" />
   </component>
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
@@ -259,6 +256,9 @@
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
     </view>
     <view id="SourcepathPane">
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/junit" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
     </view>
@@ -336,6 +336,24 @@
       <option name="MAIN_CLASS_NAME" value="org.dbunit.AllTests" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="FlatXmlDataSetTest" type="JUnit" default="false" selected="false">
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.xml.FlatXmlDataSetTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="FlatDtdDataSetTest.testWriteFromDatabase" type="JUnit" default="false" selected="false">
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.xml.FlatDtdDataSetTest" />
+      <option name="METHOD_NAME" value="testWriteFromDatabase" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
   </component>
@@ -422,7 +440,7 @@
   </component>
   <component name="LvcsConfiguration">
     <option name="LOCAL_VCS_ENABLED" value="true" />
-    <option name="LOCAL_VCS_PURGING_PERIOD" value="259200000" />
+    <option name="LOCAL_VCS_PURGING_PERIOD" value="864000000" />
     <option name="ADD_LABEL_ON_PROJECT_OPEN" value="true" />
     <option name="ADD_LABEL_ON_PROJECT_COMPILATION" value="true" />
     <option name="ADD_LABEL_ON_FILE_PACKAGE_COMPILATION" value="true" />

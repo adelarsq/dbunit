@@ -29,6 +29,7 @@ import org.dbunit.dataset.xml.XmlDataSet;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
@@ -84,7 +85,7 @@ public class DatabaseEnvironment
                 _profile.getSchema());
 
         File file = new File("src/xml/dataSetTest.xml");
-        _dataSet = new XmlDataSet(new FileInputStream(file));
+        _dataSet = new XmlDataSet(new FileReader(file));
     }
 
     public IDatabaseConnection getConnection() throws Exception

@@ -48,28 +48,123 @@ public class FlatXmlDataSet extends AbstractDataSet
      * Creates an FlatXmlDataSet object with the specifed xml file.
      * Relative DOCTYPE uri are resolved from the xml file path.
      *
-     * @param file the xml file
+     * @param xmlFile the xml file
      */
     public FlatXmlDataSet(File xmlFile) throws IOException, DataSetException
     {
+        this(xmlFile, true);
+    }
+
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml file.
+     * Relative DOCTYPE uri are resolved from the xml file path.
+     *
+     * @param xmlFile the xml file
+     * @param dtdMetadata if <code>false</code> do not use DTD as metadata
+     */
+    public FlatXmlDataSet(File xmlFile, boolean dtdMetadata)
+            throws IOException, DataSetException
+    {
         try
         {
-            Document document = new Document(new FileInputStream(xmlFile));
+            Document document = new Document(new BufferedReader(new FileReader(xmlFile)));
+
+            IDataSet metaDataSet = null;
 
             // Create metadata from dtd if defined
-            IDataSet metaDataSet = null;
             String dtdUri = getDocTypeUri(document);
-            if (dtdUri != null)
+            if (dtdMetadata && dtdUri != null)
             {
                 File dtdFile = new File(dtdUri);
                 if (!dtdFile.isAbsolute())
                 {
                     dtdFile = new File(xmlFile.getParent(), dtdUri);
                 }
-                metaDataSet = new FlatDtdDataSet(new FileInputStream(dtdFile));
+                metaDataSet = new FlatDtdDataSet(new FileReader(dtdFile));
             }
 
             _tables = getTables(document, metaDataSet);
+        }
+        catch (ParseException e)
+        {
+            throw new DataSetException(e);
+        }
+    }
+
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml reader.
+     * Relative DOCTYPE uri are resolved from the current working dicrectory.
+     *
+     * @param xmlReader the xml reader
+     */
+    public FlatXmlDataSet(Reader xmlReader) throws IOException, DataSetException
+    {
+        this(xmlReader, true);
+    }
+
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml reader.
+     * Relative DOCTYPE uri are resolved from the current working dicrectory.
+     *
+     * @param xmlReader the xml reader
+     * @param dtdMetadata if <code>false</code> do not use DTD as metadata
+     */
+    public FlatXmlDataSet(Reader xmlReader, boolean dtdMetadata)
+            throws IOException, DataSetException
+    {
+        try
+        {
+            Document document = new Document(new BufferedReader(xmlReader));
+
+            // Create metadata from dtd if defined
+            IDataSet metaDataSet = null;
+            String dtdUri = getDocTypeUri(document);
+            if (dtdMetadata && dtdUri != null)
+            {
+                try
+                {
+                    URL dtdUrl = new URL(dtdUri);
+                    metaDataSet = new FlatDtdDataSet(new InputStreamReader(
+                            dtdUrl.openStream()));
+                }
+                catch (MalformedURLException e)
+                {
+                    metaDataSet = new FlatDtdDataSet(new FileReader(dtdUri));
+                }
+            }
+
+            _tables = getTables(document, metaDataSet);
+        }
+        catch (ParseException e)
+        {
+            throw new DataSetException(e);
+        }
+    }
+
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml and dtd readers.
+     *
+     * @param xmlReader the xml reader
+     * @param dtdReader the dtd reader
+     */
+    public FlatXmlDataSet(Reader xmlReader, Reader dtdReader)
+            throws IOException, DataSetException
+    {
+        this(xmlReader, new FlatDtdDataSet(dtdReader));
+    }
+
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml reader.
+     *
+     * @param xmlReader the xml reader
+     * @param metaDataSet the dataset used as metadata source.
+     */
+    public FlatXmlDataSet(Reader xmlReader, IDataSet metaDataSet)
+            throws IOException, DataSetException
+    {
+        try
+        {
+            _tables = getTables(new Document(new BufferedReader(xmlReader)), metaDataSet);
         }
         catch (ParseException e)
         {
@@ -81,36 +176,27 @@ public class FlatXmlDataSet extends AbstractDataSet
      * Creates an FlatXmlDataSet object with the specifed xml input stream.
      * Relative DOCTYPE uri are resolved from the current working dicrectory.
      *
-     * @param stream the xml input stream
+     * @param xmlStream the xml input stream
+     * @deprecated Use Reader overload instead
      */
-    public FlatXmlDataSet(InputStream stream) throws IOException, DataSetException
+    public FlatXmlDataSet(InputStream xmlStream) throws IOException, DataSetException
     {
-        try
-        {
-            Document document = new Document(stream);
+        this(xmlStream, true);
+    }
 
-            // Create metadata from dtd if defined
-            IDataSet metaDataSet = null;
-            String dtdUri = getDocTypeUri(document);
-            if (dtdUri != null)
-            {
-                try
-                {
-                    URL dtdUrl = new URL(dtdUri);
-                    metaDataSet = new FlatDtdDataSet(dtdUrl.openStream());
-                }
-                catch (MalformedURLException e)
-                {
-                    metaDataSet = new FlatDtdDataSet(new FileInputStream(dtdUri));
-                }
-            }
-
-            _tables = getTables(document, metaDataSet);
-        }
-        catch (ParseException e)
-        {
-            throw new DataSetException(e);
-        }
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml input stream.
+     * Relative DOCTYPE uri are resolved from the current working dicrectory.
+     *
+     * @param xmlStream the xml input stream
+     * @param dtdMetadata if <code>false</code> do not use DTD as metadata
+     * @deprecated Use Reader overload instead
+     *
+     */
+    public FlatXmlDataSet(InputStream xmlStream, boolean dtdMetadata)
+            throws IOException, DataSetException
+    {
+        this(new InputStreamReader(xmlStream), dtdMetadata);
     }
 
     /**
@@ -119,6 +205,7 @@ public class FlatXmlDataSet extends AbstractDataSet
      *
      * @param xmlStream the xml input stream
      * @param dtdStream the dtd input stream
+     * @deprecated Use Reader overload instead
      */
     public FlatXmlDataSet(InputStream xmlStream, InputStream dtdStream)
             throws IOException, DataSetException
@@ -131,6 +218,7 @@ public class FlatXmlDataSet extends AbstractDataSet
      *
      * @param xmlStream the xml input stream
      * @param metaDataSet the dataset used as metadata source.
+     * @deprecated Use Reader overload instead
      */
     public FlatXmlDataSet(InputStream xmlStream, IDataSet metaDataSet)
             throws IOException, DataSetException
@@ -146,9 +234,21 @@ public class FlatXmlDataSet extends AbstractDataSet
     }
 
     /**
-     * Write the specified dataset to the specified output as xml.
+     * Write the specified dataset to the specified output stream as xml.
      */
     public static void write(IDataSet dataSet, OutputStream out)
+            throws IOException, DataSetException
+    {
+        Document document = buildDocument(dataSet);
+
+        // write xml document
+        document.write(out);
+    }
+
+    /**
+     * Write the specified dataset to the specified writer as xml.
+     */
+    public static void write(IDataSet dataSet, Writer out)
             throws IOException, DataSetException
     {
         Document document = buildDocument(dataSet);

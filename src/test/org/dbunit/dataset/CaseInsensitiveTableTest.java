@@ -33,7 +33,7 @@ public class CaseInsensitiveTableTest extends XmlTableTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        InputStream in = new FileInputStream(
+        Reader in = new FileReader(
                 new File("src/xml/caseInsensitiveTableTest.xml"));
         return new XmlDataSet(in);
     }

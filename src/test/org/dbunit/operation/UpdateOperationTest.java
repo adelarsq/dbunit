@@ -333,7 +333,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         String[] columnNames = {"PK0", "PK1", "PK2", "NORMAL0", "NORMAL1"};
         int modifiedRow = 1;
 
-        InputStream in = new FileInputStream(
+        Reader in = new FileReader(
                 new File("src/xml/updateOperationTest.xml"));
         IDataSet xmlDataSet = new XmlDataSet(in);
 

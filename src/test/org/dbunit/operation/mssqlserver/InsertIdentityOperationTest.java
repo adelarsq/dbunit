@@ -57,7 +57,7 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
     public void testExecuteXML() throws Exception
     {
         if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
-            InputStream in = new FileInputStream("src/xml/insertIdentityOperationTest.xml");
+            Reader in = new FileReader("src/xml/insertIdentityOperationTest.xml");
             IDataSet xmlDataSet = new XmlDataSet(in);
 
             ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
@@ -94,7 +94,7 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
     public void testExecuteFlatXML() throws Exception
     {
         if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
-            InputStream in = new FileInputStream("src/xml/insertIdentityOperationTestFlat.xml");
+            Reader in = new FileReader("src/xml/insertIdentityOperationTestFlat.xml");
             IDataSet xmlDataSet = new FlatXmlDataSet(in);
 
             ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
@@ -135,7 +135,7 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
    public void testIdentityInsertNoPK() throws Exception
     {
         if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
-            InputStream in = new FileInputStream("src/xml/insertIdentityOperationTestNoPK.xml");
+            Reader in = new FileReader("src/xml/insertIdentityOperationTestNoPK.xml");
             IDataSet xmlDataSet = new FlatXmlDataSet(in);
 
             ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());

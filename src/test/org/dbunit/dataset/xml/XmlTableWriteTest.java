@@ -23,6 +23,7 @@
 package org.dbunit.dataset.xml;
 
 import org.dbunit.dataset.*;
+import org.dbunit.Assertion;
 
 import java.io.*;
 
@@ -70,7 +71,7 @@ public class XmlTableWriteTest extends XmlTableTest
             XmlDataSet.write(super.createDataSet(), out);
 
             // load new dataset from temp file
-            return new XmlDataSet(new FileInputStream(tempFile));
+            return new XmlDataSet(new FileReader(tempFile));
         }
         finally
         {
@@ -102,13 +103,13 @@ public class XmlTableWriteTest extends XmlTableTest
             XmlDataSet.write(dataSet, out);
 
             // load new dataset from temp file
-            XmlDataSet xmlDataSet2 = new XmlDataSet(new FileInputStream(tempFile));
+            XmlDataSet xmlDataSet2 = new XmlDataSet(new FileReader(tempFile));
 
             // verify each table
             for (int i = 0; i < tables.length; i++)
             {
                 ITable table = tables[i];
-                DataSetUtils.assertEquals(table, xmlDataSet2.getTable(xmlDataSet2.getTableNames()[i]));
+                Assertion.assertEquals(table, xmlDataSet2.getTable(xmlDataSet2.getTableNames()[i]));
             }
         }
         finally

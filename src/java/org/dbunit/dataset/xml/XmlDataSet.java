@@ -44,24 +44,43 @@ public class XmlDataSet extends AbstractDataSet
     private final ITable[] _tables;
 
     /**
+     * Creates an XmlDataSet with the specified xml reader.
+     */
+    public XmlDataSet(Reader in) throws DataSetException
+    {
+        try
+        {
+            Document document = new Document(new BufferedReader(in));
+            _tables = getTables(document);
+        }
+        catch (ParseException e)
+        {
+            throw new DataSetException(e);
+        }
+    }
+
+    /**
      * Creates an XmlDataSet with the specified xml input stream.
+     *
+     * @deprecated Use Reader overload instead
      */
     public XmlDataSet(InputStream in) throws DataSetException
     {
         try
         {
             Document document = new Document(in);
-            Elements tableElems = document.getElement("dataset").getElements("table");
-
-            List tableList = new ArrayList();
-            while (tableElems.hasMoreElements())
-            {
-                Element tableElem = (Element)tableElems.nextElement();
-                ITable table = new XmlTable(tableElem);
-                tableList.add(table);
-            }
-
-            _tables = (ITable[])tableList.toArray(new ITable[0]);
+            _tables = getTables(document);
+//            Elements tableElems = document.getElement("dataset").getElements("table");
+//
+//            List tableList = new ArrayList();
+//            while (tableElems.hasMoreElements())
+//            {
+//                Element tableElem = (Element)tableElems.nextElement();
+//                ITable table = new XmlTable(tableElem);
+//                tableList.add(table);
+//            }
+//
+//            _tables = (ITable[])tableList.toArray(new ITable[0]);
         }
         catch (ParseException e)
         {
@@ -85,9 +104,21 @@ public class XmlDataSet extends AbstractDataSet
     }
 
     /**
-     * Write the specified dataset to the specified output as xml.
+     * Write the specified dataset to the specified output stream as xml.
      */
     public static void write(IDataSet dataSet, OutputStream out)
+            throws IOException, DataSetException
+    {
+        Document document = buildDocument(dataSet);
+
+        // write xml document
+        document.write(out);
+    }
+
+    /**
+     * Write the specified dataset to the specified writer as xml.
+     */
+    public static void write(IDataSet dataSet, Writer out)
             throws IOException, DataSetException
     {
         Document document = buildDocument(dataSet);

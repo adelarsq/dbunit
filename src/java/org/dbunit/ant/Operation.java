@@ -168,11 +168,11 @@ public class Operation implements DbUnitTaskStep
 		}
                 if (format.equalsIgnoreCase("xml"))
                 {
-                    dataset = new XmlDataSet(new FileInputStream(src));
+                    dataset = new XmlDataSet(new FileReader(src));
                 }
                 else 
                 {
-                    dataset = new FlatXmlDataSet(new FileInputStream(src));
+                    dataset = new FlatXmlDataSet(src);
                 }
                 dbOperation.execute(connection, dataset);
             }
