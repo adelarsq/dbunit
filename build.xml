@@ -47,11 +47,11 @@
 			</classpath>
 		</javac>
 	</target>
-	
+
 	<target name="jar" depends="compile">
 		<jar jarfile="${build.dir}/${name}.jar" basedir="${java.classes.dir}"/>
 	</target>
-	
+
 	<target name="javadoc" depends="init">
 		<mkdir dir="${java.docs.dir}"/>
 		<javadoc packagenames="${package}" destdir="${java.docs.dir}" author="true" version="true" use="true" package="true" windowtitle="${Name} ${version}" doctitle="${Name} ${version} API Reference" bottom="${copyright}">
@@ -117,7 +117,7 @@
 
 		<!-- Copy javadoc -->
 		<mkdir dir="${dist.dir}/docs/api"/>
-		<copy todir="${dist.dir}/docs/api" includeEmptyDirs="no">
+		<copy todir="${dist.dir}/docs/api" includeEmptyDirs="no" overwrite="yes">
 			<fileset dir="${java.docs.dir}">
 				<exclude name="**/CVS/*"/>
 			</fileset>
@@ -137,7 +137,7 @@
 			<fileset dir="${lib.dir}">
 				<include name="dtdparser.jar"/>
 				<include name="exml.jar"/>
-				<include name="junit.jar"/>
+				<!--<include name="junit.jar"/>-->
 			</fileset>
 			<fileset dir="${build.dir}">
 				<include name="${name}.jar"/>
@@ -148,8 +148,11 @@
         <zip zipfile="${build.dir}/${name}-${version}.zip"  >
             <zipfileset dir="${dist.dir}" prefix="${name}-${version}"/>
         </zip>
+        <tar tarfile="${build.dir}/htmldoc.tar" basedir="${dist.dir}/docs"/>
+        <gzip src="${build.dir}/htmldoc.tar" zipfile="${build.dir}/htmldoc.tar.gz"/>
 
 	</target>
+
 
 </project>
 

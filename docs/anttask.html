@@ -83,6 +83,24 @@
           <td>Database password</td>
           <td>Yes</td>
         </tr>
+        <tr> 
+          <td>schema </td>
+          <td>Database schema</td>
+          <td>No</td>
+        </tr>
+        <tr> 
+          <td>useQualifiedTableNames</td>
+          <td>Set System.property dbunit.qualified.table.names <br>
+            equal to supplied boolean value</td>
+          <td>No</td>
+        </tr>
+        <tr> 
+          <td>supportBatchStatement</td>
+          <td>Set System.property<br>
+            dbunit.support.batch.statement<br>
+            equal to supplied boolean value</td>
+          <td> No</td>
+        </tr>
       </table>
       <h4>Parameters specified as nested elements</h4>
       <table cellspadding = 0 border = 1 >
@@ -113,10 +131,9 @@
                 <td>Yes</td>
               </tr>
               <tr> 
-                <td>flat</td>
-                <td>If true, use <a class="code">FlatXmlDataSet</a> type in the 
-                  supplied src file. Otherwise use <a class="code">XmlDataSet</a>. 
-                  Defaults to <a class="code">true</a></td>
+                <td>format</td>
+                <td>Format type of supplied source file. Possible values are &quot;flat&quot; 
+                  or &quot;xml&quot;. Defaults to <a class="code">&quot;flat&quot;</a></td>
                 <td> 
                   <p>No</p>
                 </td>
@@ -124,6 +141,7 @@
             </table>
           </td>
         </tr>
+        <!--
         <tr> 
           <td>composite</td>
           <td> 
@@ -163,6 +181,7 @@
             </table>
           </td>
         </tr>
+    -->
         <tr> 
           <td>export</td>
           <td> 
@@ -185,10 +204,10 @@
                 <td>Yes</td>
               </tr>
               <tr> 
-                <td>flat</td>
-                <td>If true, use <a class="code">FlatXmlDataSet</a> type in the 
-                  supplied src file. Otherwise use <a class="code">XmlDataSet</a>. 
-                  Defaults to <a class="code">true</a></td>
+                <td>format</td>
+                <td>Format type of supplied destination file. Possible values 
+                  are &quot;flat&quot;, &quot;xml&quot; or &quot;dtd&quot;. Defaults 
+                  to <a class="code">&quot;flat&quot;</a></td>
                 <td> 
                   <p>No</p>
                 </td>
@@ -220,40 +239,46 @@
         </tr>
       </table>
       <h3>Examples</h3>
-      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;dbunit&quot;<br>          password=&quot;dbunit&quot;&gt;<br>    &lt;operation type=&quot;UPDATE&quot; src=&quot;updateFile.xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
+      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;operation type=&quot;UPDATE&quot; src=&quot;updateFile.xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
       <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
         and executes the UPDATE operation contained within the FlatXmlDataSet 
         file updateFile.xml.</p>
-      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;dbunit&quot;<br>          password=&quot;dbunit&quot;&gt;<br>    &lt;operation type=&quot;INSERT&quot; src=&quot;insertFile.xml&quot;/&gt;<br>    &lt;operation type=&quot;UPDATE&quot; src=&quot;updateFile.xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
+      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;operation type=&quot;INSERT&quot; src=&quot;insertFile.xml&quot;/&gt;<br>    &lt;operation type=&quot;UPDATE&quot; src=&quot;updateFile.xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
       <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver. 
         It then executes the INSERT operation contained within the FlatXmlDataSet 
         file insertFile.xml <br>
         followed by the execution of the UPDATE operation contained within the 
         FlatXmlDataSet file updateFile.xml.</p>
-      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;dbunit&quot;<br>          password=&quot;dbunit&quot;&gt;<br>    &lt;operation type=&quot;UPDATE&quot; src=&quot;updateFile.xml&quot; flat=&quot;false&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
+      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;operation type=&quot;UPDATE&quot; src=&quot;updateFile.xml&quot; flat=&quot;false&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
       <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
         and executes the UPDATE operation contained within the XmlDataSet file 
         updateFile.xml.</p>
-      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;dbunit&quot;<br>          password=&quot;dbunit&quot;&gt;<br>    &lt;composite src=&quot;compositeFile.xml&quot;&gt;<br>      &lt;operation type=&quot;DELETE&quot;/&gt;<br>      &lt;operation type=&quot;INSERT&quot;/&gt;<br>    &lt;/composite&gt;<br>  &lt;/dbunit&gt;</pre>
+      <!--
+      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;composite src=&quot;compositeFile.xml&quot;&gt;<br>      &lt;operation type=&quot;DELETE&quot;/&gt;<br>      &lt;operation type=&quot;INSERT&quot;/&gt;<br>    &lt;/composite&gt;<br>  &lt;/dbunit&gt;</pre>
       <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver. 
         It then executes the CompositeOperation, DELETE and then UPDATE, contained 
         within the FlatXmlDataSet file updateFile.xml.</p>
-      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;dbunit&quot;<br>          password=&quot;dbunit&quot;&gt;<br>    &lt;composite src=&quot;compositeFile.xml&quot; flat=&quot;false&quot;&gt;<br>      &lt;operation type=&quot;INSERT&quot;/&gt;<br>      &lt;operation type=&quot;UPDATE&quot;/&gt;<br>    &lt;/composite&gt;<br>  &lt;/dbunit&gt;</pre>
+      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;composite src=&quot;compositeFile.xml&quot; flat=&quot;false&quot;&gt;<br>      &lt;operation type=&quot;INSERT&quot;/&gt;<br>      &lt;operation type=&quot;UPDATE&quot;/&gt;<br>    &lt;/composite&gt;<br>  &lt;/dbunit&gt;</pre>
       <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver. 
         It then executes the CompositeOperation, DELETE and then UPDATE, contained 
         within the XmlDataSet file updateFile.xml.</p>
-      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;dbunit&quot;<br>          password=&quot;dbunit&quot;&gt;<br>    &lt;export dest=&quot;exportFile.xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
+        -->
+      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;export dest=&quot;exportFile.xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
       <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
         and exports the database to the given destination file as a FlatXmlDataSet. 
       </p>
-      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;dbunit&quot;<br>          password=&quot;dbunit&quot;&gt;<br>    &lt;export dest=&quot;exportNonFlatFile.xml&quot; flat=&quot;false&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
+      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;export dest=&quot;exportNonFlatFile.xml&quot; format=&quot;xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
       <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
         and exports the database to the given destination file as an XmlDataSet. 
       </p>
-      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;dbunit&quot;<br>          password=&quot;dbunit&quot;&gt;<br>    &lt;export dest=&quot;exportFile.xml&quot;&gt;<br>      &lt;table name=&quot;FOO&quot;/&gt;<br>      &lt;table name=&quot;BAR&quot;/&gt;<br>    &lt;/export&gt;<br>  &lt;/dbunit&gt;</pre>
+      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;export dest=&quot;export.dtd&quot; format=&quot;dtd&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
+      <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
+        and <br>
+        exports the document type definition (dtd) describing the flat xml format.</p>
+      <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;<br>    &lt;export dest=&quot;exportFile.xml&quot;&gt;<br>      &lt;table name=&quot;FOO&quot;/&gt;<br>      &lt;table name=&quot;BAR&quot;/&gt;<br>    &lt;/export&gt;<br>  &lt;/dbunit&gt;</pre>
       <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver 
         and exports the contents of the provided tables to the given destination 
-        file as an XmlDataSet. <br>
+        file as an FlatXmlDataSet. <br>
       </p>
       <!-- #EndEditable --> 
       <hr>

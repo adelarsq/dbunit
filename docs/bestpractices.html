@@ -98,10 +98,6 @@
         Since version 1.1, DatabaseTestCase is closing every connection in setUp() 
         and tearDown(). Override the closeConnection() method with an empty body 
         to modify this behavior. </p>
-      <p>You may be interested to look at the Daedalos JUnit Extensions (see <a href="resources.html">Resources</a>). 
-        I haven't tried it myself but this seems to be an interesting way to reuse 
-        the same connection across multiple tests.<br>
-      </p>
       <h4>In-container with Cactus or JUnitEE</h4>
       If you use the in-container strategy you should use a DatabaseDataSourceConnection 
       object to access the DataSource you configured for your application server. 
