@@ -1,0 +1,39 @@
+Documentation:
+
+* Convert existing website documentation to Jakarta-site2 XML format and generate HTML using Anakia. Maven and Cocoon are possible alternative. Actually the website is edited with Dreamweaver.
+
+* Improve Javadoc. Many classes have no or very little javadoc documentation.
+
+* Document DbUnit dependency (library + version + license).
+
+---
+
+Features:
+
+* Alternate DTD export method using choice (OR) instead sequence (AND).
+
+* Complete tests of FilteredDataSet filtering strategy (IncludeTableFilter & ExcludeTableFilter).
+
+* Add wildcard capability to IncludeTableFilter strategy.
+
+* Replace system properties with a DatabaseConfig class pushed to the DatabaseConnection. This is possible to replace all system properties with this class because they are all related to database connection. 
+
+* DisableConstrainsOperation??? The way to disable/enable database constraints is vendor specific so this is impossible to implement on all RDMS platform. Big question, is the performance acceptable???  http://sourceforge.net/mailarchive/message.php?msg_id=4148317
+
+* Determine the table sequence in DatabaseDataSet according exported/imported keys using information from DatabaseMetaData. Make it configurable because of performance cost. Make it a subclass of SequenceTableFilter???
+
+---
+
+Performance:
+
+* Profile and improve DbUnit performance.
+
+* Improve performance/memory usage of XML datasets implementation (using SAX???). 
+
+---
+
+Environment:
+
+* Perform some cleanup in the DbUnit test suite (http://sourceforge.net/mailarchive/message.php?msg_id=3866272).
+
+
