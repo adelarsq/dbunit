@@ -71,6 +71,34 @@ public class FlatXmlWriterTest extends TestCase
         FlatXmlWriter xmlWriter = new FlatXmlWriter(stringWriter);
         xmlWriter.write(new DefaultDataSet(table1, table2));
 
+        String actualOutput = stringWriter.toString();
+        assertEquals("output", expectedOutput, actualOutput);
+    }
+
+    public void testWriteWithDocType() throws Exception
+    {
+        String expectedOutput =
+                "<!DOCTYPE dataset SYSTEM \"dataset.dtd\">\n" +
+                "<dataset>\n" +
+                "  <TABLE1 COL0=\"v1\" COL1=\"v2\"/>\n" +
+                "</dataset>\n";
+
+        String col0 = "COL0";
+        String col1 = "COL1";
+        Column[] columns = new Column[]{
+            new Column(col0, DataType.UNKNOWN),
+            new Column(col1, DataType.UNKNOWN)
+        };
+
+        DefaultTable table1 = new DefaultTable("TABLE1", columns);
+        table1.addRow();
+        table1.setValue(0, col0, "v1");
+        table1.setValue(0, col1, "v2");
+
+        StringWriter stringWriter = new StringWriter();
+        FlatXmlWriter xmlWriter = new FlatXmlWriter(stringWriter);
+        xmlWriter.setDocType("dataset.dtd");
+        xmlWriter.write(new DefaultDataSet(table1));
 
         String actualOutput = stringWriter.toString();
         assertEquals("output", expectedOutput, actualOutput);

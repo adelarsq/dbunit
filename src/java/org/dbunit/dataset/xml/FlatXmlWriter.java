@@ -46,6 +46,7 @@ public class FlatXmlWriter implements IDataSetConsumer
     private ITableMetaData _activeMetaData;
     private int _activeRowCount;
     private boolean _includeEmptyTable = false;
+    private String _systemId = null;
 
     public FlatXmlWriter(Writer writer)
     {
@@ -64,6 +65,11 @@ public class FlatXmlWriter implements IDataSetConsumer
         _includeEmptyTable = includeEmptyTable;
     }
 
+    public void setDocType(String systemId)
+    {
+        _systemId = systemId;
+    }
+
     public void write(IDataSet dataSet) throws DataSetException
     {
         DataSetProducerAdapter provider = new DataSetProducerAdapter(dataSet);
@@ -79,6 +85,7 @@ public class FlatXmlWriter implements IDataSetConsumer
         try
         {
             _xmlWriter.writeDeclaration();
+            _xmlWriter.writeDoctype(_systemId, null);
             _xmlWriter.writeElement(DATASET);
         }
         catch (IOException e)
