@@ -75,28 +75,30 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
 
             // use database columns metadata
             ITableMetaData databaseMetaData = databaseDataSet.getTableMetaData(tableName);
-//            Column[] datasetColumns = dataSet.getTableMetaData(tableName).getColumns();
-//            Column[] databaseColumns = databaseMetaData.getColumns();
-//
-//            List columnList = new ArrayList();
-//            for (int j = 0; j < datasetColumns.length; j++)
-//            {
-//                Column columns = DataSetUtils.getColumn(
-//                        datasetColumns[j].getColumnName(), databaseColumns);
-//                if (columns != null)
-//                {
-//                    columnList.add(columns);
-//                }
-//            }
-//
-//            ITableMetaData metaData = new DefaultTableMetaData(tableName,
-//                    (Column[])columnList.toArray(new Column[0]),
-//                    databaseMetaData.getPrimaryKeys());
-//            OperationData operationData = getOperationData(
-//                    connection.getSchema(), metaData);
+            Column[] datasetColumns = dataSet.getTableMetaData(tableName).getColumns();
+            Column[] databaseColumns = databaseMetaData.getColumns();
 
+            List columnList = new ArrayList();
+            for (int j = 0; j < datasetColumns.length; j++)
+            {
+                String columnName = datasetColumns[j].getColumnName();
+                Column column = DataSetUtils.getColumn(
+                        columnName, databaseColumns);
+                if (column == null)
+                {
+                    throw new NoSuchColumnException(columnName);
+                }
+                columnList.add(column);
+            }
+
+            ITableMetaData metaData = new DefaultTableMetaData(tableName,
+                    (Column[])columnList.toArray(new Column[0]),
+                    databaseMetaData.getPrimaryKeys());
             OperationData operationData = getOperationData(
-                    connection.getSchema(), databaseMetaData);
+                    connection.getSchema(), metaData);
+
+//            OperationData operationData = getOperationData(
+//                    connection.getSchema(), databaseMetaData);
             IPreparedBatchStatement statement = factory.createPreparedBatchStatement(
                     operationData.getSql(), connection);
 
@@ -127,6 +129,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 
