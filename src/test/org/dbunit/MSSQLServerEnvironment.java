@@ -26,6 +26,8 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import org.dbunit.dataset.*;
+
 /**
  * @author Eric Pugh
  * @version $Revision$
@@ -65,6 +67,19 @@ public class MSSQLServerEnvironment extends DatabaseEnvironment
 */
     }
 
+    public IDataSet getInitDataSet() throws Exception
+    {
+        return super.getInitDataSet();
+      /*
+        ITable[] extraTables = {
+            new DefaultTable("CLOB_TABLE"),
+            new DefaultTable("BLOB_TABLE"),
+        };
+
+        return new CompositeDataSet(super.getInitDataSet(),
+                new DefaultDataSet(extraTables));
+                */
+    }
 
 }
 
