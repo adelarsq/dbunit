@@ -22,14 +22,15 @@
 
 package org.dbunit.operation;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
-
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.*;
-import org.dbunit.database.statement.*;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.statement.IPreparedBatchStatement;
+import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.*;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base implementation for database operation that are executed in batch.
@@ -39,6 +40,8 @@ import org.dbunit.dataset.*;
  */
 public abstract class AbstractBatchOperation extends DatabaseOperation
 {
+    protected boolean _reverseRowOrder = false;
+
     /**
      * Returns the metadata to use in this operation.
      *
@@ -63,7 +66,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
                     columnName, databaseColumns);
             if (column == null)
             {
-                throw new NoSuchColumnException(tableName + "." +columnName);
+                throw new NoSuchColumnException(tableName + "." + columnName);
             }
             columnList.add(column);
         }
@@ -118,13 +121,16 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
                 Column[] columns = operationData.getColumns();
 
                 // for each row
-                for (int j = 0; j < table.getRowCount(); j++)
+                int rowCount = table.getRowCount();
+                for (int j = 0; j < rowCount; j++)
                 {
+                    int row = _reverseRowOrder ? (rowCount - 1 - j) : j;
+
                     // for each column
                     for (int k = 0; k < columns.length; k++)
                     {
                         Column column = columns[k];
-                        statement.addValue(table.getValue(j,
+                        statement.addValue(table.getValue(row,
                                 column.getColumnName()), column.getDataType());
                     }
                     statement.addBatch();
@@ -140,6 +146,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 

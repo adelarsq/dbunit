@@ -50,8 +50,8 @@ public class DeleteOperationTest extends AbstractDatabaseTest
         String schemaName = "schema";
         String tableName = "table";
         String[] expected = {
-            "delete from schema.table where c2 = 1234 and c1 = 'toto'",
             "delete from schema.table where c2 = 123.45 and c1 = 'qwerty'",
+            "delete from schema.table where c2 = 1234 and c1 = 'toto'",
         };
 
         List valueList = new ArrayList();
@@ -155,6 +155,7 @@ public class DeleteOperationTest extends AbstractDatabaseTest
     }
 
 }
+
 
 
 

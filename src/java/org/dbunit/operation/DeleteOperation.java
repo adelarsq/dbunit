@@ -37,6 +37,7 @@ public class DeleteOperation extends AbstractBatchOperation
 {
     DeleteOperation()
     {
+        _reverseRowOrder = true;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -79,6 +80,7 @@ public class DeleteOperation extends AbstractBatchOperation
     }
 
 }
+
 
 
 
