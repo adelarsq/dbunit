@@ -19,7 +19,7 @@
             <A href="#faq">Faq</A><BR>
             <BR>
             <A href="changes.html">Changes</A><BR>
-            <A href="http://sourceforge.net/project/showfiles.php?group_id=47439">Download</A><BR>
+            <A href="http://sourceforge.net/project/showfiles.php?group_id=47439&release_id=79178">Download</A><BR>
             <A href="#contact">Contact</A><BR>
             <A href="#ressources">Ressources</A><BR>
             <P>
@@ -269,8 +269,7 @@ public class SampleTest extends DatabaseTestCase
             <H4>Step 4: Implement your testXXX() methods</H4>
             Implement your test methods as you normally would with JUnit. Your database is now initialized before and cleaned-up after each test methods according to what you did in previous steps.<BR>
             <BR>
-            How to use dbUnit in a test case that does not extend DatabaseTestCase<BR>
-            <BR>
+            <H3>How to use dbUnit in a test case that does not extend DatabaseTestCase</H3>
             In order to use dbUnit you are not required to extend the DatabaseTestCase class. Simply override the standard JUnit setUp() method and execute the desired operation on your database. Do something similar in teardown() if you need to perform any clean-up.<BR>
             <BR>
             For example:<BR>

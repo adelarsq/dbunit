@@ -14,7 +14,7 @@
     <LI>Changes that could break older environments:
     <UL>
         <LI>Connections are now closed in each setUp() and tearDown(). You must override the DatabaseTestCase.closeConnection() and provide an empty body to modify this behavior. This is not recommended if you use connection pooling.</LI>
-        <LI>Modified DatabaseTestCase.getConnection() signature to returns the IDatabaseConnection interface instead of DatabaseConnection. You need to modify your subclasses signature but not the implementation.</LI>
+        <LI>Modified DatabaseTestCase.getConnection() signature to returns the IDatabaseConnection interface instead of DatabaseConnection. You need to modify your subclasses signature but not necessarily the implementation.</LI>
     </UL>
     
     </LI>

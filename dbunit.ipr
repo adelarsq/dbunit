@@ -350,12 +350,12 @@
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
     </navigator>
     <navigator id="SourcepathNavigator" flattenPackages="false" showMembers="true">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
     </navigator>
   </component>
   <component class="com.intellij.ide.structureView.StructureViewFactory">
