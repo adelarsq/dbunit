@@ -45,7 +45,7 @@ public class FlatXmlDataSet extends DefaultDataSet
      */
     public FlatXmlDataSet(InputStream in) throws IOException, DataSetException
     {
-        super(createTables(in, true));
+        super(createTables(in));
     }
 
     /**
@@ -53,63 +53,6 @@ public class FlatXmlDataSet extends DefaultDataSet
      */
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
-    {
-        createDocument(dataSet).write(out);
-    }
-
-    /**
-     * Write a DTD for the specified dataset to the specified output.
-     * @deprecated use {@link FlatXmlDocType#write}
-     */
-    public static void writeDtd(IDataSet dataSet, OutputStream out)
-            throws IOException, DataSetException
-    {
-        FlatXmlDocType.write(dataSet, out);
-    }
-
-    private static ITable[] createTables(InputStream in, boolean noneAsNull)
-            throws DataSetException
-    {
-        try
-        {
-            List tableList = new ArrayList();
-            List rowList = new ArrayList();
-            String lastTableName = null;
-            Document document = new Document(in);
-
-            Elements rowElems = document.getElement("dataset").getElements();
-            while (rowElems.hasMoreElements())
-            {
-                Element rowElem = (Element)rowElems.nextElement();
-
-                if (lastTableName != null &&
-                        !lastTableName.equals(rowElem.getName()))
-                {
-                    Element[] elems = (Element[])rowList.toArray(new Element[0]);
-                    rowList.clear();
-
-                    tableList.add(new FlatXmlTable(elems));
-                }
-
-                lastTableName = rowElem.getName();
-                rowList.add(rowElem);
-            }
-
-            if (rowList.size() > 0)
-            {
-                Element[] elems = (Element[])rowList.toArray(new Element[0]);
-                tableList.add(new FlatXmlTable(elems));
-            }
-
-            return (ITable[])tableList.toArray(new ITable[0]);
-        }
-        catch (ParseException e)
-        {
-            throw new DataSetException(e);
-        }
-    }
-
-    private static Document createDocument(IDataSet dataSet) throws DataSetException
     {
         Document document = new Document();
         String[] tableNames = dataSet.getTableNames();
@@ -159,7 +102,71 @@ public class FlatXmlDataSet extends DefaultDataSet
             }
         }
 
-        return document;
+        // write xml document
+        document.write(out);
+    }
+
+    /**
+     * Write a DTD for the specified dataset to the specified output.
+     * @deprecated use {@link FlatXmlDocType#write}
+     */
+    public static void writeDtd(IDataSet dataSet, OutputStream out)
+            throws IOException, DataSetException
+    {
+        FlatXmlDocType.write(dataSet, out);
+    }
+
+    private static ITable[] createTables(InputStream in)
+            throws IOException, DataSetException
+    {
+        try
+        {
+            List tableList = new ArrayList();
+            List rowList = new ArrayList();
+            String lastTableName = null;
+
+            Document document = new Document(in);
+
+//            // Load dtd if defined
+//            FlatXmlDocType dtdDataSet = null;
+//            DocType docType = document.getDocType();
+//            if (docType != null && docType.getExternalId() != null)
+//            {
+//                dtdDataSet = new FlatXmlDocType(
+//                        new FileInputStream(docType.getExternalId()));
+//            }
+
+            Elements rowElems = document.getElement("dataset").getElements();
+            while (rowElems.hasMoreElements())
+            {
+                Element rowElem = (Element)rowElems.nextElement();
+
+                if (lastTableName != null &&
+                        !lastTableName.equals(rowElem.getName()))
+                {
+                    Element[] elems = (Element[])rowList.toArray(new Element[0]);
+                    rowList.clear();
+
+                    FlatXmlTable table = new FlatXmlTable(elems);
+                    tableList.add(table);
+                }
+
+                lastTableName = rowElem.getName();
+                rowList.add(rowElem);
+            }
+
+            if (rowList.size() > 0)
+            {
+                Element[] elems = (Element[])rowList.toArray(new Element[0]);
+                tableList.add(new FlatXmlTable(elems));
+            }
+
+            return (ITable[])tableList.toArray(new ITable[0]);
+        }
+        catch (ParseException e)
+        {
+            throw new DataSetException(e);
+        }
     }
 
 }

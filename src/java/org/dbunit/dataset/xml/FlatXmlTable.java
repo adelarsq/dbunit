@@ -48,26 +48,32 @@ public class FlatXmlTable extends AbstractTable
     {
         // metadata
         Element firstRow = rows[0];
-        String tableName = firstRow.getName();
+        _metaData = createMetaData(firstRow);
+
+        // rows
+        if (firstRow.getAttributes().size() == 0)
+        {
+            rows = new Element[0];
+        }
+        _rows = rows;
+
+    }
+
+    ITableMetaData createMetaData(Element sampleRow)
+    {
+        String tableName = sampleRow.getName();
 
         List columnList = new ArrayList();
-        Attributes columnAttributes = firstRow.getAttributes();
+        Attributes columnAttributes = sampleRow.getAttributes();
         while (columnAttributes.hasMoreElements())
         {
             Attribute columnAttr = (Attribute)columnAttributes.nextElement();
             Column column = new Column(columnAttr.getName(), DataType.UNKNOWN);
             columnList.add(column);
         }
+
         Column[] columns = (Column[])columnList.toArray(new Column[0]);
-        _metaData = new DefaultTableMetaData(tableName, columns);
-
-        // rows
-        if (columns.length == 0)
-        {
-            rows = new Element[0];
-        }
-        _rows = rows;
-
+        return new DefaultTableMetaData(tableName, columns);
     }
 
     ////////////////////////////////////////////////////////////////////////////

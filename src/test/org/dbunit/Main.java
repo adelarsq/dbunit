@@ -56,21 +56,18 @@ public class Main
 //                new FileOutputStream("test.xml"));
 
 
-//        ////////////////////////////////
-//        Document document = new Document(new File("test.xml"));
-//        DocType docType = document.getDocType();
-//        System.out.println(docType);
-//
-//        // display children of DocType
-//        for (Children decls = docType.getChildren(); decls.hasMoreElements();)
-//        {
-//            Child decl = decls.next();
-//            String type = decl.getClass().getName();
-//            System.out.println("decl = " + decl + ", class: " + type);
-//        }
+        ////////////////////////////////
+        Document document = new Document(new File("src/xml/flatXmlDataSetTest.xml"));
+        DocType docType = document.getDocType();
+        System.out.println(docType);
 
-        IDataSet dataSet = new FlatXmlDocType(new FileInputStream("src/dtd/test.dtd"));
-        System.out.println(dataSet);
+        // display children of DocType
+        for (Children decls = docType.getChildren(); decls.hasMoreElements();)
+        {
+            Child decl = decls.next();
+            String type = decl.getClass().getName();
+            System.out.println("decl = " + decl + ", class: " + type);
+        }
 
 //        FlatXmlDataSet.write(new XmlDataSet(
 //                new FileInputStream("src/xml/refreshOperationTest.xml")),
