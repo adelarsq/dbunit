@@ -12,7 +12,7 @@
   
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-dev -->
-  <currentVersion>2.0-rc1</currentVersion>
+  <currentVersion>2.0</currentVersion>
   
   <!-- details about the organization that 'owns' the project -->
   <organization>
@@ -235,8 +235,8 @@
   </build>
   
   <reports>
-    <report>maven-jdepend-plugin</report>
     <!--
+    <report>maven-jdepend-plugin</report>
     <report>maven-checkstyle-plugin</report>
     -->
     <report>maven-changes-plugin</report>
