@@ -24,19 +24,16 @@ package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.ForwardOnlyResultSetTableFactory;
-import org.dbunit.database.CachedResultSetTableFactory;
 import org.dbunit.database.QueryDataSet;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -61,7 +58,6 @@ public class Export implements DbUnitTaskStep
     private File _dest;
     private String _format = FORMAT_FLAT;
     private List _tables = new ArrayList();
-    private boolean _hasQuery = false;
 
     public Export()
     {
@@ -114,7 +110,6 @@ public class Export implements DbUnitTaskStep
     public void addQuery(Query query)
     {
         _tables.add(query);
-        _hasQuery = true;
     }
 
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
@@ -155,7 +150,7 @@ public class Export implements DbUnitTaskStep
             }
 
             // Write the dataset
-            Writer out = new FileWriter(_dest);
+            OutputStream out = new FileOutputStream(_dest);
             try
             {
                 if (_format.equalsIgnoreCase(FORMAT_FLAT))
