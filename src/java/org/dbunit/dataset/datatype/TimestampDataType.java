@@ -68,13 +68,29 @@ public class TimestampDataType extends AbstractDataType
 
         if (value instanceof String)
         {
+            String stringValue = (String)value;
+
+            // Probably a java.sql.Date, try it just in case!
+            if (stringValue.length() == 10)
+            {
+                try
+                {
+                    long time = java.sql.Date.valueOf(stringValue).getTime();
+                    return new java.sql.Timestamp(time);
+                }
+                catch (IllegalArgumentException e)
+                {
+                    // Was not a java.sql.Date, let Timestamp handle this value
+                }
+            }
+
             try
             {
-                return java.sql.Timestamp.valueOf((String)value);
+                return java.sql.Timestamp.valueOf(stringValue);
             }
             catch (IllegalArgumentException e)
             {
-                throw new TypeCastException((String)value, e);
+                throw new TypeCastException(stringValue, e);
             }
         }
 

@@ -71,6 +71,7 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
             new Date(1234),
             new Time(1234),
             new Timestamp(1234).toString(),
+            new Date(1234).toString(),
             new java.util.Date(1234),
         };
 
@@ -79,7 +80,8 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
             new Timestamp(1234),
             new Timestamp(new Date(1234).getTime()),
             new Timestamp(new Time(1234).getTime()),
-            Timestamp.valueOf(new Timestamp(1234).toString()),
+            new Timestamp(1234),
+            new Timestamp(Date.valueOf((new Date(1234).toString())).getTime()),
             new Timestamp(1234),
         };
 

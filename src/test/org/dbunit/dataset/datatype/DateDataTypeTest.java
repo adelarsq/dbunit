@@ -71,6 +71,7 @@ public class DateDataTypeTest extends AbstractDataTypeTest
             new Time(1234),
             new Timestamp(1234),
             new java.sql.Date(1234).toString(),
+            new Timestamp(1234).toString(),
             new java.util.Date(1234),
         };
 
@@ -80,6 +81,8 @@ public class DateDataTypeTest extends AbstractDataTypeTest
             new java.sql.Date(new Time(1234).getTime()),
             new java.sql.Date(new Timestamp(1234).getTime()),
             java.sql.Date.valueOf(new java.sql.Date(1234).toString()),
+            new java.sql.Date(
+                    Timestamp.valueOf(new Timestamp(1234).toString()).getTime()),
             new java.sql.Date(1234),
         };
 

@@ -67,13 +67,30 @@ public class DateDataType extends AbstractDataType
 
         if (value instanceof String)
         {
+            String stringValue = (String)value;
+
+            // Probably a Timestamp, try it just in case!
+            if (stringValue.length() > 10)
+            {
+                try
+                {
+                    long time = java.sql.Timestamp.valueOf(stringValue).getTime();
+                    return new java.sql.Date(time);
+//                    return java.sql.Date.valueOf(new java.sql.Date(time).toString());
+                }
+                catch (IllegalArgumentException e)
+                {
+                    // Was not a Timestamp, let java.sql.Date handle this value
+                }
+            }
+
             try
             {
-                return java.sql.Date.valueOf((String)value);
+                return java.sql.Date.valueOf(stringValue);
             }
             catch (IllegalArgumentException e)
             {
-                throw new TypeCastException((String)value, e);
+                throw new TypeCastException(stringValue, e);
             }
         }
 
