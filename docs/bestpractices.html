@@ -79,11 +79,15 @@
       Here are the recommended connection management strategies depending whether 
       you test from a remote client or an in-container strategy:<br>
       <h4>Remote client with DatabaseTestCase</h4>
-      You should reuse the same connection for the entire test suite to reduce 
-      the overhead of creating a new connection for each test by using a singleton. 
-      Since version 1.1, DatabaseTestCase is closing every connection in setUp() 
-      and tearDown(). Override the closeConnection() method with an empty body 
-      to modify this behavior. <br>
+      <p>You should reuse the same connection for the entire test suite to reduce 
+        the overhead of creating a new connection for each test by using a singleton. 
+        Since version 1.1, DatabaseTestCase is closing every connection in setUp() 
+        and tearDown(). Override the closeConnection() method with an empty body 
+        to modify this behavior. </p>
+      <p>You may be interested to look at the Daedalos JUnit Extensions (see <a href="resources.html">Resources</a>). 
+        I haven't tried it myself but this seems to be an interesting way to reuse 
+        the same connection across multiple tests.<br>
+      </p>
       <h4>In-container with Cactus or JUnitEE</h4>
       If you use the in-container strategy you should use a DatabaseDataSourceConnection 
       object to access the DataSource you configured for your application server. 
@@ -92,14 +96,13 @@
       to achieve better performance.<br>
       <pre>    IDatabaseConnection connection = new DatabaseDataSourceConnection(
             new InitialContext(), &quot;jdbc/myDataSource&quot;);</pre>
-      <br>
       <h3><a name="tableseq"> Table sequence in dataset</a></h3>
       To prevent problems with foreign keys, tables must be sequenced appropriately 
       in dataset. The framework executes INSERT, UPDATE and REFRESH operations 
       using the same sequence while DELETE and DELETE_ALL are executed in reserve 
       order.<br>
       <!-- #EndEditable --> 
-	  <hr>
+      <hr>
       <div align="center">
         <p><font size="2">Copyright &copy;2002, Manuel Laflamme, All Rights Reserved</font></p>
         <p><font size="1"><a href="index.html">Home</a> - <a href="components.html">Components</a> 
