@@ -73,14 +73,14 @@ public class SortedTable extends AbstractTable
         if (_indexes == null)
         {
             Integer[] indexes = new Integer[getRowCount()];
-            for (int i = 0; i < _indexes.length; i++)
+            for (int i = 0; i < indexes.length; i++)
             {
                 indexes[i] = new Integer(i);
             }
 
             try
             {
-                Arrays.sort(_indexes, new RowComparator());
+                Arrays.sort(indexes, new RowComparator());
             }
             catch (DatabaseUnitRuntimeException e)
             {
