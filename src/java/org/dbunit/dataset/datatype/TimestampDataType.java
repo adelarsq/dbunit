@@ -95,6 +95,11 @@ public class TimestampDataType extends AbstractDataType
         throw new TypeCastException(value, this);
     }
 
+    public boolean isDateTime()
+    {
+        return true;
+    }
+
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {

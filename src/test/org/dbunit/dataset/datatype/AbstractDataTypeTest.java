@@ -42,6 +42,8 @@ public abstract class AbstractDataTypeTest extends TestCase
 
     public abstract void testIsNumber() throws Exception;
 
+    public abstract void testIsDateTime() throws Exception;
+
     public abstract void testTypeCast() throws Exception;
 
     public abstract void testTypeCastNone() throws Exception;

@@ -94,6 +94,11 @@ public abstract class AbstractDataType extends DataType
         return _isNumber;
     }
 
+    public boolean isDateTime()
+    {
+        return false;
+    }
+
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {

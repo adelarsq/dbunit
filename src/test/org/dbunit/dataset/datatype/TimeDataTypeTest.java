@@ -57,6 +57,11 @@ public class TimeDataTypeTest extends AbstractDataTypeTest
         assertEquals("is number", false, THIS_TYPE.isNumber());
     }
 
+    public void testIsDateTime() throws Exception
+    {
+        assertEquals("is date/time", true, THIS_TYPE.isDateTime());
+    }
+
     public void testTypeCast() throws Exception
     {
         Object[] values = {

@@ -81,6 +81,14 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
         }
     }
 
+    public void testIsDateTime() throws Exception
+    {
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            assertEquals("is date/time", false, TYPES[i].isDateTime());
+        }
+    }
+
     public void testTypeCast() throws Exception
     {
         Object[] values = {

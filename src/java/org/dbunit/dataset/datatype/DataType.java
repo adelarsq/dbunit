@@ -117,6 +117,12 @@ public abstract class DataType
     public abstract boolean isNumber();
 
     /**
+     * Returns <code>true</code> if this <code>DataType</code> represents a
+     * date and/or time.
+     */
+    public abstract boolean isDateTime();
+
+    /**
      * Returns the specified column value from the specified resultset object.
      */
     public abstract Object getSqlValue(int column, ResultSet resultSet)
