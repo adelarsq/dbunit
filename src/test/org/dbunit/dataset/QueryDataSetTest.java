@@ -23,6 +23,7 @@
 package org.dbunit.dataset;
 
 import org.dbunit.DatabaseEnvironment;
+import org.dbunit.*;
 
 import org.dbunit.database.*;
 import org.dbunit.dataset.datatype.DataType;
@@ -248,14 +249,17 @@ public class QueryDataSetTest extends AbstractDataSetTest
 
     }
 
+    /* This JUNIT test case only works against Hypersonic! */
     public void testLengthSyntax() throws Exception
     {
-        ITable table = null;
+        if (DatabaseEnvironment.getInstance() instanceof HypersonicEnvironment){
+            ITable table = null;
 
-        QueryDataSet ptds = new QueryDataSet(_connection);
-        ptds.addTable("ATABLE","CALL LENGTH('hello world')");
-        table = ptds.getTable("ATABLE");
-        assertEquals("","1",new String(table.getRowCount() + ""));
+            QueryDataSet ptds = new QueryDataSet(_connection);
+            ptds.addTable("ATABLE","CALL LENGTH('hello world')");
+            table = ptds.getTable("ATABLE");
+            assertEquals("","1",new String(table.getRowCount() + ""));
+        }
 
 
 

@@ -23,6 +23,7 @@
 package org.dbunit.dataset;
 
 import org.dbunit.database.AmbiguousTableNameException;
+import org.dbunit.*;
 
 import java.util.*;
 
@@ -43,6 +44,8 @@ public abstract class AbstractDataSetTest extends TestCase
         "EMPTY_MULTITYPE_TABLE",
     };
 
+
+
     private static final String[] DUPLICATE_TABLE_NAMES = {
         "DUPLICATE_TABLE",
         "EMPTY_TABLE",
@@ -54,9 +57,10 @@ public abstract class AbstractDataSetTest extends TestCase
         super(s);
     }
 
-    protected static String[] getExpectedNames()
+    protected static String[] getExpectedNames() throws Exception
     {
         return (String[])TABLE_NAMES.clone();
+
     }
 
     protected String[] getExpectedDuplicateNames()
@@ -76,7 +80,8 @@ public abstract class AbstractDataSetTest extends TestCase
 
     /**
      * This method exclude BLOB_TABLE and CLOB_TABLE from the specified dataset
-     * because BLOB and CLOB are not supported by all database vendor
+     * because BLOB and CLOB are not supported by all database vendor.
+     * @todo Should be refactored into thee various DatabaseEnvironments!
      */
     public static IDataSet removeExtraTestTables(IDataSet dataSet) throws Exception
     {
@@ -89,6 +94,18 @@ public abstract class AbstractDataSetTest extends TestCase
         nameList.remove("CLOB_TABLE");
         nameList.remove("DBUNIT.BLOB_TABLE");
         nameList.remove("DBUNIT.CLOB_TABLE");
+        /*
+        this table shows up on MSSQLServer.  It is a user table for storing diagram information
+        that really should be considered a system table.
+        */
+        nameList.remove("DBUNIT.dtproperties");
+        nameList.remove("dtproperties");
+        /*
+        This table is created specifically for testing identity columns on MSSQL server.
+        It should be ignored on other platforms.
+        */
+        nameList.remove("DBUNIT.IDENTITY_TABLE");
+        nameList.remove("IDENTITY_TABLE");
 //        nameList.remove("ESCAPED TABLE");
         names = (String[])nameList.toArray(new String[0]);
 
@@ -206,7 +223,9 @@ public abstract class AbstractDataSetTest extends TestCase
         String[] expected = getExpectedNames();
         sort(expected);
 
-        IDataSet dataSet = createDataSet();
+        IDataSet dataSet = removeExtraTestTables(createDataSet());
+        String[] names = dataSet.getTableNames();
+        sort(names);
         ITable[] tables = dataSet.getTables();
         sort(tables);
 

@@ -22,6 +22,8 @@
 
 package org.dbunit.operation;
 
+import org.dbunit.*;
+import org.dbunit.operation.mssqlserver.*;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -31,7 +33,7 @@ import junit.framework.TestSuite;
  */
 public class AllTests
 {
-    public static Test suite()
+    public static Test suite() throws Exception
     {
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(AbstractBatchOperationTest.class));
@@ -43,6 +45,9 @@ public class AllTests
         suite.addTest(new TestSuite(RefreshOperationTest.class));
         suite.addTest(new TestSuite(TransactionOperationTest.class));
         suite.addTest(new TestSuite(UpdateOperationTest.class));
+        if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
+            suite.addTest(new TestSuite(InsertIdentityOperationTest.class));
+        }
 
         return suite;
     }

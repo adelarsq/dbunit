@@ -22,6 +22,7 @@
 
 package org.dbunit.database;
 
+import org.dbunit.*;
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
@@ -32,6 +33,31 @@ import org.dbunit.dataset.datatype.DataType;
  */
 public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
 {
+    private static final DataType[] EXPECTED_DATA_TYPES = {
+            DataType.VARCHAR,
+            DataType.NUMERIC,
+            DataType.TIMESTAMP,
+            DataType.VARBINARY,
+    };
+
+    private static final DataType[] EXPECTED_DATA_TYPES_MSSQLSERVER = {
+            DataType.VARCHAR,
+            DataType.NUMERIC,
+            DataType.BINARY,
+            DataType.VARBINARY,
+    };
+
+    protected static DataType[] getExpectedDataTypes() throws Exception
+    {
+        if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
+            return (DataType[])EXPECTED_DATA_TYPES_MSSQLSERVER.clone();
+        }
+        else {
+            return (DataType[])EXPECTED_DATA_TYPES.clone();
+        }
+
+    }
+
     public DatabaseTableMetaDataTest(String s)
     {
         super(s);
@@ -127,12 +153,7 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
             "TIMESTAMP_COL",
             "VARBINARY_COL",
         };
-        DataType[] expectedTypes = {
-            DataType.VARCHAR,
-            DataType.NUMERIC,
-            DataType.TIMESTAMP,
-            DataType.VARBINARY,
-        };
+        DataType[] expectedTypes = getExpectedDataTypes();
 
         ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
         Column[] columns = metaData.getColumns();
@@ -147,7 +168,6 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
             assertEquals("datatype", expectedTypes[i], column.getDataType());
         }
     }
-
 }
 
 
