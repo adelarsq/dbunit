@@ -25,6 +25,12 @@ package org.dbunit;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.datatype.DataType;
 
+import java.io.File;
+
+import Base64;
+import electric.xml.*;
+import junit.framework.Assert;
+
 /**
  * @author Manuel Laflamme
  * @version 1.0
@@ -33,11 +39,35 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        String s = (String)DataType.VARCHAR.typeCast(new byte[1000]);
-        System.out.println(s);
+        String s1 = Base64.encodeBytes(new byte[]{0, 1, 2, 3, 4, 5, 6,7 , 8, 9});
+        String s2 = Base64.encodeBytes(new byte[80]);
+        String s3 = "   ";
+//        System.out.println(s1);
+//        System.out.println(s2);
 
-        IDatabaseConnection connection =
-                DatabaseEnvironment.getInstance().getConnection();
+        Document document = new Document();
+        Element rootElem = document.addElement("root");
+        rootElem.addElement("oneline").addText(new CData(s1));
+        rootElem.addElement("manylines").addText(new CData(s2));
+        rootElem.addElement("spaces").addText(s3);
+        rootElem.addElement("spaces").addText(new CData(s3));
+        document.write(new File("test.xml"));
+
+        document = new Document(new File("test.xml"));
+        System.out.println(document);
+
+        Element elem = document.getElement("root").getElement("manylines");
+        System.out.println(elem.getText());
+        System.out.println(elem.getText().getString());
+//        Text text2 = new Text(new CData());
+//        text2.setRaw(true);
+//        String s3 = text.getBytes();
+//
+//        System.out.println(s3);
+//        Assert.assertEquals(s2, s3);
+
+//        IDatabaseConnection connection =
+//                DatabaseEnvironment.getInstance().getConnection();
 
 //        System.out.println(connection.createDataSet().getTableMetaData("EMPTY_MULTITYPE_TABLE"));
 //        String[] tableNames = connection.createDataSet().getTableNames();
@@ -66,6 +96,7 @@ public class Main
     }
 
 }
+
 
 
 

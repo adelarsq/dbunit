@@ -77,7 +77,7 @@ public abstract class DataType
     private static final DataType[] TYPES = {
         CHAR, VARCHAR, LONGVARCHAR, NUMERIC, DECIMAL, BOOLEAN, TINYINT,
         SMALLINT, INTEGER, BIGINT, REAL, FLOAT, DOUBLE, DATE, TIME, TIMESTAMP,
-//        BINARY, VARBINARY, LONGVARBINARY,
+        BINARY, VARBINARY, LONGVARBINARY,
     };
 
     /**
@@ -100,6 +100,14 @@ public abstract class DataType
      * number.
      */
     public abstract boolean isNumber();
+
+    /**
+     * Typecast the specified value to string.
+     */
+    public static String asString(Object value) throws TypeCastException
+    {
+        return (String)DataType.VARCHAR.typeCast(value);
+    }
 
     /**
      * Returns the <code>DataType</code> corresponding to the specified Sql
@@ -189,6 +197,7 @@ public abstract class DataType
         return UNKNOWN;
     }
 }
+
 
 
 

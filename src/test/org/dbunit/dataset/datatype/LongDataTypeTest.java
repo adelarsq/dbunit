@@ -71,6 +71,7 @@ public class LongDataTypeTest extends AbstractDataTypeTest
         Object[] values = {
             null,
             "5",
+            new Long(1234),
             new Float(Long.MAX_VALUE),
             new Float(Long.MIN_VALUE),
             "-7500",
@@ -87,6 +88,7 @@ public class LongDataTypeTest extends AbstractDataTypeTest
         Long[] expected = {
             null,
             new Long(5),
+            new Long(1234),
             new Long(Long.MAX_VALUE),
             new Long(Long.MIN_VALUE),
             new Long(-7500),
@@ -143,5 +145,25 @@ public class LongDataTypeTest extends AbstractDataTypeTest
         assertEquals(THIS_TYPE, DataType.forObject(new Long(1234)));
     }
 
+    public void testAsString() throws Exception
+    {
+        Long[] values = {
+            new Long(1234),
+        };
+
+        String[] expected = {
+            "1234",
+        };
+
+
+        assertEquals("actual vs expected count", values.length, expected.length);
+
+        for (int i = 0; i < values.length; i++)
+        {
+            assertEquals("asString " + i, expected[i], DataType.asString(values[i]));
+        }
+    }
+
 }
+
 

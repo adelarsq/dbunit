@@ -143,15 +143,11 @@ public class DataSetUtils
                 Object actualValue = actualTable.getValue(i, columnName);
                 Assert.assertEquals("value (table=" + expectedTableName +
                         ", row=" + i + ", col=" + columnName + ")",
-                        asString(expectedValue), asString(actualValue));
+                        DataType.asString(expectedValue),
+                        DataType.asString(actualValue));
 
             }
         }
-    }
-
-    private static String asString(Object value) throws TypeCastException
-    {
-        return (String)DataType.VARCHAR.typeCast(value);
     }
 
     private static String[] getSortedColumnNames(ITableMetaData metaData)
@@ -211,7 +207,7 @@ public class DataSetUtils
             return "NULL";
         }
 
-        String stringValue = (String)DataType.VARCHAR.typeCast(value);
+        String stringValue = DataType.asString(value);
         if (dataType == DataType.DATE)
         {
             return "{d '" + stringValue + "'}";
@@ -304,6 +300,7 @@ public class DataSetUtils
     }
 
 }
+
 
 
 

@@ -146,6 +146,26 @@ public class DoubleDataTypeTest extends AbstractDataTypeTest
         assertEquals(DataType.DOUBLE, DataType.forObject(new Double(1234)));
     }
 
+    public void testAsString() throws Exception
+    {
+        Object[] values = {
+            new Double("1234"),
+            new Double("12.34"),
+        };
+
+        String[] expected = {
+            "1234.0",
+            "12.34",
+        };
+
+        assertEquals("actual vs expected count", values.length, expected.length);
+
+        for (int i = 0; i < values.length; i++)
+        {
+            assertEquals("asString " + i, expected[i], DataType.asString(values[i]));
+        }
+    }
 
 }
+
 

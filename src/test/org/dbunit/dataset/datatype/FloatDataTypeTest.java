@@ -137,5 +137,26 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
         assertEquals(THIS_TYPE, DataType.forObject(new Float(1234)));
     }
 
+    public void testAsString() throws Exception
+    {
+        Object[] values = {
+            new Float("1234"),
+            new Float("12.34"),
+        };
+
+        String[] expected = {
+            "1234.0",
+            "12.34",
+        };
+
+        assertEquals("actual vs expected count", values.length, expected.length);
+
+        for (int i = 0; i < values.length; i++)
+        {
+            assertEquals("asString " + i, expected[i], DataType.asString(values[i]));
+        }
+    }
+
 }
+
 

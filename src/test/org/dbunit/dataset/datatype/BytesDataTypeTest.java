@@ -70,22 +70,19 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
         }
     }
 
-    /**
-     *
-     */
     public void testTypeCast() throws Exception
     {
         Object[] values = {
             null,
             "",
-            "*  $\" P0%!@<(\"0 ",
+            "YWJjZA==",
             new byte[] {0, 1, 2, 3, 4, 5},
         };
 
         byte[][] expected = {
             null,
             new byte[0],
-            new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+            new byte[] {'a', 'b', 'c', 'd'},
             new byte[] {0, 1, 2, 3, 4, 5},
         };
 
@@ -138,6 +135,26 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
         assertEquals(DataType.VARBINARY, DataType.forObject(new byte[0]));
     }
 
+    public void testAsString() throws Exception
+    {
+        byte[][] values = {
+            new byte[0],
+            new byte[] {'a', 'b', 'c', 'd'},
+        };
+
+        String[] expected = {
+            "",
+            "YWJjZA==",
+        };
+
+        assertEquals("actual vs expected count", values.length, expected.length);
+
+        for (int i = 0; i < values.length; i++)
+        {
+            assertEquals("asString " + i, expected[i], DataType.asString(values[i]));
+        }
+    }
 }
+
 
 

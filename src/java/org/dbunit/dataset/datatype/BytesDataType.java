@@ -13,7 +13,7 @@ package org.dbunit.dataset.datatype;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
 
-import HTTPClient.Codecs;
+import Base64;
 
 /**
  * @author Manuel Laflamme
@@ -21,7 +21,7 @@ import HTTPClient.Codecs;
  */
 public class BytesDataType extends AbstractDataType
 {
-    public BytesDataType(String name, int sqlType)
+    BytesDataType(String name, int sqlType)
     {
         super(name, sqlType, byte[].class, false);
     }
@@ -43,10 +43,10 @@ public class BytesDataType extends AbstractDataType
 
         if (value instanceof String)
         {
-            String stringValue = value + "\n\r";
-            return Codecs.uudecode(stringValue.toCharArray());
+            return Base64.decode((String)value);
         }
 
         throw new TypeCastException(value.toString());
     }
 }
+

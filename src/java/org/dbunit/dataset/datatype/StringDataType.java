@@ -23,7 +23,7 @@ package org.dbunit.dataset.datatype;
 
 import java.net.URLEncoder;
 
-import HTTPClient.Codecs;
+import Base64;
 
 /**
  * @author Manuel Laflamme
@@ -78,14 +78,13 @@ public class StringDataType extends AbstractDataType
 
         if (value instanceof byte[])
         {
-            String stringValue = new String(Codecs.uuencode((byte[])value));
-            return stringValue;
-//            return stringValue.substring(0, stringValue.lastIndexOf("\n\r"));
+            return Base64.encodeBytes((byte[])value);
         }
 
         throw new TypeCastException(value.toString());
     }
 }
+
 
 
 

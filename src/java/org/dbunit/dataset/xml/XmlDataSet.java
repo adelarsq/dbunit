@@ -129,8 +129,19 @@ public class XmlDataSet extends DefaultDataSet
                     {
                         try
                         {
-                            String stringValue = (String)DataType.VARCHAR.typeCast(value);
-                            rowElem.addElement("value").setText(stringValue);
+                            String string = DataType.asString(value);
+
+                            Text text = null;
+                            if (string.startsWith(" ") || string.endsWith(""))
+                            {
+                                text = new CData(string);
+                            }
+                            else
+                            {
+                                text = new Text(string);
+                            }
+
+                            rowElem.addElement("value").setText(text);
                         }
                         catch (TypeCastException e)
                         {
@@ -148,6 +159,7 @@ public class XmlDataSet extends DefaultDataSet
     }
 
 }
+
 
 
 

@@ -168,5 +168,24 @@ public class IntegerDataTypeTest extends AbstractDataTypeTest
         assertEquals(DataType.INTEGER, DataType.forObject(new Integer(1234)));
     }
 
+    public void testAsString() throws Exception
+    {
+        Object[] values = {
+            new Integer("1234"),
+        };
+
+        String[] expected = {
+            "1234",
+        };
+
+        assertEquals("actual vs expected count", values.length, expected.length);
+
+        for (int i = 0; i < values.length; i++)
+        {
+            assertEquals("asString " + i, expected[i], DataType.asString(values[i]));
+        }
+    }
+
 }
+
 

@@ -83,6 +83,7 @@ public class StringDataTypeTest extends AbstractDataTypeTest
             new Integer(1234),
             new Long(1234),
             new Double(12.34),
+            new byte[] {'a', 'b', 'c', 'd'},
         };
         String[] expected = {
             null,
@@ -94,6 +95,7 @@ public class StringDataTypeTest extends AbstractDataTypeTest
             "1234",
             "1234",
             "12.34",
+            "YWJjZA==",
         };
 
         assertEquals("actual vs expected count", values.length, expected.length);
@@ -145,5 +147,24 @@ public class StringDataTypeTest extends AbstractDataTypeTest
         assertEquals(DataType.VARCHAR, DataType.forObject(""));
     }
 
+    public void testAsString() throws Exception
+    {
+        Object[] values = {
+            new String("1234"),
+        };
+
+        String[] expected = {
+            "1234",
+        };
+
+        assertEquals("actual vs expected count", values.length, expected.length);
+
+        for (int i = 0; i < values.length; i++)
+        {
+            assertEquals("asString " + i, expected[i], DataType.asString(values[i]));
+        }
+    }
+
 }
+
 

@@ -134,5 +134,25 @@ public class TimeDataTypeTest extends AbstractDataTypeTest
         assertEquals(THIS_TYPE, DataType.forObject(new Time(1234)));
     }
 
+    public void testAsString() throws Exception
+    {
+        java.sql.Time[] values = {
+            new java.sql.Time(1234),
+        };
+
+        String[] expected = {
+            new java.sql.Time(1234).toString(),
+        };
+
+
+        assertEquals("actual vs expected count", values.length, expected.length);
+
+        for (int i = 0; i < values.length; i++)
+        {
+            assertEquals("asString " + i, expected[i], DataType.asString(values[i]));
+        }
+    }
+
 }
+
 

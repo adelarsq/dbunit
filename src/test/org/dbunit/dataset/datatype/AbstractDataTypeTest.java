@@ -50,5 +50,7 @@ public abstract class AbstractDataTypeTest extends TestCase
 
     public abstract void testForObject() throws Exception;
 
+    public abstract void testAsString() throws Exception;
 }
+
 

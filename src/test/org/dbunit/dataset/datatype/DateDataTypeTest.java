@@ -63,9 +63,6 @@ public class DateDataTypeTest extends AbstractDataTypeTest
         assertEquals("is number", false, THIS_TYPE.isNumber());
     }
 
-    /**
-     *
-     */
     public void testTypeCast() throws Exception
     {
         Object[] values = {
@@ -95,9 +92,6 @@ public class DateDataTypeTest extends AbstractDataTypeTest
         }
     }
 
-    /**
-     *
-     */
     public void testInvalidTypeCast() throws Exception
     {
         Object[] values = {
@@ -134,5 +128,25 @@ public class DateDataTypeTest extends AbstractDataTypeTest
         assertEquals(THIS_TYPE, DataType.forObject(new java.sql.Date(1234)));
     }
 
+    public void testAsString() throws Exception
+    {
+        java.sql.Date[] values = {
+            new java.sql.Date(1234),
+        };
+
+        String[] expected = {
+            new java.sql.Date(1234).toString(),
+        };
+
+
+        assertEquals("actual vs expected count", values.length, expected.length);
+
+        for (int i = 0; i < values.length; i++)
+        {
+            assertEquals("asString " + i, expected[i], DataType.asString(values[i]));
+        }
+    }
+
 }
+
 

@@ -96,26 +96,27 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         }
     }
 
-    public void testUnsupportedColumnDataType() throws Exception
-    {
-        String tableName = "EMPTY_MULTITYPE_TABLE";
-        String[] expectedNames = {
-            "VARCHAR_COL",
-            "NUMERIC_COL",
-            "TIMESTAMP_COL",
-        };
-
-        ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
-        Column[] columns = metaData.getColumns();
-
-        assertEquals("column count", expectedNames.length, columns.length);
-
-        for (int i = 0; i < columns.length; i++)
-        {
-            Column column = columns[i];
-            assertEquals("name", expectedNames[i], column.getColumnName());
-        }
-    }
+//    public void testUnsupportedColumnDataType() throws Exception
+//    {
+//        fail("Mock this test!");
+//        String tableName = "EMPTY_MULTITYPE_TABLE";
+//        String[] expectedNames = {
+//            "VARCHAR_COL",
+//            "NUMERIC_COL",
+//            "TIMESTAMP_COL",
+//        };
+//
+//        ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
+//        Column[] columns = metaData.getColumns();
+//
+//        assertEquals("column count", expectedNames.length, columns.length);
+//
+//        for (int i = 0; i < columns.length; i++)
+//        {
+//            Column column = columns[i];
+//            assertEquals("name", expectedNames[i], column.getColumnName());
+//        }
+//    }
 
     public void testColumnDataType() throws Exception
     {
@@ -124,11 +125,13 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
             "VARCHAR_COL",
             "NUMERIC_COL",
             "TIMESTAMP_COL",
+            "VARBINARY_COL",
         };
         DataType[] expectedTypes = {
             DataType.VARCHAR,
             DataType.NUMERIC,
             DataType.TIMESTAMP,
+            DataType.VARBINARY,
         };
 
         ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
@@ -146,6 +149,7 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
     }
 
 }
+
 
 
 

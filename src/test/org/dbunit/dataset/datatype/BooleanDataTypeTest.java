@@ -128,5 +128,29 @@ public class BooleanDataTypeTest extends AbstractDataTypeTest
         assertEquals(THIS_TYPE, DataType.forObject(Boolean.TRUE));
     }
 
+    /**
+     *
+     */
+    public void testAsString() throws Exception
+    {
+        Boolean[] values = {
+            Boolean.TRUE,
+            Boolean.FALSE,
+        };
+
+        String[] expected = {
+            "true",
+            "false",
+        };
+
+        assertEquals("actual vs expected count", values.length, expected.length);
+
+        for (int i = 0; i < values.length; i++)
+        {
+            assertEquals("asString " + i, expected[i], DataType.asString(values[i]));
+        }
+    }
+
 }
+
 
