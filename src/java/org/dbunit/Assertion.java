@@ -64,7 +64,7 @@ public class Assertion
         Arrays.sort(actualNames);
         for (int i = 0; i < expectedNames.length; i++)
         {
-            if (actualNames[i].equals(expectedNames[i]))
+            if (!actualNames[i].equals(expectedNames[i]))
             {
                 Assert.fail("expected tables " + Arrays.asList(expectedNames) +
                         " but was " + Arrays.asList(actualNames));
@@ -161,5 +161,6 @@ public class Assertion
     }
 
 }
+
 
 

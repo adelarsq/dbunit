@@ -22,8 +22,7 @@
 
 package org.dbunit;
 
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 import java.io.FileInputStream;
@@ -45,27 +44,27 @@ public class AssertionTest extends TestCase
     private IDataSet getDataSet() throws Exception
     {
         return new FlatXmlDataSet(new FileInputStream(
-                "src/xml/dataSetUtilsTest.xml"));
+                "src/xml/assertionTest.xml"));
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Test methods
 
-    public void testAssertTableEquals() throws Exception
+    public void testAssertsTablesEquals() throws Exception
     {
         IDataSet dataSet = getDataSet();
         Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                 dataSet.getTable("TEST_TABLE_WITH_SAME_VALUE"));
     }
 
-    public void testAssertTableNamesNotEquals() throws Exception
+    public void testAssertTablesAndNamesNotEquals() throws Exception
     {
         IDataSet dataSet = getDataSet();
         Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                 dataSet.getTable("TEST_TABLE_WITH_DIFFERENT_NAME"));
     }
 
-    public void testAssertColumnCountNotEquals() throws Exception
+    public void testAssertTablesAndColumnCountNotEquals() throws Exception
     {
         IDataSet dataSet = getDataSet();
 
@@ -80,7 +79,7 @@ public class AssertionTest extends TestCase
         }
     }
 
-    public void testAssertColumnSequenceNotEquals() throws Exception
+    public void testAssertTablesAndColumnSequenceNotEquals() throws Exception
     {
         IDataSet dataSet = getDataSet();
 
@@ -88,7 +87,7 @@ public class AssertionTest extends TestCase
                 dataSet.getTable("TEST_TABLE_WITH_DIFFERENT_COLUMN_SEQUENCE"));
     }
 
-    public void testAssertColumnNamesNotEquals() throws Exception
+    public void testAssertTablesAndColumnNamesNotEquals() throws Exception
     {
         IDataSet dataSet = getDataSet();
 
@@ -103,7 +102,7 @@ public class AssertionTest extends TestCase
         }
     }
 
-    public void testAssertRowCountNotEquals() throws Exception
+    public void testAssertTablesAndRowCountNotEquals() throws Exception
     {
         IDataSet dataSet = getDataSet();
 
@@ -118,7 +117,7 @@ public class AssertionTest extends TestCase
         }
     }
 
-    public void testAssertValuesNotEquals() throws Exception
+    public void testAssertTablesAndValuesNotEquals() throws Exception
     {
         IDataSet dataSet = getDataSet();
 
@@ -133,6 +132,88 @@ public class AssertionTest extends TestCase
         }
     }
 
+    public void testAssertDataSetsEquals() throws Exception
+    {
+        IDataSet dataSet1 = getDataSet();
+
+        // change table names order
+        String[] names = DataSetUtils.getReverseTableNames(dataSet1);
+        IDataSet dataSet2 = new FilteredDataSet(names, dataSet1);
+
+        assertTrue("assert not same", dataSet1 != dataSet2);
+        Assertion.assertEquals(dataSet1, dataSet2);
+    }
+
+    public void testAssertDataSetsAndTableCountNotEquals() throws Exception
+    {
+        IDataSet dataSet1 = getDataSet();
+
+        // only one table
+        String[] names = new String[]{dataSet1.getTableNames()[0]};
+        IDataSet dataSet2 = new FilteredDataSet(names, dataSet1);
+
+        assertTrue("assert not same", dataSet1 != dataSet2);
+
+        try
+        {
+            Assertion.assertEquals(dataSet1, dataSet2);
+            throw new IllegalStateException("Should throw an AssertionFailedError");
+        }
+        catch (AssertionFailedError e)
+        {
+        }
+    }
+
+    public void testAssertDataSetsAndTableNamesNotEquals() throws Exception
+    {
+        IDataSet dataSet1 = getDataSet();
+
+        // reverse table names
+        String[] names = dataSet1.getTableNames();
+        ITable[] tables = new ITable[names.length];
+        for (int i = 0; i < names.length; i++)
+        {
+            String reversedName = new StringBuffer(names[i]).reverse().toString();
+            tables[i] = new CompositeTable(reversedName,
+                    dataSet1.getTable(names[i]));
+        }
+        IDataSet dataSet2 = new DefaultDataSet(tables);
+
+        assertTrue("assert not same", dataSet1 != dataSet2);
+        assertEquals("table count", dataSet1.getTableNames().length,
+                dataSet2.getTableNames().length);
+
+        try
+        {
+            Assertion.assertEquals(dataSet1, dataSet2);
+            throw new IllegalStateException("Should throw an AssertionFailedError");
+        }
+        catch (AssertionFailedError e)
+        {
+        }
+    }
+
+    public void testAssertDataSetsAndTablesNotEquals() throws Exception
+    {
+        IDataSet dataSet1 = getDataSet();
+
+        // different row counts (double)
+        IDataSet dataSet2 = new CompositeDataSet(dataSet1, dataSet1);
+
+        assertTrue("assert not same", dataSet1 != dataSet2);
+        assertEquals("table count", dataSet1.getTableNames().length,
+                dataSet2.getTableNames().length);
+
+        try
+        {
+            Assertion.assertEquals(dataSet1, dataSet2);
+            throw new IllegalStateException("Should throw an AssertionFailedError");
+        }
+        catch (AssertionFailedError e)
+        {
+        }
+    }
 }
+
 
 
