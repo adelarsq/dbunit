@@ -48,8 +48,7 @@ public abstract class AbstractTable implements ITable
         ITableMetaData metaData = getTableMetaData();
         if (DataSetUtils.getColumn(columnName, metaData.getColumns()) == null)
         {
-            throw new NoSuchColumnException("<" + columnName +
-                    "> not a column of table <" + metaData.getTableName() + ">");
+            throw new NoSuchColumnException(metaData.getTableName() + "." + columnName);
         }
     }
 
@@ -66,8 +65,7 @@ public abstract class AbstractTable implements ITable
             }
         }
 
-        throw new NoSuchColumnException("<" + columnName +
-                "> not a column of table <" + metaData.getTableName() + ">");
+        throw new NoSuchColumnException(metaData.getTableName() + "." + columnName);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -91,6 +89,7 @@ public abstract class AbstractTable implements ITable
 //        }
 //    }
 }
+
 
 
 

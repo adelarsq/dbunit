@@ -163,7 +163,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
     public void testMissingColumns() throws Exception
     {
-        InputStream in = new FileInputStream("src/xml/insertMissingColumnTest.xml");
+        InputStream in = new FileInputStream("src/xml/missingColumnTest.xml");
         IDataSet xmlDataSet = new XmlDataSet(in);
 
         ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
@@ -254,6 +254,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
     }
 }
+
 
 
 

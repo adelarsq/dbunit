@@ -153,7 +153,7 @@ public class RefreshOperation extends DatabaseOperation
             }
 
             ITableMetaData metaData = AbstractBatchOperation.getOperationMetaData(
-                    connection, dataSet.getTable(tableName));
+                    connection, dataSet.getTableMetaData(tableName));
 
             // setup select count statement
             OperationData countData = getSelectCountData(schema, metaData);
@@ -195,6 +195,7 @@ public class RefreshOperation extends DatabaseOperation
 
     }
 }
+
 
 
 

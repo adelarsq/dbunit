@@ -43,17 +43,17 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
      * Returns the metadata to use in this operation.
      *
      * @param connection the database connection
-     * @param table the table containing operation data
+     * @param metaData the xml table metadata
      */
     static ITableMetaData getOperationMetaData(IDatabaseConnection connection,
-            ITable table) throws DatabaseUnitException, SQLException
+            ITableMetaData metaData) throws DatabaseUnitException, SQLException
     {
         IDataSet databaseDataSet = connection.createDataSet();
-        String tableName = table.getTableMetaData().getTableName();
+        String tableName = metaData.getTableName();
 
         ITableMetaData databaseMetaData = databaseDataSet.getTableMetaData(tableName);
         Column[] databaseColumns = databaseMetaData.getColumns();
-        Column[] columns = table.getTableMetaData().getColumns();
+        Column[] columns = metaData.getColumns();
 
         List columnList = new ArrayList();
         for (int j = 0; j < columns.length; j++)
@@ -63,7 +63,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
                     columnName, databaseColumns);
             if (column == null)
             {
-                throw new NoSuchColumnException(columnName);
+                throw new NoSuchColumnException(tableName + "." +columnName);
             }
             columnList.add(column);
         }
@@ -106,7 +106,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
             }
 
             ITableMetaData metaData = getOperationMetaData(connection,
-                    dataSet.getTable(tableName));
+                    dataSet.getTableMetaData(tableName));
             OperationData operationData = getOperationData(
                     connection.getSchema(), metaData);
 
@@ -140,6 +140,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 

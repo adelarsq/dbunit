@@ -34,6 +34,7 @@ public class AllTests
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
+        suite.addTest(new TestSuite(AbstractBatchOperationTest.class));
         suite.addTest(new TestSuite(CloseConnectionOperationTest.class));
         suite.addTest(new TestSuite(CompositeOperationTest.class));
         suite.addTest(new TestSuite(DeleteAllOperationTest.class));
@@ -46,6 +47,7 @@ public class AllTests
         return suite;
     }
 }
+
 
 
 
