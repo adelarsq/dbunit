@@ -8,8 +8,13 @@ $Id$
 
 
 @Version $Revision$, $Date$
+@Version $Id$
 
 $Log$
+Revision 1.5  2002/04/06 14:45:28  mlaflamm
+Test with
+Multi line log
+
 Revision 1.4  2002/04/06 14:44:38  mlaflamm
 First test with log...
 
