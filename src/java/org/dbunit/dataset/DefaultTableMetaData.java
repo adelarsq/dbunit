@@ -22,6 +22,8 @@
 
 package org.dbunit.dataset;
 
+import java.util.Arrays;
+
 
 /**
  * @author Manuel Laflamme
@@ -53,6 +55,13 @@ public class DefaultTableMetaData extends AbstractTableMetaData
         _tableName = tableName;
         _columns = columns;
         _primaryKeys = primaryKeys;
+    }
+
+    public String toString()
+    {
+        return "tableName=" + _tableName +
+                ", columns=" + Arrays.asList(_columns) +
+                ", keys=" + Arrays.asList(_primaryKeys) + "";
     }
 
     ////////////////////////////////////////////////////////////////////////////
