@@ -358,10 +358,10 @@ ForwardOnlyResultSetTable:
 <source>
 IDatabaseConnection conn = new DatabaseConnection(jdbcConn);
 
-ITableFilter filter = new DatabaseTableFilter(conn);
+ITableFilter filter = new DatabaseSequenceFilter(conn);
 IDataSet dataset = new FilteredDataSet(filter, 
        conn.createDataSet());
-
+       
 FlatXmlDataSet.write(dataset, new File(fileName));
 </source>
       </answer>
