@@ -67,6 +67,10 @@ public abstract class DataType
     public static final DataType TIME = new TimeDataType();
     public static final DataType TIMESTAMP = new TimestampDataType();
 
+    private static final DataType[] TYPES = {
+        CHAR, VARCHAR, LONGVARCHAR, NUMERIC, DECIMAL, BOOLEAN, TINYINT,
+        SMALLINT, INTEGER, BIGINT, REAL, FLOAT, DOUBLE, DATE, TIME, TIMESTAMP};
+
     /**
      * Returns the coresponding {@link java.sql.Types}.
      */
@@ -95,99 +99,17 @@ public abstract class DataType
      */
     public static DataType forSqlType(int sqlType) throws DataTypeException
     {
-        switch (sqlType)
+        for (int i = 0; i < TYPES.length; i++)
         {
-            case Types.CHAR:
-                return CHAR;
-
-            case Types.VARCHAR:
-                return VARCHAR;
-
-            case Types.LONGVARCHAR:
-                return LONGVARCHAR;
-
-            case Types.NUMERIC:
-                return NUMERIC;
-
-            case Types.DECIMAL:
-                return DECIMAL;
-
-            case Types.BIT:
-                return BOOLEAN;
-
-            case Types.TINYINT:
-                return TINYINT;
-
-            case Types.SMALLINT:
-                return SMALLINT;
-
-            case Types.INTEGER:
-                return INTEGER;
-
-            case Types.BIGINT:
-                return BIGINT;
-
-            case Types.REAL:
-                return REAL;
-
-            case Types.FLOAT:
-                return FLOAT;
-
-            case Types.DOUBLE:
-                return DOUBLE;
-
-            case Types.DATE:
-                return DataType.DATE;
-
-            case Types.TIME:
-                return DataType.TIME;
-
-            case Types.TIMESTAMP:
-                return DataType.TIMESTAMP;
-
-//            case Types.LONGVARBINARY:
-//            case Types.VARBINARY:
-//            case Types.BINARY:
-//                return DataType.BYTES;
+            if (sqlType == TYPES[i].getSqlType())
+            {
+                return TYPES[i];
+            }
         }
 
-        // todo -> should returns UNKNOWN instead
-        throw new DataTypeException("Unsuported sql data type" + sqlType);
-//        return UNKNOWN;
+        return UNKNOWN;
     }
 
-//    /**
-//     * Returns the <code>DataType</code> corresponding to the specified data
-//     * type name.
-//     */
-//    public static DataType forName(String type) throws IllegalArgumentException
-//    {
-//        if (type == null)
-//            return UNKNOWN;
-//        if (type.equals("byte"))
-//            return BYTE;
-//        if (type.equals("short"))
-//            return SHORT;
-//        if (type.equals("integer"))
-//            return INTEGER;
-//        if (type.equals("long"))
-//            return LONG;
-//        if (type.equals("float"))
-//            return FLOAT;
-//        if (type.equals("double"))
-//            return DOUBLE;
-//        if (type.equals("boolean"))
-//            return BOOLEAN;
-//        if (type.equals("string"))
-//            return STRING;
-//        if (type.equals("date"))
-//            return DATE;
-//        if (type.equals("object"))
-//            return UNKNOWN;
-//
-//        throw new IllegalArgumentException(type);
-//    }
-//
     /**
      * Returns the <code>DataType</code> corresponding to the specified value
      * runtime class. This method returns <code>DataType.UNKNOWN</code>
@@ -200,38 +122,22 @@ public abstract class DataType
             return UNKNOWN;
         }
 
-//        if (value instanceof java.lang.Short ||
-//                value.getClass() == Short.class)
-//        {
-//            return SHORT;
-//        }
-//
-//        if (value instanceof java.lang.Byte ||
-//                value.getClass() == Byte.class)
-//        {
-//            return BYTE;
-//        }
-
-        if (value instanceof java.lang.Integer ||
-                value.getClass() == Integer.class)
+        if (value instanceof java.lang.Integer)
         {
             return INTEGER;
         }
 
-        if (value instanceof java.lang.Long ||
-                value.getClass() == Long.class)
+        if (value instanceof java.lang.Long)
         {
             return BIGINT;
         }
 
-        if (value instanceof java.lang.Float ||
-                value.getClass() == Float.class)
+        if (value instanceof java.lang.Float)
         {
             return REAL;
         }
 
-        if (value instanceof java.lang.Double ||
-                value.getClass() == Double.class)
+        if (value instanceof java.lang.Double)
         {
             return DOUBLE;
         }
@@ -241,8 +147,7 @@ public abstract class DataType
             return NUMERIC;
         }
 
-        if (value instanceof java.lang.Boolean ||
-                value.getClass() == Boolean.class)
+        if (value instanceof java.lang.Boolean)
         {
             return BOOLEAN;
         }
@@ -256,22 +161,20 @@ public abstract class DataType
         {
             return DATE;
         }
+
         if (value instanceof java.sql.Time)
         {
             return TIME;
         }
+
         if (value instanceof java.sql.Timestamp)
         {
             return TIMESTAMP;
         }
 
-//        if (value instanceof java.util.Date)
-//        {
-//            return DATE;
-//        }
-
         return UNKNOWN;
     }
 }
+
 
 

@@ -160,17 +160,12 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 //                        int columnSize = resultSet.getInt(7);
                         int nullable = resultSet.getInt(11);
 
-                        try
+                        DataType dataType = DataType.forSqlType(sqlType);
+                        if (dataType != DataType.UNKNOWN)
                         {
-                            Column column = new Column(
-                                    columnName,
-                                    DataType.forSqlType(sqlType),
+                            Column column = new Column(columnName, dataType,
                                     Column.nullableValue(nullable));
                             columnList.add(column);
-                        }
-                        catch (DataTypeException e)
-                        {
-                            // ignore unknown column datatype
                         }
                     }
 
