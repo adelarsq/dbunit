@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="Frequently Asked Questions">
+
+  <part id="general">
+    <title>General</title>
+   
+    <faq id="whats-foo">
+      <question>
+        Which database system are supported?
+      </question>
+      <answer>
+    
+      The Dbunit framework has been developed and tested with Oracle and HypersonicSQL. 
+        It uses a fairly simple SQL syntax and should be compatible with the other 
+        database systems. <a href="support.html">Let us know</a> if you find any 
+        incompatibilities.
+
+      </answer>
+    </faq>
+
+    <faq id="whats-bar">
+      <question>
+        Can I use DbUnit with IDENTITY or auto-increment 
+          columns?
+      </question>
+      <answer>
+         <p>Auto-increment columns must be disabled in order to insert the dataset 
+        values into the database. The way to disable this feature is database 
+        specific. If your database does not provide a way to disable this feature 
+        then you are out of luck and DbUnit cannot be used with it. </p>
+      <p>Since version 1.4, DbUnit support IDENTITY columns for MS SQL Server 
+        with the class <a href="components.html#IdentityInsertOperation">IdentityInsertOperation</a>. 
+        <br></br>
+      </p>
+      </answer>
+    </faq>
+    
+    <faq id="clonedconnection">
+      <question>
+       Why I get a "Can't start a cloned connection" 
+        exception when I use InsertIdentityOperation?
+      </question>
+      <answer>
+        <p>If you are using the Microsoft driver (i.e. <a class="code">com.microsoft.jdbc.sqlserver.SQLServerDriver</a>), 
+        you'll need to use the <a class="code">SelectMethod=cursor</a> parameter 
+        in the JDBC connection string (as outlined by <a href="http://forum.java.sun.com/thread.jsp?forum=48&amp;thread=184797">this 
+        JDC thread</a>). Your database Url would look something like the following: 
+      </p>
+      <p> 
+      <pre>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor
+</pre>
+      </p>
+      </answer>
+    </faq>    
+    
+    <faq id="UnsatisfiedLinkError">
+      <question>
+      Why I get an "UnsatisfiedLinkError" 
+        with the DB2 driver?
+      </question>
+      <answer>
+       <p>DbUnit uses JDBC 2.0 features (batch updates). By default, DB2 installs 
+        the JDBC 1.0 driver. You have to install the JDBC 2.0 driver in order 
+        for DbUnit to work or you will get an <a class="code">UnsatisfiedLinkError</a> 
+        from the DB2 JDBC 1.0 driver.</p>
+      <p>The steps for installing the DB2 JDBC 2.0 driver are covered in the DB2 
+        documentation.</p>
+      </answer>
+    </faq>    
+    
+    <faq id="AmbiguousTableNameException">
+      <question>
+     Why I get a AmbiguousTableNameException?
+      </question>
+      <answer>
+      <p>This situation occurs when no schema is specified and that DbUnit detect 
+        that it is getting columns information from multiple tables having the 
+        same name and located in different schemas.</p>
+      <p>You can solve this problem in three different ways:<br></br>
+        1. Provide the schema name when creating the database connection.<br></br>
+        2. Ensure that the connection is restricted to access only one schema.<br></br>
+        3. Use fully qualified table names as specified <a href="howto.html#multipleschema">here</a>.<br></br>
+      </p>
+      </answer>
+    </faq>     
+    
+    <faq id="flatxmlnull">
+      <question>
+     How to specify NULL values with flat XML dataset
+      </question>
+      <answer>
+      <p>See FlatXmlDataSet documentation <a href="components.html#FlatXmlDataSet">here</a>.</p>
+      </answer>
+    </faq>  
+    
+    <faq id="p6spy">
+      <question>
+     How to use DbUnit with p6spy
+      </question>
+      <answer>
+     <p><cite>p6spy</cite> is a trasparent JDBC proxy-driver 
+      specialized to log the statements performed against the actual driver you normally would use.
+      Using p6spy would allow to log the SQL statements issued by DbUnit.
+      See more at (<a href="http://www.p6spy.com">www.p6spy.com</a>). It could be useful to stick with version 1.1
+      as 1.2 as some reported minor problems.</p>
+      <p>To install P6Spy, complete the following steps:
+      <ol>
+        <li>Put the p6spy.jar file in your classpath.
+        </li><li>Move spy.properties into a directory listed in your classpath.  Unlike
+        JAR files, you do not directly reference your property file in the
+        classpath (e.g.: if you have the file c:\r\proj\confspy.properties make sure you 
+        put c:\r\proj\conf in the classpath).
+        </li><li>Modify your application to use the P6Spy database driver i.e.
+        com.p6spy.engine.spy.P6SpyDriver.
+        </li><li>Modify the realdriver line in the spy.properties file to reflect the
+        wrapped database driver. An example of a modified realdriver line follows:
+    	realdriver = oracle.jdbc.driver.OracleDriver
+      </li></ol>
+      Installation is complete. When you run your application, a spy.log file is
+      generated in the same directory from where you run the application. 
+      The log file contains a list of all of the database statements
+      executed. You can change both the destination of spy.log and what it logs by
+      editing the spy.properties file.</p>
+      </answer>
+    </faq>    
+  </part>
+  
+  <part id="install">
+    <title>Installation</title>
+   
+    <faq id="how-install">
+      <question>
+        How do I install Foo?
+      </question>
+      <answer>
+        <p>some markup goes here</p>
+      </answer>
+    </faq>
+  </part>  
+</faqs>

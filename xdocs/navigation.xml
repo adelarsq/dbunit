@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="DbUnit">
+
+  <title>DbUnit</title>
+  
+
+  <body>
+    <links>
+      <item name="SF"                 href="http://www.sf.net/"/>
+     
+      
+    </links>
+    <menu name="Docs">
+      <item name="Intro"           href="/intro.html"/>   
+      <item name="Ant Task"    	   href="/anttask.html"/>
+      <item name="Best Practices"  href="/bestpractices.html"/>
+      <item name="Components"      href="/components.html"/>
+      <item name="Download"        href="/download.html"/>
+      <item name="FAQ"             href="/faq.html"/> 
+      <item name="Howto"           href="/howto.html"/>             
+      <item name="Properties"      href="/properties.html"/>    
+      <item name="Resources"       href="/resources.html"/> 
+      <item name="Support"         href="/support.html"/>          
+    </menu>
+  </body>
+</project>

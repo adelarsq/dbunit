@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document><properties><title>The Dbunit Framework - Howto Guides</title></properties><body><section>      <h2>How-to Guides</h2>
+      <ul>
+        <li><a href="#createtest">How to create a test case to setup your database</a></li>
+        <li><a href="#noextend">How to setup your database in a test case that
+          does not extend DatabaseTestCase</a></li>
+        <li><a href="#extract">How to export a dataset from your database</a></li>
+        <li><a href="#generatedtd">How to generate a DTD representing your database
+          schema</a></li>
+        <li><a href="#assertdata">How to verify that your database contains expected
+          data</a> <font color="#FF0000">(updated)</font></li>
+        <li><a href="#multipleschema">How to export data from or import data to
+          multiple database schemas</a></li>
+        <li><a href="#canoo">How to Use DbUnit with Canoo WebTest </a> <font color="#FF0000">(new)</font></li>
+      </ul>
+      <hr></hr>
+      <a name="createtest">
+      <h2>How to create a test case to setup your database</h2>
+      </a> To write a test case, please follow the steps described below.<br></br>
+      <br></br>
+      <h4>Step 1: Create your dataset file</h4>
+      Your test will obviously need some data to work with. This means you must
+      create a dataset. In most situations you will work with xml datasets. You
+      can manually create an xml dataset from scratch or create one by exporting
+      some data from your database (see <a href="#extract">how-to export</a>).<br></br>
+      <br></br>
+      <h4>Step 2: Extend the DatabaseTestCase class</h4>
+      Now you need to create a test class. The easiest way to use Dbunit is to
+      make your test class extend the DatabaseTestCase class. DatabaseTestCase
+      extends the JUnit TestCase class. Two template methods are required to be
+      implemented: <a class="code">getConnection()</a> to return a connection
+      to your database and <a class="code">getDataSet()</a> to return the dataset
+      you created in step 1.<br></br>
+      <br></br>
+      Following is a sample implementation that returns a connection to a Hypersonic
+      database and an xml dataset:<br></br>
+      <pre>
+public class SampleTest extends DatabaseTestCase
+{
+    public SampleTest(String name)
+    {
+        super(name);
+    }
+
+    protected IDatabaseConnection getConnection() throws Exception
+    {
+        Class driverClass = Class.forName("org.hsqldb.jdbcDriver");
+        Connection jdbcConnection = DriverManager.getConnection(
+                "jdbc:hsqldb:sample", "sa", "");
+        return new DatabaseConnection(jdbcConnection);
+    }
+
+    protected IDataSet getDataSet() throws Exception
+    {
+        return new FlatXmlDataSet(new FileInputStream("dataset.xml"));
+    }
+}</pre>
+      <br></br>
+      <h4>Step 3: (Optional) Implement getSetUpOperation() and getTearDownOperation()
+        methods</h4>
+      <p>By default, Dbunit performs a <a href="components.html#cleanInsert">CLEAN_INSERT</a>
+        operation before executing each test and performs no cleanup operation
+        afterward. You can modify this behavior by overriding <a class="code">getSetUpOperation()</a>
+        and <a class="code">getTearDownOperation()</a>.</p>
+      <p>The following example demonstrates how you can easily override the operation
+        executed before or after your test.<br></br>
+      </p>
+      <pre>
+public class SampleTest extends DatabaseTestCase
+{
+    ...
+    protected DatabaseOperation getSetUpOperation() throws Exception
+    {
+        return DatabaseOperation.REFRESH;
+    }
+
+    protected DatabaseOperation getTearDownOperation() throws Exception
+    {
+        return DatabaseOperation.NONE;
+    }
+    ...
+}</pre>
+      <h4>Step 4: Implement your testXXX() methods</h4>
+      Implement your test methods as you normally would with JUnit. Your database
+      is now initialized before and cleaned-up after each test methods according
+      to what you did in previous steps.<br></br>
+      <br></br>
+      <a name="noextend">
+      <h2>How to setup your database in a test case that does not extend DatabaseTestCase</h2>
+      </a> In order to use Dbunit you are not required to extend the DatabaseTestCase
+      class. Simply override the standard JUnit setUp() method and execute the
+      desired operation on your database. Do something similar in teardown() if
+      you need to perform any clean-up.<br></br>
+      <br></br>
+      For example:<br></br>
+      <pre>
+public class SampleTest extends TestCase
+{
+    public SampleTest(String name)
+    {
+        super(name);
+    }
+
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+
+        // initialize your database connection here
+        IDatabaseConnection connection = null;
+        // ...
+
+        // initialize your dataset here
+        IDataSet dataSet = null;
+        // ...
+
+        try
+        {
+            DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+        }
+        finally
+        {
+            connection.close();
+        }
+    }
+    ...
+}</pre>
+      <a name="extract">
+      <h2>How to export a dataset from your database</h2>
+      </a> Since version 1.2, the <a href="components.html#FlatXmlDataSet">flat
+      XML dataset</a> format is the prefered way to persist a dataset in XML.
+      The following sample demonstrates how you can export one or many tables
+      from a database to an flat XML dataset file.<br></br>
+      <pre>
+public class DatabaseExportSample
+{
+    public static void main(String[] args) throws Exception
+    {
+        // database connection
+        Class driverClass = Class.forName("org.hsqldb.jdbcDriver");
+        Connection jdbcConnection = DriverManager.getConnection(
+                "jdbc:hsqldb:sample", "sa", "");
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        // partial database export
+        String[] tableNames = {"TABLE1", "TABLE2", "TABLE2"};
+        IDataSet partialDataSet = connection.createDataSet(tableNames);
+        FlatXmlDataSet.write(partialDataSet, new FileOutputStream("partial.xml"));
+
+        // full database export
+        IDataSet fullDataSet = connection.createDataSet();
+        FlatXmlDataSet.write(fullDataSet, new FileOutputStream("full.xml"));
+    }
+}</pre>
+      <a name="generatedtd">
+      <h2>How to generate a DTD representing your database schema</h2>
+      </a>
+      <p>The following sample demonstrates how you can generate a flat xml dataset
+        DTD from a database.</p>
+      <pre>
+public class DatabaseExportSample
+{
+    public static void main(String[] args) throws Exception
+    {
+        // database connection
+        Class driverClass = Class.forName("org.hsqldb.jdbcDriver");
+        Connection jdbcConnection = DriverManager.getConnection(
+                "jdbc:hsqldb:sample", "sa", "");
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        // write DTD file
+        FlatDtdDataSet.write(connection.createDataSet(),<br></br>                new FileOutputStream("test.dtd"));<br></br>    }
+}</pre>
+      <a name="assertdata">
+      <h2>How to verify that your database contains expected data</h2>
+      </a> Dbunit provides support for verifying whether two tables or datasets
+      contain identical data. <br></br>
+      <pre>public class Assertion
+{
+    public static void assertEquals(ITable expected, ITable actual)
+    public static void assertEquals(IDataSet expected, IDataSet actual)
+}</pre>
+      This can be used to verify if your database contains the expected data during 
+      your tests. In this case, the actual dataset is a database snapshot you 
+      want to verify against an expected dataset. As its name imply, the expected 
+      dataset contains the expectation values that usually comes from an XML file 
+      or have been created in memory. 
+      <p>The expected dataset must be different from the one you have used to
+        setup your database. Therefore you need two datasets to do that; one to
+        setup your database before a test and another to provide the expected
+        data during the test.</p>
+      <p>The following example, show how to compare a database table snapshot
+        against a flat XML table:<br></br>
+      </p>
+      <pre>public class SampleTest extends DatabaseTestCase
+{
+    public SampleTest(String name)
+    {
+        super(name);
+    }
+
+    // Implements required setup methods here
+    ...
+
+    public void testMe() throws Exception
+    {
+        // Execute the tested code that modify the database here
+        ...
+
+
+        // Fetch database data after executing your code
+        IDataSet databaseDataSet = getConnection().createDataSet();
+        ITable actualTable = databaseDataSet.getTable("TABLE_NAME");
+
+        // Load expected data from an XML dataset
+        IDataSet expectedDataSet = new FlatXmlDataSet("expectedDataSet.xml");
+        ITable expectedTable = expectedDataSet.getTable("TABLE_NAME");
+
+        // Assert actual database table match expected table
+        Assertion.assertEquals(expectedTable, databaseTable);
+    }
+}</pre>
+      <h3>Verifying the result of a database query </h3>
+      <p>You can also verify if the result of a query match an expected set of
+        data. The query can be used to select only a subset of a table or even
+        join multiple tables together like this:</p>
+      <p>
+      <pre>        ITable actualJoinData = getConnection().createQueryTable("RESULT_NAME",
+                "SELECT * FROM TABLE1, TABLE2 WHERE ..."); </pre>
+      </p><h3>Ignoring some columns </h3>
+      <p>The following code snippet shows you how to ignore some columns in the
+        comparison. To works, the actual table MUST contain at least ALL the columns
+        from the expected table. Extra columns can exist in the actual table but
+        not in the expected one.
+      </p><p>
+      <pre>        Assertion.assertEquals(expected,
+                new CompositeTable(expected.getTableMetaData(), actual)); </pre>
+      </p><h3>Row ordering</h3>
+      <p>By default, database table snapshot taken by DbUnit are sorted by primary
+        keys. If a table does not have a primary key or the primary key is automatically
+        generated by your database, the rows ordering is not predictable and <code>assertEquals</code>
+        will fail.</p>
+      <p>You must order your database snapshot manually by using <code>IDatabaseConnection.createQueryTable</code>
+        with an "ORDER BY" clause. Or you can use the <code>SortedTable</code>
+        decorator class like this:</p>
+      <p>
+      <pre>        Assertion.assertEquals(new SortedTable(expected),
+                new SortedTable(actual, expected.getTableMetaData()));</pre>
+      <a name="multipleschema">
+      </a></p><h2>How to export data from or import data to multiple database schemas</h2>
+       Dbunit support multiple schemas per connection since version 1.2.3.
+      To enable multiple schemas support, set the following system property before
+      the creation of your database connection.
+      <pre>
+      System.setProperty("dbunit.qualified.table.names", "true");</pre>
+      <p>This tells to Dbunit to work with table names qualified by their schema
+        name. If this mode is enabled, all table names are assumed to have this
+        format: SCHEMA_NAME.TABLE_NAME. <br></br>
+      </p>
+      <p>Example of flat xml dataset exported or imported when qualified table
+        names mode is enabled:</p>
+      <pre>&lt;dataset&gt;
+    &lt;SCHEMA1.TABLE1 COLUMN0="row 0 col 0" COLUMN1="row 0 col 1"/&amp;
+    &lt;SCHEMA1.TABLE1 COLUMN0="row 1 col 0" COLUMN1="row 1 col 1"/&gt;
+    &lt;SCHEMA2.TABLE2 COLUMN0="row 0 col 0" COLUMN1="row 0 col 1" COLUMN2="row 0 col 2"/&gt;
+&lt;/dataset&gt;</pre>
+      <a name="canoo">
+      <h2>How to Use DbUnit with Canoo WebTest</h2>
+      </a>
+      <p>By Eric Pugh</p>
+      <p>With Dbunit 1.4's new Ant tasks, Dbunit makes it much easier to run WebTest
+        scripts for database centric applications. <a href="http://webtest.canoo.com">WebTest</a>
+        is a tool to simulate a user's browser clicking through the pages on a
+        web site. It allows you to create a series of Ant based tests for your
+        website. In fact, this can be used to perform User Acceptance tests for
+        websites built using non Java technologies like ColdFusion or ASP! This
+        howto walks you through a suggested format for storing tests. <br></br>
+      </p>
+      <h4>Step 1: Create your dataset file</h4>
+      Your first step is to create your dataset file that you wan to load into
+      your database before running your WebTest script. Use one of the various
+      methods described above. Put the various datasets you need in a <code>/data</code>
+      directory.
+      <h4>Step 2: Create your Ant build.xml file</h4>
+      A suggested setup is to have a single build.xml file that is the entry point
+      for all your tests. This would include a couple targets like:
+      <ol>
+        <li> <code>test</code>: Runs all the testSuites that you have created
+        </li><li> <code>test:single</code>: Runs a single test in a specific testSuite
+        </li><li> <code>test:suite</code>: Runs all the tests for a specific testSuite
+      </li></ol>
+      <h4>Step 3: Create your various Test Suites</h4>
+      Once you have your build.xml file set up, you can now call the various TestSuites.
+      Create a separate TestSuiteXXX.xml for the various modules that you would
+      like to test. In your TestSuiteXXX.xml, you should have your default target
+      testSuite call all the testcases you have definied:
+      <pre>
+      &lt;target name="testSuite"&gt;
+
+        &lt;antcall target="unsubscribeEmailAddressWithEmail"/&gt;
+        &lt;antcall target="unsubscribeEmailAddressWithEmailID"/&gt;
+        &lt;antcall target="unsubscribeEmailAddressWithNewEmailAddress"/&gt;
+
+        &lt;antcall target="subscribeEmailAddressWithOptedOutEmail"/&gt;
+        &lt;antcall target="subscribeEmailAddressWithNewEmailAddress"/&gt;
+        &lt;antcall target="subscribeEmailAddressWithInvalidEmailAddress"/&gt;
+
+      &lt;/target&gt;
+      </pre>
+      This way you can either run all the test's in your Test Suite, or just run
+      a specific one, all from build.xml! <br></br>
+      <h4>Step 4: Create your various Tests</h4>
+      Now you need to write your various testcases. For more information on WebTest,
+      please refer to <a href="http://webtest.canoo.com">the WebTest</a> home page.
+      If you have find you are duplicating pieces of XML, then place them in a
+      <code>/includes</code> directory. If you have a single set of properties,
+      then load them as part of build.xml by specifing them in your build.properties
+      file. If you have multiple databases you need to connect to, then declare
+      your sql connection properties in a TestSuiteXXX.properties file that you
+      load on a per suite basis. In this example, we are using doing a clean insert
+      into the database, and using the MSSQL_CLEAN_INSERT instead of CLEAN_INSERT
+      because of the requirement to do identity column inserts.
+      <pre>
+      &lt;target name="subscribeEmailAddressWithOptedOutEmail"&gt;
+        &lt;dbunit
+            driver="${sql.jdbcdriver}"
+            url="${sql.url}"
+            userid="${sql.username}"
+            password="${sql.password}"&gt;
+                &lt;operation type="MSSQL_CLEAN_INSERT"
+                      src="data/subscribeEmailAddressWithOptedOutEmail.xml"
+                format="flat"/&gt;
+        &lt;/dbunit&gt;
+        &lt;testSpec name="subscribeEmailAddressWithOptedOutEmail"&gt;
+          &amp;sharedConfiguration;
+          &lt;steps&gt;
+            &lt;invoke stepid="main page"
+              url="/edm/subscribe.asp?e=subscribeEmailAddressWithOptedOutEmail@test.com"
+              save="subscribeEmailAddressWithNewEmailAddress"/&gt;
+            &lt;verifytext stepid="Make sure we received the success message"
+              text="You have been subscribed to the mailing list"/&gt;
+
+          &lt;/steps&gt;
+        &lt;/testSpec&gt;
+      &lt;/target&gt;
+      </pre>
+      <br></br>
+      <h4>Sample Directory Layout</h4>
+      When you are done, you will have a series of files that look like this:
+      <pre>
+      \root\
+        <a href="sample_webtest/build.xml">build.xml</a>
+        <a href="sample_webtest/build.properties">build.properties</a>
+        <a href="sample_webtest/TestSuiteEDM.xml">TestSuiteEDM.xml</a>
+        <a href="sample_webtest/TestSuiteEDM.properties">TestSuiteEDM.properties</a>
+      \root\data\
+        <a href="sample_webtest/subscribeEmailAddressWithOptedOutEmail.xml">subscribeEmailAddressWithOptedOutEmail.xml</a>
+      \root\includes\
+        <a href="sample_webtest/sharedConfiguration.xml">sharedConfiguration.xml</a>
+      </pre>
+</section></body></document>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document><properties><title>The Dbunit Framework - Properties</title></properties><body><section>
+      <p>DbUnit does use System properties anymore since version 1.6/2.0. DbUnit 
+        use a configuration object, <a class="code">DatabaseConfig</a>, to query 
+        and set feature flags and property values for a <a class="code">IDatabaseConnection</a>. 
+        It is possible to change DbUnit behaviors, such as using batched statements 
+        or not, using the <a class="code">getFeature</a>, <a class="code">setFeature</a>, 
+        <a class="code">getProperty</a>, and <a class="code">setProperty</a> methods 
+        of <a class="code">DatabaseConfig</a>: </p>
+      <pre>  String id = "http://www.dbunit.org/features/batchedStatements"; 
+  DatabaseConfig config = connection.getConfig(); 
+  if (config.getFeature(id)) 
+  { 
+    System.out.println("Batched statements is enabled."); 
+  } 
+  else 
+  { 
+    System.out.println("Batched statements is disabled."); 
+  } 
+</pre>
+      While feature flags are always boolean, property values are arbitrary objects. 
+      <br></br>
+      Here is the complete list of standard DbUnit feature flags and properties. 
+      <br></br>
+      <h2>Feature Flags</h2>
+      <table border="1">
+        <tr> 
+          <td>Feature ID</td>
+          <td>http://www.dbunit.org/features/batchedStatements</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>false</td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Enable or disable multiple schemas support. If enabled, Dbunit access 
+            tables with names fully qualified by schema using this format: SCHEMA.TABLE. 
+            Also see <a href="howto.html#multipleschema">how to import/export 
+            with multiple schema</a>. </td>
+        </tr>
+      </table>
+      <p> <a name="qualifiedtablenames"></a>
+      <table border="1">
+        <tr> 
+          <td>Feature ID</td>
+          <td>http://www.dbunit.org/features/qualifiedTableNames</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>false (since 1.5.5)</td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Enable or disable usage of JDBC batched statement by DbUnit. </td>
+        </tr>
+        <tr> 
+          <td>Note</td>
+          <td>This feature is not compatible with the <a href="#escapepattern">escape pattern</a> property.</td>
+        </tr>
+      </table>
+      </p><h2>Properties</h2>
+	  <p> <a name="escapepattern"></a> 
+      <table border="1">
+        <tr> 
+          <td>Property ID</td>
+          <td>http://www.dbunit.org/properties/escapePattern</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td><i>none</i></td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Allows schema, table and column names escaping. The property value 
+            is an escape pattern where the ? is replaced by the name. For example, 
+            the pattern "[?]" is expanded as "[MY_TABLE]" for a table named "MY_TABLE". 
+          </td>
+        </tr>
+        <tr> 
+          <td>Note</td>
+          <td>This property is not compatible with the <a href="#qualifiedtablenames">qualified 
+            table names</a> feature.</td>
+        </tr>
+      </table>
+	  </p><p>
+      <table border="1">
+        <tr> 
+          <td>Property ID</td>
+          <td>http://www.dbunit.org/properties/datatypeFactory</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>org.dbunit.dataset.datatype.DefaultDataTypeFactory</td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Used to configure the DataType factory. You can replace the default 
+            factory to add support for non-standard database vendor data types. 
+            The Object must implement <a href="api/org/dbunit/dataset/datatype/IDataTypeFactory.html">org.dbunit.dataset.datatype.IDataTypeFactory</a>.</td>
+        </tr>
+      </table>
+	  </p><p>
+      <table border="1">
+        <tr> 
+          <td>Property ID</td>
+          <td>http://www.dbunit.org/properties/statementFactory</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>org.dbunit.database.statement.PreparedStatementFactory</td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Used to configure the statement factory. The Object must implement 
+            org.dbunit.database.statement.IStatementFactory.</td>
+        </tr>
+      </table>
+	  </p>
+      <table border="1">
+        <tr> 
+          <td>Property ID</td>
+          <td>http://www.dbunit.org/properties/resultSetTableFactory</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>org.dbunit.database.CachedResultSetTableFactory</td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Used to configure the ResultSet table factory. The Object must implement 
+            org.dbunit.database.IResultSetTableFactory.</td>
+        </tr>
+      </table>
+
+</section></body></document>
