@@ -92,40 +92,9 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
         }
     }
 
-    public void testWriteDtd() throws Exception
-    {
-        IDatabaseConnection connection =
-                DatabaseEnvironment.getInstance().getConnection();
-        IDataSet dataSet = connection.createDataSet();
-
-        File tempFile = File.createTempFile("flatXmlDataSetTest", ".dtd");
-
-        try
-        {
-            OutputStream out = new FileOutputStream(tempFile);
-
-            try
-            {
-                // write DTD in temp file
-                String[] tableNames = dataSet.getTableNames();
-                Arrays.sort(tableNames);
-                FlatXmlDataSet.writeDtd(new FilteredDataSet(
-                        tableNames, dataSet), out);
-            }
-            finally
-            {
-                out.close();
-            }
-
-            FileAsserts.assertEquals(new FileInputStream("src/dtd/test.dtd"), tempFile);
-        }
-        finally
-        {
-            tempFile.delete();
-        }
-    }
 
 }
+
 
 
 

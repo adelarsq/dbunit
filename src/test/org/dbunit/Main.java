@@ -22,14 +22,16 @@
 
 package org.dbunit;
 
-import java.io.FileOutputStream;
-import java.io.File;
+import java.io.*;
 import java.util.Arrays;
 
 import electric.xml.*;
+
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDocType;
 
 /**
  * @author Manuel Laflamme
@@ -54,35 +56,29 @@ public class Main
 //                new FileOutputStream("test.xml"));
 
 
-        ////////////////////////////////
-        Document document = new Document(new File("test.xml"));
-        DocType docType = document.getDocType();
-        System.out.println(docType);
-
-        // display children of DocType
-        for (Children decls = docType.getChildren(); decls.hasMoreElements();)
-        {
-            Child decl = decls.next();
-            String type = decl.getClass().getName();
-            System.out.println("decl = " + decl + ", class: " + type);
-        }
-
+//        ////////////////////////////////
+//        Document document = new Document(new File("test.xml"));
+//        DocType docType = document.getDocType();
+//        System.out.println(docType);
 //
-//        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
-//        DatabaseOperation.DELETE.execute(connection, dataSet);
-//        DatabaseOperation.INSERT.execute(connection, dataSet);
-//        DatabaseOperation.UPDATE.execute(connection, dataSet);
-//        DatabaseOperation.REFRESH.execute(connection, dataSet);
-//        DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
-//        DatabaseOperation.REFRESH.execute(connection, dataSet);
+//        // display children of DocType
+//        for (Children decls = docType.getChildren(); decls.hasMoreElements();)
+//        {
+//            Child decl = decls.next();
+//            String type = decl.getClass().getName();
+//            System.out.println("decl = " + decl + ", class: " + type);
+//        }
 
+        IDataSet dataSet = new FlatXmlDocType(new FileInputStream("src/dtd/test.dtd"));
+        System.out.println(dataSet);
 
 //        FlatXmlDataSet.write(new XmlDataSet(
 //                new FileInputStream("src/xml/refreshOperationTest.xml")),
 //                new FileOutputStream("src/xml/refreshOperationTestSetup.xml"));
-}
+    }
 
 }
+
 
 
 

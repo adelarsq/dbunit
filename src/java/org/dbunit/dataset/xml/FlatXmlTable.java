@@ -38,19 +38,14 @@ public class FlatXmlTable extends AbstractTable
 {
     private final ITableMetaData _metaData;
     private final Element[] _rows;
-    private final boolean _noneAsNull;
 
     /**
      * Creates a new FlatXmlTable object with specified rows.
      *
      * @param rows the table rows
-     * @param noneAsNull if <code>true</code> the {@link getValue} method
-     * return <code>null</code> if no value exist.
      */
-    public FlatXmlTable(Element[] rows, boolean noneAsNull)
+    public FlatXmlTable(Element[] rows)
     {
-        _noneAsNull = noneAsNull;
-
         // metadata
         Element firstRow = rows[0];
         String tableName = firstRow.getName();
@@ -93,15 +88,11 @@ public class FlatXmlTable extends AbstractTable
         assertValidRowIndex(row);
 //        assertValidColumn(column);
 
-        Object value = _rows[row].getAttributeValue(column);
-        if (value == null && !_noneAsNull)
-        {
-            value = NO_VALUE;
-        }
-        return value;
+        return _rows[row].getAttributeValue(column);
     }
 
 }
+
 
 
 

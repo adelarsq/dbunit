@@ -42,10 +42,8 @@ public class FlatXmlDataSet extends DefaultDataSet
      * Creates an FlatXmlDataSet object with specifed xml input stream.
      *
      * @param in the xml contents
-     * @param noneAsNull if <code>true</code> this specify that the absence of
-     * value should be considered as a null value
      */
-    public FlatXmlDataSet(InputStream in) throws DataSetException
+    public FlatXmlDataSet(InputStream in) throws IOException, DataSetException
     {
         super(createTables(in, true));
     }
@@ -61,61 +59,16 @@ public class FlatXmlDataSet extends DefaultDataSet
 
     /**
      * Write a DTD for the specified dataset to the specified output.
+     * @deprecated use {@link FlatXmlDocType#write}
      */
     public static void writeDtd(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
-        PrintStream printOut = new PrintStream(out);
-        String[] tableNames = dataSet.getTableNames();
-
-        // dataset element
-        printOut.println("<!ELEMENT dataset (");
-        for (int i = 0; i < tableNames.length; i++)
-        {
-            printOut.print("    ");
-            printOut.print(tableNames[i]);
-            printOut.print("*");
-            if (i + 1 < tableNames.length)
-            {
-                printOut.println(",");
-            }
-        }
-        printOut.println(")>");
-        printOut.println();
-
-        // tables
-        for (int i = 0; i < tableNames.length; i++)
-        {
-            // table element
-            String tableName = tableNames[i];
-            printOut.print("<!ELEMENT ");
-            printOut.print(tableName);
-            printOut.println(" EMPTY>");
-
-            // column attributes
-            printOut.print("<!ATTLIST ");
-            printOut.println(tableName);
-            Column[] columns = dataSet.getTableMetaData(tableName).getColumns();
-            for (int j = 0; j < columns.length; j++)
-            {
-                Column column = columns[j];
-                printOut.print("    ");
-                printOut.print(column.getColumnName());
-                if (column.getNullable() == Column.NULLABLE)
-                {
-                    printOut.println(" CDATA #IMPLIED");
-                }
-                else
-                {
-                    printOut.println(" CDATA #REQUIRED");
-                }
-            }
-            printOut.println(">");
-            printOut.println();
-        }
+        FlatXmlDocType.write(dataSet, out);
     }
 
-    private static ITable[] createTables(InputStream in, boolean noneAsNull) throws DataSetException
+    private static ITable[] createTables(InputStream in, boolean noneAsNull)
+            throws DataSetException
     {
         try
         {
@@ -210,6 +163,7 @@ public class FlatXmlDataSet extends DefaultDataSet
     }
 
 }
+
 
 
 
