@@ -85,6 +85,13 @@
       <roles>
         <role>Java Developer</role>
       </roles>
+      <name>Federico Spinazzi</name>
+      <id>fspinazzi</id>
+      <email>f.spinazzi@masterhouse.it</email>
+      <organization>MH</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
     </developer>
   </developers>
 
