@@ -56,7 +56,7 @@
           <th>Description</th>
         </tr>
         <tr> 
-          <td><a name="FlatXmlDataSet" href="apidocs/org/dbunit/dataset/xml/FlatXmlDataSet.html">FlatXmlDataSet</a></td>
+          <td><a name="flatxmldataset" href="apidocs/org/dbunit/dataset/xml/FlatXmlDataSet.html">FlatXmlDataSet</a></td>
           <td>      
        Reads and writes flat XML dataset document. Each XML element corresponds to a table row. 
         Each XML element name corresponds to a table name. The XML attributes 
@@ -88,7 +88,7 @@
 </td>
         </tr>
         <tr> 
-          <td><a href="apidocs/org/dbunit/dataset/xml/XmlDataSet.html">XmlDataSet</a></td>
+          <td><a name="xmldataset" href="apidocs/org/dbunit/dataset/xml/XmlDataSet.html">XmlDataSet</a></td>
           <td>
       Reads and writes original XML dataset document. This format 
         is very verbiose and must conform to the following DTD:
@@ -225,7 +225,7 @@ Following sample shows how to load a flat XML dataset with the StreamingDataSet:
           </td>
         </tr>
         <tr> 
-          <td><a href="apidocs/org/dbunit/dataset/excel/XlsDataSet.html">XlsDataSet</a></td>
+          <td><a name="xlsdataset" href="apidocs/org/dbunit/dataset/excel/XlsDataSet.html">XlsDataSet</a></td>
           <td>Read and writes MS Excel dataset documents. Each
   sheet represents a table. The first row of a sheet defines the columns names
   and remaining rows contains the data.</td>
@@ -281,7 +281,7 @@ dataSet.addReplacementObject("[NULL]", null);]]></source>
       be sequenced appropriately in the dataset.</td>
         </tr>
         <tr> 
-          <td><a href="apidocs/org/dbunit/operation/DeleteOperation.html">DatabaseOperation.DELETE</a></td>
+          <td><a name="delete" href="apidocs/org/dbunit/operation/DeleteOperation.html">DatabaseOperation.DELETE</a></td>
           <td>This operation deletes only the dataset contents from the database. This 
       operation does not delete the entire table contents but only data that are 
       present in the dataset.</td>
@@ -291,13 +291,13 @@ dataSet.addReplacementObject("[NULL]", null);]]></source>
           <td>Deletes all rows of tables present in the specified dataset. If the dataset does not contains a particular table, but that table exists in the database, the database table is not affected. Table are truncated in reverse sequence.</td>
         </tr>
         <tr> 
-          <td><a href="apidocs/org/dbunit/operation/TruncateTableOperation.html">DatabaseOperation.TRUNCATE</a></td>
+          <td><a name="truncate" href="apidocs/org/dbunit/operation/TruncateTableOperation.html">DatabaseOperation.TRUNCATE</a></td>
           <td>Truncate tables present in the specified dataset. If the dataset does not contains a particular table, but that table exists in the database, the database table is not affected. Table are truncated in reverse sequence. 
 
 </td>
         </tr>
         <tr> 
-          <td><a name="#refresh" href="apidocs/org/dbunit/operation/RefreshOperation.html">DatabaseOperation.REFRESH</a></td>
+          <td><a name="refresh" href="apidocs/org/dbunit/operation/RefreshOperation.html">DatabaseOperation.REFRESH</a></td>
           <td>This operation literally refreshes dataset contents into the target database. 
       This means that data of existing rows are updated and non-existing row get 
       inserted. Any rows which exist in the database but not in dataset stay unaffected. 
@@ -307,7 +307,7 @@ dataSet.addReplacementObject("[NULL]", null);]]></source>
       on a populated database like a copy of a production database.</td>
         </tr>
         <tr> 
-          <td><a name="#cleanInsert">DatabaseOperation.CLEAN_INSERT</a></td>
+          <td><a name="cleanInsert">DatabaseOperation.CLEAN_INSERT</a></td>
           <td>This composite operation performs a <a href="#deleteall">DELETE_ALL</a> operation followed by an 
       <a href="#insert">INSERT</a> operation. This is the safest approach to ensure that the database 
       is in a known state. This is appropriate for tests that require the database 
