@@ -11,10 +11,10 @@
       <item name="Maven Plugin"       href="http://maven-plugins.sourceforge.net/maven-dbunit-plugin/index.html"/>      
     </links>    
     <menu name="Quick Links">
-      <item name="Download"        href="http://sourceforge.net/project/showfiles.php?group_id=47439&amp;release_id=211888"/>
+      <item name="Download"        href="http://sourceforge.net/project/showfiles.php?group_id=47439&amp;release_id=242511"/>
       <item name="Changes"         href="/changes-report.html"/>
       <item name="FAQ"             href="/faq.html"/> 
-      <item name="Get Support"     href="https://sourceforge.net/support/getsupport.php?group_id=47439"/>          
+      <item name="Get Support"     href="http://sourceforge.net/support/getsupport.php?group_id=47439"/>          
       <item name="Wiki"       href="http://www.dbunit.org/wiki/"/>      
       <item name="Source"          href="/cvs-usage.html"/>          
       <item name="JavaDocs"        href="apidocs/index.html"/>          
