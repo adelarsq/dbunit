@@ -41,6 +41,7 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -150,6 +151,7 @@ public class FlatXmlProducer extends DefaultHandler
             }
 
             xmlReader.setContentHandler(this);
+            xmlReader.setErrorHandler(this);
             xmlReader.setEntityResolver(_resolver);
             xmlReader.parse(_inputSource);
         }
@@ -159,7 +161,18 @@ public class FlatXmlProducer extends DefaultHandler
         }
         catch (SAXException e)
         {
+            int lineNumber = -1;
+            if (e instanceof SAXParseException)
+            {
+                lineNumber = ((SAXParseException)e).getLineNumber();
+            }
             Exception exception = e.getException() == null ? e : e.getException();
+
+            if (lineNumber >= 0)
+            {
+                String message = "Line " + lineNumber + ": " + exception.getMessage();
+                throw new DataSetException(message, e);
+            }
             throw new DataSetException(exception);
         }
         catch (IOException e)
@@ -179,6 +192,15 @@ public class FlatXmlProducer extends DefaultHandler
             return new InputSource(new StringReader(""));
         }
         return null;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // ErrorHandler interface
+
+    public void error(SAXParseException e) throws SAXException
+    {
+        throw e;
+
     }
 
     ////////////////////////////////////////////////////////////////////////
