@@ -44,7 +44,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
     protected IDataSet createDataSet() throws Exception
     {
         InputStream in = new FileInputStream(
-                new File("src/xml/xmlRowDataSetTest.xml"));
+                new File("src/xml/flatXmlDataSetTest.xml"));
         return new FlatXmlDataSet(in);
     }
 
@@ -53,7 +53,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
         List tableList = new ArrayList();
 
         IDataSet dataSet = createDataSet();
-        File tempFile = File.createTempFile("xmlRowDataSetTest", ".xml");
+        File tempFile = File.createTempFile("flatXmlDataSetTest", ".xml");
         try
         {
             OutputStream out = new FileOutputStream(tempFile);
@@ -98,7 +98,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
                 DatabaseEnvironment.getInstance().getConnection();
         IDataSet dataSet = connection.createDataSet();
 
-        File tempFile = File.createTempFile("xmlRowDataSetTest", ".dtd");
+        File tempFile = File.createTempFile("flatXmlDataSetTest", ".dtd");
 
         try
         {
@@ -126,4 +126,5 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
     }
 
 }
+
 

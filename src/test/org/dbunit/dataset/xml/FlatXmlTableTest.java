@@ -45,7 +45,7 @@ public class FlatXmlTableTest extends AbstractTableTest
     protected IDataSet createDataSet(boolean noneAsNull) throws Exception
     {
         InputStream in = new FileInputStream(
-                new File("src/xml/xmlRowTableTest.xml"));
+                new File("src/xml/flatXmlTableTest.xml"));
         return new FlatXmlDataSet(in);
     }
 
@@ -67,4 +67,5 @@ public class FlatXmlTableTest extends AbstractTableTest
     }
 
 }
+
 

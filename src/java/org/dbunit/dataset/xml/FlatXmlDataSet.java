@@ -124,7 +124,7 @@ public class FlatXmlDataSet extends DefaultDataSet
             String lastTableName = null;
             Document document = new Document(in);
 
-            Elements rowElems = document.getElement("dataset2").getElements();
+            Elements rowElems = document.getElement("dataset").getElements();
             while (rowElems.hasMoreElements())
             {
                 Element rowElem = (Element)rowElems.nextElement();
@@ -162,7 +162,7 @@ public class FlatXmlDataSet extends DefaultDataSet
         String[] tableNames = dataSet.getTableNames();
 
         // dataset
-        Element rootElem = document.addElement("dataset2");
+        Element rootElem = document.addElement("dataset");
 
         // tables
         for (int i = 0; i < tableNames.length; i++)

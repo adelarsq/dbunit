@@ -39,7 +39,7 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        File tempFile = File.createTempFile("xmlRowDataSetWriteTest", ".xml");
+        File tempFile = File.createTempFile("flatXmlTableWriteTest", ".xml");
         OutputStream out = new FileOutputStream(tempFile);
         try
         {
@@ -71,7 +71,7 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
         }
 
         IDataSet dataSet = new DefaultDataSet(tables);
-        File tempFile = File.createTempFile("xmlDataSetWriteTest", "xml");
+        File tempFile = File.createTempFile("flatXmlTableWriteTest", "xml");
         OutputStream out = new FileOutputStream(tempFile);
         try
         {
@@ -98,4 +98,5 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
     }
 
 }
+
 
