@@ -29,6 +29,7 @@
         <root type="simple" url="jar://$PROJECT_DIR$/lib/crimson.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/jaxp.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/hsqldb.jar!/" />
+        <root type="simple" url="jar://$PROJECT_DIR$/lib/jakarta-poi.jar!/" />
       </root>
     </classPath>
     <excludePath>

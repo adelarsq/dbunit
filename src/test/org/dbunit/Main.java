@@ -24,11 +24,13 @@ package org.dbunit;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.excel.XlsDataSet;
+import org.dbunit.dataset.DataSetException;
 
 import electric.xml.Document;
 
-import java.io.FileWriter;
-import java.io.Writer;
+import java.io.*;
 
 /**
  * This class is a scratchpad used to try new features.
@@ -40,7 +42,7 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        oldMain();
+//        oldMain();
 //        testWrite();
 //        writeXls();
 //        newSheet();
@@ -101,17 +103,17 @@ public class Main
 //                new FileOutputStream("src/dtd/flatXmlDataSetTest.dtd"));
     }
 
-/*
     private static void writeXls() throws IOException, DataSetException
     {
         Reader in = new FileReader(
                 "P:/dbunit-cvs/dbunit/src/xml/dataSetTest.xml");
         FileOutputStream out = new FileOutputStream(
-                "P:/dbunit-cvs/dbunit/src/xml/dataSetTest.xls");
+                "P:/dbunit-cvs/dbunit/dataSetTest.xls");
         XlsDataSet.write(new XmlDataSet(in), out);
         out.close();
     }
 
+/*
     public static void newSheet() throws Exception
     {
         HSSFWorkbook wb = new HSSFWorkbook();

@@ -11,15 +11,13 @@
 package org.dbunit.dataset.xml;
 
 import org.dbunit.DatabaseEnvironment;
-import org.dbunit.Assertion;
-import org.dbunit.database.*;
-import org.dbunit.dataset.*;
+import org.dbunit.util.FileAsserts;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.AbstractDataSetTest;
+import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.IDataSet;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Comparator;
-
-import org.dbunit.util.FileAsserts;
 
 /**
  * @author Manuel Laflamme
@@ -50,30 +48,6 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
         return new FlatDtdDataSet(new FileReader(DUPLICATE_FILE));
     }
 
-    protected void sort(Object[] array)
-    {
-        if (ITable[].class.isInstance(array))
-        {
-            Arrays.sort(array, new TableComparator());
-        }
-        else
-        {
-            Arrays.sort(array);
-        }
-    }
-
-    private class TableComparator implements Comparator
-    {
-        public int compare(Object o1, Object o2)
-        {
-            String name1 = ((ITable)o1).getTableMetaData().getTableName();
-            String name2 = ((ITable)o2).getTableMetaData().getTableName();
-
-            return name1.compareTo(name2);
-        }
-    }
-
-
     protected int[] getExpectedDuplicateRows()
     {
         return new int[] {0, 0, 0};
@@ -95,17 +69,14 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
             try
             {
                 // write DTD in temp file
-                String[] tableNames = dataSet.getTableNames();
-                Arrays.sort(tableNames);
-                FlatDtdDataSet.write(new FilteredDataSet(
-                        tableNames, dataSet), out);
+                FlatDtdDataSet.write(dataSet, out);
             }
             finally
             {
                 out.close();
             }
 
-            org.dbunit.util.FileAsserts.assertEquals(
+            FileAsserts.assertEquals(
                     new BufferedReader(new FileReader(DTD_FILE)),
                     new BufferedReader(new FileReader(tempFile)));
         }
@@ -131,8 +102,7 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
             try
             {
                 // write DTD in temp file
-                String[] tableNames = dataSet.getTableNames();
-                Arrays.sort(tableNames);
+                String[] tableNames = getExpectedNames();
                 FlatDtdDataSet.write(new FilteredDataSet(
                         tableNames, dataSet), out);
             }
@@ -141,7 +111,7 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
                 out.close();
             }
 
-            org.dbunit.util.FileAsserts.assertEquals(
+            FileAsserts.assertEquals(
                     new BufferedReader(new FileReader(DTD_FILE)),
                     new BufferedReader(new FileReader(tempFile)));
         }
