@@ -22,6 +22,7 @@
 package org.dbunit.dataset.datatype;
 
 import java.net.URLEncoder;
+import java.sql.*;
 
 import org.dbunit.util.Base64;
 
@@ -80,9 +81,23 @@ public class StringDataType extends AbstractDataType
             return Base64.encodeBytes((byte[])value);
         }
 
+        if (value instanceof Clob)
+        {
+            try
+            {
+                Clob clobValue = (Clob)value;
+                clobValue.getSubString(1, (int)clobValue.length());
+            }
+            catch (SQLException e)
+            {
+                throw new TypeCastException(e);
+            }
+        }
+
         throw new TypeCastException(value.toString());
     }
 }
+
 
 
 

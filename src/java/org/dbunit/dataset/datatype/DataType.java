@@ -38,6 +38,8 @@ public abstract class DataType
             "VARCHAR", Types.VARCHAR);
     public static final DataType LONGVARCHAR = new StringDataType(
             "LONGVARCHAR", Types.LONGVARCHAR);
+    public static final DataType CLOB = new StringDataType(
+            "CLOB", Types.CLOB);
 
     public static final DataType NUMERIC = new NumberDataType(
             "NUMERIC", Types.NUMERIC);
@@ -72,11 +74,13 @@ public abstract class DataType
             "VARBINARY", Types.VARBINARY);
     public static final DataType LONGVARBINARY = new BytesDataType(
             "LONGVARBINARY", Types.LONGVARBINARY);
+    public static final DataType BLOB = new BytesDataType(
+            "BLOB", Types.BLOB);
 
     private static final DataType[] TYPES = {
-        VARCHAR, CHAR, LONGVARCHAR, NUMERIC, DECIMAL, BOOLEAN, INTEGER,
+        VARCHAR, CHAR, LONGVARCHAR, /*CLOB,*/ NUMERIC, DECIMAL, BOOLEAN, INTEGER,
         TINYINT, SMALLINT, BIGINT, REAL, DOUBLE, FLOAT, DATE, TIME, TIMESTAMP,
-        VARBINARY, BINARY, LONGVARBINARY,
+        VARBINARY, BINARY, LONGVARBINARY, /*BLOB,*/
     };
 
     /**
@@ -150,6 +154,7 @@ public abstract class DataType
         return UNKNOWN;
     }
 }
+
 
 
 

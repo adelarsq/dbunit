@@ -24,6 +24,8 @@ package org.dbunit.dataset.datatype;
 
 import java.net.URLEncoder;
 import java.net.URLDecoder;
+import java.sql.Blob;
+import java.sql.SQLException;
 
 import org.dbunit.util.Base64;
 
@@ -58,9 +60,23 @@ public class BytesDataType extends AbstractDataType
             return Base64.decode((String)value);
         }
 
+        if (value instanceof Blob)
+        {
+            try
+            {
+                Blob blobValue = (Blob)value;
+                blobValue.getBytes(1, (int)blobValue.length());
+            }
+            catch (SQLException e)
+            {
+                throw new TypeCastException(e);
+            }
+        }
+
         throw new TypeCastException(value.toString());
     }
 }
+
 
 
 
