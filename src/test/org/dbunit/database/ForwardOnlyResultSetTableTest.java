@@ -20,10 +20,15 @@
  */
 package org.dbunit.database;
 
+import org.dbunit.DatabaseEnvironment;
 import org.dbunit.dataset.ForwardOnlyTableTest;
 import org.dbunit.dataset.ITable;
-import org.dbunit.DatabaseEnvironment;
+import org.dbunit.dataset.MockTableMetaData;
+import org.dbunit.dataset.RowOutOfBoundsException;
+import org.dbunit.dataset.Column;
 import org.dbunit.operation.DatabaseOperation;
+
+import com.mockobjects.sql.MockMultiRowResultSet;
 
 /**
  * @author Manuel Laflamme
@@ -52,4 +57,54 @@ public class ForwardOnlyResultSetTableTest extends ForwardOnlyTableTest
     {
         // Do not test this!
     }
+
+    public void testGetValueOnLastRowIsClosingResultSet() throws Exception
+    {
+        String tableName = "TABLE";
+        String[] columnNames = {"C0"};
+//        String[] columnNames = {"C0", "C1", "C2"};
+        Object[][] expectedValues = new Object[][]{
+            new Object[]{"1", "2", "3"},
+            new Object[]{"4", "5", "6"},
+            new Object[]{"7", "8", "9"},
+        };
+
+        // Setup resultset
+        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
+        resultSet.setExpectedCloseCalls(1);
+        resultSet.setupColumnNames(columnNames);
+        resultSet.setupRows(expectedValues);
+
+        // Create table
+        MockTableMetaData metaData = new MockTableMetaData(tableName, columnNames);
+        ForwardOnlyResultSetTable table =
+                new ForwardOnlyResultSetTable(metaData, resultSet);
+
+        // Excercise getValue()
+        try
+        {
+            Column[] columns = table.getTableMetaData().getColumns();
+
+            for (int i = 0; ; i++)
+            {
+                for (int j = 0; j < columns.length; j++)
+                {
+                    String columnName = columns[j].getColumnName();
+                    Object actualValue = table.getValue(i, columnName);
+                    Object expectedValue = expectedValues[i][j];
+                    assertEquals("row=" + i + ", col=" + columnName,
+                            expectedValue, actualValue);
+
+                }
+            }
+        }
+        catch(RowOutOfBoundsException e)
+        {
+            // end of table
+        }
+
+        // Verify that ResultSet have been closed
+        resultSet.verify();
+    }
+
 }

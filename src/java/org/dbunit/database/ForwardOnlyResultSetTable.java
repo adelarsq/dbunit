@@ -81,6 +81,8 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
 
             if (_eot || row > _lastRow)
             {
+                // Proactively close the resultset
+                close();
                 throw new RowOutOfBoundsException(row + " > " + _lastRow);
             }
 
