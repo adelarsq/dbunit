@@ -7,24 +7,18 @@
   </properties>
 
   <body>
-    <release version="2.0" date="January ?, 2004" description="Major release.">
+    <release version="2.0" date="January 22, 2004" description="Major release.">
      <action dev="" type="update">
      	Mavenized the build and the website!
      </action>         
      <action dev="" type="update">
-     	Use SAX2 instead of Electric XML parser. DbUnit has no dependencies anymore on exml.jar and dtdparser.jar.
-     </action>      	            
-     <action dev="" type="update">
-     	Dramatic memory usage improvements to get rid of the infamous OutOfMemoryError. May need setup to take advantage of some improved features. See "OutOfMemoryError" FAQ.
+     	Now use SAX2 instead of Electric XML DOM parser. Streamed mode allows importing and exporting very large XML datasets with minimal memory consumption.
      </action>      	            
      <action dev="" type="add">
      	Flat XML dataset validation.
      </action>         
      <action dev="" type="add">
      	New <code>ITableIterator</code> interface used to iterate thru dataset tables. Allows lazy tables initialization for some dataset implementations. The <code>IDataSet.getTables</code> method have been deprecated and usage should be avoided.
-     </action>         
-     <action dev="" type="add">
-     	<code>StreamingDataSet</code>. Provides high performance and memory friendly XML document loading.
      </action>         
      <action dev="" type="update">
      	Global System properties are not supported anymore. You must now use the new <code>DatabaseConfig</code> object to alter DbUnit behaviours. 

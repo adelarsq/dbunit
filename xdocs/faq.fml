@@ -170,6 +170,15 @@ public class DatabaseExportSample
       </answer>
     </faq>  
     
+    <faq id="views">
+      <question>
+      How to enable batched statement?
+      </question>
+      <answer>
+      See <a href="properties.html#batchstatement">batched statement</a> feature.
+      </answer>
+    </faq>  
+    
     <faq id="dateformat">
       <question>
       What are the dates formats supported by DbUnit?
@@ -222,32 +231,24 @@ Don't hesitate to submit your own implementation if you encounter types not curr
       </p>
       </answer>
     </faq>    
-    
-  </part>  
 
-  <part id="use">
-    <title>Errors</title>
-
-    <faq id="outofmemory">
+    <faq id="streaming">
       <question>
-        How to get rid of the infamous "OutOfMemoryError"?
+        How to perform streamed import and export?
       </question>
       <answer>
         <p>
-        Historically, DbUnit has some memory consumption issues; especially when working with very large 
-        dataset files. DbUnit 2.0 includes many improvements, like using SAX2 instead of the Electric XML 
-        parser and and streamed XML dataset writing, to overcome the memory consumption problems.
+        Historically, DbUnit has memory consumption issues when working with very large dataset files. DbUnit 2.0 includes many improvements, like using SAX2 instead of the Electric XML parser and and streamed XML dataset writing, to overcome the memory consumption problems. 
         </p>
 	<p>
-        For compatibility reason, not all improvements are enabled by default. Depending of your 
-        utilisation, some additional setup can makes a huge difference.
+        For compatibility reason, streamed export and import are not enabled by default. When working with large dataset, using this feature can make a huge difference.
         </p>
 	<h5>
 	Database Export:
         </h5>
 
 	<p>
-	You should configure your DbUnit connection to use ForwardOnlyResultSetTable when exporting very 
+	Configure your DbUnit connection to use ForwardOnlyResultSetTable when exporting very 
 	large dataset. ForwardOnlyResultSetTable is a very efficient database table implemtation useful 
 	when random data access is not required. By default, DbUnit uses CachedResultSetTable which consume 
 	more memory but provides random data access.
@@ -266,7 +267,7 @@ ForwardOnlyResultSetTable:
 </source>
         </p>
 	<h5>
-	Forward Database Operations:
+	Database Import:
 	</h5>
 	<p>
 	Use the very efficient <a href="components.html#streamingdataset">StreamingDataSet</a> to load your XML dataset when 
@@ -274,7 +275,29 @@ ForwardOnlyResultSetTable:
 	</p>
 
       </answer>
-    </faq>
+    </faq>    
+  </part>  
+
+  <part id="use">
+    <title>Errors</title>
+
+    <faq id="AmbiguousTableNameException">
+      <question>
+     Why I get a "AmbiguousTableNameException"?
+      </question>
+      <answer>
+      <p>This situation occurs when no schema is specified and that DbUnit detect 
+        that it is getting columns information from multiple tables having the 
+        same name and located in different schemas.</p>
+      <p>You can solve this problem in three different ways:
+      <ol>
+        <li>Provide the schema name when creating the database connection. Note that for Oracle you must specify a all uppercase schema name.</li>
+        <li>Ensure that the connection is restricted to access only one schema.</li>
+        <li>Enable the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature.</li>
+      </ol>
+      </p>
+      </answer>
+    </faq>     
 
     <faq id="tableseq">
       <question>
@@ -345,23 +368,6 @@ Read how to <a href="#typefactory"> replace the default data type factory</a> an
       </answer>
     </faq>    
     
-    <faq id="AmbiguousTableNameException">
-      <question>
-     Why I get a AmbiguousTableNameException?
-      </question>
-      <answer>
-      <p>This situation occurs when no schema is specified and that DbUnit detect 
-        that it is getting columns information from multiple tables having the 
-        same name and located in different schemas.</p>
-      <p>You can solve this problem in three different ways:
-      <ol>
-        <li>Provide the schema name when creating the database connection. Note that for Oracle you must specify a all uppercase schema name.</li>
-        <li>Ensure that the connection is restricted to access only one schema.</li>
-        <li>Enable the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature.</li>
-      </ol>
-      </p>
-      </answer>
-    </faq>     
     
   </part>
 </faqs>
