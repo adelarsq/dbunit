@@ -18,10 +18,7 @@
     </p>
     <p>
       DbUnit has the ability to export and import your database (or specified tables) content to and 
-      from XML datasets. This is targeted for functional testing, so this is not the perfect tool to 
-      backup a huge production database.
-    </p>
-    <p>
+      from XML datasets. 
       DbUnit also provides assert facility to verify that your database content match some expected values.
     </p>
   </section>

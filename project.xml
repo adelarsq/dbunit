@@ -16,7 +16,7 @@
   
   <!-- details about the organization that 'owns' the project -->
   <organization>
-    <name>SourceForge</name>
+    <name>DbUnit.org</name>
     <url>http://www.sourceforge.net/projects/dbunit</url>
     <logo>http://sourceforge.net/sflogo.php?group_id=47439&amp;type=5</logo>
   </organization>
@@ -24,7 +24,7 @@
   <!-- the year the project started -->
   <inceptionYear>2002</inceptionYear>
   <package>org.dbunit</package>
-  <logo>http://www.dbunit.org/images/logo.jpg</logo>
+  <logo>/images/dbunit-logo.jpg</logo>
   <description>
     DbUnit is a JUnit extension (also usable from Ant) targeted for database-driven projects that, 
     among other things, puts your database into a known state between test runs. This is an 
@@ -78,6 +78,14 @@
   <!-- who the developers are for the project -->
   <developers>
    <developer>
+      <name>Benjamin Cox</name>
+      <id>bdrum</id>
+      <roles>
+        <role>Java Developer</role>
+       <!--  <role>Original Ant Task Contributor</role> -->
+      </roles>
+    </developer>
+   <developer>
       <name>David Eric Pugh</name>
       <id>dep4b</id>
       <email>epugh@upstate.com</email>
@@ -85,12 +93,33 @@
       <roles>
         <role>Java Developer</role>
       </roles>
+    </developer>
+   <developer>
       <name>Federico Spinazzi</name>
       <id>fspinazzi</id>
       <email>f.spinazzi@masterhouse.it</email>
       <organization>MH</organization>
       <roles>
         <role>Java Developer</role>
+       <!--  <role>DB2 Contributor</role> -->
+      </roles>
+    </developer>
+   <developer>
+      <name>Manuel Laflamme</name>
+      <id>mlaflamm</id>
+      <email>mlaflamm@users.sourceforge.net</email>
+      <organization>Oz Communication</organization>
+      <roles>
+        <role>Project Founder</role>
+       <!--  <role>Java Developer</role> -->
+      </roles>
+    </developer>
+   <developer>
+      <name>Timothy J. Ruppert</name>
+      <id>zieggy</id>
+      <roles>
+        <role>Java Developer</role>
+       <!--  <role>Original Ant Task Contributor</role> -->
       </roles>
     </developer>
   </developers>
@@ -118,10 +147,12 @@
      <id>hsqldb</id>
      <version>1.7.1</version>      
     </dependency>       
+    <!--
     <dependency>
      <id>servletapi</id>
      <version>2.3</version>      
     </dependency>       
+    -->
     <dependency>
      <id>poi</id>
      <version>1.8.0-dev-20020919</version>      
@@ -161,9 +192,9 @@
 
     <resources>
       <resource>
-        <directory>${basedir}/src/conf</directory>
+        <directory>${basedir}/src/java</directory>
         <includes>
-          <include>*.properties</include>
+          <include>**/dataset.dtd</include>
         </includes>
       </resource>
     </resources>

@@ -85,8 +85,8 @@ public interface IDataSet
       <p>For this kind of situation, this is highly recommended to use DTD. DbUnit will use the 
       columns declared in the DTD as table metadata. DbUnit only support external system URI. 
       The URI can be absolute or relative.</p> 
-      <p>Learn how to export your database data to this format <a href="howto.html#extract">here</a> 
-      and how to generate a DTD representing your database schema <a href="howto.html#generatedtd">here</a>. 
+      <p>Read how to <a href="faq.html#extract">export</a> your database data to this format 
+      and how to <a href="faq.html#generatedtd">generate a DTD</a> representing your database schema. 
       Note that DbUnit does not automatically add a reference to your DTD when 
       you export a dataset. You must edit the output file to manually add the 
       DOCTYPE declaration.</p> 

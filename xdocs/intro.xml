@@ -42,7 +42,7 @@
       <p> [...]</p>
       <p>[B]ut how do we manage the testing data in the database so that it doesn't 
         "mess up" live data?   
-      </p><h4>You need multiple databases</h4>
+      </p><h4>You need [multiple] databases</h4>
       <p>Some thoughts: A good test set is self-sufficient and creates all the 
         data it needs. Testing can be simplified if you can get the database in 
         a known state before a test is run. One ways to do this is to have a separate 

@@ -79,14 +79,13 @@ public class DatabaseExportSample
 
     <faq id="multipleschema">
       <question>
-        Can I work with multiple database schemas having table with the same name?
+        Can I work with multiple database schemas having tables with identical name?
       </question>
       <answer>
         Yes, see the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature.
       </answer>
     </faq>
 
-    <title>Using DbUnit</title>
     <faq id="identity">
       <question>
         Can I use DbUnit with IDENTITY or auto-increment 
@@ -146,6 +145,17 @@ public class DatabaseExportSample
 
   <part id="use">
     <title>Errors</title>
+
+    <faq id="tableseq">
+      <question>
+        Why I get a "Foreign keys constraint violation" error?
+      </question>
+      <answer>
+        DbUnit operations insert and update tables' rows in the same order they are found in your 
+        dataset and delete are done in reverse order. You must order your tables and rows 
+        appropriately in your datasets to prevent foreign keys constraint violation.
+      </answer>
+    </faq>
     
     <faq id="clonedconnection">
       <question>
@@ -196,18 +206,4 @@ public class DatabaseExportSample
     </faq>     
     
   </part>
-  <!--
-  <part id="install">
-    <title>Installation</title>
-   
-    <faq id="how-install">
-      <question>
-        How do I install Foo?
-      </question>
-      <answer>
-        <p>some markup goes here</p>
-      </answer>
-    </faq>
-  </part>  
-  -->
 </faqs>

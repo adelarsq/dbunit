@@ -10,7 +10,7 @@
       <item name="Maven Plugin"       href="http://maven-plugins.sourceforge.net/maven-dbunit-plugin/index.html"/>      
     </links>    
     <menu name="Quick Links">
-      <item name="News"            href="/index.html"/>  
+      <item name="About DbUnit"            href="/index.html"/>  
       <item name="Download"        href="/download.html"/>
       <item name="FAQ"             href="/faq.html"/> 
       <item name="Changes"         href="/changes-report.html"/>

@@ -8,12 +8,11 @@
 
   <body>
     <release version="1.5.6" date="October 5, 2003">
-     <action dev="" type="fix">
+     <action dev="" type="fix" issue="786543">
 	  <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=786543&amp;group_id=47439&amp;atid=449491">786543</a> - NULL primitive values incorrectly returned as zero (0).
      </action>      	            
      <action dev="" type="fix">
-	Not NULL Oracle CLOB values incorrectly returned as NULL. 
-     </action>         
+	Not NULL Oracle CLOB values incorrectly returned as NULL.     </action>         
     </release>
     <release version="1.5.5" date="July 16, 2003">
      <action dev="" type="update">

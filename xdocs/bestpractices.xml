@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document><properties><title>The Dbunit Framework - Best Practices</title></properties><body><section>
-      <h2>Best Practices</h2>
-      <p>All existing JUnit best practices still apply to the Dbunit framework. 
-        Here is a collection of best practices specifically related to database 
-        testing and Dbunit.</p>
-      <ul>
-        <li><a href="#onedbperdev">Use one database copy per developer</a></li>
-        <li><a href="#nocleanup">Good setup for every tests do not require cleanup</a></li>
+      <h3>Best Practices</h3>
+      <ol>
+        <li><a href="#onedbperdev">One database instance per developer</a></li>
+        <li><a href="#nocleanup">Setup for each test does not require cleanup</a></li>
         <li><a href="#smalldatasets">Use multiple small datasets </a></li>
         <li><a href="#staledata">Perform setup of stale data once for entire test 
-          class or a test suite</a></li>
+          class or test suite</a></li>
         <li><a href="#connections">Connection management strategies</a></li>
-        <li><a href="#tableseq">Table sequence in dataset</a></li>
-      </ul>
-      <h3><a name="onedbperdev">Use one database copy per developer</a></h3>
-      <p>See <a href="intro.html">introduction.</a></p>
-      <h3><a name="nocleanup"> Good setup for every tests do not require cleanup</a></h3>
+      </ol>
+      <h3><a name="onedbperdev">One database instance per developer</a></h3>
+      <p>Testing can be simplified if you can get your database in a known state 
+      before a test is run. A database should only be used for one test at a time; 
+      otherwise the database state cannot be guarantied. </p><p>
+	So multiple developers working on the same project should have their own 
+	database instance to prevent data corruption.
+</p>
+      <h3><a name="nocleanup">Setup for each test does not require cleanup</a></h3>
       <p>
-      People versed in testcase design already know that a test should never depend 
-      on results from previous tests. If you always correctly initialize your 
-      database before each test you won't need to do any clean up at all after 
-      execution.
-      </p>
+      You should avoid creating tests that depends on results of preceding tests; 
+      this is the main purpose of DbUnit anyway. If you always put your database in 
+      a known state before each test execution, you don't need to do clean up at the 
+      end of a test. This simplifies your tests and reduces the cleanup overhead at the same time.      </p>
       <h3><a name="smalldatasets"> Use multiple small datasets</a></h3>
       <p>
       Most of your tests do not require the entire database to be re-initialized. 
@@ -29,26 +29,22 @@
       to break it into many smaller chunks.
       </p>
       <p>
-      Those chunks could roughly corresponding to logical units, or components. 
+      These chunks could roughly corresponding to logical units, or components. 
       This reduces the overhead caused by initializing your database for each 
       test. This also facilitates team development since many developers working 
       on different components can modify datasets independently.
       </p>
       <p>
-      For integrated testing, you can still use the CompositeDataSet implementation 
-      to combine multiple datasets into one at run time.
+      For integrated testing, you can still use the CompositeDataSet class      
+      to logically combine multiple datasets into a large one at run time.
       </p>
       <h3><a name="staledata"> Perform setup of stale data once for entire test 
-        class or a test suite</a></h3>
+        class or test suite</a></h3>
       <p>
       If several tests are using the same read-only data, this data could be initialized 
       once for an entire test class or test suite. You need to be cautious and 
       ensure you never modify this data. This can reduce the time required to 
       run your tests but also introduces more risk. <br></br>
-      </p>
-      <p>
-      This feature is not yet integrated in Dbunit but may be added in the future. 
-      Something likes a DatabaseTestSuite class? <br></br>
       </p>
       <h3><a name="connections"> Connection management strategies</a></h3>
       <p>
@@ -56,27 +52,20 @@
       you test from a remote client or an in-container strategy:
       </p>
       <h4>Remote client with DatabaseTestCase</h4>
-      <p>You should reuse the same connection for the entire test suite to reduce 
-        the overhead of creating a new connection for each test by using a singleton. 
+      <p>You should try to reuse the same connection for the entire test suite to reduce 
+        the overhead of creating a new connection for each test. 
         Since version 1.1, DatabaseTestCase is closing every connection in setUp() 
         and tearDown(). Override the closeConnection() method with an empty body 
         to modify this behavior. </p>
       <h4>In-container with Cactus or JUnitEE</h4>
       <p>
-      If you use the in-container strategy you should use a DatabaseDataSourceConnection 
-      object to access the DataSource you configured for your application server. 
-      Jdbc connections are requested on demand from the DataSource. So you can 
+      If you use the in-container strategy you should use the DatabaseDataSourceConnection 
+      class to access the DataSource you configured for your application server. 
+      JDBC connections are requested on demand from the DataSource. So you can 
       rely on the built-in connection pooling capability of your application server 
-      to achieve better performance.
+      to achieve good performance.
       <source>IDatabaseConnection connection = new DatabaseDataSourceConnection(
       new InitialContext(), "jdbc/myDataSource");</source>
-      </p>
-      <h3><a name="tableseq"> Table sequence in dataset</a></h3>
-      <p>
-      To prevent problems with foreign keys, tables must be sequenced appropriately 
-      in dataset. The framework executes INSERT, UPDATE and REFRESH operations 
-      using the same sequence while DELETE and DELETE_ALL are executed in reverse 
-      order.
       </p>
       
      
