@@ -23,13 +23,16 @@
 package org.dbunit;
 
 import org.dbunit.dataset.*;
+import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
-
-import java.io.FileInputStream;
-import java.io.FileReader;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+
+import java.io.FileReader;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author Manuel Laflamme
@@ -138,6 +141,89 @@ public class AssertionTest extends TestCase
         catch (AssertionFailedError e)
         {
         }
+    }
+
+    public void testAssertTablesEqualsAndIncompatibleDataType() throws Exception
+    {
+        String tableName = "TABLE_NAME";
+
+        // Setup actual table
+        Column[] actualColumns = new Column[] {
+            new Column("BOOLEAN", DataType.BOOLEAN),
+        };
+        Object[] actualRow = new Object[] {
+            Boolean.TRUE,
+        };
+        List actualRowList = new ArrayList();
+        actualRowList.add(actualRow);
+        ITable actualTable = new DefaultTable(tableName,
+                actualColumns, actualRowList);
+
+        // Setup expected table
+        Column[] expectedColumns = new Column[] {
+            new Column("BOOLEAN", DataType.VARCHAR),
+        };
+        Object[] expectedRow = new Object[] {
+            "1",
+        };
+        List expectedRowList = new ArrayList();
+        expectedRowList.add(expectedRow);
+        ITable expectedTable = new DefaultTable(tableName,
+                expectedColumns, expectedRowList);
+
+        try
+        {
+            Assertion.assertEquals(expectedTable, actualTable);
+        }
+        catch (AssertionFailedError e)
+        {
+
+        }
+    }
+
+    public void testAssertTablesEqualsAndCompatibleDataType() throws Exception
+    {
+        String tableName = "TABLE_NAME";
+        java.sql.Timestamp now = new java.sql.Timestamp(
+                System.currentTimeMillis());
+
+        // Setup actual table
+        Column[] actualColumns = new Column[] {
+            new Column("BOOLEAN", DataType.BOOLEAN),
+            new Column("TIMESTAMP", DataType.TIMESTAMP),
+            new Column("STRING", DataType.CHAR),
+            new Column("NUMERIC", DataType.NUMERIC),
+        };
+        Object[] actualRow = new Object[] {
+            Boolean.TRUE,
+            now,
+            "0",
+            new BigDecimal("123.4"),
+        };
+        List actualRowList = new ArrayList();
+        actualRowList.add(actualRow);
+        ITable actualTable = new DefaultTable(tableName,
+                actualColumns, actualRowList);
+
+        // Setup expected table
+        Column[] expectedColumns = new Column[] {
+            new Column("BOOLEAN", DataType.UNKNOWN),
+            new Column("TIMESTAMP", DataType.UNKNOWN),
+            new Column("STRING", DataType.UNKNOWN),
+            new Column("NUMERIC", DataType.UNKNOWN),
+        };
+        Object[] expectedRow = new Object[] {
+            "1",
+            new Long(now.getTime()),
+            new Integer("0"),
+            "123.4000",
+        };
+        List expectedRowList = new ArrayList();
+        expectedRowList.add(expectedRow);
+        ITable expectedTable = new DefaultTable(tableName,
+                expectedColumns, expectedRowList);
+
+        Assertion.assertEquals(expectedTable, actualTable);
     }
 
     public void testAssertDataSetsEquals() throws Exception

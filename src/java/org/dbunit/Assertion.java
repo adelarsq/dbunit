@@ -24,9 +24,12 @@ package org.dbunit;
 
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.DataTypeException;
+import org.dbunit.dataset.datatype.UnknownDataType;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.ArrayList;
 
 import junit.framework.Assert;
 
@@ -36,6 +39,8 @@ import junit.framework.Assert;
  */
 public class Assertion
 {
+    private static final ColumnComparator COLUMN_COMPARATOR = new ColumnComparator();
+
     private Assertion()
     {
     }
@@ -90,7 +95,7 @@ public class Assertion
     public static void assertEquals(ITable expectedTable, ITable actualTable)
             throws Exception
     {
-        // do not continue if same instance
+        // Do not continue if same instance
         if (expectedTable == actualTable)
         {
             return;
@@ -104,59 +109,107 @@ public class Assertion
 //        Assert.assertEquals("table name", expectedMetaData.getTableName(),
 //                actualMetaData.getTableName());
 
-        // column count
-        String[] expectedNames = getSortedUpperColumnNames(expectedMetaData);
-        String[] actualNames = getSortedUpperColumnNames(actualMetaData);
+        // Verify columns
+        Column[] expectedColumns = getSortedColumns(expectedMetaData);
+        Column[] actualColumns = getSortedColumns(actualMetaData);
         Assert.assertEquals("column count (table=" + expectedTableName + ")",
-                expectedNames.length, actualNames.length);
+                expectedColumns.length, actualColumns.length);
 
-        // columns names in no specific order
-        for (int i = 0; i < expectedNames.length; i++)
+        for (int i = 0; i < expectedColumns.length; i++)
         {
-            String expectedName = expectedNames[i];
-            String actualName = actualNames[i];
-            if (!expectedName.equals(actualName))
+            String expectedName = expectedColumns[i].getColumnName();
+            String actualName = actualColumns[i].getColumnName();
+            if (!expectedName.equalsIgnoreCase(actualName))
             {
-                Assert.fail("expected columns " + Arrays.asList(expectedNames) +
-                        " but was " + Arrays.asList(actualNames) + " (table=" +
-                        expectedTableName + ")");
+                Assert.fail("expected columns " + getColumnNamesAsString(expectedColumns) +
+                        " but was " + getColumnNamesAsString(actualColumns) +
+                        " (table=" + expectedTableName + ")");
             }
-
         }
 
-        // row count
+        // Verify row count
         Assert.assertEquals("row count (table=" + expectedTableName + ")",
                 expectedTable.getRowCount(), actualTable.getRowCount());
 
         // values as strings
         for (int i = 0; i < expectedTable.getRowCount(); i++)
         {
-            for (int j = 0; j < expectedNames.length; j++)
+            for (int j = 0; j < expectedColumns.length; j++)
             {
-                String columnName = expectedNames[j];
+                Column expectedColumn = expectedColumns[j];
+                Column actualColumn = actualColumns[j];
 
+                String columnName = expectedColumn.getColumnName();
                 Object expectedValue = expectedTable.getValue(i, columnName);
                 Object actualValue = actualTable.getValue(i, columnName);
-                Assert.assertEquals("value (table=" + expectedTableName +
-                        ", row=" + i + ", col=" + columnName + ")",
-                        DataType.asString(expectedValue),
-                        DataType.asString(actualValue));
 
+                DataType dataType = getComparisonDataType(
+                        expectedTableName, expectedColumn, actualColumn);
+                if (dataType.compare(expectedValue, actualValue) != 0)
+                {
+                    Assert.fail("value (table=" + expectedTableName + ", " +
+                            "row=" + i + ", col=" + columnName + "): expected:<" +
+                            expectedValue + "> but was:<" + actualValue + ">");
+                }
             }
         }
     }
 
-    private static String[] getSortedUpperColumnNames(ITableMetaData metaData)
+    static DataType getComparisonDataType(String tableName, Column expectedColumn,
+            Column actualColumn)
+    {
+        DataType expectedDataType = expectedColumn.getDataType();
+        DataType actualDataType = actualColumn.getDataType();
+
+        // The two columns have different data type
+        if (!expectedDataType.getClass().isInstance(actualDataType))
+        {
+            // Expected column data type is unknown, use actual column data type
+            if (expectedDataType instanceof UnknownDataType)
+            {
+                return actualDataType;
+            }
+
+            // Actual column data type is unknown, use expected column data type
+            if (actualDataType instanceof UnknownDataType)
+            {
+                return expectedDataType;
+            }
+
+            // Impossible to determine which data type to use
+            Assert.fail("Incompatible data types: " + expectedDataType + ", " +
+                    actualDataType + " (table=" + tableName + ", col=" +
+                    expectedColumn.getColumnName() + ")");
+        }
+//        // Both columns have unknown data type, use string comparison
+//        else if (expectedDataType instanceof UnknownDataType)
+//        {
+//            return DataType.LONGVARCHAR;
+//        }
+
+        // Both columns have same data type, return any one of them
+        return expectedDataType;
+    }
+
+    private static Column[] getSortedColumns(ITableMetaData metaData)
             throws DataSetException
     {
         Column[] columns = metaData.getColumns();
+        Column[] sortColumns = new Column[columns.length];
+        System.arraycopy(columns, 0, sortColumns, 0, columns.length);
+        Arrays.sort(sortColumns, COLUMN_COMPARATOR);
+        return sortColumns;
+    }
+
+    private static String getColumnNamesAsString(Column[] columns)
+    {
         String[] names = new String[columns.length];
         for (int i = 0; i < columns.length; i++)
         {
-            names[i] = columns[i].getColumnName().toUpperCase();
+            Column column = columns[i];
+            names[i] = column.getColumnName();
         }
-        Arrays.sort(names);
-        return names;
+        return Arrays.asList(names).toString();
     }
 
     private static String[] getSortedUpperTableNames(IDataSet dataSet)
@@ -171,6 +224,21 @@ public class Assertion
         return names;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    // ColumnComparator class
+
+    private static class ColumnComparator implements Comparator
+    {
+        public int compare(Object o1, Object o2)
+        {
+            Column column1 = (Column)o1;
+            Column column2 = (Column)o2;
+
+            String columnName1 = column1.getColumnName();
+            String columnName2 = column2.getColumnName();
+            return columnName1.compareToIgnoreCase(columnName2);
+        }
+    }
 }
 
 
