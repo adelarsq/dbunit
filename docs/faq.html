@@ -6,20 +6,20 @@
 <link href="stylesheet.css" rel="stylesheet" type="text/css">
 <!-- #BeginEditable "doctitle" -->
 <title>The Dbunit Framework - FAQ</title>
-<!-- #EndEditable -->
+<!-- #EndEditable --> 
 </head>
 <body>
 <table cellspadding = 0 cellspacing = 0 border = 0 width="100%">
-  <tr height="100">
+  <tr height="100"> 
     <td class="logo" width = 200><img src="images/logo.jpg" width=200 height=100></td>
     <td class="header"></td>
   </tr>
   </table>
   <table cellspadding = 0 cellspacing = 0 border = 0>
-    <tr>
-
-    <td class="menu" nowrap valign="top" >
-      <p><a href="index.html">Home</a><br>
+    <tr> 
+      
+    <td class="menu" nowrap valign="top" > 
+	  <p><a href="index.html">Home</a><br>
         <br>
         <a href="intro.html">Introduction</a><br>
         <a href="components.html">Core classes</a><br>
@@ -36,93 +36,86 @@
         <a href="resources.html">Resources</a><br>
         <br>
       </p>
-      <div align="center"><a href="http://sourceforge.net"> <img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439">
+      <div align="center"><a href="http://sourceforge.net"> <img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439"> 
         </a></div>
       <br>
-      <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations"
+      <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations" 
       src="images/silphid.gif" border=0></a></div>
     </td>
-    <td class="body" valign="top"> <!-- #BeginEditable "body" -->
+    <td class="body" valign="top"> <!-- #BeginEditable "body" --> 
       <h2><a name="faq">Frequently asked questions</a></h2>
       <ul>
         <li><a href="#supportedvendors">Which database system are supported?</a></li>
-        <li><a href="#identity">Can I use DbUnit with IDENTITY or auto-increment
+        <li><a href="#identity">Can I use DbUnit with IDENTITY or auto-increment 
           columns?</a></li>
-        <li><a href="#clonedconnection">Why do I get a &quot;Can't start a cloned
+        <li><a href="#clonedconnection">Why do I get a &quot;Can't start a cloned 
           connection&quot; exception when I use InsertIdentityOperation?</a></li>
-        <li><a><a href="UnsatisfiedLinkError">Why do I get an &quot;UnsatisfiedLinkError&quot;
+        <li><a><a href="UnsatisfiedLinkError">Why do I get an &quot;UnsatisfiedLinkError&quot; 
           with the DB2 driver?</a></a></li>
         <li><a href="#AmbiguousTableNameException">Why do I get a AmbiguousTableNameException?</a></li>
-        <li><a href="#NoSuchColumnException">Why do I get a org.dbunit.dataset.NoSuchColumnException?</a></li>
+        <li><a href="#flatxmlnull">How to specify NULL values with flat XML dataset?</a> 
+          <font color="#FF0000">(new)</font> </li>
       </ul>
       <hr>
       <h3><a name="supportedvendors">Which database systems are supported?</a></h3>
-      <p>The Dbunit framework has been developed and tested with Oracle and HypersonicSQL.
-        It uses a fairly simple SQL syntax and should be compatible with the other
-        database systems. <a href="support.html">Let us know</a> if you find any
+      <p>The Dbunit framework has been developed and tested with Oracle and HypersonicSQL. 
+        It uses a fairly simple SQL syntax and should be compatible with the other 
+        database systems. <a href="support.html">Let us know</a> if you find any 
         incompatibilities.</p>
-      <p>
-      <h3><a name="identity">Can I use DbUnit with IDENTITY or auto-increment
+      <p> 
+      <h3><a name="identity">Can I use DbUnit with IDENTITY or auto-increment 
         columns?</a></h3>
-      <p>Auto-increment columns must be disabled in order to insert the dataset
-        values into the database. The way to disable this feature is database
-        specific. If your database does not provide a way to disable this feature
+      <p>Auto-increment columns must be disabled in order to insert the dataset 
+        values into the database. The way to disable this feature is database 
+        specific. If your database does not provide a way to disable this feature 
         then you are out of luck and DbUnit cannot be used with it. </p>
-      <p>Since version 1.4, DbUnit support IDENTITY columns for MS SQL Server
-        with the class <a href="components.html#IdentityInsertOperation">IdentityInsertOperation</a>.
+      <p>Since version 1.4, DbUnit support IDENTITY columns for MS SQL Server 
+        with the class <a href="components.html#IdentityInsertOperation">IdentityInsertOperation</a>. 
         <br>
       </p>
-      <p>
-      <h3><a name="clonedconnection">Why I get a &quot;Can't start a cloned connection&quot;
+      <p> 
+      <h3><a name="clonedconnection">Why I get a &quot;Can't start a cloned connection&quot; 
         exception when I use InsertIdentityOperation?</a></h3>
       <p></p>
-      <p>If you are using the Microsoft driver (i.e. <a class=code>com.microsoft.jdbc.sqlserver.SQLServerDriver</a>),
-        you'll need to use the <a class=code>SelectMethod=cursor</a> parameter
-        in the JDBC connection string (as outlined by <a href="http://forum.java.sun.com/thread.jsp?forum=48&thread=184797">this
-        JDC thread</a>). Your database Url would look something like the following:
+      <p>If you are using the Microsoft driver (i.e. <a class=code>com.microsoft.jdbc.sqlserver.SQLServerDriver</a>), 
+        you'll need to use the <a class=code>SelectMethod=cursor</a> parameter 
+        in the JDBC connection string (as outlined by <a href="http://forum.java.sun.com/thread.jsp?forum=48&thread=184797">this 
+        JDC thread</a>). Your database Url would look something like the following: 
       </p>
-      <p>
+      <p> 
       <pre>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor
-
 </pre>
       <h3><br>
-        <a name="UnsatisfiedLinkError">Why I get an &quot;UnsatisfiedLinkError&quot;
+        <a name="UnsatisfiedLinkError">Why I get an &quot;UnsatisfiedLinkError&quot; 
         with the DB2 driver?</a></h3>
-      <p>DbUnit uses JDBC 2.0 features (batch updates). By default, DB2 installs
-        the JDBC 1.0 driver. You have to install the JDBC 2.0 driver in order
-        for DbUnit to work or you will get an <a class="code">UnsatisfiedLinkError</a>
+      <p>DbUnit uses JDBC 2.0 features (batch updates). By default, DB2 installs 
+        the JDBC 1.0 driver. You have to install the JDBC 2.0 driver in order 
+        for DbUnit to work or you will get an <a class="code">UnsatisfiedLinkError</a> 
         from the DB2 JDBC 1.0 driver.</p>
-      <p>The steps for installing the DB2 JDBC 2.0 driver are covered in the DB2
+      <p>The steps for installing the DB2 JDBC 2.0 driver are covered in the DB2 
         documentation.</p>
       <h3><a name="AmbiguousTableNameException">Why I get a AmbiguousTableNameException?</a></h3>
-      <p>This situation occurs when no schema is specified and that DbUnit detect
-        that it is getting columns information from multiple tables having the
+      <p>This situation occurs when no schema is specified and that DbUnit detect 
+        that it is getting columns information from multiple tables having the 
         same name and located in different schemas.</p>
       <p>You can solve this problem in three different ways:<br>
         1. Provide the schema name when creating the database connection.<br>
         2. Ensure that the connection is restricted to access only one schema.<br>
         3. Use fully qualified table names as specified <a href="howto.html#multipleschema">here</a>.<br>
       </p>
-      <br>
-      <h3><a name="NoSuchColumnException">Why I get a NoSuchColumnException?</a></h3>
-        <p>If you use the query ant step to export data, you can enter SELECT ORDER_ID from Orders.  However, if the
-        ORDER_ID column is really Order_ID, then when you attempt to insert the data back into the database you will
-        get an exception like: org.dbunit.dataset.NoSuchColumnException: ORDERS.ORDER_ID</p>
-
-
-      <p><br>
-      </p>
-      <p></p>
-      <!-- #EndEditable -->
+      <h3><a name="flatxmlnull">How to specify NULL values with flat XML dataset</a></h3>
+      <p>See FlatXmlDataSet documentation <a href="components.html#FlatXmlDataSet">here</a>.</p>
+      <!-- #EndEditable --> 
       <hr>
-      <div align="center">
-        <p><font size="2">Copyright &copy;2002, Manuel Laflamme, All Rights Reserved</font></p>
-        <p><font size="1"><a href="index.html">Home</a> - <a href="intro.html">Introduction</a>
-          - <a href="components.html">Core Classes</a> - <a href="anttask.html">Ant
-          Task</a> - <a href="howto.html">How-to Guides</a> - <a href="bestpractices.html">Best
-          Practices</a> - <a href="properties.html">Properties</a> - <a href="api/index.html">API
-          Reference</a> - <a href="faq.html">FAQ</a> - <a href="changes.html">Changes
-          History</a> - <a href="download.html">Download</a> - <a href="support.html">Support</a>
+      <div align="center"> 
+        <p><font size="2">Copyright &copy;2002-2003, Manuel Laflamme, All Rights 
+          Reserved</font></p>
+        <p><font size="1"><a href="index.html">Home</a> - <a href="intro.html">Introduction</a> 
+          - <a href="components.html">Core Classes</a> - <a href="anttask.html">Ant 
+          Task</a> - <a href="howto.html">How-to Guides</a> - <a href="bestpractices.html">Best 
+          Practices</a> - <a href="properties.html">Properties</a> - <a href="api/index.html">API 
+          Reference</a> - <a href="faq.html">FAQ</a> - <a href="changes.html">Changes 
+          History</a> - <a href="download.html">Download</a> - <a href="support.html">Support</a> 
           - <a href="resources.html">Resources</a></font></p>
         <font size="1">$Revision$ $Date$</font> </div>
   </tr>

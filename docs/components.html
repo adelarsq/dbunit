@@ -6,20 +6,20 @@
 <link href="stylesheet.css" rel="stylesheet" type="text/css">
 <!-- #BeginEditable "doctitle" -->
 <title>The Dbunit Framework - Framework Components</title>
-<!-- #EndEditable -->
+<!-- #EndEditable --> 
 </head>
 <body>
 <table cellspadding = 0 cellspacing = 0 border = 0 width="100%">
-  <tr height="100">
+  <tr height="100"> 
     <td class="logo" width = 200><img src="images/logo.jpg" width=200 height=100></td>
     <td class="header"></td>
   </tr>
   </table>
   <table cellspadding = 0 cellspacing = 0 border = 0>
-    <tr>
-
-    <td class="menu" nowrap valign="top" >
-      <p><a href="index.html">Home</a><br>
+    <tr> 
+      
+    <td class="menu" nowrap valign="top" > 
+	  <p><a href="index.html">Home</a><br>
         <br>
         <a href="intro.html">Introduction</a><br>
         <a href="components.html">Core classes</a><br>
@@ -36,40 +36,39 @@
         <a href="resources.html">Resources</a><br>
         <br>
       </p>
-      <div align="center"><a href="http://sourceforge.net"> <img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439">
+      <div align="center"><a href="http://sourceforge.net"> <img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439"> 
         </a></div>
       <br>
-      <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations"
+      <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations" 
       src="images/silphid.gif" border=0></a></div>
     </td>
-    <td class="body" valign="top"> <!-- #BeginEditable "body" -->
+    <td class="body" valign="top"> <!-- #BeginEditable "body" --> 
       <h2>Core Classes</h2>
-      The following walks you through the core classes that make up DbUnit:
+      The following walks you through the core classes that make up DbUnit: 
       <ul>
         <li><a href="#dataset">IDataSet (org.dbunit.dataset)</a></li>
         <li><a href="#databaseconnection">IDatabaseConnection (org.dbunit.database)</a></li>
         <li><a href="#databaseoperation">DatabaseOperation (org.dbunit.operation)</a></li>
       </ul>
-      <p>All the above are interfaces or abstract classes and you will find yourself
+      <p>All the above are interfaces or abstract classes and you will find yourself 
         using implementations or subclasses.</p>
       <hr>
       <h3><a name="dataset">IDataSet</a></h3>
-      <p>The <a class="code">IDataSet</a> interface represents is a collection
-        of data from various tables. As explained later, these data is used to
+      <p>The <a class="code">IDataSet</a> interface represents is a collection 
+        of data from various tables. As explained later, these data is used to 
         execute setup operations on a target database. </p>
-      <p>The <a class="code">IDataSet</a> implementations provided by the framework
+      <p>The <a class="code">IDataSet</a> implementations provided by the framework 
         are: </p>
       <ul>
         <li><a href="#XmlDataSet">XmlDataSet</a></li>
-        <li><a href="#FlatXmlDataSet">FlatXmlDataSet</a></li>
+        <li><a href="#FlatXmlDataSet">FlatXmlDataSet</a> <font color="#FF0000">(updated)</font></li>
         <li><a href="#DatabaseDataSet">DatabaseDataSet</a></li>
         <li><a href="#DefaultDataSet">DefaultDataSet</a></li>
         <li><a href="#CompositeDataSet">CompositeDataSet</a></li>
         <li><a href="#FilteredDataSet">FilteredDataSet</a></li>
-        <li><a href="#CaseInsentiveDataSet" >CaseInsentiveDataSet</a></li>
-        <li><a href="#QueryDataSet" >QueryDataSet</a></li>
+        <li><a href="#QueryDataSet" >QueryDataSet</a> <font color="#FF0000">(new)</font></li>
       </ul>
-      The <a class="code">IDataSet</a> interface:
+      The <a class="code">IDataSet</a> interface: 
       <pre>public interface IDataSet
 {
     /**
@@ -87,15 +86,15 @@
      * Returns the specified table.
      */
     public ITable getTable(String tableName) throws DataSetException;
-}</pre>
-      <a name="XmlDataSet">
+
+
+    /**<br>     * Returns tables contained by this dataset. Multiple table having the same<br>     * name but different data may be returned. This method exist since version 1.5.<br>     */<br>    public ITable[] getTables() throws DataSetException;<br>}</pre>
+      <a name="XmlDataSet"> 
       <h4>XmlDataSet </h4>
-      </a>
-      <p>The <a class="code">XmlDataSet</a> class provides the persistence support
-        to read from and write to the generic xml dataset format. This format
-        is very generic and must conform to a predefined DTD.</p>
-      <p>The generic xml dataset DTD:<br>
-      </p>
+      </a> 
+      <p>The <a class="code">XmlDataSet</a> class provides the persistence support 
+        to read from and write to the generic XML dataset format. This format 
+        is very verbiose and must conform to the following DTD:</p>
       <pre>
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;!ELEMENT dataset (table+)&gt;
@@ -108,7 +107,7 @@
 &lt;!ELEMENT value (#PCDATA)&gt;
 &lt;!ELEMENT null EMPTY&gt;
 </pre>
-      <a name="originalxmlsample">And here is a sample instance:</a><br>
+      <a name="originalxmlsample">Example of XML document:</a><br>
       <pre>
 &lt;!DOCTYPE dataset SYSTEM &quot;dataset.dtd&quot;&gt;
 &lt;dataset&gt;
@@ -150,17 +149,13 @@
     &lt;/table&gt;
 &lt;/dataset&gt;</pre>
       <h4><a name="FlatXmlDataSet">FlatXmlDataSet</a></h4>
-      <p>The <a class="code">FlatXmlDataSet</a> class has been introduced in version
-        1.2 because I found that generic xml datasets were hard to create and
-        to maintain. This was particularly painful for tables with several columns.
-      </p>
-      <p>In the flat xml format, each xml element corresponds to a table row.
-        Each element name corresponds to its table name. The columns correspond
-        to attributes. This format has no predefined DTD since it is different
-        for each database. DbUnit can generate a DTD for your database (see the
-        <a href="howto.html#generatedtd">How-to guide</a>). </p>
-      <p> Here is a sample dataset containing the same data than the <a href="#originalxmlsample">XmlDataSet
-        sample</a>:<br>
+      <p>The <a class="code">FlatXmlDataSet</a> class has been introduced in version 
+        1.2. I found that generic XML datasets were hard to write and to maintain. 
+        This was particularly painful for tables having a lot of columns. </p>
+      <p>In the flat XML format, each XML element corresponds to a table row. 
+        Each XML element name corresponds to a table name. The XML attributes 
+        correspond to table columns. Here is an example dataset containing the 
+        same data than the <a href="#originalxmlsample">XmlDataSet example</a>:<br>
       </p>
       <pre>
 &lt;!DOCTYPE dataset SYSTEM &quot;my-dataset.dtd&quot;&gt;
@@ -172,59 +167,58 @@
     &lt;SECOND_TABLE COLUMN0=&quot;row 1 col 0&quot; COLUMN1=&quot;row 1 col 1&quot; /&gt;
     &lt;EMPTY_TABLE/&gt;
 &lt;/dataset&gt;</pre>
+      Learn how to export your database data to this format <a href="howto.html#extract">here</a> 
+      and how to generate a DTD representing your database schema <a href="howto.html#generatedtd">here</a>. 
+      Note that DbUnit does not automatically add a reference to your DTD when 
+      you export a dataset. You must edit the output file to manually add the 
+      DOCTYPE declaration. 
       <h5>Null Values</h5>
-      To specify a null value, you simply have to omit its corresponding attribute.
-      In the above example, COLUMN1 and COLUMN2 are nulls for the second row of
-      TEST_TABLE.
+      To specify a null value, you simply have to omit its corresponding attribute. 
+      In the above example, COLUMN1 and COLUMN2 are nulls for the second row of 
+      TEST_TABLE. 
       <h5>Table metadata</h5>
-      DbUnit generate table metadata from the DTD pointed by the document type
-      declaration. DbUnit only support external system URI. The URI can be absolute
-      or relative.
-      <p> Example of system document type declaration:
+      DbUnit use the DTD referenced by the document type declaration as metadata. 
+      DbUnit only support external system URI. The URI can be absolute or relative. 
+      <p> Example of system document type declaration: 
       <pre>&lt;!DOCTYPE dataset SYSTEM &quot;my-dataset.dtd&quot;&gt;</pre>
-      <p>If the xml document does not contain a document type declaration, the
-        metadata is generated from the first row of each table. This is highly
-        recommended to always provide a document type declaration since DbUnit
-        will think your table is missing some columns if the first row has one
-        or more null values.
+      <p>If the xml document does not contain a document type declaration, the 
+        metadata is generated from the first row of each table. This is highly 
+        recommended to always provide a document type declaration since DbUnit 
+        will think your table is missing some columns if the first row has one 
+        or more null values. 
       <h4><a name="DatabaseDataSet">DatabaseDataSet</a></h4>
-      The <a class=code>DatabaseDataSet</a> is an adapter class that allows access
-      to a database contents as a dataset. This class is not usually instantiated
+      The <a class=code>DatabaseDataSet</a> is an adapter class that allows access 
+      to a database contents as a dataset. This class is not usually instantiated 
       directly but from the factory method <a class="code">IDatabaseConnection.createDataSet()</a>.<br>
       <h4><a name="DefaultDataSet">DefaultDataSet</a></h4>
-      The <a class=code>DefaultDataSet</a> class can be used to create datasets
+      The <a class=code>DefaultDataSet</a> class can be used to create datasets 
       programmatically. <br>
       <h4><a name="CompositeDataSet">CompositeDataSet</a></h4>
-      The <a class=code>CompositeDataSet</a> class combines multiple datasets
+      The <a class=code>CompositeDataSet</a> class combines multiple datasets 
       into a single one at runtime.<br>
       <h4><a name="FilteredDataSet">FilteredDataSet</a></h4>
-      The <a class="code">FileteredDataSet</a> class is is a decorator which exposes
+      The <a class="code">FileteredDataSet</a> class is is a decorator which exposes 
       only some tables from the decorated dataset. <br>
-      <h4><a name="CaseInsentiveDataSet">CaseInsentiveDataSet</a></h4>
-      The <a class="code">CaseInsentiveDataSet</a> class is a decorator that allows
-      access to a decorated dataset in a case insensitive way. Dataset implementations
-      provided by the framework are case sensitive. This class allows using them
-      in situation where case sensitiveness is not desirable. <br>
       <h4><a name="QueryDataSet">QueryDataSet</a></h4>
-      The <a class="code">QueryDataSet</a> class is a dataset that allows you to
-      add tables, and the sql to extract the data to populate the table.  It is
-      currently only used by the Ant query step and export step.<br>
+      The <a class="code">QueryDataSet</a> allows to easily manipulates multiple 
+      <a href="./api/org/dbunit/database/IDatabaseConnection.html#createQueryTable(java.lang.String, java.lang.String)">query 
+      tables</a>.<br>
       <hr>
       <h3><a name="databaseconnection">IDatabaseConnection</a></h3>
-      <p>As its name implies, the <a class="code">IDatabaseConnection</a> represent
+      <p>As its name implies, the <a class="code">IDatabaseConnection</a> represent 
         a connection to a database. </p>
       <p>The DbUnit framework provides two implementations: </p>
       <ul>
-        <li><a class="code">DatabaseConnection</a>, which is a JDBC Connection
+        <li><a class="code">DatabaseConnection</a>, which is a JDBC Connection 
           adapter.</li>
-        <li><a class="code">DatabaseDataSourceConnection</a>, which is a JDBC
+        <li><a class="code">DatabaseDataSourceConnection</a>, which is a JDBC 
           DataSource adapter.<br>
         </li>
       </ul>
       <hr>
       <h3><a name="databaseoperation">DatabaseOperation</a></h3>
-      <p>The <a class="code">DatabaseOperation</a> abstract class defines operations
-        performed on a target database before and after each test. Again, the
+      <p>The <a class="code">DatabaseOperation</a> abstract class defines operations 
+        performed on a target database before and after each test. Again, the 
         framework provides several implementations. <br>
       </p>
       <ul>
@@ -239,9 +233,9 @@
         <li><a href="#TransactionOperation">TransactionOperation</a></li>
         <li><a href="#IdentityInsertOperation">IdentityInsertOperation</a> </li>
       </ul>
-      <p>The two most usefull operations are <a href="#refresh">REFRESH</a> and
-        <a href="#cleanInsert">CLEAN_INSERT</a>. As you will shortly see, they
-        are the ones you will deal with most of the time. They represent two opposite
+      <p>The two most usefull operations are <a href="#refresh">REFRESH</a> and 
+        <a href="#cleanInsert">CLEAN_INSERT</a>. As you will shortly see, they 
+        are the ones you will deal with most of the time. They represent two opposite 
         testing strategies with different benefits and tradeoffs. </p>
       <p>The <a class="code">DatabaseOperation</a> class declaration: </p>
       <pre>
@@ -271,62 +265,65 @@ public abstract class DatabaseOperation
     }
 }</pre>
       <h4><a name="update">DatabaseOperation</a>.UPDATE</h4>
-      This operation updates the database from the dataset contents. This operation
-      assumes that table data already exists in the target database and fails
+      This operation updates the database from the dataset contents. This operation 
+      assumes that table data already exists in the target database and fails 
       if this is not the case.<br>
       <br>
       <h4><a name="insert">DatabaseOperation.INSERT</a></h4>
-      This operation inserts the dataset contents into the database. This operation
-      assumes that table data does not exist in the target database and fails
-      if this is not the case. To prevent problems with foreign keys, tables must
+      This operation inserts the dataset contents into the database. This operation 
+      assumes that table data does not exist in the target database and fails 
+      if this is not the case. To prevent problems with foreign keys, tables must 
       be sequenced appropriately in the dataset. <br>
       <h4><a name="delete">DatabaseOperation.DELETE</a></h4>
-      This operation deletes only the dataset contents from the database. This
-      operation does not delete the entire table contents but only data that are
+      This operation deletes only the dataset contents from the database. This 
+      operation does not delete the entire table contents but only data that are 
       present in the dataset. <br>
       <h4><a name="deleteall">DatabaseOperation.DELETE_ALL</a></h4>
-      This operation deletes entire target database table contents for each table
-      contained in dataset. In other words, if a dataset does not contain a particular
-      table, but that table exists in the database, the contents of that table
+      This operation deletes entire target database table contents for each table 
+      contained in dataset. In other words, if a dataset does not contain a particular 
+      table, but that table exists in the database, the contents of that table 
       is not deleted. Deletes are performed on table in reverse sequence.<br>
       <h4><a name="refresh">DatabaseOperation.REFRESH</a></h4>
-      This operation literally refreshes dataset contents into the target database.
-      This means that data of existing rows are updated and non-existing row get
-      inserted. Any rows which exist in the database but not in dataset stay unaffected.
-      This approach is more appropriate for tests that assume other data may exist
+      This operation literally refreshes dataset contents into the target database. 
+      This means that data of existing rows are updated and non-existing row get 
+      inserted. Any rows which exist in the database but not in dataset stay unaffected. 
+      This approach is more appropriate for tests that assume other data may exist 
       in the database. <br>
       <br>
-      As you understand, this is a very powerful operation. This strategy can
-      help you deal more easily with foreign key constraints, as you don't necessarily
+      As you understand, this is a very powerful operation. This strategy can 
+      help you deal more easily with foreign key constraints, as you don't necessarily 
       need to insert data in a specific sequence. <br>
       <br>
-      If they are correctly written, tests using this strategy can even be performed
+      If they are correctly written, tests using this strategy can even be performed 
       on a populated database like a copy of a production database. <br>
       <h4><a name="cleaninsert">DatabaseOperation.CLEAN_INSERT</a></h4>
-      This composite operation performs a DELETE_ALL operation followed by an
-      INSERT operation. This is the safest approach to ensure that the database
-      is in a known state. This is appropriate for tests that require the database
+      This composite operation performs a DELETE_ALL operation followed by an 
+      INSERT operation. This is the safest approach to ensure that the database 
+      is in a known state. This is appropriate for tests that require the database 
       to only contain a specific set of data.<br>
       <h4><a name="none">DatabaseOperation.NONE</a></h4>
       This operation does absolutely nothing with the target database.<br>
       <h4><a name ="CompositeOperation">CompositeOperation</a></h4>
       This operation combines multiple operations into a single one.<br>
       <h4><a name="TransactionOperation">TransactionOperation</a></h4>
-      <p>This operation decorates an operation and executes it within the context
+      <p>This operation decorates an operation and executes it within the context 
         of a transaction.</p>
       <h4><a name="IdentityInsertOperation">IdentityInsertOperation<a ></a></a></h4>
-      <p>This operation decorates an operation and disables the MS SQL Server
-        automatic identifier generation (IDENTITY) during its execution.</p>
-      <!-- #EndEditable -->
+      <p>This operation decorates an insert operation and disables the MS SQL 
+        Server automatic identifier generation (IDENTITY) during its execution. 
+        Use following constants InsertIdentityOperation.INSERT, InsertIdentityOperation.CLEAN_INSERT 
+        or InsertIdentityOperation.REFRESH instead of those defined in DatabaseOperation.</p>
+      <!-- #EndEditable --> 
       <hr>
-      <div align="center">
-        <p><font size="2">Copyright &copy;2002, Manuel Laflamme, All Rights Reserved</font></p>
-        <p><font size="1"><a href="index.html">Home</a> - <a href="intro.html">Introduction</a>
-          - <a href="components.html">Core Classes</a> - <a href="anttask.html">Ant
-          Task</a> - <a href="howto.html">How-to Guides</a> - <a href="bestpractices.html">Best
-          Practices</a> - <a href="properties.html">Properties</a> - <a href="api/index.html">API
-          Reference</a> - <a href="faq.html">FAQ</a> - <a href="changes.html">Changes
-          History</a> - <a href="download.html">Download</a> - <a href="support.html">Support</a>
+      <div align="center"> 
+        <p><font size="2">Copyright &copy;2002-2003, Manuel Laflamme, All Rights 
+          Reserved</font></p>
+        <p><font size="1"><a href="index.html">Home</a> - <a href="intro.html">Introduction</a> 
+          - <a href="components.html">Core Classes</a> - <a href="anttask.html">Ant 
+          Task</a> - <a href="howto.html">How-to Guides</a> - <a href="bestpractices.html">Best 
+          Practices</a> - <a href="properties.html">Properties</a> - <a href="api/index.html">API 
+          Reference</a> - <a href="faq.html">FAQ</a> - <a href="changes.html">Changes 
+          History</a> - <a href="download.html">Download</a> - <a href="support.html">Support</a> 
           - <a href="resources.html">Resources</a></font></p>
         <font size="1">$Revision$ $Date$</font> </div>
   </tr>
