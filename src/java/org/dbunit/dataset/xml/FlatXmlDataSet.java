@@ -236,6 +236,7 @@ public class FlatXmlDataSet extends AbstractDataSet
 
     /**
      * Write the specified dataset to the specified output stream as xml.
+     * @deprecated Use Writer overload instead
      */
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException

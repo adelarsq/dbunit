@@ -41,19 +41,33 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
     protected IDataSet createDataSet() throws Exception
     {
         File tempFile = File.createTempFile("flatXmlTableWriteTest", ".xml");
-        OutputStream out = new FileOutputStream(tempFile);
+        Writer out = new FileWriter(tempFile);
         try
         {
             // write DefaultTable in temp file
-            FlatXmlDataSet.write(super.createDataSet(true), out);
+            try
+            {
+                FlatXmlDataSet.write(super.createDataSet(true), out);
+            }
+            finally
+            {
+                out.close();
+            }
 
             // load new dataset from temp file
-            return new FlatXmlDataSet(new FileReader(tempFile));
+            FileReader in = new FileReader(tempFile);
+            try
+            {
+                return new FlatXmlDataSet(in);
+            }
+            finally
+            {
+                in.close();
+            }
         }
         finally
         {
-            out.close();
-//            tempFile.delete();
+            tempFile.delete();
         }
     }
 
@@ -72,26 +86,39 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
 
         IDataSet dataSet = new DefaultDataSet(tables);
         File tempFile = File.createTempFile("flatXmlTableWriteTest", "xml");
-        OutputStream out = new FileOutputStream(tempFile);
+        Writer out = new FileWriter(tempFile);
         try
         {
             // write DefaultTable in temp file
-            FlatXmlDataSet.write(dataSet, out);
+            try
+            {
+                FlatXmlDataSet.write(dataSet, out);
+            }
+            finally
+            {
+                out.close();
+            }
 
             // load new dataset from temp file
-            FlatXmlDataSet xmlDataSet2 = new FlatXmlDataSet(
-                    new FileReader(tempFile));
-
-            // verify each table
-            for (int i = 0; i < tables.length; i++)
+            FileReader in = new FileReader(tempFile);
+            try
             {
-                ITable table = tables[i];
-                Assertion.assertEquals(table, xmlDataSet2.getTable(xmlDataSet2.getTableNames()[i]));
+                FlatXmlDataSet xmlDataSet2 = new FlatXmlDataSet(in);
+
+                // verify each table
+                for (int i = 0; i < tables.length; i++)
+                {
+                    ITable table = tables[i];
+                    Assertion.assertEquals(table, xmlDataSet2.getTable(xmlDataSet2.getTableNames()[i]));
+                }
+            }
+            finally
+            {
+                in.close();
             }
         }
         finally
         {
-            out.close();
             tempFile.delete();
         }
     }

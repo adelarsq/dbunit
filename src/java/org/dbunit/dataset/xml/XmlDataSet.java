@@ -71,17 +71,6 @@ public class XmlDataSet extends AbstractDataSet
         {
             Document document = new Document(in);
             _tables = getTables(document);
-//            Elements tableElems = document.getElement("dataset").getElements("table");
-//
-//            List tableList = new ArrayList();
-//            while (tableElems.hasMoreElements())
-//            {
-//                Element tableElem = (Element)tableElems.nextElement();
-//                ITable table = new XmlTable(tableElem);
-//                tableList.add(table);
-//            }
-//
-//            _tables = (ITable[])tableList.toArray(new ITable[0]);
         }
         catch (ParseException e)
         {
@@ -106,6 +95,7 @@ public class XmlDataSet extends AbstractDataSet
 
     /**
      * Write the specified dataset to the specified output stream as xml.
+     * @deprecated Use Writer overload instead
      */
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException

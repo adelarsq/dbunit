@@ -38,44 +38,35 @@ public class XmlTableWriteTest extends XmlTableTest
         super(s);
     }
 
-//    protected ITable createTable() throws Exception
-//    {
-//        ITable table = super.createTable();
-//        IDataSet dataSet = new DefaultDataSet(table);
-//
-//        File tempFile = File.createTempFile("xmlDataSetWriteTest", "xml");
-//        OutputStream out = new FileOutputStream(tempFile);
-//        try
-//        {
-//            // write DefaultTable in temp file
-//            XmlDataSet.write(dataSet, out);
-//
-//            // load new dataset from temp file
-//            XmlDataSet xmlDataSet2 = new XmlDataSet(new FileInputStream(tempFile));
-//            return xmlDataSet2.getTable(xmlDataSet2.getTableNames()[0]);
-//        }
-//        finally
-//        {
-//            out.close();
-//            tempFile.delete();
-//        }
-//    }
-
     protected IDataSet createDataSet() throws Exception
     {
         File tempFile = File.createTempFile("xmlDataSetWriteTest", ".xml");
-        OutputStream out = new FileOutputStream(tempFile);
+        Writer out = new FileWriter(tempFile);
         try
         {
             // write DefaultTable in temp file
-            XmlDataSet.write(super.createDataSet(), out);
+            try
+            {
+                XmlDataSet.write(super.createDataSet(), out);
+            }
+            finally
+            {
+                out.close();
+            }
 
             // load new dataset from temp file
-            return new XmlDataSet(new FileReader(tempFile));
+            FileReader in = new FileReader(tempFile);
+            try
+            {
+                return new XmlDataSet(in);
+            }
+            finally
+            {
+                in.close();
+            }
         }
         finally
         {
-            out.close();
             tempFile.delete();
         }
 
@@ -96,25 +87,39 @@ public class XmlTableWriteTest extends XmlTableTest
 
         IDataSet dataSet = new DefaultDataSet(tables);
         File tempFile = File.createTempFile("xmlDataSetWriteTest", "xml");
-        OutputStream out = new FileOutputStream(tempFile);
+        Writer out = new FileWriter(tempFile);
         try
         {
             // write DefaultTable in temp file
-            XmlDataSet.write(dataSet, out);
+            try
+            {
+                XmlDataSet.write(dataSet, out);
+            }
+            finally
+            {
+                out.close();
+            }
 
             // load new dataset from temp file
-            XmlDataSet xmlDataSet2 = new XmlDataSet(new FileReader(tempFile));
-
-            // verify each table
-            for (int i = 0; i < tables.length; i++)
+            FileReader in = new FileReader(tempFile);
+            try
             {
-                ITable table = tables[i];
-                Assertion.assertEquals(table, xmlDataSet2.getTable(xmlDataSet2.getTableNames()[i]));
+                XmlDataSet xmlDataSet2 = new XmlDataSet(in);
+
+                // verify each table
+                for (int i = 0; i < tables.length; i++)
+                {
+                    ITable table = tables[i];
+                    Assertion.assertEquals(table, xmlDataSet2.getTable(xmlDataSet2.getTableNames()[i]));
+                }
+            }
+            finally
+            {
+                in.close();
             }
         }
         finally
         {
-            out.close();
             tempFile.delete();
         }
 

@@ -23,11 +23,15 @@
 package org.dbunit.dataset.xml;
 
 import org.dbunit.Assertion;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.AbstractDataSetTest;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.Writer;
 
 /**
  * @author Manuel Laflamme
@@ -75,21 +79,27 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
     public void testWrite() throws Exception
     {
-        List tableList = new ArrayList();
-
-        IDataSet expectedDataSet = (FlatXmlDataSet)createDataSet();
+        IDataSet expectedDataSet = createDataSet();
         File tempFile = File.createTempFile("flatXmlDataSetTest", ".xml");
         try
         {
-            OutputStream out = new FileOutputStream(tempFile);
+            Writer out = new FileWriter(tempFile);
 
+            // write dataset in temp file
             try
             {
-                // write dataset in temp file
                 FlatXmlDataSet.write(expectedDataSet, out);
+            }
+            finally
+            {
+                out.close();
+            }
 
-                // load new dataset from temp file
-                IDataSet actualDataSet = new FlatXmlDataSet(new FileReader(tempFile));
+            // load new dataset from temp file
+            FileReader in = new FileReader(tempFile);
+            try
+            {
+                IDataSet actualDataSet = new FlatXmlDataSet(in);
 
                 // verify table count
                 assertEquals("table count", expectedDataSet.getTableNames().length,
@@ -111,7 +121,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
             }
             finally
             {
-                out.close();
+                in.close();
             }
         }
         finally
@@ -122,21 +132,27 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
     public void testDuplicateWrite() throws Exception
     {
-        List tableList = new ArrayList();
-
         IDataSet expectedDataSet = createDuplicateDataSet();
         File tempFile = File.createTempFile("flatXmlDataSetDuplicateTest", ".xml");
         try
         {
-            OutputStream out = new FileOutputStream(tempFile);
+            Writer out = new FileWriter(tempFile);
 
+            // write dataset in temp file
             try
             {
-                // write dataset in temp file
                 FlatXmlDataSet.write(expectedDataSet, out);
+            }
+            finally
+            {
+                out.close();
+            }
 
-                // load new dataset from temp file
-                IDataSet actualDataSet = new FlatXmlDataSet(new FileReader(tempFile));
+            // load new dataset from temp file
+            FileReader in = new FileReader(tempFile);
+            try
+            {
+                IDataSet actualDataSet = new FlatXmlDataSet(in);
 
                 // verify table count
                 assertEquals("table count", expectedDataSet.getTableNames().length,
@@ -158,7 +174,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
             }
             finally
             {
-                out.close();
+                in.close();
             }
         }
         finally
