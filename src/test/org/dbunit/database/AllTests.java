@@ -41,6 +41,7 @@ public class AllTests
         suite.addTest(new TestSuite(CachedResultSetTableTest.class));
         suite.addTest(new TestSuite(DatabaseConnectionTest.class));
         suite.addTest(new TestSuite(DatabaseDataSetTest.class));
+        suite.addTest(new TestSuite(DatabaseTableIteratorTest.class));
         suite.addTest(new TestSuite(DatabaseTableMetaDataTest.class));
         suite.addTest(new TestSuite(ForwardOnlyResultSetTableTest.class));
         suite.addTest(new TestSuite(QueryDataSetTest.class));

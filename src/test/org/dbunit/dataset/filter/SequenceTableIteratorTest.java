@@ -20,12 +20,14 @@
  */
 package org.dbunit.dataset.filter;
 
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.database.DatabaseDataSet;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.MockDataSet;
+import org.dbunit.database.MockResultSetTable;
+import org.dbunit.database.DatabaseTableIterator;
 import org.dbunit.dataset.AbstractTableIteratorTest;
 import org.dbunit.dataset.ITableIterator;
-import org.dbunit.dataset.filter.SequenceTableIterator;
-import org.dbunit.DatabaseEnvironment;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.database.DatabaseDataSet;
 
 /**
  * @author Manuel Laflamme
@@ -34,43 +36,26 @@ import org.dbunit.database.DatabaseDataSet;
  */
 public class SequenceTableIteratorTest extends AbstractTableIteratorTest
 {
-    protected IDatabaseConnection _connection;
-
     public SequenceTableIteratorTest(String s)
     {
         super(s);
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-    // TestCase class
-
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-
-        _connection = DatabaseEnvironment.getInstance().getConnection();
-    }
-
-    protected void tearDown() throws Exception
-    {
-        super.tearDown();
-
-        _connection = null;
-    }
-
-    protected String[] getExpectedNames() throws Exception
-    {
-        return _connection.createDataSet().getTableNames();
-    }
-
     protected ITableIterator getIterator() throws Exception
     {
-        return _connection.createDataSet().iterator();
+        String[] expectedNames = getExpectedNames();
+        MockDataSet dataSet = new MockDataSet();
+        for (int i = 0; i < expectedNames.length; i++)
+        {
+            String tableName = expectedNames[i];
+            dataSet.addEmptyTable(tableName);
+        }
+
+        return new SequenceTableIterator(expectedNames, dataSet);
     }
 
     protected ITableIterator getEmptyIterator() throws Exception
     {
-        return new SequenceTableIterator(new String[0],
-                (DatabaseDataSet)_connection.createDataSet());
+        return new SequenceTableIterator(new String[0], new MockDataSet());
     }
 }

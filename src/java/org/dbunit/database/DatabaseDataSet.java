@@ -163,7 +163,7 @@ public class DatabaseDataSet extends AbstractDataSet
             names = DataSetUtils.reverseStringArray(names);
         }
 
-        return new SequenceTableIterator(names, this);
+        return new DatabaseTableIterator(names, this);
     }
 
     ////////////////////////////////////////////////////////////////////////////
