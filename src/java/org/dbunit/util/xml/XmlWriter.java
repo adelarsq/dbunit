@@ -544,4 +544,31 @@ public class XmlWriter
         return this;
     }
 
+    public XmlWriter writeDoctype(String systemId, String publicId) throws IOException
+    {
+        if (systemId != null || publicId != null)
+        {
+            this.out.write("<!DOCTYPE dataset");
+
+            if (systemId != null)
+            {
+                this.out.write(" SYSTEM \"");
+                this.out.write(systemId);
+                this.out.write("\"");
+            }
+
+            if (publicId != null)
+            {
+                this.out.write(" PUBLIC \"");
+                this.out.write(publicId);
+                this.out.write("\"");
+            }
+
+            this.out.write(">");
+            this.out.write(this.newline);
+        }
+
+        return this;
+    }
+
 }
