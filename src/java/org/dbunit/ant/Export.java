@@ -24,6 +24,9 @@ package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.ForwardOnlyResultSetTableFactory;
+import org.dbunit.database.CachedResultSetTableFactory;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -50,13 +53,14 @@ import java.util.List;
  */
 public class Export implements DbUnitTaskStep
 {
-
-    private File _dest;
     private static final String FORMAT_FLAT = "flat";
-    private String _format = FORMAT_FLAT;
-    private List _tables = new ArrayList();
     private static final String FORMAT_XML = "xml";
     private static final String FORMAT_DTD = "dtd";
+
+    private File _dest;
+    private String _format = FORMAT_FLAT;
+    private List _tables = new ArrayList();
+    private boolean _hasQuery = false;
 
     public Export()
     {
@@ -109,6 +113,7 @@ public class Export implements DbUnitTaskStep
     public void addQuery(Query query)
     {
         _tables.add(query);
+        _hasQuery = true;
     }
 
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
@@ -122,13 +127,38 @@ public class Export implements DbUnitTaskStep
                 throw new DatabaseUnitException("'_dest' is a required attribute of the <export> step.");
             }
 
-            // retrieve the complete database if no tables or queries specified.
+            // Retrieve the complete database if no tables or queries specified.
+            DatabaseConfig config = connection.getConfig();
             if (_tables.size() == 0)
             {
+                config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY,
+                        new ForwardOnlyResultSetTableFactory());
+
                 dataset = connection.createDataSet();
             }
+            // No query but some tables specified
+            else if (!_hasQuery)
+            {
+                config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY,
+                        new ForwardOnlyResultSetTableFactory());
+
+                List tableNameList = new ArrayList();
+                for (Iterator it = _tables.iterator(); it.hasNext();)
+                {
+                    Table table = (Table)it.next();
+                    tableNameList.add(table.getName());
+                }
+
+                String[] tableNames = (String[])tableNameList.toArray(new String[0]);
+                dataset = connection.createDataSet(tableNames);
+            }
+            // At least a query specified
             else
             {
+                config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY,
+                        new CachedResultSetTableFactory());
+
+                // TODO: Use the resultset factory in QueryDataSet implementation
                 List tableList = new ArrayList();
                 for (Iterator it = _tables.iterator(); it.hasNext();)
                 {

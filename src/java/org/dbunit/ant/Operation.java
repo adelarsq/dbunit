@@ -25,10 +25,17 @@ package org.dbunit.ant;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.IDataSetProducer;
+import org.dbunit.dataset.StreamingDataSet;
+import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.XmlProducer;
+import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.mssqlserver.InsertIdentityOperation;
+
+import org.xml.sax.InputSource;
 
 import java.io.File;
 import java.io.FileReader;
@@ -46,17 +53,13 @@ import java.sql.SQLException;
  */
 public class Operation implements DbUnitTaskStep
 {
+    private static final String DEFAULT_FORMAT = "flat";
 
-    protected String type;
-    private final String DEFAULT_FORMAT = "flat";
+    protected String type = "CLEAN_INSERT";
     private String format;
     private File src;
-    private DatabaseOperation dbOperation;
-
-    public Operation()
-    {
-        this.type = "CLEAN_INSERT";
-    }
+    private DatabaseOperation _operation;
+    private boolean _forwardOperation = true;
 
     public String getType()
     {
@@ -70,7 +73,7 @@ public class Operation implements DbUnitTaskStep
 
     public DatabaseOperation getDbOperation()
     {
-        return dbOperation;
+        return _operation;
     }
 
     public String getFormat()
@@ -95,43 +98,53 @@ public class Operation implements DbUnitTaskStep
     {
         if ("UPDATE".equals(type))
         {
-            dbOperation = DatabaseOperation.UPDATE;
+            _operation = DatabaseOperation.UPDATE;
+            _forwardOperation = true;
         }
         else if ("INSERT".equals(type))
         {
-            dbOperation = DatabaseOperation.INSERT;
+            _operation = DatabaseOperation.INSERT;
+            _forwardOperation = true;
         }
         else if ("REFRESH".equals(type))
         {
-            dbOperation = DatabaseOperation.REFRESH;
+            _operation = DatabaseOperation.REFRESH;
+            _forwardOperation = true;
         }
         else if ("DELETE".equals(type))
         {
-            dbOperation = DatabaseOperation.DELETE;
+            _operation = DatabaseOperation.DELETE;
+            _forwardOperation = false;
         }
         else if ("DELETE_ALL".equals(type))
         {
-            dbOperation = DatabaseOperation.DELETE_ALL;
+            _operation = DatabaseOperation.DELETE_ALL;
+            _forwardOperation = false;
         }
         else if ("CLEAN_INSERT".equals(type))
         {
-            dbOperation = DatabaseOperation.CLEAN_INSERT;
+            _operation = DatabaseOperation.CLEAN_INSERT;
+            _forwardOperation = false;
         }
         else if ("NONE".equals(type))
         {
-            dbOperation = DatabaseOperation.NONE;
+            _operation = DatabaseOperation.NONE;
+            _forwardOperation = true;
         }
         else if ("MSSQL_CLEAN_INSERT".equals(type))
         {
-            dbOperation = InsertIdentityOperation.CLEAN_INSERT;
+            _operation = InsertIdentityOperation.CLEAN_INSERT;
+            _forwardOperation = false;
         }
         else if ("MSSQL_INSERT".equals(type))
         {
-            dbOperation = InsertIdentityOperation.INSERT;
+            _operation = InsertIdentityOperation.INSERT;
+            _forwardOperation = true;
         }
         else if ("MSSQL_REFRESH".equals(type))
         {
-            dbOperation = InsertIdentityOperation.REFRESH;
+            _operation = InsertIdentityOperation.REFRESH;
+            _forwardOperation = true;
         }
         else
         {
@@ -162,32 +175,44 @@ public class Operation implements DbUnitTaskStep
 
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
-        if (dbOperation == null)
+        if (_operation == null)
         {
             throw new DatabaseUnitException("Operation.execute(): setType(String) must be called before execute()!");
         }
 
-        if (dbOperation == DatabaseOperation.NONE)
+        if (_operation == DatabaseOperation.NONE)
         {
             return;
         }
 
         try
         {
-            IDataSet dataset;
             if (format == null)
             {
                 format = DEFAULT_FORMAT;
             }
+
+            IDataSetProducer producer = null;
             if (format.equalsIgnoreCase("xml"))
             {
-                dataset = new XmlDataSet(new FileReader(src));
+                producer = new XmlProducer(new InputSource(src.toURL().toString()));
             }
             else
             {
-                dataset = new FlatXmlDataSet(src);
+                producer = new FlatXmlProducer(new InputSource(src.toURL().toString()));
             }
-            dbOperation.execute(connection, dataset);
+
+            IDataSet dataset = null;
+            if (_forwardOperation)
+            {
+                dataset = new StreamingDataSet(producer);
+            }
+            else
+            {
+                dataset = new CachedDataSet(producer);
+            }
+
+            _operation.execute(connection, dataset);
         }
         catch (IOException e)
         {
@@ -214,7 +239,7 @@ public class Operation implements DbUnitTaskStep
         result.append(" type=" + type);
         result.append(", format=" + format);
         result.append(", src=" + src == null ? null : src.getAbsolutePath());
-        result.append(", dbOperation = " + dbOperation);
+        result.append(", _operation = " + _operation);
 
         return result.toString();
     }
