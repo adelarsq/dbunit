@@ -18,31 +18,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit;
+package org.dbunit.operation;
 
 /**
  * @author Manuel Laflamme
- * @since Apr 11, 2003
+ * @since Apr 13, 2003
  * @version $Revision$
  */
-public class TestFeature
+public class TruncateTableOperationTest extends DeleteAllOperationTest
 {
-    public static final TestFeature BLOB = new TestFeature("BLOB");
-    public static final TestFeature CLOB = new TestFeature("CLOB");
-    public static final TestFeature TRANSACTION = new TestFeature("TRANSACTION");
-    public static final TestFeature SCOLLABLE_RESULTSET = new TestFeature("SCOLLABLE_RESULTSET");
-    public static final TestFeature INSERT_IDENTITY = new TestFeature("INSERT_IDENTITY");
-    public static final TestFeature TRUNCATE_TABLE = new TestFeature("TRUNCATE_TABLE");;
-
-    private final String _name;
-
-    private TestFeature(String name)
+    public TruncateTableOperationTest(String s)
     {
-        _name = name;
+        super(s);
     }
 
-    public String toString()
+    protected DatabaseOperation getDeleteAllOperation()
     {
-        return _name;
+        return new TruncateTableOperation();
+    }
+
+    protected String getExpectedStament(String tableName)
+    {
+        return "truncate table " + tableName;
     }
 }
+

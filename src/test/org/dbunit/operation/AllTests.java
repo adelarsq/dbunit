@@ -50,7 +50,12 @@ public class AllTests
         DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
         if (environment.support(TestFeature.TRANSACTION))
         {
-        suite.addTest(new TestSuite(TransactionOperationTest.class));
+            suite.addTest(new TestSuite(TransactionOperationTest.class));
+        }
+
+        if (environment.support(TestFeature.TRUNCATE_TABLE))
+        {
+            suite.addTest(new TestSuite(TruncateTableOperationTest.class));
         }
 
         suite.addTest(new TestSuite(UpdateOperationTest.class));

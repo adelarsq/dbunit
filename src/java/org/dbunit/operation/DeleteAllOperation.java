@@ -1,6 +1,4 @@
 /*
- * CompositeOperation.java   Feb 18, 2002
- *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
@@ -31,18 +29,30 @@ import org.dbunit.dataset.*;
 import java.sql.SQLException;
 
 /**
- * Deletes entire database table contents for each table contained in dataset.
- * In other words, if a dataset does not contain a particular table, but that
- * table exists in the database, the contents of that table is not deleted.
- * Deletes are performed on table in reverse sequence.
+ * Deletes all rows of tables present in the specified dataset. If the dataset
+ * does not contains a particular table, but that table exists in the database,
+ * the database table is not affected. Table are truncated in
+ * reverse sequence.
+ * <p>
+ * This operation has the same effect of as {@link TruncateTableOperation}.
+ * TruncateTableOperation is faster, and it is non-logged, meaning it cannot be
+ * rollback. DeleteAllOperation is more portable because not all database vendor
+ * support TRUNCATE_TABLE TABLE statement.
  *
  * @author Manuel Laflamme
+ * @since Feb 18, 2002
  * @version $Revision$
+ * @see TruncateTableOperation
  */
 public class DeleteAllOperation extends DatabaseOperation
 {
     DeleteAllOperation()
     {
+    }
+
+    protected String getDeleteAllCommand()
+    {
+        return "delete from ";
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -69,7 +79,7 @@ public class DeleteAllOperation extends DatabaseOperation
                 tableName = databaseMetaData.getTableName();
 
                 StringBuffer sqlBuffer = new StringBuffer(128);
-                sqlBuffer.append("delete from ");
+                sqlBuffer.append(getDeleteAllCommand());
                 sqlBuffer.append(DataSetUtils.getQualifiedName(
                         connection.getSchema(), tableName, true));
                 statement.addBatch(sqlBuffer.toString());

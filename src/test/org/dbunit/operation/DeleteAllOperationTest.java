@@ -23,18 +23,21 @@
 package org.dbunit.operation;
 
 import org.dbunit.AbstractDatabaseTest;
-import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.*;
-
-import java.sql.SQLException;
+import org.dbunit.dataset.AbstractDataSetTest;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
 
 /**
  * @author Manuel Laflamme
  * @author Eric Pugh
- * @todo Refactor all the references to AbstractDataSetTest.removeExtraTestTables() to something better.
+ * TODO Refactor all the references to AbstractDataSetTest.removeExtraTestTables() to something better.
  * @version $Revision$
  */
 public class DeleteAllOperationTest extends AbstractDatabaseTest
@@ -44,11 +47,21 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
         super(s);
     }
 
+    protected DatabaseOperation getDeleteAllOperation()
+    {
+        return new DeleteAllOperation();
+    }
+
+    protected String getExpectedStament(String tableName)
+    {
+        return "delete from " + tableName;
+    }
+
     public void testMockExecute() throws Exception
     {
         String schemaName = "schema";
         String tableName = "table";
-        String expected = "delete from schema.table";
+        String expected = getExpectedStament(schemaName + "." + tableName);
 
         IDataSet dataSet = new DefaultDataSet(new DefaultTable(tableName));
 
@@ -70,7 +83,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
         connection.setExpectedCloseCalls(0);
 
         // execute operation
-        new DeleteAllOperation().execute(connection, dataSet);
+        getDeleteAllOperation().execute(connection, dataSet);
 
         statement.verify();
         factory.verify();
@@ -81,7 +94,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
     {
         String schemaName = "schema";
         String tableName = "table";
-        String expected = "delete from 'schema'.'table'";
+        String expected = getExpectedStament("'" + schemaName + "'.'" + tableName +"'");
 
         IDataSet dataSet = new DefaultDataSet(new DefaultTable(tableName));
 
@@ -106,7 +119,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
         setEscapePattern("'?'");
         try
         {
-            new DeleteAllOperation().execute(connection, dataSet);
+            getDeleteAllOperation().execute(connection, dataSet);
         }
         finally
         {
@@ -122,7 +135,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
     {
         String schemaName = "schema";
         String tableName = "table";
-        String expected = "delete from schema.table";
+        String expected = getExpectedStament(schemaName + "." + tableName);
 
         ITable table = new DefaultTable(tableName);
         IDataSet dataSet = new DefaultDataSet(new ITable[] {table, table});
@@ -146,7 +159,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
         connection.setExpectedCloseCalls(0);
 
         // execute operation
-        new DeleteAllOperation().execute(connection, dataSet);
+        getDeleteAllOperation().execute(connection, dataSet);
 
         statement.verify();
         factory.verify();
@@ -179,7 +192,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
     {
         //dataSet = dataSet);
         ITable[] tablesBefore = DataSetUtils.getTables(AbstractDataSetTest.removeExtraTestTables(_connection.createDataSet()));
-        DatabaseOperation.DELETE_ALL.execute(_connection, dataSet);
+        getDeleteAllOperation().execute(_connection, dataSet);
         ITable[] tablesAfter = DataSetUtils.getTables(AbstractDataSetTest.removeExtraTestTables(_connection.createDataSet()));
 
         assertTrue("table count > 0", tablesBefore.length > 0);
@@ -205,9 +218,9 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
 
     public void testExecuteWithEmptyDataset() throws Exception
     {
-        DatabaseOperation.DELETE_ALL.execute(_connection, new DefaultDataSet(new ITable[0]));
+        getDeleteAllOperation().execute(
+                _connection, new DefaultDataSet(new ITable[0]));
     }
-
 }
 
 
