@@ -51,6 +51,14 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
     public void addValue(Object value, DataType dataType)
             throws TypeCastException, SQLException
     {
+        // Special NULL handling
+        if (value == null)
+        {
+            _statement.setNull(++_index, dataType.getSqlType());
+            return;
+        }
+
+        // Special BLOB handling
         if (dataType == DataType.CLOB)
         {
             _statement.setObject(++_index, dataType.typeCast(value),
@@ -58,6 +66,7 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
             return;
         }
 
+        // Special CLOB handling
         if (dataType == DataType.BLOB)
         {
             _statement.setObject(++_index, dataType.typeCast(value),
