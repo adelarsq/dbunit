@@ -44,11 +44,22 @@ public class DatabaseConfig
             "http://www.dbunit.org/properties/datatypeFactory";
     public static final String PROPERTY_ESCAPE_PATTERN =
             "http://www.dbunit.org/properties/escapePattern";
+    public static final String PROPERTY_TABLE_TYPE =
+            "http://www.dbunit.org/properties/tableType";
 
     public static final String FEATURE_QUALIFIED_TABLE_NAMES =
             "http://www.dbunit.org/features/qualifiedTableNames";
     public static final String FEATURE_BATCHED_STATEMENTS =
             "http://www.dbunit.org/features/batchedStatements";
+
+    private static final DefaultDataTypeFactory DEFAULT_DATA_TYPE_FACTORY =
+            new DefaultDataTypeFactory();
+    private static final PreparedStatementFactory PREPARED_STATEMENT_FACTORY =
+            new PreparedStatementFactory();
+    private static final CachedResultSetTableFactory RESULT_SET_TABLE_FACTORY =
+            new CachedResultSetTableFactory();
+    private static final String DEFAULT_ESCAPE_PATTERN = null;
+    private static final String[] DEFAULT_TABLE_TYPE = {"TABLE"};
 
     private Set _featuresSet = new HashSet();
     private Map _propertyMap = new HashMap();
@@ -58,10 +69,11 @@ public class DatabaseConfig
         setFeature(FEATURE_BATCHED_STATEMENTS, false);
         setFeature(FEATURE_QUALIFIED_TABLE_NAMES, false);
 
-        setProperty(PROPERTY_STATEMENT_FACTORY, new PreparedStatementFactory());
-        setProperty(PROPERTY_RESULTSET_TABLE_FACTORY, new CachedResultSetTableFactory());
-        setProperty(PROPERTY_DATATYPE_FACTORY, new DefaultDataTypeFactory());
-        setProperty(PROPERTY_ESCAPE_PATTERN, null);
+        setProperty(PROPERTY_STATEMENT_FACTORY, PREPARED_STATEMENT_FACTORY);
+        setProperty(PROPERTY_RESULTSET_TABLE_FACTORY, RESULT_SET_TABLE_FACTORY);
+        setProperty(PROPERTY_DATATYPE_FACTORY, DEFAULT_DATA_TYPE_FACTORY);
+        setProperty(PROPERTY_ESCAPE_PATTERN, DEFAULT_ESCAPE_PATTERN);
+        setProperty(PROPERTY_TABLE_TYPE, DEFAULT_TABLE_TYPE);
     }
 
     /**

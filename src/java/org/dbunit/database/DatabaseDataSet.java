@@ -47,8 +47,6 @@ import java.util.Map;
  */
 public class DatabaseDataSet extends AbstractDataSet
 {
-    private static final String[] TABLE_TYPE = {"TABLE"};
-
     private final IDatabaseConnection _connection;
     private final Map _tableMap = new HashMap();
     private List _nameList = null;
@@ -126,10 +124,12 @@ public class DatabaseDataSet extends AbstractDataSet
         {
             Connection jdbcConnection = _connection.getConnection();
             String schema = _connection.getSchema();
+            String[] tableType = (String[])_connection.getConfig().getProperty(
+                    DatabaseConfig.PROPERTY_TABLE_TYPE);
 
             DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
             ResultSet resultSet = databaseMetaData.getTables(
-                    null, schema, "%", TABLE_TYPE);
+                    null, schema, "%", tableType);
 
             try
             {
