@@ -41,8 +41,6 @@ public class DefaultDataTypeFactory implements IDataTypeFactory
         else
         {
             // Necessary for compatibility with DbUnit 1.5 and older
-/*
-
             // BLOB
             if ("BLOB".equals(sqlTypeName))
             {
@@ -54,7 +52,6 @@ public class DefaultDataTypeFactory implements IDataTypeFactory
             {
                 return DataType.CLOB;
             }
-*/
         }
         return dataType;
     }

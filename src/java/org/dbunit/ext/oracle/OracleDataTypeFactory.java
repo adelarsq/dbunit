@@ -52,6 +52,12 @@ public class
                 return DataType.CLOB;
             }
 
+            // NVARCHAR2
+            if ("NVARCHAR2".equals(sqlTypeName))
+            {
+                return DataType.VARCHAR;
+            }
+
             // TIMESTAMP
             if (sqlTypeName.startsWith("TIMESTAMP"))
             {
