@@ -49,7 +49,7 @@ public class InsertOperation extends AbstractBatchOperation
         Column[] columns = metaData.getColumns();
 
         // insert
-        StringBuffer sqlBuffer = new StringBuffer();
+        StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("insert into ");
         sqlBuffer.append(DataSetUtils.getQualifiedName(schemaName,
                 metaData.getTableName()));
@@ -81,5 +81,6 @@ public class InsertOperation extends AbstractBatchOperation
     }
 
 }
+
 
 

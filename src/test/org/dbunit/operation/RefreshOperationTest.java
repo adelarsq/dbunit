@@ -23,11 +23,15 @@
 package org.dbunit.operation;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import org.dbunit.dataset.*;
+import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.database.statement.MockStatementFactory;
+import org.dbunit.database.MockDatabaseConnection;
 
 /**
  * @author Manuel Laflamme
@@ -65,7 +69,30 @@ public class RefreshOperationTest extends AbstractDatabaseTest
         DataSetUtils.assertEquals(expectedTable, tableAfter);
     }
 
+    public void testExecuteWithEmptyTable() throws Exception
+    {
+        Column[] columns = {new Column("c1", DataType.STRING)};
+        ITable table = new DefaultTable(new DefaultTableMetaData(
+                "name", columns, columns), new ArrayList());
+        IDataSet dataSet = new DefaultDataSet(table);
+
+        // setup mock objects
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(0);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // execute operation
+        DatabaseOperation.REFRESH.execute(connection, dataSet);
+
+        factory.verify();
+        connection.verify();
+    }
 
 }
+
 
 

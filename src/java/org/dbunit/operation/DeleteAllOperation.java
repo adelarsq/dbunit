@@ -60,9 +60,11 @@ public class DeleteAllOperation extends DatabaseOperation
                 String name = tableNames[i];
                 ITableMetaData metaData = dataSet.getTableMetaData(name);
 
-                String sql = "delete from " + DataSetUtils.getQualifiedName(
-                        connection.getSchema(), metaData.getTableName());
-                statement.addBatch(sql);
+                StringBuffer sqlBuffer = new StringBuffer(128);
+                sqlBuffer.append("delete from ");
+                sqlBuffer.append(DataSetUtils.getQualifiedName(
+                        connection.getSchema(), metaData.getTableName()));
+                statement.addBatch(sqlBuffer.toString());
             }
 
             statement.executeBatch();
@@ -74,5 +76,6 @@ public class DeleteAllOperation extends DatabaseOperation
         }
     }
 }
+
 
 

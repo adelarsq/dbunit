@@ -132,6 +132,8 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
             assertEquals("datatype", expectedTypes[i], column.getDataType());
         }
     }
+
 }
+
 
 

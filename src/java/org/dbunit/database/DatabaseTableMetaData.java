@@ -48,10 +48,20 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
     private String[] getPrimaryKeyNames() throws SQLException
     {
+        // qualified names support
+        String schemaName = _connection.getSchema();
+        String tableName = _tableName;
+        int index = tableName.indexOf(".");
+        if (index >= 0)
+        {
+            schemaName = tableName.substring(0, index);
+            tableName = tableName.substring(index + 1);
+        }
+
         Connection connection = _connection.getConnection();
         DatabaseMetaData databaseMetaData = connection.getMetaData();
         ResultSet resultSet = databaseMetaData.getPrimaryKeys(
-                null, _connection.getSchema(), _tableName);
+                null, schemaName, tableName);
 
         List list = new ArrayList();
         try
@@ -59,8 +69,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             while (resultSet.next())
             {
                 String name = resultSet.getString(4);
-                int index = resultSet.getInt(5);
-                list.add(new PrimaryKeyData(name, index));
+                int sequence = resultSet.getInt(5);
+                list.add(new PrimaryKeyData(name, sequence));
             }
         }
         finally
@@ -124,10 +134,20 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         {
             try
             {
+                // qualified names support
+                String schemaName = _connection.getSchema();
+                String tableName = _tableName;
+                int index = tableName.indexOf(".");
+                if (index >= 0)
+                {
+                    schemaName = tableName.substring(0, index);
+                    tableName = tableName.substring(index + 1);
+                }
+
                 Connection jdbcConnection = _connection.getConnection();
                 DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
                 ResultSet resultSet = databaseMetaData.getColumns(
-                        null, _connection.getSchema(), _tableName, null);
+                        null, schemaName, tableName, null);
 
                 try
                 {
@@ -186,6 +206,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     }
 
 }
+
 
 
 

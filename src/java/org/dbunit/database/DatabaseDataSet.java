@@ -34,9 +34,9 @@ import org.dbunit.dataset.*;
  */
 public class DatabaseDataSet extends AbstractDataSet
 {
-    private static final String[] TABLE_TYPE = {"TABLE"};
-    private static final String QUALIFIED_DATABASE_NAMES =
+    static final String QUALIFIED_DATABASE_NAMES =
             "dbunit.qualified.database.names";
+    private static final String[] TABLE_TYPE = {"TABLE"};
 
     private final IDatabaseConnection _connection;
     private Map _tableMap = null;
@@ -52,7 +52,7 @@ public class DatabaseDataSet extends AbstractDataSet
         Column[] columns = metaData.getColumns();
 
         // select
-        StringBuffer sqlBuffer = new StringBuffer();
+        StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("select ");
         for (int i = 0; i < columns.length; i++)
         {
@@ -162,8 +162,8 @@ public class DatabaseDataSet extends AbstractDataSet
 
             try
             {
-                ResultSet resultSet = statement.executeQuery(
-                        getSelectStatement(schema, metaData));
+                String sql = getSelectStatement(schema, metaData);
+                ResultSet resultSet = statement.executeQuery(sql);
                 try
                 {
                     return new CachedResultSetTable(metaData, resultSet);
@@ -185,5 +185,6 @@ public class DatabaseDataSet extends AbstractDataSet
     }
 
 }
+
 
 

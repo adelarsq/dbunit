@@ -90,6 +90,29 @@ public class InsertOperationTest extends AbstractDatabaseTest
         connection.verify();
     }
 
+    public void testExecuteWithEmptyTable() throws Exception
+    {
+        Column[] columns = {new Column("c1", DataType.STRING)};
+        ITable table = new DefaultTable(new DefaultTableMetaData(
+                "name", columns, columns), new ArrayList());
+        IDataSet dataSet = new DefaultDataSet(table);
+
+        // setup mock objects
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(0);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // execute operation
+        new InsertOperation().execute(connection, dataSet);
+
+        factory.verify();
+        connection.verify();
+    }
+
     public void testExecute() throws Exception
     {
         InputStream in = new FileInputStream(
@@ -126,5 +149,6 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
     }
 }
+
 
 

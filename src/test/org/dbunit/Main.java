@@ -29,8 +29,8 @@ import java.util.Arrays;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
-import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.*;
+import org.dbunit.operation.DatabaseOperation;
 
 /**
  * @author Manuel Laflamme
@@ -40,22 +40,35 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-//        IDatabaseConnection connection =
-//                DatabaseEnvironment.getInstance().getConnection();
-//
-//        // write DTD for database
-//        String[] tableNames = connection.createDataSet().getTableNames();
-//        Arrays.sort(tableNames);
+        IDatabaseConnection connection =
+                DatabaseEnvironment.getInstance().getConnection();
+
+        String[] tableNames = connection.createDataSet().getTableNames();
+        Arrays.sort(tableNames);
 //        FlatXmlDataSet.writeDtd(new FilteredDataSet(tableNames,
 //                connection.createDataSet()),
 //                new FileOutputStream("test2.dtd"));
+//        FlatXmlDataSet.write(new FilteredDataSet(tableNames,
+//                connection.createDataSet()),
+//                new FileOutputStream("test.xml"));
+
+        IDataSet dataSet = new FlatXmlDataSet(new FileInputStream("test.xml"));
+
+        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+        DatabaseOperation.DELETE.execute(connection, dataSet);
+        DatabaseOperation.INSERT.execute(connection, dataSet);
+        DatabaseOperation.UPDATE.execute(connection, dataSet);
+        DatabaseOperation.REFRESH.execute(connection, dataSet);
+        DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
+        DatabaseOperation.REFRESH.execute(connection, dataSet);
 
 
-        FlatXmlDataSet.write(new XmlDataSet(
-                new FileInputStream("src/xml/refreshOperationTest.xml")),
-                new FileOutputStream("src/xml/refreshOperationTestSetup.xml"));
+//        FlatXmlDataSet.write(new XmlDataSet(
+//                new FileInputStream("src/xml/refreshOperationTest.xml")),
+//                new FileOutputStream("src/xml/refreshOperationTestSetup.xml"));
     }
 
 }
+
 
 

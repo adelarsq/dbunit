@@ -57,7 +57,7 @@ public class UpdateOperation extends AbstractBatchOperation
         }
 
         // update table
-        StringBuffer sqlBuffer = new StringBuffer();
+        StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("update ");
         sqlBuffer.append(DataSetUtils.getQualifiedName(schemaName,
                 metaData.getTableName()));
@@ -105,5 +105,6 @@ public class UpdateOperation extends AbstractBatchOperation
     }
 
 }
+
 
 

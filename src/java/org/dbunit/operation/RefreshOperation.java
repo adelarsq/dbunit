@@ -84,11 +84,18 @@ public class RefreshOperation extends DatabaseOperation
         ITable[] tables = DataSetUtils.getTables(dataSet);
         for (int i = 0; i < tables.length; i++)
         {
-            // use database metadata to get columns datatype
+            // do not process empty table
             String tableName = tables[i].getTableMetaData().getTableName();
+            ITable table = dataSet.getTable(tableName);
+            if (table.getRowCount() == 0)
+            {
+                continue;
+            }
+
+            // use database metadata to get columns datatype
             ITableMetaData metaData = databaseDataSet.getTableMetaData(tableName);
 
-            // setup insert statement    <
+            // setup insert statement
             OperationData insertData = INSERT.getOperationData(schema, metaData);
             IPreparedBatchStatement insertStatement =
                     factory.createPreparedStatement(insertData.getSql(), connection);
@@ -99,7 +106,6 @@ public class RefreshOperation extends DatabaseOperation
                     factory.createPreparedStatement(updateData.getSql(), connection);
 
             // refresh each table's row
-            ITable table = dataSet.getTable(tableName);
             for (int j = 0; j < table.getRowCount(); j++)
             {
                 // try to update row
@@ -116,5 +122,6 @@ public class RefreshOperation extends DatabaseOperation
 
     }
 }
+
 
 

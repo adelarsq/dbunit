@@ -63,20 +63,25 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         // for each table
         for (int i = 0; i < tableNames.length; i++)
         {
-            String name = tableNames[i];
+            // do not process empty table
+            String tableName = tableNames[i];
+            ITable table = dataSet.getTable(tableName);
+            if (table.getRowCount() == 0)
+            {
+                continue;
+            }
 
             // use database metadata
-            ITableMetaData metaData = databaseDataSet.getTableMetaData(name);
+            ITableMetaData metaData = databaseDataSet.getTableMetaData(tableName);
 
             OperationData operationData = getOperationData(connection.getSchema(),
-                    databaseDataSet.getTableMetaData(name));
+                    databaseDataSet.getTableMetaData(tableName));
             IPreparedBatchStatement statement = factory.createPreparedStatement(
                     operationData.getSql(), connection);
 
             try
             {
                 Column[] columns = operationData.getColumns();
-                ITable table = dataSet.getTable(name);
 
                 // for each row
                 for (int j = 0; j < table.getRowCount(); j++)
@@ -101,5 +106,6 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         }
     }
 }
+
 
 

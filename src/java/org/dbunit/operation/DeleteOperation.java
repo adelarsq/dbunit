@@ -58,7 +58,7 @@ public class DeleteOperation extends AbstractBatchOperation
         }
 
         // delete from
-        StringBuffer sqlBuffer = new StringBuffer();
+        StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("delete from ");
         sqlBuffer.append(DataSetUtils.getQualifiedName(
                 schemaName, metaData.getTableName()));
@@ -79,5 +79,6 @@ public class DeleteOperation extends AbstractBatchOperation
     }
 
 }
+
 
 

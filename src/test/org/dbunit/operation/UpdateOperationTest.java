@@ -93,6 +93,29 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         connection.verify();
     }
 
+    public void testExecuteWithEmptyTable() throws Exception
+    {
+        Column[] columns = {new Column("c1", DataType.STRING)};
+        ITable table = new DefaultTable(new DefaultTableMetaData(
+                "name", columns, columns), new ArrayList());
+        IDataSet dataSet = new DefaultDataSet(table);
+
+        // setup mock objects
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(0);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // execute operation
+        new UpdateOperation().execute(connection, dataSet);
+
+        factory.verify();
+        connection.verify();
+    }
+
     public void testGetOperationStatementsAndNoPrimaryKey() throws Exception
     {
         IDataSet dataSet = _connection.createDataSet();
@@ -158,5 +181,6 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
 
 }
+
 
 
