@@ -73,6 +73,16 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         assertSame("type", expected, actual);
     }
 
+    public void testCreateLongRawDataType() throws Exception
+    {
+        int sqlType = Types.LONGVARBINARY;
+        String sqlTypeName = "LONG RAW";
+
+        DataType expected = OracleDataTypeFactory.LONG_RAW;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
     public void testCreateTimestampDataType() throws Exception
     {
         int sqlType = Types.OTHER;

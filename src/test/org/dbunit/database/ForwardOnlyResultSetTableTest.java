@@ -20,9 +20,12 @@
  */
 package org.dbunit.database;
 
-import com.mockobjects.sql.MockMultiRowResultSet;
 import org.dbunit.DatabaseEnvironment;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.ForwardOnlyTableTest;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.MockTableMetaData;
+import org.dbunit.dataset.RowOutOfBoundsException;
 import org.dbunit.operation.DatabaseOperation;
 
 /**
@@ -65,7 +68,7 @@ public class ForwardOnlyResultSetTableTest extends ForwardOnlyTableTest
         };
 
         // Setup resultset
-        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
+        ExtendedMockMultiRowResultSet resultSet = new ExtendedMockMultiRowResultSet();
         resultSet.setExpectedCloseCalls(1);
         resultSet.setupColumnNames(columnNames);
         resultSet.setupRows(expectedValues);

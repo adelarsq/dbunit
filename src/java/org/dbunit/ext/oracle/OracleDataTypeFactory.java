@@ -23,6 +23,7 @@ package org.dbunit.ext.oracle;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+import org.dbunit.dataset.datatype.BinaryStreamDataType;
 
 import java.sql.Types;
 
@@ -37,6 +38,8 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
 {
     public static final DataType ORACLE_BLOB = new OracleBlobDataType();
     public static final DataType ORACLE_CLOB = new OracleClobDataType();
+    public static final DataType LONG_RAW = new BinaryStreamDataType(
+            "LONG RAW", Types.LONGVARBINARY);
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
@@ -46,31 +49,34 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
             return DataType.TIMESTAMP;
         }
 
-        if (sqlType == Types.OTHER)
+        // TIMESTAMP
+        if (sqlTypeName.startsWith("TIMESTAMP"))
         {
-            // BLOB
-            if ("BLOB".equals(sqlTypeName))
-            {
-                return ORACLE_BLOB;
-            }
+            return DataType.TIMESTAMP;
+        }
 
-            // CLOB
-            if ("CLOB".equals(sqlTypeName) || "NCLOB".equals(sqlTypeName))
-            {
-                return ORACLE_CLOB;
-            }
+        // BLOB
+        if ("BLOB".equals(sqlTypeName))
+        {
+            return ORACLE_BLOB;
+        }
 
-            // NVARCHAR2
-            if ("NVARCHAR2".equals(sqlTypeName))
-            {
-                return DataType.VARCHAR;
-            }
+        // CLOB
+        if ("CLOB".equals(sqlTypeName) || "NCLOB".equals(sqlTypeName))
+        {
+            return ORACLE_CLOB;
+        }
 
-            // TIMESTAMP
-            if (sqlTypeName.startsWith("TIMESTAMP"))
-            {
-                return DataType.TIMESTAMP;
-            }
+        // NVARCHAR2
+        if ("NVARCHAR2".equals(sqlTypeName))
+        {
+            return DataType.VARCHAR;
+        }
+
+        // LONG RAW
+        if (LONG_RAW.toString().equals(sqlTypeName))
+        {
+            return LONG_RAW;
         }
 
         return super.createDataType(sqlType, sqlTypeName);

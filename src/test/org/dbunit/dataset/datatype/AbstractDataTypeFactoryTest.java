@@ -48,7 +48,7 @@ public class AbstractDataTypeFactoryTest extends TestCase
             DataType.CHAR,
             DataType.VARCHAR,
             DataType.LONGVARCHAR,
-            DataType.CLOB,
+//            DataType.CLOB,
             DataType.NUMERIC,
             DataType.DECIMAL,
             DataType.BOOLEAN,
@@ -65,7 +65,7 @@ public class AbstractDataTypeFactoryTest extends TestCase
             DataType.BINARY,
             DataType.VARBINARY,
             DataType.LONGVARBINARY,
-            DataType.BLOB,
+//            DataType.BLOB,
         };
 
         IDataTypeFactory factory = createFactory();
@@ -83,6 +83,26 @@ public class AbstractDataTypeFactoryTest extends TestCase
         String sqlTypeName = "DATE";
 
         DataType expected = DataType.DATE;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
+    public void testCreateBlobDataType() throws Exception
+    {
+        int sqlType = Types.BLOB;
+        String sqlTypeName = "BLOB";
+
+        DataType expected = DataType.BLOB;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
+    public void testCreateClobDataType() throws Exception
+    {
+        int sqlType = Types.CLOB;
+        String sqlTypeName = "CLOB";
+
+        DataType expected = DataType.CLOB;
         DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
         assertSame("type", expected, actual);
     }
