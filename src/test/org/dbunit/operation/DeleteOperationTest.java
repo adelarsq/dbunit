@@ -34,6 +34,7 @@ import org.dbunit.dataset.xml.XmlDataSet;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigInteger;
 
 /**
  * @author Manuel Laflamme
@@ -229,7 +230,7 @@ public class DeleteOperationTest extends AbstractDatabaseTest
         try
         {
             new DeleteOperation().getOperationData(
-                    metaData, _connection);
+                    metaData, null, _connection);
             fail("Should throw a NoPrimaryKeyException");
         }
         catch (NoPrimaryKeyException e)

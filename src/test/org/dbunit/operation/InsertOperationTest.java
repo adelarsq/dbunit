@@ -30,15 +30,7 @@ import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.DefaultTable;
-import org.dbunit.dataset.DefaultTableMetaData;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.LowerCaseDataSet;
-import org.dbunit.dataset.ForwardOnlyDataSet;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
@@ -66,13 +58,13 @@ public class InsertOperationTest extends AbstractDatabaseTest
         String schemaName = "schema";
         String tableName = "table";
         String[] expected = {
-            "insert into schema.table (c1, c2, c3) values (NULL, 1234, 'false')",
+            "insert into schema.table (c1, c2, c3) values ('toto', 1234, 'false')",
             "insert into schema.table (c1, c2, c3) values ('qwerty', 123.45, 'true')",
         };
 
         // setup table
         List valueList = new ArrayList();
-        valueList.add(new Object[]{null, "1234", Boolean.FALSE});
+        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
         valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
@@ -107,18 +99,70 @@ public class InsertOperationTest extends AbstractDatabaseTest
         connection.verify();
     }
 
+    public void testExecuteIgnoreNull() throws Exception
+    {
+        String schemaName = "schema";
+        String tableName = "table";
+        String[] expected = {
+            "insert into schema.table (c1, c2, c3) values ('toto', 1234, 'false')",
+            "insert into schema.table (c2, c3) values (123.45, 'true')",
+            "insert into schema.table (c1, c2, c3) values ('qwerty1', 1, 'true')",
+            "insert into schema.table (c1, c2, c3) values ('qwerty2', 2, 'false')",
+            "insert into schema.table (c3) values ('false')",
+        };
+
+        // setup table
+        List valueList = new ArrayList();
+        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
+        valueList.add(new Object[]{null, new Double("123.45"), "true"});
+        valueList.add(new Object[]{"qwerty1", "1", Boolean.TRUE});
+        valueList.add(new Object[]{"qwerty2", "2", Boolean.FALSE});
+        valueList.add(new Object[]{null, null, Boolean.FALSE});
+        Column[] columns = new Column[]{
+            new Column("c1", DataType.VARCHAR),
+            new Column("c2", DataType.NUMERIC),
+            new Column("c3", DataType.BOOLEAN),
+        };
+        DefaultTable table = new DefaultTable(tableName, columns, valueList);
+        IDataSet dataSet = new DefaultDataSet(table);
+
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.addExpectedBatchStrings(expected);
+        statement.setExpectedExecuteBatchCalls(4);
+        statement.setExpectedClearBatchCalls(4);
+        statement.setExpectedCloseCalls(4);
+
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(4);
+        factory.setupStatement(statement);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupSchema(schemaName);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // execute operation
+        new InsertOperation().execute(connection, dataSet);
+
+        statement.verify();
+        factory.verify();
+        connection.verify();
+    }
+
     public void testExecuteWithEscapedNames() throws Exception
     {
         String schemaName = "schema";
         String tableName = "table";
         String[] expected = {
-            "insert into 'schema'.'table' ('c1', 'c2', 'c3') values (NULL, 1234, 'false')",
+            "insert into 'schema'.'table' ('c1', 'c2', 'c3') values ('toto', 1234, 'false')",
             "insert into 'schema'.'table' ('c1', 'c2', 'c3') values ('qwerty', 123.45, 'true')",
         };
 
         // setup table
         List valueList = new ArrayList();
-        valueList.add(new Object[]{null, "1234", Boolean.FALSE});
+        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
         valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
@@ -160,15 +204,15 @@ public class InsertOperationTest extends AbstractDatabaseTest
         String schemaName = "schema";
         String tableName = "table";
         String[] expected = {
-            "insert into schema.table (c1, c2, c3) values (NULL, 1234, 'false')",
+            "insert into schema.table (c1, c2, c3) values ('toto', 1234, 'false')",
             "insert into schema.table (c1, c2, c3) values ('qwerty', 123.45, 'true')",
-            "insert into schema.table (c1, c2, c3) values (NULL, 1234, 'false')",
+            "insert into schema.table (c1, c2, c3) values ('toto', 1234, 'false')",
             "insert into schema.table (c1, c2, c3) values ('qwerty', 123.45, 'true')",
         };
 
         // setup table
         List valueList = new ArrayList();
-        valueList.add(new Object[]{null, "1234", Boolean.FALSE});
+        valueList.add(new Object[]{"toto", "1234", Boolean.FALSE});
         valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
         Column[] columns = new Column[]{
             new Column("c1", DataType.VARCHAR),
@@ -382,7 +426,10 @@ public class InsertOperationTest extends AbstractDatabaseTest
                 }
                 else
                 {
-                    Assertion.assertEquals(dataSet.getTable(name), table);
+                    SortedTable expectedTable = new SortedTable(
+                            dataSet.getTable(name), table.getTableMetaData());
+                    SortedTable actualTable = new SortedTable(table);
+                    Assertion.assertEquals(expectedTable, actualTable);
                 }
             }
         }

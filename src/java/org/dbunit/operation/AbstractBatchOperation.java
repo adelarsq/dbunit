@@ -32,6 +32,7 @@ import org.dbunit.dataset.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigInteger;
 
 /**
  * Base implementation for database operation that are executed in batch.
@@ -41,6 +42,7 @@ import java.util.List;
  */
 public abstract class AbstractBatchOperation extends DatabaseOperation
 {
+    private static final BigInteger EMPTY_IGNORE_MAPPING = new BigInteger("0");
     protected boolean _reverseRowOrder = false;
 
     /**
@@ -109,8 +111,28 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         return dataSet.iterator();
     }
 
-    abstract public OperationData getOperationData(
-            ITableMetaData metaData, IDatabaseConnection connection) throws DataSetException;
+    /**
+     * Returns mapping of columns to ignore by this operation. Each bit set represent
+     * a column to ignore.
+     */
+    BigInteger getIngnoreMapping(ITable table, int row)
+            throws DataSetException
+    {
+        return EMPTY_IGNORE_MAPPING;
+    }
+
+    /**
+     * Returns false if the specified table row have a different ignore mapping
+     * than the specified mapping.
+     */
+    boolean equalsIgnoreMapping(BigInteger ignoreMapping, ITable table,
+            int row) throws DataSetException
+    {
+        return true;
+    }
+
+    abstract OperationData getOperationData(ITableMetaData metaData,
+            BigInteger ignoreMapping, IDatabaseConnection connection) throws DataSetException;
 
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseOperation class
@@ -136,16 +158,12 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
 
             ITableMetaData metaData = getOperationMetaData(connection,
                     table.getTableMetaData());
-            OperationData operationData = getOperationData(
-                    metaData, connection);
-
-            IPreparedBatchStatement statement = factory.createPreparedBatchStatement(
-                    operationData.getSql(), connection);
+            BigInteger ignoreMapping = null;
+            OperationData operationData = null;
+            IPreparedBatchStatement statement = null;
 
             try
             {
-                Column[] columns = operationData.getColumns();
-
                 // For each row
                 int start = _reverseRowOrder ? table.getRowCount() - 1 : 0;
                 int increment = _reverseRowOrder ? -1 : 1;
@@ -156,12 +174,36 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
                     {
                         int row = i;
 
+                        // If current row have a diffrent ignore value mapping than
+                        // previous one, we generate a new statement
+                        if (ignoreMapping == null || !equalsIgnoreMapping(ignoreMapping, table, row))
+                        {
+                            // Execute and close previous statement
+                            if (statement != null)
+                            {
+                                statement.executeBatch();
+                                statement.clearBatch();
+                                statement.close();
+                            }
+
+                            ignoreMapping = getIngnoreMapping(table, row);
+                            operationData = getOperationData(metaData, ignoreMapping, connection);
+                            statement = factory.createPreparedBatchStatement(
+                                    operationData.getSql(), connection);
+                        }
+
+
                         // for each column
+                        Column[] columns = operationData.getColumns();
                         for (int j = 0; j < columns.length; j++)
                         {
-                            Column column = columns[j];
-                            statement.addValue(table.getValue(row,
-                                    column.getColumnName()), column.getDataType());
+                            // Bind value only if not in ignore mapping
+                            if (!ignoreMapping.testBit(j))
+                            {
+                                Column column = columns[j];
+                                statement.addValue(table.getValue(row,
+                                        column.getColumnName()), column.getDataType());
+                            }
                         }
                         statement.addBatch();
                     }

@@ -27,6 +27,7 @@ import org.dbunit.database.IDatabaseConnection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigInteger;
 
 /**
  * Updates the database from the dataset contents. This operation assumes that
@@ -44,8 +45,7 @@ public class UpdateOperation extends AbstractBatchOperation
     ////////////////////////////////////////////////////////////////////////////
     // AbstractBatchOperation class
 
-    public OperationData getOperationData(
-            ITableMetaData metaData, IDatabaseConnection connection) throws DataSetException
+    public OperationData getOperationData(ITableMetaData metaData, BigInteger ignoreMapping, IDatabaseConnection connection) throws DataSetException
     {
         Column[] columns = metaData.getColumns();
         Column[] primaryKeys = metaData.getPrimaryKeys();

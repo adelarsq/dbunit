@@ -24,11 +24,22 @@ package org.dbunit.operation;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.database.statement.*;
-import org.dbunit.dataset.*;
+import org.dbunit.database.statement.IPreparedBatchStatement;
+import org.dbunit.database.statement.SimplePreparedStatement;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoPrimaryKeyException;
+import org.dbunit.dataset.RowOutOfBoundsException;
 import org.dbunit.dataset.datatype.DataType;
 
-import java.sql.*;
+import java.math.BigInteger;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * This operation literally refreshes dataset contents into the database. This
@@ -133,7 +144,8 @@ public class RefreshOperation extends DatabaseOperation
     class RowOperation
     {
         protected IPreparedBatchStatement _statement;
-        protected Column[] _columns;
+        protected OperationData _operationData;
+        protected BigInteger _ignoreMapping;
 
         /**
          * Execute this operation on the sepcfied table row.
@@ -142,10 +154,15 @@ public class RefreshOperation extends DatabaseOperation
         public boolean execute(ITable table, int row)
                 throws DataSetException, SQLException
         {
-            for (int i = 0; i < _columns.length; i++)
+            Column[] columns = _operationData.getColumns();
+            for (int i = 0; i < columns.length; i++)
             {
-                Object value = table.getValue(row, _columns[i].getColumnName());
-                _statement.addValue(value, _columns[i].getDataType());
+                // Bind value only if not in ignore mapping
+                if (_ignoreMapping == null || !_ignoreMapping.testBit(i))
+                {
+                    Object value = table.getValue(row, columns[i].getColumnName());
+                    _statement.addValue(value, columns[i].getDataType());
+                }
             }
             _statement.addBatch();
             int result = _statement.executeBatch();
@@ -159,7 +176,10 @@ public class RefreshOperation extends DatabaseOperation
          */
         public void close() throws SQLException
         {
-            _statement.close();
+            if (_statement != null)
+            {
+                _statement.close();
+            }
         }
     }
 
@@ -168,17 +188,41 @@ public class RefreshOperation extends DatabaseOperation
      */
     private class InsertRowOperation extends RowOperation
     {
+        private IDatabaseConnection _connection;
+        private ITableMetaData _metaData;
+
         public InsertRowOperation(IDatabaseConnection connection,
                 ITableMetaData metaData)
                 throws DataSetException, SQLException
         {
-            // setup insert statement
-            OperationData insertData = _insertOperation.getOperationData(
-                    metaData, connection);
-            _statement = new SimplePreparedStatement(insertData.getSql(),
-                    connection.getConnection());
-            _columns = insertData.getColumns();
+            _connection = connection;
+            _metaData = metaData;
         }
+
+        public boolean execute(ITable table, int row)
+                throws DataSetException, SQLException
+        {
+            // If current row have a diffrent ignore value mapping than
+            // previous one, we generate a new statement
+            if (_ignoreMapping == null ||
+                    !_insertOperation.equalsIgnoreMapping(_ignoreMapping, table, row))
+            {
+                // Execute and close previous statement
+                if (_statement != null)
+                {
+                    _statement.close();
+                }
+
+                _ignoreMapping = _insertOperation.getIngnoreMapping(table, row);
+                _operationData = _insertOperation.getOperationData(_metaData,
+                        _ignoreMapping, _connection);
+                _statement = new SimplePreparedStatement(_operationData.getSql(),
+                        _connection.getConnection());
+            }
+
+            return super.execute(table, row);
+        }
+
     }
 
     /**
@@ -193,11 +237,10 @@ public class RefreshOperation extends DatabaseOperation
                 throws DataSetException, SQLException
         {
             // setup update statement
-            OperationData updateData = _updateOperation.getOperationData(
-                    metaData, connection);
-            _statement = new SimplePreparedStatement(updateData.getSql(),
+            _operationData = _updateOperation.getOperationData(
+                    metaData, null, connection);
+            _statement = new SimplePreparedStatement(_operationData.getSql(),
                     connection.getConnection());
-            _columns = updateData.getColumns();
         }
     }
 
@@ -213,10 +256,9 @@ public class RefreshOperation extends DatabaseOperation
                 throws DataSetException, SQLException
         {
             // setup select count statement
-            OperationData countData = getSelectCountData(metaData, connection);
+            _operationData = getSelectCountData(metaData, connection);
             _countStatement = connection.getConnection().prepareStatement(
-                    countData.getSql());
-            _columns = countData.getColumns();
+                    _operationData.getSql());
         }
 
         private OperationData getSelectCountData(
@@ -263,10 +305,11 @@ public class RefreshOperation extends DatabaseOperation
         public boolean execute(ITable table, int row)
                 throws DataSetException, SQLException
         {
-            for (int i = 0; i < _columns.length; i++)
+            Column[] columns = _operationData.getColumns();
+            for (int i = 0; i < columns.length; i++)
             {
-                Object value = table.getValue(row, _columns[i].getColumnName());
-                DataType dataType = _columns[i].getDataType();
+                Object value = table.getValue(row, columns[i].getColumnName());
+                DataType dataType = columns[i].getDataType();
                 dataType.setSqlValue(value, i + 1, _countStatement);
             }
 

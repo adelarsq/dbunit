@@ -26,6 +26,8 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.*;
 
+import java.math.BigInteger;
+
 /**
  * Deletes only the dataset contents from the database. This operation does not
  * delete the entire table contents but only data that are present in the
@@ -49,8 +51,7 @@ public class DeleteOperation extends AbstractBatchOperation
         return dataSet.reverseIterator();
     }
 
-    public OperationData getOperationData(
-            ITableMetaData metaData, IDatabaseConnection connection) throws DataSetException
+    public OperationData getOperationData(ITableMetaData metaData, BigInteger ignoreMapping, IDatabaseConnection connection) throws DataSetException
     {
         // cannot construct where clause if no primary key
         Column[] primaryKeys = metaData.getPrimaryKeys();

@@ -24,6 +24,9 @@ package org.dbunit.operation;
 
 import org.dbunit.dataset.*;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.DatabaseUnitException;
+
+import java.math.BigInteger;
 
 /**
  * Inserts the dataset contents into the database. This operation assumes that
@@ -43,8 +46,8 @@ public class InsertOperation extends AbstractBatchOperation
     ////////////////////////////////////////////////////////////////////////////
     // AbstractBatchOperation class
 
-    public OperationData getOperationData(
-            ITableMetaData metaData, IDatabaseConnection connection) throws DataSetException
+    public OperationData getOperationData(ITableMetaData metaData,
+            BigInteger ignoreMapping, IDatabaseConnection connection) throws DataSetException
     {
         Column[] columns = metaData.getColumns();
 
@@ -56,34 +59,72 @@ public class InsertOperation extends AbstractBatchOperation
 
         // columns
         sqlBuffer.append(" (");
+        String columnSeparator = "";
         for (int i = 0; i < columns.length; i++)
         {
-            if (i > 0)
+            if (!ignoreMapping.testBit(i))
             {
-                sqlBuffer.append(", ");
+                // escape column name
+                String columnName = getQualifiedName(null,
+                        columns[i].getColumnName(), connection);
+                sqlBuffer.append(columnSeparator);
+                sqlBuffer.append(columnName);
+                columnSeparator = ", ";
             }
-
-            // escape column name
-            String columnName = getQualifiedName(null,
-                    columns[i].getColumnName(), connection);
-             sqlBuffer.append(columnName);
         }
 
         // values
         sqlBuffer.append(") values (");
+        String valueSeparator = "";
         for (int i = 0; i < columns.length; i++)
         {
-            if (i > 0)
+            if (!ignoreMapping.testBit(i))
             {
-                sqlBuffer.append(", ");
+                sqlBuffer.append(valueSeparator);
+                sqlBuffer.append("?");
+                valueSeparator = ", ";
             }
-            sqlBuffer.append("?");
         }
         sqlBuffer.append(")");
 
         return new OperationData(sqlBuffer.toString(), columns);
     }
 
+    protected BigInteger getIngnoreMapping(ITable table, int row) throws DataSetException
+    {
+        Column[] columns = table.getTableMetaData().getColumns();
+        int n = columns.length;
+        int byteNum = n / 8;
+        byte[] result = new byte[byteNum + 2];
+
+        for (int i = 0; i < n; i++)
+        {
+            Object value = table.getValue(row, columns[i].getColumnName());
+            if (value == null)
+            {
+                result[result.length - (i / 8) - 1] |= (1 << (i % 8));
+            }
+        }
+        return new BigInteger(result);
+    }
+
+    protected boolean equalsIgnoreMapping(BigInteger ignoreMapping, ITable table,
+            int row) throws DataSetException
+    {
+        Column[] columns = table.getTableMetaData().getColumns();
+
+        for (int i = 0; i < columns.length; i++)
+        {
+            boolean bit = ignoreMapping.testBit(i);
+            Object value = table.getValue(row, columns[i].getColumnName());
+            if ((bit && value != null) || (!bit && value == null))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 
 
