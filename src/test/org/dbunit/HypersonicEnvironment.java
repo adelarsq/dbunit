@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.Statement;
 
 /**
@@ -41,8 +42,16 @@ public class HypersonicEnvironment extends DatabaseEnvironment
         super(profile);
 
         // Creates required tables into the hypersonic in-memory database
-        BufferedReader sqlReader = new BufferedReader(
-                new FileReader(new File("src/sql/hypersonic.sql")));
+        File ddlFile = new File("src/sql/hypersonic.sql");
+        Connection connection = getConnection().getConnection();
+
+        executeDdlFile(ddlFile, connection);
+
+    }
+
+    public static void executeDdlFile(File ddlFile, Connection connection) throws Exception
+    {
+        BufferedReader sqlReader = new BufferedReader(new FileReader(ddlFile));
         StringBuffer sqlBuffer = new StringBuffer();
         while (sqlReader.ready())
         {
@@ -53,17 +62,24 @@ public class HypersonicEnvironment extends DatabaseEnvironment
             }
         }
 
-        Connection connection = getConnection().getConnection();
+        String sql = sqlBuffer.toString();
         Statement statement = connection.createStatement();
         try
         {
-            String sql = sqlBuffer.toString();
             statement.execute(sql);
         }
         finally
         {
             statement.close();
         }
+    }
+
+    public static Connection createJdbcConnection(String databaseName) throws Exception
+    {
+        Class.forName("org.hsqldb.jdbcDriver");
+        Connection connection = DriverManager.getConnection(
+                "jdbc:hsqldb:" + databaseName, "sa", "");
+        return connection;
     }
 
     public void closeConnection() throws Exception
