@@ -54,18 +54,6 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         }
     }
 
-    public void testIsValidName2() throws Exception
-    {
-//        String[] validNames = getExpectedNames();
-//        ITableFilter filter = new SequenceTableFilter(validNames);
-//
-//        for (int i = 0; i < validNames.length; i++)
-//        {
-//            String validName = validNames[i];
-//            assertEquals(validName, true, filter.isValidName(validName));
-//        }
-    }
-
     public void testIsCaseInsensitiveValidName() throws Exception
     {
         String[] validNames = getExpectedNames();
@@ -95,6 +83,21 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
     }
 
     public void testGetTableNames() throws Exception
+    {
+        String[] expectedNames = getExpectedNames();
+        ITableFilter filter = new SequenceTableFilter(expectedNames);
+
+        IDataSet dataSet = createDataSet();
+        assertTrue("dataset names count",
+                dataSet.getTableNames().length > expectedNames.length);
+
+        String[] actualNames = filter.getTableNames(dataSet);
+        assertEquals("name count", expectedNames.length, actualNames.length);
+        assertEquals("names",
+                Arrays.asList(expectedNames), Arrays.asList(actualNames));
+    }
+
+    public void testGetTableNamesAndTableNotInDecoratedDataSet() throws Exception
     {
         String[] expectedNames = getExpectedNames();
         ITableFilter filter = new SequenceTableFilter(expectedNames);

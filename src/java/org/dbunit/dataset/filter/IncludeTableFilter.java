@@ -37,7 +37,7 @@ public class IncludeTableFilter extends AbstractTableFilter implements ITableFil
     private final Set _allowedNames = new HashSet();
 
     /**
-     * Create a new empty IncludeTableFilter. Use {@link #addTableName} to allow
+     * Create a new empty IncludeTableFilter. Use {@link #includeTable} to allow
      * access to some tables.
      */
     public IncludeTableFilter()
@@ -52,14 +52,14 @@ public class IncludeTableFilter extends AbstractTableFilter implements ITableFil
         for (int i = 0; i < tableNames.length; i++)
         {
             String tableName = tableNames[i];
-            addTableName(tableName);
+            includeTable(tableName);
         }
     }
 
     /**
      * Add a new table name to include in this filter.
      */
-    public void addTableName(String tableName)
+    public void includeTable(String tableName)
     {
         _allowedNames.add(tableName.toUpperCase());
     }

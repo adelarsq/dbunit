@@ -34,14 +34,15 @@ import java.util.Set;
  */
 public class ExcludeTableFilter extends AbstractTableFilter implements ITableFilter
 {
-    private Set _forbidenNames = new HashSet();
+    private final IncludeTableFilter _includeFilter;
 
     /**
-     * Create a new empty ExcludeTableFilter. Use {@link #addTableName} to hide
+     * Create a new empty ExcludeTableFilter. Use {@link #excludeTable} to hide
      * some tables.
      */
     public ExcludeTableFilter()
     {
+        _includeFilter = new IncludeTableFilter();
     }
 
     /**
@@ -49,19 +50,15 @@ public class ExcludeTableFilter extends AbstractTableFilter implements ITableFil
      */
     public ExcludeTableFilter(String[] tableNames)
     {
-        for (int i = 0; i < tableNames.length; i++)
-        {
-            String tableName = tableNames[i];
-            addTableName(tableName);
-        }
+        _includeFilter = new IncludeTableFilter(tableNames);
     }
 
     /**
      * Add a new table name to exclude in this filter.
      */
-    public void addTableName(String tableName)
+    public void excludeTable(String tableName)
     {
-        _forbidenNames.add(tableName.toUpperCase());
+        _includeFilter.includeTable(tableName);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -69,6 +66,6 @@ public class ExcludeTableFilter extends AbstractTableFilter implements ITableFil
 
     public boolean isValidName(String tableName)
     {
-        return !_forbidenNames.contains(tableName.toUpperCase());
+        return !_includeFilter.isValidName(tableName);
     }
 }
