@@ -259,8 +259,8 @@
             userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <export dest="${exportDataSet}">
-        <query name="TEST_TABLE" sql="SELECT * FROM TEST_TABLE"/>
-        <query name="PK_TABLE" sql="SELECT * FROM PK_TABLE"/>
+        <query name="TEST_TABLE" sql="SELECT * FROM test_table"/>
+        <query name="PK_TABLE" sql="SELECT * FROM pk_table"/>
       </export>
     </dbunit>
     <delete file="${exportDataSet}"/>
@@ -273,7 +273,7 @@
             password="${dbunit.profile.password}">
       <export dest="${exportDataSet}">
         <table name="TEST_TABLE" />
-        <query name="PK_TABLE" sql="SELECT * FROM PK_TABLE WHERE NORMAL1='0 wor'"/>
+        <query name="PK_TABLE" sql="SELECT * FROM pk_table WHERE normal1='0 wor'"/>
       </export>
     </dbunit>
     <delete file="${exportDataSet}"/>

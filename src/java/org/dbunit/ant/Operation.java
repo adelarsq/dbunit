@@ -30,8 +30,9 @@ import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.mssqlserver.InsertIdentityOperation;
 
-import java.io.*;
-import java.sql.Connection;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -45,7 +46,7 @@ import java.sql.SQLException;
  */
 public class Operation implements DbUnitTaskStep
 {
-  
+
     protected String type;
     private final String DEFAULT_FORMAT = "flat";
     private String format;
@@ -77,14 +78,14 @@ public class Operation implements DbUnitTaskStep
         return format != null ? format : DEFAULT_FORMAT;
     }
 
-  /**
-   * This returns the actual value of the <code>format</code> field, 
-   * which makes it possible to determine whether the setFormat() method was ever called
-   * despite the fact that the <code>getFormat()</code> method returns a default.
-   * 
-   * @return a <code>String</code>, the actual value of the <code>format</code> field.
-   *         If <code>setFormat()</code> has not been called, this method will return null.
-   */
+    /**
+     * This returns the actual value of the <code>format</code> field,
+     * which makes it possible to determine whether the setFormat() method was ever called
+     * despite the fact that the <code>getFormat()</code> method returns a default.
+     *
+     * @return a <code>String</code>, the actual value of the <code>format</code> field.
+     *         If <code>setFormat()</code> has not been called, this method will return null.
+     */
     String getRawFormat()
     {
         return format;
@@ -116,23 +117,23 @@ public class Operation implements DbUnitTaskStep
         {
             dbOperation = DatabaseOperation.CLEAN_INSERT;
         }
-        else if ("MSSQL_CLEAN_INSERT".equals(type)) 
-	{
-	    dbOperation = InsertIdentityOperation.CLEAN_INSERT;
-	}
-	else if ("MSSQL_INSERT".equals(type)) 
-	{
-	    dbOperation = InsertIdentityOperation.INSERT;
-	} 
-	else if ("MSSQL_REFRESH".equals(type)) 
-	{
-	    dbOperation = InsertIdentityOperation.REFRESH;
-	} 
-	else 
-	{
-	    throw new IllegalArgumentException("Type must be one of: UPDATE, INSERT,"
+        else if ("MSSQL_CLEAN_INSERT".equals(type))
+        {
+            dbOperation = InsertIdentityOperation.CLEAN_INSERT;
+        }
+        else if ("MSSQL_INSERT".equals(type))
+        {
+            dbOperation = InsertIdentityOperation.INSERT;
+        }
+        else if ("MSSQL_REFRESH".equals(type))
+        {
+            dbOperation = InsertIdentityOperation.REFRESH;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Type must be one of: UPDATE, INSERT,"
                     + " REFRESH, DELETE, DELETE_ALL, CLEAN_INSERT, MSSQL_INSERT, "
-		    + " or MSSQL_REFRESH but was: " + type);
+                    + " or MSSQL_REFRESH but was: " + type);
         }
         this.type = type;
     }
@@ -144,15 +145,15 @@ public class Operation implements DbUnitTaskStep
 
     public void setFormat(String format)
     {
-	if (format.equalsIgnoreCase("flat")
-	    || format.equalsIgnoreCase("xml"))
-	{
+        if (format.equalsIgnoreCase("flat")
+                || format.equalsIgnoreCase("xml"))
+        {
             this.format = format;
-	}
-	else
-	{
-   	    throw new IllegalArgumentException("Type must be either 'flat'(default) or 'xml' but was: " + format);
-	}
+        }
+        else
+        {
+            throw new IllegalArgumentException("Type must be either 'flat'(default) or 'xml' but was: " + format);
+        }
     }
 
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
@@ -162,15 +163,15 @@ public class Operation implements DbUnitTaskStep
             try
             {
                 IDataSet dataset;
-		if (format == null) 
-		{
-		    format = DEFAULT_FORMAT;
-		}
+                if (format == null)
+                {
+                    format = DEFAULT_FORMAT;
+                }
                 if (format.equalsIgnoreCase("xml"))
                 {
                     dataset = new XmlDataSet(new FileReader(src));
                 }
-                else 
+                else
                 {
                     dataset = new FlatXmlDataSet(src);
                 }
@@ -195,7 +196,7 @@ public class Operation implements DbUnitTaskStep
     {
         return "Executing operation: " + type
                 + "\n          on   file: " + src.getAbsolutePath()
-	        + "\n          with format: " + format;
+                + "\n          with format: " + format;
     }
 
 

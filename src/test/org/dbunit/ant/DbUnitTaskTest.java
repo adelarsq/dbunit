@@ -265,11 +265,11 @@ public class DbUnitTaskTest extends TaskdefsTest
 
         Query testTable = (Query)queries.get(0);
         assertEquals("name", "TEST_TABLE", testTable.getName());
-        assertEquals("sql", "SELECT * FROM TEST_TABLE", testTable.getSql());
+        assertEquals("sql", "SELECT * FROM test_table", testTable.getSql());
 
         Query pkTable = (Query)queries.get(1);
         assertEquals("name", "PK_TABLE", pkTable.getName());
-        assertEquals("sql", "SELECT * FROM PK_TABLE", pkTable.getSql());
+        assertEquals("sql", "SELECT * FROM pk_table", pkTable.getSql());
     }
 
     public void testExportQueryMixed()

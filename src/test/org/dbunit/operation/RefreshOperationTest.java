@@ -24,18 +24,22 @@ package org.dbunit.operation;
 
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
-import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.NoPrimaryKeyException;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
@@ -94,7 +98,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
 
     public void testExecuteAndNoPrimaryKeys() throws Exception
     {
-        String tableName = "TEST_TABLE";
+        String tableName = "test_table";
 
         Reader reader = new FileReader("src/xml/refreshOperationNoPKTest.xml");
         IDataSet dataSet = new FlatXmlDataSet(reader);

@@ -45,7 +45,7 @@ public class ResultsetTableTest extends AbstractTableTest
 
         DatabaseOperation.CLEAN_INSERT.execute(connection, env.getInitDataSet());
 
-        String sql = "select * from TEST_TABLE order by COLUMN0";
+        String sql = "select * from test_table order by COLUMN0";
         return connection.createQueryTable("TEST_TABLE", sql);
     }
 
