@@ -23,6 +23,9 @@
 package org.dbunit;
 
 import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author Manuel Laflamme
@@ -37,6 +40,7 @@ public class DatabaseProfile
     private static final String SCHEMA = "schema";
     private static final String USER = "user";
     private static final String PASSWORD = "password";
+    private static final String UNSUPPORTED_FEATURES = "unsupportedFeatures";
 
     private final Properties _properties;
 
@@ -78,6 +82,20 @@ public class DatabaseProfile
     public String getPassword()
     {
         return _properties.getProperty(getPropertyKey(PASSWORD));
+    }
+
+    public String[] getUnsupportedFeatures()
+    {
+        String property = _properties.getProperty(
+                getPropertyKey(UNSUPPORTED_FEATURES));
+
+        List stringList = new ArrayList();
+        StringTokenizer tokenizer = new StringTokenizer(property, ",");
+        while(tokenizer.hasMoreTokens())
+        {
+            stringList.add(tokenizer.nextToken().trim());
+        }
+        return (String[])stringList.toArray(new String[0]);
     }
 
 }

@@ -110,7 +110,7 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
             try
             {
-                ITableMetaData metaData = ResultSetTable.createTableMetaData(
+                ITableMetaData metaData = ScrollableResultSetTable.createTableMetaData(
                         resultName, resultSet);
                 return new CachedResultSetTable(metaData, resultSet);
             }

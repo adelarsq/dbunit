@@ -12,7 +12,9 @@
         <root type="jdk" rootType="sourcePath" name="java version &quot;1.3.1_07&quot;" />
         <root type="simple" url="file://$PROJECT_DIR$/src/java" />
         <root type="simple" url="file://$PROJECT_DIR$/src/test" />
-        <root type="simple" url="file://C:/projects/jakarta-poi-1.8.0/src/java" />
+        <root type="simple" url="file://$PROJECT_DIR$/../../mockobjects-0.07-src/core" />
+        <root type="simple" url="file://$PROJECT_DIR$/../../mockobjects-0.07-src/jdk/1.3" />
+        <root type="simple" url="file://$PROJECT_DIR$/../../jakarta-poi-1.8.0/src/java" />
       </root>
     </sourcePath>
     <classPath>
@@ -23,13 +25,17 @@
         <root type="simple" url="jar://$PROJECT_DIR$/lib/exml.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/junit.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/j2ee.jar!/" />
-        <root type="simple" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/" />
-        <root type="simple" url="jar://$PROJECT_DIR$/lib/oracle-jdbc.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/ant.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/crimson.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/jaxp.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/hsqldb.jar!/" />
-        <root type="simple" url="jar://$PROJECT_DIR$/lib/jakarta-poi.jar!/" />
+        <root type="simple" url="jar://$PROJECT_DIR$/lib/mysql-connector-java-3.0.6-stable-bin.jar!/" />
+        <root type="simple" url="jar://$PROJECT_DIR$/lib/mockobjects-0.07-core.jar!/" />
+        <root type="simple" url="jar://$PROJECT_DIR$/lib/mockobjects-0.07-jdk1.3.jar!/" />
+        <root type="simple" url="jar://$PROJECT_DIR$/lib/jakarta-poi-1.8.0-dev-20020919.jar!/" />
+        <root type="simple" url="jar://$PROJECT_DIR$/lib/msbase.jar!/" />
+        <root type="simple" url="jar://$PROJECT_DIR$/lib/mssqlserver.jar!/" />
+        <root type="simple" url="jar://$PROJECT_DIR$/lib/msutil.jar!/" />
       </root>
     </classPath>
     <excludePath>
@@ -131,8 +137,8 @@
     <option name="NEW_SESSION_BEAN_LAST_PACKAGE" value="" />
   </component>
   <component name="CodeStyleManager">
-    <option name="USE_DEFAULT_CODE_STYLE_SCHEME" value="true" />
-    <option name="CODE_STYLE_SCHEME" value="" />
+    <option name="USE_DEFAULT_CODE_STYLE_SCHEME" value="false" />
+    <option name="CODE_STYLE_SCHEME" value="dbunit" />
   </component>
   <component name="ExportToHTMLSettings">
     <option name="PRINT_LINE_NUMBERS" value="false" />

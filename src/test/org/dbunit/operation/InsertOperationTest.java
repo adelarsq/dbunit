@@ -22,19 +22,31 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.*;
+import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.Assertion;
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.TestFeature;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
@@ -168,7 +180,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
             new Column("c3", DataType.BOOLEAN),
         };
         DefaultTable table = new DefaultTable(tableName, columns, valueList);
-        IDataSet dataSet = new DefaultDataSet(new ITable[] {table, table});
+        IDataSet dataSet = new DefaultDataSet(new ITable[]{table, table});
 
         // setup mock objects
         MockBatchStatement statement = new MockBatchStatement();
@@ -220,11 +232,12 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
     public void testInsertClob() throws Exception
     {
-        String tableName = "CLOB_TABLE";
-
         // execute this test only if the target database support CLOB
-        if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
+        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        if (environment.support(TestFeature.CLOB))
         {
+            String tableName = "CLOB_TABLE";
+
             Reader in = new FileReader(new File("src/xml/clobInsertTest.xml"));
             IDataSet xmlDataSet = new FlatXmlDataSet(in);
 
@@ -240,11 +253,12 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
     public void testInsertBlob() throws Exception
     {
-        String tableName = "BLOB_TABLE";
-
         // execute this test only if the target database support BLOB
-        if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
+        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        if (environment.support(TestFeature.BLOB))
         {
+            String tableName = "BLOB_TABLE";
+
             Reader in = new FileReader(new File("src/xml/blobInsertTest.xml"));
             IDataSet xmlDataSet = new FlatXmlDataSet(in);
 
@@ -307,16 +321,8 @@ public class InsertOperationTest extends AbstractDatabaseTest
                     for (int k = 1; k < columns.length; k++)
                     {
                         String columnName = columns[k].getColumnName();
-                        DataType columnDataType = columns[k].getDataType();
-
-
-                        if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment && columnDataType.equals(DataType.BINARY)){
-                            assertTrue(tableName + "." + columnName,databaseTable.getValue(j, columnName)!= null);
-                        }
-                        else {
-                            assertEquals(tableName + "." + columnName,
+                        assertEquals(tableName + "." + columnName,
                                 null, databaseTable.getValue(j, columnName));
-                        }
                     }
                 }
             }
@@ -326,26 +332,18 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
     public void testExecute() throws Exception
     {
-        // this won't work because of the timestamp column.
-        if (!(DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment))
-        {
-            Reader in = new FileReader("src/xml/insertOperationTest.xml");
-            IDataSet dataSet = new XmlDataSet(in);
+        Reader in = new FileReader("src/xml/insertOperationTest.xml");
+        IDataSet dataSet = new XmlDataSet(in);
 
-            testExecute(dataSet);
-        }
+        testExecute(dataSet);
     }
 
     public void testExecuteCaseInsensitive() throws Exception
     {
-        // this won't work because of the timestamp column.
-        if (!(DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment))
-        {
-            Reader in = new FileReader("src/xml/insertOperationTest.xml");
-            IDataSet dataSet = new XmlDataSet(in);
+        Reader in = new FileReader("src/xml/insertOperationTest.xml");
+        IDataSet dataSet = new XmlDataSet(in);
 
-            testExecute(new LowerCaseDataSet(dataSet));
-        }
+        testExecute(new LowerCaseDataSet(dataSet));
     }
 
     private void testExecute(IDataSet dataSet) throws Exception, SQLException

@@ -23,7 +23,6 @@
 package org.dbunit.database;
 
 import org.dbunit.DatabaseEnvironment;
-import org.dbunit.MSSQLServerEnvironment;
 import org.dbunit.dataset.AbstractDataSetTest;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetUtils;
@@ -143,35 +142,31 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 
     public void testGetQualifiedTableNames() throws Exception
     {
-        // this won't work because of the timestamp column.
-        if (!(DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment)){
-            String[] expectedNames = getExpectedNames();
-//            sort(expectedNames);
+        String[] expectedNames = getExpectedNames();
 
-            try
-            {
-                System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "true");
+        try
+        {
+            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "true");
 
-                IDatabaseConnection connection = new DatabaseConnection(
-                        _connection.getConnection(), _connection.getSchema());
+            IDatabaseConnection connection = new DatabaseConnection(
+                    _connection.getConnection(), _connection.getSchema());
 
-                IDataSet dataSet = connection.createDataSet();
-                String[] actualNames = dataSet.getTableNames();
+            IDataSet dataSet = connection.createDataSet();
+            String[] actualNames = dataSet.getTableNames();
 //                sort(actualNames);
 
-                assertEquals("name count", expectedNames.length, actualNames.length);
-                for (int i = 0; i < actualNames.length; i++)
-                {
-                    String expected = DataSetUtils.getQualifiedName(
-                            _connection.getSchema(), expectedNames[i]);
-                    String actual = actualNames[i];
-                    assertEquals("name", expected, actual);
-                }
-            }
-            finally
+            assertEquals("name count", expectedNames.length, actualNames.length);
+            for (int i = 0; i < actualNames.length; i++)
             {
-                System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "false");
+                String expected = DataSetUtils.getQualifiedName(
+                        _connection.getSchema(), expectedNames[i]);
+                String actual = actualNames[i];
+                assertEquals("name", expected, actual);
             }
+        }
+        finally
+        {
+            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "false");
         }
     }
 
@@ -263,6 +258,16 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
     }
 
     public void testGetCaseInsensitiveDuplicateTableMetaData() throws Exception
+    {
+        // Cannot test! Unsupported feature.
+    }
+
+    public void testReverseIteratorAndDuplicateTable() throws Exception
+    {
+        // Cannot test! Unsupported feature.
+    }
+
+    public void testIteratorAndDuplicateTable() throws Exception
     {
         // Cannot test! Unsupported feature.
     }

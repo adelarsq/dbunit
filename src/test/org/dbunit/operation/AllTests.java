@@ -22,8 +22,9 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.*;
-import org.dbunit.operation.mssqlserver.*;
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.TestFeature;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -36,6 +37,8 @@ public class AllTests
     public static Test suite() throws Exception
     {
         TestSuite suite = new TestSuite();
+
+        suite.addTest(org.dbunit.operation.mssqlserver.AllTests.suite());
         suite.addTest(new TestSuite(AbstractBatchOperationTest.class));
         suite.addTest(new TestSuite(CloseConnectionOperationTest.class));
         suite.addTest(new TestSuite(CompositeOperationTest.class));
@@ -43,11 +46,14 @@ public class AllTests
         suite.addTest(new TestSuite(DeleteOperationTest.class));
         suite.addTest(new TestSuite(InsertOperationTest.class));
         suite.addTest(new TestSuite(RefreshOperationTest.class));
+
+        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        if (environment.support(TestFeature.TRANSACTION))
+        {
         suite.addTest(new TestSuite(TransactionOperationTest.class));
-        suite.addTest(new TestSuite(UpdateOperationTest.class));
-        if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
-            suite.addTest(new TestSuite(InsertIdentityOperationTest.class));
         }
+
+        suite.addTest(new TestSuite(UpdateOperationTest.class));
 
         return suite;
     }

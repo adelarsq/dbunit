@@ -1,7 +1,6 @@
 /*
- * AllTests.java   Feb 18, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
  * This library is free software; you can redistribute it and/or
@@ -19,35 +18,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+package org.dbunit.database;
 
-package org.dbunit.dataset.xml;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.DataSetException;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
+ * @since Apr 10, 2003
  * @version $Revision$
  */
-public class AllTests
+public interface IResultSetTable extends ITable
 {
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(FlatDtdDataSetTest.class));
-        suite.addTest(new TestSuite(FlatXmlDataSetTest.class));
-        suite.addTest(new TestSuite(FlatXmlTableTest.class));
-        suite.addTest(new TestSuite(FlatXmlTableWriteTest.class));
-        suite.addTest(new TestSuite(XmlDataSetTest.class));
-        suite.addTest(new TestSuite(XmlTableTest.class));
-        suite.addTest(new TestSuite(XmlTableWriteTest.class));
-
-        return suite;
-    }
+    public void close() throws DataSetException;
 }
-
-
-
-
-
-

@@ -22,19 +22,16 @@
 
 package org.dbunit.operation.mssqlserver;
 
-import org.dbunit.operation.*;
-import org.dbunit.*;
-import org.dbunit.database.MockDatabaseConnection;
-import org.dbunit.database.statement.MockBatchStatement;
-import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.Assertion;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.FileReader;
+import java.io.Reader;
 
 /**
  * @author Manuel Laflamme
@@ -57,118 +54,109 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
 
     public void testExecuteXML() throws Exception
     {
-        if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
-          System.out.println("mssql");
-            Reader in = new FileReader("src/xml/insertIdentityOperationTest.xml");
-            IDataSet xmlDataSet = new XmlDataSet(in);
+//        System.out.println("mssql");
+        Reader in = new FileReader("src/xml/insertIdentityOperationTest.xml");
+        IDataSet xmlDataSet = new XmlDataSet(in);
 
-            ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
-            InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
-            ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
+        ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
+        InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
+        ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
 
-            assertEquals("table count", tablesBefore.length, tablesAfter.length);
-            for (int i = 0; i < tablesBefore.length; i++)
+        assertEquals("table count", tablesBefore.length, tablesAfter.length);
+        for (int i = 0; i < tablesBefore.length; i++)
+        {
+            ITable table = tablesBefore[i];
+            String name = table.getTableMetaData().getTableName();
+
+
+            if (name.startsWith("IDENTITY"))
             {
-                ITable table = tablesBefore[i];
-                String name = table.getTableMetaData().getTableName();
 
-
-                if (name.startsWith("IDENTITY"))
-                {
-
-                    assertTrue("Should have either 0 or 6", table.getRowCount()==0 | table.getRowCount()==6);
-                }
-            }
-
-            for (int i = 0; i < tablesAfter.length; i++)
-            {
-                ITable table = tablesAfter[i];
-                String name = table.getTableMetaData().getTableName();
-                if (name.startsWith("IDENTITY"))
-                {
-                    Assertion.assertEquals(xmlDataSet.getTable(name), table);
-                }
+                assertTrue("Should have either 0 or 6", table.getRowCount() == 0 | table.getRowCount() == 6);
             }
         }
 
+        for (int i = 0; i < tablesAfter.length; i++)
+        {
+            ITable table = tablesAfter[i];
+            String name = table.getTableMetaData().getTableName();
+            if (name.startsWith("IDENTITY"))
+            {
+                Assertion.assertEquals(xmlDataSet.getTable(name), table);
+            }
+        }
     }
 
     public void testExecuteFlatXML() throws Exception
     {
-        if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
-            Reader in = new FileReader("src/xml/insertIdentityOperationTestFlat.xml");
-            IDataSet xmlDataSet = new FlatXmlDataSet(in);
+        Reader in = new FileReader("src/xml/insertIdentityOperationTestFlat.xml");
+        IDataSet xmlDataSet = new FlatXmlDataSet(in);
 
-            ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
-            InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
-            ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
+        ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
+        InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
+        ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
 
-            assertEquals("table count", tablesBefore.length, tablesAfter.length);
-            for (int i = 0; i < tablesBefore.length; i++)
+        assertEquals("table count", tablesBefore.length, tablesAfter.length);
+        for (int i = 0; i < tablesBefore.length; i++)
+        {
+            ITable table = tablesBefore[i];
+            String name = table.getTableMetaData().getTableName();
+
+
+            if (name.startsWith("IDENTITY"))
             {
-                ITable table = tablesBefore[i];
-                String name = table.getTableMetaData().getTableName();
 
-
-                if (name.startsWith("IDENTITY"))
-                {
-
-                    assertTrue("Should have either 0 or 6", table.getRowCount()==0 | table.getRowCount()==6);
-                }
-            }
-
-            for (int i = 0; i < tablesAfter.length; i++)
-            {
-                ITable table = tablesAfter[i];
-                String name = table.getTableMetaData().getTableName();
-                if (name.startsWith("IDENTITY"))
-                {
-                    Assertion.assertEquals(xmlDataSet.getTable(name), table);
-                }
+                assertTrue("Should have either 0 or 6", table.getRowCount() == 0 | table.getRowCount() == 6);
             }
         }
 
+        for (int i = 0; i < tablesAfter.length; i++)
+        {
+            ITable table = tablesAfter[i];
+            String name = table.getTableMetaData().getTableName();
+            if (name.startsWith("IDENTITY"))
+            {
+                Assertion.assertEquals(xmlDataSet.getTable(name), table);
+            }
+        }
     }
 
     /* test case was added to validate the bug that tables with Identity columns that are not
     one of the primary keys are able to figure out if an IDENTITY_INSERT is needed.
     Thanks to Gaetano Di Gregorio for finding the bug.
     */
-   public void testIdentityInsertNoPK() throws Exception
+    public void testIdentityInsertNoPK() throws Exception
     {
-        if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
-            Reader in = new FileReader("src/xml/insertIdentityOperationTestNoPK.xml");
-            IDataSet xmlDataSet = new FlatXmlDataSet(in);
+        Reader in = new FileReader("src/xml/insertIdentityOperationTestNoPK.xml");
+        IDataSet xmlDataSet = new FlatXmlDataSet(in);
 
-            ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
-            InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
-            ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
+        ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
+        InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
+        ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
 
-            assertEquals("table count", tablesBefore.length, tablesAfter.length);
-            for (int i = 0; i < tablesBefore.length; i++)
+        assertEquals("table count", tablesBefore.length, tablesAfter.length);
+        for (int i = 0; i < tablesBefore.length; i++)
+        {
+            ITable table = tablesBefore[i];
+            String name = table.getTableMetaData().getTableName();
+
+
+            if (name.equals("TEST_IDENTITY_NOT_PK"))
             {
-                ITable table = tablesBefore[i];
-                String name = table.getTableMetaData().getTableName();
 
-
-                if (name.equals("TEST_IDENTITY_NOT_PK"))
-                {
-
-                    assertTrue("Should have either 0 or 6", table.getRowCount()==0 | table.getRowCount()==6);
-                }
-            }
-
-            for (int i = 0; i < tablesAfter.length; i++)
-            {
-                ITable table = tablesAfter[i];
-                String name = table.getTableMetaData().getTableName();
-                if (name.equals("TEST_IDENTITY_NOT_PK"))
-                {
-                    Assertion.assertEquals(xmlDataSet.getTable(name), table);
-                }
+                assertTrue("Should have either 0 or 6", table.getRowCount() == 0 | table.getRowCount() == 6);
             }
         }
 
+        for (int i = 0; i < tablesAfter.length; i++)
+        {
+            ITable table = tablesAfter[i];
+            String name = table.getTableMetaData().getTableName();
+            if (name.equals("TEST_IDENTITY_NOT_PK"))
+            {
+                Assertion.assertEquals(xmlDataSet.getTable(name), table);
+            }
+        }
     }
 }
 

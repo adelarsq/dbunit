@@ -22,20 +22,31 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.*;
+import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.Assertion;
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.TestFeature;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.CompositeDataSet;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.NoPrimaryKeyException;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.Test;
 
 /**
  * @author Manuel Laflamme
@@ -53,16 +64,24 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
     protected IDataSet getDataSet() throws Exception
     {
-        if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
+        IDataSet dataSet = super.getDataSet();
+
+        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        if (environment.support(TestFeature.BLOB))
         {
-            return new CompositeDataSet(new IDataSet[]{
-                new FlatXmlDataSet(new File("src/xml/clobInsertTest.xml")),
-                new FlatXmlDataSet(new File("src/xml/blobInsertTest.xml")),
-                super.getDataSet(),
-            });
+            dataSet = new CompositeDataSet(
+                    new FlatXmlDataSet(new File("src/xml/blobInsertTest.xml")),
+                    dataSet);
         }
 
-        return super.getDataSet();
+        if (environment.support(TestFeature.CLOB))
+        {
+            dataSet = new CompositeDataSet(
+                    new FlatXmlDataSet(new File("src/xml/clobInsertTest.xml")),
+                    dataSet);
+        }
+
+        return dataSet;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -247,11 +266,12 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
     public void testUpdateClob() throws Exception
     {
-        String tableName = "CLOB_TABLE";
-
         // execute this test only if the target database support CLOB
-        if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
+        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        if (environment.support(TestFeature.CLOB))
         {
+            String tableName = "CLOB_TABLE";
+
             {
                 IDataSet beforeDataSet = new FlatXmlDataSet(
                         new File("src/xml/clobInsertTest.xml"));
@@ -275,11 +295,12 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
     public void testUpdateBlob() throws Exception
     {
-        String tableName = "BLOB_TABLE";
-
-        // execute this test only if the target database support CLOB
-        if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
+        // execute this test only if the target database support BLOB
+        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        if (environment.support(TestFeature.BLOB))
         {
+            String tableName = "BLOB_TABLE";
+
             {
                 IDataSet beforeDataSet = new FlatXmlDataSet(
                         new File("src/xml/blobInsertTest.xml"));

@@ -1,5 +1,4 @@
 /*
- * ResultsetTableTest.java   Feb 19, 2002
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -19,21 +18,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package org.dbunit.database;
 
 import org.dbunit.DatabaseEnvironment;
-import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.dataset.AbstractTableTest;
 import org.dbunit.dataset.ITable;
+import org.dbunit.operation.DatabaseOperation;
 
 /**
  * @author Manuel Laflamme
+ * @since Apr 11, 2003
  * @version $Revision$
  */
-public class ResultsetTableTest extends AbstractTableTest
+public class CachedResultSetTableTest extends AbstractTableTest
 {
-    public ResultsetTableTest(String s)
+    public CachedResultSetTableTest(String s)
     {
         super(s);
     }
@@ -45,18 +44,13 @@ public class ResultsetTableTest extends AbstractTableTest
 
         DatabaseOperation.CLEAN_INSERT.execute(connection, env.getInitDataSet());
 
-        String sql = "select * from test_table order by COLUMN0";
-        return connection.createQueryTable("TEST_TABLE", sql);
+        String selectStatement = "select * from test_table order by COLUMN0";
+        return new CachedResultSetTable(
+                new ForwardOnlyResultSetTable("TEST_TABLE", selectStatement, connection));
     }
 
     public void testGetMissingValue() throws Exception
     {
-        // impossible to test this
+        // Do not test this!
     }
-
 }
-
-
-
-
-

@@ -31,14 +31,20 @@ public abstract class AbstractTable implements ITable
 {
     protected void assertValidRowIndex(int row) throws DataSetException
     {
+        assertValidRowIndex(row, getRowCount());
+    }
+
+    protected void assertValidRowIndex(int row, int rowCount)
+            throws DataSetException
+    {
         if (row < 0)
         {
             throw new RowOutOfBoundsException(row + " < 0");
         }
 
-        if (row >= getRowCount())
+        if (row >= rowCount)
         {
-            throw new RowOutOfBoundsException(row + " > " + getRowCount());
+            throw new RowOutOfBoundsException(row + " > " + rowCount);
         }
     }
 

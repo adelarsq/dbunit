@@ -1,7 +1,6 @@
 /*
- * FilteredDataSetTest.java   Feb 22, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
  * This library is free software; you can redistribute it and/or
@@ -19,43 +18,38 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+package org.dbunit.database;
 
-package org.dbunit.dataset;
-
-import org.dbunit.dataset.xml.XmlDataSet;
-
-import java.io.FileReader;
+import org.dbunit.dataset.ForwardOnlyTableTest;
+import org.dbunit.dataset.ITable;
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.operation.DatabaseOperation;
 
 /**
  * @author Manuel Laflamme
+ * @since Apr 11, 2003
  * @version $Revision$
  */
-public class DefaultDataSetTest extends AbstractDataSetTest
+public class ForwardOnlyResultSetTableTest extends ForwardOnlyTableTest
 {
-    public DefaultDataSetTest(String s)
+    public ForwardOnlyResultSetTableTest(String s)
     {
         super(s);
     }
 
-    protected IDataSet createDataSet() throws Exception
+    protected ITable createTable() throws Exception
     {
-        IDataSet dataSet = new XmlDataSet(
-                new FileReader("src/xml/dataSetTest.xml"));
-        ITable[] tables = DataSetUtils.getTables(dataSet);
+        DatabaseEnvironment env = DatabaseEnvironment.getInstance();
+        IDatabaseConnection connection = env.getConnection();
 
-        return new DefaultDataSet(tables);
+        DatabaseOperation.CLEAN_INSERT.execute(connection, env.getInitDataSet());
+
+        String selectStatement = "select * from test_table order by COLUMN0";
+        return new ForwardOnlyResultSetTable("TEST_TABLE", selectStatement, connection);
     }
 
-    protected IDataSet createDuplicateDataSet() throws Exception
+    public void testGetMissingValue() throws Exception
     {
-        IDataSet dataSet = new XmlDataSet(
-                new FileReader("src/xml/xmlDataSetDuplicateTest.xml"));
-        ITable[] tables = DataSetUtils.getTables(dataSet);
-
-        return new DefaultDataSet(tables);
+        // Do not test this!
     }
 }
-
-
-
-

@@ -1,7 +1,6 @@
 /*
- * AllTests.java   Feb 18, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
  * This library is free software; you can redistribute it and/or
@@ -19,35 +18,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
-package org.dbunit.dataset.xml;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
+package org.dbunit;
 
 /**
  * @author Manuel Laflamme
+ * @since Apr 11, 2003
  * @version $Revision$
  */
-public class AllTests
+public class TestFeature
 {
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(FlatDtdDataSetTest.class));
-        suite.addTest(new TestSuite(FlatXmlDataSetTest.class));
-        suite.addTest(new TestSuite(FlatXmlTableTest.class));
-        suite.addTest(new TestSuite(FlatXmlTableWriteTest.class));
-        suite.addTest(new TestSuite(XmlDataSetTest.class));
-        suite.addTest(new TestSuite(XmlTableTest.class));
-        suite.addTest(new TestSuite(XmlTableWriteTest.class));
+    public static final TestFeature BLOB = new TestFeature("BLOB");
+    public static final TestFeature CLOB = new TestFeature("CLOB");
+    public static final TestFeature TRANSACTION = new TestFeature("TRANSACTION");
+    public static final TestFeature SCOLLABLE_RESULTSET = new TestFeature("SCOLLABLE_RESULTSET");
+    public static final TestFeature INSERT_IDENTITY = new TestFeature("INSERT_IDENTITY");
 
-        return suite;
+    private final String _name;
+
+    private TestFeature(String name)
+    {
+        _name = name;
+    }
+
+    public String toString()
+    {
+        return _name;
     }
 }
-
-
-
-
-
-

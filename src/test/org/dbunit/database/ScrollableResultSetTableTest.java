@@ -1,5 +1,5 @@
 /*
- * HypersonicEnvironment.java   May 2, 2002
+ * ScrollableResultSetTableTest.java   Feb 19, 2002
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -20,30 +20,42 @@
  *
  */
 
-package org.dbunit;
+package org.dbunit.database;
 
-import org.dbunit.dataset.*;
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.dataset.AbstractTableTest;
+import org.dbunit.dataset.ITable;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class OracleEnvironment extends DatabaseEnvironment
+public class ScrollableResultSetTableTest extends AbstractTableTest
 {
-    public OracleEnvironment(DatabaseProfile profile) throws Exception
+    public ScrollableResultSetTableTest(String s)
     {
-        super(profile);
+        super(s);
     }
 
-    public IDataSet getInitDataSet() throws Exception
+    protected ITable createTable() throws Exception
     {
-        ITable[] extraTables = {
-            new DefaultTable("CLOB_TABLE"),
-            new DefaultTable("BLOB_TABLE"),f
-        };
+        DatabaseEnvironment env = DatabaseEnvironment.getInstance();
+        IDatabaseConnection connection = env.getConnection();
 
-        return new CompositeDataSet(super.getInitDataSet(),
-                new DefaultDataSet(extraTables));
+        DatabaseOperation.CLEAN_INSERT.execute(connection, env.getInitDataSet());
+
+        String selectStatement = "select * from test_table order by COLUMN0";
+        return new ScrollableResultSetTable("TEST_TABLE", selectStatement, connection);
+    }
+
+    public void testGetMissingValue() throws Exception
+    {
+        // Do not test this!
     }
 }
+
+
+
+
 

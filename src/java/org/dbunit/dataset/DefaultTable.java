@@ -24,6 +24,7 @@ package org.dbunit.dataset;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author Manuel Laflamme
@@ -32,12 +33,12 @@ import java.util.List;
 public class DefaultTable extends AbstractTable
 {
     private final ITableMetaData _metaData;
-    private final List _list;
+    protected final List _rowList;
 
     public DefaultTable(ITableMetaData metaData, List list)
     {
         _metaData = metaData;
-        _list = list;
+        _rowList = list;
     }
 
     /**
@@ -46,13 +47,19 @@ public class DefaultTable extends AbstractTable
     public DefaultTable(String tableName)
     {
         _metaData = new DefaultTableMetaData(tableName, new Column[0]);
-        _list = Arrays.asList(new Object[0]);
+        _rowList = Arrays.asList(new Object[0]);
     }
 
     public DefaultTable(String tableName, Column[] columns, List list)
     {
         _metaData = new DefaultTableMetaData(tableName, columns);
-        _list = list;
+        _rowList = list;
+    }
+
+    protected DefaultTable(ITableMetaData metaData)
+    {
+        _metaData = metaData;
+        _rowList = new ArrayList();
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -65,14 +72,14 @@ public class DefaultTable extends AbstractTable
 
     public int getRowCount()
     {
-        return _list.size();
+        return _rowList.size();
     }
 
     public Object getValue(int row, String column) throws DataSetException
     {
         assertValidRowIndex(row);
 
-        Object[] rowValues = (Object[])_list.get(row);
+        Object[] rowValues = (Object[])_rowList.get(row);
         return rowValues[getColumnIndex(column)];
     }
 

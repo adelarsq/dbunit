@@ -22,6 +22,9 @@
 
 package org.dbunit.database;
 
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.TestFeature;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -31,15 +34,22 @@ import junit.framework.TestSuite;
  */
 public class AllTests
 {
-    public static Test suite()
+    public static Test suite() throws Exception
     {
         TestSuite suite = new TestSuite();
         suite.addTest(org.dbunit.database.statement.AllTests.suite());
+        suite.addTest(new TestSuite(CachedResultSetTableTest.class));
         suite.addTest(new TestSuite(DatabaseConnectionTest.class));
         suite.addTest(new TestSuite(DatabaseDataSetTest.class));
         suite.addTest(new TestSuite(DatabaseTableMetaDataTest.class));
+        suite.addTest(new TestSuite(ForwardOnlyResultSetTableTest.class));
         suite.addTest(new TestSuite(QueryDataSetTest.class));
-        suite.addTest(new TestSuite(ResultsetTableTest.class));
+
+        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        if (environment.support(TestFeature.SCOLLABLE_RESULTSET))
+        {
+            suite.addTest(new TestSuite(ScrollableResultSetTableTest.class));
+        }
 
         return suite;
     }

@@ -22,11 +22,9 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.xml.XmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.database.AmbiguousTableNameException;
+import org.dbunit.dataset.xml.XmlDataSet;
 
-import java.io.FileInputStream;
 import java.io.FileReader;
 
 /**
@@ -163,6 +161,32 @@ public class FilteredDataSetTest extends AbstractDataSetTest
         try
         {
             dataSet.getTables();
+            fail("Should throw AmbiguousTableNameException");
+        }
+        catch (AmbiguousTableNameException e)
+        {
+        }
+    }
+
+    public void testReverseIteratorAndDuplicateTable() throws Exception
+    {
+        IDataSet dataSet = createDuplicateDataSet();
+        try
+        {
+            dataSet.iterator();
+            fail("Should throw AmbiguousTableNameException");
+        }
+        catch (AmbiguousTableNameException e)
+        {
+        }
+    }
+
+    public void testIteratorAndDuplicateTable() throws Exception
+    {
+        IDataSet dataSet = createDuplicateDataSet();
+        try
+        {
+            dataSet.reverseIterator();
             fail("Should throw AmbiguousTableNameException");
         }
         catch (AmbiguousTableNameException e)

@@ -24,6 +24,7 @@ package org.dbunit.database;
 
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.HypersonicEnvironment;
+import org.dbunit.TestFeature;
 import org.dbunit.dataset.AbstractDataSetTest;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
@@ -214,20 +215,6 @@ public class QueryDataSetTest extends AbstractDataSetTest
         assertEquals("", "0", table.getValue(0, "PK0").toString());
         assertEquals("", "1", new String(table.getRowCount() + ""));
 
-    }
-
-    /* This JUNIT test case only works against Hypersonic! */
-    public void testLengthSyntax() throws Exception
-    {
-        if (DatabaseEnvironment.getInstance() instanceof HypersonicEnvironment)
-        {
-            ITable table = null;
-
-            QueryDataSet ptds = new QueryDataSet(_connection);
-            ptds.addTable("ATABLE", "CALL LENGTH('hello world')");
-            table = ptds.getTable("ATABLE");
-            assertEquals("", "1", new String(table.getRowCount() + ""));
-        }
     }
 
     public void testMultipleTablesWithMissingWhere() throws Exception

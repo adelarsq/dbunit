@@ -26,7 +26,6 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
-import org.dbunit.operation.DatabaseOperation;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,10 +59,6 @@ public class DatabaseEnvironment
             {
                 INSTANCE = new OracleEnvironment(profile);
             }
-            else if (profileName.equals("mssql"))
-            {
-                INSTANCE = new MSSQLServerEnvironment(profile);
-            }
             else
             {
                 INSTANCE = new DatabaseEnvironment(profile);
@@ -76,15 +71,6 @@ public class DatabaseEnvironment
     public DatabaseEnvironment(DatabaseProfile profile) throws Exception
     {
         _profile = profile;
-
-//        String name = profile.getDriverClass();
-//        Class.forName(name);
-//        Connection connection = DriverManager.getConnection(
-//                _profile.getConnectionUrl(), _profile.getUser(),
-//                _profile.getPassword());
-//        _connection = new DatabaseConnection(connection,
-//                _profile.getSchema());
-
         File file = new File("src/xml/dataSetTest.xml");
         _dataSet = new XmlDataSet(new FileReader(file));
     }
@@ -123,6 +109,20 @@ public class DatabaseEnvironment
         return _profile;
     }
 
+    public boolean support(TestFeature feature)
+    {
+        String[] unsupportedFeatures = _profile.getUnsupportedFeatures();
+        for (int i = 0; i < unsupportedFeatures.length; i++)
+        {
+            String unsupportedFeature = unsupportedFeatures[i];
+            if (feature.toString().equals(unsupportedFeature))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 
 

@@ -22,44 +22,45 @@
 
 package org.dbunit.database;
 
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.CachedTable;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITableMetaData;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class CachedResultSetTable extends DefaultTable
+public class CachedResultSetTable extends CachedTable implements IResultSetTable
 {
     public CachedResultSetTable(ITableMetaData metaData, ResultSet resultSet)
             throws SQLException, DataSetException
     {
-        super(metaData, createList(metaData, resultSet));
+        this(new ForwardOnlyResultSetTable(metaData, resultSet));
     }
 
-    private static List createList(ITableMetaData metaData, ResultSet resultSet)
-            throws SQLException, DataSetException
+    public CachedResultSetTable(IResultSetTable table) throws DataSetException, SQLException
     {
-        List list = new ArrayList();
-        Column[] columns = metaData.getColumns();
-        while (resultSet.next())
+        super(table.getTableMetaData());
+        try
         {
-            Object[] row = new Object[columns.length];
-            for (int i = 0; i < columns.length; i++)
-            {
-                Object value = resultSet.getObject(columns[i].getColumnName());
-                row[i] = value;
-            }
-
-            list.add(row);
+            _rowList.addAll(createRowList(table));
         }
-        return list;
+        finally
+        {
+            table.close();
+        }
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    // IResultSetTable interface
+
+    public void close() throws DataSetException
+    {
+        // nothing to do, already closed
+    }
 }
 
 

@@ -23,10 +23,12 @@
 package org.dbunit;
 
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.DatabaseDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITableIterator;
 
 import electric.xml.Document;
 
@@ -42,6 +44,15 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
+//        System.setProperty("dbunit.qualified.table.names", "true");
+
+        IDatabaseConnection connection =
+                DatabaseEnvironment.getInstance().getConnection();
+        ITableIterator iterator = connection.createDataSet().iterator();
+        while(iterator.next())
+        {
+            System.out.println(iterator.getTableMetaData().getTableName());
+        }
 //        oldMain();
 //        testWrite();
 //        writeXls();

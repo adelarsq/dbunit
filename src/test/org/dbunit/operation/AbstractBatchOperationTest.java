@@ -23,13 +23,16 @@
 package org.dbunit.operation;
 
 import org.dbunit.AbstractDatabaseTest;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoSuchColumnException;
 import org.dbunit.dataset.xml.XmlDataSet;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.Reader;
 import java.io.FileReader;
+import java.io.Reader;
 
 /**
  * @author Manuel Laflamme
@@ -103,7 +106,8 @@ public class AbstractBatchOperationTest extends AbstractDatabaseTest
 
         try
         {
-            AbstractBatchOperation.getOperationMetaData(_connection, xmlTable.getTableMetaData());
+            AbstractBatchOperation.getOperationMetaData(_connection,
+                    xmlTable.getTableMetaData());
             fail("Should throw a NoSuchColumnException");
         }
         catch (NoSuchColumnException e)

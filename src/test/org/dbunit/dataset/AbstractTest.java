@@ -96,7 +96,7 @@ public class AbstractTest extends TestCase
         List expectedList = Arrays.asList(expected);
         List actualList = Arrays.asList(actual);
 
-        if (!expectedList.containsAll(actualList))
+        if (!actualList.containsAll(expectedList))
         {
             fail(message + " expected contains:<" + expectedList + "> but was:<"
                     + actualList + ">");

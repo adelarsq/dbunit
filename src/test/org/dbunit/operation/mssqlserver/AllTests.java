@@ -1,5 +1,4 @@
 /*
- * PrimaryKeySupport.java   Feb 20, 2002
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -19,45 +18,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+package org.dbunit.operation.mssqlserver;
 
-package org.dbunit;
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.TestFeature;
 
-public class PrimaryKeySupport
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
+/**
+ * @author Manuel Laflamme
+ * @since Apr 11, 2003
+ * @version $Revision$
+ */
+public class AllTests
 {
-    public static final PrimaryKeySupport SINGLE = new PrimaryKeySupport("single");
-    public static final PrimaryKeySupport MULTIPLE = new PrimaryKeySupport("multiple");
-    public static final PrimaryKeySupport NONE = new PrimaryKeySupport("none");
-
-    private final String _name;
-
-    private PrimaryKeySupport(String name)
+    public static Test suite() throws Exception
     {
-        _name = name;
+        TestSuite suite = new TestSuite();
+
+        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        if (environment.support(TestFeature.INSERT_IDENTITY))
+        {
+            suite.addTest(new TestSuite(InsertIdentityOperationTest.class));
+        }
+
+        return suite;
     }
 
-    public String toString()
-    {
-        return _name;
-    }
-
-    public static PrimaryKeySupport forName(String name)
-    {
-        if (SINGLE.toString().equalsIgnoreCase(name))
-        {
-            return SINGLE;
-        }
-        else if (MULTIPLE.toString().equalsIgnoreCase(name))
-        {
-            return MULTIPLE;
-        }
-        else
-        {
-            return NONE;
-        }
-    }
 }
-
-
-
-
-

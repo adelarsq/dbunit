@@ -134,13 +134,8 @@ public abstract class AbstractDataSetTest extends AbstractTest
     public void testGetTable() throws Exception
     {
         String[] expected = getExpectedNames();
-//        sort(expected);
 
         IDataSet dataSet = createDataSet();
-//        String[] names = dataSet.getTableNames();
-//        sort(names);
-//        assertEquals("table count",
-//                expected.length, dataSet.getTableNames().length);
         for (int i = 0; i < expected.length; i++)
         {
             ITable table = dataSet.getTable(expected[i]);
@@ -350,6 +345,25 @@ public abstract class AbstractDataSetTest extends AbstractTest
         assertEquals("table count", expected.length, i);
     }
 
+    public void testIteratorAndDuplicateTable() throws Exception
+    {
+        String[] expectedNames = getExpectedDuplicateNames();
+//        int[] expectedRows = getExpectedDuplicateRows();
+
+        int i = 0;
+        ITableIterator iterator = createDuplicateDataSet().iterator();
+        while(iterator.next())
+        {
+            ITable table = iterator.getTable();
+            String name = table.getTableMetaData().getTableName();
+            assertEqualsTableName("name " + i, expectedNames[i], name);
+//            assertEquals("row count", expectedRows[i], table.getRowCount());
+            i++;
+        }
+
+        assertEquals("table count", expectedNames.length, i);
+    }
+
     public void testReverseIterator() throws Exception
     {
         String[] expected = DataSetUtils.reverseStringArray(getExpectedNames());
@@ -368,7 +382,26 @@ public abstract class AbstractDataSetTest extends AbstractTest
         assertEquals("table count", expected.length, i);
     }
 
+    public void testReverseIteratorAndDuplicateTable() throws Exception
+    {
+        String[] expectedNames = getExpectedDuplicateNames();
+        int[] expectedRows = getExpectedDuplicateRows();
 
+        int i = expectedRows.length - 1;
+        int count = 0;
+        ITableIterator iterator = createDuplicateDataSet().reverseIterator();
+        while(iterator.next())
+        {
+            ITable table = iterator.getTable();
+            String name = table.getTableMetaData().getTableName();
+            assertEqualsTableName("name " + i, expectedNames[i], name);
+            assertEquals("row count", expectedRows[i], table.getRowCount());
+            i--;
+            count++;
+        }
+
+        assertEquals("table count", expectedNames.length, count);
+    }
 }
 
 
