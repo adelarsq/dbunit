@@ -31,7 +31,7 @@ import java.sql.*;
  */
 public class StringDataType extends AbstractDataType
 {
-    StringDataType(String name, int sqlType)
+    public StringDataType(String name, int sqlType)
     {
         super(name, sqlType, String.class, false);
     }
