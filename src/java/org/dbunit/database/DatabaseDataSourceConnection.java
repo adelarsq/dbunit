@@ -1,5 +1,5 @@
 /*
- * DatabaseDataSource.java   Mar 8, 2002
+ * DatabaseDataSourceConnection.java   Mar 8, 2002
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
@@ -32,32 +32,32 @@ import javax.naming.NamingException;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class DatabaseDataSource extends AbstractDatabaseConnection
+public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
         implements IDatabaseConnection
 {
     private final String _schema;
     private final DataSource _dataSource;
     private Connection _connection;
 
-    public DatabaseDataSource(InitialContext context, String jndiName,
+    public DatabaseDataSourceConnection(InitialContext context, String jndiName,
             String schema) throws NamingException, SQLException
     {
         this((DataSource)context.lookup(jndiName), schema);
     }
 
-    public DatabaseDataSource(InitialContext context, String jndiName)
+    public DatabaseDataSourceConnection(InitialContext context, String jndiName)
             throws NamingException, SQLException
     {
         this(context, jndiName, null);
     }
 
-    public DatabaseDataSource(DataSource dataSource)
+    public DatabaseDataSourceConnection(DataSource dataSource)
             throws SQLException
     {
         this(dataSource, null);
     }
 
-    public DatabaseDataSource(DataSource dataSource, String schema)
+    public DatabaseDataSourceConnection(DataSource dataSource, String schema)
             throws SQLException
     {
         _dataSource = dataSource;

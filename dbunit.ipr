@@ -342,21 +342,20 @@
   <component class="com.intellij.ide.impl.ProjectWorkspace" />
   <component class="com.intellij.ide.navigator.impl.ProjectNavigatorSettings">
     <navigator id="ClasspathNavigator" flattenPackages="false" showMembers="false">
+      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/" />
       <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/electric/xml" />
       <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/electric" />
-      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/exml.jar!/" />
     </navigator>
     <navigator id="ProjectNavigator" flattenPackages="false" showMembers="false">
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/docs" />
     </navigator>
     <navigator id="SourcepathNavigator" flattenPackages="false" showMembers="true">
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
     </navigator>
   </component>
   <component class="com.intellij.ide.structureView.StructureViewFactory">

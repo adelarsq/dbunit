@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<META name="GENERATOR" content="IBM WebSphere Studio">
+<META http-equiv="Content-Style-Type" content="text/css">
+<LINK href="stylesheet.css" rel="stylesheet" type="text/css">
+<TITLE>changes.html</TITLE>
+</HEAD>
+<BODY>
+<H1>The dbUnit database testing framework</H1>
+<HR>
+<H3>Changes in version 1.1 from 1.0</H3>
+<UL>
+    <LI>
+    Better connection management:
+    <UL>
+        <LI>Added the IDatabaseConnection interface. </LI>
+        <LI>Modified DatabaseTestCase.getConnection() signature to returns that interface instead of DatabaseConnection. Subclasses signature need to be modified accordingly.</LI>
+        <LI>Added the DatabaseDataSourceConnection class. This class provides support for accessing jdbc connections from a DataSource. Jdbc connections are requested on demand from the DataSource. </LI>
+        <LI>Modified documentations relative to connection management.</LI>
+    </UL>
+    
+    <LI>Improved performance. </LI>
+    <LI>
+        Fixed bug 526235 - Cannot export tables (jdbc-odbc with MS-SQL 7).
+    </LI>
+</UL>
+<HR>
+</BODY>
+</HTML>

@@ -2,6 +2,7 @@
 <HTML>
 <HEAD>
 <META http-equiv="Content-Style-Type" content="text/css">
+<META name="GENERATOR" content="IBM WebSphere Studio">
 <LINK href="stylesheet.css" rel="stylesheet" type="text/css">
 <TITLE>The dbUnit database testing framework</TITLE>
 </HEAD>
@@ -11,10 +12,11 @@
     <TBODY>
         <TR>
             <TD class="menu" nowrap><A href="#introduction">Introduction</A><BR>
-            <A href="#components">Componets</A><BR>
+            <A href="#components">Components</A><BR>
             <A href="#howto">How to guides</A><BR>
             <A href="#bestpractices">Best practices</A><BR>
             <A href="#faq">Faq</A><BR>
+            <A href="changes.html">Changes</A><BR>
             <A href="http://sourceforge.net/project/showfiles.php?group_id=47439">Download</A><BR>
             <A href="#contact">Contact</A><BR>
             <A href="#ressources">Ressources</A><BR>
@@ -154,21 +156,21 @@ public interface IDataSet
             <PRE>
 public abstract class DatabaseOperation
 {
-    public static final DatabaseOperation NONE = new DummyAction();
-    public static final DatabaseOperation UPDATE = new UpdateOperation();
-    public static final DatabaseOperation INSERT = new InsertOperation();
-    public static final DatabaseOperation REFRESH = new RefreshOperation();
-    public static final DatabaseOperation DELETE = new DeleteOperation();
-    public static final DatabaseOperation DELETE_ALL = new DeleteAllOperation();
-    public static final DatabaseOperation CLEAN_INSERT = new CompositeOperation(
+    public static final IDatabaseOperation NONE = new DummyAction();
+    public static final IDatabaseOperation UPDATE = new UpdateOperation();
+    public static final IDatabaseOperation INSERT = new InsertOperation();
+    public static final IDatabaseOperation REFRESH = new RefreshOperation();
+    public static final IDatabaseOperation DELETE = new DeleteOperation();
+    public static final IDatabaseOperation DELETE_ALL = new DeleteAllOperation();
+    public static final IDatabaseOperation CLEAN_INSERT = new CompositeOperation(
             DELETE_ALL, INSERT);
 
-    public abstract void execute(DatabaseConnection connection,
+    public abstract void execute(IDatabaseConnection connection,
             IDataSet dataSet) throws DatabaseUnitException, SQLException;
 
     private static class DummyAction extends DatabaseOperation
     {
-        public void execute(DatabaseConnection connection, IDataSet dataSet)
+        public void execute(IDatabaseConnection connection, IDataSet dataSet)
         {
         }
     }
@@ -227,7 +229,7 @@ public class SampleTest extends DatabaseTestCase
         super(name);
     }
 
-    protected DatabaseConnection getConnection() throws Exception
+    protected IDatabaseConnection getConnection() throws Exception
     {
         Class driverClass = Class.forName(&quot;org.hsqldb.jdbcDriver&quot;);
         Connection jdbcConnection = DriverManager.getConnection(
@@ -283,14 +285,21 @@ public class SampleTest extends TestCase
         super.setUp();
 
         // initialize your database connection here
-        DatabaseConnection connection = null;
+        IDatabaseConnection connection = null;
         // ...
 
         // initialize your dataset here
         IDataSet dataSet = null;
         // ...
 
-        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+        try
+        {
+            DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+        }
+        finally
+        {
+            connection.close();
+        }
     }
     ... 
 } </PRE>
@@ -308,7 +317,7 @@ public class DatabaseExportSample
         Class driverClass = Class.forName(&quot;org.hsqldb.jdbcDriver&quot;);
         Connection jdbcConnection = DriverManager.getConnection(
                 &quot;jdbc:hsqldb:sample&quot;, &quot;sa&quot;, &quot;&quot;);
-        DatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
 
         // partial database export
         String[] tableNames = {&quot;TABLE1&quot;, &quot;TABLE2&quot;, &quot;TABLE2&quot;};
@@ -343,8 +352,14 @@ public class DatabaseExportSample
             <BR>
             This feature is not yet integrated in dbUnit but may be added in the future. Something likes a DatabaseTestSuite class… <BR>
             <BR>
-            <H4>5. Reuse same DatabaseConnection for every test</H4>
-            One way to speed up execution of your tests is to reuse the same DatabaseConnection for all you tests. dbUnit caches database metadata in this object and therefore does not require to fetch them repeatedly from the database.<BR>
+            <H4>5. Connection management strategies</H4>Here are the recommended connection management strategies depending if your testing strategy is to perform your tests from a remote client or in-container:<BR>
+            <H5>Remote client with DatabaseTestCase</H5>
+            You should reuse the same connection for the entire test suite to reduce the overhead of creating a new connection for each test by using a singleton. Since version 1.1, DatabaseTestCase is closing every connection in setUp() and tearDown(). Override the closeConnection() method with an empty body to modify this behavior. <BR>
+            <H5>In-container with Cactus or JUnitEE</H5>
+            If you use the in-container strategy you should use a DatabaseDataSourceConnection object to access the DataSource you configured for your application server. Jdbc connections are requested on demand from the DataSource. So you can rely on the built-in connection pooling capability of your application server to achieve better performance.<BR>
+            <PRE>    // initialize your database connection here 
+    IDatabaseConnection connection = new DatabaseDataSourceConnection(
+            new InitialContext(), &quot;jdbc/myDataSource&quot;);</PRE>
             <BR>
             <H4>6. Table sequence in dataset</H4>
             To prevent problems with foreign keys, tables must be sequenced appropriately in dataset. The framework executes INSERT, UPDATE and REFRESH operations using the same sequence while DELETE and DELETE_ALL are executed in reserve order.<BR>
@@ -356,7 +371,7 @@ public class DatabaseExportSample
             <BR>
             <HR>
             <H2><A name="contact">Contact information</A></H2>
-            Visit the <A href="http://sourceforge.net/projects/dbunit">dbUnit project</A> hosted by SourceForge.<BR>
+            Visit the <A href="http://sourceforge.net/projects/dbunit">dbUnit project</A> hosted by SourceForge. You can also subscribe to the <A href="http://sourceforge.net/mail/?group_id=47439">dbunit-user</A> mailing list. <BR>
             <BR>
             <HR>
             <H2><A name="ressources">Ressources</A></H2>
