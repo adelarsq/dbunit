@@ -143,6 +143,7 @@
             The Object must implement <a href="api/org/dbunit/dataset/datatype/IDataTypeFactory.html">org.dbunit.dataset.datatype.IDataTypeFactory</a>.</td>
         </tr>
       </table>
+      <a name="statementfactory"></a>
       <h4>Statement factory</h4>
       <table border="1">
         <tr> 
@@ -159,6 +160,7 @@
             org.dbunit.database.statement.IStatementFactory.</td>
         </tr>
       </table>
+      <a name="resultsettablefactory"></a>
       <h4>ResultSetTable factory</h4>
       <table border="1">
         <tr> 
