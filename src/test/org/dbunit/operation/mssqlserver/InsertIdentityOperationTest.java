@@ -38,6 +38,7 @@ import java.util.List;
 
 /**
  * @author Manuel Laflamme
+ * @author Eric Pugh
  * @version $Revision$
  */
 public class InsertIdentityOperationTest extends AbstractDatabaseTest
@@ -57,6 +58,7 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
     public void testExecuteXML() throws Exception
     {
         if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
+          System.out.println("mssql");
             Reader in = new FileReader("src/xml/insertIdentityOperationTest.xml");
             IDataSet xmlDataSet = new XmlDataSet(in);
 
