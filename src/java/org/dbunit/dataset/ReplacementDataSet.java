@@ -38,8 +38,8 @@ public class ReplacementDataSet implements IDataSet
     private final IDataSet _dataSet;
     private final Map _objectMap;
     private final Map _substringMap;
-    private String _startDelimiter;
-    private String _endDelimiter;
+    private String _startDelim;
+    private String _endDelim;
 
 
     /**
@@ -106,14 +106,14 @@ public class ReplacementDataSet implements IDataSet
             throw new NullPointerException();
         }
 
-        _startDelimiter = startDelimiter;
-        _endDelimiter = endDelimiter;
+        _startDelim = startDelimiter;
+        _endDelim = endDelimiter;
     }
 
     private ReplacementTable createReplacementTable(ITable table)
     {
         return new ReplacementTable(table, _objectMap, _substringMap,
-                _startDelimiter, _endDelimiter);
+                _startDelim, _endDelim);
     }
 
     ////////////////////////////////////////////////////////////////////////////

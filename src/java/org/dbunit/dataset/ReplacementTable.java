@@ -37,8 +37,8 @@ public class ReplacementTable implements ITable
     private final ITable _table;
     private final Map _objectMap;
     private final Map _substringMap;
-    private String _startDelimiter;
-    private String _endDelimiter;
+    private String _startDelim;
+    private String _endDelim;
 
     /**
      * Create a new ReplacementTable object that decorates the specified table.
@@ -56,8 +56,8 @@ public class ReplacementTable implements ITable
         _table = table;
         _objectMap = objectMap;
         _substringMap = substringMap;
-        _startDelimiter = startDelimiter;
-        _endDelimiter = endDelimiter;
+        _startDelim = startDelimiter;
+        _endDelim = endDelimiter;
     }
 
     /**
@@ -98,8 +98,8 @@ public class ReplacementTable implements ITable
             throw new NullPointerException();
         }
 
-        _startDelimiter = startDelimiter;
-        _endDelimiter = endDelimiter;
+        _startDelim = startDelimiter;
+        _endDelim = endDelimiter;
     }
 
     private String replaceSubstrings(String value)
@@ -139,41 +139,51 @@ public class ReplacementTable implements ITable
         return buffer == null ? value : buffer.toString();
     }
 
-    /**
-     * This implementation is very inefficient and will be replaced soon by a
-     * optimized version. At least the functionality exists for now! - Manuel
-     */
     private String replaceDelimitedSubstrings(String value)
     {
         StringBuffer buffer = null;
 
-        for (Iterator it = _substringMap.entrySet().iterator(); it.hasNext();)
+        int startIndex = 0;
+        int endIndex = 0;
+        int lastEndIndex = 0;
+        for(;;)
         {
-            Map.Entry entry = (Map.Entry)it.next();
-            String original = _startDelimiter + entry.getKey() + _endDelimiter;
-            String replacement = (String)entry.getValue();
-
-            int startIndex = 0;
-            int lastEndIndex = 0;
-            for(;;)
+            startIndex = value.indexOf(_startDelim, lastEndIndex);
+            if (startIndex != -1)
             {
-                startIndex = value.indexOf(original, lastEndIndex);
-                if (startIndex == -1)
+                endIndex = value.indexOf(_endDelim, startIndex + _startDelim.length());
+                if (endIndex != -1)
                 {
-                    if (buffer != null)
+                    if (buffer == null)
                     {
-                        buffer.append(value.substring(lastEndIndex));
+                        buffer = new StringBuffer();
                     }
-                    break;
-                }
 
-                if (buffer == null)
-                {
-                    buffer = new StringBuffer();
+                    String substring = value.substring(
+                            startIndex + _startDelim.length(), endIndex);
+                    if (_substringMap.containsKey(substring))
+                    {
+                        buffer.append(value.substring(lastEndIndex, startIndex));
+                        buffer.append(_substringMap.get(substring));
+                    }
+                    else
+                    {
+                        buffer.append(value.substring(
+                                lastEndIndex, endIndex + _endDelim.length()));
+                    }
+
+                    lastEndIndex = endIndex + _endDelim.length();
                 }
-                buffer.append(value.substring(lastEndIndex, startIndex));
-                buffer.append(replacement);
-                lastEndIndex = startIndex + original.length();
+            }
+
+            // No more delimited substring
+            if (startIndex == -1 || endIndex == -1)
+            {
+                if (buffer != null)
+                {
+                    buffer.append(value.substring(lastEndIndex));
+                }
+                break;
             }
         }
 
@@ -210,7 +220,7 @@ public class ReplacementTable implements ITable
         }
 
         // Substring replacement
-        if (_startDelimiter != null && _endDelimiter != null)
+        if (_startDelim != null && _endDelim != null)
         {
             return replaceDelimitedSubstrings((String)value);
         }
