@@ -18,15 +18,17 @@
   <table cellspadding = 0 cellspacing = 0 border = 0>
     <tr> 
       
-    <td class="menu" nowrap valign="top" > <a href="index.html">Home</a><br>
+    <td class="menu" nowrap valign="top" > 
+	  <a href="index.html">Home</a><br>
       <br>
-      <a href="components.html">Core Classes</a><br>
-      <a href="howto.html">How-to guides</a><br>
+	  <a href="intro.html">Introduction</a><br>
+      <a href="components.html">Core classes</a><br>
+      <a href="howto.html">How-to Guides</a><br>
       <a href="bestpractices.html">Best Practices</a><br>
       <a href="api/index.html">API Reference</a><br>
       <a href="faq.html">FAQ</a><br>
       <br>
-      <a href="changes.html">News/Changes</a><br>
+      <a href="changes.html">Changes</a><br>
       <a href="download.html">Download</a><br>
       <a href="support.html">Support</a><br>
       <a href="resources.html">Resources</a><br>
@@ -37,9 +39,8 @@
       <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations" 
       src="images/silphid.gif" border=0></a></div>
     </td>
-    <td class="body" valign="top"> <!-- #BeginEditable "body" -->
+    <td class="body" valign="top"> <!-- #BeginEditable "body" --> 
       <h2>The Dbunit Database Testing Framework</h2>
-            
       <p>The Dbunit database testing framework is a JUnit extension which sets 
         up your database in a known state before executing your tests. This framework 
         uses xml datasets (collection of data tables) and performs database operations 
@@ -48,51 +49,25 @@
         <br>
         Something worth noting: Dbunit is using itself in its own test suite!	
       </p>
-      <h2 ><a name="notes">Notes about database unit testing</a></h2>
-      By Richard Dallaway (see <a href="resources.html">resources</a>)<br>
-	  <p>
-      <cite>&quot;A good test set is self-sufficient and creates all the data 
-      it needs. Testing can be simplified if you can get the database in a known 
-      state before a test is run. One ways to do this is to have a separate unit 
-      test database, which is under the control of the test cases: the test cases 
-      clean out the database before starting any tests.<br>
-      <br>
-      [...]<br>
-      <br>
-      Deleting and inserting data for every test may seem like a big time over 
-      head, but as tests use relatively little data, I find this approach to be 
-      quick enough (especially if you're running against a local test database).<br>
-      <br>
-      [...]<br>
-      <br>
-      The downside is that you need more than one database - but remember, they 
-      can all run on one server if necessary. The way I'm testing now needs four 
-      databases (well, two at a pinch): <br>
-      </cite> 
-      <ol>
-        <li><cite>The <strong>production database</strong>. Live data. No testing 
-          on this database. </cite></li>
-        <li><cite>Your <strong>local development database</strong>, which is where 
-          most of the testing is carried out. </cite></li>
-        <li><cite>A <strong>populated development database</strong>, possibly 
-          shared by all developers so you can run your application and see it 
-          work with realistic amounts of data, rather than the hand full of records 
-          you have in your test database. You may not strictly need this, but 
-          it's reassuring to see your app work with lots of data (i.e., a copy 
-          of the production database's data). </cite></li>
-        <li><cite>A <strong>deployment databas</strong>e, or integration database, 
-          where the tests are run prior to deployment to make sure any local database 
-          changes have been applied. If you're working alone, you may be able 
-          to live without this one, but you'll have to be sure any database structure 
-          or stored procedure changes have been made to the production database 
-          before you go live with your code. </cite></li>
-      </ol>
-      <cite>
-      With multiple database you have to make sure you keep the structure of the 
-      databases in sync: if you change a table definition or a stored procedure 
-      on your test machine, you'll have to remember to make those changes on the 
-      live server. The deployment database should act as a reminder to make those 
-      changes.&quot;</cite><br>
+      <a name="intro"><h2>News</h2>
+      </a> 
+      <ul>
+        <!--<li>2002-??-?? - The java API documentation is now available <a href="api/index.html">online</a>.</li>-->
+        <li>2002-04-04 - Version 1.3 released. See <a href="changes.html#1.3">changes</a>.</li>
+        <li>2002-04-04 - New website design done by <a href="http://www.silphid.com/">Silphid 
+          Creations</a>.</li>
+        <li>2002-03-19 - Version 1.2.4 released. See <a href="changes.html#1.2.4">changes</a>.</li>
+        <li>2002-03-19 - Added Daedalos JUnit Extensions link in the <a href="resources.html">Resources</a> 
+          page.</li>
+        <li>2002-03-17 - Added the <a href="support.html#knownissues">Known Issues</a> 
+          section in support page.</li>
+        <li>2002-03-15 - Version 1.2 released. See <a href="changes.html#1.2">changes</a>.</li>
+        <li>2002-03-10 - Modified the <a href="bestpractices.html#connections">connections 
+          management strategies</a> best practices.</li>
+        <li>2002-03-10 - Version 1.1 released. See <a href="changes.html#1.1">changes</a>.</li>
+        <li>2002-02-27 - Version 1.0 released. This is the first public release.</li>
+      </ul>
+      <p>&nbsp;</p>
       <!-- #EndEditable --> 
       <hr>
       <div align="center"> 
