@@ -14,9 +14,9 @@
       <h4>Parameters</h4>
       <table border="1">
         <tr> 
-          <td><b>Attribute</b></td>
-          <td><b>Description</b></td>
-          <td><b>Required</b></td>
+          <th>Attribute</th>
+          <th>Description</th>
+          <th>Required</th>
         </tr>
         <tr> 
           <td>driver</td>
@@ -77,9 +77,9 @@
             </p>
             <table border="1">
               <tr> 
-                <td><b>Attribute</b></td>
-                <td><b>Description</b></td>
-                <td><b>Required</b></td>
+                <th>Attribute</th>
+                <th>Description</th>
+                <th>Required</th>
               </tr>
               <tr> 
                 <td>type</td>
@@ -115,9 +115,9 @@
               same file) into a single one.</p>
             <table border="1">
               <tr>
-                <td><b>Attribute</b></td>
-                <td><b>Description</b></td>
-                <td><b>Required</b></td>
+                <th>Attribute</th>
+                <th>Description</th>
+                <th>Required</th>
               </tr>
               <tr>
                 <td>src</td>
@@ -159,9 +159,9 @@
               step.</p>
             <table width="100%" border="1">
               <tr> 
-                <td><b>Attribute</b></td>
-                <td><b>Description</b></td>
-                <td><b>Required</b></td>
+                <th>Attribute</th>
+                <th>Description</th>
+                <th>Required</th>
               </tr>
               <tr> 
                 <td>dest</td>
@@ -187,9 +187,9 @@
                     specific tables. </p>
                   <table border="1">
                     <tr> 
-                      <td><b>Attribute</b></td>
-                      <td><b>Description</b></td>
-                      <td><b>Required</b></td>
+                      <th>Attribute</th>
+                      <th>Description</th>
+                      <th>Required</th>
                     </tr>
                     <tr> 
                       <td>name</td>
@@ -206,9 +206,9 @@
                     data according to a sql statement. </p>
                   <table border="1">
                     <tr> 
-                      <td><b>Attribute</b></td>
-                      <td><b>Description</b></td>
-                      <td><b>Required</b></td>
+                      <th>Attribute</th>
+                      <th>Description</th>
+                      <th>Required</th>
                     </tr>
                     <tr> 
                       <td>name</td>

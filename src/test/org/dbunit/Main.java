@@ -30,17 +30,25 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.sql.Connection;
 
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.ForwardOnlyResultSetTableFactory;
+import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.stream.MockDataSetProducer;
 import org.dbunit.dataset.stream.StreamingDataSet;
+import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlWriter;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSetWriter;
+import org.dbunit.dataset.xml.FlatXmlProducer;
+
+import org.xml.sax.InputSource;
 
 /**
  * This class is a scratchpad used to try new features.
@@ -139,8 +147,26 @@ public class Main
 //        out.flush();
 //    }
 
+    public void test() throws Exception
+    {
+        Connection jdbcConnection = null;
+    IDatabaseConnection connection = new DatabaseConnection(jdbcConnection, "");
+    DatabaseConfig config = connection.getConfig();
+
+    // Use the ForwardOnlyResultSetTableFactory to export very large dataset.
+    config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY,
+            new ForwardOnlyResultSetTableFactory());
+
+        // Use the StreamingDataSet to import very large dataset.
+    IDataSetProducer producer = new FlatXmlProducer(
+            new InputSource("dataset.xml"));
+    IDataSet dataSet = new StreamingDataSet(producer);
+    }
+
+
     private static void oldMain() throws Exception
     {
+
 //        System.setProperty("dbunit.name.escapePattern", "\"?\"");
         IDatabaseConnection connection =
                 DatabaseEnvironment.getInstance().getConnection();

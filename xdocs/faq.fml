@@ -6,15 +6,55 @@
    
     <faq id="supportedvendors">
       <question>
-        Which database system are supported?
+        Which relational database systems are supported?
       </question>
       <answer>
-      <p>The Dbunit framework has been developed and tested with Oracle and HypersonicSQL. 
+      <p>The Dbunit framework is actively developed and tested with Oracle and HypersonicSQL. 
         It uses a fairly simple SQL syntax and should be compatible with the other 
         database systems. <a href="support.html">Let us know</a> if you find any 
         incompatibilities.</p>
       </answer>
     </faq>
+
+    <faq id="build">
+      <question>
+        How to build DbUnit?
+      </question>
+      <answer>
+      <p>DbUnit is build with <a href="http://maven.apache.org/">Maven 1.0-rc1</a>. The default goal will build the DbUnit jar.</p>
+      </answer>
+    </faq>
+
+    <faq id="p6spy">
+      <question>
+     How to see SQL statements issued by DbUnit using P6Spy?
+      </question>
+      <answer>
+     <p><a href="http://www.p6spy.com">P6Spy</a> is a trasparent JDBC proxy-driver 
+      specialized to log the statements performed against the actual driver you normally would use.
+      Using p6spy would allow to log the SQL statements issued by DbUnit.
+      </p>
+      <p>To install P6Spy, complete the following steps:
+      <ol>
+        <li>Put the p6spy.jar file in your classpath.
+        </li><li>Move spy.properties into a directory listed in your classpath.  Unlike
+        JAR files, you do not directly reference your property file in the
+        classpath (e.g.: if you have the file c:\r\proj\confspy.properties make sure you 
+        put c:\r\proj\conf in the classpath).
+        </li><li>Modify your application to use the P6Spy database driver i.e.
+        com.p6spy.engine.spy.P6SpyDriver.
+        </li><li>Modify the realdriver line in the spy.properties file to reflect the
+        wrapped database driver. An example of a modified realdriver line follows:
+    	realdriver = oracle.jdbc.driver.OracleDriver
+      </li></ol>
+      Installation is complete. When you run your application, a spy.log file is
+      generated in the same directory from where you run the application. 
+      The log file contains a list of all of the database statements
+      executed. You can change both the destination of spy.log and what it logs by
+      editing the spy.properties file.</p>
+      </answer>
+    </faq>    
+
   </part>  
 
   <part id="use">
@@ -111,34 +151,47 @@ public class DatabaseExportSample
       </answer>
     </faq>  
     
-    <faq id="p6spy">
+    <faq id="views">
       <question>
-     How to see SQL statements issued by DbUnit using P6Spy?
+      Can I use DbUnit with views or with synonyms? 
       </question>
       <answer>
-     <p><cite>p6spy</cite> is a trasparent JDBC proxy-driver 
-      specialized to log the statements performed against the actual driver you normally would use.
-      Using p6spy would allow to log the SQL statements issued by DbUnit.
-      See more at (<a href="http://www.p6spy.com">www.p6spy.com</a>). It could be useful to stick with version 1.1
-      as 1.2 as some reported minor problems.</p>
-      <p>To install P6Spy, complete the following steps:
-      <ol>
-        <li>Put the p6spy.jar file in your classpath.
-        </li><li>Move spy.properties into a directory listed in your classpath.  Unlike
-        JAR files, you do not directly reference your property file in the
-        classpath (e.g.: if you have the file c:\r\proj\confspy.properties make sure you 
-        put c:\r\proj\conf in the classpath).
-        </li><li>Modify your application to use the P6Spy database driver i.e.
-        com.p6spy.engine.spy.P6SpyDriver.
-        </li><li>Modify the realdriver line in the spy.properties file to reflect the
-        wrapped database driver. An example of a modified realdriver line follows:
-    	realdriver = oracle.jdbc.driver.OracleDriver
-      </li></ol>
-      Installation is complete. When you run your application, a spy.log file is
-      generated in the same directory from where you run the application. 
-      The log file contains a list of all of the database statements
-      executed. You can change both the destination of spy.log and what it logs by
-      editing the spy.properties file.</p>
+      <p>
+      Yes. By default DbUnit is configured to only recognize normal tables. Modify the 
+      <a href="properties.html#tabletype">table type property</a> to work with other table types.
+      </p>
+      <p>
+      For example, use <code>{"TABLE", "VIEW"}</code> for views and <code>{"TABLE", "SYNONYM"}</code> for synonyms.
+      </p>
+
+      </answer>
+    </faq>  
+    
+    <faq id="dateformat">
+      <question>
+      What are the dates formats used by XML dataset implementations?
+      </question>
+      <answer>
+     <p>DbUnit use the JDBC escape formats for string representation.
+      <table border="1">
+        <tr> 
+          <th>Type</th>
+          <th>Format</th>
+        </tr>
+        <tr> 
+          <td>DATE</td>
+          <td>yyyy-mm-dd</td>
+        </tr>
+        <tr> 
+          <td>TIME</td>
+          <td>hh:mm:ss</td>
+        </tr>
+        <tr> 
+          <td>TIMESTAMP</td>
+          <td>yyyy-mm-dd hh:mm:ss.fffffffff</td>
+        </tr>
+      </table>
+</p>
       </answer>
     </faq>    
   </part>  
@@ -196,11 +249,11 @@ public class DatabaseExportSample
         that it is getting columns information from multiple tables having the 
         same name and located in different schemas.</p>
       <p>You can solve this problem in three different ways:
-      <ul>
-        <li>1. Provide the schema name when creating the database connection.</li>
-        <li>2. Ensure that the connection is restricted to access only one schema.</li>
-        <li>3. Enable the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature.</li>
-      </ul>
+      <ol>
+        <li>Provide the schema name when creating the database connection.</li>
+        <li>Ensure that the connection is restricted to access only one schema.</li>
+        <li>Enable the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature.</li>
+      </ol>
       </p>
       </answer>
     </faq>     

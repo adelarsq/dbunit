@@ -7,19 +7,84 @@
   </properties>
 
   <body>
+    <release version="2.0" date="January ?, 2004" description="Major release.">
+     <action dev="" type="update">
+     	DbUnit is now build with Maven!
+     </action>         
+     <action dev="" type="update">
+     	Use SAX2 instead of Electric XML parser. DbUnit has no dependencies anymore on exml.jar and dtdparser.jar.
+     </action>      	            
+     <action dev="" type="update">
+     	Dramatic memory usage improvements to get rid of the infamous OutOfMemoryError. Need some setup to take advantage of some of them. See FAQ (TODO!).
+     </action>      	            
+     <action dev="" type="add">
+     	Flat XML dataset validation.
+     </action>         
+     <action dev="" type="add">
+     	New <code>ITableIterator</code> interface used to iterate thru dataset tables. Allows usage of efficient lazy tables initialization for some dataset implementations. The <code>IDataSet.getTables</code> method have been deprecated and should not be used anymore.
+     </action>         
+     <action dev="" type="add">
+     	<code>StreamingDataSet</code>. Provides high performance and memory friendly flat XML loading.
+     </action>         
+     <action dev="" type="update">
+     	Global System properties are not supported anymore. You must now use the new <code>DatabaseConfig</code> object to alter DbUnit behaviours. 
+     </action>         
+     <action dev="" type="add">
+     	New configurable DataType factory to easily integrates new custom data type with the DbUnit core. Multiple factory implementations available for some database vendors. Submit your own!
+     </action>         
+     <action dev="" type="add">
+     	Oracle TIMESTAMP data type support via the <code>OracleDataTypeFactory</code>.
+     </action>         
+     <action dev="" type="fix">
+     	Fix truncated Oracle DATE. Must use the <code>OracleDataTypeFactory</code>.
+     </action>         
+     <action dev="" type="fix">
+     	Fix for Oracle CLOB greater than 4000 bytes. Must use the <code>OracleDataTypeFactory</code>.
+     </action>         
+     <action dev="" type="add">
+     	MySQL 'longtext' data type support via the <code>MySqlDataTypeFactory</code>.
+     </action>         
+     <action dev="" type="add">
+     	DB2 XML data types support via the <code>Db2DataTypeFactory</code>.
+     </action>         
+     <action dev="" type="add">
+     	Database views support.
+     </action>         
+     <action dev="" type="add">
+     	New pluggable filter strategies for <code>DataSetFilter</code>. You can now exclude/include tables using wildcard patterns.
+     </action>         
+     <action dev="" type="add">
+     	Ability to sort tables by their dependencies with the new <code>DatabaseSequenceFilter</code> strategy.
+     </action>         
+     <action dev="" type="add">
+     	New <code>ReplacementDataSet</code> decorator, which can replace decorated dataset values on the fly. Can be used as a new way to specify null values for flat XML dataset.
+     </action>         
+     <action dev="" type="add">
+     	New <code>XlsDataSet</code>. An MS Excel dataset implementation. Uses the Jakarta POI package.
+     </action>         
+     <action dev="" type="update">
+     	<code>Assertion.assertEquals</code> is now performing typed comparison instead of string representation comparison.
+     </action>         
+    </release>
+
     <release version="1.5.6" date="October 5, 2003">
-     <action dev="" type="fix" issue="786543">
+     <action dev="" type="fix">
 	  <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=786543&amp;group_id=47439&amp;atid=449491">786543</a> - NULL primitive values incorrectly returned as zero (0).
      </action>      	            
      <action dev="" type="fix">
-	Not NULL Oracle CLOB values incorrectly returned as NULL.     </action>         
+	Fix Oracle CLOB values incorrectly returned as NULL.     </action>         
     </release>
     <release version="1.5.5" date="July 16, 2003">
      <action dev="" type="update">
 	  DatabaseDataSet improvements: faster access to metadata cache and keep original database table ordering.
      </action>      	            
      <action dev="" type="update">
-	Better handling of the various data types in general. <B>WARNING!</B> New abstract methods have been added to the DataType class. This change may break your environment if you have implemented your own data types. 
+	Better handling of the various data types in general. <B>WARNING!</B> New abstract methods have been 
+	added to the DataType class. This change may break your environment if you have implemented your 
+	own data types. 
+     </action>         
+     <action dev="" type="update">
+	More efficient XmlDataSet writing. Now put values in CData block only when necessary. 
      </action>         
      <action dev="" type="update">
 	Do not enable batched statement by default anymore. Many JDBC drivers have problems with this feature. 
@@ -105,6 +170,10 @@
     </release>   
     
   <release version="1.4" date="July 17, 2002">
+     <action dev="" type="add">
+     <strong><em>DbUnitTask</em></strong> for Ant contributed by Timothy 
+            Ruppert and Ben Cox.
+     </action>    
      <action dev="" type="update">
      Moved the Base64 class to the <a class="code">org.dbunit.util</a> 
           package because Visual Age for Java is not able to handle classes located 
@@ -133,10 +202,6 @@
             - None column values.
      </action>   
      <action dev="" type="add">
-     <strong><em>DbUnitTask</em></strong> for Ant contributed by Timothy 
-            Ruppert and Ben Cox.
-     </action>    
-     <action dev="" type="add">
      Added support for BLOB and CLOB data types.
      </action>                       
   </release>      
@@ -145,9 +210,6 @@
      <action dev="" type="add">
      Added support for binary data types: BINARY, VARBINARY and LONGVARBINARY. 
           Binary data is persisted in xml datasets using the base64 encoding scheme.
-     </action>    
-     <action dev="" type="add">
-     Added the CaseInsentiveDataSet class.
      </action>    
      <action dev="" type="update">
      Deprecated the DataSetUtils.assertEquals() methods. You should now 
@@ -172,7 +234,7 @@
      	Added support for multiple schemas per connection. See <a href="faq.html#multipleschema">FAQ 
           </a> document.
      </action>    
-     <action dev="" type="update">
+     <action dev="" type="remove">
      	Removed element &lt;none/&gt; from dataset.dtd. This feature was incompatible 
           with future support for the binary data types.
      </action>    
@@ -188,7 +250,7 @@
 
   <release version="1.2" date="March 15, 2002">
      <action dev="" type="add">
-     	Added the flat xml dataset format. See the <a href="components.html#FlatXmlDataSet">FlatXmlDataSet</a> 
+     	Added the flat XML dataset format. See the <a href="components.html#FlatXmlDataSet">FlatXmlDataSet</a> 
           in Core Components document.
      </action>    
      <action dev="" type="add">

@@ -2,26 +2,36 @@
 <document><properties><title>The Dbunit Framework - Best Practices</title></properties><body><section>
       <h3>Best Practices</h3>
       <ol>
-        <li><a href="#onedbperdev">One database instance per developer</a></li>
-        <li><a href="#nocleanup">Setup for each test does not require cleanup</a></li>
+        <li><a href="#onedbperdev">Use one database instance per developer</a></li>
+        <li><a href="#nocleanup">Good setup don't need cleanup!</a></li>
         <li><a href="#smalldatasets">Use multiple small datasets </a></li>
         <li><a href="#staledata">Perform setup of stale data once for entire test 
           class or test suite</a></li>
         <li><a href="#connections">Connection management strategies</a></li>
       </ol>
-      <h3><a name="onedbperdev">One database instance per developer</a></h3>
+      <h3><a name="onedbperdev">Use one database instance per developer</a></h3>
       <p>Testing can be simplified if you can get your database in a known state 
       before a test is run. A database should only be used for one test at a time; 
       otherwise the database state cannot be guarantied. </p><p>
 	So multiple developers working on the same project should have their own 
-	database instance to prevent data corruption.
+	database instance to prevent data corruption. This also simplifies database 
+	cleanup, as you don't necessarily need needs to revert it to its initial state.
 </p>
-      <h3><a name="nocleanup">Setup for each test does not require cleanup</a></h3>
+      <h3><a name="nocleanup">Good setup don't need cleanup!</a></h3>
       <p>
-      You should avoid creating tests that depends on results of preceding tests; 
-      this is the main purpose of DbUnit anyway. If you always put your database in 
-      a known state before each test execution, you don't need to do clean up at the 
-      end of a test. This simplifies your tests and reduces the cleanup overhead at the same time.      </p>
+      You should always avoid creating tests that depends on results of preceding 
+      tests; thankfully this is the main purpose of DbUnit. 
+      </p>
+      <p>
+      Don't be afraid to leave your trace after a test; principally if you are using 
+      <a href="#onedbperdev">one database instance per developer</a>. If you always put 
+      your database in a known state before a test execution, you usually don't need to 
+      clean it up.. This simplifies your tests maintenance and 
+      reduces the overhead taken by the cleanup procedure.
+      And sometimes, this is very helpful to manually verify the database state after 
+      executing a test that fails. 
+	</p>
+
       <h3><a name="smalldatasets"> Use multiple small datasets</a></h3>
       <p>
       Most of your tests do not require the entire database to be re-initialized. 

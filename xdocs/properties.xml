@@ -82,6 +82,30 @@
             table names</a> feature.</td>
         </tr>
       </table>
+      
+      <h4><a name="tabletype">Table Type</a></h4>
+      <table border="1">
+        <tr> 
+          <td>Property ID</td>
+          <td>http://www.dbunit.org/properties/tableType</td>
+        </tr>
+        <tr> 
+          <td>Type</td>
+          <td>String[]</td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Used to configure the list of table types recognized by DbUnit. 
+            See <a href="http://java.sun.com/j2se/1.3/docs/api/java/sql/DatabaseMetaData.html#getTables(java.lang.String,%20java.lang.String,%20java.lang.String,%20java.lang.String%5B%5D)">java.sql.DatabaseMetaData.getTables</a> 
+            for possible values.</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>String[]{"TABLE"}</td>
+        </tr>
+      </table>
+      
+      
       <h4>DataType factory</h4>
       <table border="1">
         <tr> 
