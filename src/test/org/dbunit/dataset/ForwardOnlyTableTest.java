@@ -97,4 +97,21 @@ public class ForwardOnlyTableTest extends DefaultTableTest
             }
         }
     }
+
+    public void testGetValueOnEmptyTable() throws Exception
+    {
+        MockTableMetaData metaData =
+                new MockTableMetaData("TABLE", new String[] {"C1"});
+        ITable table = new ForwardOnlyTable(new DefaultTable(metaData));
+        try
+        {
+            table.getValue(0, "C1");
+            fail("Should have throw RowOutOfBoundsException");
+        }
+        catch (RowOutOfBoundsException e)
+        {
+
+        }
+    }
+
 }

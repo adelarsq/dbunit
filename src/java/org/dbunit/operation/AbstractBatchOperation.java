@@ -76,6 +76,29 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
                 databaseMetaData.getPrimaryKeys());
     }
 
+    static boolean isEmpty(ITable table) throws DataSetException
+    {
+        Column[] columns = table.getTableMetaData().getColumns();
+
+        // No columns = empty
+        if (columns.length == 0)
+        {
+            return true;
+        }
+
+        // Try to fetch first table value
+        try
+        {
+            table.getValue(0, columns[0].getColumnName());
+            return false;
+        }
+        catch (RowOutOfBoundsException e)
+        {
+            // Not able to access first row thus empty
+            return true;
+        }
+    }
+
     /**
      * Returns list of tables this operation is applied to. This method
      * allow subclass to do filtering.
@@ -98,12 +121,12 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
 
         // for each table
         ITableIterator iterator = iterator(dataSet);
-        while(iterator.next())
+        while (iterator.next())
         {
             ITable table = iterator.getTable();
 
-            // do not process empty table
-            if (table.getRowCount() == 0)
+            // Do not process empty table
+            if (isEmpty(table))
             {
                 continue;
             }
@@ -120,20 +143,29 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
             {
                 Column[] columns = operationData.getColumns();
 
-                // for each row
-                int rowCount = table.getRowCount();
-                for (int i = 0; i < rowCount; i++)
-                {
-                    int row = _reverseRowOrder ? (rowCount - 1 - i) : i;
+                // For each row
+                int start = _reverseRowOrder ? table.getRowCount() - 1 : 0;
+                int increment = _reverseRowOrder ? -1 : 1;
 
-                    // for each column
-                    for (int j = 0; j < columns.length; j++)
+                try
+                {
+                    for (int i = start; ; i = i + increment)
                     {
-                        Column column = columns[j];
-                        statement.addValue(table.getValue(row,
-                                column.getColumnName()), column.getDataType());
+                        int row = i;
+
+                        // for each column
+                        for (int j = 0; j < columns.length; j++)
+                        {
+                            Column column = columns[j];
+                            statement.addValue(table.getValue(row,
+                                    column.getColumnName()), column.getDataType());
+                        }
+                        statement.addBatch();
                     }
-                    statement.addBatch();
+                }
+                catch (RowOutOfBoundsException e)
+                {
+                    // end of table
                 }
 
                 statement.executeBatch();

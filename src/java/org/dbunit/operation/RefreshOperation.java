@@ -50,6 +50,18 @@ public class RefreshOperation extends DatabaseOperation
         _updateOperation = (UpdateOperation)DatabaseOperation.UPDATE;
     }
 
+    private boolean isEmpty(ITable table) throws DataSetException
+    {
+        return AbstractBatchOperation.isEmpty(table);
+    }
+
+    private ITableMetaData getOperationMetaData(IDatabaseConnection connection,
+            ITableMetaData metaData) throws DatabaseUnitException, SQLException
+    {
+        return AbstractBatchOperation.getOperationMetaData(
+                            connection, metaData);
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseOperation class
 
@@ -60,35 +72,44 @@ public class RefreshOperation extends DatabaseOperation
 
         // for each table
         ITableIterator iterator = dataSet.iterator();
-        while(iterator.next())
+        while (iterator.next())
         {
             ITable table = iterator.getTable();
 
-            // do not process empty table
-            if (table.getRowCount() == 0)
+            // Do not process empty table
+            if (isEmpty(table))
             {
                 continue;
             }
 
-            ITableMetaData metaData = AbstractBatchOperation.getOperationMetaData(
-                    connection, table.getTableMetaData());
+            ITableMetaData metaData = getOperationMetaData(connection,
+                    table.getTableMetaData());
             RowOperation updateRowOperation = createUpdateOperation(connection,
                     schema, metaData);
             RowOperation insertRowOperation = new InsertRowOperation(connection,
                     schema, metaData);
 
-            // refresh all rows
-            for (int i = 0; i < table.getRowCount(); i++)
+            try
             {
-                if (!updateRowOperation.execute(table, i))
+                // refresh all rows
+                for (int i = 0; ; i++)
                 {
-                    insertRowOperation.execute(table, i);
+                    if (!updateRowOperation.execute(table, i))
+                    {
+                        insertRowOperation.execute(table, i);
+                    }
                 }
             }
-
-            // cleanup
-            updateRowOperation.close();
-            insertRowOperation.close();
+            catch (RowOutOfBoundsException e)
+            {
+                // end of table
+            }
+            finally
+            {
+                // cleanup
+                updateRowOperation.close();
+                insertRowOperation.close();
+            }
         }
 
     }

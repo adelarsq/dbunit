@@ -37,6 +37,7 @@ import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.ForwardOnlyDataSet;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
@@ -346,6 +347,14 @@ public class InsertOperationTest extends AbstractDatabaseTest
         testExecute(new LowerCaseDataSet(dataSet));
     }
 
+    public void testExecuteForwardOnly() throws Exception
+    {
+        Reader in = new FileReader("src/xml/insertOperationTest.xml");
+        IDataSet dataSet = new XmlDataSet(in);
+
+        testExecute(new ForwardOnlyDataSet(dataSet));
+    }
+
     private void testExecute(IDataSet dataSet) throws Exception, SQLException
     {
         ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
@@ -372,7 +381,14 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
             if (name.startsWith("EMPTY"))
             {
-                Assertion.assertEquals(dataSet.getTable(name), table);
+                if (dataSet instanceof ForwardOnlyDataSet)
+                {
+                    assertTrue(name, table.getRowCount() > 0);
+                }
+                else
+                {
+                    Assertion.assertEquals(dataSet.getTable(name), table);
+                }
             }
         }
     }

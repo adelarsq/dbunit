@@ -27,6 +27,8 @@ import org.dbunit.Assertion;
 import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.ForwardOnlyDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 
@@ -45,78 +47,70 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
         super(s);
     }
 
-//    public static Test suite()
-//    {
-//        return new InsertIdentityOperationTest("testInsertBlob");
-//    }
-
-
-
     public void testExecuteXML() throws Exception
     {
-//        System.out.println("mssql");
         Reader in = new FileReader("src/xml/insertIdentityOperationTest.xml");
-        IDataSet xmlDataSet = new XmlDataSet(in);
+        IDataSet dataSet = new XmlDataSet(in);
 
-        ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
-        InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
-        ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
-
-        assertEquals("table count", tablesBefore.length, tablesAfter.length);
-        for (int i = 0; i < tablesBefore.length; i++)
-        {
-            ITable table = tablesBefore[i];
-            String name = table.getTableMetaData().getTableName();
-
-
-            if (name.startsWith("IDENTITY"))
-            {
-
-                assertTrue("Should have either 0 or 6", table.getRowCount() == 0 | table.getRowCount() == 6);
-            }
-        }
-
-        for (int i = 0; i < tablesAfter.length; i++)
-        {
-            ITable table = tablesAfter[i];
-            String name = table.getTableMetaData().getTableName();
-            if (name.startsWith("IDENTITY"))
-            {
-                Assertion.assertEquals(xmlDataSet.getTable(name), table);
-            }
-        }
+        testExecute(dataSet);
     }
 
     public void testExecuteFlatXML() throws Exception
     {
         Reader in = new FileReader("src/xml/insertIdentityOperationTestFlat.xml");
-        IDataSet xmlDataSet = new FlatXmlDataSet(in);
+        IDataSet dataSet = new FlatXmlDataSet(in);
 
+        testExecute(dataSet);
+    }
+
+    public void testExecuteLowerCase() throws Exception
+    {
+        Reader in = new FileReader("src/xml/insertIdentityOperationTestFlat.xml");
+        IDataSet dataSet = new LowerCaseDataSet(new FlatXmlDataSet(in));
+
+        testExecute(dataSet);
+    }
+
+    public void testExecuteForwardOnly() throws Exception
+    {
+        Reader in = new FileReader("src/xml/insertIdentityOperationTestFlat.xml");
+        IDataSet dataSet = new ForwardOnlyDataSet(new FlatXmlDataSet(in));
+
+        testExecute(dataSet);
+    }
+
+    private void testExecute(IDataSet dataSet) throws Exception
+    {
         ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
-        InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
+//        InsertIdentityOperation.CLEAN_INSERT.execute(_connection, dataSet);
+        InsertIdentityOperation.INSERT.execute(_connection, dataSet);
         ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
 
         assertEquals("table count", tablesBefore.length, tablesAfter.length);
-        for (int i = 0; i < tablesBefore.length; i++)
-        {
-            ITable table = tablesBefore[i];
-            String name = table.getTableMetaData().getTableName();
 
-
-            if (name.startsWith("IDENTITY"))
-            {
-
-                assertTrue("Should have either 0 or 6", table.getRowCount() == 0 | table.getRowCount() == 6);
-            }
-        }
-
+        // Verify tables after
         for (int i = 0; i < tablesAfter.length; i++)
         {
-            ITable table = tablesAfter[i];
-            String name = table.getTableMetaData().getTableName();
+            ITable tableBefore = tablesBefore[i];
+            ITable tableAfter = tablesAfter[i];
+
+            String name = tableAfter.getTableMetaData().getTableName();
             if (name.startsWith("IDENTITY"))
             {
-                Assertion.assertEquals(xmlDataSet.getTable(name), table);
+                assertEquals("row count before: " + name, 0, tableBefore.getRowCount());
+                if (dataSet instanceof ForwardOnlyDataSet)
+                {
+                    assertTrue(name, tableAfter.getRowCount() > 0);
+                }
+                else
+                {
+                    Assertion.assertEquals(dataSet.getTable(name), tableAfter);
+                }
+            }
+            else
+            {
+                // Other tables should have not been affected
+                Assertion.assertEquals(tableBefore, tableAfter);
             }
         }
     }
@@ -134,27 +128,22 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
         InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
         ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
 
-        assertEquals("table count", tablesBefore.length, tablesAfter.length);
-        for (int i = 0; i < tablesBefore.length; i++)
-        {
-            ITable table = tablesBefore[i];
-            String name = table.getTableMetaData().getTableName();
-
-
-            if (name.equals("TEST_IDENTITY_NOT_PK"))
-            {
-
-                assertTrue("Should have either 0 or 6", table.getRowCount() == 0 | table.getRowCount() == 6);
-            }
-        }
-
+        // Verify tables after
         for (int i = 0; i < tablesAfter.length; i++)
         {
-            ITable table = tablesAfter[i];
-            String name = table.getTableMetaData().getTableName();
+            ITable tableBefore = tablesBefore[i];
+            ITable tableAfter = tablesAfter[i];
+
+            String name = tableAfter.getTableMetaData().getTableName();
             if (name.equals("TEST_IDENTITY_NOT_PK"))
             {
-                Assertion.assertEquals(xmlDataSet.getTable(name), table);
+                assertEquals("row count before: " + name, 0, tableBefore.getRowCount());
+                Assertion.assertEquals(xmlDataSet.getTable(name), tableAfter);
+            }
+            else
+            {
+                // Other tables should have not been affected
+                Assertion.assertEquals(tableBefore, tableAfter);
             }
         }
     }

@@ -34,6 +34,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.LowerCaseDataSet;
 import org.dbunit.dataset.NoPrimaryKeyException;
+import org.dbunit.dataset.ForwardOnlyDataSet;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
@@ -66,6 +67,14 @@ public class RefreshOperationTest extends AbstractDatabaseTest
         IDataSet dataSet = new FlatXmlDataSet(reader);
 
         testExecute(new LowerCaseDataSet(dataSet));
+    }
+
+    public void testExecuteForwardOnly() throws Exception
+    {
+        Reader reader = new FileReader("src/xml/refreshOperationTest.xml");
+        IDataSet dataSet = new FlatXmlDataSet(reader);
+
+        testExecute(new ForwardOnlyDataSet(dataSet));
     }
 
     private void testExecute(IDataSet dataSet) throws Exception

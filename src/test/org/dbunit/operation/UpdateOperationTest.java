@@ -29,15 +29,7 @@ import org.dbunit.TestFeature;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.CompositeDataSet;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.DefaultTable;
-import org.dbunit.dataset.DefaultTableMetaData;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.LowerCaseDataSet;
-import org.dbunit.dataset.NoPrimaryKeyException;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
@@ -345,6 +337,15 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         IDataSet dataSet = new XmlDataSet(in);
 
         testExecute(new LowerCaseDataSet(dataSet));
+    }
+
+    public void testExecuteForwardOnly() throws Exception
+    {
+        Reader in = new FileReader(
+                new File("src/xml/updateOperationTest.xml"));
+        IDataSet dataSet = new XmlDataSet(in);
+
+        testExecute(new ForwardOnlyDataSet(dataSet));
     }
 
     public void testExecuteAndNoPrimaryKeys() throws Exception
