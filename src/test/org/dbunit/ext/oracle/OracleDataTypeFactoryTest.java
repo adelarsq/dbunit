@@ -103,7 +103,7 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         assertSame("type", expected, actual);
     }
 
-    public void testCreateNChar2Type() throws Exception
+    public void testCreateNChar2DataType() throws Exception
     {
         int sqlType = Types.OTHER;
         String sqlTypeName = "NCHAR2";
@@ -113,12 +113,22 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         assertSame("type", expected, actual);
     }
 
-    public void testCreateNVarChar2Type() throws Exception
+    public void testCreateNVarChar2DataType() throws Exception
     {
         int sqlType = Types.OTHER;
         String sqlTypeName = "NVARCHAR2";
 
         DataType expected = DataType.VARCHAR;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
+    public void testCreateFloatDataType() throws Exception
+    {
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "FLOAT";
+
+        DataType expected = DataType.FLOAT;
         DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
         assertSame("type", expected, actual);
     }

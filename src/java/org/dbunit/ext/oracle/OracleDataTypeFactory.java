@@ -79,6 +79,12 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
             return DataType.CHAR;
         }
 
+        // FLOAT
+        if ("FLOAT".equals(sqlTypeName))
+        {
+            return DataType.FLOAT;
+        }
+
         // LONG RAW
         if (LONG_RAW.toString().equals(sqlTypeName))
         {
