@@ -22,6 +22,10 @@
 
 package org.dbunit.dataset;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 /**
  * @author Manuel Laflamme
@@ -29,16 +33,27 @@ package org.dbunit.dataset;
  */
 public class DefaultDataSet extends AbstractDataSet
 {
-    private final ITable[] _tables;
+    private final List _tableList = new ArrayList();
 
     public DefaultDataSet(ITable table)
     {
-        _tables = new ITable[]{table};
+        addTable(table);
     }
 
     public DefaultDataSet(ITable[] tables)
     {
-        _tables = tables;
+        for (int i = 0; i < tables.length; i++)
+        {
+            addTable(tables[i]);
+        }
+    }
+
+    /**
+     * Add a new table in this dataset.
+     */
+    public void addTable(ITable table)
+    {
+        _tableList.add(table);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -46,7 +61,7 @@ public class DefaultDataSet extends AbstractDataSet
 
     public ITable[] getTables() throws DataSetException
     {
-        return cloneTables(_tables);
+        return (ITable[])_tableList.toArray(new ITable[0]);
     }
 }
 
