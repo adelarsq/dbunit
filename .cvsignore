@@ -1,0 +1,6 @@
+*.log
+.classpath
+target
+*.ser
+junit*.properties
+.project
