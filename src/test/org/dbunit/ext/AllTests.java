@@ -30,10 +30,11 @@ import junit.framework.TestSuite;
  */
 public class AllTests
 {
-    public static Test suite()
+    public static Test suite() throws Exception
     {
         TestSuite suite = new TestSuite();
         suite.addTest(org.dbunit.ext.db2.AllTests.suite());
+        suite.addTest(org.dbunit.ext.mssql.AllTests.suite());
         suite.addTest(org.dbunit.ext.mysql.AllTests.suite());
         suite.addTest(org.dbunit.ext.oracle.AllTests.suite());
         return suite;

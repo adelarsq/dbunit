@@ -33,7 +33,7 @@ import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.XmlProducer;
 import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.dbunit.operation.DatabaseOperation;
-import org.dbunit.operation.mssqlserver.InsertIdentityOperation;
+import org.dbunit.ext.mssql.InsertIdentityOperation;
 
 import org.xml.sax.InputSource;
 

@@ -38,7 +38,6 @@ public class AllTests
     {
         TestSuite suite = new TestSuite();
 
-        suite.addTest(org.dbunit.operation.mssqlserver.AllTests.suite());
         suite.addTest(new TestSuite(AbstractBatchOperationTest.class));
         suite.addTest(new TestSuite(CloseConnectionOperationTest.class));
         suite.addTest(new TestSuite(CompositeOperationTest.class));

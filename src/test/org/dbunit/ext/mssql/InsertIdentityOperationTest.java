@@ -20,7 +20,7 @@
  *
  */
 
-package org.dbunit.operation.mssqlserver;
+package org.dbunit.ext.mssql;
 
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;

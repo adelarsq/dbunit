@@ -68,6 +68,9 @@
      <action dev="" type="update">
      	INSERT, CLEAN_INSERT and REFRESH operations do not override database default values anymore with null values. Null values are now omitted from insert statements. Operations use multiple prepared statements for the same table, when null values vary from row to row.
      </action>         
+     <action dev="" type="update">
+     	Moved InsertIdentityOperation to "org.dbunit.ext.mssql" package to be consistent with other vendor extensions. Temporary keep a deprecated copy in "org.dbunit.operation.mssqlserver" to ease transition to DbUnit 2. 
+     </action>         
     </release>
 
     <release version="1.5.6" date="October 5, 2003">

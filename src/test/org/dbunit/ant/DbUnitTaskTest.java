@@ -28,7 +28,7 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.operation.DatabaseOperation;
-import org.dbunit.operation.mssqlserver.InsertIdentityOperation;
+import org.dbunit.ext.mssql.InsertIdentityOperation;
 
 import java.io.File;
 import java.sql.SQLException;

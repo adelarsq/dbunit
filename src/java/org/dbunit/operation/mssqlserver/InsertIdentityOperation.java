@@ -1,5 +1,5 @@
 /*
- * InsertIdentityOperation.java   Apr 9, 2002
+ * InsertIdentityOperation.java
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -49,123 +49,23 @@ import org.dbunit.operation.AbstractOperation;
  * <p>
  * <code>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor</code>
  * <p>
- * Thanks to <a href="mailto:epugh@upstate.com">Eric Pugh</a> for having
- * submitted the original patch and for the beta testing.
- * Another special thanks to Jeremy Stein how have submited multiple patches.
+ * Thanks to Jeremy Stein who have submited multiple patches.
  *
  * @author Manuel Laflamme
+ * @author Eric Pugh
  * @version $Revision$
+ * @since Apr 9, 2002
+ * @deprecated Replaced by {@link org.dbunit.ext.mssql.InsertIdentityOperation}. Be warned, this class will eventually be removed.
  */
-public class InsertIdentityOperation extends AbstractOperation
+public class InsertIdentityOperation extends org.dbunit.ext.mssql.InsertIdentityOperation
 {
-    public static final DatabaseOperation INSERT =
-            new InsertIdentityOperation(DatabaseOperation.INSERT);
-
-    public static final DatabaseOperation CLEAN_INSERT =
-            new CompositeOperation(DatabaseOperation.DELETE_ALL,
-                    new InsertIdentityOperation(DatabaseOperation.INSERT));
-
-    public static final DatabaseOperation REFRESH =
-            new InsertIdentityOperation(DatabaseOperation.REFRESH);
-
-    private final DatabaseOperation _operation;
-
     /**
      * Creates a new InsertIdentityOperation object that decorates the
      * specified operation.
      */
     public InsertIdentityOperation(DatabaseOperation operation)
     {
-        _operation = operation;
-    }
-
-    protected boolean hasIdentityColumn(ITableMetaData metaData)
-            throws DataSetException
-    {
-        // check all columns to see if they are an identity column
-        Column[] columns = metaData.getColumns();
-
-        for (int i = 0; i < columns.length; i++)
-        {
-            if (columns[i].getSqlTypeName().endsWith("identity"))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // DatabaseOperation class
-
-    public void execute(IDatabaseConnection connection, IDataSet dataSet)
-            throws DatabaseUnitException, SQLException
-    {
-        Connection jdbcConnection = connection.getConnection();
-        Statement statement = jdbcConnection.createStatement();
-
-        try
-        {
-            IDataSet databaseDataSet = connection.createDataSet();
-            
-
-            // INSERT_IDENTITY need to be enabled/disabled inside the
-            // same transaction
-            if (jdbcConnection.getAutoCommit() == false)
-            {
-                throw new ExclusiveTransactionException();
-            }
-            jdbcConnection.setAutoCommit(false);
-
-            // Execute decorated operation one table at a time
-            ITableIterator iterator = dataSet.iterator();
-            while(iterator.next())
-            {
-                ITable table = iterator.getTable();
-                String tableName = table.getTableMetaData().getTableName();
-
-                ITableMetaData metaData =
-                        databaseDataSet.getTableMetaData(tableName);
-
-                // enable identity insert
-                boolean hasIdentityColumn = hasIdentityColumn(metaData);
-
-                if (hasIdentityColumn)
-                {
-                    StringBuffer sqlBuffer = new StringBuffer(128);
-                    sqlBuffer.append("SET IDENTITY_INSERT ");
-                    sqlBuffer.append(getQualifiedName(connection.getSchema(),
-                            metaData.getTableName(), connection));
-                    sqlBuffer.append(" ON");
-                    statement.execute(sqlBuffer.toString());
-                }
-
-                try
-                {
-                    _operation.execute(connection, new DefaultDataSet(table));
-                }
-                finally
-                {
-                    // disable identity insert
-                    if (hasIdentityColumn)
-                    {
-                        StringBuffer sqlBuffer = new StringBuffer(128);
-                        sqlBuffer.append("SET IDENTITY_INSERT ");
-                        sqlBuffer.append(getQualifiedName(connection.getSchema(),
-                                metaData.getTableName(), connection));
-                        sqlBuffer.append(" OFF");
-                        statement.execute(sqlBuffer.toString());
-                    }
-                    jdbcConnection.commit();
-                }
-            }
-        }
-        finally
-        {
-            jdbcConnection.setAutoCommit(true);
-            statement.close();
-        }
+        super(operation);
     }
 }
 
