@@ -3,17 +3,13 @@
 
   <part id="general">
     <title>General</title>
-   
 <!--
     <faq id="supportedvendors">
       <question>
         Which relational database systems are supported?
       </question>
       <answer>
-      <p>The Dbunit framework is actively developed and tested with Oracle and HypersonicSQL. 
-        It uses a fairly simple SQL syntax and should be compatible with the other 
-        database systems. <a href="support.html">Let us know</a> if you find any 
-        incompatibilities.</p>
+      <p>See the publicly maintained <a href="http://www.dbunit.org/cgi-bin/wiki.pl?SupportedRDBMS">list of compatible RDBMS</a> at the <a href="http://www.dbunit.org/wiki/">DbUnit Wiki.</a></p>
       </answer>
     </faq>
 -->
@@ -164,12 +160,9 @@ public class DatabaseExportSample
       <p>
       Yes. By default DbUnit is configured to only recognize normal tables. Modify the 
       <a href="properties.html#tabletype">table type property</a> to work with other table types.
-      For example, use <code>{"TABLE", "VIEW"}</code> for views.
       </p>
       <p>
-      Be aware that REFRESH, DELETE and UPDATE operations are not compatible with tables without 
-      primary keys, thus are not usable with views. CLEAN_INSERT, INSERT and DELETE_ALL 
-      operations are compatible with views.
+      For example, use <code>{"TABLE", "VIEW"}</code> for views.
       </p>
 
       </answer>
@@ -295,6 +288,51 @@ ForwardOnlyResultSetTable:
     producer.setValidating(true);
     IDataSet dataSet = new CachedDataSet(producer);
 </source>
+</p>
+
+      </answer>
+    </faq>  
+
+    <faq id="performance">
+      <question>
+      How to improve the performance of my DbUnit tests?
+      </question>
+      <answer>
+      <p>
+      It is normal that testing with a real database is slower than testing with <a href="http://www.mockobjects.com/">MockObjects</a>. Here are few tricks that will help to speedup your DbUnit tests.
+      </p>
+      <h5>
+      1. Reuse the same connection thorough your test suite
+      </h5>
+      <p>
+      Creating a new DbUnit connection every time has a cost. The overhead is much more than just creating a new JDBC connection. DbUnit need to fetches tables' metadata to determine columns data types. This information is cached in the DbUnit connection. So this is highly recommended to reuse the same DbUnit connection thorough your test suite; more you have tables greater are the benefits. 
+      </p>
+      <h5>
+      2. Specify the database schema name 
+      </h5>
+      <p>
+      If your database server supports multiple schemas, like Oracle, you should always specify the schema name you want to use when 
+      creating the DbUnit connection. DbUnit can potentially fetch the metadata of all tables it have access to. 
+      This include tables from other schemas if you are using a <b>god JDBC connection</b>. So in this situation, 
+      specifying a schema name can dramatically improve DbUnit performance. 
+      </p>
+      <h5>
+      3. Test with little data
+      </h5>
+      <p>
+      Unit testing require relatively little data. So try to <a href="bestpractices.html#smalldatasets">keep your setup datasets as small as possible</a>. There is no necessity to reset the entire database content at the beginning of every test. Try to use only the data you need for a particular test case.  
+      </p>
+      <h5>
+      4. Setup stale data once for the entire test suite
+      </h5>
+      <p>
+      If most of your tests are using the same read-only data, you should consider initializing this data once for an entire test class or test suite. 
+      </p>
+      <h5>
+      5. Enable the batched statement feature
+      </h5>
+      <p>
+      The <a href="properties.html#batchstatement">batched statements</a> feature is disabled by default because there are many JDBC drivers incompatible with it. This is recommended to enable this feature if your driver supports it. The performance gain may not be very significant when testing with <a href="bestpractices.html#smalldatasets">small datasets</a>.
 </p>
 
       </answer>
