@@ -50,7 +50,7 @@ public class ReplacementTableTest extends AbstractTableTest
 
     private IDataSet createDataSet() throws Exception
     {
-        return new BooleanDataSet(
+        return new ReplacementDataSet(
                 new FlatXmlDataSet(new File("src/xml/flatXmlTableTest.xml")));
     }
 
