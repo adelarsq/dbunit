@@ -5,3 +5,5 @@ target
 junit*.properties
 .project
 spy.*
+tmp
+idea

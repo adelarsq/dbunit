@@ -41,6 +41,7 @@ public class AllTests
         {
             suite.addTest(new TestSuite(InsertIdentityOperationTest.class));
         }
+        suite.addTest(new TestSuite(MsSqlDataTypeFactoryTest.class));
 
         return suite;
     }

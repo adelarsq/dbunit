@@ -1,24 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="3" relativePaths="false">
+  <component name="WebReferencesConfigurable">
+    <property name="CUSTOM_MAP_LOOKUP" type="list" />
+    <property name="INTERFACE_POSTFIX" value="" type="string" />
+    <property name="electric.home" value="/electric" type="string" />
+    <property name="INTERFACE_PREFIX" value="I" type="string" />
+    <property name="THROW_EXCEPTIONS" value="false" type="boolean" />
+    <property name="ENABLED" value="false" type="boolean" />
+  </component>
   <component name="FileEditorManager">
     <history>
-      <source-position-entry url="file://$PROJECT_DIR$/project.xml" line="214" column="0" vertical-scroll-proportion="0.17721519" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/xml/antTestBuildFile.xml" line="10" column="56" vertical-scroll-proportion="-0.73006135" horizontal-scroll-proportion="0.7606112" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/ant/AllTests.java" line="38" column="16" vertical-scroll-proportion="0.91922003" horizontal-scroll-proportion="0.14253898" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/csv/IllegalInputCharacterException.java" line="23" column="55" vertical-scroll-proportion="0.97493035" horizontal-scroll-proportion="0.48997772" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/csv/handlers/PipelineException.java" line="25" column="42" vertical-scroll-proportion="0.97493035" horizontal-scroll-proportion="0.37416482" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/csv/IllegalCharacterSeen.java" line="23" column="45" vertical-scroll-proportion="0.97493035" horizontal-scroll-proportion="0.40089086" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/csv/AllTests.java" line="37" column="61" vertical-scroll-proportion="0.80779946" horizontal-scroll-proportion="0.54342985" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/csv/IllegalCharacterSeen.java" line="23" column="45" vertical-scroll-proportion="0.82437277" horizontal-scroll-proportion="0.59800667" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/csv/AllTests.java" line="37" column="61" vertical-scroll-proportion="0.88709676" horizontal-scroll-proportion="0.8106312" />
       <source-position-entry url="jar://C:/Documents and Settings/Utente/.maven/repository/ant/jars/ant-1.5.3-1.jar!/org/apache/tools/ant/taskdefs/Delete.class" line="170" column="0" vertical-scroll-proportion="0.66386557" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/ant/DbUnitTaskTest.java" line="239" column="0" vertical-scroll-proportion="0.7214485" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/ant/DbUnitTaskTest.java" line="230" column="14" vertical-scroll-proportion="0.46057346" horizontal-scroll-proportion="0.18855219" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/DatabaseTestCase.java" line="33" column="22" vertical-scroll-proportion="0.34408602" horizontal-scroll-proportion="0.2962963" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/ant/DbUnitTask.java" line="388" column="27" vertical-scroll-proportion="0.6075269" horizontal-scroll-proportion="0.36363637" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/DataType.java" line="33" column="22" vertical-scroll-proportion="0.33333334" horizontal-scroll-proportion="0.2962963" />
+      <source-position-entry url="jar://C:/java/jdk1.3.1_08/src.jar!/src/java/sql/Types.java" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/ext/mssql/MsSqlDataTypeFactory.java" line="35" column="10" vertical-scroll-proportion="0.24731183" horizontal-scroll-proportion="0.13289036">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/ext/mssql/AllTests.java" line="44" column="8" vertical-scroll-proportion="0.76344085" horizontal-scroll-proportion="0.10631229" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/DefaultTable.java" line="139" column="18" vertical-scroll-proportion="0.33333334" horizontal-scroll-proportion="0.24242425" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/xml/FlatXmlWriterTest.java" line="65" column="17" vertical-scroll-proportion="0.25089607" horizontal-scroll-proportion="0.22895622" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/xml/FlatXmlTableWriteTest.java" line="65" column="13" vertical-scroll-proportion="0.82437277" horizontal-scroll-proportion="0.17508417" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlWriter.java" line="65" column="13" vertical-scroll-proportion="0.21505377" horizontal-scroll-proportion="0.17508417" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/ext/mssql/MsSqlDataTypeFactoryTest.java" line="26" column="20" vertical-scroll-proportion="0.71684587" horizontal-scroll-proportion="0.26578072">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
     </history>
     <open-files>
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/csv/AllTests.java" line="37" column="61" vertical-scroll-proportion="0.80779946" horizontal-scroll-proportion="0.54342985" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/ant/DbUnitTaskTest.java" line="239" column="0" vertical-scroll-proportion="0.7214485" horizontal-scroll-proportion="0.0" selected="true" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/ant/AllTests.java" line="38" column="16" vertical-scroll-proportion="0.91922003" horizontal-scroll-proportion="0.14253898" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/csv/IllegalInputCharacterException.java" line="23" column="55" vertical-scroll-proportion="0.97493035" horizontal-scroll-proportion="0.48997772" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/csv/handlers/PipelineException.java" line="25" column="42" vertical-scroll-proportion="0.97493035" horizontal-scroll-proportion="0.37416482" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/csv/IllegalCharacterSeen.java" line="23" column="45" vertical-scroll-proportion="0.97493035" horizontal-scroll-proportion="0.40089086" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/ext/mssql/MsSqlDataTypeFactory.java" line="35" column="10" vertical-scroll-proportion="0.24731183" horizontal-scroll-proportion="0.13289036">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/ext/mssql/MsSqlDataTypeFactoryTest.java" line="26" column="20" vertical-scroll-proportion="0.71684587" horizontal-scroll-proportion="0.26578072" selected="true">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlWriter.java" line="65" column="13" vertical-scroll-proportion="0.21505377" horizontal-scroll-proportion="0.17508417" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/xml/FlatXmlTableWriteTest.java" line="65" column="13" vertical-scroll-proportion="0.82437277" horizontal-scroll-proportion="0.17508417" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/xml/FlatXmlWriterTest.java" line="65" column="17" vertical-scroll-proportion="0.25089607" horizontal-scroll-proportion="0.22895622" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/DefaultTable.java" line="139" column="18" vertical-scroll-proportion="0.33333334" horizontal-scroll-proportion="0.24242425" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/ext/mssql/AllTests.java" line="44" column="8" vertical-scroll-proportion="0.76344085" horizontal-scroll-proportion="0.10631229" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/DataType.java" line="33" column="22" vertical-scroll-proportion="0.33333334" horizontal-scroll-proportion="0.2962963" />
     </open-files>
   </component>
   <component name="ToolWindowManager">
@@ -27,26 +59,26 @@
     <layout>
       <window_info id="SQL" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33" order="8" />
       <window_info id="Deep Find" active="false" anchor="left" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33" order="3" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.24974722" order="1" />
       <window_info id="JavaSig" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33" order="8" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.3301282" order="2" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.34245187" order="2" />
+      <window_info id="Java Bean" active="false" anchor="left" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33029383" order="3" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="6" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.3301282" order="8" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="sliding" type="sliding" visible="false" weight="0.4" order="0" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.2992922" order="0" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="3" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.295846" order="0" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.61661345" order="1" x="18" y="290" width="865" height="442" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.24974722" order="1" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.61698717" order="1" x="18" y="290" width="865" height="442" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.3301282" order="8" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="5" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.3301282" order="8" />
+      <window_info id="Duplications" active="false" anchor="left" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33" order="3" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.24974722" order="1" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.32972136" order="2" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.34245187" order="2" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="3" />
+      <window_info id="Hibernate Tools" active="false" anchor="right" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33" order="3" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="sliding" type="sliding" visible="false" weight="0.4" order="0" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="0" />
-      <window_info id="Java Bean" active="false" anchor="left" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33029383" order="3" />
       <window_info id="EJB" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="3" />
-      <window_info id="Duplications" active="false" anchor="left" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33" order="3" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="4" />
-      <window_info id="Hibernate Tools" active="false" anchor="right" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33" order="3" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.3301282" order="8" />
     </layout>
   </component>
   <component name="Debugger">
@@ -249,18 +281,19 @@
   <component name="ProjectViewSettings">
     <navigator currentView="ProjectPane" flattenPackages="false" showMembers="false" showStructure="false" autoscrollToSource="false" splitterProportion="0.5" />
     <view id="ProjectPane">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/csv" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/csv" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/ext" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit/ext/mssql" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/ext/mssql" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit/ext" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/ant" />
     </view>
     <view id="SourcepathPane" />
     <view id="ClasspathPane" />
@@ -573,14 +606,84 @@
   <component name="VcsManagerConfiguration">
     <option name="ACTIVE_VCS_NAME" value="" />
   </component>
-  <component name="dashboard.Configurable">
-    <option name="showingStartFixConfirmationMessage" value="true" />
-    <option name="showingPopUpsOnFixEvent" value="true" />
-    <option name="userName" value="fede" />
-    <option name="resultsURL" value="" />
-    <option name="browserPath" value="" />
-    <option name="multicastHost" value="236.1.2.3" />
-    <option name="multicastPort" value="3274" />
+  <component name="HibernateTools">
+    <HIBERNATE_HOME value="" />
+    <DB_CLASSPATH value="" />
+    <projectMode value="true" />
+    <HIBERNATE_VERSION value="1" />
+    <SCHEMA_EXPORT>
+      <EXPORT_TOOL value="true" />
+      <ONLY_DROP value="false" />
+      <CONNECTION_NAME value="NONE" />
+      <NOT_EXPORT value="false" />
+      <FORMAT value="false" />
+      <DELIMITER value="false" />
+      <CREATE_DDL_FILE value="false" />
+      <DELIMITER_STRING value="" />
+      <DDL_FILE_NAME value="" />
+    </SCHEMA_EXPORT>
+    <MAP_GENERATOR>
+      <MODIFY_UID value="false" />
+      <SET_UID value="false" />
+      <ADD_UID value="false" />
+      <DEPTH value="false" />
+      <SELECT_MODE value="false" />
+      <CREATE_MAP value="true" />
+      <ABSTRACT_CLASS value="false" />
+      <UID value="" />
+      <DEPTH_VALUE value="" />
+      <SELECT_STRING value="" />
+      <MAP_NAME value="" />
+      <ABSTRACT_CLASS_NAME value="" />
+    </MAP_GENERATOR>
+    <CODE_GENERATOR>
+      <OUT_DIR value="" />
+    </CODE_GENERATOR>
+    <REVERSE_GENERATOR>
+      <PACKAGE_NAME value="" />
+      <BASE_CLASS_NAME value="" />
+      <OPT_HIBERNATE_TYPE value="false" />
+      <SINGLE_MAP_FILE value="false" />
+      <OUT_TO_SRC value="true" />
+      <ID_NAME value="" />
+      <ID_TYPE value="" />
+      <MAPPING_FILE value="" />
+      <CONNECTION_NAME value="NONE" />
+    </REVERSE_GENERATOR>
+  </component>
+  <component name="ideajad">
+    <property name="annotate" value="false" />
+    <property name="annotateFully" value="false" />
+    <property name="braces" value="false" />
+    <property name="clear" value="false" />
+    <property name="confirmNavigationTriggeredDecompile" value="false" />
+    <property name="dead" value="false" />
+    <property name="defaultInitializers" value="false" />
+    <property name="dissassemblerOnly" value="false" />
+    <property name="fieldsFirst" value="false" />
+    <property name="fileExtension" value="java" />
+    <property name="fullyQualifiedNames" value="false" />
+    <property name="indentation" value="4" />
+    <property name="intRadix" value="10" />
+    <property name="lineNumbersAsComments" value="false" />
+    <property name="longRadix" value="10" />
+    <property name="maxStringLength" value="64" />
+    <property name="nocast" value="false" />
+    <property name="noclass" value="false" />
+    <property name="nocode" value="false" />
+    <property name="noconv" value="false" />
+    <property name="noctor" value="false" />
+    <property name="nodos" value="false" />
+    <property name="nofd" value="false" />
+    <property name="noinner" value="false" />
+    <property name="nolvt" value="false" />
+    <property name="nonlb" value="true" />
+    <property name="outputDirectory" value="" />
+    <property name="readonly" value="false" />
+    <property name="safe" value="false" />
+    <property name="spaceAfterKeyword" value="false" />
+    <property name="splitStringsAtNewline" value="false" />
+    <property name="useTabs" value="false" />
   </component>
   <component name="JavaSig" />
   <component name="SQL">
@@ -592,6 +695,9 @@
     <savePasswords enabled="false" encode="true" />
     <datesWithTime enabled="true" />
     <resizeColumns toHeader="true" toContent="true" />
+  </component>
+  <component name="SamePlugin.Configuration">
+    <option name="minimumSizeOfFragment" value="10" />
   </component>
   <component name="StarteamConfiguration">
     <option name="SERVER" value="" />

@@ -33,19 +33,18 @@ import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
  */
 public class MsSqlDataTypeFactory extends DefaultDataTypeFactory
 {
+    public static final int NCHAR = -8;
+    public static final int NVARCHAR = -9;
+    public static final int NTEXT = -10;
+
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
         // TODO : Process MS SQL Server custom datatype here
-//        if (sqlType == custom1)
-//        {
-//            return CUSTOM1;
-//        }
-//
-//        if (sqlType == custom2)
-//        {
-//            return CUSTOM2;
-//        }
-
-        return super.createDataType(sqlType, sqlTypeName);
+        switch(sqlType) {
+            case NCHAR: return DataType.CHAR; // nchar
+            case NVARCHAR: return DataType.VARCHAR; // nvarchar
+            case NTEXT: return DataType.LONGVARCHAR; // ntext
+            default: return super.createDataType(sqlType, sqlTypeName);
+        }
     }
 }
