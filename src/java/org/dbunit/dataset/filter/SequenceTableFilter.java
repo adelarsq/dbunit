@@ -23,7 +23,6 @@ package org.dbunit.dataset.filter;
 import org.dbunit.database.AmbiguousTableNameException;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
@@ -37,7 +36,7 @@ import java.util.List;
  * dataset table names. This implementation do not support duplicate table names.
  * Thus you cannot specify the same table name more than once in this filter
  * and the filtered dataset must not contains duplicate table names. This is
- * the default filter used by the {@link FilteredDataSet}.
+ * the default filter used by the {@link org.dbunit.dataset.FilteredDataSet}.
  *
  * @author Manuel Laflamme
  * @since Mar 7, 2003

@@ -21,13 +21,12 @@
 package org.dbunit.dataset.filter;
 
 import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITableIterator;
 
 /**
- * Represents a strategy used by {@link FilteredDataSet} to exposes only some
- * tables from a dataset.
+ * Represents a strategy used by {@link org.dbunit.dataset.FilteredDataSet} to
+ * exposes only some tables from a dataset.
  *
  * @author Manuel Laflamme
  * @since Mar 7, 2003

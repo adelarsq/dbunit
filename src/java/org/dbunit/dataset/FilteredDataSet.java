@@ -21,9 +21,7 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.filter.ExcludeTableFilter;
 import org.dbunit.dataset.filter.ITableFilter;
-import org.dbunit.dataset.filter.IncludeTableFilter;
 import org.dbunit.dataset.filter.SequenceTableFilter;
 
 /**
@@ -32,8 +30,8 @@ import org.dbunit.dataset.filter.SequenceTableFilter;
  *
  * @see ITableFilter
  * @see SequenceTableFilter
- * @see IncludeTableFilter
- * @see ExcludeTableFilter
+ * @see org.dbunit.dataset.filter.IncludeTableFilter
+ * @see org.dbunit.dataset.filter.ExcludeTableFilter
  *
  * @author Manuel Laflamme
  * @version $Revision$
