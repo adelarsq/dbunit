@@ -148,26 +148,12 @@ public class BytesDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        // Special BLOB handling
-        if (this == DataType.BLOB)
-        {
-            return typeCast(resultSet.getBlob(column));
-        }
-
         return resultSet.getBytes(column);
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
-        // Special BLOB handling
-        if (this == DataType.BLOB)
-        {
-            statement.setObject(column, typeCast(value),
-                    DataType.LONGVARBINARY.getSqlType());
-            return;
-        }
-
         super.setSqlValue(value, column, statement);
     }
 

@@ -58,7 +58,7 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         int sqlType = Types.OTHER;
         String sqlTypeName = "CLOB";
 
-        DataType expected = DataType.CLOB;
+        DataType expected = OracleDataTypeFactory.ORACLE_CLOB;
         DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
         assertSame("type", expected, actual);
     }
@@ -68,7 +68,7 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         int sqlType = Types.OTHER;
         String sqlTypeName = "NCLOB";
 
-        DataType expected = DataType.CLOB;
+        DataType expected = OracleDataTypeFactory.ORACLE_CLOB;
         DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
         assertSame("type", expected, actual);
     }

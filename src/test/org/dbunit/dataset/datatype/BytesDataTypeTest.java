@@ -37,7 +37,7 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
         DataType.BINARY,
         DataType.VARBINARY,
         DataType.LONGVARBINARY,
-        DataType.BLOB,
+//        DataType.BLOB,
     };
 
     public BytesDataTypeTest(String name)
@@ -47,7 +47,12 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
 
     public void testToString() throws Exception
     {
-        String[] expected = {"BINARY", "VARBINARY", "LONGVARBINARY", "BLOB"};
+        String[] expected = {
+            "BINARY",
+            "VARBINARY",
+            "LONGVARBINARY",
+//            "BLOB",
+        };
 
         assertEquals("type count", expected.length, TYPES.length);
         for (int i = 0; i < TYPES.length; i++)
@@ -216,7 +221,12 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
 
     public void testSqlType() throws Exception
     {
-        int[] sqlTypes = {Types.BINARY, Types.VARBINARY, Types.LONGVARBINARY, Types.BLOB};
+        int[] sqlTypes = {
+            Types.BINARY,
+            Types.VARBINARY,
+            Types.LONGVARBINARY,
+//            Types.BLOB,
+        };
 
         assertEquals("count", sqlTypes.length, TYPES.length);
         for (int i = 0; i < TYPES.length; i++)

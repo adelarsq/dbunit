@@ -41,8 +41,7 @@ public abstract class DataType
             "VARCHAR", Types.VARCHAR);
     public static final DataType LONGVARCHAR = new StringDataType(
             "LONGVARCHAR", Types.LONGVARCHAR);
-    public static final DataType CLOB = new StringDataType(
-            "CLOB", Types.CLOB);
+    public static final DataType CLOB = new ClobDataType();
 
     public static final DataType NUMERIC = new NumberDataType(
             "NUMERIC", Types.NUMERIC);
@@ -77,8 +76,7 @@ public abstract class DataType
             "VARBINARY", Types.VARBINARY);
     public static final DataType LONGVARBINARY = new BytesDataType(
             "LONGVARBINARY", Types.LONGVARBINARY);
-    public static final DataType BLOB = new BytesDataType(
-            "BLOB", Types.BLOB);
+    public static final DataType BLOB = new BlobDataType();
 
     private static final DataType[] TYPES = {
         VARCHAR, CHAR, LONGVARCHAR, CLOB, NUMERIC, DECIMAL, BOOLEAN, INTEGER,

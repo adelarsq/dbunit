@@ -33,9 +33,10 @@ import java.sql.Types;
  * @since Jul 17, 2003
  * @version $Revision$
  */
-public class
-        OracleDataTypeFactory extends DefaultDataTypeFactory
+public class OracleDataTypeFactory extends DefaultDataTypeFactory
 {
+    public static final DataType ORACLE_CLOB = new OracleClobDataType();
+
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
         if (sqlType == Types.OTHER)
@@ -49,7 +50,7 @@ public class
             // CLOB
             if ("CLOB".equals(sqlTypeName) || "NCLOB".equals(sqlTypeName))
             {
-                return DataType.CLOB;
+                return ORACLE_CLOB;
             }
 
             // NVARCHAR2

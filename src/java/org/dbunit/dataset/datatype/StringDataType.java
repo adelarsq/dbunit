@@ -118,26 +118,12 @@ public class StringDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        // Special CLOB handling
-        if (this == DataType.CLOB)
-        {
-            return typeCast(resultSet.getClob(column));
-        }
-
         return resultSet.getString(column);
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
-        // Special CLOB handling
-        if (this == DataType.CLOB)
-        {
-            statement.setObject(column, typeCast(value),
-                    DataType.LONGVARCHAR.getSqlType());
-            return;
-        }
-
         statement.setString(column, asString(value));
     }
 }
