@@ -170,6 +170,89 @@ public class ReplacementTableTest extends AbstractTableTest
         Assertion.assertEquals(expectedTable, actualTable);
     }
 
+    public void testDelimitedSubstringReplacement() throws Exception
+    {
+        String tableName = "TABLE_NAME";
+
+        Column[] columns = new Column[] {
+            new Column("ONLY_SUBSTRING", DataType.CHAR),
+            new Column("START_SUBSTRING", DataType.CHAR),
+            new Column("MIDDLE_SUBSTRING", DataType.CHAR),
+            new Column("END_SUBSTRING", DataType.CHAR),
+            new Column("MULTIPLE_SUBSTRING", DataType.CHAR),
+            new Column("NO_SUBSTRING", DataType.CHAR),
+            new Column("NOT_A_STRING", DataType.NUMERIC),
+            new Column("NULL_VALUE", DataType.CHAR),
+            new Column("ONLY_NONDELIMITED_SUBSTRING", DataType.CHAR),
+            new Column("START_NONDELIMITED_SUBSTRING", DataType.CHAR),
+            new Column("MIDDLE_NONDELIMITED_SUBSTRING", DataType.CHAR),
+            new Column("END_NONDELIMITED_SUBSTRING", DataType.CHAR),
+            new Column("MULTIPLE_NONDELIMITED_SUBSTRING", DataType.CHAR),
+            new Column("BAD_DELIMITED_SUBSTRING1", DataType.CHAR),
+            new Column("BAD_DELIMITED_SUBSTRING2", DataType.CHAR),
+            new Column("BAD_DELIMITED_SUBSTRING3", DataType.CHAR),
+            new Column("BAD_DELIMITED_SUBSTRING4", DataType.CHAR),
+            new Column("BAD_DELIMITED_SUBSTRING5", DataType.CHAR),
+        };
+
+        // Setup actual table
+        Object[] actualRow = new Object[] {
+            "${substring}",
+            "${substring}_",
+            "_${substring}_",
+            "_${substring}",
+            "${substring}${substring} ${substring}",
+            "this is a string",
+            new Long(0),
+            null,
+            "substring",
+            "substring_",
+            "_substring_",
+            "_substring",
+            "substringsubstring substring",
+            "_${substring_",
+            "_$substring}_",
+            "_substring}_",
+            "${substring${substring} ${substring}",
+            "${substringsubstring} ${substring}",
+        };
+
+        List actualRowList = new ArrayList();
+        actualRowList.add(actualRow);
+        ITable originalTable = new DefaultTable(tableName, columns, actualRowList);
+        ReplacementTable actualTable = new ReplacementTable(originalTable);
+        actualTable.addReplacementSubstring("substring", "replacement");
+        actualTable.setSubstringDelimiters("${", "}");
+
+        // Setup expected table
+        Object[] expectedRow = new Object[] {
+            "replacement",
+            "replacement_",
+            "_replacement_",
+            "_replacement",
+            "replacementreplacement replacement",
+            "this is a string",
+            new Long(0),
+            null,
+            "substring",
+            "substring_",
+            "_substring_",
+            "_substring",
+            "substringsubstring substring",
+            "_${substring_",
+            "_$substring}_",
+            "_substring}_",
+            "${substringreplacement replacement",
+            "${substringsubstring} replacement",
+        };
+
+        List expectedRowList = new ArrayList();
+        expectedRowList.add(expectedRow);
+        ITable expectedTable = new DefaultTable(tableName, columns, expectedRowList);
+
+        Assertion.assertEquals(expectedTable, actualTable);
+    }
+
     public void testAddNullReplacementSubstring() throws Exception
     {
         ReplacementTable replacementTable =

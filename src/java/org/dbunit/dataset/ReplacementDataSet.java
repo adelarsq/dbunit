@@ -21,9 +21,9 @@
 package org.dbunit.dataset;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * Decorator that replace configured values from the decorated dataset
@@ -38,6 +38,9 @@ public class ReplacementDataSet implements IDataSet
     private final IDataSet _dataSet;
     private final Map _objectMap;
     private final Map _substringMap;
+    private String _startDelimiter;
+    private String _endDelimiter;
+
 
     /**
      * Create a new ReplacementDataSet object that decorates the specified dataset.
@@ -79,6 +82,26 @@ public class ReplacementDataSet implements IDataSet
         _substringMap.put(originalSubstring, replacementSubstring);
     }
 
+    /**
+     * Sets substring delimiters.
+     */
+    public void setSubstringDelimiters(String startDelimiter, String endDelimiter)
+    {
+        if (startDelimiter == null || endDelimiter == null)
+        {
+            throw new NullPointerException();
+        }
+
+        _startDelimiter = startDelimiter;
+        _endDelimiter = endDelimiter;
+    }
+
+    private ReplacementTable createReplacementTable(ITable table)
+    {
+        return new ReplacementTable(table, _objectMap, _substringMap,
+                _startDelimiter, _endDelimiter);
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // IDataSet interface
 
@@ -95,8 +118,7 @@ public class ReplacementDataSet implements IDataSet
 
     public ITable getTable(String tableName) throws DataSetException
     {
-        return new ReplacementTable(_dataSet.getTable(tableName), _objectMap,
-                _substringMap);
+        return createReplacementTable(_dataSet.getTable(tableName));
     }
 
     public ITable[] getTables() throws DataSetException
@@ -106,9 +128,8 @@ public class ReplacementDataSet implements IDataSet
         for (int i = 0; i < tables.length; i++)
         {
             ITable table = tables[i];
-            tableList.add(new ReplacementTable(table, _objectMap, _substringMap));
+            tableList.add(createReplacementTable(table));
         }
         return (ITable[])tableList.toArray(new ITable[0]);
     }
-
 }
