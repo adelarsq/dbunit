@@ -11,6 +11,10 @@
           <td>Excellent introduction to DbUnit written by Andrew Glover. A must read!</td>
         </tr>
         <tr> 
+          <td><a name="controltestenv" href="http://www-106.ibm.com/developerworks/java/library/j-dbunit.html">Control your test-environment with DbUnit and Anthill</a></td>
+          <td>Learn how DbUnit can ease your testing and build process.</td>
+        </tr>
+        <tr> 
           <td><a href="http://groups.yahoo.com/group/agileDatabases/">The Agile Database 
         Mailing List</a></td>
           <td>Discussion about Database management with regards to Extreme Programming 

@@ -25,6 +25,10 @@
   <section name="News">
       <table border="1">
         <tr> 
+          <td>2004-05-31</td>
+          <td><b>Version 2.1 released.</b> Multiple bugfixes and enhancements. See <a href="changes-report.html#2.1">changes</a>.</td>
+        </tr>
+        <tr> 
           <td>2004-04-28</td>
           <td>DeveloperWorks article: <a href="http://www-106.ibm.com/developerworks/library/j-dbunit.html?ca=drs-j1604">Control your test-environement with DbUnit and Anthill</a>.</td>
         </tr>

@@ -7,6 +7,83 @@
   </properties>
 
   <body>
+    <release version="2.1" date="May 31, 2004" description="Multiple bugfixes and enhancements.">
+     <action dev="" type="add">
+     	741394 - New database compare Ant tag. See Ant task documentation.
+     </action>         
+     <action dev="fspinazzi" type="add">
+     	New Comma Separated Values (CSV) dataset implementation.
+     </action>      	            
+     <action dev="" type="add">
+     	824328 &amp; 948479 - Ability to add DOCTYPE declaration when writing a flat Xml dataset. See FAQ.
+     </action>         
+     <action dev="" type="add">
+     	884422 - FlatDtdWriter has now the ability to generate DTDs with choice model instead of sequence model. 
+     </action>         
+     <action dev="" type="add">
+     	Ability to import external file for binary data types like BLOB; the value can be either a qualified URL or a file path name.
+     </action>         
+     <action dev="" type="update">
+     	Do not omit NULL values anymore in INSERT statements. Now only XmlDataSet's <none/> tag are omitted. With FlatXmlDataSet you must use the ReplacementDataSet to achieve the same behavior.
+     </action>         
+     <action dev="" type="fix">
+     	937732 - XlsDataSet now use UTF-16 encoding to support Asian characters. Patch submitted by Shuhei Kondo.
+     </action>         
+     <action dev="" type="fix">
+     	Applied XlsTable empty table detection patch submitted by Deepak Kaimal.
+     </action>         
+     <action dev="" type="fix">
+     	Added back FlatXmlDataSet constructors taking URL as argument missing in version 2.0.
+     </action>         
+     <action dev="" type="fix">
+     	918631 &amp; 925585 - Fixed FlatXmlDataSet constructors taking InputStream/Reader for loading DTD.
+     </action>         
+     <action dev="" type="fix">
+     	DELETE_ALL operation now deletes tables only *once* in reverse order they are encountered. Before, duplicate tables were resulting in multiple deletes. Patch submitted by John Hurst.
+     </action>         
+     <action dev="" type="update">
+     	DELETE_ALL operation now compatible with StreamingDataSet.
+     </action>         
+     <action dev="" type="fix">
+     	947330 - Now closing ResultSet before Statement to fix exceptions thrown by the Firebird JDBC driver and the OpenBase 8.0 JDBC driver.
+     </action>         
+     <action dev="" type="fix">
+     	921869 - Fixed ParameterIndexOutOfBoundsException with InterBase.
+     </action>         
+     <action dev="" type="update">
+     	947809 - Moved createMetaData() static method from AbstractResultSet to DatabaseTableMetaData and made it public. Can now be used to create ITable from a ResultSet.
+     </action>         
+     <action dev="" type="fix">
+     	Support for large Oracle BLOB. Must use OracleDataTypeFactory.
+     </action>         
+     <action dev="" type="add">
+     	Oracle LONG RAW data type support via OracleDataTypeFactory. Original patch submitted by Markus Muller.
+     </action>         
+     <action dev="" type="fix">
+     	Added back support for Oracle FLOAT missing in DbUnit 2.0. Must use OracleDataTypeFactory.
+     </action>         
+     <action dev="" type="add">
+     	Support for Oracle NCHAR2 as proposed by Deepak Kaimal. Must use OracleDataTypeFactory.
+     </action>         
+     <action dev="" type="update">
+     	Added DataType.isDateTime() method proposed by Ayman Mahfouz.
+     </action>         
+     <action dev="" type="add">
+     	726366 &amp; 884422 - Added IColumnFilter interface. Can be used to filter out some table columns. See FAQ.
+     </action>         
+     <action dev="" type="update">
+     	Renamed ITableFilter.isValidName() method to accept() to be consistent with the new IColumnFilter interface. 
+     </action>         
+     <action dev="" type="add">
+     	955354 - Ability to determine the primary keys with IColumnFilter interface instead of DatabaseMetaData.getPrimaryKeys(). Primary keys sequence is not predictable when using filter. See FAQ.
+     </action>         
+     <action dev="" type="add">
+     	Ability to plug custom IDENTITY column detection strategy for InsertIdentityOperation when using user defined types. See FAQ.
+     </action>         
+     <action dev="" type="add">
+     	Added DefaultTableFilter class, which combines capability of the Include/ExcludeTableFilter classes.
+     </action>         
+    </release>
     <release version="2.0" date="January 22, 2004" description="Major release.">
      <action dev="" type="update">
      	Mavenized the build and the website!

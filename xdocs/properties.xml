@@ -178,4 +178,39 @@
         </tr>
       </table>
 
+      <a name="primarykeysfilter"></a>
+      <h4>Primary keys filter</h4>
+      <table border="1">
+        <tr> 
+          <td>Property ID</td>
+          <td>http://www.dbunit.org/properties/primaryKeyFilter</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td><i>none</i></td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Use to override primary keys detection. The Object must implement 
+            org.dbunit.dataset.filter.IColumnFilter.</td>
+        </tr>
+      </table>
+
+      <a name="identitycolumnfilter"></a>
+      <h4>MS SQL Server IDENTITY column filter</h4>
+      <table border="1">
+        <tr> 
+          <td>Property ID</td>
+          <td>http://www.dbunit.org/properties/mssql/identityColumnFilter</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td><i>none</i></td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Use to override IDENTITY column detection. The Object must implement 
+            org.dbunit.dataset.filter.IColumnFilter.</td>
+        </tr>
+      </table>
 </section></body></document>

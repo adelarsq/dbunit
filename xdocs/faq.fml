@@ -167,13 +167,13 @@ DbUnit provides this functionality for MS SQL Server with the <a href="component
       </p>
       <p>
       Be aware that REFRESH, DELETE and UPDATE operations are not compatible with tables without 
-      primary keys, thus are not usable with views. CLEAN_INSERT, INSERT and DELETE_ALL 
+      primary keys. They are not usable with views without <a href="#customprimarykeys">overriding primary keys detection</a>. CLEAN_INSERT, INSERT and DELETE_ALL 
       operations are compatible with views.
       </p>
       </answer>
     </faq>  
     
-    <faq id="views">
+    <faq id="batchstatement">
       <question>
       How to enable batched statement?
       </question>
@@ -366,8 +366,98 @@ FlatXmlDataSet.write(dataset, new File(fileName));
 </source>
       </answer>
     </faq>    
-  </part>  
+    <faq id="doctypeexport">
+      <question>
+	How to add the DOCTYPE declaration when writing a flat XML dataset?
+      </question>
+      <answer>
+      <p>
+	Use the setDocType() method of the FlatXmlWriter class like this:
+<source>
+    FlatXmlWriter datasetWriter = new FlatXmlWriter( 
+            new FileOutputStream("dataset.xml")); 
+    datasetWriter.setDocType("dataset.dtd"); 
+    datasetWriter.write(connection.createDataSet());
+</source>
+    This can also be done with the <a href="anttask.html">DbUnit Ant task</a>.
+</p>    
+      </answer>
+    </faq> 
 
+    <faq id="columnfilter">
+      <question>
+      How to exclude some table columns at runtime?
+      </question>
+      <answer>
+<p>
+      The FilteredTableMetaData class, introduced in DbUnit 2.1, can be used in combination with the IColumnFilter interface to decide the inclusion or exclusion of table columns at runtime.
+<source>
+    FilteredTableMetaData metaData = new FilteredTableMetaData(
+        originalTable.getTableMetaData(), new MyColumnFilter());
+    ITable filteredTable = new CompositeTable(metaData, originalTable);
+</source>
+</p>
+<p>
+You can use your own IColumnFilter implementation or use the DefaultColumnFilter class provided by DbUnit. DefaultColumnFilter supports wildcards. This class also offers some convenience methods, includedColumnsTable() and excludedColumnsTable(), to ease creation of column filtered table.
+<br/>
+The following sample demonstrates the usage of DefaultColumnFilter to exclude all columns prefixed with "PK" or suffixed by "TIME". 
+</p>
+<source>
+    DefaultColumnFilter columnFilter = new DefaultColumnFilter();
+    columnFilter.excludeColumn("PK*");
+    columnFilter.excludeColumn("*TIME");
+
+    FilteredTableMetaData metaData = new FilteredTableMetaData(
+            originalTable.getTableMetaData(), columnFilter);
+</source>
+<p>
+Same than above but using the excludedColumnsTable() convenience method.
+<source>
+    ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(
+            originalTable, new String[]{"PK*", "*TIME"});
+</source>
+</p>
+<p>
+See also <a href="howto.html#compareignorecolumns">Ignoring some columns in comparison</a>.
+</p>
+      </answer>
+    </faq> 
+        
+    <faq id="usertypeidentity">
+      <question>
+      How to use InsertIdentityOperation with user defined types?
+      </question>
+      <answer>
+      <p>
+      The IColumnFilter interface is now used by InsertIdentityOperation to detect identity columns. The default implementation assumes that type name of identity columns end with "identity". If you are using user defined types that does not follow this assumption you can now provide your own implementation via the <a href="properties.html#identitycolumnfilter">MS SQL identity column filter property</a>.
+<source>
+    IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+    connection.getConfig().setProperty(
+        "http://www.dbunit.org/properties/mssql/identityColumnFilter",
+        new MyIndentityFilter());
+</source>
+</p>    
+      </answer>
+    </faq>  
+    
+    <faq id="customprimarykeys">
+      <question>
+      How to customize primary keys detection?
+      </question>
+      <answer>
+      <p>
+      The IColumnFilter interface can also be used to determine which columns are primary keys instead of using DatabaseMetaData.getPrimaryKeys().  This can be useful if your primary keys are not explicitly defined in your database model.
+<source>
+    IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+    connection.getConfig().setProperty(
+        "http://www.dbunit.org/properties/primaryKeyFilter",
+        new MyPrimaryKeyFilter());
+</source>
+</p>    
+      </answer>
+    </faq>       
+
+  </part>  
   <part id="use">
     <title>Errors</title>
 
