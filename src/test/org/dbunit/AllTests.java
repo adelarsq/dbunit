@@ -37,6 +37,7 @@ public class AllTests
         suite.addTest(org.dbunit.database.AllTests.suite());
         suite.addTest(org.dbunit.dataset.AllTests.suite());
         suite.addTest(org.dbunit.operation.AllTests.suite());
+        suite.addTest(new TestSuite(AssertionTest.class));
 
         return suite;
     }
@@ -47,6 +48,7 @@ public class AllTests
         System.exit(0);
     }
 }
+
 
 
 

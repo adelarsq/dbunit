@@ -97,15 +97,8 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
 
     }
 
-    public void testGetValueAndNoSuchColumn() throws Exception
-    {
-        ITable table = createTable();
-        String columnName = "Unknown";
-
-        Object value = table.getValue(0, columnName);
-        assertEquals("no value", ITable.NO_VALUE, value);
-    }
 }
+
 
 
 

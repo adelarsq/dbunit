@@ -6,13 +6,13 @@
       <runInBackground value="true" />
       <useEmacsModeOutput value="true" />
       <useCustomJdk value="false" />
-      <useJavaw value="false" />
+      <useJavaw value="true" />
       <includeProjectClasspath value="false" />
       <maximumHeapSize value="128" />
     </buildFile>
   </component>
   <component class="com.intellij.ant.AntManager">
-    <option name="OPEN_IN_TEXT_VIEW" value="false" />
+    <option name="OPEN_IN_TEXT_VIEW" value="true" />
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
   </component>
   <component class="com.intellij.codeInsight.CodeInsightManager">
@@ -377,6 +377,12 @@
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
+    <configuration name="AssertionTest" type="JUnit" default="false" selected="false">
+      <option name="MAIN_CLASS_NAME" value="org.dbunit.AssertionTest" />
+      <option name="VM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="TEST_RUNNER" value="Text" />
+    </configuration>
   </component>
   <component class="com.intellij.ide.SelectInManager">
     <target name="Classpath View" />
@@ -394,21 +400,21 @@
   </component>
   <component class="com.intellij.ide.desktop.IdeDocumentManager">
     <recent_files>
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/datatype/IntegerDataTypeTest.java" column="24" line="176" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/datatype/DoubleDataTypeTest.java" column="19" line="156" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/datatype/StringDataTypeTest.java" column="23" line="81" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/datatype/BytesDataTypeTest.java" column="0" line="142" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/StringDataType.java" column="22" line="42" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" column="66" line="187" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/DataSetUtils.java" column="41" line="209" />
-      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseTableMetaDataTest.java" column="0" line="101" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/FloatDataType.java" column="13" line="31" />
-      <file_info url="file://$PROJECT_DIR$/src/java/Base64.java" column="73" line="200" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/DataType.java" column="22" line="31" />
-      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/BooleanDataType.java" column="0" line="18" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/BytesDataType.java" column="81" line="13" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/statement/BatchStatement.java" column="31" line="7" />
       <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/database/statement/PreparedStatementFactory.java" column="36" line="3" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" column="13" line="38" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlTable.java" column="11" line="49" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/xml/FlatXmlTableTest.java" column="37" line="74" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/xml/FlatXmlTableWriteTest.java" column="0" line="98" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/DataSetUtilsTest.java" column="0" line="44" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/Assertion.java" column="0" line="53" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/AllTests.java" column="52" line="36" />
+      <file_info url="file://$PROJECT_DIR$/src/test/org/dbunit/AssertionTest.java" column="27" line="70" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/DataSetUtils.java" column="28" line="147" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/AbstractTableMetaData.java" column="45" line="38" />
+      <file_info url="file://$PROJECT_DIR$/src/java/Base64.java" column="65" line="19" />
+      <file_info url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/AbstractTable.java" column="25" line="48" />
     </recent_files>
   </component>
   <component class="com.intellij.ide.hierarchy.HierarchyBrowserManager">
@@ -419,22 +425,24 @@
   <component class="com.intellij.ide.impl.ProjectWorkspace" />
   <component class="com.intellij.ide.navigator.impl.ProjectNavigatorSettings">
     <navigator id="ClasspathNavigator" flattenPackages="false" showMembers="false">
+      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/com" />
+      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/com/mockobjects/sql" />
       <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/" />
       <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/com/mockobjects" />
-      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/com/mockobjects/sql" />
-      <expanded_node type="directory" url="jar://$PROJECT_DIR$/lib/mockobjects.jar!/com" />
     </navigator>
     <navigator id="ProjectNavigator" flattenPackages="false" showMembers="false">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/dtd" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/sql" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/sql" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/dtd" />
     </navigator>
     <navigator id="SourcepathNavigator" flattenPackages="false" showMembers="true">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org/dbunit" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test/org" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
     </navigator>
   </component>
   <component class="com.intellij.ide.structureView.StructureViewFactory">

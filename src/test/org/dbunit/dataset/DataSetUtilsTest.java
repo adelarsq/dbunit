@@ -42,96 +42,6 @@ public class DataSetUtilsTest extends TestCase
         super(s);
     }
 
-    private IDataSet getDataSet() throws Exception
-    {
-        return new FlatXmlDataSet(new FileInputStream(
-                "src/xml/dataSetUtilsTest.xml"));
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Test methods
-
-    public void testAssertEquals() throws Exception
-    {
-        IDataSet dataSet = getDataSet();
-        DataSetUtils.assertEquals(dataSet.getTable("TEST_TABLE"),
-                dataSet.getTable("TEST_TABLE_WITH_SAME_VALUE"));
-    }
-
-    public void testAssertTableNamesNotEquals() throws Exception
-    {
-        IDataSet dataSet = getDataSet();
-        DataSetUtils.assertEquals(dataSet.getTable("TEST_TABLE"),
-                dataSet.getTable("TEST_TABLE_WITH_DIFFERENT_NAME"));
-    }
-
-    public void testAssertColumnCountNotEquals() throws Exception
-    {
-        IDataSet dataSet = getDataSet();
-
-        try
-        {
-            DataSetUtils.assertEquals(dataSet.getTable("TEST_TABLE"),
-                    dataSet.getTable("TEST_TABLE_WITH_3_COLUMNS"));
-            throw new IllegalStateException("Should throw an AssertionFailedError");
-        }
-        catch (AssertionFailedError e)
-        {
-        }
-    }
-
-    public void testAssertColumnSequenceNotEquals() throws Exception
-    {
-        IDataSet dataSet = getDataSet();
-
-        DataSetUtils.assertEquals(dataSet.getTable("TEST_TABLE"),
-                dataSet.getTable("TEST_TABLE_WITH_DIFFERENT_COLUMN_SEQUENCE"));
-    }
-
-    public void testAssertColumnNamesNotEquals() throws Exception
-    {
-        IDataSet dataSet = getDataSet();
-
-        try
-        {
-            DataSetUtils.assertEquals(dataSet.getTable("TEST_TABLE"),
-                    dataSet.getTable("TEST_TABLE_WITH_DIFFERENT_COLUMN_NAMES"));
-            throw new IllegalStateException("Should throw an AssertionFailedError");
-        }
-        catch (AssertionFailedError e)
-        {
-        }
-    }
-
-    public void testAssertRowCountNotEquals() throws Exception
-    {
-        IDataSet dataSet = getDataSet();
-
-        try
-        {
-            DataSetUtils.assertEquals(dataSet.getTable("TEST_TABLE"),
-                    dataSet.getTable("TEST_TABLE_WITH_ONE_ROW"));
-            throw new IllegalStateException("Should throw an AssertionFailedError");
-        }
-        catch (AssertionFailedError e)
-        {
-        }
-    }
-
-    public void testAssertValuesNotEquals() throws Exception
-    {
-        IDataSet dataSet = getDataSet();
-
-        try
-        {
-            DataSetUtils.assertEquals(dataSet.getTable("TEST_TABLE"),
-                    dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"));
-            throw new IllegalStateException("Should throw an AssertionFailedError");
-        }
-        catch (AssertionFailedError e)
-        {
-        }
-    }
 
     public void testGetQualifiedName() throws Exception
     {
@@ -276,6 +186,7 @@ public class DataSetUtilsTest extends TestCase
     }
 
 }
+
 
 
 

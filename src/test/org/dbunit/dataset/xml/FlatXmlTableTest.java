@@ -72,10 +72,11 @@ public class FlatXmlTableTest extends AbstractTableTest
         String columnName = "Unknown";
 
         Object value = table.getValue(0, columnName);
-        assertEquals("no value", ITable.NO_VALUE, value);
+        assertEquals("no value", null, value);
     }
 
 }
+
 
 
 
