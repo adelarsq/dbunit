@@ -139,6 +139,7 @@ public class NumberDataTypeTest extends AbstractDataTypeTest
             Boolean.TRUE,
             Boolean.FALSE,
             new BigDecimal(123.4),
+            "123",
         };
         Object[] values2 = {
             null,
@@ -148,6 +149,7 @@ public class NumberDataTypeTest extends AbstractDataTypeTest
             new BigDecimal("1"),
             new BigDecimal("0"),
             new BigDecimal(123.4000),
+            new BigDecimal("123.0"),
         };
 
         assertEquals("values count", values1.length, values2.length);

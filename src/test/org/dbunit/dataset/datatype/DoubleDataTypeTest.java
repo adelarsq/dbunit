@@ -154,6 +154,7 @@ public class DoubleDataTypeTest extends AbstractDataTypeTest
             new Double(5.49879),
             "-99.9",
             new BigDecimal(1234),
+            "123",
         };
 
         Object[] values2 = {
@@ -167,6 +168,7 @@ public class DoubleDataTypeTest extends AbstractDataTypeTest
             new Double(5.49879),
             new Double(-99.9),
             new Double(1234),
+            new Double(123.0)
         };
 
         assertEquals("values count", values1.length, values2.length);
