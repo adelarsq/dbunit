@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+
+<project name="ant-test" basedir="../../" default="all">
+
+  <property file="profile.properties"/>
+
+  <property name="testDataSet" value="src/xml/antTestDataSet.xml"/>
+
+  <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>
+  
+  <target name="all" depends="no-driver, no-db-url, no-userid, no-password"/>
+
+  <target name="no-driver">
+    <dbunit url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="CLEAN_INSERT" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="no-db-url">
+    <dbunit driver="${dbunit.profile.driverClass}"
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="CLEAN_INSERT" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="no-userid">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	   
+            password="${dbunit.profile.password}">
+      <operation type="CLEAN_INSERT" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="no-password">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}">
+      <operation type="CLEAN_INSERT" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="invalid-db-info">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="jdbc:foobar://localhost/dbunittest" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="CLEAN_INSERT" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="set-flat-false">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="INSERT" src="${testDataSet}" flat="false"/>
+    </dbunit>
+  </target>
+
+  <target name="set-type-insert">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="INSERT" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="set-type-update">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="UPDATE" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="set-type-refresh">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="REFRESH" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="set-type-delete">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="DELETE" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="set-type-delete-all">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="DELETE_ALL" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="set-type-clean-insert">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="CLEAN_INSERT" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="invalid-type">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="CLEAN_INSERT" src="${testDataSet}"/>
+      <operation type="DELETE" src="${testDataSet}"/>
+      <operation type="RIDICULOUS" src="${testDataSet}"/>
+    </dbunit>
+  </target>
+
+  <target name="composite-tests">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <composite src="${testDataSet}">
+        <operation type="CLEAN_INSERT"/>
+        <operation type="DELETE"/>
+      </composite>
+    </dbunit>
+  </target>
+
+  <target name="invalid-composite-operation-src">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <composite src="${testDataSet}">
+        <operation type="CLEAN_INSERT" src="${testDataSet}"/>
+        <operation type="DELETE"/>
+      </composite>
+    </dbunit>
+  </target>
+
+  <target name="invalid-composite-operation-flat">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <composite src="${testDataSet}">
+        <operation type="CLEAN_INSERT" flat="false"/>
+        <operation type="DELETE"/>
+      </composite>
+    </dbunit>
+  </target>
+
+  <target name="test-export-full">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <export dest="exportFullDataSet.xml"/>
+    </dbunit>
+  </target>
+
+  <target name="test-export-partial">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <export dest="exportPartialDataSet.xml">
+        <table name="TEST_TABLE"/>
+        <table name="PK_TABLE"/>
+      </export>
+    </dbunit>
+  </target>
+
+  <target name="test-export-flat">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}" 
+	    userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <export dest="exportDataSet.xml" flat="false"/>>
+    </dbunit>
+  </target>
+
+</project>
+
