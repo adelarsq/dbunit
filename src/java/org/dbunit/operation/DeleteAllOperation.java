@@ -51,6 +51,8 @@ public class DeleteAllOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
+        IDataSet databaseDataSet = connection.createDataSet();
+
         IStatementFactory statementFactory = connection.getStatementFactory();
         IBatchStatement statement = statementFactory.createBatchStatement(connection);
         try
@@ -60,10 +62,15 @@ public class DeleteAllOperation extends DatabaseOperation
             {
                 for (int i = 0; i < tableNames.length; i++)
                 {
+                    // Use database table name. Required to support case sensitive database.
+                    ITableMetaData databaseMetaData =
+                            databaseDataSet.getTableMetaData(tableNames[i]);
+                    String tableName = databaseMetaData.getTableName();
+
                     StringBuffer sqlBuffer = new StringBuffer(128);
                     sqlBuffer.append("delete from ");
                     sqlBuffer.append(DataSetUtils.getQualifiedName(
-                            connection.getSchema(), tableNames[i], true));
+                            connection.getSchema(), tableName, true));
                     statement.addBatch(sqlBuffer.toString());
                 }
 
