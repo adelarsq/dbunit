@@ -107,7 +107,6 @@
    <developer>
       <name>Manuel Laflamme</name>
       <id>mlaflamm</id>
-      <email>mlaflamm@users.sourceforge.net</email>
       <organization>Oz Communication</organization>
       <roles>
         <role>Project Founder</role>
@@ -123,6 +122,41 @@
       </roles>
     </developer>
   </developers>
+
+  <contributors>
+    <contributor>
+      <name>Erik Price</name>
+       <!--  
+      <roles>
+        <role>DatabaseSequenceOperation</role>
+      </roles>
+      -->
+    </contributor>
+    <contributor>
+      <name>Jeremy Stein</name>
+       <!--  
+      <roles>
+        <role>InsertIndentityOperation</role>
+      </roles>
+      -->
+    </contributor>
+    <contributor>
+      <name>Keven Kizer</name>
+       <!--  
+      <roles>
+        <role>Early guinea pig</role>
+      </roles>
+      -->
+    </contributor>
+    <contributor>
+      <name>Mike Bresnahan</name>
+       <!--  
+      <roles>
+        <role>DbUnit evangelist</role>
+      </roles>
+      -->
+    </contributor>
+  </contributors>
 
   <!-- jar files the project is dependent on -->
   <dependencies>
