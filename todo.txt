@@ -1,14 +1,5 @@
 Documentation:
 
-* Convert existing website documentation to Jakarta-site2 XML format and
-  generate HTML using Anakia. Maven and Cocoon are possible alternative.
-  Actually the website is edited with Dreamweaver.
-
-* Improve Javadoc. Many classes have no or very little javadoc documentation.
-  http://sourceforge.net/tracker/index.php?func=detail&aid=589218&group_id=47439&atid=449494
-
-* Document DbUnit dependency (library + version + license).
-
 ---
 
 Features:
@@ -16,13 +7,6 @@ Features:
 * Alternate DTD export method using choice (OR) instead sequence (AND).
   http://sourceforge.net/mailarchive/message.php?msg_id=4127649
   http://sourceforge.net/mailarchive/message.php?msg_id=4148318
-
-* Replace system properties with a DatabaseConfig class pushed to the
-  DatabaseConnection. This is possible to replace all system properties with
-  this class because they are all related to database connection.
-
-* Make TABLE_TYPE configurable in DatabaseDataSet.
-  http://sourceforge.net/mailarchive/message.php?msg_id=4179160
 
 * Add configuration to limits the number of rows fetched from the database
   http://sourceforge.net/tracker/index.php?func=detail&aid=561202&group_id=47439&atid=449491
@@ -38,8 +22,8 @@ Features:
   http://sourceforge.net/mailarchive/message.php?msg_id=4156221
   http://sourceforge.net/mailarchive/message.php?msg_id=4159237
 
-* Validate XML against its DTD. This can greatly degrade XML loading performance.
-  http://sourceforge.net/tracker/index.php?func=detail&aid=677408&group_id=47439&atid=449494
+* Ability to add reference to DTD when exporting a flat XML dataset.
+  http://sourceforge.net/mailarchive/forum.php?thread_id=3071649&forum_id=8154
 
 ---
 
@@ -47,13 +31,7 @@ Performance:
 
 * Profile and improve DbUnit performance.
 
-* Improve performance/memory usage of XML datasets implementation. Use SAX???
-  Is it necessary??? I have some doubt since unit testing should use fairly
-  small datasets.
-
 ---
 
 Environment:
 
-* Perform some cleanup in the DbUnit test suite.
-  http://sourceforge.net/mailarchive/message.php?msg_id=3866272
