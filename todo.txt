@@ -1,8 +1,11 @@
 Documentation:
 
-* Convert existing website documentation to Jakarta-site2 XML format and generate HTML using Anakia. Maven and Cocoon are possible alternative. Actually the website is edited with Dreamweaver.
+* Convert existing website documentation to Jakarta-site2 XML format and
+  generate HTML using Anakia. Maven and Cocoon are possible alternative.
+  Actually the website is edited with Dreamweaver.
 
 * Improve Javadoc. Many classes have no or very little javadoc documentation.
+  http://sourceforge.net/tracker/index.php?func=detail&aid=589218&group_id=47439&atid=449494
 
 * Document DbUnit dependency (library + version + license).
 
@@ -11,12 +14,32 @@ Documentation:
 Features:
 
 * Alternate DTD export method using choice (OR) instead sequence (AND).
+  http://sourceforge.net/mailarchive/message.php?msg_id=4127649
+  http://sourceforge.net/mailarchive/message.php?msg_id=4148318
 
-* Replace system properties with a DatabaseConfig class pushed to the DatabaseConnection. This is possible to replace all system properties with this class because they are all related to database connection.
+* Replace system properties with a DatabaseConfig class pushed to the
+  DatabaseConnection. This is possible to replace all system properties with
+  this class because they are all related to database connection.
 
-* DisableConstrainsOperation??? The way to disable/enable database constraints is vendor specific so this is impossible to implement on all RDMS platform. Big question, is the performance acceptable???  http://sourceforge.net/mailarchive/message.php?msg_id=4148317
+* Make TABLE_TYPE configurable in DatabaseDataSet.
+  http://sourceforge.net/mailarchive/message.php?msg_id=4179160
 
-* Determine the table sequence in DatabaseDataSet according exported/imported keys using information from DatabaseMetaData. Make it configurable because of performance cost. Make it a subclass of SequenceTableFilter???
+* Add configuration to limits the number of rows fetched from the database
+  http://sourceforge.net/tracker/index.php?func=detail&aid=561202&group_id=47439&atid=449491
+
+* DisableConstrainsOperation??? The way to disable/enable database constraints
+  is vendor specific so this is impossible to implement on all RDMS platform.
+  Big question, is the performance acceptable???
+  http://sourceforge.net/mailarchive/message.php?msg_id=4148317
+
+* Determine the table sequence in DatabaseDataSet according exported/imported
+  keys using information from DatabaseMetaData. Make it configurable because of
+  performance cost. Make it a subclass of SequenceTableFilter???
+  http://sourceforge.net/mailarchive/message.php?msg_id=4156221
+  http://sourceforge.net/mailarchive/message.php?msg_id=4159237
+
+* Validate XML against its DTD. This can greatly degrade XML loading performance.
+  http://sourceforge.net/tracker/index.php?func=detail&aid=677408&group_id=47439&atid=449494
 
 ---
 
@@ -24,12 +47,13 @@ Performance:
 
 * Profile and improve DbUnit performance.
 
-* Improve performance/memory usage of XML datasets implementation (using SAX???). 
+* Improve performance/memory usage of XML datasets implementation. Use SAX???
+  Is it necessary??? I have some doubt since unit testing should use fairly
+  small datasets.
 
 ---
 
 Environment:
 
-* Perform some cleanup in the DbUnit test suite (http://sourceforge.net/mailarchive/message.php?msg_id=3866272).
-
-
+* Perform some cleanup in the DbUnit test suite.
+  http://sourceforge.net/mailarchive/message.php?msg_id=3866272
