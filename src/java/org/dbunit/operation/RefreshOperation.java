@@ -68,8 +68,7 @@ public class RefreshOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        String schema = connection.getSchema();
-
+        
         // for each table
         ITableIterator iterator = dataSet.iterator();
         while (iterator.next())
@@ -85,7 +84,7 @@ public class RefreshOperation extends DatabaseOperation
             ITableMetaData metaData = getOperationMetaData(connection,
                     table.getTableMetaData());
             RowOperation updateRowOperation = createUpdateOperation(connection,
-                    schema, metaData);
+                    metaData);
             RowOperation insertRowOperation = new InsertRowOperation(connection,
                     metaData);
 
@@ -115,7 +114,7 @@ public class RefreshOperation extends DatabaseOperation
     }
 
     private RowOperation createUpdateOperation(IDatabaseConnection connection,
-            String schema, ITableMetaData metaData)
+            ITableMetaData metaData)
             throws DataSetException, SQLException
     {
         // update only if columns are not all primary keys
@@ -125,7 +124,7 @@ public class RefreshOperation extends DatabaseOperation
         }
 
         // otherwise, operation only verify if row exist
-        return new RowExistOperation(connection, schema, metaData);
+        return new RowExistOperation(connection,  metaData);
     }
 
     /**
@@ -210,7 +209,7 @@ public class RefreshOperation extends DatabaseOperation
         PreparedStatement _countStatement;
 
         public RowExistOperation(IDatabaseConnection connection,
-                String schema, ITableMetaData metaData)
+                ITableMetaData metaData)
                 throws DataSetException, SQLException
         {
             // setup select count statement

@@ -10,15 +10,10 @@
 
 package org.dbunit.dataset.xml;
 
-import org.dbunit.dataset.*;
-
-import org.xml.sax.InputSource;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -26,6 +21,19 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.dbunit.dataset.AbstractDataSet;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.DefaultTableIterator;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.IDataSetConsumer;
+import org.dbunit.dataset.IDataSetProducer;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoSuchTableException;
+import org.xml.sax.InputSource;
 
 /**
  * @author Manuel Laflamme

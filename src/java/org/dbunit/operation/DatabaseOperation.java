@@ -22,14 +22,13 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.DataSetUtils;
-
 import java.sql.SQLException;
+
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.IDataSet;
 
 /**
  * Defines the interface contract for operations performed on the database.

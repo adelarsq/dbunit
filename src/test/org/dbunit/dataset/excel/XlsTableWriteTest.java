@@ -20,13 +20,19 @@
  */
 package org.dbunit.dataset.excel;
 
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.XmlTableTest;
-import org.dbunit.dataset.xml.FlatXmlTableTest;
-import org.dbunit.Assertion;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-import java.io.*;
+import org.dbunit.Assertion;
+import org.dbunit.dataset.CompositeTable;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableMetaData;
 
 /**
  * @author Manuel Laflamme

@@ -22,8 +22,6 @@
 package org.dbunit.dataset.datatype;
 
 import java.sql.Types;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  * @author Manuel Laflamme

@@ -20,8 +20,6 @@
  */
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.ITableMetaData;
 
 /**
  * Receive notification of the content of a dataset.

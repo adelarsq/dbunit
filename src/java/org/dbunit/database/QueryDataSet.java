@@ -21,15 +21,16 @@
  */
 package org.dbunit.database;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import org.dbunit.database.*;
 import org.dbunit.dataset.AbstractDataSet;
 import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultTableIterator;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
-import org.dbunit.dataset.DefaultTableIterator;
 
 /**
  * @author     Eric Pugh

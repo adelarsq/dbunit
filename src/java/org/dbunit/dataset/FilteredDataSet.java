@@ -22,9 +22,7 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.filter.IncludeTableFilter;
 import org.dbunit.dataset.filter.SequenceTableFilter;
-import org.dbunit.dataset.filter.ExcludeTableFilter;
 import org.dbunit.dataset.filter.ITableFilter;
 
 /**

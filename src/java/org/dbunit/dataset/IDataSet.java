@@ -22,8 +22,6 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.database.AmbiguousTableNameException;
-
 /**
  * Represents a collection of tables.
  *

@@ -22,6 +22,15 @@
 
 package org.dbunit;
 
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -29,15 +38,9 @@ import org.dbunit.dataset.MockDataSetProducer;
 import org.dbunit.dataset.StreamingDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlProducer;
+import org.dbunit.dataset.xml.FlatXmlWriter;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSetWriter;
-import org.dbunit.dataset.xml.XmlProducer;
-import org.dbunit.dataset.xml.FlatXmlWriter;
-
-import org.xml.sax.InputSource;
-
-import java.io.*;
 
 /**
  * This class is a scratchpad used to try new features.

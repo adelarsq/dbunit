@@ -20,19 +20,11 @@
  */
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.ITableIterator;
-import org.dbunit.dataset.AbstractDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.DefaultTableIterator;
-import org.dbunit.dataset.DefaultTable;
-
-import com.mockobjects.Verifiable;
-
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import com.mockobjects.Verifiable;
 
 /**
  * @author Manuel Laflamme

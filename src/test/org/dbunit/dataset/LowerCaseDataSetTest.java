@@ -10,11 +10,9 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.xml.XmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-
-import java.io.FileInputStream;
 import java.io.FileReader;
+
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 /**
  * @author Manuel Laflamme

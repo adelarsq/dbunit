@@ -23,7 +23,12 @@ package org.dbunit.util;
  *
  */
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import junit.framework.Assert;
 
@@ -109,8 +114,7 @@ public class FileAsserts
 
         Assert.assertTrue(actual.canRead());
 
-        int lineCounter = 0;
-        String problem = null;
+        
         BufferedReader expectedData = new BufferedReader(new InputStreamReader(expected));
 
         BufferedReader actualData =

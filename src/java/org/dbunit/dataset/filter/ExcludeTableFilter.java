@@ -20,8 +20,6 @@
  */
 package org.dbunit.dataset.filter;
 
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * This filter hides specified tables from the filtered dataset. This

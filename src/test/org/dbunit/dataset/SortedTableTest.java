@@ -22,10 +22,9 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-
 import java.io.File;
+
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 /**
  * @author Manuel Laflamme

@@ -20,14 +20,9 @@
  */
 package org.dbunit.dataset.filter;
 
-import org.dbunit.DatabaseEnvironment;
-import org.dbunit.database.DatabaseDataSet;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.MockDataSet;
-import org.dbunit.database.MockResultSetTable;
-import org.dbunit.database.DatabaseTableIterator;
 import org.dbunit.dataset.AbstractTableIteratorTest;
 import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.MockDataSet;
 
 /**
  * @author Manuel Laflamme

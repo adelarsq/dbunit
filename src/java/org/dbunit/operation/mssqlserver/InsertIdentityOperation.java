@@ -20,13 +20,22 @@
  */
 
 package org.dbunit.operation.mssqlserver;
-import org.dbunit.database.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.*;
-import org.dbunit.operation.*;
-
-import java.sql.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.operation.CompositeOperation;
+import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.operation.ExclusiveTransactionException;
 
 /**
  * This class disable the MS SQL Server automatic identifier generation for
@@ -98,7 +107,7 @@ public class InsertIdentityOperation extends DatabaseOperation
         try
         {
             IDataSet databaseDataSet = connection.createDataSet();
-            String schemaName = connection.getSchema();
+            
 
             // INSERT_IDENTITY need to be enabled/disabled inside the
             // same transaction

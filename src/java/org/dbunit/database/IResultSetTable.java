@@ -23,7 +23,6 @@ package org.dbunit.database;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.DataSetException;
 
-import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme

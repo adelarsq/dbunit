@@ -55,10 +55,8 @@ package org.dbunit.util.xml;
  */
 
 import java.io.IOException;
-import java.io.Writer;
 import java.io.OutputStreamWriter;
-import java.io.BufferedWriter;
-
+import java.io.Writer;
 import java.util.Stack;
 
 /**

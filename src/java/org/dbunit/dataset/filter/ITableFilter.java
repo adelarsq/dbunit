@@ -22,8 +22,7 @@ package org.dbunit.dataset.filter;
 
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.ITableIterator;
 
 /**
  * Represents a strategy used by {@link FilteredDataSet} to exposes only some

@@ -20,8 +20,6 @@
  */
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSetConsumer;
 
 /**
  * Interface for reading a dataset using callback.

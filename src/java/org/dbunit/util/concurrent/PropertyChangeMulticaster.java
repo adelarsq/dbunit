@@ -438,8 +438,7 @@ public class PropertyChangeMulticaster implements Serializable {
   private synchronized void writeObject(ObjectOutputStream s) throws IOException {
     s.defaultWriteObject();
     
-    for (int i = 0; i < listeners.length; i++) {
-      PropertyChangeListener l = listeners[i];
+    for (int i = 0; i < listeners.length; i++) {      
       if (listeners[i] instanceof Serializable) {
         s.writeObject(listeners[i]);
       }

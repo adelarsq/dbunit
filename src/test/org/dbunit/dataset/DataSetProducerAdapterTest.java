@@ -20,19 +20,9 @@
  */
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.AbstractTest;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.DataSetProducerAdapter;
-import org.dbunit.dataset.IDataSetConsumer;
-import org.dbunit.dataset.IDataSetProducer;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlProducer;
-
-import org.xml.sax.InputSource;
-
-import java.io.FileReader;
 import java.io.File;
+
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 /**
  * @author Manuel Laflamme

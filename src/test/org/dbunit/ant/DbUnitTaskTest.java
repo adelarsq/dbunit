@@ -80,7 +80,7 @@ public class DbUnitTaskTest extends TaskdefsTest
         expectBuildException("no-password", "Should have required a password attribute.");
     }
 
-    public void testInvalidDatbaseInformation()
+    public void testInvalidDatabaseInformation()
     {
         Throwable sql = null;
         try

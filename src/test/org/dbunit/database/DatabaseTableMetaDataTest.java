@@ -22,11 +22,13 @@
 
 package org.dbunit.database;
 
-import org.dbunit.*;
 import org.dbunit.AbstractDatabaseTest;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoColumnsFoundException;
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 
 /**
  * @author Manuel Laflamme

@@ -20,13 +20,12 @@
  */
 package org.dbunit.dataset.xml;
 
+import java.io.PrintWriter;
+import java.io.Writer;
+
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITableMetaData;
-
-import java.io.PrintWriter;
-import java.io.Writer;
 
 /**
  * @author Manuel Laflamme

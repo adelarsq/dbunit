@@ -24,7 +24,6 @@ package org.dbunit.ext.db2;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.dbunit.dataset.*;
 
 /**
  * @author Manuel Laflamme
