@@ -245,21 +245,6 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         connection.verify();
     }
 
-    public void testExecuteAndNoPrimaryKey() throws Exception
-    {
-        IDataSet dataSet = _connection.createDataSet();
-        ITableMetaData metaData = dataSet.getTableMetaData("TEST_TABLE");
-        try
-        {
-            new UpdateOperation().getOperationData(
-                    _connection.getSchema(), metaData);
-            fail("Should throw a NoPrimaryKeyException");
-        }
-        catch (NoPrimaryKeyException e)
-        {
-        }
-    }
-
     public void testUpdateClob() throws Exception
     {
         String tableName = "CLOB_TABLE";
@@ -339,6 +324,30 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         IDataSet dataSet = new XmlDataSet(in);
 
         testExecute(new LowerCaseDataSet(dataSet));
+    }
+
+    public void testExecuteAndNoPrimaryKeys() throws Exception
+    {
+        String tableName = "TEST_TABLE";
+
+        Reader reader = new FileReader("src/xml/updateOperationNoPKTest.xml");
+        IDataSet dataSet = new FlatXmlDataSet(reader);
+
+        // verify table before
+        assertEquals("row count before", 6, _connection.getRowCount(tableName));
+
+        try
+        {
+            DatabaseOperation.REFRESH.execute(_connection, dataSet);
+            fail("Should not be here!");
+        }
+        catch (NoPrimaryKeyException e)
+        {
+
+        }
+
+        // verify table after
+        assertEquals("row count before", 6, _connection.getRowCount(tableName));
     }
 
     private void testExecute(IDataSet dataSet) throws Exception

@@ -1,4 +1,4 @@
-<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Manuel Laflamme (Java development) -->
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Stephane Besson (R&D) -->
 <dataset>
 	<TEST_TABLE COLUMN0="row 0 col 0" COLUMN1="row 0 col 1" COLUMN2="row 0 col 2" COLUMN3="row 0 col 3"/>
 	<TEST_TABLE COLUMN0="row 1 col 0" COLUMN1="row 1 col 1" COLUMN2="row 1 col 2" COLUMN3="row 1 col 3"/>
@@ -19,4 +19,3 @@
 	<ONLY_PK_TABLE/>
 	<EMPTY_MULTITYPE_TABLE/>
 </dataset>
-

@@ -24,6 +24,7 @@ package org.dbunit.operation;
 
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockStatementFactory;
 import org.dbunit.dataset.*;
@@ -34,6 +35,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
@@ -88,6 +90,30 @@ public class RefreshOperationTest extends AbstractDatabaseTest
             ITable tableAfter = createOrderedTable(tableNames[i], primaryKey);
             Assertion.assertEquals(expectedTable, tableAfter);
         }
+    }
+
+    public void testExecuteAndNoPrimaryKeys() throws Exception
+    {
+        String tableName = "TEST_TABLE";
+
+        Reader reader = new FileReader("src/xml/refreshOperationNoPKTest.xml");
+        IDataSet dataSet = new FlatXmlDataSet(reader);
+
+        // verify table before
+        assertEquals("row count before", 6, _connection.getRowCount(tableName));
+
+        try
+        {
+            DatabaseOperation.REFRESH.execute(_connection, dataSet);
+            fail("Should not be here!");
+        }
+        catch (NoPrimaryKeyException e)
+        {
+
+        }
+
+        // verify table after
+        assertEquals("row count before", 6, _connection.getRowCount(tableName));
     }
 
     public void testExecuteWithDuplicateTables() throws Exception
