@@ -278,6 +278,25 @@ ForwardOnlyResultSetTable:
 
       </answer>
     </faq>    
+    
+    <faq id="flatxmlvalidation">
+      <question>
+      How to enable flat XML dataset validation?
+      </question>
+      <answer>
+      <p>
+      Flat XML validation is disabled by default even if you are using a DTD. Following sample demonstrate how to load a flat XML dataset with DTD validation enabled:
+<source>
+    FlatXmlProducer producer = new FlatXmlProducer(
+            new InputSource("dataset.xml"));
+    producer.setValidating(true);
+    IDataSet dataSet = new CachedDataSet(producer);
+</source>
+</p>
+
+      </answer>
+    </faq>  
+    
   </part>  
 
   <part id="use">
