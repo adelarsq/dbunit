@@ -22,6 +22,7 @@ package org.dbunit.database;
 
 import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.filter.SequenceTableFilter;
 
 import java.sql.DatabaseMetaData;
@@ -161,24 +162,38 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
                 return (Set)_dependentMap.get(tableName);
             }
 
-            DatabaseMetaData metaData = _connection.getConnection().getMetaData();
-            String schema = _connection.getSchema();
+            boolean qualifiedNames = _connection.getConfig().getFeature(
+                    DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES);
 
-            ResultSet resultSet = metaData.getExportedKeys(null, schema, tableName);
+            String originalTableName = tableName;
+            String schemaName = _connection.getSchema();
+            int index = tableName.indexOf(".");
+            if (index >= 0)
+            {
+                schemaName = tableName.substring(0, index);
+                tableName = tableName.substring(index + 1);
+            }
+            DatabaseMetaData metaData = _connection.getConnection().getMetaData();
+            ResultSet resultSet = metaData.getExportedKeys(null, schemaName, tableName);
+
             try
             {
                 Set foreignTableSet = new HashSet();
 
                 while (resultSet.next())
                 {
-                    // TODO : add support for qualified table names
-//                    String foreignSchemaName = resultSet.getString(6);
+                    String foreignSchemaName = resultSet.getString(6);
                     String foreignTableName = resultSet.getString(7);
+                    if (qualifiedNames)
+                    {
+                        foreignTableName = DataSetUtils.getQualifiedName(
+                                foreignSchemaName, foreignTableName);
+                    }
 
                     foreignTableSet.add(foreignTableName);
                 }
 
-                _dependentMap.put(tableName, foreignTableSet);
+                _dependentMap.put(originalTableName, foreignTableSet);
                 return foreignTableSet;
             }
             finally
