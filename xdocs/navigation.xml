@@ -7,9 +7,8 @@
   <body>
     <links>
       <item name="SF"                 href="http://www.sf.net/projects/dbunit"/>
-     
-      
-    </links>
+      <item name="Maven Plugin"       href="http://maven-plugins.sourceforge.net/maven-dbunit-plugin/index.html"/>      
+    </links>    
     <menu name="Docs">
       <item name="Overview"        href="/index.html"/>  
       <item name="Intro"           href="/intro.html"/>   
