@@ -4,3 +4,4 @@ target
 *.ser
 junit*.properties
 .project
+spy.*
