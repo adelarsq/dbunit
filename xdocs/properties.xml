@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<document><properties><title>The Dbunit Framework - Properties</title></properties><body><section>
-      <h2>DbUnit features and properties</h2>
+<document><properties><title>Configurable Features and Properties</title></properties><body><section>
+      <h3>Configurable features and properties</h3>
       <p>DbUnit does not use System properties anymore since version 2.0. DbUnit 
         use a configuration object, <code>DatabaseConfig</code>, to query 
         and set feature flags and property values for a <code>IDatabaseConnection</code>. 
@@ -34,10 +34,7 @@
         </tr>
         <tr> 
           <td>Description</td>
-          <td>Enable or disable multiple schemas support. If enabled, Dbunit access 
-            tables with names fully qualified by schema using this format: SCHEMA.TABLE. 
-            Also see <a href="howto.html#multipleschema">how to import/export 
-            with multiple schema</a>. </td>
+          <td>Enable or disable usage of JDBC batched statement by DbUnit. </td>
         </tr>
       </table>
       <a name="qualifiedtablenames"></a>
@@ -53,7 +50,8 @@
         </tr>
         <tr> 
           <td>Description</td>
-          <td>Enable or disable usage of JDBC batched statement by DbUnit. </td>
+          <td>Enable or disable multiple schemas support. If enabled, Dbunit access 
+            tables with names fully qualified by schema using this format: SCHEMA.TABLE.</td>
         </tr>
         <tr> 
           <td>Note</td>

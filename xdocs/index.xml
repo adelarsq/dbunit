@@ -3,13 +3,13 @@
 <document>
 
   <properties>
-    <title>DBUnit</title>
+    <title>About DbUnit and News</title>
     <author email="epugh@upstate.com">Eric Pugh</author>
   </properties>
 
   <body>
 
-  <section name="DBUnit">
+  <section name="About DbUnit">
     <p>
       DbUnit is a JUnit extension (also usable from Ant) targeted for database-driven projects that, 
       among other things, puts your database into a known state between test runs. This is an excellent 

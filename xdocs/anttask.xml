@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document><properties><title>The Dbunit Framework - Ant Task</title></properties><body><section>
-      <h2>Ant Integration</h2>
-      <h3>Installation</h3>
+      <h3>Ant Integration</h3>
+      <h4>Installation</h4>
       The steps required to add the DbUnit task to your system are: 
         <p>1. Add the DbUnit jar to Ant's classpath. </p>
         <p>2. Add a &lt;taskdef&gt; element to your build script as follows: 

@@ -9,15 +9,84 @@
         Which database system are supported?
       </question>
       <answer>
-    
-      The Dbunit framework has been developed and tested with Oracle and HypersonicSQL. 
+      <p>The Dbunit framework has been developed and tested with Oracle and HypersonicSQL. 
         It uses a fairly simple SQL syntax and should be compatible with the other 
         database systems. <a href="support.html">Let us know</a> if you find any 
-        incompatibilities.
+        incompatibilities.</p>
+      </answer>
+    </faq>
+  </part>  
 
+  <part id="use">
+    <title>Using DbUnit</title>
+    <faq id="extract">
+      <question>
+        How to extract a flat XML dataset from my database?
+      </question>
+      <answer>
+      <p>
+      The following sample demonstrates how you can export one or many tables
+      from a database to an flat XML dataset file.
+      <source>
+public class DatabaseExportSample
+{
+    public static void main(String[] args) throws Exception
+    {
+        // database connection
+        Class driverClass = Class.forName("org.hsqldb.jdbcDriver");
+        Connection jdbcConnection = DriverManager.getConnection(
+                "jdbc:hsqldb:sample", "sa", "");
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        // partial database export
+        String[] tableNames = {"TABLE1", "TABLE2", "TABLE2"};
+        IDataSet partialDataSet = connection.createDataSet(tableNames);
+        FlatXmlDataSet.write(partialDataSet, new FileOutputStream("partial.xml"));
+
+        // full database export
+        IDataSet fullDataSet = connection.createDataSet();
+        FlatXmlDataSet.write(fullDataSet, new FileOutputStream("full.xml"));
+    }
+}</source></p>      </answer>
+    </faq>
+
+    <faq id="generatedtd">
+      <question>
+        How to generate a DTD representing my database schema?
+      </question>
+      <answer>
+      <p>The following sample demonstrates how you can generate a flat xml dataset
+        DTD from a database.</p>
+      <source>
+public class DatabaseExportSample
+{
+    public static void main(String[] args) throws Exception
+    {
+        // database connection
+        Class driverClass = Class.forName("org.hsqldb.jdbcDriver");
+        Connection jdbcConnection = DriverManager.getConnection(
+                "jdbc:hsqldb:sample", "sa", "");
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        // write DTD file
+        FlatDtdDataSet.write(connection.createDataSet(),
+                new FileOutputStream("test.dtd"));
+    }
+}</source>
+      
       </answer>
     </faq>
 
+    <faq id="multipleschema">
+      <question>
+        Can I work with multiple database schemas having table with the same name?
+      </question>
+      <answer>
+        Yes, see the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature.
+      </answer>
+    </faq>
+
+    <title>Using DbUnit</title>
     <faq id="identity">
       <question>
         Can I use DbUnit with IDENTITY or auto-increment 
@@ -28,68 +97,18 @@
         values into the database. The way to disable this feature is database 
         specific. If your database does not provide a way to disable this feature 
         then you are out of luck and DbUnit cannot be used with it. </p>
-      <p>Since version 1.4, DbUnit support IDENTITY columns for MS SQL Server 
+      <p>DbUnit support IDENTITY columns for MS SQL Server 
         with the class <a href="components.html#IdentityInsertOperation">IdentityInsertOperation</a>. 
-        <br></br>
       </p>
       </answer>
     </faq>
-    
-    <faq id="clonedconnection">
-      <question>
-       Why I get a "Can't start a cloned connection" 
-        exception when I use InsertIdentityOperation?
-      </question>
-      <answer>
-        <p>If you are using the Microsoft driver (i.e. <a class="code">com.microsoft.jdbc.sqlserver.SQLServerDriver</a>), 
-        you'll need to use the <a class="code">SelectMethod=cursor</a> parameter 
-        in the JDBC connection string (as outlined by <a href="http://forum.java.sun.com/thread.jsp?forum=48&amp;thread=184797">this 
-        JDC thread</a>). Your database Url would look something like the following: 
-      </p>
-      <p> 
-      <pre>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor
-</pre>
-      </p>
-      </answer>
-    </faq>    
-    
-    <faq id="UnsatisfiedLinkError">
-      <question>
-      Why I get an "UnsatisfiedLinkError" 
-        with the DB2 driver?
-      </question>
-      <answer>
-       <p>DbUnit uses JDBC 2.0 features (batch updates). By default, DB2 installs 
-        the JDBC 1.0 driver. You have to install the JDBC 2.0 driver in order 
-        for DbUnit to work or you will get an <a class="code">UnsatisfiedLinkError</a> 
-        from the DB2 JDBC 1.0 driver.</p>
-      <p>The steps for installing the DB2 JDBC 2.0 driver are covered in the DB2 
-        documentation.</p>
-      </answer>
-    </faq>    
-    
-    <faq id="AmbiguousTableNameException">
-      <question>
-     Why I get a AmbiguousTableNameException?
-      </question>
-      <answer>
-      <p>This situation occurs when no schema is specified and that DbUnit detect 
-        that it is getting columns information from multiple tables having the 
-        same name and located in different schemas.</p>
-      <p>You can solve this problem in three different ways:<br></br>
-        1. Provide the schema name when creating the database connection.<br></br>
-        2. Ensure that the connection is restricted to access only one schema.<br></br>
-        3. Use fully qualified table names as specified <a href="howto.html#multipleschema">here</a>.<br></br>
-      </p>
-      </answer>
-    </faq>     
-    
+
     <faq id="flatxmlnull">
       <question>
-     How to specify NULL values with flat XML dataset
+     How to specify NULL values with flat XML dataset?
       </question>
       <answer>
-      <p>See FlatXmlDataSet documentation <a href="components.html#FlatXmlDataSet">here</a>.</p>
+      <p>See <a href="components.html#FlatXmlDataSet">FlatXmlDataSet documentation</a></p>
       </answer>
     </faq>  
     
@@ -123,6 +142,59 @@
       editing the spy.properties file.</p>
       </answer>
     </faq>    
+  </part>  
+
+  <part id="use">
+    <title>Errors</title>
+    
+    <faq id="clonedconnection">
+      <question>
+       Why I get a "Can't start a cloned connection" 
+        exception when I use InsertIdentityOperation?
+      </question>
+      <answer>
+        <p>If you are using the Microsoft driver (i.e. <a class="code">com.microsoft.jdbc.sqlserver.SQLServerDriver</a>), 
+        you'll need to use the <a class="code">SelectMethod=cursor</a> parameter 
+        in the JDBC connection string (as outlined by <a href="http://forum.java.sun.com/thread.jsp?forum=48&amp;thread=184797">this 
+        JDC thread</a>). Your database Url would look something like the following: 
+      <source>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor</source>
+      </p>
+      </answer>
+    </faq>    
+    
+    <faq id="UnsatisfiedLinkError">
+      <question>
+      Why I get an "UnsatisfiedLinkError" 
+        with the DB2 driver?
+      </question>
+      <answer>
+       <p>DbUnit uses JDBC 2.0 features (batch updates). By default, DB2 installs 
+        the JDBC 1.0 driver. You have to install the JDBC 2.0 driver in order 
+        for DbUnit to work or you will get an <a class="code">UnsatisfiedLinkError</a> 
+        from the DB2 JDBC 1.0 driver.</p>
+      <p>The steps for installing the DB2 JDBC 2.0 driver are covered in the DB2 
+        documentation.</p>
+      </answer>
+    </faq>    
+    
+    <faq id="AmbiguousTableNameException">
+      <question>
+     Why I get a AmbiguousTableNameException?
+      </question>
+      <answer>
+      <p>This situation occurs when no schema is specified and that DbUnit detect 
+        that it is getting columns information from multiple tables having the 
+        same name and located in different schemas.</p>
+      <p>You can solve this problem in three different ways:
+      <ul>
+        <li>1. Provide the schema name when creating the database connection.</li>
+        <li>2. Ensure that the connection is restricted to access only one schema.</li>
+        <li>3. Enable the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature.</li>
+      </ul>
+      </p>
+      </answer>
+    </faq>     
+    
   </part>
   <!--
   <part id="install">

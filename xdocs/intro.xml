@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<document><properties><title>The Dbunit Framework - Home</title></properties><body><section>
-      <h2>Introduction</h2>
+<document><properties><title>Database Testing</title></properties><body><section>
+      <h3>Database Testing</h3>
       <p>Richard Dallaway notes about database unit testing inspired me the realization 
         of the DbUnit framework. I think this is a very good text about this subject. 
         Hopefully he gave me the permission to present excerpts from his notes 
-        here on the DbUnit site.</p>
+        here.</p>
       <p>The original text is much longer and I strongly suggest you to read it 
         as well. See <a href="resources.html#RichardDallaway">resources</a> for 
-        reference to it.<br></br>
+        reference to it. - Manuel Laflamme
       </p>
-      <hr></hr>
       <p> 
-      </p><h3>Unit testing database code</h3>
+      </p><h3>Unit testing database</h3>
       <p>These are my notes on how I've gone about unit testing database functionality.</p>
       <p> [...]</p>
       <p>The problem is this: you have a SQL database, some stored procedures, 
         and a layer of code sitting between your application and the database. 
         How can you put tests in place to make sure your code really is reading 
         and writing the right data from the database? </p>
-      <p> 
-      </p><h3>Why bother?</h3>
+      <h4>Why bother?</h4>
       <p>I'm guessing some, if not a lot, of database development goes like this: 
         set up database, write code to access database, run code, do a SELECT 
         to see if the records showed up in the database. They did? Good, then 
@@ -44,7 +42,7 @@
       <p> [...]</p>
       <p>[B]ut how do we manage the testing data in the database so that it doesn't 
         "mess up" live data?   
-      </p><h3>You need four databases</h3>
+      </p><h4>You need multiple databases</h4>
       <p>Some thoughts: A good test set is self-sufficient and creates all the 
         data it needs. Testing can be simplified if you can get the database in 
         a known state before a test is run. One ways to do this is to have a separate 

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<document><properties><title>The Dbunit Framework - Framework Components</title></properties><body><section>
+<document><properties><title>Core Components</title></properties><body><section>
 	 
-      <h2>Core Classes</h2>
-      The following walks you through the core classes that make up DbUnit: 
-      <ul>
-        <li><a href="#dataset">IDataSet (org.dbunit.dataset)</a></li>
-        <li><a href="#databaseconnection">IDatabaseConnection (org.dbunit.database)</a></li>
-        <li><a href="#databaseoperation">DatabaseOperation (org.dbunit.operation)</a></li>
-      </ul>
+      <h3>Core Components</h3>
+      <p>The following walks you through the core classes that make up DbUnit: 
+      <ol>
+        <li><a href="#dataset">IDataSet</a></li>
+        <li><a href="#databaseconnection">IDatabaseConnection</a></li>
+        <li><a href="#databaseoperation">DatabaseOperation</a></li>
+      </ol>
+      </p>
       <p>All the above are interfaces or abstract classes and you will find yourself 
         using implementations or subclasses.</p>
       <hr></hr>
