@@ -23,6 +23,7 @@ package org.dbunit.database;
 import org.dbunit.dataset.AbstractTableIteratorTest;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.MockDataSet;
 
 /**
  * @author Manuel Laflamme

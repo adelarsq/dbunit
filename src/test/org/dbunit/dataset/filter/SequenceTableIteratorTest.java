@@ -23,7 +23,7 @@ package org.dbunit.dataset.filter;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.database.DatabaseDataSet;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.database.MockDataSet;
+import org.dbunit.dataset.MockDataSet;
 import org.dbunit.database.MockResultSetTable;
 import org.dbunit.database.DatabaseTableIterator;
 import org.dbunit.dataset.AbstractTableIteratorTest;
