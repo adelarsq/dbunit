@@ -34,8 +34,6 @@ import java.sql.PreparedStatement;
 public abstract class DataType
 {
     public static final DataType UNKNOWN = new UnknownDataType();
-//    public static final DataType UNKNOWN = new UnknownDataType(
-//            "UNKNOWN", Types.OTHER);
 
     public static final DataType CHAR = new StringDataType(
             "CHAR", Types.CHAR);

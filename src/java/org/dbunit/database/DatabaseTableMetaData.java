@@ -22,11 +22,21 @@
 
 package org.dbunit.database;
 
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.AbstractTableMetaData;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.NoColumnsFoundException;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Manuel Laflamme
@@ -36,13 +46,16 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 {
     private final String _tableName;
     private final IDatabaseConnection _connection;
+    private final IDataTypeFactory _dataTypeFactory;
     private Column[] _columns;
     private Column[] _primaryKeys;
 
-    public DatabaseTableMetaData(String tableName, IDatabaseConnection connection)
+    DatabaseTableMetaData(String tableName, IDatabaseConnection connection,
+            IDataTypeFactory dataTypeFactory)
     {
         _tableName = tableName;
         _connection = connection;
+        _dataTypeFactory = dataTypeFactory;
     }
 
     private String[] getPrimaryKeyNames() throws SQLException
@@ -159,17 +172,9 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 //                        int columnSize = resultSet.getInt(7);
                         int nullable = resultSet.getInt(11);
 
-                        // convert sql type to DataType
-                        DataType dataType = DataType.UNKNOWN;
-                        if (sqlType != Types.OTHER)
-                        {
-                            dataType = DataType.forSqlType(sqlType);
-                        }
-                        else
-                        {
-                            dataType = DataType.forSqlTypeName(sqlTypeName);
-                        }
-
+                        // Convert SQL type to DataType
+                        DataType dataType =
+                                _dataTypeFactory.createDataType(sqlType, sqlTypeName);
                         if (dataType != DataType.UNKNOWN)
                         {
                             Column column = new Column(columnName, dataType,

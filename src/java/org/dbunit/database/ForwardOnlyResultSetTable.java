@@ -24,6 +24,7 @@ import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.RowOutOfBoundsException;
 import org.dbunit.dataset.Column;
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,16 +45,16 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
         super(metaData, resultSet);
     }
 
-    public ForwardOnlyResultSetTable(String tableName, String selectStatement,
-            IDatabaseConnection connection) throws DataSetException, SQLException
-    {
-        super(tableName, selectStatement, connection);
-    }
-
     public ForwardOnlyResultSetTable(ITableMetaData metaData,
             IDatabaseConnection connection) throws DataSetException, SQLException
     {
         super(metaData, connection);
+    }
+
+    public ForwardOnlyResultSetTable(String tableName, String selectStatement,
+            IDatabaseConnection connection) throws DataSetException, SQLException
+    {
+        super(tableName, selectStatement, connection, new DefaultDataTypeFactory());
     }
 
     ////////////////////////////////////////////////////////////////////////////

@@ -25,6 +25,7 @@ package org.dbunit.database;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.Column;
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,10 +60,10 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         }
     }
 
-    public ScrollableResultSetTable(String tableName, String selectStatement,
+    public ScrollableResultSetTable(ITableMetaData metaData,
             IDatabaseConnection connection) throws DataSetException, SQLException
     {
-        super(tableName, selectStatement, connection);
+        super(metaData, connection);
 
         try
         {
@@ -81,10 +82,10 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         }
     }
 
-    public ScrollableResultSetTable(ITableMetaData metaData,
+    public ScrollableResultSetTable(String tableName, String selectStatement,
             IDatabaseConnection connection) throws DataSetException, SQLException
     {
-        super(metaData, connection);
+        super(tableName, selectStatement, connection, new DefaultDataTypeFactory());
 
         try
         {

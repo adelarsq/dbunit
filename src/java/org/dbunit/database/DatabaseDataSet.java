@@ -22,11 +22,26 @@
 
 package org.dbunit.database;
 
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.filter.SequenceTableIterator;
+import org.dbunit.dataset.AbstractDataSet;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoSuchTableException;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Manuel Laflamme
@@ -39,12 +54,14 @@ public class DatabaseDataSet extends AbstractDataSet
     private static final String[] TABLE_TYPE = {"TABLE"};
 
     private final IDatabaseConnection _connection;
+    private final IDataTypeFactory _dataTypeFactory;
     private final Map _tableMap = new HashMap();
     private List _nameList = null;
 
-    DatabaseDataSet(IDatabaseConnection connection) throws SQLException
+    DatabaseDataSet(IDatabaseConnection connection, IDataTypeFactory dataTypeFactory) throws SQLException
     {
         _connection = connection;
+        _dataTypeFactory = dataTypeFactory;
     }
 
     static String getSelectStatement(String schema, ITableMetaData metaData)
@@ -202,7 +219,7 @@ public class DatabaseDataSet extends AbstractDataSet
             {
                 // Create metadata and cache it
                 metaData = new DatabaseTableMetaData(
-                        databaseTableName, _connection);
+                        databaseTableName, _connection, _dataTypeFactory);
                 _tableMap.put(upperTableName, metaData);
                 break;
             }

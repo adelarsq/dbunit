@@ -26,6 +26,7 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,7 +54,8 @@ public abstract class AbstractResultSetTable extends AbstractTable
     }
 
     public AbstractResultSetTable(String tableName, String selectStatement,
-            IDatabaseConnection connection) throws DataSetException, SQLException
+            IDatabaseConnection connection, IDataTypeFactory dataTypeFactory)
+            throws DataSetException, SQLException
     {
         Connection jdbcConnection = connection.getConnection();
         _statement = jdbcConnection.createStatement();
@@ -62,7 +64,7 @@ public abstract class AbstractResultSetTable extends AbstractTable
         try
         {
             _resultSet = _statement.executeQuery(selectStatement);
-            _metaData = createTableMetaData(tableName, _resultSet);
+            _metaData = createTableMetaData(tableName, _resultSet, dataTypeFactory);
         }
         catch (SQLException e)
         {
@@ -101,16 +103,20 @@ public abstract class AbstractResultSetTable extends AbstractTable
     }
 
     static ITableMetaData createTableMetaData(String name,
-            ResultSet resultSet) throws DataSetException, SQLException
+            ResultSet resultSet, IDataTypeFactory dataTypeFactory) throws DataSetException, SQLException
     {
         ResultSetMetaData metaData = resultSet.getMetaData();
         Column[] columns = new Column[metaData.getColumnCount()];
         for (int i = 0; i < columns.length; i++)
         {
+            int columnType = metaData.getColumnType(i + 1);
+            String columnTypeName = metaData.getColumnTypeName(i + 1);
+            DataType dataType = dataTypeFactory.createDataType(
+                    columnType, columnTypeName);
             columns[i] = new Column(
                     metaData.getColumnName(i + 1),
-                    DataType.forSqlType(metaData.getColumnType(i + 1)),
-                    metaData.getColumnTypeName(i + 1),
+                    dataType,
+                    columnTypeName,
                     Column.nullableValue(metaData.isNullable(i + 1)));
         }
 

@@ -25,6 +25,8 @@ package org.dbunit.database;
 import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.*;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -41,6 +43,7 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
             "org.dbunit.database.statement.PreparedStatementFactory";
 
     private final IStatementFactory _statementFactory;
+    private final IDataTypeFactory _dataTypeFactory = new DefaultDataTypeFactory();
     private IDataSet _dataSet = null;
 
     public AbstractDatabaseConnection()
@@ -82,6 +85,11 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         _statementFactory = factory;
     }
 
+    protected IDataTypeFactory getDataTypeFactory()
+    {
+        return _dataTypeFactory;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // IDatabaseConnection interface
 
@@ -89,7 +97,7 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
     {
         if (_dataSet == null)
         {
-            _dataSet = new DatabaseDataSet(this);
+            _dataSet = new DatabaseDataSet(this, getDataTypeFactory());
         }
 
         return _dataSet;
@@ -110,8 +118,8 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
             try
             {
-                ITableMetaData metaData = ScrollableResultSetTable.createTableMetaData(
-                        resultName, resultSet);
+                ITableMetaData metaData = AbstractResultSetTable.createTableMetaData(
+                        resultName, resultSet, getDataTypeFactory());
                 return new CachedResultSetTable(metaData, resultSet);
             }
             finally
