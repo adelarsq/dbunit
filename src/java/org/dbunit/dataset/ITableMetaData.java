@@ -23,7 +23,7 @@
 package org.dbunit.dataset;
 
 /**
- * Represents metadata of a table.
+ * Represents table metadata.
  *
  * @author Manuel Laflamme
  * @version $Revision$

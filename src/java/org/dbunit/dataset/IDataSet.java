@@ -22,8 +22,10 @@
 
 package org.dbunit.dataset;
 
+import org.dbunit.database.AmbiguousTableNameException;
+
 /**
- * A dataset represents a collection of data from various tables.
+ * Represents a collection of tables.
  *
  * @author Manuel Laflamme
  * @version $Revision$
