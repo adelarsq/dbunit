@@ -81,8 +81,9 @@ public class DatabaseExportSample
         IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
 
         // partial database export
-        String[] tableNames = {"TABLE1", "TABLE2", "TABLE2"};
-        IDataSet partialDataSet = connection.createDataSet(tableNames);
+        QueryDataSet partialDataSet = new QueryDataSet(connection);
+        partialDataSet.addTable("FOO", "SELECT * FROM TABLE WHERE COL='VALUE'");
+        partialDataSet.addTable("BAR");
         FlatXmlDataSet.write(partialDataSet, new FileOutputStream("partial.xml"));
 
         // full database export
@@ -171,7 +172,7 @@ public class DatabaseExportSample
     
     <faq id="dateformat">
       <question>
-      What are the dates formats used by XML dataset implementations?
+      What are the dates formats supported by DbUnit?
       </question>
       <answer>
      <p>DbUnit use the JDBC escape formats for string representation.
@@ -207,7 +208,7 @@ You can replace the default DbUnit <a href="properties.html#typefactory">data ty
 DbUnit provides extended factories for some vendors, which are located in <code>org.dbunit.ext</code> subpackages.
       </p>
       <p>
-Here is how to use the Oracle factory:
+Here is how to setup the Oracle factory:
 <source>
     IDatabaseConnection connection = new DatabaseConnection(
             jdbcConnection, schema);

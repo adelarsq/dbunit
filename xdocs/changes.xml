@@ -15,13 +15,13 @@
      	Use SAX2 instead of Electric XML parser. DbUnit has no dependencies anymore on exml.jar and dtdparser.jar.
      </action>      	            
      <action dev="" type="update">
-     	Dramatic memory usage improvements to get rid of the infamous OutOfMemoryError. Need some setup to take advantage of some of them. See "OutOfMemoryError" FAQ.
+     	Dramatic memory usage improvements to get rid of the infamous OutOfMemoryError. May need setup to take advantage of some improved features. See "OutOfMemoryError" FAQ.
      </action>      	            
      <action dev="" type="add">
      	Flat XML dataset validation.
      </action>         
      <action dev="" type="add">
-     	New <code>ITableIterator</code> interface used to iterate thru dataset tables. Allows usage of efficient lazy tables initialization for some dataset implementations. The <code>IDataSet.getTables</code> method have been deprecated and should not be used anymore.
+     	New <code>ITableIterator</code> interface used to iterate thru dataset tables. Allows lazy tables initialization for some dataset implementations. The <code>IDataSet.getTables</code> method have been deprecated and usage should be avoided.
      </action>         
      <action dev="" type="add">
      	<code>StreamingDataSet</code>. Provides high performance and memory friendly XML document loading.
@@ -30,7 +30,7 @@
      	Global System properties are not supported anymore. You must now use the new <code>DatabaseConfig</code> object to alter DbUnit behaviours. 
      </action>         
      <action dev="" type="add">
-     	New configurable DataType factory to easily integrates new custom data type with the DbUnit core. Multiple factory implementations available for some database vendors. Submit your own!
+     	Configurable data type factory to easily integrates new data types with the DbUnit core. Factory implementations available for some database vendors. Submit your own!
      </action>         
      <action dev="" type="add">
      	Oracle TIMESTAMP data type support via the <code>OracleDataTypeFactory</code>.
@@ -57,7 +57,7 @@
      	Ability to sort tables by their dependencies with the new <code>DatabaseSequenceFilter</code> strategy.
      </action>         
      <action dev="" type="add">
-     	New <code>ReplacementDataSet</code> decorator, which can replace decorated dataset values on the fly. Can be used as a new way to specify null values for flat XML dataset.
+     	New <code>ReplacementDataSet</code> decorator, which can replace decorated dataset values on the fly. Can be used with flat XML dataset as a new way to specify null values.
      </action>         
      <action dev="" type="add">
      	New <code>XlsDataSet</code>. An MS Excel dataset implementation. Uses the Jakarta POI package.

@@ -244,12 +244,12 @@
         </tr>
       </table>
       <h3>Examples</h3>
-      <h4>Update operation with specified JDBC driver</h4>
+      <h4>Update operation with specified JDBC driver jar</h4>
 	<source><![CDATA[
-<dbunit driver="org.hsqldb.jdbcDriver"          
-	url="jdbc:hsqldb:."          
-	userid="sa"          
-	password="">
+<dbunit driver="com.vendor.jdbc.Driver"          
+	url="jdbc:vendor:mydatabase"          
+	userid="user"          
+	password="password">
     <classpath>    	
         <pathelement location="/some/jdbc.jar"/>    
     </classpath>    
@@ -258,41 +258,43 @@
 
       <h4>Insert and update operations</h4>
 	<source><![CDATA[
-<dbunit driver="org.hsqldb.jdbcDriver"          
-        url="jdbc:hsqldb:."          
-        userid="sa"          
-        password="">    
+<dbunit driver="com.vendor.jdbc.Driver"          
+        url="jdbc:vendor:mydatabase"          
+        userid="user"          
+        password="password">    
     <operation type="INSERT" src="insertFile.xml"/>    
     <operation type="UPDATE" src="updateFile.xml"/>  
 </dbunit>]]></source>        
 
       <h4>Database data export to XML</h4>
 	<source><![CDATA[
-<dbunit driver="org.hsqldb.jdbcDriver"          
-        url="jdbc:hsqldb:."          
-        userid="sa"          
-        password="">    
+<dbunit driver="com.vendor.jdbc.Driver"          
+        url="jdbc:vendor:mydatabase"          
+        userid="user"          
+        password="password">    
     <export dest="export.xml"/> 
 </dbunit>]]></source>        
 
       <h4>Database structure export to DTD</h4>
 	<source><![CDATA[
-<dbunit driver="org.hsqldb.jdbcDriver"          
-        url="jdbc:hsqldb:."          
-        userid="sa"          
-        password="">    
+<dbunit driver="com.vendor.jdbc.Driver"          
+        url="jdbc:vendor:mydatabase"          
+        userid="user"          
+        password="password">    
     <export dest="export.dtd" format="dtd"/>
 </dbunit>]]></source>        
 
-      <h4>Partial database data export</h4>
+      <h4><a name="partialexport">Partial database data export</a></h4>
+      <p>Export two tables: FOO, resulting from specified query and BAR, resulting from generated query "SELECT * FROM BAR"</p>
 	<source><![CDATA[
-<dbunit driver="org.hsqldb.jdbcDriver"          
-        url="jdbc:hsqldb:."          
-        userid="sa"          
-        password="">    
+<dbunit driver="com.vendor.jdbc.Driver"          
+        url="jdbc:vendor:mydatabase"          
+        userid="user"          
+        password="password">    
     <export dest="partial.xml">      
-        <table name="FOO"/>      
-        <query name="BAR" sql="SELECT COL1, COL2, COL3 as 'COLSPECIAL' FROM BAR WHERE COL1=4"/>
+        <query name="FOO" sql="SELECT COL1, COL2, COL3 as 'COLSPECIAL' 
+                               FROM BAR WHERE COL1=4"/>
+        <table name="BAR"/>      
     </export>
 </dbunit>]]></source>        
 

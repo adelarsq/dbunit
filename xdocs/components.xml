@@ -155,21 +155,30 @@ Following sample shows how to load a flat XML dataset with the StreamingDataSet:
 </td>
         </tr>
         <tr> 
-          <td><a href="apidocs/org/dbunit/database/DatabaseDataSet.html">DatabaseDataSet</a></td>
+          <td><a name="databasedataset" href="apidocs/org/dbunit/database/DatabaseDataSet.html">DatabaseDataSet</a></td>
           <td>Adapter that provides access 
       to a database instance as a dataset. This class is not usually instantiated 
       directly but from the factory method <code>IDatabaseConnection.createDataSet()</code>.</td>
         </tr>
         <tr> 
-          <td><a href="apidocs/org/dbunit/database/QueryDataSet.html">QueryDataSet</a></td>
-          <td>Holds collection of tables resulting from database query.</td>
+          <td><a name="querydataset" href="apidocs/org/dbunit/database/QueryDataSet.html">QueryDataSet</a></td>
+          <td>Holds collection of tables resulting from database queries.
+          <br/>
+          Following sample snippet creates a dataset containing two tables: FOO, resulting from specified query and BAR, resulting from generated query "SELECT * FROM BAR".
+<source>
+    QueryDataSet dataSet = new QueryDataSet(connection);
+    dataSet.addTable("FOO", "SELECT * FROM TABLE WHERE COL='VALUE'");
+    dataSet.addTable("BAR");
+</source>
+
+          </td>
         </tr>
         <tr> 
-          <td><a href="apidocs/org/dbunit/dataset/DefaultDataSet.html">DefaultDataSet</a></td>
+          <td><a name="defaultdataset" href="apidocs/org/dbunit/dataset/DefaultDataSet.html">DefaultDataSet</a></td>
           <td>Uses to create datasets       programmatically.</td>
         </tr>
         <tr> 
-          <td><a href="apidocs/org/dbunit/dataset/CompositeDataSet.html">CompositeDataSet</a></td>
+          <td><a name="compositedataset" href="apidocs/org/dbunit/dataset/CompositeDataSet.html">CompositeDataSet</a></td>
           <td>Combines multiple datasets 
       into a single logical dataset.</td>
         </tr>
@@ -187,16 +196,15 @@ Following sample shows how to load a flat XML dataset with the StreamingDataSet:
         </tr>
 
         <tr> 
-          <td> ExcludeTableFilter </td>
-          <td> Hides matching tables pattern without modifying the original table order. Support wildcards.</td>
+          <td>ExcludeTableFilter </td>
+          <td>Hides matching tables pattern without modifying the original table order. Support wildcards.</td>
         </tr>
         <tr> 
-          <td> SequenceTableFilter </td>
-          <td> Exposes a configured table sequence and can be used to reorder dataset table. This is the original filtering strategy from DbUnit 1.x. </td>
+          <td>SequenceTableFilter </td>
+          <td>Exposes a configured table sequence and can be used to reorder dataset table. This is the original filtering strategy from DbUnit 1.x. </td>
         </tr>
         <tr> 
-          <td> DatabaseSequenceFilter 
-</td>
+          <td>DatabaseSequenceFilter</td>
           <td> Automatically determine the tables order using foreign/exported keys information. 
           This strategy is vendor 
           independent and should work with any JDBC driver that implement the 
