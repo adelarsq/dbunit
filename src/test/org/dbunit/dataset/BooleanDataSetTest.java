@@ -1,5 +1,4 @@
 /*
- * NumberDataType.java   Feb 17, 2002
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -19,58 +18,36 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+package org.dbunit.dataset;
 
-package org.dbunit.dataset.datatype;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 
-import java.math.BigDecimal;
+import java.io.FileReader;
 
 /**
  * @author Manuel Laflamme
+ * @since Mar 14, 2003
  * @version $Revision$
  */
-public class NumberDataType extends AbstractDataType
+public class BooleanDataSetTest extends AbstractDataSetTest
 {
-    private static final Number TRUE = new BigDecimal(1);
-    private static final Number FALSE = new BigDecimal(0);
-
-    NumberDataType(String name, int sqlType)
+    public BooleanDataSetTest(String s)
     {
-        super(name, sqlType, BigDecimal.class, true);
+        super(s);
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // DataType class
+    // AbstractDataSetTest class
 
-    public Object typeCast(Object value) throws TypeCastException
+    protected IDataSet createDataSet() throws Exception
     {
-        if (value == null)
-        {
-            return null;
-        }
+        return new BooleanDataSet(new FlatXmlDataSet(new FileReader(
+                "src/xml/flatXmlDataSetTest.xml")));
+    }
 
-        if (value instanceof BigDecimal)
-        {
-            return value;
-        }
-
-        if (value instanceof Boolean)
-        {
-            return ((Boolean)value).booleanValue() ? TRUE : FALSE;
-        }
-
-        try
-        {
-            return new BigDecimal(value.toString());
-        }
-        catch (java.lang.NumberFormatException e)
-        {
-            throw new TypeCastException(e);
-        }
+    protected IDataSet createDuplicateDataSet() throws Exception
+    {
+        return new BooleanDataSet(new FlatXmlDataSet(new FileReader(
+                "src/xml/flatXmlDataSetDuplicateTest.xml")));
     }
 }
-
-
-
-
-
-
