@@ -1,8 +1,7 @@
 /*
- * ExclusiveTransactionException.java   Feb 21, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +26,7 @@ import org.dbunit.DatabaseUnitException;
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 21, 2002
  */
 public class ExclusiveTransactionException extends DatabaseUnitException
 {

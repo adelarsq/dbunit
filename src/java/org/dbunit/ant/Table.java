@@ -1,8 +1,7 @@
 /*
- * Table.java    Jun 10, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Timothy Ruppert && Ben Cox
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,8 +25,10 @@ package org.dbunit.ant;
  * The <code>Table</code> class is just a step placeholder for a table name
  * within an <code>Export</code>.
  *
- * @author Timothy Ruppert && Ben Cox
+ * @author Timothy Ruppert 
+ * @author Ben Cox
  * @version $Revision$
+ * @since Jun 10, 2002
  */
 public class Table
 {

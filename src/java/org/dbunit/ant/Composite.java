@@ -1,8 +1,7 @@
 /*
- * Composite.java    Mar 24, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Timothy Ruppert && Ben Cox
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,13 +23,18 @@ package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * The <code>Composite</code> class executes nested <code>Operation</code> steps.
  *
- * @author Timothy Ruppert && Ben Cox
+ * @author Timothy Ruppert 
+ * @author Ben Cox
  * @version $Revision$
+ * @since Jun 10, 2002
  * @see org.dbunit.ant.Operation
  */
 public class Composite extends Operation

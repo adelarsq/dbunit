@@ -17,13 +17,13 @@
 
 package org.dbunit.util.concurrent;
 
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
-import java.util.HashMap;
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * This class is interoperable with java.beans.PropertyChangeSupport,

@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,15 +20,15 @@
  */
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.Assertion;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 import java.io.File;
-import java.util.List;
-import java.util.ArrayList;
-import java.sql.Date;
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

@@ -1,8 +1,7 @@
 /*
- * DataSetException.java   Feb 17, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,6 +25,7 @@ package org.dbunit.dataset;
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 17, 2002
  */
 
 public class RowOutOfBoundsException extends DataSetException

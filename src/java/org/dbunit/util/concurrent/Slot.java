@@ -13,7 +13,7 @@
 */
 
 package org.dbunit.util.concurrent;
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * A one-slot buffer, using semaphores to control access.

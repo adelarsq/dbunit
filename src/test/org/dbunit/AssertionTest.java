@@ -1,8 +1,7 @@
 /*
- * AssertionTest.java   Mar 22, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +21,15 @@
 
 package org.dbunit;
 
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.CompositeDataSet;
+import org.dbunit.dataset.CompositeTable;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
@@ -31,12 +38,13 @@ import junit.framework.TestCase;
 
 import java.io.FileReader;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Mar 22, 2002
  */
 public class AssertionTest extends TestCase
 {

@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,11 +21,11 @@
 package org.dbunit.database;
 
 import org.dbunit.DatabaseEnvironment;
+import org.dbunit.dataset.Column;
 import org.dbunit.dataset.ForwardOnlyTableTest;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.MockTableMetaData;
 import org.dbunit.dataset.RowOutOfBoundsException;
-import org.dbunit.dataset.Column;
 import org.dbunit.operation.DatabaseOperation;
 
 import com.mockobjects.sql.MockMultiRowResultSet;

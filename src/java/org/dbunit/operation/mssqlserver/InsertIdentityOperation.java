@@ -1,8 +1,7 @@
 /*
- * InsertIdentityOperation.java
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,23 +19,7 @@
  */
 
 package org.dbunit.operation.mssqlserver;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.ITableIterator;
-import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.operation.CompositeOperation;
 import org.dbunit.operation.DatabaseOperation;
-import org.dbunit.operation.ExclusiveTransactionException;
-import org.dbunit.operation.AbstractOperation;
 
 /**
  * This class disable the MS SQL Server automatic identifier generation for

@@ -1,8 +1,7 @@
 /*
- * Operation.java    Mar 24, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Timothy Ruppert && Ben Cox
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,21 +23,18 @@ package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.stream.StreamingDataSet;
-import org.dbunit.dataset.CachedDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.XmlDataSet;
-import org.dbunit.dataset.xml.XmlProducer;
 import org.dbunit.dataset.xml.FlatXmlProducer;
-import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.dataset.xml.XmlProducer;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
+import org.dbunit.operation.DatabaseOperation;
 
 import org.xml.sax.InputSource;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -47,8 +43,10 @@ import java.sql.SQLException;
  * operation will be performed in the execution of the <code>DbUnitTask</code>
  * task.
  *
- * @author Timothy Ruppert && Ben Cox
+ * @author Timothy Ruppert
+ * @author Ben Cox
  * @version $Revision$
+ * @since Jun 10, 2002
  * @see org.dbunit.ant.DbUnitTaskStep
  */
 public class Operation implements DbUnitTaskStep

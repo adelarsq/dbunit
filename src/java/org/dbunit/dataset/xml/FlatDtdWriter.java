@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,12 +20,12 @@
  */
 package org.dbunit.dataset.xml;
 
-import java.io.PrintWriter;
-import java.io.Writer;
-
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
+
+import java.io.PrintWriter;
+import java.io.Writer;
 
 /**
  * @author Manuel Laflamme

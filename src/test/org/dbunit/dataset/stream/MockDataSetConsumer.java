@@ -1,9 +1,7 @@
-package org.dbunit.dataset.stream;
-
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,11 +18,12 @@ package org.dbunit.dataset.stream;
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-import org.dbunit.dataset.stream.IDataSetConsumer;
-import org.dbunit.dataset.ITableMetaData;
+package org.dbunit.dataset.stream;
+
 import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.ITableMetaData;
 
 import com.mockobjects.ExpectationList;
 import com.mockobjects.Verifiable;

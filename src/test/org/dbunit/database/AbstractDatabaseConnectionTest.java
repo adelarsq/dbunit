@@ -1,8 +1,7 @@
 /*
- * AbstractDatabaseConnectionTest.java   Mar 26, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,6 +27,7 @@ import org.dbunit.AbstractDatabaseTest;
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Mar 26, 2002
  */
 public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTest
 {

@@ -1,8 +1,7 @@
 /*
- * ScrollableResultSetTableTest.java   Feb 19, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,13 +22,14 @@
 package org.dbunit.database;
 
 import org.dbunit.DatabaseEnvironment;
-import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.dataset.AbstractTableTest;
 import org.dbunit.dataset.ITable;
+import org.dbunit.operation.DatabaseOperation;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 19, 2002
  */
 public class ScrollableResultSetTableTest extends AbstractTableTest
 {

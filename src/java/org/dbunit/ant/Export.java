@@ -1,8 +1,7 @@
 /*
- * Export.java    Jun 10, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Timothy Ruppert && Ben Cox
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -45,8 +44,10 @@ import java.util.List;
  * The export can be performed on a full dataset or a partial one if
  * specific table names are identified.
  *
- * @author Timothy Ruppert && Ben Cox
+ * @author Timothy Ruppert 
+ * @author Ben Cox
  * @version $Revision$
+ * @since Jun 10, 2002
  * @see DbUnitTaskStep
  */
 public class Export implements DbUnitTaskStep

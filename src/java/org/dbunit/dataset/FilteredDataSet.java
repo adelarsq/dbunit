@@ -1,8 +1,7 @@
 /*
- * FilteredDataSet.java   Feb 22, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,8 +21,10 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.filter.SequenceTableFilter;
+import org.dbunit.dataset.filter.ExcludeTableFilter;
 import org.dbunit.dataset.filter.ITableFilter;
+import org.dbunit.dataset.filter.IncludeTableFilter;
+import org.dbunit.dataset.filter.SequenceTableFilter;
 
 /**
  * Decorates a dataset and exposes only some tables from it. Can be used with
@@ -36,6 +37,7 @@ import org.dbunit.dataset.filter.ITableFilter;
  *
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 22, 2002
  */
 public class FilteredDataSet extends AbstractDataSet
 {

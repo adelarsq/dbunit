@@ -1,8 +1,7 @@
 /*
- * MockDatabaseOperation.java   Mar 16, 2002
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,14 +25,15 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
-import java.sql.SQLException;
-
 import com.mockobjects.ExpectationCounter;
 import com.mockobjects.Verifiable;
+
+import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Mar 16, 2002
  */
 public class MockDatabaseOperation extends DatabaseOperation implements Verifiable
 {

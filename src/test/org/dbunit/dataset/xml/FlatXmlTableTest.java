@@ -1,8 +1,7 @@
 /*
- * XmlTableTest.java   Mar 12, 2002
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,13 +21,17 @@
 
 package org.dbunit.dataset.xml;
 
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.AbstractTableTest;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
 
 import java.io.File;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Mar 12, 2002
  */
 public class FlatXmlTableTest extends AbstractTableTest
 {

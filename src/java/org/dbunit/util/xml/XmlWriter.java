@@ -104,7 +104,7 @@ public class XmlWriter
      * Pretty printing is enabled by default, but it can be turned off
      * to generate more compact XML.
      *
-     * @param boolean true to enable, false to disable pretty printing.
+     * @param enable true to enable, false to disable pretty printing.
      */
     public void enablePrettyPrint(boolean enable)
     {
@@ -117,7 +117,7 @@ public class XmlWriter
      * or a different number of spaces. Specifying an empty string will turn
      * off indentation when pretty printing.
      *
-     * @param String representing one level of indentation while pretty printing.
+     * @param indent representing one level of indentation while pretty printing.
      */
     public void setIndent(String indent)
     {
@@ -132,7 +132,7 @@ public class XmlWriter
      * an empty string will turn off generation of line breaks when pretty
      * printing.
      *
-     * @param String representing the newline sequence when pretty printing.
+     * @param newline representing the newline sequence when pretty printing.
      */
     public void setNewline(String newline)
     {
@@ -177,7 +177,7 @@ public class XmlWriter
     /**
      * Begin to output an element.
      *
-     * @param String name of element.
+     * @param name name of element.
      */
     private XmlWriter openElement(String name) throws IOException
     {
@@ -236,8 +236,8 @@ public class XmlWriter
      * Currently it does not actually throw the exception, but
      * the api is set that way for future changes.
      *
-     * @param String name of attribute.
-     * @param String value of attribute.
+     * @param attr name of attribute.
+     * @param value value of attribute.
      */
     public XmlWriter writeAttribute(String attr, String value) throws IOException
     {
@@ -330,7 +330,7 @@ public class XmlWriter
      * Write out a chunk of CDATA. This helper method surrounds the
      * passed in data with the CDATA tag.
      *
-     * @param String of CDATA text.
+     * @param cdata of CDATA text.
      */
     public XmlWriter writeCData(String cdata) throws IOException
     {
@@ -347,7 +347,7 @@ public class XmlWriter
      * Write out a chunk of comment. This helper method surrounds the
      * passed in data with the xml comment tag.
      *
-     * @param String of text to comment.
+     * @param comment of text to comment.
      */
     public XmlWriter writeComment(String comment) throws IOException
     {
@@ -416,7 +416,7 @@ public class XmlWriter
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Added by Manu for DbUnit
+    // Added for DbUnit
 
     private String escapeXml(String str)
     {

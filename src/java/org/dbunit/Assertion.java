@@ -1,8 +1,7 @@
 /*
- * Assertion.java   Mar 22, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,11 +21,6 @@
 
 package org.dbunit;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
-import junit.framework.Assert;
-
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -35,9 +29,15 @@ import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.UnknownDataType;
 
+import junit.framework.Assert;
+
+import java.util.Arrays;
+import java.util.Comparator;
+
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Mar 22, 2002
  */
 public class Assertion
 {

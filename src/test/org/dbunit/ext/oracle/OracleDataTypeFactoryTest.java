@@ -21,8 +21,8 @@
 package org.dbunit.ext.oracle;
 
 import org.dbunit.dataset.datatype.AbstractDataTypeFactoryTest;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 
 import java.sql.Types;
 

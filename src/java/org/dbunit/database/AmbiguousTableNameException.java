@@ -1,8 +1,7 @@
 /*
- * AmbiguousTableNameException.java   May 1, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,6 +37,7 @@ import org.dbunit.dataset.DataSetException;
 
  * @author Manuel Laflamme
  * @version 1.0
+ * @since May 1, 2002
  */
 public class AmbiguousTableNameException extends DataSetException
 {

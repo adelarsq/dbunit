@@ -1,8 +1,7 @@
 /*
- * DeleteOperationTest.java   Feb 19, 2002
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,22 +22,32 @@
 package org.dbunit.operation;
 
 import org.dbunit.AbstractDatabaseTest;
-import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.NoPrimaryKeyException;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-import java.math.BigInteger;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 19, 2002
  */
 public class DeleteOperationTest extends AbstractDatabaseTest
 {

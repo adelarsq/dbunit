@@ -1,8 +1,7 @@
 /*
- * StatementFactory.java   Mar 15, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,6 +28,7 @@ import java.sql.SQLException;
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Mar 15, 2002
  */
 public class StatementFactory extends AbstractStatementFactory
 {

@@ -1,19 +1,36 @@
 /*
- * Created by IntelliJ IDEA.
- * User: mlaflamm
- * Date: Apr 10, 2002
- * Time: 9:28:37 AM
- * To change template for new class use
- * Code Style | Class Templates options (Tools | IDE Options).
+ *
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
 
 package org.dbunit.database.statement;
 
-import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.IDatabaseConnection;
 
 import java.sql.SQLException;
 
+/**
+ * @author Manuel Laflamme
+ * @version $Revision$
+ * @since Apr 10, 2002
+ */
 public abstract class AbstractStatementFactory implements IStatementFactory
 {
     /**

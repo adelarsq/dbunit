@@ -1,8 +1,7 @@
 /*
- * DbUnitTask.java    Mar 24, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Timothy Ruppert && Ben Cox
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,18 +22,26 @@
 package org.dbunit.ant;
 
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.ForwardOnlyResultSetTableFactory;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 
-import java.sql.*;
-import java.util.*;
-
-import org.apache.tools.ant.*;
+import org.apache.tools.ant.AntClassLoader;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
+
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * <code>DbUnitTask</code> is the task definition for an Ant
@@ -42,8 +49,10 @@ import org.apache.tools.ant.types.Reference;
  * which sets your database to a known state before executing your
  * tasks.
  *
- * @author Timothy Ruppert && Ben Cox
+ * @author Timothy Ruppert
+ * @author Ben Cox
  * @version $Revision$
+ * @since Jun 10, 2002
  * @see org.apache.tools.ant.Task
  */
 public class DbUnitTask extends Task

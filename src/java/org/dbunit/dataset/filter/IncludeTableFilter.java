@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,8 +21,8 @@
 package org.dbunit.dataset.filter;
 
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * This filter exposes only allowed tables from the filtered dataset. This
@@ -91,6 +91,8 @@ public class IncludeTableFilter extends AbstractTableFilter implements ITableFil
      */
     private boolean match(String pattern, String str, boolean isCaseSensitive)
     {
+        /* Following pattern matching code taken from the Apache Ant project. */
+
         char[] patArr = pattern.toCharArray();
         char[] strArr = str.toCharArray();
         int patIdxStart = 0;

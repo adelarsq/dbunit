@@ -1,8 +1,7 @@
 /*
- * QueryDataSetTest.java   Feb 18, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,14 +26,12 @@ import org.dbunit.dataset.AbstractDataSetTest;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.NoSuchColumnException;
-import org.dbunit.dataset.DataSetUtils;
-import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.Column;
 import org.dbunit.operation.DatabaseOperation;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 18, 2002
  */
 public class QueryDataSetTest extends AbstractDataSetTest
 {

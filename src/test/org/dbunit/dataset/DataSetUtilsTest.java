@@ -1,8 +1,7 @@
 /*
- * DataSetUtilsTest.java   Feb 19, 2002
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,14 +23,15 @@ package org.dbunit.dataset;
 
 import org.dbunit.dataset.datatype.DataType;
 
+import junit.framework.TestCase;
+
 import java.sql.Time;
 import java.sql.Timestamp;
-
-import junit.framework.TestCase;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 19, 2002
  */
 public class DataSetUtilsTest extends TestCase
 {

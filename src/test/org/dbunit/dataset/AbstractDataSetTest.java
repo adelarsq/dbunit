@@ -1,8 +1,7 @@
 /*
- * AbstractDataSetTest.java   Feb 22, 2002
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,6 +30,7 @@ import java.util.List;
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 22, 2002
  */
 public abstract class AbstractDataSetTest extends AbstractTest
 {

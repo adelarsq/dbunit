@@ -1,8 +1,7 @@
 /*
- * Main.java   Mar 14, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,6 +21,24 @@
 
 package org.dbunit;
 
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.ForwardOnlyResultSetTableFactory;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.excel.XlsDataSet;
+import org.dbunit.dataset.stream.IDataSetProducer;
+import org.dbunit.dataset.stream.MockDataSetProducer;
+import org.dbunit.dataset.stream.StreamingDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlProducer;
+import org.dbunit.dataset.xml.FlatXmlWriter;
+import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.XmlDataSetWriter;
+
+import org.xml.sax.InputSource;
+
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -32,29 +49,12 @@ import java.io.Reader;
 import java.io.Writer;
 import java.sql.Connection;
 
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.ForwardOnlyResultSetTableFactory;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.stream.MockDataSetProducer;
-import org.dbunit.dataset.stream.StreamingDataSet;
-import org.dbunit.dataset.stream.IDataSetProducer;
-import org.dbunit.dataset.excel.XlsDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlWriter;
-import org.dbunit.dataset.xml.XmlDataSet;
-import org.dbunit.dataset.xml.XmlDataSetWriter;
-import org.dbunit.dataset.xml.FlatXmlProducer;
-
-import org.xml.sax.InputSource;
-
 /**
  * This class is a scratchpad used to try new features.
  *
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Mar 14, 2002
  */
 public class Main
 {

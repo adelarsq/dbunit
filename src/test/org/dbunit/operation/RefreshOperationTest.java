@@ -1,8 +1,7 @@
 /*
- * UpdateOperationTest.java   Feb 19, 2002
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,11 +29,11 @@ import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.ForwardOnlyDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.LowerCaseDataSet;
 import org.dbunit.dataset.NoPrimaryKeyException;
-import org.dbunit.dataset.ForwardOnlyDataSet;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
@@ -45,6 +44,7 @@ import java.util.ArrayList;
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 19, 2002
  */
 public class RefreshOperationTest extends AbstractDatabaseTest
 {

@@ -1,8 +1,7 @@
 /*
- * DeleteAllOperationTest.java   Feb 18, 2002
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,8 +22,8 @@
 package org.dbunit.operation;
 
 import org.dbunit.AbstractDatabaseTest;
-import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
 import org.dbunit.dataset.AbstractDataSetTest;
@@ -40,6 +39,7 @@ import org.dbunit.dataset.LowerCaseDataSet;
  * @author Eric Pugh
  * TODO Refactor all the references to AbstractDataSetTest.removeExtraTestTables() to something better.
  * @version $Revision$
+ * @since Feb 18, 2002
  */
 public class DeleteAllOperationTest extends AbstractDatabaseTest
 {

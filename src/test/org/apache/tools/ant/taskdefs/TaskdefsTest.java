@@ -54,11 +54,15 @@
 
 package org.apache.tools.ant.taskdefs;
 
+import junit.framework.TestCase;
+import org.apache.tools.ant.BuildEvent;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.BuildListener;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.ProjectHelper;
+
 import java.io.File;
 import java.io.PrintStream;
-
-import junit.framework.TestCase;
-import org.apache.tools.ant.*;
 
 /**
  * @author Nico Seessle <nico@seessle.de>

@@ -1,8 +1,7 @@
 /*
- * FlatXmlDataSetTest.java   Mar 13, 2002
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,9 +24,9 @@ package org.dbunit.dataset.xml;
 import org.dbunit.Assertion;
 import org.dbunit.dataset.AbstractDataSetTest;
 import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.DataSetUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -37,6 +36,7 @@ import java.io.Writer;
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Mar 13, 2002
  */
 public class FlatXmlDataSetTest extends AbstractDataSetTest
 {

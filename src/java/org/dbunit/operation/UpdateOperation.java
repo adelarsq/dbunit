@@ -1,8 +1,7 @@
 /*
- * UpdateOperation.java   Feb 19, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,12 +21,16 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.dataset.*;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoPrimaryKeyException;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.math.BigInteger;
 
 /**
  * Updates the database from the dataset contents. This operation assumes that
@@ -35,6 +38,7 @@ import java.math.BigInteger;
 
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Feb 19, 2002
  */
 public class UpdateOperation extends AbstractBatchOperation
 {

@@ -1,8 +1,7 @@
 /*
- * XmlTableWriteTest.java   Mar 13, 2002
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,13 +22,22 @@
 package org.dbunit.dataset.xml;
 
 import org.dbunit.Assertion;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.CompositeTable;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableMetaData;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.Writer;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Mar 13, 2002
  */
 public class FlatXmlTableWriteTest extends FlatXmlTableTest
 {

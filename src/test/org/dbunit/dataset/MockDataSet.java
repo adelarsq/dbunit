@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,11 +20,11 @@
  */
 package org.dbunit.dataset;
 
+import com.mockobjects.Verifiable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import com.mockobjects.Verifiable;
 
 /**
  * @author Manuel Laflamme

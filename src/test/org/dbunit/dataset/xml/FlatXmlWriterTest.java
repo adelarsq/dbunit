@@ -1,7 +1,7 @@
 /*
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,19 +21,14 @@
 
 package org.dbunit.dataset.xml;
 
-import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.datatype.DataType;
 
 import junit.framework.TestCase;
 
 import java.io.StringWriter;
-import java.io.Writer;
-import java.io.OutputStreamWriter;
-
-import org.xml.sax.InputSource;
 
 /**
  *

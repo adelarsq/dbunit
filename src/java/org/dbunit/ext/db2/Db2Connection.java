@@ -1,8 +1,7 @@
 /*
- * Db2Connection.java
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +26,11 @@ import org.dbunit.database.DatabaseConnection;
 
 import java.sql.Connection;
 
+/**
+ * @author Federico Spinazzi
+ * @since Jul 17, 2003
+ * @version $Revision$
+ */
 public class Db2Connection extends DatabaseConnection
 {
 

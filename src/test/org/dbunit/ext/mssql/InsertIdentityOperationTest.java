@@ -1,8 +1,7 @@
 /*
- * InsertIdentityOperationTest.java   Feb 19, 2002
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,10 +24,10 @@ package org.dbunit.ext.mssql;
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
 import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.ForwardOnlyDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.LowerCaseDataSet;
-import org.dbunit.dataset.ForwardOnlyDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 
@@ -39,6 +38,7 @@ import java.io.Reader;
  * @author Manuel Laflamme
  * @author Eric Pugh
  * @version $Revision$
+ * @since Feb 19, 2002
  */
 public class InsertIdentityOperationTest extends AbstractDatabaseTest
 {

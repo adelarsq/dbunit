@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,13 +20,13 @@
  */
 package org.dbunit.database;
 
-import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.database.statement.PreparedStatementFactory;
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 
-import java.util.Set;
-import java.util.Map;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -82,8 +82,8 @@ public class DatabaseConfig
     /**
      * Set the value of a feature flag.
      *
-     * @param name
-     * @param value
+     * @param name the feature id
+     * @param value the feature status
      */
     public void setFeature(String name, boolean value)
     {
@@ -100,8 +100,8 @@ public class DatabaseConfig
     /**
      * Look up the value of a feature flag.
      *
-     * @param name
-     * @return
+     * @param name the feature id
+     * @return the feature status
      */
     public boolean getFeature(String name)
     {
@@ -111,8 +111,8 @@ public class DatabaseConfig
     /**
      * Set the value of a property.
      *
-     * @param name
-     * @param value
+     * @param name the property id
+     * @param value the property value
      */
     public void setProperty(String name, Object value)
     {
@@ -122,8 +122,8 @@ public class DatabaseConfig
     /**
      * Look up the value of a property.
      *
-     * @param name
-     * @return
+     * @param name the property id
+     * @return the property value
      */
     public Object getProperty(String name)
     {

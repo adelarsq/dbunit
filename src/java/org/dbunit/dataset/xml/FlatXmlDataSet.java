@@ -1,8 +1,7 @@
 /*
- * FlatXmlDataSet.java   Mar 12, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,6 +21,14 @@
 
 package org.dbunit.dataset.xml;
 
+import org.dbunit.dataset.CachedDataSet;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,13 +36,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-
-import org.dbunit.dataset.CachedDataSet;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * Reads and writes flat XML dataset document. Each XML element corresponds to a table row.
@@ -67,6 +67,7 @@ import org.xml.sax.SAXException;
  *
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Mar 12, 2002
  */
 public class FlatXmlDataSet extends CachedDataSet
 {

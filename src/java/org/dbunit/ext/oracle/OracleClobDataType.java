@@ -1,16 +1,7 @@
-package org.dbunit.ext.oracle;
-
-import org.dbunit.dataset.datatype.ClobDataType;
-import org.dbunit.dataset.datatype.TypeCastException;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 /*
  *
- * DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,7 +18,15 @@ import java.lang.reflect.Method;
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+package org.dbunit.ext.oracle;
 
+import org.dbunit.dataset.datatype.ClobDataType;
+import org.dbunit.dataset.datatype.TypeCastException;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

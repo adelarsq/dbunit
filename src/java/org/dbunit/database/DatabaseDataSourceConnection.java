@@ -1,8 +1,7 @@
 /*
- * DatabaseDataSourceConnection.java   Mar 8, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,11 +21,11 @@
 
 package org.dbunit.database;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * This class adapts a JDBC <code>DataSource</code> to a
@@ -34,6 +33,7 @@ import javax.sql.DataSource;
  *
  * @author Manuel Laflamme
  * @version $Revision$
+ * @since Mar 8, 2002
  */
 public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
         implements IDatabaseConnection

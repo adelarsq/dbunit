@@ -1,8 +1,7 @@
 /*
- * DbUnitTaskTest.java    Mar 24, 2002
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Timothy Ruppert && Ben Cox
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,16 +22,12 @@
 package org.dbunit.ant;
 
 import org.dbunit.DatabaseEnvironment;
-import org.dbunit.ext.oracle.OracleDataTypeFactory;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
-import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.DatabaseConfig;
-import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
-
-import java.io.File;
-import java.sql.SQLException;
-import java.util.*;
+import org.dbunit.ext.oracle.OracleDataTypeFactory;
+import org.dbunit.operation.DatabaseOperation;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -40,11 +35,19 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Target;
 import org.apache.tools.ant.taskdefs.TaskdefsTest;
 
+import java.io.File;
+import java.sql.SQLException;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Ant-based test class for the Dbunit ant task definition.
  *
- * @author Timothy Ruppert && Ben Cox
+ * @author Timothy Ruppert
+ * @author Ben Cox
  * @version $Revision$
+ * @since Jun 10, 2002
  * @see org.dbunit.ant.AntTest
  */
 public class DbUnitTaskTest extends TaskdefsTest

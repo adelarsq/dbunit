@@ -1,8 +1,7 @@
 /*
- * Db2DataTypeFactory.java
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002, Manuel Laflamme
+ * Copyright (C)2002-2004, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,6 +28,14 @@ import org.dbunit.dataset.datatype.StringDataType;
 
 import java.sql.Types;
 
+/**
+ * Specialized factory that recognizes DB2 data types.
+ *
+ * @author Federico Spinazzi
+ * @author Manuel Laflamme
+ * @since Jul 17, 2003
+ * @version $Revision$
+ */
 public class Db2DataTypeFactory extends DefaultDataTypeFactory
 {
     static final DataType DB2XML_XMLVARCHAR = new StringDataType(
