@@ -55,6 +55,20 @@ public class ReplacementDataSet implements IDataSet
     }
 
     /**
+     * Create a new ReplacementDataSet object that decorates the specified dataset.
+     *
+     * @param dataSet the decorated dataset
+     * @param objectMap the replacement objects mapping
+     * @param substringMap the replacement substrings mapping
+     */
+    public ReplacementDataSet(IDataSet dataSet, Map objectMap, Map substringMap)
+    {
+        _dataSet = dataSet;
+        _objectMap = objectMap == null ? new HashMap() : objectMap;
+        _substringMap = substringMap == null ? new HashMap() : substringMap;
+    }
+
+    /**
      * Add a new Object replacement mapping.
      *
      * @param originalObject the object to replace
