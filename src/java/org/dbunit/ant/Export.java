@@ -29,11 +29,14 @@ import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * The <code>Export</code> class is the step that facilitates exporting
@@ -49,9 +52,11 @@ public class Export implements DbUnitTaskStep
 {
 
     private File _dest;
-    private String _format = "flat";
+    private static final String FORMAT_FLAT = "flat";
+    private String _format = FORMAT_FLAT;
     private List _tables = new ArrayList();
-//    private List queries = new ArrayList();
+    private static final String FORMAT_XML = "xml";
+    private static final String FORMAT_DTD = "dtd";
 
     public Export()
     {
@@ -84,9 +89,9 @@ public class Export implements DbUnitTaskStep
 
     public void setFormat(String format)
     {
-        if (format.equalsIgnoreCase("flat")
-                || format.equalsIgnoreCase("xml")
-                || format.equalsIgnoreCase("dtd"))
+        if (format.equalsIgnoreCase(FORMAT_FLAT)
+                || format.equalsIgnoreCase(FORMAT_XML)
+                || format.equalsIgnoreCase(FORMAT_DTD))
         {
             _format = format;
         }
@@ -146,15 +151,15 @@ public class Export implements DbUnitTaskStep
             Writer out = new FileWriter(_dest);
             try
             {
-                if (_format.equalsIgnoreCase("flat"))
+                if (_format.equalsIgnoreCase(FORMAT_FLAT))
                 {
                     FlatXmlDataSet.write(dataset, out);
                 }
-                else if (_format.equalsIgnoreCase("xml"))
+                else if (_format.equalsIgnoreCase(FORMAT_XML))
                 {
                     XmlDataSet.write(dataset, out);
                 }
-                else if (_format.equalsIgnoreCase("dtd"))
+                else if (_format.equalsIgnoreCase(FORMAT_DTD))
                 {
                     FlatDtdDataSet.write(dataset, out);
                 }
@@ -178,24 +183,24 @@ public class Export implements DbUnitTaskStep
     private ITable createTable(Table table, IDatabaseConnection connection)
            throws DataSetException, SQLException
     {
-        return connection.createDataSet().getTable(table.getName());
+        IDataSet databaseDataSet = connection.createDataSet();
+
+        // Optimization: do not fetch table data since DTD export only use
+        // table metadata.
+        if (_format.equalsIgnoreCase(FORMAT_DTD))
+        {
+            ITableMetaData metaData =
+                    databaseDataSet.getTableMetaData(table.getName());
+            return new DefaultTable(metaData, new ArrayList());
+        }
+
+        return databaseDataSet.getTable(table.getName());
     }
 
     private ITable createTable(Query query, IDatabaseConnection connection)
             throws DataSetException, SQLException
     {
         return connection.createQueryTable(query.getName(), query.getSql());
-    }
-
-    private String[] getTableArray()
-    {
-        String[] result = new String[_tables.size()];
-        for (int i = 0; i < _tables.size(); i++)
-        {
-            Table table = (Table)_tables.get(i);
-            result[i] = table.getName();
-        }
-        return result;
     }
 
     public String getLogMessage()
