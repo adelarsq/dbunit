@@ -40,6 +40,7 @@ public class AllTests
         suite.addTest(new TestSuite(FlatXmlProducerTest.class));
         suite.addTest(new TestSuite(FlatXmlTableTest.class));
         suite.addTest(new TestSuite(FlatXmlTableWriteTest.class));
+        suite.addTest(new TestSuite(FlatXmlWriterTest.class));
         suite.addTest(new TestSuite(XmlDataSetTest.class));
         suite.addTest(new TestSuite(XmlTableTest.class));
         suite.addTest(new TestSuite(XmlTableWriteTest.class));

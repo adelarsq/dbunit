@@ -47,7 +47,7 @@ public class DefaultTable extends AbstractTable
     public DefaultTable(String tableName)
     {
         _metaData = new DefaultTableMetaData(tableName, new Column[0]);
-        _rowList = Arrays.asList(new Object[0]);
+        _rowList = new ArrayList();
     }
 
     public DefaultTable(String tableName, Column[] columns, List list)
@@ -56,10 +56,35 @@ public class DefaultTable extends AbstractTable
         _rowList = list;
     }
 
+    public DefaultTable(String tableName, Column[] columns)
+    {
+        _metaData = new DefaultTableMetaData(tableName, columns);
+        _rowList = new ArrayList();
+    }
+
     protected DefaultTable(ITableMetaData metaData)
     {
         _metaData = metaData;
         _rowList = new ArrayList();
+    }
+
+    public void addRow() throws DataSetException
+    {
+        int columnCount = _metaData.getColumns().length;
+        _rowList.add(new Object[columnCount]);
+    }
+
+    public void addRow(Object[] values) throws DataSetException
+    {
+        _rowList.add(values);
+    }
+
+    public void setValue(int row, String column, Object value) throws DataSetException
+    {
+        assertValidRowIndex(row);
+
+        Object[] rowValues = (Object[])_rowList.get(row);
+        rowValues[getColumnIndex(column)] = value;
     }
 
     ////////////////////////////////////////////////////////////////////////////

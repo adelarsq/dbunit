@@ -137,6 +137,13 @@ public class FlatXmlWriter implements IDataSetConsumer
             {
                 String columnName = columns[i].getColumnName();
                 Object value = values[i];
+
+                // Skip null value
+                if (value == null)
+                {
+                    continue;
+                }
+
                 try
                 {
                     String stringValue = DataType.asString(value);

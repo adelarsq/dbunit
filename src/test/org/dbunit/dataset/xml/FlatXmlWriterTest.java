@@ -1,0 +1,147 @@
+package org.dbunit.dataset.xml;
+
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.datatype.DataType;
+
+import junit.framework.TestCase;
+
+import java.io.StringWriter;
+import java.io.Writer;
+import java.io.OutputStreamWriter;
+
+import org.xml.sax.InputSource;
+
+/**
+ *
+ * <p> Copyright (c) 2002 OZ.COM.  All Rights Reserved. </p>
+ * @author manuel.laflamme$
+ * @since Sep 8, 2003$
+ */
+public class FlatXmlWriterTest extends TestCase
+{
+    public FlatXmlWriterTest(String name)
+    {
+        super(name);
+    }
+
+    public void testWrite() throws Exception
+    {
+        String expectedOutput =
+                "<dataset>\n" +
+                "  <TABLE1 COL0=\"t1v1\" COL1=\"t1v2\"/>\n" +
+                "  <TABLE2 COL0=\"t2v1\" COL1=\"t2v2\"/>\n" +
+                "</dataset>\n";
+
+        String col0 = "COL0";
+        String col1 = "COL1";
+        Column[] columns = new Column[]{
+            new Column(col0, DataType.UNKNOWN),
+            new Column(col1, DataType.UNKNOWN)
+        };
+
+        DefaultTable table1 = new DefaultTable("TABLE1", columns);
+        table1.addRow();
+        table1.setValue(0, col0, "t1v1");
+        table1.setValue(0, col1, "t1v2");
+
+        DefaultTable table2 = new DefaultTable("TABLE2", columns);
+        table2.addRow();
+        table2.setValue(0, col0, "t2v1");
+        table2.setValue(0, col1, "t2v2");
+
+        StringWriter stringWriter = new StringWriter();
+        FlatXmlWriter xmlWriter = new FlatXmlWriter(stringWriter);
+        xmlWriter.write(new DefaultDataSet(table1, table2));
+
+
+        String actualOutput = stringWriter.toString();
+        assertEquals("output", expectedOutput, actualOutput);
+    }
+
+    public void testWriteExcludeEmptyTable() throws Exception
+    {
+        String expectedOutput =
+                "<dataset>\n" +
+                "  <TEST_TABLE COL0=\"value\"/>\n" +
+                "</dataset>\n";
+
+        String col0 = "COL0";
+        Column[] columns = new Column[]{
+            new Column(col0, DataType.UNKNOWN),
+        };
+
+        DefaultTable table1 = new DefaultTable("TEST_TABLE", columns);
+        table1.addRow();
+        table1.setValue(0, col0, "value");
+        DefaultTable table2 = new DefaultTable("EMPTY_TABLE", columns);
+
+        StringWriter stringWriter = new StringWriter();
+        FlatXmlWriter datasetWriter = new FlatXmlWriter(stringWriter);
+        datasetWriter.setIncludeEmptyTable(false);
+        datasetWriter.write(new DefaultDataSet(table1, table2));
+
+        String actualOutput = stringWriter.toString();
+        assertEquals("output", expectedOutput, actualOutput);
+    }
+
+    public void testWriteIncludeEmptyTable() throws Exception
+    {
+        String expectedOutput =
+                "<dataset>\n" +
+                "  <TEST_TABLE COL0=\"value\"/>\n" +
+                "  <EMPTY_TABLE/>\n" +
+                "</dataset>\n";
+
+        String col0 = "COL0";
+        Column[] columns = new Column[]{
+            new Column(col0, DataType.UNKNOWN),
+        };
+
+        DefaultTable table1 = new DefaultTable("TEST_TABLE", columns);
+        table1.addRow();
+        table1.setValue(0, col0, "value");
+        DefaultTable table2 = new DefaultTable("EMPTY_TABLE", columns);
+
+        StringWriter stringWriter = new StringWriter();
+        FlatXmlWriter datasetWriter = new FlatXmlWriter(stringWriter);
+        datasetWriter.setIncludeEmptyTable(true);
+        datasetWriter.write(new DefaultDataSet(table1, table2));
+
+        String actualOutput = stringWriter.toString();
+        assertEquals("output", expectedOutput, actualOutput);
+    }
+
+    public void testWriteNullValue() throws Exception
+    {
+        String expectedOutput =
+                "<dataset>\n" +
+                "  <TEST_TABLE COL0=\"c0r0\" COL1=\"c1r0\"/>\n" +
+                "  <TEST_TABLE COL0=\"c0r1\"/>\n" +
+                "</dataset>\n";
+
+        String col0 = "COL0";
+        String col1 = "COL1";
+        Column[] columns = new Column[]{
+            new Column(col0, DataType.UNKNOWN),
+            new Column(col1, DataType.UNKNOWN)
+        };
+
+        DefaultTable table = new DefaultTable("TEST_TABLE", columns);
+        table.addRow();
+        table.setValue(0, col0, "c0r0");
+        table.setValue(0, col1, "c1r0");
+        table.addRow();
+        table.setValue(1, col0, "c0r1");
+        table.setValue(1, col1, null);
+
+        StringWriter stringWriter = new StringWriter();
+        FlatXmlWriter xmlWriter = new FlatXmlWriter(stringWriter);
+        xmlWriter.write(new DefaultDataSet(table));
+
+        String actualOutput = stringWriter.toString();
+        assertEquals("output", expectedOutput, actualOutput);
+    }
+}
