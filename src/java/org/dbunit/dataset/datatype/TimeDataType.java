@@ -24,6 +24,9 @@ package org.dbunit.dataset.datatype;
 
 import java.sql.Time;
 import java.sql.Types;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
 
 /**
  * @author Manuel Laflamme
@@ -76,6 +79,18 @@ public class TimeDataType extends AbstractDataType
         }
 
         throw new TypeCastException(value.toString());
+    }
+
+    public Object getSqlValue(int column, ResultSet resultSet)
+            throws SQLException, TypeCastException
+    {
+        return resultSet.getTime(column);
+    }
+
+    public void setSqlValue(Object value, int column, PreparedStatement statement)
+            throws SQLException, TypeCastException
+    {
+        statement.setTime(column, (java.sql.Time)typeCast(value));
     }
 }
 

@@ -56,23 +56,7 @@ public class PreparedBatchStatement extends AbstractPreparedBatchStatement
             return;
         }
 
-        // Special BLOB handling
-        if (dataType == DataType.CLOB)
-        {
-            _statement.setObject(++_index, dataType.typeCast(value),
-                    DataType.LONGVARCHAR.getSqlType());
-            return;
-        }
-
-        // Special CLOB handling
-        if (dataType == DataType.BLOB)
-        {
-            _statement.setObject(++_index, dataType.typeCast(value),
-                    DataType.LONGVARBINARY.getSqlType());
-            return;
-        }
-
-        _statement.setObject(++_index, dataType.typeCast(value), dataType.getSqlType());
+        dataType.setSqlValue(value, ++_index, _statement);
     }
 
     public void addBatch() throws SQLException

@@ -23,6 +23,7 @@ package org.dbunit.database;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.RowOutOfBoundsException;
+import org.dbunit.dataset.Column;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,7 +64,7 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
         throw new UnsupportedOperationException();
     }
 
-    public Object getValue(int row, String column) throws DataSetException
+    public Object getValue(int row, String columnName) throws DataSetException
     {
         try
         {
@@ -86,7 +87,9 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
                 throw new RowOutOfBoundsException(row + " > " + _lastRow);
             }
 
-            return _resultSet.getObject(getColumnIndex(column) + 1);
+            int columnIndex = getColumnIndex(columnName);
+            Column column = _metaData.getColumns()[columnIndex];
+            return column.getDataType().getSqlValue(columnIndex + 1, _resultSet);
         }
         catch (SQLException e)
         {

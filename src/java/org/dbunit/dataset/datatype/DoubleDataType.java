@@ -22,6 +22,9 @@
 package org.dbunit.dataset.datatype;
 
 import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
 
 /**
  * @author Manuel Laflamme
@@ -58,6 +61,19 @@ public class DoubleDataType extends AbstractDataType
             throw new TypeCastException(e);
         }
     }
+
+    public Object getSqlValue(int column, ResultSet resultSet)
+            throws SQLException, TypeCastException
+    {
+        return new Double(resultSet.getDouble(column));
+    }
+
+    public void setSqlValue(Object value, int column, PreparedStatement statement)
+            throws SQLException, TypeCastException
+    {
+        statement.setDouble(column, ((Number)typeCast(value)).doubleValue());
+    }
+
 }
 
 

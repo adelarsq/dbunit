@@ -23,6 +23,9 @@ package org.dbunit.dataset.datatype;
 
 import java.math.BigDecimal;
 import java.sql.Types;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
 
 /**
  * @author Manuel Laflamme
@@ -58,6 +61,18 @@ public class FloatDataType extends AbstractDataType
         {
             throw new TypeCastException(e);
         }
+    }
+
+    public Object getSqlValue(int column, ResultSet resultSet)
+            throws SQLException, TypeCastException
+    {
+        return new Float(resultSet.getFloat(column));
+    }
+
+    public void setSqlValue(Object value, int column, PreparedStatement statement)
+            throws SQLException, TypeCastException
+    {
+        statement.setFloat(column, ((Number)typeCast(value)).floatValue());
     }
 }
 

@@ -26,6 +26,8 @@ import org.dbunit.util.Base64;
 
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 
 /**
  * @author Manuel Laflamme
@@ -142,6 +144,27 @@ public class BytesDataType extends AbstractDataType
         }
         return len1 - len2;
     }
+
+    public Object getSqlValue(int column, ResultSet resultSet)
+            throws SQLException, TypeCastException
+    {
+        return resultSet.getBytes(column);
+    }
+
+    public void setSqlValue(Object value, int column, PreparedStatement statement)
+            throws SQLException, TypeCastException
+    {
+        // Special BLOB handling
+        if (this == DataType.BLOB)
+        {
+            statement.setObject(column, typeCast(value),
+                    DataType.LONGVARBINARY.getSqlType());
+            return;
+        }
+
+        super.setSqlValue(value, column, statement);
+    }
+
 }
 
 

@@ -268,8 +268,7 @@ public class RefreshOperation extends DatabaseOperation
             {
                 Object value = table.getValue(row, _columns[i].getColumnName());
                 DataType dataType = _columns[i].getDataType();
-                _countStatement.setObject(i + 1, dataType.typeCast(value),
-                        dataType.getSqlType());
+                dataType.setSqlValue(value, i + 1, _countStatement);
             }
 
             ResultSet resultSet = _countStatement.executeQuery();

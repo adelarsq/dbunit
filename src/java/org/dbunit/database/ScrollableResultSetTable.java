@@ -24,6 +24,7 @@ package org.dbunit.database;
 
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.Column;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -110,14 +111,17 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         return _rowCount;
     }
 
-    public Object getValue(int row, String column) throws DataSetException
+    public Object getValue(int row, String columnName) throws DataSetException
     {
         assertValidRowIndex(row);
 
         try
         {
             _resultSet.absolute(row + 1);
-            return _resultSet.getObject(getColumnIndex(column) + 1);
+
+            int columnIndex = getColumnIndex(columnName);
+            Column column = _metaData.getColumns()[columnIndex];
+            return column.getDataType().getSqlValue(columnIndex + 1, _resultSet);
         }
         catch (SQLException e)
         {
