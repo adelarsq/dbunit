@@ -25,6 +25,8 @@ package org.dbunit.ant;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.QueryDataSet;
+import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.xml.*;
 
 import java.io.*;
@@ -48,6 +50,7 @@ public class Export implements DbUnitTaskStep
     private File dest;
     private String format = "flat";
     private List tables = new ArrayList();
+    private List queries = new ArrayList();
 
     public Export()
     {
@@ -71,6 +74,11 @@ public class Export implements DbUnitTaskStep
     public List getTables()
     {
         return tables;
+    }
+
+    public List getQueries()
+    {
+        return queries;
     }
 
     public void setDest(File dest)
@@ -97,45 +105,71 @@ public class Export implements DbUnitTaskStep
         tables.add(table);
     }
 
+    public void addQuery(Query query)
+    {
+        queries.add(query);
+    }
+
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
-        IDataSet dataset;
+        IDataSet dataset = null;
         try
         {
-            if (tables.size() == 0)
+
+            if (dest == null)
+            {
+                throw new DatabaseUnitException("'dest' is a required attribute of the <export> step.");
+            }
+            // retrieve the dataset if no tables or queries specifedid.
+            if (tables.size() == 0 && queries.size()==0)
             {
                 dataset = connection.createDataSet();
             }
             else
             {
-                dataset = connection.createDataSet(getTableArray());
-            }
-            if (dest == null)
-            {
-                throw new DatabaseUnitException("'dest' is a required attribute of the <export> step.");
-            }
-            else
-            {
-                OutputStream out = new FileOutputStream(dest);
-                try
-                {
-                    if (format.equalsIgnoreCase("flat"))
-                    {
-                        FlatXmlDataSet.write(dataset, out);
+                if (tables.size() > 0) {
+                    dataset = connection.createDataSet(getTableArray());
+                }
+                if (queries.size() > 0) {
+                    QueryDataSet queryDataSet = new QueryDataSet(connection);
+                    for (int i = 0; i < queries.size(); i++){
+                        Query query = (Query)queries.get(i);
+                        if (query.getSql() == null){
+                            throw new DatabaseUnitException("'sql' is a required attribute of the <query> step.");
+                        }
+                        queryDataSet.addTable(query.getName(),query.getSql());
+
                     }
-                    else if (format.equalsIgnoreCase("xml"))
-                    {
-                        XmlDataSet.write(dataset, out);
+                    //crummy merge!
+                    if(dataset != null) {
+                        dataset = new CompositeDataSet(queryDataSet,dataset);
                     }
-                    else if (format.equalsIgnoreCase("dtd"))
-                    {
-                        FlatDtdDataSet.write(dataset, out);
+                    else {
+                        dataset = queryDataSet;
                     }
                 }
-                finally
+
+            }
+            // save the dataset
+            OutputStream out = new FileOutputStream(dest);
+            try
+            {
+                if (format.equalsIgnoreCase("flat"))
                 {
-                    out.close();
+                    FlatXmlDataSet.write(dataset, out);
                 }
+                else if (format.equalsIgnoreCase("xml"))
+                {
+                    XmlDataSet.write(dataset, out);
+                }
+                else if (format.equalsIgnoreCase("dtd"))
+                {
+                    FlatDtdDataSet.write(dataset, out);
+                }
+            }
+            finally
+            {
+                out.close();
             }
 
         }
@@ -160,6 +194,16 @@ public class Export implements DbUnitTaskStep
         return result;
     }
 
+    private String[] convertListToStringArray(List list){
+        String []strArray = new String[list.size()];
+        for (int i = 0; i < list.size(); i++)
+        {
+            Table table = (Table)list.get(i);
+            strArray[i] = table.getName();
+        }
+        return strArray;
+    }
+
     public String getLogMessage()
     {
         return "Executing export: "
@@ -173,8 +217,9 @@ public class Export implements DbUnitTaskStep
         StringBuffer result = new StringBuffer();
         result.append("Export: ");
         result.append(" dest=" + getAbsolutePath(dest));
-        result.append(", format= " + tables);
+        result.append(", format= " + format);
         result.append(", tables= " + tables);
+        result.append(", queries= " + queries);
 
         return result.toString();
     }

@@ -1,5 +1,5 @@
 /*
- * Table.java    Jun 10, 2002
+ * Query.java    Jun 10, 2002
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Timothy Ruppert && Ben Cox
@@ -23,19 +23,19 @@
 package org.dbunit.ant;
 
 /**
- * The <code>Table</code> class is just a step placeholder for a table name
+ * The <code>Query</code> class is just a step placeholder for a table name
  * within an <code>Export</code>.
  *
  * @author Timothy Ruppert && Ben Cox
  * @version $Revision$
  */
-public class Table
+public class Query
 {
 
     private String name;
-    private String query;
+    private String sql;
 
-    public Table()
+    public Query()
     {
     }
 
@@ -53,22 +53,22 @@ public class Table
     public String toString()
     {
         StringBuffer result = new StringBuffer();
-        result.append("Table: ");
+        result.append("Query: ");
         result.append(" name=" + name);
-        result.append(" query=" + query);
+        result.append(" sql=" + sql);
 
 
         return result.toString();
     }
 
-    public String getQuery()
+    public String getSql()
     {
-        return query;
+        return sql;
     }
 
-    public void setQuery(String query)
+    public void setSql(String sql)
     {
-        this.query = query;
+        this.sql = sql;
     }
 }
 
