@@ -41,6 +41,7 @@ import electric.xml.*;
  */
 public class XmlDataSet extends AbstractDataSet
 {
+    private static final String DEFAULT_ENCODING = "UTF-8";
     private final ITable[] _tables;
 
     /**
@@ -109,10 +110,11 @@ public class XmlDataSet extends AbstractDataSet
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
-        Document document = buildDocument(dataSet);
+        Document document = buildDocument(dataSet, DEFAULT_ENCODING);
 
         // write xml document
         document.write(out);
+        out.flush();
     }
 
     /**
@@ -121,16 +123,33 @@ public class XmlDataSet extends AbstractDataSet
     public static void write(IDataSet dataSet, Writer out)
             throws IOException, DataSetException
     {
-        Document document = buildDocument(dataSet);
+        Document document = buildDocument(dataSet, DEFAULT_ENCODING);
 
         // write xml document
         document.write(out);
+        out.flush();
     }
 
-    private static Document buildDocument(IDataSet dataSet) throws DataSetException
+    /**
+     * Write the specified dataset to the specified writer as xml.
+     */
+    public static void write(IDataSet dataSet, Writer out, String encoding)
+            throws IOException, DataSetException
     {
-        Document document = new Document();
+        Document document = buildDocument(dataSet, encoding);
+
+        // write xml document
+        document.write(out);
+        out.flush();
+    }
+
+    private static Document buildDocument(IDataSet dataSet, String encoding)
+            throws DataSetException
+    {
         ITable[] tables = dataSet.getTables();
+
+        Document document = new Document();
+        document.addChild(new XMLDecl("1.0", encoding));
 
         // dataset
         Element rootElem = document.addElement("dataset");

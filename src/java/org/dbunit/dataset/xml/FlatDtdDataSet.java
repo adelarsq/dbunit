@@ -128,6 +128,8 @@ public class FlatDtdDataSet extends AbstractDataSet
             printOut.println(">");
             printOut.println();
         }
+
+        printOut.flush();
     }
 
     private ITableMetaData createTableMetaData(DTDAttlist attrList)

@@ -290,6 +290,40 @@ public class DbUnitTaskTest extends TaskdefsTest
         assertEquals("name", "PK_TABLE", pkTable.getName());
     }
 
+    public void testClasspath() throws Exception
+    {
+        String targetName = "test-classpath";
+
+        try
+        {
+            executeTarget(targetName);
+            fail("Should not be able to connect with invalid url!");
+        }
+        catch (BuildException e)
+        {
+            // Verify exception type
+            assertEquals("nested exception type", SQLException.class, e.getException().getClass());
+        }
+
+    }
+
+    public void testDriverNotInClasspath() throws Exception
+    {
+        String targetName = "test-drivernotinclasspath";
+
+        try
+        {
+            executeTarget(targetName);
+            fail("Should not have found driver!");
+        }
+        catch (BuildException e)
+        {
+            // Verify exception type
+            assertEquals("nested exception type", ClassNotFoundException.class, e.getException().getClass());
+        }
+    }
+
+
     protected void assertOperationType(String failMessage, String targetName, DatabaseOperation expected)
     {
         Operation oper = (Operation)getFirstStepFromTarget(targetName);

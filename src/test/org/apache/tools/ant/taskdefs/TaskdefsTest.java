@@ -209,6 +209,7 @@ public abstract class TaskdefsTest extends TestCase
         try
         {
             executeTarget(taskname);
+            fail("Should throw BuildException because: " + cause);
         }
         catch (org.apache.tools.ant.BuildException ex)
         {
@@ -218,7 +219,6 @@ public abstract class TaskdefsTest extends TestCase
             }
             return;
         }
-        fail("Should throw BuildException because: " + cause);
     }
 
     private class AntOutputStream extends java.io.OutputStream

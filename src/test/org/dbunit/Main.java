@@ -36,6 +36,8 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import java.io.*;
 import java.util.Date;
 
+import electric.xml.Document;
+
 /**
  * This class is a scratchpad used to try new features.
  *
@@ -47,6 +49,7 @@ public class Main
     public static void main(String[] args) throws Exception
     {
         oldMain();
+//        testWrite();
 //        writeXls();
 //        newSheet();
 //        createCells();
@@ -55,11 +58,20 @@ public class Main
 //        cellTypes();
     }
 
+    private static void testWrite() throws Exception
+    {
+        Writer out = new FileWriter("test.xml");
+
+        Document document = new Document();
+        document.write(out);
+        out.flush();
+    }
+
     private static void oldMain() throws Exception
     {
 //        System.setProperty("dbunit.name.escapePattern", "\"?\"");
-//        IDatabaseConnection connection =
-//                DatabaseEnvironment.getInstance().getConnection();
+        IDatabaseConnection connection =
+                DatabaseEnvironment.getInstance().getConnection();
 //        IDataSet dataSet = new XmlDataSet(new FileReader("dataSetTest.xml"));
 //        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 
@@ -70,8 +82,12 @@ public class Main
 //                new FileOutputStream("test.dtd"));
 //
 //
-//        FlatXmlDataSet.write(connection.createDataSet(),
-//                new FileOutputStream("test.xml"));
+        Writer out = new FileWriter("test.xml");
+//        FlatXmlDataSet.write(connection.createDataSet(), out, "ISO-8859-1");
+        FlatXmlDataSet.write(connection.createDataSet(), out);
+//        out.flush();
+//        out.close();
+
 
 //        ////////////////////////////////
 //        Document document = new Document(new File("src/xml/flatXmlDataSetTest.xml"));

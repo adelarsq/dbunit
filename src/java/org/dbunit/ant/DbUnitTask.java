@@ -276,7 +276,7 @@ public class DbUnitTask extends Task
         catch (ClassNotFoundException e)
         {
             throw new BuildException("Class Not Found: JDBC driver "
-                    + driver + " could not be loaded", location);
+                    + driver + " could not be loaded", e, location);
         }
         catch (IllegalAccessException e)
         {

@@ -278,7 +278,7 @@
       </table>
       <h3>Examples</h3>
       <pre>  &lt;dbunit driver=&quot;org.hsqldb.jdbcDriver&quot;<br>          url=&quot;jdbc:hsqldb:.&quot;<br>          userid=&quot;sa&quot;<br>          password=&quot;&quot;&gt;
-    &lt;classpath&gt;<br>    	&lt;pathelement location=&quot;/some/jdbc.jar&quot;&gt;<br>    &lt;/classpath&gt;<br>    &lt;operation type=&quot;UPDATE&quot; src=&quot;updateFile.xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
+    &lt;classpath&gt;<br>    	&lt;pathelement location=&quot;/some/jdbc.jar&quot;/&gt;<br>    &lt;/classpath&gt;<br>    &lt;operation type=&quot;UPDATE&quot; src=&quot;updateFile.xml&quot;/&gt;<br>  &lt;/dbunit&gt;</pre>
       <p> Connects to the database given in url as the dbunit user using the org.hsqldb.jdbcDriver, 
         searching it from /some/jdbc.jar as well from the system classpath, and 
         executes the UPDATE operation contained within the FlatXmlDataSet file 

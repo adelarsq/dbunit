@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="3" relativePaths="false">
+<project version="3" relativePaths="true">
   <component name="WebReferencesConfigurable">
     <property name="CUSTOM_MAP_LOOKUP" type="list" />
     <property name="INTERFACE_POSTFIX" value="" type="string" />
@@ -11,49 +11,56 @@
   </component>
   <component name="FileEditorManager">
     <history>
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/InsertOperationTest.java" line="266" column="34" vertical-scroll-proportion="0.3580247" horizontal-scroll-proportion="0.36785161" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/operation/AbstractBatchOperationTest.java" line="46" column="34" vertical-scroll-proportion="0.3580247" horizontal-scroll-proportion="0.36785161" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/util/Base64.java" line="548" column="51" vertical-scroll-proportion="0.33333334" horizontal-scroll-proportion="0.5517774" />
-      <source-position-entry url="file://$PROJECT_DIR$/build.xml" line="70" column="0" vertical-scroll-proportion="4.1463413" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/database/statement/MockBatchStatement.java" line="32" column="13" vertical-scroll-proportion="0.65313655" horizontal-scroll-proportion="0.13663663" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/FileAsserts.java" line="15" column="63" vertical-scroll-proportion="0.4704797" horizontal-scroll-proportion="0.71359223" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/dataset/xml/FlatDtdDataSetTest.java" line="107" column="12" vertical-scroll-proportion="0.30960855" horizontal-scroll-proportion="0.13592233">
+      <source-position-entry url="file://$PROJECT_DIR$/profile.properties" line="37" column="30" vertical-scroll-proportion="0.35640138" horizontal-scroll-proportion="0.34146342" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/ant/DbUnitTaskTest.java" line="303" column="0" vertical-scroll-proportion="0.25373134" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/xml/antTestBuildFile.xml" line="293" column="41" vertical-scroll-proportion="0.5018657" horizontal-scroll-proportion="0.46666667" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/ant/DbUnitTask.java" line="278" column="58" vertical-scroll-proportion="0.5242537" horizontal-scroll-proportion="0.6601626" />
+      <source-position-entry url="jar://$PROJECT_DIR$/lib/ant.jar!/org/apache/tools/ant/BuildException.class" line="38" column="11" vertical-scroll-proportion="0.92350745" horizontal-scroll-proportion="0.12520325" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatDtdDataSet.java" line="131" column="25" vertical-scroll-proportion="0.116094984" horizontal-scroll-proportion="0.28455284" />
+      <source-position-entry url="jar://C:/java/jdk1.3.1_07/src.jar!/src/java/io/OutputStreamWriter.java" line="112" column="18" vertical-scroll-proportion="0.3324468" horizontal-scroll-proportion="0.20487805" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/xml/caseInsensitiveTableTest.xml" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/xml/compositeDataSetDuplicateTest2.xml" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/xml/caseInsensitiveDataSetDuplicateTest.xml" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/Main.java" line="49" column="10" vertical-scroll-proportion="-0.13167259" horizontal-scroll-proportion="0.11326861">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlTable.java" line="58" column="60" vertical-scroll-proportion="0.9341637" horizontal-scroll-proportion="0.63106793" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/NoSuchColumnException.java" line="35" column="18" vertical-scroll-proportion="0.46494466" horizontal-scroll-proportion="0.20192307" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" line="40" column="22" vertical-scroll-proportion="0.90774906" horizontal-scroll-proportion="0.23557693" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/NoPrimaryKeyException.java" line="29" column="13" vertical-scroll-proportion="0.3321033" horizontal-scroll-proportion="0.14583333" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/NoColumnsFoundException.java" line="1" column="39" vertical-scroll-proportion="-0.6800766" horizontal-scroll-proportion="0.4375" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseTableMetaData.java" line="182" column="46" vertical-scroll-proportion="2.2398524" horizontal-scroll-proportion="0.51602566" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseTableMetaDataTest.java" line="117" column="23" vertical-scroll-proportion="0.41143912" horizontal-scroll-proportion="0.25801283" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/UnknownDataType.java" line="29" column="17" vertical-scroll-proportion="0.9095941" horizontal-scroll-proportion="0.19070514" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/XmlDataSet.java" line="162" column="13" vertical-scroll-proportion="0.3291815" horizontal-scroll-proportion="0.14724919" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" line="232" column="34" vertical-scroll-proportion="0.7597865" horizontal-scroll-proportion="0.38511327">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
     </history>
     <open-files>
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" line="40" column="22" vertical-scroll-proportion="0.90774906" horizontal-scroll-proportion="0.23557693" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/database/DatabaseTableMetaData.java" line="182" column="46" vertical-scroll-proportion="2.2398524" horizontal-scroll-proportion="0.51602566" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/database/DatabaseTableMetaDataTest.java" line="117" column="23" vertical-scroll-proportion="0.41143912" horizontal-scroll-proportion="0.25801283" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype/UnknownDataType.java" line="29" column="17" vertical-scroll-proportion="0.9095941" horizontal-scroll-proportion="0.19070514" selected="true" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/NoPrimaryKeyException.java" line="29" column="13" vertical-scroll-proportion="0.3321033" horizontal-scroll-proportion="0.14583333" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/NoSuchColumnException.java" line="35" column="18" vertical-scroll-proportion="0.46494466" horizontal-scroll-proportion="0.20192307" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/test/org/dbunit/Main.java" line="49" column="10" vertical-scroll-proportion="-0.13167259" horizontal-scroll-proportion="0.11326861">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/FlatXmlDataSet.java" line="232" column="34" vertical-scroll-proportion="0.7597865" horizontal-scroll-proportion="0.38511327" selected="true">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml/XmlDataSet.java" line="162" column="13" vertical-scroll-proportion="0.3291815" horizontal-scroll-proportion="0.14724919" />
     </open-files>
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1032" height="746" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="3" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.39935064" order="2" />
+      <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.175813" order="3" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.38311687" order="2" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="1" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="7" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="sliding" type="sliding" visible="false" weight="0.4" order="0" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.29268292" order="0" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.39935064" order="3" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.2987805" order="0" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.3993808" order="3" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="1" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.41233766" order="1" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.40584415" order="8" x="20" y="232" width="984" height="274" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.48701298" order="1" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.3961039" order="8" x="20" y="232" width="984" height="274" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="6" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="5" />
@@ -258,16 +265,16 @@
   <component name="ProjectViewSettings">
     <navigator currentView="SourcepathPane" flattenPackages="false" showMembers="false" showStructure="false" autoscrollToSource="false" splitterProportion="0.5" />
     <view id="ProjectPane">
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/xml" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
     </view>
     <view id="SourcepathPane">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/database" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/datatype" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/java/org/dbunit/dataset/xml" />
     </view>
     <view id="ClasspathPane" />
   </component>
@@ -330,77 +337,16 @@
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="AllTests" type="JUnit" default="false" selected="false">
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.AllTests" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    </configuration>
     <configuration name="AllTests" type="Application" default="false" selected="true">
       <option name="MAIN_CLASS_NAME" value="org.dbunit.AllTests" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="FlatXmlDataSetTest" type="JUnit" default="false" selected="false">
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.xml.FlatXmlDataSetTest" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    </configuration>
-    <configuration name="FlatDtdDataSetTest.testWriteFromDatabase" type="JUnit" default="false" selected="false">
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.dataset.xml.FlatDtdDataSetTest" />
-      <option name="METHOD_NAME" value="testWriteFromDatabase" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    </configuration>
-    <configuration name="DatabaseTableMetaDataTest.testGetNoColumns" type="JUnit" default="false" selected="false">
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.database.DatabaseTableMetaDataTest" />
-      <option name="METHOD_NAME" value="testGetNoColumns" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    </configuration>
-    <configuration name="DatabaseTableMetaDataTest.testGetNoPrimaryKeys" type="JUnit" default="false" selected="false">
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.database.DatabaseTableMetaDataTest" />
-      <option name="METHOD_NAME" value="testGetNoPrimaryKeys" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    </configuration>
-    <configuration name="DatabaseTableMetaDataTest.testGetPrimaryKeys" type="JUnit" default="false" selected="false">
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.database.DatabaseTableMetaDataTest" />
-      <option name="METHOD_NAME" value="testGetPrimaryKeys" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    </configuration>
-    <configuration name="DatabaseTableMetaDataTest" type="JUnit" default="false" selected="false">
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" value="org.dbunit.database.DatabaseTableMetaDataTest" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    </configuration>
   </component>
-  <component name="BookmarkManager" />
+  <component name="BookmarkManager">
+    <editor_bookmark url="file://$PROJECT_DIR$/src/test/org/dbunit/ant/DbUnitTaskTest.java" line="293" />
+  </component>
   <component name="Commander">
     <leftPanel view="Project" url="file://$PROJECT_DIR$/src/java/org/dbunit" />
     <rightPanel view="Project" />

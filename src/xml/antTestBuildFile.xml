@@ -278,6 +278,30 @@
     </dbunit>
     <delete file="${exportDataSet}"/>
   </target>
+  
+  <target name="test-classpath">
+    <dbunit driver="org.gjt.mm.mysql.Driver"
+            url="jdbc:mysql://localhost:3306/dbunit"
+            userid="root"
+            password="">
+      <operation type="INSERT" src="${testDataSet}" format="xml"/>
+      <classpath>    	
+      	<pathelement location="./lib/mm.mysql-2.0.11-bin.jar"/>
+      </classpath>
+    </dbunit>
+  </target>  
+
+  <target name="test-drivernotinclasspath">
+    <dbunit driver="org.gjt.mm.mysql.Driver"
+            url="jdbc:mysql://localhost:3306/dbunit"
+            userid="root"
+            password="">
+      <operation type="INSERT" src="${testDataSet}" format="xml"/>
+      <classpath>
+      	<pathelement location="./lib/unknown.jar"/>
+      </classpath>
+    </dbunit>
+  </target>
 
 </project>
 
