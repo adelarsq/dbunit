@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project>
+
+  <!-- the version of maven's project object model -->
+  <pomVersion>3</pomVersion>
+  
+  <!-- a unique name for this project -->
+  <id>dbunit</id>
+  
+  <!-- a short but descriptive name for the project -->
+  <name>Maven example projects</name>
+  
+  <!-- The version of the project under development, e.g.
+       1.1, 1.2, 2.0-dev -->
+  <currentVersion>1.6-dev</currentVersion>
+  
+  <!-- details about the organization that 'owns' the project -->
+  <organization>
+    <name>Apache Software Foundation</name>
+    <url>http://www.apache.org/</url>
+    <logo>http://maven.apache.org/images/jakarta-logo-blue.gif</logo>
+  </organization>
+  
+  <!-- the year the project started -->
+  <inceptionYear>2002</inceptionYear>
+  <package>org.dbunit</package>
+  <logo>http://www.dbunit.org/images/logo.jpg</logo>
+  <description>
+    DbUnit is a JUnit extension (also usable from Ant) targeted for database-driven projects that, 
+    among other things, puts your database into a known state between test runs. This is an 
+    excellent way to avoid the myriad of problems that can occur when one test case corrupts 
+    the database and causes subsequent tests to fail or exacerbate the damage.
+  </description>
+  <!-- a short description of what the project does -->
+  <shortDescription>
+    DbUnit is a JUnit extension targeted for database-driven projects
+  </shortDescription>
+
+  <!-- the project home page -->
+  <url>http://www.dbunit.org</url>
+  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=47439&amp;atid=449491</issueTrackingUrl>
+  <siteAddress>www.dbunit.org</siteAddress>
+  <siteDirectory></siteDirectory>
+  <distributionDirectory></distributionDirectory>
+
+  <!-- the version control repository and http url for online access
+       the connection element has the form:
+       scm:<system>:<system specific connection string> -->
+  <repository>
+    <connection>scm:cvs:pserver:anoncvs@cvs.sourceforge.net:/cvsroot/dbunit:dbunit</connection>
+    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dbunit/dbunit</url>
+   
+  </repository>
+
+  <!-- any mailing lists for the project -->
+  <mailingLists/>
+  
+  <!-- who the developers are for the project -->
+  <developers>
+   <developer>
+      <name>David Eric Pugh</name>
+      <id>dep4b</id>
+      <email>epugh@upstate.com</email>
+      <organization>Upstate</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <!-- jar files the project is dependent on -->
+  <dependencies>
+    <dependency>
+      <id>ant</id>
+      <version>1.5.3-1</version>      
+    </dependency>   
+    <dependency>
+     <id>crimson</id>
+     <version>1.1.3</version>      
+    </dependency>   
+    <dependency>
+      <id>junit</id>
+      <version>3.8.1</version>      
+    </dependency>     
+    <dependency>
+     <id>hsqldb</id>
+     <version>1.7.1</version>      
+    </dependency>       
+    <dependency>
+     <id>servletapi</id>
+     <version>2.3</version>      
+    </dependency>       
+    <dependency>
+     <id>poi</id>
+     <version>1.8.0-dev-20020919</version>      
+    </dependency>       
+    <dependency>
+     <id>mockobjects:mockobjects-0.07-core</id>
+     <jar>mockobjects-0.07-core.jar</jar>     
+    </dependency>       
+    <dependency>
+     <id>mockobjects:mockobjects-0.07-jdk1.3</id>
+     <jar>mockobjects-0.07-jdk1.3.jar</jar>
+     <version/>
+    </dependency>
+    <dependency>
+     <id>mm-mysql</id>
+     <version>2.0.13-bin</version>      
+    </dependency>           
+  </dependencies>
+  
+  <!-- build information for the project -->
+  <build>
+    <nagEmailAddress></nagEmailAddress>
+    <sourceDirectory>${basedir}/src/java</sourceDirectory>
+    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+      <excludes>
+        <exclude></exclude>
+      </excludes>
+    </unitTest>
+
+    <resources>
+      <resource>
+        <directory>${basedir}/src/conf</directory>
+        <includes>
+          <include>*.properties</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+
+
+</project>
+
