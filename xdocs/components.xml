@@ -2,29 +2,63 @@
 <document><properties><title>Core Components</title></properties><body><section>
 	 
       <h3>Core Components</h3>
-      <p>The following walks you through the core classes that make up DbUnit: 
-      <ol>
-        <li><a href="#dataset">IDataSet</a></li>
-        <li><a href="#databaseconnection">IDatabaseConnection</a></li>
-        <li><a href="#databaseoperation">DatabaseOperation</a></li>
-      </ol>
+      <p>This document attemps to give you an overview of the core classes that make up DbUnit. 
+      Following are the core interfaces or abstract classes:
+      
+      <table border="1">
+        <tr> 
+          <th>Class</th>
+          <th>Description</th>
+        </tr>
+        <tr> 
+          <td><a href="#databaseconnection">IDatabaseConnection</a></td>
+          <td>Interface representing a DbUnit connection to a database.</td>
+        </tr>
+        <tr> 
+          <td><a href="#dataset">IDataSet</a></td>
+          <td>Interface representing a collection of tables.</td>
+        </tr>
+        <tr> 
+          <td><a href="#databaseoperation">DatabaseOperation</a></td>
+          <td>Abstract class representing an operation performed on the database before and after each test.</td>
+        </tr>
+       </table>
       </p>
-      <p>All the above are interfaces or abstract classes and you will find yourself 
-        using implementations or subclasses.</p>
-      <hr></hr>
+
+      <h3><a name="databaseconnection">IDatabaseConnection</a></h3>
+      <p>The <a href="apidocs/org/dbunit/database/IDatabaseConnection.html">IDatabaseConnection</a> interface represents  
+        a DbUnit connection to a database. 
+        
+      <table border="1">
+        <tr> 
+          <th>Class</th>
+          <th>Description</th>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/database/DatabaseConnection.html">DatabaseConnection</a></td>
+          <td>Wraps a JDBC connection.</td>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/database/DatabaseDataSourceConnection.html">DatabaseDataSourceConnection</a></td>
+          <td>Wraps a JDBC DataSource.</td>
+        </tr>
+       </table>
+      </p>
+      
       <h3><a name="dataset">IDataSet</a></h3>
-      <p>The <a class="code">IDataSet</a> interface represents is a collection 
-        of data from various tables. As explained later, these data is used to 
-        execute setup operations on a target database. 
+      <p>The <a href="apidocs/org/dbunit/dataset/IDataSet.html">IDataSet</a> interface represents is a collection 
+        of tables. 
       <source>
 public interface IDataSet
 {
     /**
-     * Returns names of tables in this dataset in proper sequence. Multiple
-     * occurence of the same name may be returned if multiple tables having
-     * the same name are present in the dataset.
+     * Returns table names from this dataset in proper order. 
+     * multiple occurence of the same name may be returned if 
+     * more tables having the same name are present in the 
+     * dataset.
      */
-    public String[] getTableNames() throws DataSetException;
+    public String[] getTableNames() 
+            throws DataSetException;
 
     /**
      * Returns the specified table metadata.
@@ -35,66 +69,67 @@ public interface IDataSet
     /**
      * Returns the specified table.
      */
-    public ITable getTable(String tableName) throws DataSetException;
+    public ITable getTable(String tableName) 
+            throws DataSetException;
 
     /**
-     * Returns an iterator over the tables in this dataset in proper sequence.
+     * Returns an iterator over the tables in this dataset 
+     * in proper order.
      */
-    public ITableIterator iterator() throws DataSetException;
+    public ITableIterator iterator() 
+            throws DataSetException;
 
     /**
-     * Returns an iterator over the tables in this dataset in reverse sequence.
+     * Returns an iterator over the tables in this dataset 
+     * in reverse order.
      */
-    public ITableIterator reverseIterator() throws DataSetException;
+    public ITableIterator reverseIterator() 
+            throws DataSetException;
 }</source>
 </p>
-      <p>The <a class="code">IDataSet</a> implementations provided by the framework 
-        are: 
-      <ul>
-        <li><a href="#FlatXmlDataSet">FlatXmlDataSet</a></li>
-        <li><a href="#XmlDataSet">XmlDataSet</a></li>
-        <li><a href="#DatabaseDataSet">DatabaseDataSet</a></li>
-        <li><a href="#DefaultDataSet">DefaultDataSet</a></li>
-        <li><a href="#CompositeDataSet">CompositeDataSet</a></li>
-        <li><a href="#FilteredDataSet">FilteredDataSet</a></li>
-        <li><a href="#QueryDataSet">QueryDataSet</a> <font color="#FF0000">(new)</font></li>
-      </ul>
-</p>      
-      <h4><a name="FlatXmlDataSet">FlatXmlDataSet</a></h4>
-      <p>In the flat XML format, each XML element corresponds to a table row. 
+      <p>IDataSet implemetations provided by DbUnit:
+        
+      <table border="1">
+        <tr> 
+          <th>Implementation</th>
+          <th>Description</th>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/dataset/xml/FlatXmlDataSet.html">FlatXmlDataSet</a></td>
+          <td>      
+       Reads and writes flat XML dataset document. Each XML element corresponds to a table row. 
         Each XML element name corresponds to a table name. The XML attributes 
-        correspond to table columns.</p>
-      <p> Here is an example dataset containing the 
-        same data than the XmlDataSet <a href="#originalxmlsample">example</a>:
+        correspond to table columns.<br/>
+      Flat XML dataset document sample:
       <source><![CDATA[
 <!DOCTYPE dataset SYSTEM "my-dataset.dtd">
 <dataset>
-    <TEST_TABLE COLUMN0="row 0 col 0" COLUMN1="row 0 col 1"
-                COLUMN2="row 0 col 2" COLUMN3="row 0 col 3"/>
-    <TEST_TABLE COLUMN0="row 1 col 0" COLUMN3="row 1 col 3"/>
-    <SECOND_TABLE COLUMN0="row 0 col 0" COLUMN1="row 0 col 1" />
-    <SECOND_TABLE COLUMN0="row 1 col 0" COLUMN1="row 1 col 1" />
+    <TEST_TABLE COL0="row 0 col 0" 
+                COL1="row 0 col 1"
+                COL2="row 0 col 2"/> 
+    <TEST_TABLE COL1="row 1 col 1"/>
+    <SECOND_TABLE COL0="row 0 col 0" 
+                  COL1="row 0 col 1" />
     <EMPTY_TABLE/>
 </dataset>]]></source>
-      </p>
-      <p>To specify a null value, you simply have to omit its corresponding attribute. 
-      In the above example, COLUMN1 and COLUMN2 are nulls for the second row of 
-      TEST_TABLE.</p>
-      <p>Table metadata is deduced from the first row of each table. <b>Beware that DbUnit may think 
-      a table miss some columns if the first row of that table has one or more null values.</b></p>
-      <p>For this kind of situation, this is highly recommended to use DTD. DbUnit will use the 
+      <br/>
+      To specify null values, omit corresponding attribute. 
+      In the above example, missing COL0 and COL2 attributes of TEST_TABLE second row represents null values.
+      <br/>
+      Table metadata is deduced from the first row of each table. <b>Beware you may get a NoSuchColumnException 
+      if the first row of a table has one or more null values.</b>
+      Because of that, this is highly recommended to use DTD. DbUnit will use the 
       columns declared in the DTD as table metadata. DbUnit only support external system URI. 
-      The URI can be absolute or relative.</p> 
-      <p>Read how to <a href="faq.html#extract">export</a> your database data to this format 
-      and how to <a href="faq.html#generatedtd">generate a DTD</a> representing your database schema. 
-      Note that DbUnit does not automatically add a reference to your DTD when 
-      you export a dataset. You must edit the output file to manually add the 
-      DOCTYPE declaration.</p> 
-      <a name="XmlDataSet"> 
-      <h4>XmlDataSet </h4>
-      </a> 
-      <p>The XmlDataSet class provides the persistence support 
-        to read from and write to the generic XML dataset format. This format 
+      The URI can be absolute or relative.
+      <br/>
+      Another way to cope with this problem is to use the <a href= "#replacementdataset">ReplacementDataSet</a>.
+     
+</td>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/dataset/xml/XmlDataSet.html">XmlDataSet</a></td>
+          <td>
+      Reads and writes original XML dataset document. This format 
         is very verbiose and must conform to the following DTD:
       <source><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
@@ -107,27 +142,25 @@ public interface IDataSet
 <!ELEMENT row (value | null | none)*>
 <!ELEMENT value (#PCDATA)>
 <!ELEMENT null EMPTY>
-]]></source></p>
-      <p><a name="originalxmlsample">Example of XML document:</a><br></br>
+]]></source>
+      <br/>
+      <a name="originalxmlsample">XML dataset document sample:</a>
       <source><![CDATA[
 <!DOCTYPE dataset SYSTEM "dataset.dtd">
 <dataset>
     <table name="TEST_TABLE">
-        <column>COLUMN0</column>
-        <column>COLUMN1</column>
-        <column>COLUMN2</column>
-        <column>COLUMN3</column>
+        <column>COL0</column>
+        <column>COL1</column>
+        <column>COL2</column>
         <row>
             <value>row 0 col 0</value>
             <value>row 0 col 1</value>
             <value>row 0 col 2</value>
-            <value>row 0 col 3</value>
         </row>
         <row>
-            <value>row 1 col 0</value>
             <null/>
+            <value>row 1 col 1</value>
             <null/>
-            <value>row 1 col 3</value>
         </row>
     </table>
     <table name="SECOND_TABLE">
@@ -137,147 +170,200 @@ public interface IDataSet
             <value>row 0 col 0</value>
             <value>row 0 col 1</value>
         </row>
-        <row>
-            <value>row 1 col 0</value>
-            <value>row 1 col 1</value>
-        </row>
     </table>
     <table name='EMPTY_TABLE'>
         <column>COLUMN0</column>
         <column>COLUMN1</column>
-        <column>COLUMN2</column>
-        <column>COLUMN3</column>
     </table>
-</dataset>]]></source></p>
-      <h4><a name="DatabaseDataSet">DatabaseDataSet</a></h4>
-      <p>The DatabaseDataSet is an adapter class that allows access 
-      to a database contents as a dataset. This class is not usually instantiated 
-      directly but from the factory method <code>IDatabaseConnection.createDataSet()</code>.</p>
-      <h4><a name="DefaultDataSet">DefaultDataSet</a></h4>
-      <p>The DefaultDataSet class can be used to create datasets 
-      programmatically.</p>
-      <h4><a name="CompositeDataSet">CompositeDataSet</a></h4>
-      <p>The CompositeDataSet class combines multiple datasets 
-      into a single one at runtime.</p>
-      <h4><a name="FilteredDataSet">FilteredDataSet</a></h4>
-      <p>The FileteredDataSet class is is a decorator which exposes 
-      only some tables from the decorated dataset.</p>
-      <h4><a name="QueryDataSet">QueryDataSet</a></h4>
-      <p>The QueryDataSet allows to easily manipulates multiple 
-      <a href="./api/org/dbunit/database/IDatabaseConnection.html#createQueryTable(java.lang.String,%20java.lang.String)">query 
-      tables</a>.</p>
-      <h3><a name="databaseconnection">IDatabaseConnection</a></h3>
-      <p>As its name implies, the IDatabaseConnection represent 
-        a connection to a database. 
-        </p>
-      <p>The DbUnit framework provides two implementations:
-      <ul>
-        <li><a class="code">DatabaseConnection</a>, which is a JDBC Connection 
-          adapter.</li>
-        <li><a class="code">DatabaseDataSourceConnection</a>, which is a JDBC 
-          DataSource adapter.<br></br>
-        </li>
-      </ul>
-       </p>
+</dataset>]]></source>
+      <br/>
+          </td>
+        </tr>
+        <tr> 
+          <td><a name="streamingdataset" href="apidocs/org/dbunit/database/StreamingDataSet.html">StreamingDataSet</a></td>
+          <td>Consumes a producer and expose its content as a dataset. Provides cursor like forward only access to it and only keeps the active row in memory. Can be used with FlatXmlProducer and XmlProvider.
+<br/>
+This is a very efficient way to load XML dataset document when working with forward only database operations (UPDATE, INSERT, REFRESH).
+<br/>
+Following sample shows how to load a flat XML dataset with the StreamingDataSet: 
+<source>
+    IDataSetProducer producer = new FlatXmlProducer(
+            new InputSource("dataset.xml"));
+    IDataSet dataSet = new StreamingDataSet(producer);
+</source>
+</td>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/database/DatabaseDataSet.html">DatabaseDataSet</a></td>
+          <td>Adapter that provides access 
+      to a database instance as a dataset. This class is not usually instantiated 
+      directly but from the factory method <code>IDatabaseConnection.createDataSet()</code>.</td>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/database/QueryDataSet.html">QueryDataSet</a></td>
+          <td>Holds collection of tables resulting from database query.</td>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/dataset/DefaultDataSet.html">DefaultDataSet</a></td>
+          <td>Uses to create datasets       programmatically.</td>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/dataset/CompositeDataSet.html">CompositeDataSet</a></td>
+          <td>Combines multiple datasets 
+      into a single logical dataset.</td>
+        </tr>
+        <tr> 
+          <td><a name="filtereddataset" href="apidocs/org/dbunit/dataset/FilteredDataSet.html">FilteredDataSet</a></td>
+          <td>Decorator that exposes only some tables from decorated dataset. Can be used with different filtering strategies. Some strategies can include/exclude tables without altering their order while others expose tables with a different order.
+                <table border="1">
+        <tr> 
+          <th>Strategy</th>
+          <th>Description</th>
+        </tr>
+        <tr> 
+          <td>IncludeTableFilter</td>
+          <td>Exposes only matching tables pattern without modifying the original table order. Support wildcards. </td>
+        </tr>
+
+        <tr> 
+          <td> ExcludeTableFilter </td>
+          <td> Hides matching tables pattern without modifying the original table order. Support wildcards.</td>
+        </tr>
+        <tr> 
+          <td> SequenceTableFilter </td>
+          <td> Exposes a configured table sequence and can be used to reorder dataset table. This is the original filtering strategy from DbUnit 1.x. </td>
+        </tr>
+        <tr> 
+          <td> DatabaseSequenceFilter 
+</td>
+          <td> Automatically determine the tables order using foreign/exported keys information. 
+          This strategy is vendor 
+          independent and should work with any JDBC driver that implement the 
+          <code>DatabaseMetaData.getExportedKeys()</code> method. 
+          <br/>
+		Support simple multilevel dependency like this:
+<source>
+  A
+ / \
+B   C
+   / \
+  D   E
+</source>
+</td>
+        </tr>
+</table>
+
+          </td>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/dataset/excel/XlsDataSet.html">XlsDataSet</a></td>
+          <td>Read and writes MS Excel dataset documents. Each
+  sheet represents a table. The first row of a sheet defines the columns names
+  and remaining rows contains the data.</td>
+        </tr>
+        <tr> 
+          <td><a name= "replacementdataset" href="apidocs/org/dbunit/dataset/ReplacementDataSet.html">ReplacementDataSet</a></td>
+          <td>Decorator that replaces placeholder objects from the decorated dataset with replacement objects. Substring substitution is also possible.
+          <br/>
+Interestingly this provides a new way to specify null values in flat XML datasets. For example you can use a placeholder value, like "[NULL]" in your flat XML dataset and replace it with <code>null</code> at runtime.
+
+<source><![CDATA[
+<?xml version="1.0"?>
+<dataset>
+    <TEST_TABLE COL0="row 0 col 0" 
+                COL1="[null]"/> 
+    <TEST_TABLE COL1="row 1 col 0"
+                COL2="row 1 col 1"/> 
+</dataset>]]></source>
+          <br/>
+Loading the flat XML dataset:
+<source><![CDATA[
+ReplacementDataSet dataSet = new ReplacementDataSet(
+        new FlatXmlDataSet(…)); 
+dataSet.addReplacementObject("[NULL]", null);]]></source>
+          <br/>
+ </td>
+        </tr>
+      </table>
+      </p>
       <h3><a name="databaseoperation">DatabaseOperation</a></h3>
-      <p>The <a class="code">DatabaseOperation</a> abstract class defines operations 
-        performed on a target database before and after each test. 
-      <source><![CDATA[
-public abstract class DatabaseOperation
-{
-    public static final IDatabaseOperation NONE = new DummyAction();
-    public static final IDatabaseOperation UPDATE = new UpdateOperation();
-    public static final IDatabaseOperation INSERT = new InsertOperation();
-    public static final IDatabaseOperation REFRESH = new RefreshOperation();
-    public static final IDatabaseOperation DELETE = new DeleteOperation();
-    public static final IDatabaseOperation DELETE_ALL =
-            new DeleteAllOperation();
-    public static final IDatabaseOperation CLEAN_INSERT =
-            new CompositeOperation(DELETE_ALL, INSERT);
-
-
-    /**
-     * Executes this operation on the specified database using the specified
-     * dataset contents.
-     *
-     * @param connection the database connection.
-     * @param dataSet the dataset to be used by this operation.
-     */
-    public abstract void execute(IDatabaseConnection connection,
-            IDataSet dataSet) throws DatabaseUnitException, SQLException;
-
-    private static class DummyAction extends DatabaseOperation
-    {
-        public void execute(IDatabaseConnection connection,
-                IDataSet dataSet)
-        {
-        }
-    }
-}]]></source>
-      </p>
-        <p>Again, the framework provides several implementations. 
-      <ul>
-        <li><a href="#update">UPDATE</a></li>
-        <li><a href="#insert">INSERT</a></li>
-        <li><a href="#delete">DELETE</a></li>
-        <li><a href="#deleteall">DELETE_ALL</a></li>
-        <li><a href="#refresh">REFRESH</a></li>
-        <li><a href="#cleaninsert">CLEAN_INSERT</a></li>
-        <li><a href="#none">NONE</a></li>
-        <li><a href="#CompositeOperation">CompositeOperation</a></li>
-        <li><a href="#TransactionOperation">TransactionOperation</a></li>
-        <li><a href="#IdentityInsertOperation">IdentityInsertOperation</a> </li>
-      </ul>
-      </p>
+      <p><a href="apidocs/org/dbunit/operation/DatabaseOperation.html">DatabaseOperation</a> is an abstract class that represents an operation performed on the database before and after each test. </p>
       <p>The two most usefull operations are <a href="#refresh">REFRESH</a> and 
         <a href="#cleanInsert">CLEAN_INSERT</a>. They 
-        are the ones you will deal usualy with. They represent two opposite 
+        are the ones you will deal usualy with. They represent two 
         testing strategies with different benefits and tradeoffs. </p>
-      <p>The <a class="code">DatabaseOperation</a> class declaration: </p>
-      <h4><a name="update">DatabaseOperation</a>.UPDATE</h4>
-      <p>This operation updates the database from the dataset contents. This operation 
+
+      <table border="1">
+        <tr> 
+          <th>Operation</th>
+          <th>Description</th>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/operation/UpdateOperation.html">DatabaseOperation.UPDATE</a></td>
+          <td>This operation updates the database from the dataset contents. This operation 
       assumes that table data already exists in the target database and fails 
-      if this is not the case.</p>
-      <h4><a name="insert">DatabaseOperation.INSERT</a></h4>
-      <p>This operation inserts the dataset contents into the database. This operation 
+      if this is not the case.</td>
+        </tr>
+        <tr> 
+          <td><a name="insert" href="apidocs/org/dbunit/operation/InsertOperation.html">DatabaseOperation.INSERT</a></td>
+          <td>This operation inserts the dataset contents into the database. This operation 
       assumes that table data does not exist in the target database and fails 
       if this is not the case. To prevent problems with foreign keys, tables must 
-      be sequenced appropriately in the dataset.</p>
-      <h4><a name="delete">DatabaseOperation.DELETE</a></h4>
-      <p>This operation deletes only the dataset contents from the database. This 
+      be sequenced appropriately in the dataset.</td>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/operation/DeleteOperation.html">DatabaseOperation.DELETE</a></td>
+          <td>This operation deletes only the dataset contents from the database. This 
       operation does not delete the entire table contents but only data that are 
-      present in the dataset.</p>
-      <h4><a name="deleteall">DatabaseOperation.DELETE_ALL</a></h4>
-      <p>This operation deletes entire target database table contents for each table 
-      contained in dataset. In other words, if a dataset does not contain a particular 
-      table, but that table exists in the database, the contents of that table 
-      is not deleted. Deletes are performed on table in reverse sequence.</p>
-      <h4><a name="refresh">DatabaseOperation.REFRESH</a></h4>
-      <p>This operation literally refreshes dataset contents into the target database. 
+      present in the dataset.</td>
+        </tr>
+        <tr> 
+          <td><a name="deleteall" href="apidocs/org/dbunit/operation/DeleteAllOperation.html">DatabaseOperation.DELETE_ALL</a></td>
+          <td>Deletes all rows of tables present in the specified dataset. If the dataset does not contains a particular table, but that table exists in the database, the database table is not affected. Table are truncated in reverse sequence.</td>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/operation/TruncateTableOperation.html">DatabaseOperation.TRUNCATE</a></td>
+          <td>Truncate tables present in the specified dataset. If the dataset does not contains a particular table, but that table exists in the database, the database table is not affected. Table are truncated in reverse sequence. 
+
+</td>
+        </tr>
+        <tr> 
+          <td><a name="#refresh" href="apidocs/org/dbunit/operation/RefreshOperation.html">DatabaseOperation.REFRESH</a></td>
+          <td>This operation literally refreshes dataset contents into the target database. 
       This means that data of existing rows are updated and non-existing row get 
       inserted. Any rows which exist in the database but not in dataset stay unaffected. 
       This approach is more appropriate for tests that assume other data may exist 
-      in the database.</p>
-      <p>As you understand, this is a very powerful operation. This strategy can 
-      help you deal more easily with foreign key constraints, as you don't necessarily 
-      need to insert data in a specific sequence.</p>
-      <p>If they are correctly written, tests using this strategy can even be performed 
-      on a populated database like a copy of a production database.</p>
-      <h4><a name="cleaninsert">DatabaseOperation.CLEAN_INSERT</a></h4>
-      <p>This composite operation performs a DELETE_ALL operation followed by an 
-      INSERT operation. This is the safest approach to ensure that the database 
+      in the database.<br/>
+      if they are correctly written, tests using this strategy can even be performed 
+      on a populated database like a copy of a production database.</td>
+        </tr>
+        <tr> 
+          <td><a name="#cleanInsert">DatabaseOperation.CLEAN_INSERT</a></td>
+          <td>This composite operation performs a <a href="#deleteall">DELETE_ALL</a> operation followed by an 
+      <a href="#insert">INSERT</a> operation. This is the safest approach to ensure that the database 
       is in a known state. This is appropriate for tests that require the database 
-      to only contain a specific set of data.</p>
-      <h4><a name="none">DatabaseOperation.NONE</a></h4>
-      <p>This operation does absolutely nothing with the target database.</p>
-      <h4><a name="CompositeOperation">CompositeOperation</a></h4>
-      <p>This operation combines multiple operations into a single one.</p>
-      <h4><a name="TransactionOperation">TransactionOperation</a></h4>
-      <p>This operation decorates an operation and executes it within the context 
-        of a transaction.</p>
-      <h4><a name="IdentityInsertOperation">IdentityInsertOperation</a></h4>
-      <p>This operation decorates an insert operation and disables the MS SQL 
+      to only contain a specific set of data.</td>
+        </tr>
+        <tr> 
+          <td>DatabaseOperation.NONE</td>
+          <td>Empty operation that does absolutely nothing.</td>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/operation/CompositeOperation.html">CompositeOperation</a></td>
+          <td>This operation combines multiple operations into a single one.</td>
+        </tr>
+        <tr> 
+          <td><a href="apidocs/org/dbunit/operation/TransactionOperation.html">TransactionOperation</a></td>
+          <td>This operation decorates an operation and executes it within the context 
+        of a transaction.</td>
+        </tr>
+        <tr> 
+          <td><a name="InsertIdentityOperation" href="apidocs/org/dbunit/operation/mssqlserver/InsertIdentityOperation.html">IdentityInsertOperation</a></td>
+          <td>This operation decorates an insert operation and disables the MS SQL 
         Server automatic identifier generation (IDENTITY) during its execution. 
         Use following constants InsertIdentityOperation.INSERT, InsertIdentityOperation.CLEAN_INSERT 
-        or InsertIdentityOperation.REFRESH instead of those defined in DatabaseOperation.</p>
+        or InsertIdentityOperation.REFRESH instead of those defined in DatabaseOperation.</td>
+        </tr>
+      </table>
+
       </section></body></document>

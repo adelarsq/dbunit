@@ -15,7 +15,7 @@
      	Use SAX2 instead of Electric XML parser. DbUnit has no dependencies anymore on exml.jar and dtdparser.jar.
      </action>      	            
      <action dev="" type="update">
-     	Dramatic memory usage improvements to get rid of the infamous OutOfMemoryError. Need some setup to take advantage of some of them. See FAQ (TODO!).
+     	Dramatic memory usage improvements to get rid of the infamous OutOfMemoryError. Need some setup to take advantage of some of them. See "OutOfMemoryError" FAQ.
      </action>      	            
      <action dev="" type="add">
      	Flat XML dataset validation.
@@ -24,7 +24,7 @@
      	New <code>ITableIterator</code> interface used to iterate thru dataset tables. Allows usage of efficient lazy tables initialization for some dataset implementations. The <code>IDataSet.getTables</code> method have been deprecated and should not be used anymore.
      </action>         
      <action dev="" type="add">
-     	<code>StreamingDataSet</code>. Provides high performance and memory friendly flat XML loading.
+     	<code>StreamingDataSet</code>. Provides high performance and memory friendly XML document loading.
      </action>         
      <action dev="" type="update">
      	Global System properties are not supported anymore. You must now use the new <code>DatabaseConfig</code> object to alter DbUnit behaviours. 
@@ -64,6 +64,9 @@
      </action>         
      <action dev="" type="update">
      	<code>Assertion.assertEquals</code> is now performing typed comparison instead of string representation comparison.
+     </action>         
+     <action dev="" type="update">
+     	INSERT, CLEAN_INSERT and REFRESH operations do not override database default values anymore with null values. Null values are now omitted from insert statements. Operations use multiple prepared statements for the same table, when null values vary from row to row.
      </action>         
     </release>
 

@@ -50,12 +50,27 @@
         </tr>
         <tr> 
           <td>useQualifiedTableNames</td>
-          <td>Uses qualified table names. Defaults to false</td>
+          <td>Set the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature. Defaults to false</td>
           <td>No</td>
         </tr>
         <tr> 
           <td>supportBatchStatement</td>
-          <td>JDBC driver supports batch statement. Defaults to false</td>
+          <td>Set the <a href="properties.html#batchstatement">batched statement</a> feature. Defaults to false</td>
+          <td>No</td>
+        </tr>
+        <tr> 
+          <td>datatypeWarning</td>
+          <td>Set the <a href="properties.html#typewarning">data type warning</a> feature. Defaults to true</td>
+          <td>No</td>
+        </tr>
+        <tr> 
+          <td>escapePattern</td>
+          <td>Set the <a href="properties.html#escapepattern">escape pattern</a> property.</td>
+          <td>No</td>
+        </tr>
+        <tr> 
+          <td>datatypeFactory</td>
+          <td>Set the <a href="properties.html#typefactory">datatype factory</a> property.</td>
           <td>No</td>
         </tr>
       </table>

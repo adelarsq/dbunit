@@ -15,6 +15,7 @@
       <item name="FAQ"             href="/faq.html"/> 
       <item name="Get Support"     href="https://sourceforge.net/support/getsupport.php?group_id=47439"/>          
       <item name="Source"          href="/cvs-usage.html"/>          
+      <item name="JavaDocs"        href="apidocs/index.html"/>          
     </menu>
     <menu name="Overview">
       <item name="About DbUnit"            href="/index.html"/>  
@@ -24,7 +25,6 @@
       <item name="Core Components"      href="/components.html"/>
       <item name="Properties"      href="/properties.html"/>    
       <item name="Ant Task"    	   href="/anttask.html"/>
-      <item name="JavaDocs"        href="apidocs/index.html"/>          
       <item name="Resources"       href="/resources.html"/> 
     </menu>
   </body>

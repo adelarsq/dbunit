@@ -153,7 +153,7 @@ public class DatabaseExportSample
     
     <faq id="views">
       <question>
-      Can I use DbUnit with views or with synonyms? 
+      Can I use DbUnit with database views? 
       </question>
       <answer>
       <p>
@@ -161,7 +161,7 @@ public class DatabaseExportSample
       <a href="properties.html#tabletype">table type property</a> to work with other table types.
       </p>
       <p>
-      For example, use <code>{"TABLE", "VIEW"}</code> for views and <code>{"TABLE", "SYNONYM"}</code> for synonyms.
+      For example, use <code>{"TABLE", "VIEW"}</code> for views.
       </p>
 
       </answer>
@@ -194,10 +194,84 @@ public class DatabaseExportSample
 </p>
       </answer>
     </faq>    
+
+    <faq id="typefactory">
+      <question>
+       How to replace the default data type factory?
+      </question>
+      <answer>
+      <p>
+You can replace the default DbUnit <a href="properties.html#typefactory">data type factory</a> to get support for custom data type. 
+DbUnit provides extended factories for some vendors, which are located in <code>org.dbunit.ext</code> subpackages.
+      </p>
+      <p>
+Here is how to use the Oracle factory:
+<source>
+    IDatabaseConnection connection = new DatabaseConnection(
+            jdbcConnection, schema);
+    DatabaseConfig config = connection.getConfig();
+    config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
+            new OracleDataTypeFactory());
+</source>
+      </p>
+      <p>
+Don't hesitate to submit your own implementation if you encounter types not currently supported by DbUnit. 
+      </p>
+      </answer>
+    </faq>    
+    
   </part>  
 
   <part id="use">
     <title>Errors</title>
+
+    <faq id="outofmemory">
+      <question>
+        How to get rid of the infamous "OutOfMemoryError"?
+      </question>
+      <answer>
+        <p>
+        Historically, DbUnit has some memory consumption issues; especially when working with very large 
+        dataset files. DbUnit 2.0 includes many improvements, like using SAX2 instead of the Electric XML 
+        parser and and streamed XML dataset writing, to overcome the memory consumption problems.
+        </p>
+	<p>
+        For compatibility reason, not all improvements are enabled by default. Depending of your 
+        utilisation, some additional setup can makes a huge difference.
+        </p>
+	<h5>
+	Database Export:
+        </h5>
+
+	<p>
+	You should configure your DbUnit connection to use ForwardOnlyResultSetTable when exporting very 
+	large dataset. ForwardOnlyResultSetTable is a very efficient database table implemtation useful 
+	when random data access is not required. By default, DbUnit uses CachedResultSetTable which consume 
+	more memory but provides random data access.
+        </p>
+
+	<p>
+	Following sample shows how to configure your DbUnit connection to use
+ForwardOnlyResultSetTable:
+<source>
+    IDatabaseConnection connection = new DatabaseConnection(
+            jdbcConnection, schema);
+    DatabaseConfig config = connection.getConfig();
+
+    config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY,
+            new ForwardOnlyResultSetTableFactory());
+</source>
+        </p>
+	<h5>
+	Forward Database Operations:
+	</h5>
+	<p>
+	Use the very efficient <a href="components.html#streamingdataset">StreamingDataSet</a> to load your XML dataset when 
+	working with forward only database operations like UPDATE, INSERT, REFRESH. 
+	</p>
+
+      </answer>
+    </faq>
 
     <faq id="tableseq">
       <question>
@@ -207,8 +281,36 @@ public class DatabaseExportSample
         DbUnit operations insert and update tables' rows in the same order they are found in your 
         dataset and delete are done in reverse order. You must order your tables and rows 
         appropriately in your datasets to prevent foreign keys constraint violation.
+        <br/>
+	The <a href="components.html#filtereddataset">DatabaseSequenceFilter</a> can now be used to automatically determine the tables order using foreign/exported keys information. 
+        <br/>
+	The following sample demonstrate how to use this class to export a flat XML dataset:
+<source>
+IDatabaseConnection conn = new DatabaseConnection(jdbcConn);
+
+ITableFilter filter = new DatabaseTableFilter(conn);
+IDataSet dataset = new FilteredDataSet(filter, 
+       conn.createDataSet());
+
+FlatXmlDataSet.write(dataset, new File(fileName));
+</source>
       </answer>
     </faq>
+    
+    <faq id="typenotrecognized">
+      <question>
+       Why I get a "data type not recognized" warning?
+      </question>
+      <answer>
+      <p>
+        By default, DbUnit only support standard JDBC data types. You will get this warning message if you are using vendor specific data types. 
+      </p>
+      <p>
+Read how to <a href="#typefactory"> replace the default data type factory</a> and how to <a href="properties.html#typewarning">disable this warning message</a>.
+      </p>
+
+      </answer>
+    </faq>    
     
     <faq id="clonedconnection">
       <question>
@@ -250,7 +352,7 @@ public class DatabaseExportSample
         same name and located in different schemas.</p>
       <p>You can solve this problem in three different ways:
       <ol>
-        <li>Provide the schema name when creating the database connection.</li>
+        <li>Provide the schema name when creating the database connection. Note that for Oracle you must specify a all uppercase schema name.</li>
         <li>Ensure that the connection is restricted to access only one schema.</li>
         <li>Enable the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature.</li>
       </ol>

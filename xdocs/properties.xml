@@ -22,6 +22,7 @@
   } 
 ]]></source></p>
       <h3>Feature Flags</h3>
+      <a name="batchstatement"></a>
       <h4>Batched statements</h4>
       <table border="1">
         <tr> 
@@ -58,6 +59,24 @@
           <td>This feature is not compatible with the <a href="#escapepattern">escape pattern</a> property.</td>
         </tr>
       </table>
+
+      <a name="typewarning"></a>
+      <h4>DataType warning</h4>
+      <table border="1">
+        <tr> 
+          <td>Feature ID</td>
+          <td>http://www.dbunit.org/features/datatypeWarning</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>true</td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Enable or disable the warning message displayed when DbUnit encounter an unsupported data type.</td>
+        </tr>
+      </table>
+
       <h3>Properties</h3>
       <h4><a name="escapepattern">Escape pattern</a></h4>
       <table border="1">
@@ -106,6 +125,7 @@
       </table>
       
       
+      <a name="typefactory"></a>
       <h4>DataType factory</h4>
       <table border="1">
         <tr> 
