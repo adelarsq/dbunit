@@ -23,10 +23,11 @@ package org.dbunit.dataset.filter;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.NoSuchTableException;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class provides a skeletal implementation of the {@link ITableFilter}
@@ -58,19 +59,48 @@ public abstract class AbstractTableFilter implements ITableFilter
         return (String[])nameList.toArray(new String[0]);
     }
 
-    public ITable[] getTables(IDataSet dataSet) throws DataSetException
+    public ITableIterator iterator(IDataSet dataSet, boolean reversed)
+            throws DataSetException
     {
-        ITable[] tables = dataSet.getTables();
-        List tableList = new ArrayList();
-        for (int i = 0; i < tables.length; i++)
+        return new FilterIterator(reversed ?
+                dataSet.reverseIterator() : dataSet.iterator());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // FilterIterator class
+
+    private class FilterIterator implements ITableIterator
+    {
+        private final ITableIterator _iterator;
+
+        public FilterIterator(ITableIterator iterator)
         {
-            ITable table = tables[i];
-            String tableName = table.getTableMetaData().getTableName();
-            if (isValidName(tableName))
-            {
-                tableList.add(table);
-            }
+            _iterator = iterator;
         }
-        return (ITable[])tableList.toArray(new ITable[0]);
+
+        ////////////////////////////////////////////////////////////////////////////
+        // ITableIterator interface
+
+        public boolean next() throws DataSetException
+        {
+            while(_iterator.next())
+            {
+                if (isValidName(_iterator.getTableMetaData().getTableName()))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public ITableMetaData getTableMetaData() throws DataSetException
+        {
+            return _iterator.getTableMetaData();
+        }
+
+        public ITable getTable() throws DataSetException
+        {
+            return _iterator.getTable();
+        }
     }
 }

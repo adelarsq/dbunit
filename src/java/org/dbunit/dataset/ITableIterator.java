@@ -18,40 +18,33 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.dataset.filter;
-
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.*;
+package org.dbunit.dataset;
 
 /**
- * Represents a strategy used by {@link FilteredDataSet} to exposes only some
- * tables from a dataset.
- *
  * @author Manuel Laflamme
- * @since Mar 7, 2003
+ * @since Apr 5, 2003
  * @version $Revision$
  */
-public interface ITableFilter
+public interface ITableIterator
 {
     /**
-     * Returns <code>true</code> if specified table is allowed by this filter.
+     * Position this iterator to the next table. The iterator is initially
+     * positioned before the first table; the first call to the method next
+     * makes the first table the current table; the second call makes the
+     * second table the current table, and so on.
+     *
+     * @return <code>true</code> if the new current table is valid;
+     * <code>false</code> if there are no more table
      */
-    public boolean isValidName(String tableName) throws DataSetException;
+    public boolean next() throws DataSetException;
 
     /**
-     * Returns the table names allowed by this filter from the specified dataset.
-     *
-     * @param dataSet the filtered dataset
+     * Returns the metadata of the current table.
      */
-    public String[] getTableNames(IDataSet dataSet) throws DataSetException;
+    public ITableMetaData getTableMetaData() throws DataSetException;
 
     /**
-     * Returns iterator of tables allowed by this filter from the specified dataset.
-     *
-     * @param dataSet the filtered dataset
+     * Returns the current table.
      */
-    public ITableIterator iterator(IDataSet dataSet, boolean reversed)
-            throws DataSetException;
+    public ITable getTable() throws DataSetException;
 }

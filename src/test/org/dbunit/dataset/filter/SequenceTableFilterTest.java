@@ -20,16 +20,16 @@
  */
 package org.dbunit.dataset.filter;
 
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.database.AmbiguousTableNameException;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
 
-import junit.framework.TestCase;
-
-import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * @author Manuel Laflamme
@@ -169,7 +169,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
                 Arrays.asList(expectedNames), Arrays.asList(actualNames));
     }
 
-    public void testGetTables() throws Exception
+    public void testIterator() throws Exception
     {
         String[] expectedNames = getExpectedNames();
         ITableFilter filter = new SequenceTableFilter(expectedNames);
@@ -178,14 +178,15 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         assertTrue("dataset names count",
                 dataSet.getTableNames().length > expectedNames.length);
 
-        ITable[] actualTables = filter.getTables(dataSet);
+        ITable[] actualTables = DataSetUtils.getTables(
+                filter.iterator(dataSet, false));
         String[] actualNames = new DefaultDataSet(actualTables).getTableNames();
         assertEquals("table count", expectedNames.length, actualTables.length);
         assertEquals("table names",
                 Arrays.asList(expectedNames), Arrays.asList(actualNames));
     }
 
-    public void testGetDuplicateTables() throws Exception
+    public void testIteratorWithDuplicateTables() throws Exception
     {
         String[] expectedNames = getExpectedDuplicateNames();
         ITableFilter filter = new SequenceTableFilter(expectedNames);
@@ -196,7 +197,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
 
         try
         {
-            filter.getTables(dataSet);
+            DataSetUtils.getTables(filter.iterator(dataSet, false));
             fail("Should not be here!");
         }
         catch (AmbiguousTableNameException e)
@@ -204,7 +205,7 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         }
     }
 
-    public void testGetCaseInsensitiveTables() throws Exception
+    public void testCaseInsensitiveIterator() throws Exception
     {
         ITableFilter filter = new SequenceTableFilter(getExpectedNames());
         String[] lowerNames = getExpectedLowerNames();
@@ -213,30 +214,33 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         assertTrue("dataset names count",
                 dataSet.getTableNames().length > lowerNames.length);
 
-        ITable[] actualTables = filter.getTables(dataSet);
+        ITable[] actualTables = DataSetUtils.getTables(
+                filter.iterator(dataSet, false));
         String[] actualNames = new DefaultDataSet(actualTables).getTableNames();
         assertEquals("table count", lowerNames.length, actualTables.length);
         assertEquals("table names",
                 Arrays.asList(lowerNames), Arrays.asList(actualNames));
     }
 
-    public void testGetReverseTables() throws Exception
+    public void testReverseIterator() throws Exception
     {
-        String[] expectedNames = DataSetUtils.reverseStringArray(getExpectedNames());
-        ITableFilter filter = new SequenceTableFilter(expectedNames);
+        String[] filterNames = getExpectedNames();
+        String[] expectedNames = DataSetUtils.reverseStringArray(filterNames);
+        ITableFilter filter = new SequenceTableFilter(filterNames);
 
         IDataSet dataSet = createDataSet();
         assertTrue("dataset names count",
                 dataSet.getTableNames().length > expectedNames.length);
 
-        ITable[] actualTables = filter.getTables(dataSet);
+        ITable[] actualTables = DataSetUtils.getTables(
+                filter.iterator(dataSet, true));
         String[] actualNames = new DefaultDataSet(actualTables).getTableNames();
         assertEquals("table count", expectedNames.length, actualTables.length);
         assertEquals("table names",
                 Arrays.asList(expectedNames), Arrays.asList(actualNames));
     }
 
-    public void testGetTablesAndTableNotInDecoratedDataSet() throws Exception
+    public void testIteratorAndTableNotInDecoratedDataSet() throws Exception
     {
         String[] expectedNames = getExpectedNames();
 
@@ -249,10 +253,31 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         assertTrue("dataset names count",
                 dataSet.getTableNames().length > expectedNames.length);
 
-        ITable[] actualTables = filter.getTables(dataSet);
+        ITable[] actualTables = DataSetUtils.getTables(
+                filter.iterator(dataSet, false));
         String[] actualNames = new DefaultDataSet(actualTables).getTableNames();
         assertEquals("table count", expectedNames.length, actualTables.length);
         assertEquals("table names",
                 Arrays.asList(expectedNames), Arrays.asList(actualNames));
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public void testIteratorWithDifferentSequence() throws Exception
+    {
+        String[] expectedNames = DataSetUtils.reverseStringArray(getExpectedNames());
+        ITableFilter filter = new SequenceTableFilter(expectedNames);
+
+        IDataSet dataSet = createDataSet();
+        assertTrue("dataset names count",
+                dataSet.getTableNames().length > expectedNames.length);
+
+        ITable[] actualTables = DataSetUtils.getTables(
+                filter.iterator(dataSet, false));
+        String[] actualNames = new DefaultDataSet(actualTables).getTableNames();
+        assertEquals("table count", expectedNames.length, actualTables.length);
+        assertEquals("table names",
+                Arrays.asList(expectedNames), Arrays.asList(actualNames));
+    }
+
 }

@@ -22,14 +22,15 @@
 
 package org.dbunit.database;
 
-import org.dbunit.*;
 import org.dbunit.DatabaseEnvironment;
-import org.dbunit.dataset.*;
+import org.dbunit.MSSQLServerEnvironment;
+import org.dbunit.dataset.AbstractDataSetTest;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
-
-import java.util.Arrays;
-import java.util.Comparator;
-import java.lang.reflect.Array;
 
 /**
  * @author Manuel Laflamme
@@ -71,32 +72,14 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         return _connection.createDataSet();
     }
 
+    protected String[] getExpectedNames() throws Exception
+    {
+        return _connection.createDataSet().getTableNames();
+    }
+
     protected IDataSet createDuplicateDataSet() throws Exception
     {
         throw new UnsupportedOperationException();
-    }
-
-    protected void sort(Object[] array)
-    {
-        if (ITable[].class.isInstance(array))
-        {
-            Arrays.sort(array, new TableComparator());
-        }
-        else
-        {
-            Arrays.sort(array);
-        }
-    }
-
-    private class TableComparator implements Comparator
-    {
-        public int compare(Object o1, Object o2)
-        {
-            String name1 = ((ITable)o1).getTableMetaData().getTableName();
-            String name2 = ((ITable)o2).getTableMetaData().getTableName();
-
-            return name1.compareTo(name2);
-        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -163,7 +146,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         // this won't work because of the timestamp column.
         if (!(DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment)){
             String[] expectedNames = getExpectedNames();
-            sort(expectedNames);
+//            sort(expectedNames);
 
             try
             {
@@ -172,9 +155,9 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
                 IDatabaseConnection connection = new DatabaseConnection(
                         _connection.getConnection(), _connection.getSchema());
 
-                IDataSet dataSet = removeExtraTestTables(connection.createDataSet());
+                IDataSet dataSet = connection.createDataSet();
                 String[] actualNames = dataSet.getTableNames();
-                sort(actualNames);
+//                sort(actualNames);
 
                 assertEquals("name count", expectedNames.length, actualNames.length);
                 for (int i = 0; i < actualNames.length; i++)

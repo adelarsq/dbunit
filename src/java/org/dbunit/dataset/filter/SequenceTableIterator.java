@@ -20,38 +20,45 @@
  */
 package org.dbunit.dataset.filter;
 
+import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.IDataSet;
 
 /**
- * Represents a strategy used by {@link FilteredDataSet} to exposes only some
- * tables from a dataset.
- *
  * @author Manuel Laflamme
- * @since Mar 7, 2003
+ * @since Apr 6, 2003
  * @version $Revision$
  */
-public interface ITableFilter
+public class SequenceTableIterator implements ITableIterator
 {
-    /**
-     * Returns <code>true</code> if specified table is allowed by this filter.
-     */
-    public boolean isValidName(String tableName) throws DataSetException;
+    private final String[] _tableNames;
+    private final IDataSet _dataSet;
+    private int _index = -1;
 
-    /**
-     * Returns the table names allowed by this filter from the specified dataset.
-     *
-     * @param dataSet the filtered dataset
-     */
-    public String[] getTableNames(IDataSet dataSet) throws DataSetException;
+    public SequenceTableIterator(String[] tableNames, IDataSet dataSet)
+    {
+        _tableNames = tableNames;
+        _dataSet = dataSet;
+    }
 
-    /**
-     * Returns iterator of tables allowed by this filter from the specified dataset.
-     *
-     * @param dataSet the filtered dataset
-     */
-    public ITableIterator iterator(IDataSet dataSet, boolean reversed)
-            throws DataSetException;
+    ////////////////////////////////////////////////////////////////////////////
+    // ITableIterator interface
+
+    public boolean next() throws DataSetException
+    {
+        _index++;
+        return _index < _tableNames.length;
+    }
+
+    public ITableMetaData getTableMetaData() throws DataSetException
+    {
+        return _dataSet.getTableMetaData(_tableNames[_index]);
+    }
+
+    public ITable getTable() throws DataSetException
+    {
+        return _dataSet.getTable(_tableNames[_index]);
+    }
 }

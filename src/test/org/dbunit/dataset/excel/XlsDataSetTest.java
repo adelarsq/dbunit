@@ -24,6 +24,7 @@ import org.dbunit.Assertion;
 import org.dbunit.dataset.AbstractDataSetTest;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.DataSetUtils;
 
 import java.io.*;
 
@@ -79,8 +80,8 @@ public class XlsDataSetTest extends AbstractDataSetTest
                         actualDataSet.getTableNames().length);
 
                 // verify each table
-                ITable[] expected = expectedDataSet.getTables();
-                ITable[] actual = actualDataSet.getTables();
+                ITable[] expected = DataSetUtils.getTables(expectedDataSet);
+                ITable[] actual = DataSetUtils.getTables(actualDataSet);
                 assertEquals("table count", expected.length, actual.length);
                 for (int i = 0; i < expected.length; i++)
                 {
@@ -132,8 +133,8 @@ public class XlsDataSetTest extends AbstractDataSetTest
                         actualDataSet.getTableNames().length);
 
                 // verify each table
-                ITable[] expected = expectedDataSet.getTables();
-                ITable[] actual = actualDataSet.getTables();
+                ITable[] expected = DataSetUtils.getTables(expectedDataSet);
+                ITable[] actual = DataSetUtils.getTables(actualDataSet);
                 assertEquals("table count", expected.length, actual.length);
                 for (int i = 0; i < expected.length; i++)
                 {

@@ -20,13 +20,12 @@
  */
 package org.dbunit.dataset.filter;
 
-import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.AbstractTest;
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
-
-import junit.framework.TestCase;
 
 import java.io.FileReader;
 
@@ -35,54 +34,13 @@ import java.io.FileReader;
  * @since Mar 9, 2003
  * @version $Revision$
  */
-public abstract class AbstractTableFilterTest extends TestCase
+public abstract class AbstractTableFilterTest
+        extends AbstractTest
 {
-    private static final String[] TABLE_NAMES = {
-        "TEST_TABLE",
-        "SECOND_TABLE",
-        "EMPTY_TABLE",
-        "PK_TABLE",
-        "ONLY_PK_TABLE",
-        "EMPTY_MULTITYPE_TABLE",
-    };
-
-    private static final String[] DUPLICATE_TABLE_NAMES = {
-        "DUPLICATE_TABLE",
-        "EMPTY_TABLE",
-        "DUPLICATE_TABLE",
-    };
-
-    private static final String EXTRA_TABLE_NAME = "EXTRA_TABLE";
 
     public AbstractTableFilterTest(String s)
     {
         super(s);
-    }
-
-    protected String[] getExpectedNames() throws Exception
-    {
-        return (String[])TABLE_NAMES.clone();
-    }
-
-    protected String[] getExpectedLowerNames() throws Exception
-    {
-        String[] names = (String[])TABLE_NAMES.clone();
-        for (int i = 0; i < names.length; i++)
-        {
-            names[i] = names[i].toLowerCase();
-        }
-
-        return names;
-    }
-
-    protected String[] getExpectedDuplicateNames()
-    {
-        return (String[])DUPLICATE_TABLE_NAMES.clone();
-    }
-
-    public String getExtraTableName()
-    {
-        return EXTRA_TABLE_NAME;
     }
 
     protected IDataSet createDataSet() throws Exception
@@ -127,14 +85,13 @@ public abstract class AbstractTableFilterTest extends TestCase
 
     public abstract void testGetTableNamesAndTableNotInDecoratedDataSet() throws Exception;
 
-    public abstract void testGetTables() throws Exception;
+    public abstract void testIterator() throws Exception;
 
-    public abstract void testGetDuplicateTables() throws Exception;
+    public abstract void testIteratorWithDuplicateTables() throws Exception;
 
-    public abstract void testGetCaseInsensitiveTables() throws Exception;
+    public abstract void testCaseInsensitiveIterator() throws Exception;
 
-    public abstract void testGetReverseTables() throws Exception;
+    public abstract void testReverseIterator() throws Exception;
 
-    public abstract void testGetTablesAndTableNotInDecoratedDataSet() throws Exception;
-
+    public abstract void testIteratorAndTableNotInDecoratedDataSet() throws Exception;
 }

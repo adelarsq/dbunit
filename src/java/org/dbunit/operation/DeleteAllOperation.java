@@ -57,23 +57,29 @@ public class DeleteAllOperation extends DatabaseOperation
         IBatchStatement statement = statementFactory.createBatchStatement(connection);
         try
         {
-            String[] tableNames = DataSetUtils.getReverseTableNames(dataSet);
-            if (tableNames.length > 0)
+            int count = 0;
+            ITableIterator iterator = dataSet.reverseIterator();
+            while(iterator.next())
             {
-                for (int i = 0; i < tableNames.length; i++)
-                {
-                    // Use database table name. Required to support case sensitive database.
-                    ITableMetaData databaseMetaData =
-                            databaseDataSet.getTableMetaData(tableNames[i]);
-                    String tableName = databaseMetaData.getTableName();
+                String tableName = iterator.getTableMetaData().getTableName();
 
-                    StringBuffer sqlBuffer = new StringBuffer(128);
-                    sqlBuffer.append("delete from ");
-                    sqlBuffer.append(DataSetUtils.getQualifiedName(
-                            connection.getSchema(), tableName, true));
-                    statement.addBatch(sqlBuffer.toString());
-                }
+                // Use database table name. Required to support case sensitive database.
+                ITableMetaData databaseMetaData =
+                        databaseDataSet.getTableMetaData(tableName);
+                tableName = databaseMetaData.getTableName();
 
+                StringBuffer sqlBuffer = new StringBuffer(128);
+                sqlBuffer.append("delete from ");
+                sqlBuffer.append(DataSetUtils.getQualifiedName(
+                        connection.getSchema(), tableName, true));
+                statement.addBatch(sqlBuffer.toString());
+
+                count++;
+            }
+
+
+            if (count > 0)
+            {
                 statement.executeBatch();
                 statement.clearBatch();
             }

@@ -38,7 +38,7 @@ import org.dbunit.dataset.filter.ITableFilter;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class FilteredDataSet implements IDataSet
+public class FilteredDataSet extends AbstractDataSet
 {
     private final IDataSet _dataSet;
     private final ITableFilter _filter;
@@ -65,6 +65,15 @@ public class FilteredDataSet implements IDataSet
     {
         _dataSet = dataSet;
         _filter = filter;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // AbstractDataSet class
+
+    protected ITableIterator createIterator(boolean reversed)
+            throws DataSetException
+    {
+        return _filter.iterator(_dataSet, reversed);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -95,12 +104,6 @@ public class FilteredDataSet implements IDataSet
 
         return _dataSet.getTable(tableName);
     }
-
-    public ITable[] getTables() throws DataSetException
-    {
-        return _filter.getTables(_dataSet);
-    }
-
 }
 
 

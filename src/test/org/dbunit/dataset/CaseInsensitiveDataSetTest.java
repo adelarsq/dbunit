@@ -39,13 +39,10 @@ public class CaseInsensitiveDataSetTest extends AbstractDataSetTest
                 "src/xml/caseInsensitiveDataSetDuplicateTest.xml")));
     }
 
-    protected void assertEqualsTableName(String mesage, String expected,
+    protected void assertEqualsTableName(String message, String expected,
             String actual)
     {
-        if (!expected.equalsIgnoreCase(actual))
-        {
-            super.assertEqualsTableName(mesage, expected, actual);
-        }
+        assertEqualsIgnoreCase(message, expected, actual);
     }
 }
 

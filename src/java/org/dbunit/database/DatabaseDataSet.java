@@ -23,6 +23,7 @@
 package org.dbunit.database;
 
 import org.dbunit.dataset.*;
+import org.dbunit.dataset.filter.SequenceTableIterator;
 
 import java.sql.*;
 import java.util.*;
@@ -31,14 +32,15 @@ import java.util.*;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class DatabaseDataSet implements IDataSet
+public class DatabaseDataSet extends AbstractDataSet
 {
     static final String QUALIFIED_TABLE_NAMES =
             "dbunit.qualified.table.names";
     private static final String[] TABLE_TYPE = {"TABLE"};
 
     private final IDatabaseConnection _connection;
-    private Map _tableMap = null;
+    private final Map _tableMap = new HashMap();
+    private List _nameList = null;
 
     DatabaseDataSet(IDatabaseConnection connection) throws SQLException
     {
@@ -100,11 +102,11 @@ public class DatabaseDataSet implements IDataSet
     /**
      * Get all the table names form the database that are not system tables.
      */
-    private Map getTableMap() throws DataSetException
+    private void initialize() throws DataSetException
     {
-        if (_tableMap != null)
+        if (_nameList != null)
         {
-            return _tableMap;
+            return;
         }
 
         try
@@ -118,7 +120,7 @@ public class DatabaseDataSet implements IDataSet
 
             try
             {
-                Map tableMap = new HashMap();
+                List nameList = new ArrayList();
                 while (resultSet.next())
                 {
                     String schemaName = resultSet.getString(2);
@@ -128,15 +130,15 @@ public class DatabaseDataSet implements IDataSet
                     tableName = getQualifiedName(schemaName, tableName);
 
                     // prevent table name conflict
-                    if (tableMap.containsKey(tableName))
+                    if (_tableMap.containsKey(tableName.toUpperCase()))
                     {
                         throw new AmbiguousTableNameException(tableName);
                     }
-                    tableMap.put(tableName, null);
+                    nameList.add(tableName);
+                    _tableMap.put(tableName.toUpperCase(), null);
                 }
 
-                _tableMap = tableMap;
-                return _tableMap;
+                _nameList = nameList;
             }
             finally
             {
@@ -150,52 +152,69 @@ public class DatabaseDataSet implements IDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    // AbstractDataSet class
+
+    protected ITableIterator createIterator(boolean reversed)
+            throws DataSetException
+    {
+        String[] names = getTableNames();
+        if (reversed)
+        {
+            names = DataSetUtils.reverseStringArray(names);
+        }
+
+        return new SequenceTableIterator(names, this);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     // IDataSet interface
 
     public String[] getTableNames() throws DataSetException
     {
-        return (String[])getTableMap().keySet().toArray(new String[0]);
+        initialize();
+
+        return (String[])_nameList.toArray(new String[0]);
     }
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
-        for (Iterator it = getTableMap().entrySet().iterator(); it.hasNext();)
-        {
-            Map.Entry entry = (Map.Entry)it.next();
-            if (tableName.equalsIgnoreCase((String)entry.getKey()))
-            {
-                ITableMetaData metaData = (ITableMetaData)entry.getValue();
-                if (metaData != null)
-                {
-                    return metaData;
-                }
+        initialize();
 
-                metaData = new DatabaseTableMetaData((String)entry.getKey(), _connection);
-                getTableMap().put(metaData.getTableName(), metaData);
-                return metaData;
+        // Verify if table exist in the database
+        String upperTableName = tableName.toUpperCase();
+        if (!_tableMap.containsKey(upperTableName))
+        {
+            throw new NoSuchTableException(tableName);
+        }
+
+        // Try to find cached metadata
+        ITableMetaData metaData = (ITableMetaData)_tableMap.get(upperTableName);
+        if (metaData != null)
+        {
+            return metaData;
+        }
+
+        // Search for original database table name
+        for (Iterator it = _nameList.iterator(); it.hasNext();)
+        {
+            String databaseTableName = (String)it.next();
+            if (databaseTableName.equalsIgnoreCase(tableName))
+            {
+                // Create metadata and cache it
+                metaData = new DatabaseTableMetaData(
+                        databaseTableName, _connection);
+                _tableMap.put(upperTableName, metaData);
+                break;
             }
         }
 
-        throw new NoSuchTableException(tableName);
-
-//        ITableMetaData metaData = (ITableMetaData)getTableMap().get(tableName);
-//        if (metaData != null)
-//        {
-//            return metaData;
-//        }
-//
-//        if (!getTableMap().containsKey(tableName))
-//        {
-//            throw new NoSuchTableException(tableName);
-//        }
-//
-//        metaData = new DatabaseTableMetaData(tableName, _connection);
-//        getTableMap().put(tableName, metaData);
-//        return metaData;
+        return metaData;
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
+        initialize();
+
         try
         {
             ITableMetaData metaData = getTableMetaData(tableName);
@@ -226,17 +245,6 @@ public class DatabaseDataSet implements IDataSet
         {
             throw new DataSetException(e);
         }
-    }
-
-    public ITable[] getTables() throws DataSetException
-    {
-        String[] names = getTableNames();
-        List tableList = new ArrayList(names.length);
-        for (int i = 0; i < names.length; i++)
-        {
-            tableList.add(getTable(names[i]));
-        }
-        return (ITable[])tableList.toArray(new ITable[0]);
     }
 }
 

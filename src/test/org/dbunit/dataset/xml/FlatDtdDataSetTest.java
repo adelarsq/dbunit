@@ -91,7 +91,7 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
     {
         IDatabaseConnection connection =
                 DatabaseEnvironment.getInstance().getConnection();
-        IDataSet dataSet = removeExtraTestTables(connection.createDataSet());
+        IDataSet dataSet = connection.createDataSet();
 
         File tempFile = File.createTempFile("flatXmlDocType", ".dtd");
 

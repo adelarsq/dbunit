@@ -43,15 +43,9 @@ public class DeleteOperation extends AbstractBatchOperation
     ////////////////////////////////////////////////////////////////////////////
     // AbstractBatchOperation class
 
-    protected ITable[] getTables(IDataSet dataSet) throws DatabaseUnitException
+    protected ITableIterator iterator(IDataSet dataSet) throws DatabaseUnitException
     {
-        ITable[] tables = dataSet.getTables();
-        ITable[] reverseTables = new ITable[tables.length];
-        for (int i = 0; i < tables.length; i++)
-        {
-            reverseTables[tables.length - 1 - i] = tables[i];
-        }
-        return reverseTables;
+        return dataSet.reverseIterator();
     }
 
     public OperationData getOperationData(String schemaName,

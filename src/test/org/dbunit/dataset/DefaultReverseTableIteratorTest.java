@@ -18,27 +18,34 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.dataset.filter;
+package org.dbunit.dataset;
 
-import junit.framework.TestSuite;
-import junit.framework.Test;
+
 
 /**
  * @author Manuel Laflamme
- * @since Mar 8, 2003
+ * @since Apr 6, 2003
  * @version $Revision$
  */
-public class AllTests
+public class DefaultReverseTableIteratorTest extends DefaultTableIteratorTest
 {
-    public static Test suite()
+    public DefaultReverseTableIteratorTest(String s)
     {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(ExcludeTableFilterTest.class));
-        suite.addTest(new TestSuite(IncludeTableFilterTest.class));
-        suite.addTest(new TestSuite(SequenceTableFilterTest.class));
-        suite.addTest(new TestSuite(SequenceTableIteratorTest.class));
-
-        return suite;
+        super(s);
     }
 
+    protected String[] getExpectedNames() throws Exception
+    {
+        return DataSetUtils.reverseStringArray(super.getExpectedNames());
+    }
+
+    protected ITableIterator getIterator() throws Exception
+    {
+        return getIterator(true);
+    }
+
+    protected ITableIterator getEmptyIterator()
+    {
+        return new DefaultTableIterator(new ITable[0], true);
+    }
 }

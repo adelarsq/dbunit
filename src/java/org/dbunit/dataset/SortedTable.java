@@ -51,6 +51,22 @@ public class SortedTable extends AbstractTable
     }
 
     /**
+     * Sort the decorated table by specified columns order.
+     */
+    public SortedTable(ITable table, String[] columnNames) throws DataSetException
+    {
+        _table = table;
+        _columns = new Column[columnNames.length];
+
+        Column[] columns = table.getTableMetaData().getColumns();
+        for (int i = 0; i < columnNames.length; i++)
+        {
+            String columnName = columnNames[i];
+            _columns[i] = DataSetUtils.getColumn(columnName, columns);
+        }
+    }
+
+    /**
      * Sort the decorated table by specified metadata columns order. All
      * metadata columns will be used.
      */

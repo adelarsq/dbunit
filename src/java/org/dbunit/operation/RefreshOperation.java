@@ -59,11 +59,12 @@ public class RefreshOperation extends DatabaseOperation
         String schema = connection.getSchema();
 
         // for each table
-        ITable[] tables = dataSet.getTables();
-        for (int i = 0; i < tables.length; i++)
+        ITableIterator iterator = dataSet.iterator();
+        while(iterator.next())
         {
+            ITable table = iterator.getTable();
+
             // do not process empty table
-            ITable table = tables[i];
             if (table.getRowCount() == 0)
             {
                 continue;
@@ -77,11 +78,11 @@ public class RefreshOperation extends DatabaseOperation
                     schema, metaData);
 
             // refresh all rows
-            for (int j = 0; j < table.getRowCount(); j++)
+            for (int i = 0; i < table.getRowCount(); i++)
             {
-                if (!updateRowOperation.execute(table, j))
+                if (!updateRowOperation.execute(table, i))
                 {
-                    insertRowOperation.execute(table, j);
+                    insertRowOperation.execute(table, i);
                 }
             }
 

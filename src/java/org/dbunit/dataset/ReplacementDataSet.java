@@ -20,9 +20,7 @@
  */
 package org.dbunit.dataset;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,7 +31,7 @@ import java.util.Map;
  * @since Mar 17, 2003
  * @version $Revision$
  */
-public class ReplacementDataSet implements IDataSet
+public class ReplacementDataSet extends AbstractDataSet
 {
     private final IDataSet _dataSet;
     private final Map _objectMap;
@@ -117,6 +115,16 @@ public class ReplacementDataSet implements IDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    // AbstractDataSet class
+
+    protected ITableIterator createIterator(boolean reversed)
+            throws DataSetException
+    {
+        return new ReplacementIterator(reversed ?
+                _dataSet.reverseIterator() : _dataSet.iterator());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     // IDataSet interface
 
     public String[] getTableNames() throws DataSetException
@@ -135,15 +143,34 @@ public class ReplacementDataSet implements IDataSet
         return createReplacementTable(_dataSet.getTable(tableName));
     }
 
-    public ITable[] getTables() throws DataSetException
+    ////////////////////////////////////////////////////////////////////////////
+    // ReplacementIterator class
+
+    private class ReplacementIterator implements ITableIterator
     {
-        List tableList = new ArrayList();
-        ITable[] tables = _dataSet.getTables();
-        for (int i = 0; i < tables.length; i++)
+        private final ITableIterator _iterator;
+
+        public ReplacementIterator(ITableIterator iterator)
         {
-            ITable table = tables[i];
-            tableList.add(createReplacementTable(table));
+            _iterator = iterator;
         }
-        return (ITable[])tableList.toArray(new ITable[0]);
+
+        ////////////////////////////////////////////////////////////////////////
+        // ITableIterator interface
+
+        public boolean next() throws DataSetException
+        {
+            return _iterator.next();
+        }
+
+        public ITableMetaData getTableMetaData() throws DataSetException
+        {
+            return _iterator.getTableMetaData();
+        }
+
+        public ITable getTable() throws DataSetException
+        {
+            return createReplacementTable(_iterator.getTable());
+        }
     }
 }

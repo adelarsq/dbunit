@@ -25,10 +25,12 @@ package org.dbunit.dataset;
 import org.dbunit.database.AmbiguousTableNameException;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * This abstract class provides the basic implementation of the IDataSet
- * interface. Subclass are only required to implement the {@link #getTables}
+ * interface. Subclass are only required to implement the {@link #createIterator}
  * method.
  *
  * @author Manuel Laflamme
@@ -46,19 +48,21 @@ public abstract class AbstractDataSet implements IDataSet
         return clones;
     }
 
+    protected abstract ITableIterator createIterator(boolean reversed)
+            throws DataSetException;
+
     ////////////////////////////////////////////////////////////////////////////
     // IDataSet interface
 
     public String[] getTableNames() throws DataSetException
     {
-        ITable[] tables = getTables();
-        String[] tableNames = new String[tables.length];
-        for (int i = 0; i < tables.length; i++)
+        List tableNameList = new ArrayList();
+        ITableIterator iterator = createIterator(false);
+        while (iterator.next())
         {
-            ITable table = tables[i];
-            tableNames[i] = table.getTableMetaData().getTableName();
+            tableNameList.add(iterator.getTableMetaData().getTableName());
         }
-        return tableNames;
+        return (String[])tableNameList.toArray(new String[0]);
     }
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
@@ -69,10 +73,10 @@ public abstract class AbstractDataSet implements IDataSet
     public ITable getTable(String tableName) throws DataSetException
     {
         ITable found = null;
-        ITable[] tables = getTables();
-        for (int i = 0; i < tables.length; i++)
+        ITableIterator iterator = createIterator(false);
+        while (iterator.next())
         {
-            ITable table = tables[i];
+            ITable table = iterator.getTable();
             if (tableName.equalsIgnoreCase(table.getTableMetaData().getTableName()))
             {
                 if (found != null)
@@ -90,6 +94,27 @@ public abstract class AbstractDataSet implements IDataSet
         }
 
         throw new NoSuchTableException(tableName);
+    }
+
+    public ITable[] getTables() throws DataSetException
+    {
+        List tableList = new ArrayList();
+        ITableIterator iterator = createIterator(false);
+        while (iterator.next())
+        {
+            tableList.add(iterator.getTable());
+        }
+        return (ITable[])tableList.toArray(new ITable[0]);
+    }
+
+    public ITableIterator iterator() throws DataSetException
+    {
+        return createIterator(false);
+    }
+
+    public ITableIterator reverseIterator() throws DataSetException
+    {
+        return createIterator(true);
     }
 
     ////////////////////////////////////////////////////////////////////////////

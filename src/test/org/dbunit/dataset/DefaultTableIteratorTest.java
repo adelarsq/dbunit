@@ -1,5 +1,4 @@
 /*
- * DefaultDataSet.java   Feb 18, 2002
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -19,65 +18,46 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package org.dbunit.dataset;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * @author Manuel Laflamme
+ * @since Apr 6, 2003
  * @version $Revision$
  */
-public class DefaultDataSet extends AbstractDataSet
+public class DefaultTableIteratorTest
+        extends AbstractTableIteratorTest
 {
-    private final List _tableList = new ArrayList();
-
-    public DefaultDataSet()
+    public DefaultTableIteratorTest(String s)
     {
+        super(s);
     }
 
-    public DefaultDataSet(ITable table)
+    protected ITableIterator getIterator() throws Exception
     {
-        addTable(table);
+        return getIterator(false);
     }
 
-    public DefaultDataSet(ITable[] tables)
+    protected ITableIterator getEmptyIterator()
     {
-        for (int i = 0; i < tables.length; i++)
+        return new DefaultTableIterator(new ITable[0]);
+    }
+
+    protected ITableIterator getIterator(boolean reversed) throws Exception
+    {
+        List tableList = new ArrayList();
+        String[] names = super.getExpectedNames();
+        for (int i = 0; i < names.length; i++)
         {
-            addTable(tables[i]);
+            String name = names[i];
+            tableList.add(new DefaultTable(name));
         }
-    }
 
-    public DefaultDataSet(ITable table1, ITable table2)
-    {
-        addTable(table1);
-        addTable(table2);
-    }
-
-    /**
-     * Add a new table in this dataset.
-     */
-    public void addTable(ITable table)
-    {
-        _tableList.add(table);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // AbstractDataSet class
-
-    protected ITableIterator createIterator(boolean reversed)
-            throws DataSetException
-    {
-        ITable[] tables = (ITable[])_tableList.toArray(new ITable[0]);
+        ITable[] tables = (ITable[])tableList.toArray(new ITable[0]);
         return new DefaultTableIterator(tables, reversed);
     }
+
 }
-
-
-
-
-
-

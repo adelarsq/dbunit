@@ -71,7 +71,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
             columnList.add(column);
         }
 
-        return new DefaultTableMetaData(tableName,
+        return new DefaultTableMetaData(databaseMetaData.getTableName(),
                 (Column[])columnList.toArray(new Column[0]),
                 databaseMetaData.getPrimaryKeys());
     }
@@ -80,9 +80,9 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
      * Returns list of tables this operation is applied to. This method
      * allow subclass to do filtering.
      */
-    protected ITable[] getTables(IDataSet dataSet) throws DatabaseUnitException
+    protected ITableIterator iterator(IDataSet dataSet) throws DatabaseUnitException
     {
-        return dataSet.getTables();
+        return dataSet.iterator();
     }
 
     abstract public OperationData getOperationData(String schemaName,
@@ -95,19 +95,19 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
             throws DatabaseUnitException, SQLException
     {
         IStatementFactory factory = connection.getStatementFactory();
-        ITable[] tables = getTables(dataSet);
 
         // for each table
-        for (int i = 0; i < tables.length; i++)
+        ITableIterator iterator = iterator(dataSet);
+        while(iterator.next())
         {
+            ITable table = iterator.getTable();
+
             // do not process empty table
-            ITable table = tables[i];
             if (table.getRowCount() == 0)
             {
                 continue;
             }
 
-//            String tableName = tableNames[i];
             ITableMetaData metaData = getOperationMetaData(connection,
                     table.getTableMetaData());
             OperationData operationData = getOperationData(
@@ -122,14 +122,14 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
 
                 // for each row
                 int rowCount = table.getRowCount();
-                for (int j = 0; j < rowCount; j++)
+                for (int i = 0; i < rowCount; i++)
                 {
-                    int row = _reverseRowOrder ? (rowCount - 1 - j) : j;
+                    int row = _reverseRowOrder ? (rowCount - 1 - i) : i;
 
                     // for each column
-                    for (int k = 0; k < columns.length; k++)
+                    for (int j = 0; j < columns.length; j++)
                     {
-                        Column column = columns[k];
+                        Column column = columns[j];
                         statement.addValue(table.getValue(row,
                                 column.getColumnName()), column.getDataType());
                     }

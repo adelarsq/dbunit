@@ -29,26 +29,72 @@ package org.dbunit.dataset;
  */
 public class SortedDataSet extends AbstractDataSet
 {
-    private final ITable[] _tables;
+    private final IDataSet _dataSet;
 
     public SortedDataSet(IDataSet dataSet) throws DataSetException
     {
-        ITable[] tables = dataSet.getTables();
-        for (int i = 0; i < tables.length; i++)
-        {
-            tables[i] = new SortedTable(tables[i]);
-        }
+        _dataSet = dataSet;
+    }
 
-        _tables = tables;
+    ////////////////////////////////////////////////////////////////////////////
+    // AbstractDataSet class
+
+    protected ITableIterator createIterator(boolean reversed)
+            throws DataSetException
+    {
+        return new SortedIterator(reversed ?
+                _dataSet.reverseIterator() : _dataSet.iterator());
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // IDataSet interface
 
-    public ITable[] getTables() throws DataSetException
+    public String[] getTableNames() throws DataSetException
     {
-        return cloneTables(_tables);
+        return _dataSet.getTableNames();
     }
+
+    public ITableMetaData getTableMetaData(String tableName) throws DataSetException
+    {
+        return _dataSet.getTableMetaData(tableName);
+    }
+
+    public ITable getTable(String tableName) throws DataSetException
+    {
+        return new SortedTable(_dataSet.getTable(tableName));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // SortedIterator class
+
+    private class SortedIterator implements ITableIterator
+    {
+        private final ITableIterator _iterator;
+
+        public SortedIterator(ITableIterator iterator)
+        {
+            _iterator = iterator;
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+        // ITableIterator interface
+
+        public boolean next() throws DataSetException
+        {
+            return _iterator.next();
+        }
+
+        public ITableMetaData getTableMetaData() throws DataSetException
+        {
+            return _iterator.getTableMetaData();
+        }
+
+        public ITable getTable() throws DataSetException
+        {
+            return new SortedTable(_iterator.getTable());
+        }
+    }
+
 }
 
 

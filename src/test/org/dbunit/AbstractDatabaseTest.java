@@ -25,6 +25,7 @@ package org.dbunit;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.SortedTable;
 import org.dbunit.operation.DatabaseOperation;
 
 /**
@@ -49,8 +50,10 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
     protected ITable createOrderedTable(String tableName, String orderByColumn)
             throws Exception
     {
-        String sql = "select * from " + tableName + " order by " + orderByColumn;
-        return _connection.createQueryTable(tableName, sql);
+        return new SortedTable(_connection.createDataSet().getTable(tableName),
+                new String[]{orderByColumn});
+//        String sql = "select * from " + tableName + " order by " + orderByColumn;
+//        return _connection.createQueryTable(tableName, sql);
     }
 
     public static void setEscapePattern(String pattern)

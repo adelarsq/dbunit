@@ -1,5 +1,4 @@
 /*
- * DefaultDataSet.java   Feb 18, 2002
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -19,65 +18,54 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package org.dbunit.dataset;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * @author Manuel Laflamme
+ * @since Apr 5, 2003
  * @version $Revision$
  */
-public class DefaultDataSet extends AbstractDataSet
+public class DefaultTableIterator implements ITableIterator
 {
-    private final List _tableList = new ArrayList();
+    private final ITable[] _tables;
+    private int _index = -1;
 
-    public DefaultDataSet()
+    public DefaultTableIterator(ITable[] tables)
     {
+        _tables = tables;
     }
 
-    public DefaultDataSet(ITable table)
+    public DefaultTableIterator(ITable[] tables, boolean reversed)
     {
-        addTable(table);
-    }
-
-    public DefaultDataSet(ITable[] tables)
-    {
-        for (int i = 0; i < tables.length; i++)
+        if (reversed)
         {
-            addTable(tables[i]);
+            ITable[] reverseTables = new ITable[tables.length];
+            for (int i = 0; i < tables.length; i++)
+            {
+                reverseTables[tables.length - 1 - i] = tables[i];
+            }
+            tables = reverseTables;
         }
-    }
 
-    public DefaultDataSet(ITable table1, ITable table2)
-    {
-        addTable(table1);
-        addTable(table2);
-    }
-
-    /**
-     * Add a new table in this dataset.
-     */
-    public void addTable(ITable table)
-    {
-        _tableList.add(table);
+        _tables = tables;
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // AbstractDataSet class
+    // ITableIterator interface
 
-    protected ITableIterator createIterator(boolean reversed)
-            throws DataSetException
+    public boolean next() throws DataSetException
     {
-        ITable[] tables = (ITable[])_tableList.toArray(new ITable[0]);
-        return new DefaultTableIterator(tables, reversed);
+        _index++;
+        return _index < _tables.length;
+    }
+
+    public ITableMetaData getTableMetaData() throws DataSetException
+    {
+        return getTable().getTableMetaData();
+    }
+
+    public ITable getTable() throws DataSetException
+    {
+        return _tables[_index];
     }
 }
-
-
-
-
-
-

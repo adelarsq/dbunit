@@ -33,26 +33,21 @@ package org.dbunit.dataset;
  */
 public class LowerCaseDataSet extends AbstractDataSet
 {
-    private final ITable[] _tables;
+    private final IDataSet _dataSet;
 
     public LowerCaseDataSet(ITable table) throws DataSetException
     {
-        this(new ITable[]{table});
-    }
-
-    public LowerCaseDataSet(IDataSet dataSet) throws DataSetException
-    {
-        this(dataSet.getTables());
+        this(new DefaultDataSet(table));
     }
 
     public LowerCaseDataSet(ITable[] tables) throws DataSetException
     {
-        ITable[] lowerTables = new ITable[tables.length];
-        for (int i = 0; i < tables.length; i++)
-        {
-            lowerTables[i] = createLowerTable(tables[i]);
-        }
-        _tables = lowerTables;
+        this(new DefaultDataSet(tables));
+    }
+
+    public LowerCaseDataSet(IDataSet dataSet) throws DataSetException
+    {
+        _dataSet = dataSet;
     }
 
     private ITable createLowerTable(ITable table) throws DataSetException
@@ -62,11 +57,67 @@ public class LowerCaseDataSet extends AbstractDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    // AbstractDataSet class
+
+    protected ITableIterator createIterator(boolean reversed)
+            throws DataSetException
+    {
+        return new LowerCaseIterator(reversed ?
+                _dataSet.reverseIterator() : _dataSet.iterator());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     // IDataSet interface
 
-    public ITable[] getTables() throws DataSetException
+    public String[] getTableNames() throws DataSetException
     {
-        return cloneTables(_tables);
+        String[] tableNames = super.getTableNames();
+        for (int i = 0; i < tableNames.length; i++)
+        {
+            tableNames[i] = tableNames[i].toLowerCase();
+        }
+        return tableNames;
+    }
+
+    public ITableMetaData getTableMetaData(String tableName) throws DataSetException
+    {
+        return new LowerCaseTableMetaData(super.getTableMetaData(tableName));
+    }
+
+    public ITable getTable(String tableName) throws DataSetException
+    {
+        return createLowerTable(super.getTable(tableName));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // LowerCaseIterator class
+
+    private class LowerCaseIterator implements ITableIterator
+    {
+        private final ITableIterator _iterator;
+
+        public LowerCaseIterator(ITableIterator iterator)
+        {
+            _iterator = iterator;
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+        // ITableIterator interface
+
+        public boolean next() throws DataSetException
+        {
+            return _iterator.next();
+        }
+
+        public ITableMetaData getTableMetaData() throws DataSetException
+        {
+            return new LowerCaseTableMetaData(_iterator.getTableMetaData());
+        }
+
+        public ITable getTable() throws DataSetException
+        {
+            return createLowerTable(_iterator.getTable());
+        }
     }
 }
 

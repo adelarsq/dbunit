@@ -97,6 +97,8 @@ public class InsertIdentityOperation extends DatabaseOperation
 
         try
         {
+            IDataSet databaseDataSet = connection.createDataSet();
+
             // INSERT_IDENTITY need to be enabled/disabled inside the
             // same transaction
             if (jdbcConnection.getAutoCommit() == false)
@@ -106,19 +108,16 @@ public class InsertIdentityOperation extends DatabaseOperation
             jdbcConnection.setAutoCommit(false);
 
             // Execute decorated operation one table at a time
-            ITable[] tables = dataSet.getTables();
-            for (int i = 0; i < tables.length; i++)
+            ITableIterator iterator = dataSet.iterator();
+            while(iterator.next())
             {
-                ITable table = tables[i];
-
-                ITableMetaData databaseMetaData = table.getTableMetaData();
-
-                if (!(databaseMetaData instanceof DatabaseTableMetaData)){
-                    databaseMetaData = new DatabaseTableMetaData(table.getTableMetaData().getTableName(),connection);
-                }
+                ITable table = iterator.getTable();
                 String tableName = DataSetUtils.getQualifiedName(
                         connection.getSchema(),
-                        databaseMetaData.getTableName(), true);
+                        table.getTableMetaData().getTableName(), true);
+
+                ITableMetaData databaseMetaData =
+                        databaseDataSet.getTableMetaData(tableName);
 
                 // enable identity insert
                 boolean hasIdentityColumn = hasIdentityColumn(databaseMetaData);

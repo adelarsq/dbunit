@@ -28,6 +28,8 @@ import org.dbunit.database.*;
 import org.dbunit.dataset.AbstractDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.DefaultTableIterator;
 
 /**
  * @author     Eric Pugh
@@ -65,33 +67,9 @@ public class QueryDataSet extends AbstractDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // IDataSet interface
+    // AbstractDataSet class
 
-    /**
-     *  Gets the tableNames attribute of the QueryDataSet object
-     *
-     * @return                       An array of all the table names
-     * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
-     */
-    public String[] getTableNames() throws DataSetException
-    {
-        List names = new ArrayList();
-        for (Iterator it = _tables.iterator(); it.hasNext();)
-        {
-            TableEntry entry = (TableEntry)it.next();
-            names.add(entry.getTableName());
-        }
-
-        return (String[])names.toArray(new String[0]);
-    }
-
-    /**
-     *  Gets the tables attribute of the QueryDataSet object
-     *
-     * @return                       The tables value
-     * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
-     */
-    public ITable[] getTables() throws DataSetException
+    protected ITableIterator createIterator(boolean reversed) throws DataSetException
     {
         try
         {
@@ -110,12 +88,28 @@ public class QueryDataSet extends AbstractDataSet
                 tableList.add(table);
             }
 
-            return (ITable[])tableList.toArray(new ITable[0]);
+            ITable[] tables = (ITable[])tableList.toArray(new ITable[0]);
+            return new DefaultTableIterator(tables, reversed);
         }
         catch (SQLException e)
         {
             throw new DataSetException(e);
         }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // IDataSet interface
+
+    public String[] getTableNames() throws DataSetException
+    {
+        List names = new ArrayList();
+        for (Iterator it = _tables.iterator(); it.hasNext();)
+        {
+            TableEntry entry = (TableEntry)it.next();
+            names.add(entry.getTableName());
+        }
+
+        return (String[])names.toArray(new String[0]);
     }
 
     private static class TableEntry

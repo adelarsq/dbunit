@@ -12,12 +12,30 @@ package org.dbunit.dataset.xml;
 
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.database.AmbiguousTableNameException;
 
-import java.io.*;
-import java.util.*;
+import com.wutka.dtd.DTD;
+import com.wutka.dtd.DTDAttlist;
+import com.wutka.dtd.DTDAttribute;
+import com.wutka.dtd.DTDContainer;
+import com.wutka.dtd.DTDDecl;
+import com.wutka.dtd.DTDItem;
+import com.wutka.dtd.DTDName;
+import com.wutka.dtd.DTDParser;
 
-import com.wutka.dtd.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * @author Manuel Laflamme
@@ -149,36 +167,10 @@ public class FlatDtdDataSet extends AbstractDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // IDataSet interface
+    // AbstractDataSet class
 
-    public String[] getTableNames() throws DataSetException
-    {
-        return (String[])_tableNames.toArray(new String[0]);
-    }
-
-//    public ITableMetaData getTableMetaData(String tableName)
-//            throws DataSetException
-//    {
-//        return getTable(tableName).getTableMetaData();
-//    }
-//
-//    public ITable getTable(String tableName) throws DataSetException
-//    {
-//        if (_tableNames.indexOf(tableName) != _tableNames.lastIndexOf(tableName))
-//        {
-//            throw new AmbiguousTableNameException(tableName);
-//        }
-//
-//        ITable table = (ITable)_tableMap.get(tableName);
-//        if (table == null)
-//        {
-//            throw new NoSuchTableException(tableName);
-//        }
-//
-//        return table;
-//    }
-
-    public ITable[] getTables() throws DataSetException
+    protected ITableIterator createIterator(boolean reversed)
+            throws DataSetException
     {
         String[] names = (String[])_tableNames.toArray(new String[0]);
         ITable[] tables = new ITable[names.length];
@@ -194,10 +186,18 @@ public class FlatDtdDataSet extends AbstractDataSet
             tables[i] = table;
         }
 
-        return tables;
+        return new DefaultTableIterator(tables, reversed);
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    // IDataSet interface
+
+    public String[] getTableNames() throws DataSetException
+    {
+        return (String[])_tableNames.toArray(new String[0]);
+    }
 }
+
 
 
 

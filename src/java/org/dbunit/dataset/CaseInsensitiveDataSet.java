@@ -21,7 +21,7 @@ import org.dbunit.database.AmbiguousTableNameException;
  * @version $Revision$
  * @deprecated All IDataSet implementations are case insensitive since DbUnit 1.5
  */
-public class CaseInsensitiveDataSet implements IDataSet
+public class CaseInsensitiveDataSet extends AbstractDataSet
 {
     private final IDataSet _dataSet;
 
@@ -55,6 +55,16 @@ public class CaseInsensitiveDataSet implements IDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    // AbstractDataSet class
+
+    protected ITableIterator createIterator(boolean reversed)
+            throws DataSetException
+    {
+        return new CaseInsensitiveIterator(reversed ?
+                _dataSet.reverseIterator() : _dataSet.iterator());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     // IDataSet interface
 
     public String[] getTableNames() throws DataSetException
@@ -74,9 +84,35 @@ public class CaseInsensitiveDataSet implements IDataSet
         return new CaseInsensitiveTable(table);
     }
 
-    public ITable[] getTables() throws DataSetException
+    ////////////////////////////////////////////////////////////////////////////
+    // CaseInsensitiveIterator class
+
+    private class CaseInsensitiveIterator implements ITableIterator
     {
-        return _dataSet.getTables();
+        private final ITableIterator _iterator;
+
+        public CaseInsensitiveIterator(ITableIterator iterator)
+        {
+            _iterator = iterator;
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+        // ITableIterator interface
+
+        public boolean next() throws DataSetException
+        {
+            return _iterator.next();
+        }
+
+        public ITableMetaData getTableMetaData() throws DataSetException
+        {
+            return _iterator.getTableMetaData();
+        }
+
+        public ITable getTable() throws DataSetException
+        {
+            return new CaseInsensitiveTable(_iterator.getTable());
+        }
     }
 }
 

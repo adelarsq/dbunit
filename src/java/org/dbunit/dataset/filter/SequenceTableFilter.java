@@ -104,17 +104,12 @@ public class SequenceTableFilter implements ITableFilter
         return (String[])nameList.toArray(new String[0]);
     }
 
-    public ITable[] getTables(IDataSet dataSet) throws DataSetException
+    public ITableIterator iterator(IDataSet dataSet, boolean reversed)
+            throws DataSetException
     {
-        List tableList = new ArrayList();
         String[] tableNames = getTableNames(dataSet);
-        for (int i = 0; i < tableNames.length; i++)
-        {
-            String tableName = tableNames[i];
-            tableList.add(dataSet.getTable(tableName));
-        }
-
-        return (ITable[])tableList.toArray(new ITable[0]);
+        return new SequenceTableIterator(reversed ?
+                DataSetUtils.reverseStringArray(tableNames) : tableNames, dataSet);
     }
 }
 

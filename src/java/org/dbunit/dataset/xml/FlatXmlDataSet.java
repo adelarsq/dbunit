@@ -22,17 +22,37 @@
 
 package org.dbunit.dataset.xml;
 
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.AbstractDataSet;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultTableIterator;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
 
-import java.io.*;
+import electric.xml.DocType;
+import electric.xml.Document;
+import electric.xml.Element;
+import electric.xml.Elements;
+import electric.xml.ParseException;
+import electric.xml.XMLDecl;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import electric.xml.*;
 
 /**
  * @author Manuel Laflamme
@@ -287,8 +307,6 @@ public class FlatXmlDataSet extends AbstractDataSet
     private static Document buildDocument(IDataSet dataSet, String encoding)
             throws DataSetException
     {
-        ITable[] tables = dataSet.getTables();
-
         Document document = new Document();
         document.addChild(new XMLDecl("1.0", encoding));
 
@@ -296,10 +314,11 @@ public class FlatXmlDataSet extends AbstractDataSet
         Element rootElem = document.addElement("dataset");
 
         // tables
-        for (int i = 0; i < tables.length; i++)
+        ITableIterator iterator = dataSet.iterator();
+        while(iterator.next())
         {
-            ITable table = tables[i];
-            ITableMetaData metaData = tables[i].getTableMetaData();
+            ITable table = iterator.getTable();
+            ITableMetaData metaData = table.getTableMetaData();
             String tableName = metaData.getTableName();
 
             Column[] columns = table.getTableMetaData().getColumns();
@@ -422,13 +441,13 @@ public class FlatXmlDataSet extends AbstractDataSet
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // IDataSet interface
+    // AbstractDataSet class
 
-    public ITable[] getTables() throws DataSetException
+    protected ITableIterator createIterator(boolean reversed)
+            throws DataSetException
     {
-        return cloneTables(_tables);
+        return new DefaultTableIterator(_tables, reversed);
     }
-
 }
 
 
