@@ -38,6 +38,6 @@ public class OracleConnection extends DatabaseConnection
     {
         super(connection, schema);
         getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
-                new Db2DataTypeFactory());
+                new OracleDataTypeFactory());
     }
 }
