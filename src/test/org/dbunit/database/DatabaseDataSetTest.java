@@ -27,6 +27,7 @@ import java.sql.DatabaseMetaData;
 
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.dataset.*;
+import org.dbunit.dataset.datatype.DataType;
 
 /**
  * @author Manuel Laflamme
@@ -79,9 +80,9 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         String schemaName = "schema";
         String tableName = "table";
         Column[] columns = new Column[]{
-            new Column("c1", null),
-            new Column("c2", null),
-            new Column("c3", null),
+            new Column("c1", DataType.UNKNOWN),
+            new Column("c2", DataType.UNKNOWN),
+            new Column("c3", DataType.UNKNOWN),
         };
         String expected = "select c1, c2, c3 from schema.table";
 
@@ -95,9 +96,9 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         String schemaName = "schema";
         String tableName = "table";
         Column[] columns = new Column[]{
-            new Column("c1", null),
-            new Column("c2", null),
-            new Column("c3", null),
+            new Column("c1", DataType.UNKNOWN),
+            new Column("c2", DataType.UNKNOWN),
+            new Column("c3", DataType.UNKNOWN),
         };
         String expected = "select c1, c2, c3 from schema.table order by c1, c2, c3";
 
@@ -200,6 +201,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 //    }
 
 }
+
 
 
 

@@ -49,6 +49,7 @@ public class Column
 
     private final String _columnName;
     private final DataType _dataType;
+    private final String _sqlTypeName;
     private final Nullable _nullable;
 
     /**
@@ -62,6 +63,7 @@ public class Column
         _columnName = columnName;
         _dataType = dataType;
         _nullable = NULLABLE_UNKNOWN;
+        _sqlTypeName = dataType.toString();
     }
 
     /**
@@ -71,6 +73,19 @@ public class Column
     {
         _columnName = columnName;
         _dataType = dataType;
+        _sqlTypeName = dataType.toString();
+        _nullable = nullable;
+    }
+
+    /**
+     * Creates a Column object.
+     */
+    public Column(String columnName, DataType dataType, String sqlTypeName,
+            Nullable nullable)
+    {
+        _columnName = columnName;
+        _dataType = dataType;
+        _sqlTypeName = sqlTypeName;
         _nullable = nullable;
     }
 
@@ -88,6 +103,14 @@ public class Column
     public DataType getDataType()
     {
         return _dataType;
+    }
+
+    /**
+     * Returns this column sql data type name.
+     */
+    public String getSqlTypeName()
+    {
+        return _sqlTypeName;
     }
 
     /**
@@ -155,6 +178,7 @@ public class Column
     }
 
 }
+
 
 
 

@@ -61,11 +61,11 @@ public class DataSetUtilsTest extends TestCase
     public void testGetColumn() throws Exception
     {
         Column[] columns = new Column[]{
-            new Column("c0", null),
-            new Column("c1", null),
-            new Column("c2", null),
-            new Column("c3", null),
-            new Column("c4", null),
+            new Column("c0", DataType.UNKNOWN),
+            new Column("c1", DataType.UNKNOWN),
+            new Column("c2", DataType.UNKNOWN),
+            new Column("c3", DataType.UNKNOWN),
+            new Column("c4", DataType.UNKNOWN),
         };
 
         for (int i = 0; i < columns.length; i++)
@@ -190,6 +190,7 @@ public class DataSetUtilsTest extends TestCase
     }
 
 }
+
 
 
 

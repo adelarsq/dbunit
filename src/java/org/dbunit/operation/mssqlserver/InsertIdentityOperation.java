@@ -21,12 +21,12 @@
 
 package org.dbunit.operation.mssqlserver;
 
-import java.sql.*;
-
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.operation.*;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.*;
+import org.dbunit.operation.*;
+
+import java.sql.*;
 
 /**
  * This class disable the MS SQL Server automatic identifier generation for
@@ -68,6 +68,21 @@ public class InsertIdentityOperation extends DatabaseOperation
         _operation = operation;
     }
 
+    private boolean hasIdentityColumn(ITableMetaData metaData)
+            throws DataSetException
+    {
+        Column[] primaryKeys = metaData.getPrimaryKeys();
+        for (int i = 0; i < primaryKeys.length; i++)
+        {
+            if (primaryKeys[i].getSqlTypeName().endsWith("IDENTITY"))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseOperation class
 
@@ -93,15 +108,18 @@ public class InsertIdentityOperation extends DatabaseOperation
             {
                 ITable table = dataSet.getTable(tableNames[i]);
                 String tableName = DataSetUtils.getQualifiedName(
-                        connection.getSchema(),
-                        tableNames[i]);
+                        connection.getSchema(), tableNames[i]);
 
                 // enable identity insert
-                StringBuffer sqlBuffer = new StringBuffer(128);
-                sqlBuffer.append("SET IDENTITY_INSERT ");
-                sqlBuffer.append(tableName);
-                sqlBuffer.append(" ON");
-                statement.execute(sqlBuffer.toString());
+                boolean hasIdentityColumn = hasIdentityColumn(table.getTableMetaData());
+                if (hasIdentityColumn)
+                {
+                    StringBuffer sqlBuffer = new StringBuffer(128);
+                    sqlBuffer.append("SET IDENTITY_INSERT ");
+                    sqlBuffer.append(tableName);
+                    sqlBuffer.append(" ON");
+                    statement.execute(sqlBuffer.toString());
+                }
 
                 try
                 {
@@ -110,12 +128,15 @@ public class InsertIdentityOperation extends DatabaseOperation
                 finally
                 {
                     // disable identity insert
-                    sqlBuffer = new StringBuffer(128);
-                    sqlBuffer.append("SET IDENTITY_INSERT ");
-                    sqlBuffer.append(tableName);
-                    sqlBuffer.append(" OFF");
-                    statement.execute(sqlBuffer.toString());
-                    jdbcConnection.commit();
+                    if (hasIdentityColumn)
+                    {
+                        StringBuffer sqlBuffer = new StringBuffer(128);
+                        sqlBuffer.append("SET IDENTITY_INSERT ");
+                        sqlBuffer.append(tableName);
+                        sqlBuffer.append(" OFF");
+                        statement.execute(sqlBuffer.toString());
+                        jdbcConnection.commit();
+                    }
                 }
             }
         }
@@ -126,6 +147,7 @@ public class InsertIdentityOperation extends DatabaseOperation
         }
     }
 }
+
 
 
 

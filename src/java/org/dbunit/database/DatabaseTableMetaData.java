@@ -174,7 +174,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                         if (dataType != DataType.UNKNOWN)
                         {
                             Column column = new Column(columnName, dataType,
-                                    Column.nullableValue(nullable));
+                                    sqlTypeName, Column.nullableValue(nullable));
                             columnList.add(column);
                         }
                     }
@@ -227,6 +227,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         }
     }
 }
+
 
 
 

@@ -58,8 +58,11 @@ public class ResultSetTable extends AbstractTable
         Column[] columns = new Column[metaData.getColumnCount()];
         for (int i = 0; i < columns.length; i++)
         {
-            columns[i] = new Column(metaData.getColumnName(i + 1),
-                    DataType.forSqlType(metaData.getColumnType(i + 1)));
+            columns[i] = new Column(
+                    metaData.getColumnName(i + 1),
+                    DataType.forSqlType(metaData.getColumnType(i + 1)),
+                    metaData.getColumnTypeName(i + 1),
+                    Column.nullableValue(metaData.isNullable(i + 1)));
         }
 
         return new DefaultTableMetaData(name, columns);
@@ -93,6 +96,7 @@ public class ResultSetTable extends AbstractTable
         }
     }
 }
+
 
 
 
