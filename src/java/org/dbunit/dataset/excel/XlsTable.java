@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * @since Feb 21, 2003
  * @version $Revision$
  */
-public class XlsTable extends AbstractTable
+class XlsTable extends AbstractTable
 {
     private final ITableMetaData _metaData;
     private final HSSFSheet _sheet;

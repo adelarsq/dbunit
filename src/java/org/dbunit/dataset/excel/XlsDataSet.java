@@ -30,6 +30,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import java.io.*;
 
 /**
+ * This dataset implementation can read and write MS Excel documents. Each
+ * sheet represents a table. The first row of a sheet defines the columns names
+ * and remaining rows contains the data.
+ *
  * @author Manuel Laflamme
  * @since Feb 21, 2003
  * @version $Revision$
@@ -38,11 +42,17 @@ public class XlsDataSet extends AbstractDataSet
 {
     private final ITable[] _tables;
 
+    /**
+     * Creates a new XlsDataSet object that loads the specified Excel document.
+     */
     public XlsDataSet(File file) throws IOException, DataSetException
     {
         this(new FileInputStream(file));
     }
 
+    /**
+     * Creates a new XlsDataSet object that loads the specified Excel document.
+     */
     public XlsDataSet(InputStream in) throws IOException, DataSetException
     {
         HSSFWorkbook workbook = new HSSFWorkbook(in);
@@ -55,8 +65,7 @@ public class XlsDataSet extends AbstractDataSet
     }
 
     /**
-     * Write the specified dataset to the specified output stream as a xls
-     * document.
+     * Write the specified dataset to the specified Excel document.
      */
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
