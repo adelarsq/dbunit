@@ -30,7 +30,7 @@ import java.sql.Types;
  */
 public abstract class DataType
 {
-    public static final DataType UNKNOWN = new UnkownDataType();
+    public static final DataType UNKNOWN = new UnknownDataType();
 
     public static final DataType CHAR = new StringDataType(
             "CHAR", Types.CHAR);

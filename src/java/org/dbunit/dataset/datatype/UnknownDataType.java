@@ -27,9 +27,9 @@ import java.sql.Types;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class UnkownDataType extends AbstractDataType
+public class UnknownDataType extends AbstractDataType
 {
-    UnkownDataType()
+    UnknownDataType()
     {
         super("UNKNOWN", Types.OTHER, Object.class, false);
     }
