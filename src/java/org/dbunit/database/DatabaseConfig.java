@@ -51,6 +51,8 @@ public class DatabaseConfig
             "http://www.dbunit.org/features/qualifiedTableNames";
     public static final String FEATURE_BATCHED_STATEMENTS =
             "http://www.dbunit.org/features/batchedStatements";
+    public static final String FEATURE_DATATYPE_WARNING =
+            "http://www.dbunit.org/features/datatypeWarning";
 
     private static final DefaultDataTypeFactory DEFAULT_DATA_TYPE_FACTORY =
             new DefaultDataTypeFactory();
@@ -68,6 +70,7 @@ public class DatabaseConfig
     {
         setFeature(FEATURE_BATCHED_STATEMENTS, false);
         setFeature(FEATURE_QUALIFIED_TABLE_NAMES, false);
+        setFeature(FEATURE_DATATYPE_WARNING, true);
 
         setProperty(PROPERTY_STATEMENT_FACTORY, PREPARED_STATEMENT_FACTORY);
         setProperty(PROPERTY_RESULTSET_TABLE_FACTORY, RESULT_SET_TABLE_FACTORY);

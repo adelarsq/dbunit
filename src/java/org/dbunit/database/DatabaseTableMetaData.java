@@ -164,6 +164,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                     DatabaseConfig config = _connection.getConfig();
                     IDataTypeFactory dataTypeFactory = (IDataTypeFactory)config.getProperty(
                             DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
+                    boolean datatypeWarning = config.getFeature(
+                            DatabaseConfig.FEATURE_DATATYPE_WARNING);
 
                     List columnList = new ArrayList();
                     while (resultSet.next())
@@ -182,6 +184,13 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                             Column column = new Column(columnName, dataType,
                                     sqlTypeName, Column.nullableValue(nullable));
                             columnList.add(column);
+                        }
+                        else if (datatypeWarning)
+                        {
+                            System.out.println(
+                                    "WARNING - " + tableName + "." + columnName +
+                                    " data type (" + sqlType + ", ‘" + sqlTypeName +
+                                    "’) not recognized and will be ignored. See FAQ for more information.");
                         }
                     }
 

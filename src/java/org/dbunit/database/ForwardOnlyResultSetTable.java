@@ -20,12 +20,10 @@
  */
 package org.dbunit.database;
 
-import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.RowOutOfBoundsException;
 import org.dbunit.dataset.Column;
-import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.RowOutOfBoundsException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -22,10 +22,9 @@
 
 package org.dbunit.database;
 
+import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
