@@ -22,10 +22,13 @@
 package org.dbunit.dataset.datatype;
 
 import org.dbunit.database.ExtendedMockSingleRowResultSet;
+import org.dbunit.util.FileAsserts;
 import org.dbunit.dataset.ITable;
 
 import java.sql.Types;
 import java.util.Arrays;
+import java.io.File;
+import java.io.ByteArrayInputStream;
 
 /**
  * @author Manuel Laflamme
@@ -106,6 +109,31 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
         }
     }
 
+    public void testTypeCastFileName() throws Exception
+    {
+        File file = new File("LICENSE.txt");
+
+        Object[] values = {
+            file.toString(),
+            file.getAbsolutePath(),
+            file.toURL().toString(),
+            file,
+            file.toURL(),
+        };
+
+//        System.out.println(file.getAbsolutePath());
+        assertEquals("exists", true, file.exists());
+
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            for (int j = 0; j < values.length; j++)
+            {
+                byte[] actual = (byte[])TYPES[i].typeCast(values[j]);
+                FileAsserts.assertEquals(new ByteArrayInputStream(actual), file);
+            }
+        }
+    }
+
     public void testTypeCastNone() throws Exception
     {
         for (int i = 0; i < TYPES.length; i++)
@@ -119,7 +147,7 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
     {
         Object[] values = {
             new Object(),
-            new Integer(1234)
+            new Integer(1234),
         };
 
         for (int i = 0; i < TYPES.length; i++)
@@ -129,7 +157,7 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
                 try
                 {
                     TYPES[i].typeCast(values[j]);
-                    fail("Should throw TypeCastException");
+                    fail("Should throw TypeCastException: " + values[j]);
                 }
                 catch (TypeCastException e)
                 {

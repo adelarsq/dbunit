@@ -28,6 +28,15 @@ import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.BufferedInputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * @author Manuel Laflamme
@@ -36,9 +45,24 @@ import java.sql.SQLException;
  */
 public class BytesDataType extends AbstractDataType
 {
+    private static final int MAX_URI_LENGTH = 256;
+
     BytesDataType(String name, int sqlType)
     {
         super(name, sqlType, byte[].class, false);
+    }
+
+    private byte[] toByteArray(InputStream in, int length) throws IOException
+    {
+        ByteArrayOutputStream out = new ByteArrayOutputStream(length);
+        in = new BufferedInputStream(in);
+        int i = in.read();
+        while (i != -1)
+        {
+            out.write(i);
+            i = in.read();
+        }
+        return out.toByteArray();
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -58,9 +82,43 @@ public class BytesDataType extends AbstractDataType
 
         if (value instanceof String)
         {
-            return Base64.decode((String)value);
-        }
+            String stringValue = (String)value;
 
+            // Assume not an uri if length greater than max uri length
+            if (stringValue.length() == 0 || stringValue.length() > MAX_URI_LENGTH)
+            {
+                return Base64.decode((String)value);
+            }
+
+            try
+            {
+                try
+                {
+                    // Try value as URL
+                    URL url = new URL(stringValue);
+                    return toByteArray(url.openStream(), 0);
+                }
+                catch (MalformedURLException e1)
+                {
+                    try
+                    {
+                        // Not an URL, try as file name
+                        File file = new File(stringValue);
+                        return toByteArray(new FileInputStream(file),
+                                (int)file.length());
+                    }
+                    catch (FileNotFoundException e2)
+                    {
+                        // Not a file name either
+                        return Base64.decode((String)value);
+                    }
+                }
+            }
+            catch (IOException e)
+            {
+                throw new TypeCastException(e);
+            }
+        }
 
         if (value instanceof Blob)
         {
@@ -70,6 +128,32 @@ public class BytesDataType extends AbstractDataType
                 return blobValue.getBytes(1, (int)blobValue.length());
             }
             catch (SQLException e)
+            {
+                throw new TypeCastException(e);
+            }
+        }
+
+        if (value instanceof URL)
+        {
+            try
+            {
+                return toByteArray(((URL)value).openStream(), 0);
+            }
+            catch (IOException e)
+            {
+                throw new TypeCastException(e);
+            }
+        }
+
+        if (value instanceof File)
+        {
+            try
+            {
+                File file = (File)value;
+                return toByteArray(new FileInputStream(file),
+                        (int)file.length());
+            }
+            catch (IOException e)
             {
                 throw new TypeCastException(e);
             }
