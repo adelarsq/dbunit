@@ -93,7 +93,7 @@ public class DbUnitTask extends Task
     /**
      * Flag for using botched statements.
      */
-    private boolean supportBatchStatement = false;
+    private boolean supportBatchStatement = true;
 
     /**
      * Set the JDBC driver to be used.
@@ -245,13 +245,14 @@ public class DbUnitTask extends Task
         {
             throw new BuildException("Must declare at least one step in a <dbunit> task!");
         }
+
         if (useQualifiedTableNames)
         {
             System.setProperty("dbunit.qualified.table.names", "true");
         }
-        if (supportBatchStatement)
+        if (!supportBatchStatement)
         {
-            System.setProperty("dbunit.database.supportBatchStatement", "true");
+            System.setProperty("dbunit.database.supportBatchStatement", "false");
         }
 
         Driver driverInstance = null;
@@ -304,11 +305,11 @@ public class DbUnitTask extends Task
             }
 
             conn.setAutoCommit(true);
+            IDatabaseConnection connection = new DatabaseConnection(conn, schema);
             Iterator stepIter = steps.listIterator();
             while (stepIter.hasNext())
             {
                 DbUnitTaskStep step = (DbUnitTaskStep)stepIter.next();
-                IDatabaseConnection connection = new DatabaseConnection(conn, schema);
                 log(step.getLogMessage(), Project.MSG_INFO);
                 step.execute(connection);
             }
