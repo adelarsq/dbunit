@@ -58,6 +58,10 @@ public class DatabaseEnvironment
             {
                 INSTANCE = new OracleEnvironment(profile);
             }
+            else if (profileName.equals("mssql"))
+            {
+                INSTANCE = new MSSQLServerEnvironment(profile);
+            }
             else
             {
                 INSTANCE = new DatabaseEnvironment(profile);
