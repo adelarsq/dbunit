@@ -71,3 +71,4 @@ public class DoubleDataType extends NumberDataType
     }
 
 }
+

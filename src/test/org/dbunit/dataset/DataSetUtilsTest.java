@@ -131,15 +131,19 @@ public class DataSetUtilsTest extends TestCase
         }
     }
 
-    public void testGetAbsoluteName() throws Exception
+    public void testGetQualifiedName() throws Exception
     {
-        String schemaName = "schema";
-        String tableName = "table";
+        assertEquals("prefix + name", "prefix.name",
+                DataSetUtils.getQualifiedName("prefix", "name"));
 
-        assertEquals("with schema", "schema.table",
-                DataSetUtils.getAbsoluteName(schemaName, tableName));
-        assertEquals("no schema", "table",
-                DataSetUtils.getAbsoluteName(null, tableName));
+        assertEquals("null prefix", "name",
+                DataSetUtils.getQualifiedName(null, "name"));
+
+        assertEquals("empty prefix", "name",
+                DataSetUtils.getQualifiedName("", "name"));
+
+        assertEquals("existing prefix", "prefix.name",
+                DataSetUtils.getQualifiedName("wrongPrefix", "prefix.name"));
     }
 
     public void testGetColumn() throws Exception
@@ -267,4 +271,5 @@ public class DataSetUtilsTest extends TestCase
     }
 
 }
+
 

@@ -25,6 +25,7 @@ package org.dbunit.database;
 import java.sql.*;
 
 import org.dbunit.dataset.*;
+import org.dbunit.database.statement.*;
 
 /**
  * @author Manuel Laflamme
@@ -32,7 +33,13 @@ import org.dbunit.dataset.*;
  */
 public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 {
+    private final IStatementFactory _statementFactory;
     private IDataSet _dataSet = null;
+
+    public AbstractDatabaseConnection()
+    {
+        _statementFactory = new StatementFactory();
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // IDatabaseConnection interface
@@ -77,18 +84,11 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         }
     }
 
-    public BatchStatement createBatchStatement() throws SQLException
+    public IStatementFactory getStatementFactory()
     {
-        if (getConnection().getMetaData().supportsBatchUpdates())
-        {
-            return new BatchStatement(getConnection());
-        }
-        else
-        {
-            return new SimpleStatement(getConnection());
-        }
+        return _statementFactory;
     }
 
-
 }
+
 

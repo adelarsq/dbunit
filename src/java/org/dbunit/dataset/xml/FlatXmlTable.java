@@ -60,7 +60,7 @@ public class FlatXmlTable extends AbstractTable
         while (columnAttributes.hasMoreElements())
         {
             Attribute columnAttr = (Attribute)columnAttributes.nextElement();
-            Column column = new Column(columnAttr.getName(), DataType.OBJECT);
+            Column column = new Column(columnAttr.getName(), DataType.UNKNOWN);
             columnList.add(column);
         }
         Column[] columns = (Column[])columnList.toArray(new Column[0]);
@@ -102,4 +102,5 @@ public class FlatXmlTable extends AbstractTable
     }
 
 }
+
 

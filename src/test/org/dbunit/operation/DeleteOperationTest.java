@@ -30,6 +30,9 @@ import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.database.statement.MockBatchStatement;
+import org.dbunit.database.statement.MockStatementFactory;
+import org.dbunit.database.MockDatabaseConnection;
 
 /**
  * @author Manuel Laflamme
@@ -42,7 +45,7 @@ public class DeleteOperationTest extends AbstractDatabaseTest
         super(s);
     }
 
-    public void testGetActionStatements() throws Exception
+    public void testMockExecute() throws Exception
     {
         String schemaName = "schema";
         String tableName = "table";
@@ -63,23 +66,41 @@ public class DeleteOperationTest extends AbstractDatabaseTest
 
         ITable table = new DefaultTable(new DefaultTableMetaData(
                 tableName, columns, primaryKeys), valueList);
+        IDataSet dataSet = new DefaultDataSet(table);
 
-        String[] sql = new DeleteOperation().getOperationStatements(schemaName, table);
-        assertEquals("statement count", valueList.size(), sql.length);
-        for (int i = 0; i < sql.length; i++)
-        {
-            String s = sql[i];
-            assertEquals("statement", expected[i], sql[i]);
-        }
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.setupExecuteBatchResult(2);
+        statement.addExpectedBatchStrings(expected);
+        statement.setExpectedExecuteBatchCalls(1);
+        statement.setExpectedClearBatchCalls(1);
+        statement.setExpectedCloseCalls(1);
+
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(1);
+        factory.setupStatement(statement);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupSchema(schemaName);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        new DeleteOperation().execute(connection, dataSet);
+
+        statement.verify();
+        factory.verify();
+        connection.verify();
     }
-
 
     public void testGetActionStatementsAndNoPrimaryKey() throws Exception
     {
-        ITable table = _connection.createDataSet().getTable("TEST_TABLE");
+        IDataSet dataSet = _connection.createDataSet();
+        ITableMetaData metaData = dataSet.getTableMetaData("TEST_TABLE");
         try
         {
-            new DeleteOperation().getOperationStatements(_connection.getSchema(), table);
+            new DeleteOperation().getOperationData(
+                    _connection.getSchema(), metaData);
             fail("Should throw a NoPrimaryKeyException");
         }
         catch (NoPrimaryKeyException e)
@@ -111,4 +132,5 @@ public class DeleteOperationTest extends AbstractDatabaseTest
     }
 
 }
+
 

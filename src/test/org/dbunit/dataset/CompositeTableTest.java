@@ -45,3 +45,4 @@ public class CompositeTableTest extends DefaultTableTest
     }
 }
 
+

@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import junit.framework.Assert;
+
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
 
@@ -108,22 +109,20 @@ public class DataSetUtils
 //                actualMetaData.getTableName());
 
         // column count
-        Column[] expectedColumns = expectedMetaData.getColumns();
-        Column[] actualColumns = actualMetaData.getColumns();
+        String[] expectedNames = getSortedColumnNames(expectedMetaData);
+        String[] actualNames = getSortedColumnNames(actualMetaData);
         Assert.assertEquals("column count (table=" + expectedTableName + ")",
-                expectedColumns.length, actualColumns.length);
+                expectedNames.length, actualNames.length);
 
         // columns names in no specific order
-        Arrays.sort(expectedColumns, ColumnComparator.INSTANCE);
-        Arrays.sort(actualColumns, ColumnComparator.INSTANCE);
-        for (int i = 0; i < expectedColumns.length; i++)
+        for (int i = 0; i < expectedNames.length; i++)
         {
-            String expectedName = expectedColumns[i].getColumnName();
-            String actualName = actualColumns[i].getColumnName();
+            String expectedName = expectedNames[i];
+            String actualName = actualNames[i];
             if (!expectedName.equals(actualName))
             {
-                Assert.fail("expected columns " + Arrays.asList(expectedColumns) +
-                        " but was " + Arrays.asList(actualColumns) + " (table=" +
+                Assert.fail("expected columns " + Arrays.asList(expectedNames) +
+                        " but was " + Arrays.asList(actualNames) + " (table=" +
                         expectedTableName + ")");
             }
 
@@ -136,9 +135,9 @@ public class DataSetUtils
         // values as strings
         for (int i = 0; i < expectedTable.getRowCount(); i++)
         {
-            for (int j = 0; j < expectedColumns.length; j++)
+            for (int j = 0; j < expectedNames.length; j++)
             {
-                String columnName = expectedColumns[j].getColumnName();
+                String columnName = expectedNames[j];
 
                 Object expectedValue = expectedTable.getValue(i, columnName);
                 Object actualValue = actualTable.getValue(i, columnName);
@@ -150,36 +149,44 @@ public class DataSetUtils
         }
     }
 
-    private static class ColumnComparator implements Comparator
+    private static String[] getSortedColumnNames(ITableMetaData metaData)
+            throws DataSetException
     {
-        private static final ColumnComparator INSTANCE = new ColumnComparator();
-
-        public int compare(Object o1, Object o2)
+        Column[] columns = metaData.getColumns();
+        String[] names = new String[columns.length];
+        for (int i = 0; i < columns.length; i++)
         {
-            Column column1 = (Column)o1;
-            Column column2 = (Column)o2;
-            return column1.getColumnName().compareTo(column2.getColumnName());
+            names[i] = columns[i].getColumnName();
         }
+        Arrays.sort(names);
+        return names;
     }
 
+
     /**
-     * Returns the name with the schema as prefixing if not <code>null</code>.
-     * For example <code>getAbsoluteName(null, "NAME")</code> returns
-     * <code>"NAME"</code> and <code>getAbsoluteName("SCHEMA", "NAME")</code>
-     * returns <code>"SCHEMA.NAME"</code>.
+     * Returns the specified name qualified with the specified prefix. The name
+     * is not modified if the prefix is <code>null</code> or if the name is
+     * already qualified.
+     * <p>
+     * Example: <br>
+     * <code>getQualifiedName(null, "NAME")</code> returns
+     * <code>"NAME"</code>. <code>getQualifiedName("PREFIX", "NAME")</code>
+     * returns <code>"PREFIX.NAME"</code> and
+     * <code>getQualifiedName("PREFIX2", "PREFIX1.NAME")</code>
+     * returns <code>"PREFIX1.NAME"</code>.
      *
-     * @param schema the schema name
+     * @param schema the prefix
      * @param name the name
-     * @returns the absolute name
+     * @returns the qualified name
      */
-    public static String getAbsoluteName(String schema, String name)
+    public static String getQualifiedName(String prefix, String name)
     {
-        if (schema == null)
+        if (prefix == null || prefix.equals("") || name.indexOf(".") >= 0)
         {
             return name;
         }
 
-        return schema + "." + name;
+        return prefix + "." + name;
     }
 
     /**
@@ -282,4 +289,5 @@ public class DataSetUtils
     }
 
 }
+
 

@@ -49,6 +49,12 @@ public class DefaultTable extends AbstractTable
         _list = Arrays.asList(new Object[0]);
     }
 
+    public DefaultTable(String tableName, Column[] columns, List list)
+    {
+        _metaData = new DefaultTableMetaData(tableName, columns);
+        _list = list;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // ITable interface
 
@@ -71,4 +77,5 @@ public class DefaultTable extends AbstractTable
     }
 
 }
+
 

@@ -34,6 +34,10 @@ import org.dbunit.dataset.*;
  */
 public class DatabaseDataSet extends AbstractDataSet
 {
+    private static final String[] TABLE_TYPE = {"TABLE"};
+    private static final String QUALIFIED_DATABASE_NAMES =
+            "dbunit.qualified.database.names";
+
     private final IDatabaseConnection _connection;
     private Map _tableMap = null;
 
@@ -48,22 +52,32 @@ public class DatabaseDataSet extends AbstractDataSet
         Column[] columns = metaData.getColumns();
 
         // select
-        String sql = "select";
+        StringBuffer sqlBuffer = new StringBuffer();
+        sqlBuffer.append("select ");
         for (int i = 0; i < columns.length; i++)
         {
-            Column column = columns[i];
-//            sql += " " + getAbsoluteName(schema, column.getColumnName());
-            sql += " " + column.getColumnName();
-            if (i + 1 < columns.length)
+            if (i > 0)
             {
-                sql += ",";
+                sqlBuffer.append(", ");
             }
+            sqlBuffer.append(columns[i].getColumnName());
         }
 
         // from
-        sql += " from " + DataSetUtils.getAbsoluteName(schema, metaData.getTableName());
+        sqlBuffer.append(" from ");
+        sqlBuffer.append(DataSetUtils.getQualifiedName(schema,
+                metaData.getTableName()));
 
-        return sql;
+        return sqlBuffer.toString();
+    }
+
+    private String getQualifiedName(String prefix, String name)
+    {
+        if (System.getProperty(QUALIFIED_DATABASE_NAMES, "false").equals("true"))
+        {
+            return DataSetUtils.getQualifiedName(prefix, name);
+        }
+        return name;
     }
 
     /**
@@ -83,19 +97,17 @@ public class DatabaseDataSet extends AbstractDataSet
 
             DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
             ResultSet resultSet = databaseMetaData.getTables(
-                    jdbcConnection.getCatalog(), schema, "%", null);
+                    null, schema, "%", TABLE_TYPE);
 
             try
             {
                 Map tableMap = new HashMap();
                 while (resultSet.next())
                 {
-                    String name = resultSet.getString(3);
-                    String type = resultSet.getString(4);
-                    if (type.equals("TABLE"))
-                    {
-                        tableMap.put(name, null);
-                    }
+                    String schemaName = resultSet.getString(2);
+                    String tableName = resultSet.getString(3);
+                    tableName = getQualifiedName(schemaName, tableName);
+                    tableMap.put(tableName, null);
                 }
 
                 _tableMap = tableMap;
@@ -150,8 +162,8 @@ public class DatabaseDataSet extends AbstractDataSet
 
             try
             {
-                ResultSet resultSet = statement.executeQuery(getSelectStatement(
-                        schema, metaData));
+                ResultSet resultSet = statement.executeQuery(
+                        getSelectStatement(schema, metaData));
                 try
                 {
                     return new CachedResultSetTable(metaData, resultSet);
@@ -173,4 +185,5 @@ public class DatabaseDataSet extends AbstractDataSet
     }
 
 }
+
 

@@ -26,8 +26,9 @@ import java.io.*;
 import java.sql.SQLException;
 
 import org.dbunit.AbstractDatabaseTest;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.*;
+import org.dbunit.database.statement.BatchStatement;
+import org.dbunit.database.statement.StatementFactory;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.XmlDataSet;
@@ -43,34 +44,23 @@ public class CloseConnectionOperationTest extends AbstractDatabaseTest
         super(s);
     }
 
-    public void testExecute() throws Exception
+    public void testMockExecute() throws Exception
     {
-        String tableName = "TEST_TABLE";
-        InputStream in = new FileInputStream(
-                new File("src/xml/closeConnectionOperationTest.xml"));
-        IDataSet xmlDataSet = new XmlDataSet(in);
+        // setup mock objects
+        MockDatabaseOperation operation = new MockDatabaseOperation();
+        operation.setExpectedExecuteCalls(1);
 
-        // verify table before
-        IDatabaseConnection connection = getConnection();
-        ITable tableBefore = connection.createDataSet().getTable(tableName);
-        assertEquals("row count before", 6, tableBefore.getRowCount());
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setExpectedCloseCalls(1);
 
-        DatabaseOperation operation = new CloseConnectionOperation(
-                DatabaseOperation.DELETE_ALL);
-        operation.execute(_connection, xmlDataSet);
+        // execute operation
+        new CloseConnectionOperation(operation).execute(connection, null);
 
-        ITable tableAfter = connection.createDataSet().getTable(tableName);
-        assertEquals("row count after", 0, tableAfter.getRowCount());
-
-        try
-        {
-            connection.createBatchStatement();
-            fail("Should throw an SQLException");
-        }
-        catch (SQLException e)
-        {
-        }
+        // verify
+        operation.verify();
+        connection.verify();
     }
 
 }
+
 

@@ -67,3 +67,4 @@ public class ShortDataType extends NumberDataType
         }
     }
 }
+

@@ -28,7 +28,7 @@ import java.util.*;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.*;
-import FileAsserts;
+import junit.extensions.FileAsserts;
 
 /**
  * @author Manuel Laflamme
@@ -126,5 +126,6 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
     }
 
 }
+
 
 

@@ -113,3 +113,4 @@ public class DatabaseUnitRuntimeException extends RuntimeException
             _e.printStackTrace(s);
     }
 }
+

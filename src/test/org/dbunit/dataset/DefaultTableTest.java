@@ -66,7 +66,7 @@ public class DefaultTableTest extends AbstractTableTest
         Column[] columns = new Column[columnCount];
         for (int i = 0; i < columns.length; i++)
         {
-            columns[i] = new Column("COLUMN" + i, DataType.OBJECT);
+            columns[i] = new Column("COLUMN" + i, DataType.UNKNOWN);
         }
 
         return new DefaultTableMetaData("myTable", columns);
@@ -89,4 +89,5 @@ public class DefaultTableTest extends AbstractTableTest
     }
 
 }
+
 

@@ -26,6 +26,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.dbunit.dataset.*;
+import org.dbunit.database.statement.*;
 
 /**
  * @author Manuel Laflamme
@@ -69,7 +70,8 @@ public interface IDatabaseConnection
     public ITable createQueryTable(String resultName, String sql)
             throws DataSetException, SQLException;
 
-    public BatchStatement createBatchStatement() throws SQLException;
+    public IStatementFactory getStatementFactory();
 }
+
 
 

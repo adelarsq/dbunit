@@ -49,7 +49,7 @@ public class XmlTable extends AbstractTable
         {
             Element columnElem = (Element)columnElems.nextElement();
             Column column = new Column(columnElem.getTextString(),
-                    DataType.OBJECT);
+                    DataType.UNKNOWN);
             columnList.add(column);
         }
         Column[] columns = (Column[])columnList.toArray(new Column[0]);
@@ -114,4 +114,5 @@ public class XmlTable extends AbstractTable
         }
     }
 }
+
 

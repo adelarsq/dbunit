@@ -76,3 +76,4 @@ public class ByteDataType extends NumberDataType
         }
     }
 }
+

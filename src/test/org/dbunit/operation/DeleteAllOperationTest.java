@@ -3,17 +3,17 @@
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -24,6 +24,9 @@ package org.dbunit.operation;
 
 import org.dbunit.dataset.*;
 import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.database.statement.MockBatchStatement;
+import org.dbunit.database.statement.MockStatementFactory;
+import org.dbunit.database.MockDatabaseConnection;
 
 /**
  * @author Manuel Laflamme
@@ -36,15 +39,38 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
         super(s);
     }
 
-    public void testGetDeleteStatement() throws Exception
+    public void testMockExecute() throws Exception
     {
         String schemaName = "schema";
         String tableName = "table";
         String expected = "delete from schema.table";
 
-        ITableMetaData metaData = new DefaultTableMetaData(tableName, new Column[0]);
-        String sql = new DeleteAllOperation().getDeleteStatement(schemaName, metaData);
-        assertEquals("delete statement", expected, sql);
+        IDataSet dataSet = new DefaultDataSet(new DefaultTable(tableName));
+
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.setupExecuteBatchResult(1);
+        statement.addExpectedBatchString(expected);
+        statement.setExpectedExecuteBatchCalls(1);
+        statement.setExpectedClearBatchCalls(1);
+        statement.setExpectedCloseCalls(1);
+
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreateStatementCalls(1);
+        factory.setupStatement(statement);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupSchema(schemaName);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // invoke operation
+        new DeleteAllOperation().execute(connection, dataSet);
+
+        statement.verify();
+        factory.verify();
+        connection.verify();
     }
 
     public void testExecute() throws Exception
@@ -78,4 +104,5 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
     }
 
 }
+
 

@@ -3,17 +3,17 @@
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -28,6 +28,8 @@ import java.sql.Statement;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.statement.IPreparedBatchStatement;
+import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.*;
 
 /**
@@ -41,44 +43,27 @@ import org.dbunit.dataset.*;
  */
 public class RefreshOperation extends DatabaseOperation
 {
+    private static final InsertOperation INSERT = new InsertOperation();
+    private static final UpdateOperation UPDATE = new UpdateOperation();
+
     RefreshOperation()
     {
     }
 
-    private String getUpdateStatement(String schema, ITable table,
-            int row) throws DatabaseUnitException
+    private int executeRowOperation(IPreparedBatchStatement statement,
+            Column[] columns, ITable table, int row)
+            throws DatabaseUnitException, SQLException
     {
-        return ((UpdateOperation)DatabaseOperation.UPDATE).getOperationStatement(
-                schema, table, row);
-    }
-
-    private String getInsertStatement(String schema, ITable table,
-            int row) throws DatabaseUnitException
-    {
-        return ((InsertOperation)DatabaseOperation.INSERT).getOperationStatement(
-                schema, table, row);
-    }
-
-    private void executeRowAction(IDatabaseConnection connection, ITable table,
-            int row) throws DatabaseUnitException, SQLException
-    {
-        Statement statement = connection.getConnection().createStatement();
-        try
+        for (int i = 0; i < columns.length; i++)
         {
-            // try to update row
-            String updateSql = getUpdateStatement(connection.getSchema(), table, row);
-            if (statement.executeUpdate(updateSql) == 0)
-            {
-                // no row updated, insert it
-                String insertSql = getInsertStatement(connection.getSchema(), table, row);
-                statement.executeUpdate(insertSql);
-            }
+            Object value = table.getValue(row, columns[i].getColumnName());
+            statement.addValue(value, columns[i].getDataType());
         }
-        finally
-        {
-            statement.close();
-        }
+        statement.addBatch();
+        int result = statement.executeBatch();
+        statement.clearBatch();
 
+        return result;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -87,6 +72,9 @@ public class RefreshOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
+        IStatementFactory factory = connection.getStatementFactory();
+        String schema = connection.getSchema();
+
         // this dataset is used to get metadata from database
         IDataSet databaseDataSet = connection.createDataSet();
 
@@ -94,18 +82,37 @@ public class RefreshOperation extends DatabaseOperation
         ITable[] tables = DataSetUtils.getTables(dataSet);
         for (int i = 0; i < tables.length; i++)
         {
-            // use database metadata
-            String name = tables[i].getTableMetaData().getTableName();
-            ITableMetaData metaData = databaseDataSet.getTableMetaData(name);
-            ITable table = new CompositeTable(metaData, dataSet.getTable(name));
+            // use database metadata to get columns datatype
+            String tableName = tables[i].getTableMetaData().getTableName();
+            ITableMetaData metaData = databaseDataSet.getTableMetaData(tableName);
 
-            // execute action on each row
+            // setup insert statement
+            OperationData insertData = INSERT.getOperationData(schema, metaData);
+            IPreparedBatchStatement insertStatement =
+                    factory.createPreparedStatement(insertData.getSql(), connection);
+
+            // setup update statement
+            OperationData updateData = UPDATE.getOperationData(schema, metaData);
+            IPreparedBatchStatement updateStatement =
+                    factory.createPreparedStatement(updateData.getSql(), connection);
+
+            // refresh each table's row
+            ITable table = dataSet.getTable(tableName);
             for (int j = 0; j < table.getRowCount(); j++)
             {
-                executeRowAction(connection, table, j);
+                // try to update row
+                int result = executeRowOperation(updateStatement,
+                        updateData.getParams(), table, j);
+                if (result == 0)
+                {
+                    // update not sucessful, try insert instead
+                    executeRowOperation(insertStatement,
+                            insertData.getParams(), table, j);
+                }
             }
         }
 
     }
 }
+
 

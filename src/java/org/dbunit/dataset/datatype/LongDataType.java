@@ -73,3 +73,4 @@ public class LongDataType extends NumberDataType
     }
 
 }
+

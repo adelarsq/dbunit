@@ -26,6 +26,7 @@ import java.io.*;
 
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.AbstractDatabaseTest;
 
 /**
@@ -46,9 +47,8 @@ public class RefreshOperationTest extends AbstractDatabaseTest
         int updatedRow = 1;
         int insertedRow = 3;
 
-        InputStream in = new FileInputStream(
-                new File("src/xml/refreshOperationTest.xml"));
-        IDataSet xmlDataSet = new XmlDataSet(in);
+        IDataSet xmlDataSet = new FlatXmlDataSet(
+                new FileInputStream("src/xml/refreshOperationTest.xml"));
 
         // verify table before
         ITable tableBefore = createOrderedTable(tableName, columnNames[0]);
@@ -57,52 +57,15 @@ public class RefreshOperationTest extends AbstractDatabaseTest
         DatabaseOperation.REFRESH.execute(_connection, xmlDataSet);
 
         // verify table after
+        IDataSet expectedDataSet = new FlatXmlDataSet(
+                new FileInputStream("src/xml/refreshOperationTestExpected.xml"));
+        ITable expectedTable = expectedDataSet.getTable("PK_TABLE");
         ITable tableAfter = createOrderedTable(tableName, columnNames[0]);
-        assertEquals("row count after", 4, tableAfter.getRowCount());
-        for (int i = 0; i < tableAfter.getRowCount(); i++)
-        {
-            // verify updated row
-            if (i == updatedRow)
-            {
-                assertEquals("PK0", "1",
-                        tableAfter.getValue(i, "PK0").toString());
-                assertEquals("PK1", "11",
-                        tableAfter.getValue(i, "PK1").toString());
-                assertEquals("PK2", "111",
-                        tableAfter.getValue(i, "PK2").toString());
-                assertEquals("NORMAL0", "toto",
-                        tableAfter.getValue(i, "NORMAL0").toString());
-                assertEquals("NORMAL1", "qwerty",
-                        tableAfter.getValue(i, "NORMAL1").toString());
-            }
-            // verify inserted row
-            else if (i == insertedRow)
-            {
-                assertEquals("PK0", "3",
-                        tableAfter.getValue(i, "PK0").toString());
-                assertEquals("PK1", "33",
-                        tableAfter.getValue(i, "PK1").toString());
-                assertEquals("PK2", "333",
-                        tableAfter.getValue(i, "PK2").toString());
-                assertEquals("NORMAL0", "3333",
-                        tableAfter.getValue(i, "NORMAL0").toString());
-                assertEquals("NORMAL1", "33333",
-                        tableAfter.getValue(i, "NORMAL1").toString());
-            }
-            // all other row must be equals than before
-            else
-            {
-                for (int j = 0; j < columnNames.length; j++)
-                {
-                    String name = columnNames[j];
-                    Object valueAfter = tableAfter.getValue(i, name);
-                    Object valueBefore = tableBefore.getValue(i, name);
-                    assertEquals("c=" + name + ",r=" + j, valueBefore, valueAfter);
-                }
-            }
-        }
+
+        DataSetUtils.assertEquals(expectedTable, tableAfter);
     }
 
 
 }
+
 

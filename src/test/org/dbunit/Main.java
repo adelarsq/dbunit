@@ -23,10 +23,12 @@
 package org.dbunit;
 
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.util.Arrays;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.FilteredDataSet;
 
@@ -38,23 +40,22 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        IDatabaseConnection connection =
-                DatabaseEnvironment.getInstance().getConnection();
+//        IDatabaseConnection connection =
+//                DatabaseEnvironment.getInstance().getConnection();
+//
+//        // write DTD for database
+//        String[] tableNames = connection.createDataSet().getTableNames();
+//        Arrays.sort(tableNames);
+//        FlatXmlDataSet.writeDtd(new FilteredDataSet(tableNames,
+//                connection.createDataSet()),
+//                new FileOutputStream("test2.dtd"));
 
-//        // initialize database connection here
-//        IDatabaseConnection connection = ...
 
-        // write DTD for database
-        String[] tableNames = connection.createDataSet().getTableNames();
-        Arrays.sort(tableNames);
-        FlatXmlDataSet.writeDtd(new FilteredDataSet(tableNames,
-                connection.createDataSet()),
-                new FileOutputStream("test2.dtd"));
-    }
-
-    public void test() throws Exception
-    {
+        FlatXmlDataSet.write(new XmlDataSet(
+                new FileInputStream("src/xml/refreshOperationTest.xml")),
+                new FileOutputStream("src/xml/refreshOperationTestSetup.xml"));
     }
 
 }
+
 

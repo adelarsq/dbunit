@@ -30,6 +30,9 @@ import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.database.statement.MockBatchStatement;
+import org.dbunit.database.statement.MockStatementFactory;
+import org.dbunit.database.MockDatabaseConnection;
 
 /**
  * @author Manuel Laflamme
@@ -42,7 +45,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         super(s);
     }
 
-    public void testGetOperationStatements() throws Exception
+    public void testMockExecute() throws Exception
     {
         String schemaName = "schema";
         String tableName = "table";
@@ -61,57 +64,43 @@ public class UpdateOperationTest extends AbstractDatabaseTest
             new Column("c4", DataType.NUMBER),
         };
         String[] primaryKeys = {"c4", "c1"};
-
         ITable table = new DefaultTable(new DefaultTableMetaData(
                 tableName, columns, primaryKeys), valueList);
+        IDataSet dataSet = new DefaultDataSet(table);
 
-        String[] sql = new UpdateOperation().getOperationStatements(schemaName, table);
-        assertEquals("statement count", valueList.size(), sql.length);
-        for (int i = 0; i < sql.length; i++)
-        {
-            String s = sql[i];
-            assertEquals("statement", expected[i], sql[i]);
-        }
-    }
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.setupExecuteBatchResult(2);
+        statement.addExpectedBatchStrings(expected);
+        statement.setExpectedExecuteBatchCalls(1);
+        statement.setExpectedClearBatchCalls(1);
+        statement.setExpectedCloseCalls(1);
 
-    public void testGetOperationStatementsAndMissingValue() throws Exception
-    {
-        String schemaName = "schema";
-        String tableName = "table";
-        String[] expected = {
-            "update schema.table set c1 = 'toto', c2 = 1234 where c4 = 0",
-            "update schema.table set c2 = 123.45, c3 = NULL where c4 = 0",
-        };
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(1);
+        factory.setupStatement(statement);
 
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{"toto", "1234", ITable.NO_VALUE, "0"});
-        valueList.add(new Object[]{ITable.NO_VALUE, new Double("123.45"), null, "0"});
-        Column[] columns = new Column[]{
-            new Column("c1", DataType.STRING),
-            new Column("c2", DataType.NUMBER),
-            new Column("c3", DataType.STRING),
-            new Column("c4", DataType.NUMBER),
-        };
-        String[] primaryKeys = {"c4"};
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupSchema(schemaName);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
 
-        ITable table = new DefaultTable(new DefaultTableMetaData(
-                tableName, columns, primaryKeys), valueList);
+        new UpdateOperation().execute(connection, dataSet);
 
-        String[] sql = new UpdateOperation().getOperationStatements(schemaName, table);
-        assertEquals("statement count", valueList.size(), sql.length);
-        for (int i = 0; i < sql.length; i++)
-        {
-            String s = sql[i];
-            assertEquals("statement", expected[i], sql[i]);
-        }
+        statement.verify();
+        factory.verify();
+        connection.verify();
     }
 
     public void testGetOperationStatementsAndNoPrimaryKey() throws Exception
     {
-        ITable table = _connection.createDataSet().getTable("TEST_TABLE");
+        IDataSet dataSet = _connection.createDataSet();
+        ITableMetaData metaData = dataSet.getTableMetaData("TEST_TABLE");
         try
         {
-            new UpdateOperation().getOperationStatements(_connection.getSchema(), table);
+            new UpdateOperation().getOperationData(
+                    _connection.getSchema(), metaData);
             fail("Should throw a NoPrimaryKeyException");
         }
         catch (NoPrimaryKeyException e)
@@ -169,4 +158,5 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
 
 }
+
 

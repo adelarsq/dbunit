@@ -126,17 +126,22 @@ public class TransactionOperationTest extends AbstractDatabaseTest
             assertEquals("before row count", 6, tableBefore.getRowCount());
             assertEquals("autocommit before", true, jdbcConnection.getAutoCommit());
 
+            MockDatabaseOperation mockOperation = new MockDatabaseOperation();
+            mockOperation.setExpectedExecuteCalls(1);
+            mockOperation.setupThrowExceptionOnExecute(exceptions[i]);
+
             try
             {
                 DatabaseOperation operation = new CompositeOperation(
                         DatabaseOperation.DELETE_ALL,
-                        new ExceptionOperation(exceptions[i]));
+                        mockOperation);
                 operation = new TransactionOperation(operation);
                 operation.execute(_connection, xmlDataSet);
                 fail("Should throw an exception");
             }
             catch (Exception e)
             {
+                mockOperation.verify();
             }
 
             // snapshot after operation
@@ -146,33 +151,6 @@ public class TransactionOperationTest extends AbstractDatabaseTest
 
         }
     }
-
-    private class ExceptionOperation extends DatabaseOperation
-    {
-        private final Exception _exception;
-
-        public ExceptionOperation(Exception exception)
-        {
-            _exception = exception;
-        }
-
-        public void execute(IDatabaseConnection connection, IDataSet dataSet)
-                throws DatabaseUnitException, SQLException
-        {
-            if (_exception instanceof SQLException)
-            {
-                throw (SQLException)_exception;
-            }
-            else if (_exception instanceof DatabaseUnitException)
-            {
-                throw (DatabaseUnitException)_exception;
-            }
-            else if (_exception instanceof RuntimeException)
-            {
-                throw (RuntimeException)_exception;
-            }
-        }
-    }
-
 }
+
 

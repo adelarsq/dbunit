@@ -68,3 +68,4 @@ public class FloatDataType extends NumberDataType
     }
 
 }
+

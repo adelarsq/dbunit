@@ -30,7 +30,7 @@ import java.sql.Types;
  */
 public abstract class DataType
 {
-    public static final DataType OBJECT = new ObjectDataType();
+    public static final DataType UNKNOWN = new ObjectDataType();
     public static final DataType INTEGER = new IntegerDataType();
     public static final DataType LONG = new LongDataType();
     public static final DataType FLOAT = new FloatDataType();
@@ -126,7 +126,9 @@ public abstract class DataType
 
         }
 
+        // todo -> should returns UNKNOWN instead
         throw new DataTypeException("Unknown sql data type" + sqlType);
+//        return UNKNOWN;
     }
 
 //    /**
@@ -136,7 +138,7 @@ public abstract class DataType
 //    public static DataType forName(String type) throws IllegalArgumentException
 //    {
 //        if (type == null)
-//            return OBJECT;
+//            return UNKNOWN;
 //        if (type.equals("byte"))
 //            return BYTE;
 //        if (type.equals("short"))
@@ -156,48 +158,89 @@ public abstract class DataType
 //        if (type.equals("date"))
 //            return DATE;
 //        if (type.equals("object"))
-//            return OBJECT;
+//            return UNKNOWN;
 //
 //        throw new IllegalArgumentException(type);
 //    }
 //
-//    /**
-//     * Returns the <code>DataType</code> corresponding to the specified value
-//     * runtime class. This method returns <code>DataType.OBJECT</code>
-//     * if the value is <code>null</code> or runtime class not recognized.
-//     */
-//    public static DataType forObject(Object value)
-//    {
-//        if (value == null)
-//            return OBJECT;
-//
-//        if (value instanceof java.lang.Short ||
-//                value.getClass() == Short.class)
-//            return SHORT;
-//        if (value instanceof java.lang.Byte ||
-//                value.getClass() == Byte.class)
-//            return BYTE;
-//        if (value instanceof java.lang.Integer ||
-//                value.getClass() == Integer.class)
-//            return INTEGER;
-//        if (value instanceof java.lang.Long ||
-//                value.getClass() == Long.class)
-//            return LONG;
-//        if (value instanceof java.lang.Float ||
-//                value.getClass() == Float.class)
-//            return FLOAT;
-//        if (value instanceof java.lang.Double ||
-//                value.getClass() == Double.class)
-//            return DOUBLE;
-//        if (value instanceof java.lang.Boolean ||
-//                value.getClass() == Boolean.class)
-//            return BOOLEAN;
-//        if (value instanceof java.lang.String)
-//            return STRING;
+    /**
+     * Returns the <code>DataType</code> corresponding to the specified value
+     * runtime class. This method returns <code>DataType.UNKNOWN</code>
+     * if the value is <code>null</code> or runtime class not recognized.
+     */
+    public static DataType forObject(Object value)
+    {
+        if (value == null)
+        {
+            return UNKNOWN;
+        }
+
+        if (value instanceof java.lang.Short ||
+                value.getClass() == Short.class)
+        {
+            return SHORT;
+        }
+
+        if (value instanceof java.lang.Byte ||
+                value.getClass() == Byte.class)
+        {
+            return BYTE;
+        }
+
+        if (value instanceof java.lang.Integer ||
+                value.getClass() == Integer.class)
+        {
+            return INTEGER;
+        }
+
+        if (value instanceof java.lang.Long ||
+                value.getClass() == Long.class)
+        {
+            return LONG;
+        }
+
+        if (value instanceof java.lang.Float ||
+                value.getClass() == Float.class)
+        {
+            return FLOAT;
+        }
+
+        if (value instanceof java.lang.Double ||
+                value.getClass() == Double.class)
+        {
+            return DOUBLE;
+        }
+
+        if (value instanceof java.lang.Boolean ||
+                value.getClass() == Boolean.class)
+        {
+            return BOOLEAN;
+        }
+
+        if (value instanceof java.lang.String)
+        {
+            return STRING;
+        }
+
+        if (value instanceof java.sql.Date)
+        {
+            return DATE;
+        }
+        if (value instanceof java.sql.Time)
+        {
+            return TIME;
+        }
+        if (value instanceof java.sql.Timestamp)
+        {
+            return TIMESTAMP;
+        }
+
 //        if (value instanceof java.util.Date)
+//        {
 //            return DATE;
-//
-//        // Since the class have not been found we return Object
-//        return OBJECT;
-//    }
+//        }
+
+        return UNKNOWN;
+    }
 }
+

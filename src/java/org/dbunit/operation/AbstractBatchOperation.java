@@ -26,6 +26,7 @@ import java.sql.SQLException;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.*;
+import org.dbunit.database.statement.*;
 import org.dbunit.dataset.*;
 
 /**
@@ -37,13 +38,6 @@ import org.dbunit.dataset.*;
 public abstract class AbstractBatchOperation extends DatabaseOperation
 {
     /**
-     * Returns statement for the specified table at the specified row. This
-     * template method must be implemented by subclass.
-     */
-    abstract String getOperationStatement(String schema, ITable table,
-            int row) throws DatabaseUnitException;
-
-    /**
      * Returns list of table names this operation is applied to. This method
      * allow subclass to do filtering.
      */
@@ -52,22 +46,8 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         return dataSet.getTableNames();
     }
 
-    /**
-     * Returns all statements to be applied to the specified table.
-     */
-    String[] getOperationStatements(String schema, ITable table)
-            throws DatabaseUnitException
-    {
-        ITableMetaData metaData = table.getTableMetaData();
-
-        String[] sql = new String[table.getRowCount()];
-        for (int i = 0; i < sql.length; i++)
-        {
-            sql[i] = getOperationStatement(schema, table, i);
-        }
-
-        return sql;
-    }
+    abstract public OperationData getOperationData(String schemaName,
+            ITableMetaData metaData) throws DataSetException;
 
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseOperation class
@@ -77,33 +57,49 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
     {
         // this dataset is used to get metadata from database
         IDataSet databaseDataSet = connection.createDataSet();
+        IStatementFactory factory = connection.getStatementFactory();
+        String[] tableNames = getTableNames(dataSet);
 
-        BatchStatement statement = connection.createBatchStatement();
-        try
+        // for each table
+        for (int i = 0; i < tableNames.length; i++)
         {
-            String[] tableNames = getTableNames(dataSet);
-            for (int i = 0; i < tableNames.length; i++)
+            String name = tableNames[i];
+
+            // use database metadata
+            ITableMetaData metaData = databaseDataSet.getTableMetaData(name);
+
+            OperationData operationData = getOperationData(connection.getSchema(),
+                    databaseDataSet.getTableMetaData(name));
+            IPreparedBatchStatement statement = factory.createPreparedStatement(
+                    operationData.getSql(), connection);
+
+            try
             {
-                String name = tableNames[i];
+                Column[] columns = operationData.getParams();
+                ITable table = dataSet.getTable(name);
 
-                // use database metadata
-                ITableMetaData metaData = databaseDataSet.getTableMetaData(name);
-                ITable table = new CompositeTable(metaData, dataSet.getTable(name));
-
-                String[] sql = getOperationStatements(connection.getSchema(), table);
-                for (int j = 0; j < sql.length; j++)
+                // for each row
+                for (int j = 0; j < table.getRowCount(); j++)
                 {
-                    statement.add(sql[j]);
+                    // for each column
+                    for (int k = 0; k < columns.length; k++)
+                    {
+                        Column column = columns[k];
+                        statement.addValue(table.getValue(j,
+                                column.getColumnName()), column.getDataType());
+                    }
+                    statement.addBatch();
                 }
 
-                statement.execute();
-                statement.clear();
+                statement.executeBatch();
+                statement.clearBatch();
             }
-        }
-        finally
-        {
-            statement.close();
+            finally
+            {
+                statement.close();
+            }
         }
     }
 }
+
 

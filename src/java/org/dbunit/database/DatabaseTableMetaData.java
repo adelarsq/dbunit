@@ -51,7 +51,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         Connection connection = _connection.getConnection();
         DatabaseMetaData databaseMetaData = connection.getMetaData();
         ResultSet resultSet = databaseMetaData.getPrimaryKeys(
-                connection.getCatalog(), _connection.getSchema(), _tableName);
+                null, _connection.getSchema(), _tableName);
 
         List list = new ArrayList();
         try
@@ -127,8 +127,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                 Connection jdbcConnection = _connection.getConnection();
                 DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
                 ResultSet resultSet = databaseMetaData.getColumns(
-                        jdbcConnection.getCatalog(), _connection.getSchema(),
-                        _tableName, null);
+                        null, _connection.getSchema(), _tableName, null);
 
                 try
                 {
@@ -187,5 +186,6 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     }
 
 }
+
 
 

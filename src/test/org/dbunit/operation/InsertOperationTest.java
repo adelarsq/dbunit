@@ -30,6 +30,8 @@ import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.database.MockDatabaseConnection;
+import org.dbunit.database.statement.*;
 
 /**
  * @author Manuel Laflamme
@@ -42,8 +44,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
         super(s);
     }
 
-
-    public void testGetOperationStatements() throws Exception
+    public void testMockExecute() throws Exception
     {
         String schemaName = "schema";
         String tableName = "table";
@@ -52,6 +53,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
             "insert into schema.table (c1, c2, c3) values ('qwerty', 123.45, 'true')",
         };
 
+        // setup table
         List valueList = new ArrayList();
         valueList.add(new Object[]{null, "1234", Boolean.FALSE});
         valueList.add(new Object[]{"qwerty", new Double("123.45"), "true"});
@@ -60,49 +62,34 @@ public class InsertOperationTest extends AbstractDatabaseTest
             new Column("c2", DataType.NUMBER),
             new Column("c3", DataType.BOOLEAN),
         };
+        DefaultTable table = new DefaultTable(tableName, columns, valueList);
+        IDataSet dataSet = new DefaultDataSet(table);
 
-        ITable table = new DefaultTable(new DefaultTableMetaData(tableName, columns),
-                valueList);
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.setupExecuteBatchResult(2);
+        statement.addExpectedBatchStrings(expected);
+        statement.setExpectedExecuteBatchCalls(1);
+        statement.setExpectedClearBatchCalls(1);
+        statement.setExpectedCloseCalls(1);
 
-        String[] sql = new InsertOperation().getOperationStatements(schemaName, table);
-        assertEquals("statement count", valueList.size(), sql.length);
-        for (int i = 0; i < sql.length; i++)
-        {
-            String s = sql[i];
-            assertEquals("statement", expected[i], sql[i]);
-        }
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(1);
+        factory.setupStatement(statement);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupSchema(schemaName);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // invoke operation
+        new InsertOperation().execute(connection, dataSet);
+
+        statement.verify();
+        factory.verify();
+        connection.verify();
     }
-
-    public void testGetOperationStatementsAndMissingValue() throws Exception
-    {
-        String schemaName = "schema";
-        String tableName = "table";
-        String[] expected = {
-            "insert into schema.table (c1, c2) values (NULL, 1234)",
-            "insert into schema.table (c2, c3) values (123.45, 'true')",
-        };
-
-        List valueList = new ArrayList();
-        valueList.add(new Object[]{null, "1234", ITable.NO_VALUE});
-        valueList.add(new Object[]{ITable.NO_VALUE, new Double("123.45"), "true"});
-        Column[] columns = new Column[]{
-            new Column("c1", DataType.STRING),
-            new Column("c2", DataType.NUMBER),
-            new Column("c3", DataType.BOOLEAN),
-        };
-
-        ITable table = new DefaultTable(
-                new DefaultTableMetaData(tableName, columns), valueList);
-
-        String[] sql = new InsertOperation().getOperationStatements(schemaName, table);
-        assertEquals("statement count", valueList.size(), sql.length);
-        for (int i = 0; i < sql.length; i++)
-        {
-            String s = sql[i];
-            assertEquals("statement", expected[i], sql[i]);
-        }
-    }
-
 
     public void testExecute() throws Exception
     {
@@ -140,4 +127,5 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
     }
 }
+
 

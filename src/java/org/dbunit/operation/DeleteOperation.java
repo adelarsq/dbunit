@@ -47,38 +47,37 @@ public class DeleteOperation extends AbstractBatchOperation
         return DataSetUtils.getReverseTableNames(dataSet);
     }
 
-    protected String getOperationStatement(String schemaName, ITable table,
-            int row) throws DatabaseUnitException
+    public OperationData getOperationData(String schemaName,
+            ITableMetaData metaData) throws DataSetException
     {
-        ITableMetaData metaData = table.getTableMetaData();
-        Column[] primaryKeys = metaData.getPrimaryKeys();
-
         // cannot construct where clause if no primary key
+        Column[] primaryKeys = metaData.getPrimaryKeys();
         if (primaryKeys.length == 0)
         {
             throw new NoPrimaryKeyException(metaData.getTableName());
         }
 
         // delete from
-        String sql = "delete from " + DataSetUtils.getAbsoluteName(schemaName,
-                metaData.getTableName());
+        StringBuffer sqlBuffer = new StringBuffer();
+        sqlBuffer.append("delete from ");
+        sqlBuffer.append(DataSetUtils.getQualifiedName(
+                schemaName, metaData.getTableName()));
 
         // where
-        sql += " where ";
+        sqlBuffer.append(" where ");
         for (int i = 0; i < primaryKeys.length; i++)
         {
-            Column key = primaryKeys[i];
-            Object value = table.getValue(row, key.getColumnName());
-            sql += key.getColumnName() + " = " +
-                    DataSetUtils.getSqlValueString(value, key.getDataType());
+            sqlBuffer.append(primaryKeys[i]);
+            sqlBuffer.append(" = ?");
             if (i + 1 < primaryKeys.length)
             {
-                sql += " and ";
+                sqlBuffer.append(" and ");
             }
         }
 
-        return sql;
+        return new OperationData(sqlBuffer.toString(), primaryKeys);
     }
 
 }
+
 

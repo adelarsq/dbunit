@@ -43,62 +43,43 @@ public class InsertOperation extends AbstractBatchOperation
     ////////////////////////////////////////////////////////////////////////////
     // AbstractBatchOperation class
 
-    String getOperationStatement(String schemaName, ITable table,
-            int row) throws DatabaseUnitException
+    public OperationData getOperationData(String schemaName,
+            ITableMetaData metaData) throws DataSetException
     {
-        ITableMetaData metaData = table.getTableMetaData();
         Column[] columns = metaData.getColumns();
-        Object[] values = new Object[columns.length];
 
         // insert
-        String sql = "insert into " + DataSetUtils.getAbsoluteName(schemaName,
-                metaData.getTableName());
+        StringBuffer sqlBuffer = new StringBuffer();
+        sqlBuffer.append("insert into ");
+        sqlBuffer.append(DataSetUtils.getQualifiedName(schemaName,
+                metaData.getTableName()));
 
-        // column
-        boolean firstColumn = true;
-        sql += " (";
+        // columns
+        sqlBuffer.append(" (");
         for (int i = 0; i < columns.length; i++)
         {
-            Column column = columns[i];
-
-            values[i] = table.getValue(row, column.getColumnName());
-            if (values[i] != ITable.NO_VALUE)
+            if (i > 0)
             {
-
-                if (!firstColumn)
-                {
-                    sql += ", ";
-                }
-                firstColumn = false;
-
-                sql += column.getColumnName();
+                sqlBuffer.append(", ");
             }
+            sqlBuffer.append(columns[i].getColumnName());
         }
 
         // values
-        boolean firstValue = true;
-        sql += ") values (";
+        sqlBuffer.append(") values (");
         for (int i = 0; i < columns.length; i++)
         {
-            Column column = columns[i];
-            Object value = table.getValue(row, column.getColumnName());
-            if (value != ITable.NO_VALUE)
+            if (i > 0)
             {
-                if (!firstValue)
-                {
-                    sql += ", ";
-                }
-                firstValue = false;
-
-                sql += DataSetUtils.getSqlValueString(value, column.getDataType());
+                sqlBuffer.append(", ");
             }
+            sqlBuffer.append("?");
         }
-        sql += ")";
-        
-//        System.out.println(sql);
+        sqlBuffer.append(")");
 
-        return sql;
+        return new OperationData(sqlBuffer.toString(), columns);
     }
 
 }
+
 

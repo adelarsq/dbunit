@@ -1,25 +1,5 @@
 <!-- edited with XML Spy v3.5 (http://www.xmlspy.com) by  () -->
 <dataset>
-	<table name="PK_TABLE">
-		<column>PK0</column>
-		<column>PK1</column>
-		<column>PK2</column>
-		<column>NORMAL0</column>
-		<column>NORMAL1</column>
-		<row>
-			<value>1</value>
-			<value>11</value>
-			<value>111</value>
-			<value>toto</value>
-			<value>qwerty</value>
-		</row>
-		<row>
-			<value>3</value>
-			<value>33</value>
-			<value>333</value>
-			<value>3333</value>
-			<value>33333</value>
-		</row>
-	</table>
+	<PK_TABLE PK0="1" PK1="11" PK2="111" NORMAL0="toto" NORMAL1="qwerty"/>
+	<PK_TABLE PK0="3" PK1="33" PK2="333" NORMAL0="3333" NORMAL1="33333"/>
 </dataset>
-
