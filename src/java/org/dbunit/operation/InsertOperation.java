@@ -36,6 +36,9 @@ import org.dbunit.dataset.*;
  */
 public class InsertOperation extends AbstractBatchOperation
 {
+    InsertOperation()
+    {
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // AbstractBatchOperation class
@@ -78,6 +81,7 @@ public class InsertOperation extends AbstractBatchOperation
     }
 
 }
+
 
 
 

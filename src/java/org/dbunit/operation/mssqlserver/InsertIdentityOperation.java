@@ -32,51 +32,100 @@ import org.dbunit.dataset.*;
  * This class disable the MS SQL Server automatic identifier generation for
  * the execution of inserts.
  * <p>
+ * If you are using the Microsoft driver (i.e.
+ * <code>com.microsoft.jdbc.sqlserver.SQLServerDriver</code>), you'll need to
+ * use the <code>SelectMethod=cursor</code> parameter in the JDBC connection
+ * string. Your databaseUrl would look something like the following:
+ * <p>
+ * <code>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor</code>
+ * <p>
  * Thanks to <a href="mailto:epugh@upstate.com">Eric Pugh</a> for having
  * submitted the original patch and for the beta testing.
  *
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class InsertIdentityOperation extends InsertOperation
+public class InsertIdentityOperation extends DatabaseOperation
 {
     public static final DatabaseOperation INSERT =
-            new InsertIdentityOperation();
+            new InsertIdentityOperation(DatabaseOperation.INSERT);
 
     public static final DatabaseOperation CLEAN_INSERT =
-            new CompositeOperation(DatabaseOperation.DELETE_ALL, INSERT);
+            new CompositeOperation(DatabaseOperation.DELETE_ALL,
+                    new InsertIdentityOperation(DatabaseOperation.INSERT));
 
     public static final DatabaseOperation REFRESH =
-            new RefreshOperation((InsertOperation)INSERT,
-                    (UpdateOperation)DatabaseOperation.UPDATE);
+            new InsertIdentityOperation(DatabaseOperation.REFRESH);
 
-    ////////////////////////////////////////////////////////////////////////////
-    // AbstractBatchOperation class
+    private final DatabaseOperation _operation;
 
-    public OperationData getOperationData(String schemaName,
-            ITableMetaData metaData) throws DataSetException
+    /**
+     * Creates a new InsertIdentityOperation object that decorates the
+     * specified operation.
+     */
+    public InsertIdentityOperation(DatabaseOperation operation)
     {
-        OperationData data = super.getOperationData(schemaName, metaData);
-        String tableName = DataSetUtils.getQualifiedName(
-                schemaName, metaData.getTableName());
-
-        // enable IDENTITY_INSERT
-        StringBuffer sqlBuffer = new StringBuffer(256);
-        sqlBuffer.append("SET IDENTITY_INSERT ");
-        sqlBuffer.append(tableName);
-        sqlBuffer.append(" ON ");
-
-        // original insert statement
-        sqlBuffer.append(data.getSql());
-
-        // disable IDENTITY_INSERT
-        sqlBuffer.append(" SET IDENTITY_INSERT ");
-        sqlBuffer.append(tableName);
-        sqlBuffer.append(" OFF");
-
-        return new OperationData(sqlBuffer.toString(), data.getColumns());
+        _operation = operation;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    // DatabaseOperation class
+
+    public void execute(IDatabaseConnection connection, IDataSet dataSet)
+            throws DatabaseUnitException, SQLException
+    {
+        Connection jdbcConnection = connection.getConnection();
+        Statement statement = jdbcConnection.createStatement();
+
+        try
+        {
+            // INSERT_IDENTITY need to be enabled/disabled inside the
+            // same transaction
+            if (jdbcConnection.getAutoCommit() == false)
+            {
+                throw new ExclusiveTransactionException();
+            }
+            jdbcConnection.setAutoCommit(false);
+
+            // Execute decorated operation one table at a time
+            String[] tableNames = dataSet.getTableNames();
+            for (int i = 0; i < tableNames.length; i++)
+            {
+                ITable table = dataSet.getTable(tableNames[i]);
+                String tableName = DataSetUtils.getQualifiedName(
+                        connection.getSchema(),
+                        tableNames[i]);
+
+                // enable identity insert
+                StringBuffer sqlBuffer = new StringBuffer(128);
+                sqlBuffer.append("SET IDENTITY_INSERT ");
+                sqlBuffer.append(tableName);
+                sqlBuffer.append(" ON");
+                statement.execute(sqlBuffer.toString());
+
+                try
+                {
+                    _operation.execute(connection, new DefaultDataSet(table));
+                }
+                finally
+                {
+                    // disable identity insert
+                    sqlBuffer = new StringBuffer(128);
+                    sqlBuffer.append("SET IDENTITY_INSERT ");
+                    sqlBuffer.append(tableName);
+                    sqlBuffer.append(" OFF");
+                    statement.execute(sqlBuffer.toString());
+                    jdbcConnection.commit();
+                }
+            }
+        }
+        finally
+        {
+            jdbcConnection.setAutoCommit(true);
+            statement.close();
+        }
+    }
 }
+
 
 

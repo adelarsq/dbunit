@@ -54,13 +54,6 @@ public class RefreshOperation extends DatabaseOperation
         _updateOperation = (UpdateOperation)DatabaseOperation.UPDATE;
     }
 
-    public RefreshOperation(InsertOperation insertOperation,
-            UpdateOperation updateOperation)
-    {
-        _insertOperation = insertOperation;
-        _updateOperation = updateOperation;
-    }
-
     private boolean rowExist(PreparedStatement statement,
             Column[] columns, ITable table, int row)
             throws DataSetException, SQLException
@@ -202,6 +195,7 @@ public class RefreshOperation extends DatabaseOperation
 
     }
 }
+
 
 
 
