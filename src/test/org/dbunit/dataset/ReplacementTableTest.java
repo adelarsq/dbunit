@@ -63,7 +63,7 @@ public class ReplacementTableTest extends AbstractTableTest
     {
         String tableName = "TABLE_NAME";
         BigDecimal trueObject = new BigDecimal(1);
-        BigDecimal falseObject = new BigDecimal(1);
+        BigDecimal falseObject = new BigDecimal(0);
         Date now = new Date(System.currentTimeMillis());
 
         Column[] columns = new Column[] {
