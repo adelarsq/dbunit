@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<document><properties><title>The Dbunit Framework - Ressources</title></properties><body><section>
+<document><properties><title>Ressources</title></properties><body><section>
       <h3>External Ressources</h3>
-      <p>
       <table border="1">
         <tr> 
           <td><b>Document</b></td>
@@ -44,5 +43,4 @@
           <td>The Mock Objects approach applied to JDBC development.</td>
         </tr>
       </table>
-      </p>
 </section></body></document>

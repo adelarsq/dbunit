@@ -4,6 +4,7 @@
   <part id="general">
     <title>General</title>
    
+<!--
     <faq id="supportedvendors">
       <question>
         Which relational database systems are supported?
@@ -15,13 +16,14 @@
         incompatibilities.</p>
       </answer>
     </faq>
+-->
 
     <faq id="build">
       <question>
         How to build DbUnit?
       </question>
       <answer>
-      <p>DbUnit is build with <a href="http://maven.apache.org/">Maven 1.0-rc1</a>. The default goal will build the DbUnit jar.</p>
+      <p>Since version 2.0, DbUnit is build with <a href="http://maven.apache.org/">Maven 1.0-rc1</a>. See project <a href="dependencies.html">dependencies</a>.</p>
       </answer>
     </faq>
 

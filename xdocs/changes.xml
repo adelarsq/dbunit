@@ -9,7 +9,7 @@
   <body>
     <release version="2.0" date="January ?, 2004" description="Major release.">
      <action dev="" type="update">
-     	DbUnit is now build with Maven!
+     	Mavenized the build and the website!
      </action>         
      <action dev="" type="update">
      	Use SAX2 instead of Electric XML parser. DbUnit has no dependencies anymore on exml.jar and dtdparser.jar.

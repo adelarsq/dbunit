@@ -47,55 +47,16 @@
       
       <h3><a name="dataset">IDataSet</a></h3>
       <p>The <a href="apidocs/org/dbunit/dataset/IDataSet.html">IDataSet</a> interface represents is a collection 
-        of tables. 
-      <source>
-public interface IDataSet
-{
-    /**
-     * Returns table names from this dataset in proper order. 
-     * multiple occurence of the same name may be returned if 
-     * more tables having the same name are present in the 
-     * dataset.
-     */
-    public String[] getTableNames() 
-            throws DataSetException;
-
-    /**
-     * Returns the specified table metadata.
-     */
-    public ITableMetaData getTableMetaData(String tableName)
-            throws DataSetException;
-
-    /**
-     * Returns the specified table.
-     */
-    public ITable getTable(String tableName) 
-            throws DataSetException;
-
-    /**
-     * Returns an iterator over the tables in this dataset 
-     * in proper order.
-     */
-    public ITableIterator iterator() 
-            throws DataSetException;
-
-    /**
-     * Returns an iterator over the tables in this dataset 
-     * in reverse order.
-     */
-    public ITableIterator reverseIterator() 
-            throws DataSetException;
-}</source>
+        of tables. This is the primary abstraction used by DbUnit to manipulate tabular data. 
 </p>
-      <p>IDataSet implemetations provided by DbUnit:
-        
+      <p>Most commonly used implemetations:       
       <table border="1">
         <tr> 
           <th>Implementation</th>
           <th>Description</th>
         </tr>
         <tr> 
-          <td><a href="apidocs/org/dbunit/dataset/xml/FlatXmlDataSet.html">FlatXmlDataSet</a></td>
+          <td><a name="FlatXmlDataSet" href="apidocs/org/dbunit/dataset/xml/FlatXmlDataSet.html">FlatXmlDataSet</a></td>
           <td>      
        Reads and writes flat XML dataset document. Each XML element corresponds to a table row. 
         Each XML element name corresponds to a table name. The XML attributes 
@@ -243,11 +204,11 @@ Following sample shows how to load a flat XML dataset with the StreamingDataSet:
           <br/>
 		Support simple multilevel dependency like this:
 <source>
-  A
- / \
-B   C
-   / \
-  D   E
+   A
+  / \
+ B   C
+    / \
+   D   E
 </source>
 </td>
         </tr>

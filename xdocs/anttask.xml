@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<document><properties><title>The Dbunit Framework - Ant Task</title></properties><body><section>
+<document><properties><title>Ant Integration</title></properties><body><section>
       <h3>Ant Integration</h3>
       <h4>Installation</h4>
       The steps required to add the DbUnit task to your system are: 
