@@ -20,22 +20,25 @@
  *
  */
 package org.dbunit.database;
+
 import java.sql.*;
 import java.util.*;
 
 import org.dbunit.database.*;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.AbstractDataSet;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITable;
 
 /**
  * @author     Eric Pugh
- * @created    December 4, 2002
+ * @since      December 4, 2002
  * @version    $Revision$
  */
-public class QueryDataSet implements IDataSet {
+public class QueryDataSet extends AbstractDataSet
+{
 
     private final IDatabaseConnection _connection;
-    private Map _tableMap = new HashMap();
-    private Map _queryMap = null;
+    private final List _tables = new ArrayList();
 
 
     /**
@@ -45,24 +48,21 @@ public class QueryDataSet implements IDataSet {
      * @exception  java.sql.SQLException  Description of the Exception
      */
     public QueryDataSet(IDatabaseConnection connection)
-        throws SQLException {
+            throws SQLException
+    {
         _connection = connection;
     }
 
-
     /**
-     *  Gets the tableMap attribute of the QueryDataSet object
+     *  Adds a table and it's associted query to this dataset.
      *
-     * @return                       The tableMap value
-     * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
+     * @param  tableName  The name of the table
+     * @param  query  The query to retrieve data with for this table
      */
-    private Map getTableMap()
-        throws DataSetException {
-
-        return _tableMap;
+    public void addTable(String tableName, String query)
+    {
+        _tables.add(new TableEntry(tableName, query));
     }
-
-
 
     ////////////////////////////////////////////////////////////////////////////
     // IDataSet interface
@@ -73,71 +73,17 @@ public class QueryDataSet implements IDataSet {
      * @return                       An array of all the table names
      * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
      */
-    public String[] getTableNames()
-        throws DataSetException {
-        return (String[]) getTableMap().keySet().toArray(new String[0]);
+    public String[] getTableNames() throws DataSetException
+    {
+        List names = new ArrayList();
+        for (Iterator it = _tables.iterator(); it.hasNext();)
+        {
+            TableEntry entry = (TableEntry)it.next();
+            names.add(entry.getTableName());
+        }
+
+        return (String[])names.toArray(new String[0]);
     }
-
-
-    /**
-     *  Gets the tableMetaData attribute of the QueryDataSet object
-     *
-     * @param  tableName             The name of the table to retrieve
-     * @return                       The tableMetaData value
-     * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
-     */
-    public ITableMetaData getTableMetaData(String tableName)
-        throws DataSetException {
-        ITableMetaData metaData = (ITableMetaData) getTableMap().get(tableName);
-        if (metaData != null) {
-            return metaData;
-        }
-
-        if (!getTableMap().containsKey(tableName)) {
-            throw new NoSuchTableException(tableName);
-        }
-
-        metaData = new DatabaseTableMetaData(tableName, _connection);
-        getTableMap().put(tableName, metaData);
-        return metaData;
-    }
-
-
-    /**
-     *  Gets a specific table of the QueryDataSet object
-     *
-     * @param  tableName             The name of the table to retrieve
-     * @return                       The table
-     * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
-     */
-    public ITable getTable(String tableName)
-        throws DataSetException {
-        try {
-
-            Connection jdbcConnection = _connection.getConnection();
-//            String schema = _connection.getSchema();
-            Statement statement = jdbcConnection.createStatement();
-
-            try {
-                String sql = getQuery(tableName);
-                ResultSet resultSet = statement.executeQuery(sql);
-                try {
-                    ITableMetaData metaData = ResultSetTable.createTableMetaData(tableName, resultSet);
-                    return new CachedResultSetTable(metaData, resultSet);
-                }
-                finally {
-                    resultSet.close();
-                }
-            }
-            finally {
-                statement.close();
-            }
-        }
-        catch (SQLException e) {
-            throw new DataSetException(e);
-        }
-    }
-
 
     /**
      *  Gets the tables attribute of the QueryDataSet object
@@ -145,43 +91,65 @@ public class QueryDataSet implements IDataSet {
      * @return                       The tables value
      * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
      */
-    public ITable[] getTables()
-        throws DataSetException {
-        String[] names = getTableNames();
-        List tableList = new ArrayList(names.length);
-        for (int i = 0; i < names.length; i++) {
-            tableList.add(getTable(names[i]));
+    public ITable[] getTables() throws DataSetException
+    {
+        try
+        {
+            List tableList = new ArrayList();
+            for (Iterator it = _tables.iterator(); it.hasNext();)
+            {
+                TableEntry entry = (TableEntry)it.next();
+
+                ITable table = entry.getTable();
+                if (table == null)
+                {
+                    table = _connection.createQueryTable(
+                            entry.getTableName(), entry.getQuery());
+                    entry.setTable(table);
+                }
+                tableList.add(table);
+            }
+
+            return (ITable[])tableList.toArray(new ITable[0]);
         }
-        return (ITable[]) tableList.toArray(new ITable[0]);
-    }
-
-
-    /**
-     *  Gets the query to be used for a specific table added to the QueryDataSet object
-     *
-     * @param  tableName  The name of the table
-     * @return            The query value
-     */
-    public String getQuery(String tableName) {
-        return (String) _queryMap.get(tableName);
-    }
-
-
-    /**
-     *  Adds a table and it's associted query to this dataset.
-     *
-     * @param  tableName  The name of the table
-     * @param  query  The query to retrieve data with for this table
-     */
-    public void addTable(String tableName, String query) {
-        if (_queryMap == null) {
-            _queryMap = new HashMap();
+        catch (SQLException e)
+        {
+            throw new DataSetException(e);
         }
-        _queryMap.put(tableName, query);
-        _tableMap.put(tableName, null);
-
     }
 
+    private static class TableEntry
+    {
+        private final String _tableName;
+        private final String _query;
+        private ITable _table;
+
+        public TableEntry(String tableName, String query)
+        {
+            _tableName = tableName;
+            _query = query;
+        }
+
+        public String getTableName()
+        {
+            return _tableName;
+        }
+
+        public String getQuery()
+        {
+            return _query;
+        }
+
+        public ITable getTable()
+        {
+            return _table;
+        }
+
+        public void setTable(ITable table)
+        {
+            _table = table;
+        }
+    }
 }
 
 
