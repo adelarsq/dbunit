@@ -3,16 +3,14 @@
 
   <part id="general">
     <title>General</title>
-<!--
     <faq id="supportedvendors">
       <question>
         Which relational database systems are supported?
       </question>
       <answer>
-      <p>See the publicly maintained <a href="http://www.dbunit.org/cgi-bin/wiki.pl?SupportedRDBMS">list of compatible RDBMS</a> at the <a href="http://www.dbunit.org/wiki/">DbUnit Wiki.</a></p>
+      <p>See the publicly maintained <a href="http://www.dbunit.org/cgi-bin/wiki.pl?SupportedRDBMS">list of compatible RDBMS</a> at the <a href="http://www.dbunit.org/wiki/">DbUnit Wiki.</a> Don't hesitate to contribute to this list, particularly for database not listed yet.</p>
       </answer>
     </faq>
--->
 
     <faq id="build">
       <question>

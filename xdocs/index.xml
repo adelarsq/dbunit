@@ -3,7 +3,7 @@
 <document>
 
   <properties>
-    <title>About DbUnit and News</title>
+    <title>About DbUnit</title>
     <author email="epugh@upstate.com">Eric Pugh</author>
   </properties>
 
@@ -24,6 +24,10 @@
 
   <section name="News">
       <table border="1">
+        <tr> 
+          <td>2004-03-16</td>
+          <td>The <a href="http://www.dbunit.org/wiki/">DbUnit Wiki</a> is now officially online. Please contribute to the <a href=" http://www.dbunit.org/cgi-bin/wiki.pl?SupportedRDBMS">SupportedRDBMS</a> page.</td>
+        </tr>
         <tr> 
           <td>2004-01-26</td>
           <td>ONJava article: <a href="http://www.onjava.com/pub/a/onjava/2004/01/21/dbunit.html">Effective Unit Testing with DbUnit</a>.</td>
