@@ -38,7 +38,7 @@ public interface IDataSet
     public String[] getTableNames() throws DataSetException;
 
     /**
-     * Returns the specified table metatdata.
+     * Returns the specified table metadata.
      *
      * @throws AmbiguousTableNameException if dataset contains multiple tables
      *      having the specified name. Use {@link getTables} to access

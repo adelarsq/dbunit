@@ -252,22 +252,22 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 
     public void testGetDuplicateTable() throws Exception
     {
-        // Cannot test! Unsuported feature.
+        // Cannot test! Unsupported feature.
     }
 
     public void testGetDuplicateTableMetaData() throws Exception
     {
-        // Cannot test! Unsuported feature.
+        // Cannot test! Unsupported feature.
     }
 
     public void testGetDuplicateTableNames() throws Exception
     {
-        // Cannot test! Unsuported feature.
+        // Cannot test! Unsupported feature.
     }
 
     public void testGetDuplicateTables() throws Exception
     {
-        // Cannot test! Unsuported feature.
+        // Cannot test! Unsupported feature.
     }
 }
 
