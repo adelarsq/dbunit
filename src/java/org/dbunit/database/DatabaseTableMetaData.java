@@ -205,7 +205,24 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         return _primaryKeys;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    // Object class
+    public String toString()
+    {
+        try
+        {
+            String tableName = getTableName();
+            String columns = Arrays.asList(getColumns()).toString();
+            String primaryKeys = Arrays.asList(getPrimaryKeys()).toString();
+            return "table=" + tableName + ", cols=" + columns + ", pk=" + primaryKeys + "";
+        }
+        catch (DataSetException e)
+        {
+            return super.toString();
+        }
+    }
 }
+
 
 
 

@@ -109,7 +109,7 @@ public class Column
      */
     public static Nullable nullableValue(int nullable)
     {
-        switch(nullable)
+        switch (nullable)
         {
             case DatabaseMetaData.columnNoNulls:
                 return NO_NULLS;
@@ -131,7 +131,8 @@ public class Column
 
     public String toString()
     {
-        return _columnName;
+        return "(" + _columnName + ", " + _dataType + ", " + _nullable + ")";
+//        return _columnName;
     }
 
     public static class Nullable
@@ -154,6 +155,7 @@ public class Column
     }
 
 }
+
 
 
 

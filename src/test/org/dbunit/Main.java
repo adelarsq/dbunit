@@ -43,11 +43,12 @@ public class Main
         IDatabaseConnection connection =
                 DatabaseEnvironment.getInstance().getConnection();
 
-        String[] tableNames = connection.createDataSet().getTableNames();
-        Arrays.sort(tableNames);
-        FlatXmlDataSet.writeDtd(new FilteredDataSet(tableNames,
-                connection.createDataSet()),
-                new FileOutputStream("test2.dtd"));
+        System.out.println(connection.createDataSet().getTableMetaData("EMPTY_MULTITYPE_TABLE"));
+//        String[] tableNames = connection.createDataSet().getTableNames();
+//        Arrays.sort(tableNames);
+//        FlatXmlDataSet.writeDtd(new FilteredDataSet(tableNames,
+//                connection.createDataSet()),
+//                new FileOutputStream("test2.dtd"));
 //        FlatXmlDataSet.write(new FilteredDataSet(tableNames,
 //                connection.createDataSet()),
 //                new FileOutputStream("test.xml"));
@@ -69,6 +70,7 @@ public class Main
     }
 
 }
+
 
 
 

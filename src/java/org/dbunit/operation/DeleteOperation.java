@@ -67,7 +67,7 @@ public class DeleteOperation extends AbstractBatchOperation
         sqlBuffer.append(" where ");
         for (int i = 0; i < primaryKeys.length; i++)
         {
-            sqlBuffer.append(primaryKeys[i]);
+            sqlBuffer.append(primaryKeys[i].getColumnName());
             sqlBuffer.append(" = ?");
             if (i + 1 < primaryKeys.length)
             {
@@ -79,6 +79,7 @@ public class DeleteOperation extends AbstractBatchOperation
     }
 
 }
+
 
 
 

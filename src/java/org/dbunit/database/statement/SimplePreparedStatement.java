@@ -50,12 +50,14 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
     public void addValue(Object value, DataType dataType)
             throws TypeCastException, SQLException
     {
-        _statement.setObject(_index + 1, dataType.typeCast(value), dataType.getSqlType());
+        _statement.setObject(++_index, dataType.typeCast(value), dataType.getSqlType());
     }
 
     public void addBatch() throws SQLException
     {
         _result += _statement.executeUpdate();
+        _index = 0;
+        _statement.clearParameters();
     }
 
     public int executeBatch() throws SQLException
@@ -73,4 +75,5 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
     }
 
 }
+
 

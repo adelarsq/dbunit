@@ -100,7 +100,7 @@ public class FlatXmlDataSet extends DefaultDataSet
             {
                 Column column = columns[j];
                 printOut.print("    ");
-                printOut.print(column);
+                printOut.print(column.getColumnName());
                 if (column.getNullable() == Column.NULLABLE)
                 {
                     printOut.println(" CDATA #IMPLIED");
@@ -210,6 +210,7 @@ public class FlatXmlDataSet extends DefaultDataSet
     }
 
 }
+
 
 
 

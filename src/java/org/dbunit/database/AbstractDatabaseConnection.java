@@ -38,7 +38,8 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
     public AbstractDatabaseConnection()
     {
-        _statementFactory = new StatementFactory();
+        _statementFactory = new PreparedStatementFactory();
+//        _statementFactory = new StatementFactory();
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -90,5 +91,6 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
     }
 
 }
+
 
 

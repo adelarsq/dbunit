@@ -48,12 +48,13 @@ public class PreparedBatchStatement extends AbstractPreparedBatchStatement
     public void addValue(Object value, DataType dataType)
             throws TypeCastException, SQLException
     {
-        _statement.setObject(_index + 1, dataType.typeCast(value), dataType.getSqlType());
+        _statement.setObject(++_index, dataType.typeCast(value), dataType.getSqlType());
     }
 
     public void addBatch() throws SQLException
     {
         _statement.addBatch();
+        _index = 0;
     }
 
     public int executeBatch() throws SQLException
@@ -73,4 +74,5 @@ public class PreparedBatchStatement extends AbstractPreparedBatchStatement
         _statement.clearBatch();
     }
 }
+
 
