@@ -38,6 +38,7 @@ public class AllTests
         suite.addTest(new TestSuite(DatabaseConnectionTest.class));
         suite.addTest(new TestSuite(DatabaseDataSetTest.class));
         suite.addTest(new TestSuite(DatabaseTableMetaDataTest.class));
+        suite.addTest(new TestSuite(QueryDataSetTest.class));
         suite.addTest(new TestSuite(ResultsetTableTest.class));
 
         return suite;

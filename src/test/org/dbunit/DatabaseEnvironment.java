@@ -26,6 +26,7 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.operation.DatabaseOperation;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -76,13 +77,13 @@ public class DatabaseEnvironment
     {
         _profile = profile;
 
-        String name = profile.getDriverClass();
-        Class driverClass = Class.forName(name);
-        Connection connection = DriverManager.getConnection(
-                _profile.getConnectionUrl(), _profile.getUser(),
-                _profile.getPassword());
-        _connection = new DatabaseConnection(connection,
-                _profile.getSchema());
+//        String name = profile.getDriverClass();
+//        Class.forName(name);
+//        Connection connection = DriverManager.getConnection(
+//                _profile.getConnectionUrl(), _profile.getUser(),
+//                _profile.getPassword());
+//        _connection = new DatabaseConnection(connection,
+//                _profile.getSchema());
 
         File file = new File("src/xml/dataSetTest.xml");
         _dataSet = new XmlDataSet(new FileReader(file));
@@ -90,7 +91,26 @@ public class DatabaseEnvironment
 
     public IDatabaseConnection getConnection() throws Exception
     {
+        if (_connection == null)
+        {
+            String name = _profile.getDriverClass();
+            Class.forName(name);
+            Connection connection = DriverManager.getConnection(
+                    _profile.getConnectionUrl(), _profile.getUser(),
+                    _profile.getPassword());
+            _connection = new DatabaseConnection(connection,
+                    _profile.getSchema());
+        }
         return _connection;
+    }
+
+    public void closeConnection() throws Exception
+    {
+        if (_connection != null)
+        {
+            _connection.close();
+            _connection = null;
+        }
     }
 
     public IDataSet getInitDataSet() throws Exception

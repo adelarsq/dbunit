@@ -22,6 +22,8 @@
 
 package org.dbunit.dataset;
 
+import org.dbunit.database.QueryDataSetTest;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -48,7 +50,6 @@ public class AllTests
         suite.addTest(new TestSuite(FilteredDataSetTest.class));
         suite.addTest(new TestSuite(LowerCaseDataSetTest.class));
         suite.addTest(new TestSuite(LowerCaseTableMetaDataTest.class));
-        suite.addTest(new TestSuite(QueryDataSetTest.class));
 
         return suite;
     }

@@ -22,6 +22,8 @@
 
 package org.dbunit;
 
+import org.dbunit.operation.DatabaseOperation;
+
 import java.io.*;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -58,6 +60,10 @@ public class HypersonicEnvironment extends DatabaseEnvironment
         }
     }
 
+    public void closeConnection() throws Exception
+    {
+        DatabaseOperation.DELETE_ALL.execute(getConnection(), getInitDataSet());
+    }
 }
 
 

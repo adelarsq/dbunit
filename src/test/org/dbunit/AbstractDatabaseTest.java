@@ -25,6 +25,7 @@ package org.dbunit;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.operation.DatabaseOperation;
 
 /**
  * @author Manuel Laflamme
@@ -76,6 +77,8 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
     {
         super.tearDown();
 
+        DatabaseOperation.DELETE_ALL.execute(_connection, _connection.createDataSet());
+
         _connection = null;
         setEscapePattern(null);
     }
@@ -99,7 +102,13 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
 
     protected void closeConnection(IDatabaseConnection connection) throws Exception
     {
+//        getEnvironment().closeConnection();
     }
+//
+//    protected DatabaseOperation getTearDownOperation() throws Exception
+//    {
+//        return DatabaseOperation.DELETE_ALL;
+//    }
 }
 
 

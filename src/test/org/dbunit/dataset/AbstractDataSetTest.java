@@ -43,8 +43,6 @@ public abstract class AbstractDataSetTest extends TestCase
         "EMPTY_MULTITYPE_TABLE",
     };
 
-
-
     private static final String[] DUPLICATE_TABLE_NAMES = {
         "DUPLICATE_TABLE",
         "EMPTY_TABLE",

@@ -23,6 +23,7 @@
 package org.dbunit.database;
 
 import org.dbunit.DatabaseEnvironment;
+import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.dataset.AbstractTableTest;
 import org.dbunit.dataset.ITable;
 
@@ -39,8 +40,10 @@ public class ResultsetTableTest extends AbstractTableTest
 
     protected ITable createTable() throws Exception
     {
-        IDatabaseConnection connection =
-                DatabaseEnvironment.getInstance().getConnection();
+        DatabaseEnvironment env = DatabaseEnvironment.getInstance();
+        IDatabaseConnection connection = env.getConnection();
+
+        DatabaseOperation.CLEAN_INSERT.execute(connection, env.getInitDataSet());
 
         String sql = "select * from TEST_TABLE order by COLUMN0";
         return connection.createQueryTable("TEST_TABLE", sql);

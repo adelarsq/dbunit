@@ -20,13 +20,14 @@
  *
  */
 
-package org.dbunit.dataset;
+package org.dbunit.database;
 
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.*;
 
 import org.dbunit.database.*;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.*;
 
 import java.util.Arrays;
 import java.util.Comparator;

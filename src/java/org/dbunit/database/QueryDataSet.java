@@ -19,11 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.dataset;
+package org.dbunit.database;
 import java.sql.*;
 import java.util.*;
 
 import org.dbunit.database.*;
+import org.dbunit.dataset.*;
 
 /**
  * @author     Eric Pugh
@@ -41,7 +42,7 @@ public class QueryDataSet implements IDataSet {
      * Create a QueryDataSet by passing in the connection to the database to use.
      *
      * @param  connection        The connection object to the database.
-     * @exception  SQLException  Description of the Exception
+     * @exception  java.sql.SQLException  Description of the Exception
      */
     public QueryDataSet(IDatabaseConnection connection)
         throws SQLException {
@@ -53,7 +54,7 @@ public class QueryDataSet implements IDataSet {
      *  Gets the tableMap attribute of the QueryDataSet object
      *
      * @return                       The tableMap value
-     * @exception  DataSetException  Thrown if there is an issue.
+     * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
      */
     private Map getTableMap()
         throws DataSetException {
@@ -70,7 +71,7 @@ public class QueryDataSet implements IDataSet {
      *  Gets the tableNames attribute of the QueryDataSet object
      *
      * @return                       An array of all the table names
-     * @exception  DataSetException  Thrown if there is an issue.
+     * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
      */
     public String[] getTableNames()
         throws DataSetException {
@@ -83,7 +84,7 @@ public class QueryDataSet implements IDataSet {
      *
      * @param  tableName             The name of the table to retrieve
      * @return                       The tableMetaData value
-     * @exception  DataSetException  Thrown if there is an issue.
+     * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
      */
     public ITableMetaData getTableMetaData(String tableName)
         throws DataSetException {
@@ -107,7 +108,7 @@ public class QueryDataSet implements IDataSet {
      *
      * @param  tableName             The name of the table to retrieve
      * @return                       The table
-     * @exception  DataSetException  Thrown if there is an issue.
+     * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
      */
     public ITable getTable(String tableName)
         throws DataSetException {
@@ -142,7 +143,7 @@ public class QueryDataSet implements IDataSet {
      *  Gets the tables attribute of the QueryDataSet object
      *
      * @return                       The tables value
-     * @exception  DataSetException  Thrown if there is an issue.
+     * @exception  org.dbunit.dataset.DataSetException  Thrown if there is an issue.
      */
     public ITable[] getTables()
         throws DataSetException {
