@@ -183,7 +183,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                 Connection jdbcConnection = _connection.getConnection();
                 DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
                 ResultSet resultSet = databaseMetaData.getColumns(
-                        null, schemaName, tableName, null);
+                        null, schemaName, tableName, "%");
 
                 try
                 {
