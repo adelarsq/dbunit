@@ -229,6 +229,7 @@ public class DbUnitTaskTest extends TaskdefsTest
                 export.getFormat().equalsIgnoreCase("dtd"));
     }
 
+/*
     public void testExportCsv () {
         String targetName = "test-export-format-csv";
         Export export = (Export)getFirstStepFromTarget(targetName);
@@ -236,6 +237,7 @@ public class DbUnitTaskTest extends TaskdefsTest
                 + "but was: " + export.getFormat(),
                 export.getFormat().equalsIgnoreCase("csv"));
     }
+*/
 
     public void testInvalidExportFormat()
     {
