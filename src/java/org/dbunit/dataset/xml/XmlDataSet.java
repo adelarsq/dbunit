@@ -22,15 +22,18 @@
 
 package org.dbunit.dataset.xml;
 
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.datatype.TypeCastException;
+import org.dbunit.dataset.CachedDataSet;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import org.xml.sax.InputSource;
 
-import electric.xml.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 
 /**
  * Provides persistence support to read from and write to the dbunit xml format.
@@ -39,192 +42,52 @@ import electric.xml.*;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class XmlDataSet extends AbstractDataSet
+public class XmlDataSet extends CachedDataSet
 {
-    private static final String DEFAULT_ENCODING = "UTF-8";
-    private final ITable[] _tables;
+    private static final String DEFAULT_ENCODING = "UTF8";
 
     /**
      * Creates an XmlDataSet with the specified xml reader.
      */
-    public XmlDataSet(Reader in) throws DataSetException
+    public XmlDataSet(Reader reader) throws DataSetException
     {
-        try
-        {
-            Document document = new Document(new BufferedReader(in));
-            _tables = getTables(document);
-        }
-        catch (ParseException e)
-        {
-            throw new DataSetException(e);
-        }
+        super(new XmlProducer(new InputSource(reader)));
     }
 
     /**
      * Creates an XmlDataSet with the specified xml input stream.
-     *
-     * @deprecated Use Reader overload instead
      */
     public XmlDataSet(InputStream in) throws DataSetException
     {
-        try
-        {
-            Document document = new Document(in);
-            _tables = getTables(document);
-        }
-        catch (ParseException e)
-        {
-            throw new DataSetException(e);
-        }
-    }
-
-    private ITable[] getTables(Document document) throws DataSetException
-    {
-        Elements tableElems = document.getElement("dataset").getElements("table");
-
-        List tableList = new ArrayList();
-        while (tableElems.hasMoreElements())
-        {
-            Element tableElem = (Element)tableElems.nextElement();
-            ITable table = new XmlTable(tableElem);
-            tableList.add(table);
-        }
-
-        return (ITable[])tableList.toArray(new ITable[0]);
+        super(new XmlProducer(new InputSource(in)));
     }
 
     /**
      * Write the specified dataset to the specified output stream as xml.
-     * @deprecated Use Writer overload instead
      */
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
-        Document document = buildDocument(dataSet, DEFAULT_ENCODING);
-
-        // write xml document
-        document.write(out);
-        out.flush();
+        OutputStreamWriter writer = new OutputStreamWriter(out, DEFAULT_ENCODING);
+        write(dataSet, writer);
     }
 
     /**
      * Write the specified dataset to the specified writer as xml.
      */
-    public static void write(IDataSet dataSet, Writer out)
+    public static void write(IDataSet dataSet, Writer writer)
             throws IOException, DataSetException
     {
-        Document document = buildDocument(dataSet, DEFAULT_ENCODING);
-
-        // write xml document
-        document.write(out);
-        out.flush();
+        write(dataSet, writer, null);
     }
 
     /**
      * Write the specified dataset to the specified writer as xml.
      */
-    public static void write(IDataSet dataSet, Writer out, String encoding)
+    public static void write(IDataSet dataSet, Writer writer, String encoding)
             throws IOException, DataSetException
     {
-        Document document = buildDocument(dataSet, encoding);
-
-        // write xml document
-        document.write(out);
-        out.flush();
-    }
-
-    private static Document buildDocument(IDataSet dataSet, String encoding)
-            throws DataSetException
-    {
-        Document document = new Document();
-        document.addChild(new XMLDecl("1.0", encoding));
-
-        // dataset
-        Element rootElem = document.addElement("dataset");
-        ITableIterator iterator = dataSet.iterator();
-        while(iterator.next())
-        {
-            ITable table = iterator.getTable();
-            ITableMetaData metaData = table.getTableMetaData();
-            String tableName = metaData.getTableName();
-
-            // table
-            Element tableElem = rootElem.addElement("table");
-            tableElem.setAttribute("name", tableName);
-
-            // columns
-            Column[] columns = metaData.getColumns();
-            for (int j = 0; j < columns.length; j++)
-            {
-                Column column = columns[j];
-                tableElem.addElement("column").setText(column.getColumnName());
-            }
-
-            // rows
-            for (int j = 0; j < table.getRowCount(); j++)
-            {
-                Element rowElem = tableElem.addElement("row");
-                for (int k = 0; k < columns.length; k++)
-                {
-                    Column column = columns[k];
-                    Object value = table.getValue(j, column.getColumnName());
-
-                    // null
-                    if (value == null)
-                    {
-                        rowElem.addElement("null");
-                    }
-                    // none
-                    else if (value == ITable.NO_VALUE)
-                    {
-                        rowElem.addElement("none");
-                    }
-                    // values
-                    else
-                    {
-                        try
-                        {
-                            String string = DataType.asString(value);
-
-                            Text text = null;
-                            if (string.startsWith(" ") || string.endsWith(""))
-                            {
-                                text = new CData(string);
-                            }
-                            else
-                            {
-                                text = new Text(string);
-                            }
-
-                            rowElem.addElement("value").setText(text);
-                        }
-                        catch (TypeCastException e)
-                        {
-                            throw new DataSetException("table=" +
-                                    metaData.getTableName() + ", row=" + j +
-                                    ", column=" + column.getColumnName() +
-                                    ", value=" + value, e);
-                        }
-                    }
-                }
-            }
-        }
-        return document;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // AbstractDataSet class
-
-    protected ITableIterator createIterator(boolean reversed)
-            throws DataSetException
-    {
-        return new DefaultTableIterator(_tables, reversed);
+        XmlDataSetWriter datasetWriter = new XmlDataSetWriter(writer, encoding);
+        datasetWriter.write(dataSet);
     }
 }
-
-
-
-
-
-
-

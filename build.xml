@@ -34,11 +34,24 @@
 		<!-- Create the build directory -->
 		<mkdir dir="${build.dir}"/>
 	</target>
+
 	<target name="clean" depends="init">
 		<delete dir="${build.dir}"/>
 	</target>
+
 	<target name="compile" depends="init">
+
 		<mkdir dir="${java.classes.dir}"/>
+
+        <!-- Copy resource files -->
+        <copy todir="${java.classes.dir}" includeEmptyDirs="no">
+            <fileset dir="${java.src.dir}">
+                <!-- <include name="**/*.xml"/> -->
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+
+        <!-- Compile src -->
 		<javac srcdir="${java.src.dir}" destdir="${java.classes.dir}" debug="${debug}" >
 			<classpath>
 				<fileset dir="${lib.dir}">
@@ -103,6 +116,12 @@
 			</fileset>
 		</copy>
 
+        <!-- Copy XML dataset DTD from src to root dist dir -->
+        <copy tofile="${dist.dir}/dataset.dtd" includeEmptyDirs="no">
+            <fileset dir="${src.dir}">
+                <include name="**/dataset.dtd"/>
+            </fileset>
+        </copy>
 
 		<!-- Copy html doc -->
 		<mkdir dir="${dist.dir}/docs"/>

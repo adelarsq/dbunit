@@ -40,6 +40,11 @@ import java.io.Writer;
  */
 public class FlatXmlDataSetTest extends AbstractDataSetTest
 {
+    protected static final File DATASET_FILE =
+            new File("src/xml/flatXmlDataSetTest.xml");
+    protected static final File DUPLICATE_DATASET_FILE =
+            new File("src/xml/flatXmlDataSetDuplicateTest.xml");
+
     public FlatXmlDataSetTest(String s)
     {
         super(s);
@@ -47,13 +52,13 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        return new FlatXmlDataSet(new File("src/xml/flatXmlDataSetTest.xml"));
+        return new FlatXmlDataSet(DATASET_FILE);
     }
 
     protected IDataSet createDuplicateDataSet() throws Exception
     {
         return new FlatXmlDataSet(
-                new File("src/xml/flatXmlDataSetDuplicateTest.xml"));
+                DUPLICATE_DATASET_FILE);
     }
 
     public void testMissingColumnAndEnableDtdMetadata() throws Exception

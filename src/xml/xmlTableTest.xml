@@ -53,7 +53,7 @@
 			<none/>
 			<value>value</value>
 			<value/>
-			<value>   </value>
+			<value><![CDATA[   ]]></value>
 		</row>
 	</table>
 </dataset>

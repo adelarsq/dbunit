@@ -1,7 +1,6 @@
 /*
- * AllTests.java   Feb 18, 2002
  *
- * DbUnit Database Testing Framework
+ * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
  *
  * This library is free software; you can redistribute it and/or
@@ -19,37 +18,40 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
-package org.dbunit.dataset.xml;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
+package org.dbunit.dataset;
 
 /**
+ * This class provides no op implementations for all of the callbacks in the
+ * {@link IDataSetConsumer} interface.
+ *
  * @author Manuel Laflamme
+ * @since Apr 29, 2003
  * @version $Revision$
  */
-public class AllTests
+public class DefaultConsumer implements IDataSetConsumer
 {
-    public static Test suite()
+    public void startDataSet() throws DataSetException
     {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(FlatDtdDataSetTest.class));
-        suite.addTest(new TestSuite(FlatDtdProducerTest.class));
-        suite.addTest(new TestSuite(FlatXmlDataSetTest.class));
-        suite.addTest(new TestSuite(FlatXmlProducerTest.class));
-        suite.addTest(new TestSuite(FlatXmlTableTest.class));
-        suite.addTest(new TestSuite(FlatXmlTableWriteTest.class));
-        suite.addTest(new TestSuite(XmlDataSetTest.class));
-        suite.addTest(new TestSuite(XmlTableTest.class));
-        suite.addTest(new TestSuite(XmlTableWriteTest.class));
+        // no op
+    }
 
-        return suite;
+    public void endDataSet() throws DataSetException
+    {
+        // no op
+    }
+
+    public void startTable(ITableMetaData metaData) throws DataSetException
+    {
+        // no op
+    }
+
+    public void endTable() throws DataSetException
+    {
+        // no op
+    }
+
+    public void row(Object[] values) throws DataSetException
+    {
+        // no op
     }
 }
-
-
-
-
-
-

@@ -48,14 +48,16 @@ public class PreparedStatementFactory extends AbstractStatementFactory
     public IPreparedBatchStatement createPreparedBatchStatement(String sql,
             IDatabaseConnection connection) throws SQLException
     {
+        IPreparedBatchStatement statement = null;
         if (supportBatchStatement(connection))
         {
-            return new PreparedBatchStatement(sql, connection.getConnection());
+            statement = new PreparedBatchStatement(sql, connection.getConnection());
         }
         else
         {
-            return new SimplePreparedStatement(sql, connection.getConnection());
+            statement = new SimplePreparedStatement(sql, connection.getConnection());
         }
+        return new AutomaticPreparedBatchStatement(statement, 1000);
     }
 }
 
