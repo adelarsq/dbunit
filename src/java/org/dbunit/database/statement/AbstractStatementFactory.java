@@ -10,20 +10,19 @@
 package org.dbunit.database.statement;
 
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
 
 import java.sql.SQLException;
 
 public abstract class AbstractStatementFactory implements IStatementFactory
 {
-    static final String SUPPORT_BATCH_STATEMENT = "dbunit.database.supportBatchStatement";
-
     /**
      * Returns <code>true</code> if target database supports batch statement.
      */
     protected boolean supportBatchStatement(IDatabaseConnection connection)
             throws SQLException
     {
-        if (System.getProperty(SUPPORT_BATCH_STATEMENT, "true").equals("true"))
+        if (connection.getConfig().getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS))
         {
             return connection.getConnection().getMetaData().supportsBatchUpdates();
         }

@@ -30,13 +30,11 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoSuchTableException;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -49,22 +47,18 @@ import java.util.Map;
  */
 public class DatabaseDataSet extends AbstractDataSet
 {
-    static final String QUALIFIED_TABLE_NAMES =
-            "dbunit.qualified.table.names";
     private static final String[] TABLE_TYPE = {"TABLE"};
 
     private final IDatabaseConnection _connection;
-    private final IDataTypeFactory _dataTypeFactory;
     private final Map _tableMap = new HashMap();
     private List _nameList = null;
 
-    DatabaseDataSet(IDatabaseConnection connection, IDataTypeFactory dataTypeFactory) throws SQLException
+    DatabaseDataSet(IDatabaseConnection connection) throws SQLException
     {
         _connection = connection;
-        _dataTypeFactory = dataTypeFactory;
     }
 
-    static String getSelectStatement(String schema, ITableMetaData metaData)
+    static String getSelectStatement(String schema, ITableMetaData metaData, String escapePattern)
             throws DataSetException
     {
         Column[] columns = metaData.getColumns();
@@ -80,14 +74,14 @@ public class DatabaseDataSet extends AbstractDataSet
                 sqlBuffer.append(", ");
             }
             String columnName = DataSetUtils.getQualifiedName(null,
-                    columns[i].getColumnName(), true);
+                    columns[i].getColumnName(), escapePattern);
             sqlBuffer.append(columnName);
         }
 
         // from
         sqlBuffer.append(" from ");
         sqlBuffer.append(DataSetUtils.getQualifiedName(schema,
-                metaData.getTableName(), true));
+                metaData.getTableName(), escapePattern));
 
         // order by
         for (int i = 0; i < primaryKeys.length; i++)
@@ -109,7 +103,9 @@ public class DatabaseDataSet extends AbstractDataSet
 
     private String getQualifiedName(String prefix, String name)
     {
-        if (System.getProperty(QUALIFIED_TABLE_NAMES, "false").equals("true"))
+        DatabaseConfig config = _connection.getConfig();
+        boolean feature = config.getFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES);
+        if (feature)
         {
             return DataSetUtils.getQualifiedName(prefix, name);
         }
@@ -219,7 +215,7 @@ public class DatabaseDataSet extends AbstractDataSet
             {
                 // Create metadata and cache it
                 metaData = new DatabaseTableMetaData(
-                        databaseTableName, _connection, _dataTypeFactory);
+                        databaseTableName, _connection);
                 _tableMap.put(upperTableName, metaData);
                 break;
             }
@@ -236,10 +232,10 @@ public class DatabaseDataSet extends AbstractDataSet
         {
             ITableMetaData metaData = getTableMetaData(tableName);
 
-            // Use ForwardOnlyResultSetTable to export big tables.
-            // TODO: Make this configurable
-            return new CachedResultSetTable(metaData, _connection);
-//            return new ForwardOnlyResultSetTable(metaData, _connection);
+            DatabaseConfig config = _connection.getConfig();
+            IResultSetTableFactory factory = (IResultSetTableFactory)config.getProperty(
+                    DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY);
+            return factory.createTable(metaData, _connection);
         }
         catch (SQLException e)
         {

@@ -18,44 +18,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.dataset.datatype;
+package org.dbunit.database;
 
-import java.sql.Types;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITableMetaData;
+
+import java.sql.SQLException;
 
 /**
- * Generic factory that handle standard JDBC types.
  *
- * @author Manuel Laflamme
- * @since May 17, 2003
+ * @author manuel.laflamme$
+ * @since Jul 31, 2003$
  * @version $Revision$
  */
-public class DefaultDataTypeFactory implements IDataTypeFactory
+public class ForwardOnlyResultSetTableFactory implements IResultSetTableFactory
 {
-    public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
+    public IResultSetTable createTable(String tableName, String selectStatement,
+            IDatabaseConnection connection) throws SQLException, DataSetException
     {
-        DataType dataType = DataType.UNKNOWN;
-        if (sqlType != Types.OTHER)
-        {
-            dataType = DataType.forSqlType(sqlType);
-        }
-        else
-        {
-            // Necessary for compatibility with DbUnit 1.5 and older
-/*
+        return new ForwardOnlyResultSetTable(tableName, selectStatement, connection);
+    }
 
-            // BLOB
-            if ("BLOB".equals(sqlTypeName))
-            {
-                return DataType.BLOB;
-            }
-
-            // CLOB
-            if ("CLOB".equals(sqlTypeName))
-            {
-                return DataType.CLOB;
-            }
-*/
-        }
-        return dataType;
+    public IResultSetTable createTable(ITableMetaData metaData,
+            IDatabaseConnection connection) throws SQLException, DataSetException
+    {
+        return new ForwardOnlyResultSetTable(metaData, connection);
     }
 }

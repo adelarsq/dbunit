@@ -125,8 +125,8 @@ public class InsertIdentityOperation extends DatabaseOperation
                 {
                     StringBuffer sqlBuffer = new StringBuffer(128);
                     sqlBuffer.append("SET IDENTITY_INSERT ");
-                    sqlBuffer.append(DataSetUtils.getQualifiedName(
-                            schemaName, metaData.getTableName(), true));
+                    sqlBuffer.append(getQualifiedName(connection.getSchema(),
+                            metaData.getTableName(), connection));
                     sqlBuffer.append(" ON");
                     statement.execute(sqlBuffer.toString());
                 }
@@ -142,8 +142,8 @@ public class InsertIdentityOperation extends DatabaseOperation
                     {
                         StringBuffer sqlBuffer = new StringBuffer(128);
                         sqlBuffer.append("SET IDENTITY_INSERT ");
-                        sqlBuffer.append(DataSetUtils.getQualifiedName(
-                                schemaName, metaData.getTableName(), true));
+                        sqlBuffer.append(getQualifiedName(connection.getSchema(),
+                                metaData.getTableName(), connection));
                         sqlBuffer.append(" OFF");
                         statement.execute(sqlBuffer.toString());
                     }

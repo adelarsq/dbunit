@@ -76,7 +76,7 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         String tableName = "UNKNOWN_TABLE";
 
         ITableMetaData metaData = new DatabaseTableMetaData(tableName,
-                getConnection(), new DefaultDataTypeFactory());
+                getConnection());
         try
         {
             metaData.getColumns();

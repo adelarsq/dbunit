@@ -23,6 +23,7 @@
 package org.dbunit.operation;
 
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.*;
 
 /**
@@ -48,8 +49,8 @@ public class DeleteOperation extends AbstractBatchOperation
         return dataSet.reverseIterator();
     }
 
-    public OperationData getOperationData(String schemaName,
-            ITableMetaData metaData) throws DataSetException
+    public OperationData getOperationData(
+            ITableMetaData metaData, IDatabaseConnection connection) throws DataSetException
     {
         // cannot construct where clause if no primary key
         Column[] primaryKeys = metaData.getPrimaryKeys();
@@ -61,16 +62,16 @@ public class DeleteOperation extends AbstractBatchOperation
         // delete from
         StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("delete from ");
-        sqlBuffer.append(DataSetUtils.getQualifiedName(
-                schemaName, metaData.getTableName(), true));
+        sqlBuffer.append(getQualifiedName(connection.getSchema(),
+                metaData.getTableName(), connection));
 
         // where
         sqlBuffer.append(" where ");
         for (int i = 0; i < primaryKeys.length; i++)
         {
             // escape column name
-            String columnName = DataSetUtils.getQualifiedName(null,
-                    primaryKeys[i].getColumnName(), true);
+            String columnName = getQualifiedName(null,
+                    primaryKeys[i].getColumnName(), connection);
             sqlBuffer.append(columnName);
 
             sqlBuffer.append(" = ?");

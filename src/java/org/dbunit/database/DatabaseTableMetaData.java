@@ -46,16 +46,14 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 {
     private final String _tableName;
     private final IDatabaseConnection _connection;
-    private final IDataTypeFactory _dataTypeFactory;
     private Column[] _columns;
     private Column[] _primaryKeys;
 
-    DatabaseTableMetaData(String tableName, IDatabaseConnection connection,
-            IDataTypeFactory dataTypeFactory)
+    DatabaseTableMetaData(String tableName, IDatabaseConnection connection
+            )
     {
         _tableName = tableName;
         _connection = connection;
-        _dataTypeFactory = dataTypeFactory;
     }
 
     private String[] getPrimaryKeyNames() throws SQLException
@@ -163,6 +161,10 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
                 try
                 {
+                    DatabaseConfig config = _connection.getConfig();
+                    IDataTypeFactory dataTypeFactory = (IDataTypeFactory)config.getProperty(
+                            DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
+
                     List columnList = new ArrayList();
                     while (resultSet.next())
                     {
@@ -174,7 +176,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
                         // Convert SQL type to DataType
                         DataType dataType =
-                                _dataTypeFactory.createDataType(sqlType, sqlTypeName);
+                                dataTypeFactory.createDataType(sqlType, sqlTypeName);
                         if (dataType != DataType.UNKNOWN)
                         {
                             Column column = new Column(columnName, dataType,

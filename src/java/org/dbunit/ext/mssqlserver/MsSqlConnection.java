@@ -20,10 +20,10 @@
  */
 package org.dbunit.ext.mssqlserver;
 
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.filter.ExcludeTableFilter;
 import org.dbunit.dataset.filter.ITableFilter;
 
@@ -37,7 +37,6 @@ import java.sql.SQLException;
  */
 public class MsSqlConnection extends DatabaseConnection
 {
-    private final IDataTypeFactory _dataTypeFactory = new MsSqlDataTypeFactory();
     private final ITableFilter _filter = new ExcludeTableFilter(
             new String[] {"dtproperties"});
 
@@ -50,6 +49,8 @@ public class MsSqlConnection extends DatabaseConnection
     public MsSqlConnection(Connection connection, String schema)
     {
         super(connection, schema);
+        getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
+                new MsSqlDataTypeFactory());
     }
 
     /**
@@ -60,6 +61,8 @@ public class MsSqlConnection extends DatabaseConnection
     public MsSqlConnection(Connection connection)
     {
         super(connection);
+        getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
+                new MsSqlDataTypeFactory());
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -75,13 +78,5 @@ public class MsSqlConnection extends DatabaseConnection
     {
         IDataSet dataSet = super.createDataSet(tableNames);
         return new FilteredDataSet(_filter, dataSet);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // AbstractDatabaseConnection
-
-    protected IDataTypeFactory getDataTypeFactory()
-    {
-        return _dataTypeFactory;
     }
 }

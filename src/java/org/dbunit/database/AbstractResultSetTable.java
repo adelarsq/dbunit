@@ -78,13 +78,15 @@ public abstract class AbstractResultSetTable extends AbstractTable
             IDatabaseConnection connection) throws DataSetException, SQLException
     {
         Connection jdbcConnection = connection.getConnection();
+        String escapePattern = (String)connection.getConfig().getProperty(
+                DatabaseConfig.PROPERTY_ESCAPE_PATTERN);
         _statement = jdbcConnection.createStatement();
 //        _statement.setFetchDirection(ResultSet.FETCH_FORWARD);
 
         try
         {
             String schema = connection.getSchema();
-            String selectStatement = getSelectStatement(schema, metaData);
+            String selectStatement = getSelectStatement(schema, metaData, escapePattern);
             _resultSet = _statement.executeQuery(selectStatement);
             _metaData = metaData;
         }
@@ -96,10 +98,10 @@ public abstract class AbstractResultSetTable extends AbstractTable
         }
     }
 
-    static String getSelectStatement(String schema, ITableMetaData metaData)
+    static String getSelectStatement(String schema, ITableMetaData metaData, String escapePattern)
             throws DataSetException
     {
-        return DatabaseDataSet.getSelectStatement(schema, metaData);
+        return DatabaseDataSet.getSelectStatement(schema, metaData, escapePattern);
     }
 
     static ITableMetaData createTableMetaData(String name,

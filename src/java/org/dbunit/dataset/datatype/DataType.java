@@ -160,6 +160,7 @@ public abstract class DataType
      * Returns the <code>DataType</code> corresponding to the specified Sql
      * type name.
      *
+     * @deprecated Should not be used anymore
      */
     public static DataType forSqlTypeName(String sqlTypeName) throws DataTypeException
     {

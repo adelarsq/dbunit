@@ -25,7 +25,6 @@ package org.dbunit.database;
 import org.dbunit.dataset.CachedTable;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

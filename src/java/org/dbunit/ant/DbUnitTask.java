@@ -25,6 +25,7 @@ package org.dbunit.ant;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
 
 import java.sql.*;
 import java.util.*;
@@ -93,7 +94,7 @@ public class DbUnitTask extends Task
     /**
      * Flag for using botched statements.
      */
-    private boolean supportBatchStatement = true;
+    private boolean supportBatchStatement = false;
 
     /**
      * Set the JDBC driver to be used.
@@ -246,15 +247,6 @@ public class DbUnitTask extends Task
             throw new BuildException("Must declare at least one step in a <dbunit> task!");
         }
 
-        if (useQualifiedTableNames)
-        {
-            System.setProperty("dbunit.qualified.table.names", "true");
-        }
-        if (!supportBatchStatement)
-        {
-            System.setProperty("dbunit.database.supportBatchStatement", "false");
-        }
-
         Driver driverInstance = null;
         try
         {
@@ -303,9 +295,13 @@ public class DbUnitTask extends Task
                 // Driver doesn't understand the URL
                 throw new SQLException("No suitable Driver for " + url);
             }
-
             conn.setAutoCommit(true);
+
             IDatabaseConnection connection = new DatabaseConnection(conn, schema);
+            DatabaseConfig config = connection.getConfig();
+            config.setFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, supportBatchStatement);
+            config.setFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, useQualifiedTableNames);
+
             Iterator stepIter = steps.listIterator();
             while (stepIter.hasNext())
             {

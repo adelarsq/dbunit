@@ -1,5 +1,4 @@
 /*
- * Db2Connection.java
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002, Manuel Laflamme
@@ -19,22 +18,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+package org.dbunit.database;
 
-package org.dbunit.ext.db2;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITableMetaData;
 
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
+import java.sql.SQLException;
 
-import java.sql.Connection;
-
-public class Db2Connection extends DatabaseConnection
+/**
+ *
+ * @author manuel.laflamme
+ * @since Jul 17, 2003
+ * @version $Revision$
+ */
+public interface IResultSetTableFactory
 {
+    public IResultSetTable createTable(String tableName, String selectStatement,
+            IDatabaseConnection connection) throws SQLException, DataSetException;
 
-    public Db2Connection(Connection connection, String schema)
-    {
-        super(connection, schema);
-        getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
-                new Db2DataTypeFactory());
+    public IResultSetTable createTable(ITableMetaData metaData,
+            IDatabaseConnection connection) throws SQLException, DataSetException;
 
-    }
+
 }

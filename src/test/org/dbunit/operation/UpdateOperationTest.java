@@ -27,6 +27,7 @@ import org.dbunit.Assertion;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.TestFeature;
 import org.dbunit.database.MockDatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
 import org.dbunit.dataset.*;
@@ -168,15 +169,9 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         connection.setExpectedCloseCalls(0);
 
         // execute operation
-        setEscapePattern("[?]");
-        try
-        {
-            new UpdateOperation().execute(connection, dataSet);
-        }
-        finally
-        {
-            setEscapePattern(null);
-        }
+        connection.getConfig().setProperty(
+                DatabaseConfig.PROPERTY_ESCAPE_PATTERN, "[?]");
+        new UpdateOperation().execute(connection, dataSet);
 
         statement.verify();
         factory.verify();

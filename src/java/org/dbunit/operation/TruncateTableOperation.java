@@ -24,6 +24,7 @@ package org.dbunit.operation;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.dataset.IDataSet;
 
 import java.sql.SQLException;
@@ -46,8 +47,6 @@ import java.sql.SQLException;
  */
 public class TruncateTableOperation extends DeleteAllOperation
 {
-    static final String SUPPORT_BATCH_STATEMENT = "dbunit.database.supportBatchStatement";
-
     TruncateTableOperation()
     {
     }
@@ -67,15 +66,16 @@ public class TruncateTableOperation extends DeleteAllOperation
             throws DatabaseUnitException, SQLException
     {
         // Patch to make it work with MS SQL Server
-        String oldValue = System.getProperty(SUPPORT_BATCH_STATEMENT, "true");
+        DatabaseConfig config = connection.getConfig();
+        boolean oldValue = config.getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS);
         try
         {
-            System.setProperty(SUPPORT_BATCH_STATEMENT, "false");
+            config.setFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, false);
             super.execute(connection, dataSet);
         }
         finally
         {
-            System.setProperty(SUPPORT_BATCH_STATEMENT, oldValue);
+            config.setFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, oldValue);
         }
     }
 }

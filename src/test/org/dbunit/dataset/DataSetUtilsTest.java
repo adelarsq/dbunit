@@ -58,10 +58,8 @@ public class DataSetUtilsTest extends TestCase
         assertEquals("escaped prefix + name", "prefix.name",
                 DataSetUtils.getQualifiedName("prefix", "name"));
 
-        System.setProperty("dbunit.name.escapePattern", "[?]");
         assertEquals("escaped prefix + name", "[prefix].[name]",
-                DataSetUtils.getQualifiedName("prefix", "name", true));
-        System.getProperties().remove("dbunit.name.escapePattern");
+                DataSetUtils.getQualifiedName("prefix", "name", "[?]"));
 
     }
 

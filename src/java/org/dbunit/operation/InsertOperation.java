@@ -23,6 +23,7 @@
 package org.dbunit.operation;
 
 import org.dbunit.dataset.*;
+import org.dbunit.database.IDatabaseConnection;
 
 /**
  * Inserts the dataset contents into the database. This operation assumes that
@@ -42,16 +43,16 @@ public class InsertOperation extends AbstractBatchOperation
     ////////////////////////////////////////////////////////////////////////////
     // AbstractBatchOperation class
 
-    public OperationData getOperationData(String schemaName,
-            ITableMetaData metaData) throws DataSetException
+    public OperationData getOperationData(
+            ITableMetaData metaData, IDatabaseConnection connection) throws DataSetException
     {
         Column[] columns = metaData.getColumns();
 
         // insert
         StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("insert into ");
-        sqlBuffer.append(DataSetUtils.getQualifiedName(schemaName,
-                metaData.getTableName(), true));
+        sqlBuffer.append(getQualifiedName(connection.getSchema(),
+                metaData.getTableName(), connection));
 
         // columns
         sqlBuffer.append(" (");
@@ -63,8 +64,8 @@ public class InsertOperation extends AbstractBatchOperation
             }
 
             // escape column name
-            String columnName = DataSetUtils.getQualifiedName(null,
-                    columns[i].getColumnName(), true);
+            String columnName = getQualifiedName(null,
+                    columns[i].getColumnName(), connection);
              sqlBuffer.append(columnName);
         }
 

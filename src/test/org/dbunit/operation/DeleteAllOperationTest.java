@@ -24,6 +24,7 @@ package org.dbunit.operation;
 
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.database.MockDatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
 import org.dbunit.dataset.AbstractDataSetTest;
@@ -116,15 +117,9 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
         connection.setExpectedCloseCalls(0);
 
         // execute operation
-        setEscapePattern("'?'");
-        try
-        {
-            getDeleteAllOperation().execute(connection, dataSet);
-        }
-        finally
-        {
-            setEscapePattern(null);
-        }
+        connection.getConfig().setProperty(
+                DatabaseConfig.PROPERTY_ESCAPE_PATTERN, "'?'");
+        getDeleteAllOperation().execute(connection, dataSet);
 
         statement.verify();
         factory.verify();

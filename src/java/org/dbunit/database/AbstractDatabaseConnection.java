@@ -22,15 +22,17 @@
 
 package org.dbunit.database;
 
-import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.database.statement.IStatementFactory;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
-import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * @author Manuel Laflamme
@@ -38,56 +40,18 @@ import java.sql.*;
  */
 public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 {
-    static final String STATEMENT_FACTORY = "dbunit.statement.factory";
-    static final String DEFAULT_FACTORY =
-            "org.dbunit.database.statement.PreparedStatementFactory";
+//    static final String STATEMENT_FACTORY = "dbunit.statement.factory";
+//    static final String DEFAULT_FACTORY =
+//            "org.dbunit.database.statement.PreparedStatementFactory";
 
-    private final IStatementFactory _statementFactory;
-    private final IDataTypeFactory _dataTypeFactory = new DefaultDataTypeFactory();
+//    private final IStatementFactory _statementFactory;
+//    private final IDataTypeFactory _dataTypeFactory = new DefaultDataTypeFactory();
     private IDataSet _dataSet = null;
+    private DatabaseConfig _databaseConfig;
 
     public AbstractDatabaseConnection()
     {
-        String className = System.getProperty(STATEMENT_FACTORY, DEFAULT_FACTORY);
-        try
-        {
-            Constructor constructor = Class.forName(className).getConstructor(new Class[0]);
-            _statementFactory = (IStatementFactory)constructor.newInstance(new Object[0]);
-        }
-        catch (NoSuchMethodException e)
-        {
-            throw new DatabaseUnitRuntimeException(e);
-        }
-        catch (ClassNotFoundException e)
-        {
-            throw new DatabaseUnitRuntimeException(e);
-        }
-        catch (InstantiationException e)
-        {
-            throw new DatabaseUnitRuntimeException(e);
-        }
-        catch (IllegalAccessException e)
-        {
-            throw new DatabaseUnitRuntimeException(e);
-        }
-        catch (IllegalArgumentException e)
-        {
-            throw new DatabaseUnitRuntimeException(e);
-        }
-        catch (InvocationTargetException e)
-        {
-            throw new DatabaseUnitRuntimeException(e);
-        }
-    }
-
-    public AbstractDatabaseConnection(IStatementFactory factory)
-    {
-        _statementFactory = factory;
-    }
-
-    protected IDataTypeFactory getDataTypeFactory()
-    {
-        return _dataTypeFactory;
+        _databaseConfig = new DatabaseConfig();
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -97,7 +61,7 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
     {
         if (_dataSet == null)
         {
-            _dataSet = new DatabaseDataSet(this, getDataTypeFactory());
+            _dataSet = new DatabaseDataSet(this);
         }
 
         return _dataSet;
@@ -118,8 +82,10 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
             try
             {
+                IDataTypeFactory typeFactory = (IDataTypeFactory)_databaseConfig.getProperty(
+                        DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
                 ITableMetaData metaData = AbstractResultSetTable.createTableMetaData(
-                        resultName, resultSet, getDataTypeFactory());
+                        resultName, resultSet, typeFactory);
                 return new CachedResultSetTable(metaData, resultSet);
             }
             finally
@@ -169,9 +135,15 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         }
     }
 
+    public DatabaseConfig getConfig()
+    {
+        return _databaseConfig;
+    }
+
     public IStatementFactory getStatementFactory()
     {
-        return _statementFactory;
+        return (IStatementFactory)_databaseConfig.getProperty(
+                DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
     }
 
 }

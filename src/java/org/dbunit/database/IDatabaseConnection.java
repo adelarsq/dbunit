@@ -89,6 +89,14 @@ public interface IDatabaseConnection
      */
     public int getRowCount(String tableName, String whereClause) throws SQLException;
 
+    /**
+     * Returns this connection database configuration
+     */
+    public DatabaseConfig getConfig();
+
+    /**
+     * @deprecated Use {@link #getConfig}
+     */
     public IStatementFactory getStatementFactory();
 }
 

@@ -24,6 +24,7 @@ package org.dbunit.operation;
 
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.database.MockDatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
 import org.dbunit.dataset.*;
@@ -139,15 +140,9 @@ public class DeleteOperationTest extends AbstractDatabaseTest
         connection.setExpectedCloseCalls(0);
 
         // execute operation
-        setEscapePattern("[?]");
-        try
-        {
-            new DeleteOperation().execute(connection, dataSet);
-        }
-        finally
-        {
-            setEscapePattern(null);
-        }
+        connection.getConfig().setProperty(
+                DatabaseConfig.PROPERTY_ESCAPE_PATTERN, "[?]");
+        new DeleteOperation().execute(connection, dataSet);
 
         statement.verify();
         factory.verify();
@@ -234,7 +229,7 @@ public class DeleteOperationTest extends AbstractDatabaseTest
         try
         {
             new DeleteOperation().getOperationData(
-                    _connection.getSchema(), metaData);
+                    metaData, _connection);
             fail("Should throw a NoPrimaryKeyException");
         }
         catch (NoPrimaryKeyException e)

@@ -24,6 +24,7 @@ package org.dbunit.operation;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.statement.IPreparedBatchStatement;
 import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.*;
@@ -108,8 +109,8 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
         return dataSet.iterator();
     }
 
-    abstract public OperationData getOperationData(String schemaName,
-            ITableMetaData metaData) throws DataSetException;
+    abstract public OperationData getOperationData(
+            ITableMetaData metaData, IDatabaseConnection connection) throws DataSetException;
 
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseOperation class
@@ -117,7 +118,9 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        IStatementFactory factory = connection.getStatementFactory();
+        DatabaseConfig databaseConfig = connection.getConfig();
+        IStatementFactory factory = (IStatementFactory)databaseConfig.getProperty(
+                DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
 
         // for each table
         ITableIterator iterator = iterator(dataSet);
@@ -134,7 +137,7 @@ public abstract class AbstractBatchOperation extends DatabaseOperation
             ITableMetaData metaData = getOperationMetaData(connection,
                     table.getTableMetaData());
             OperationData operationData = getOperationData(
-                    connection.getSchema(), metaData);
+                    metaData, connection);
 
             IPreparedBatchStatement statement = factory.createPreparedBatchStatement(
                     operationData.getSql(), connection);

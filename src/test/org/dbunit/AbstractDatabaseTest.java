@@ -34,7 +34,6 @@ import org.dbunit.operation.DatabaseOperation;
  */
 public abstract class AbstractDatabaseTest extends DatabaseTestCase
 {
-    private static final String ESCAPE_PATTERN_KEY = "dbunit.name.escapePattern";
     protected IDatabaseConnection _connection;
 
     public AbstractDatabaseTest(String s)
@@ -56,16 +55,6 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
 //        return _connection.createQueryTable(tableName, sql);
     }
 
-    public static void setEscapePattern(String pattern)
-    {
-        if (pattern == null)
-        {
-            System.getProperties().remove(ESCAPE_PATTERN_KEY);
-            return;
-        }
-        System.setProperty(ESCAPE_PATTERN_KEY, pattern);
-    }
-
     ////////////////////////////////////////////////////////////////////////////
     // TestCase class
 
@@ -83,7 +72,6 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
         DatabaseOperation.DELETE_ALL.execute(_connection, _connection.createDataSet());
 
         _connection = null;
-        setEscapePattern(null);
     }
 
     ////////////////////////////////////////////////////////////////////////////

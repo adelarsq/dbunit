@@ -87,7 +87,7 @@ public class RefreshOperation extends DatabaseOperation
             RowOperation updateRowOperation = createUpdateOperation(connection,
                     schema, metaData);
             RowOperation insertRowOperation = new InsertRowOperation(connection,
-                    schema, metaData);
+                    metaData);
 
             try
             {
@@ -121,7 +121,7 @@ public class RefreshOperation extends DatabaseOperation
         // update only if columns are not all primary keys
         if (metaData.getColumns().length > metaData.getPrimaryKeys().length)
         {
-            return new UpdateRowOperation(connection, schema, metaData);
+            return new UpdateRowOperation(connection, metaData);
         }
 
         // otherwise, operation only verify if row exist
@@ -170,12 +170,12 @@ public class RefreshOperation extends DatabaseOperation
     private class InsertRowOperation extends RowOperation
     {
         public InsertRowOperation(IDatabaseConnection connection,
-                String schema, ITableMetaData metaData)
+                ITableMetaData metaData)
                 throws DataSetException, SQLException
         {
             // setup insert statement
-            OperationData insertData = _insertOperation.getOperationData(schema,
-                    metaData);
+            OperationData insertData = _insertOperation.getOperationData(
+                    metaData, connection);
             _statement = new SimplePreparedStatement(insertData.getSql(),
                     connection.getConnection());
             _columns = insertData.getColumns();
@@ -190,12 +190,12 @@ public class RefreshOperation extends DatabaseOperation
         PreparedStatement _countStatement;
 
         public UpdateRowOperation(IDatabaseConnection connection,
-                String schema, ITableMetaData metaData)
+                ITableMetaData metaData)
                 throws DataSetException, SQLException
         {
             // setup update statement
-            OperationData updateData = _updateOperation.getOperationData(schema,
-                    metaData);
+            OperationData updateData = _updateOperation.getOperationData(
+                    metaData, connection);
             _statement = new SimplePreparedStatement(updateData.getSql(),
                     connection.getConnection());
             _columns = updateData.getColumns();
@@ -214,14 +214,14 @@ public class RefreshOperation extends DatabaseOperation
                 throws DataSetException, SQLException
         {
             // setup select count statement
-            OperationData countData = getSelectCountData(schema, metaData);
+            OperationData countData = getSelectCountData(metaData, connection);
             _countStatement = connection.getConnection().prepareStatement(
                     countData.getSql());
             _columns = countData.getColumns();
         }
 
-        private OperationData getSelectCountData(String schemaName,
-                ITableMetaData metaData) throws DataSetException
+        private OperationData getSelectCountData(
+                ITableMetaData metaData, IDatabaseConnection connection) throws DataSetException
         {
             Column[] primaryKeys = metaData.getPrimaryKeys();
 
@@ -234,8 +234,8 @@ public class RefreshOperation extends DatabaseOperation
             // select count
             StringBuffer sqlBuffer = new StringBuffer(128);
             sqlBuffer.append("select COUNT(*) from ");
-            sqlBuffer.append(DataSetUtils.getQualifiedName(schemaName,
-                    metaData.getTableName(), true));
+            sqlBuffer.append(getQualifiedName(connection.getSchema(),
+                    metaData.getTableName(), connection));
 
             // where
             sqlBuffer.append(" where ");

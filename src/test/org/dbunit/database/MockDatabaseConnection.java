@@ -43,7 +43,8 @@ public class MockDatabaseConnection implements IDatabaseConnection, Verifiable
     private Connection _connection;
     private String _schema;
     private IDataSet _dataSet;
-    private IStatementFactory _statementFactory;
+//    private IStatementFactory _statementFactory;
+    private DatabaseConfig _databaseConfig = new DatabaseConfig();
 
     public void setupSchema(String schema)
     {
@@ -72,9 +73,14 @@ public class MockDatabaseConnection implements IDatabaseConnection, Verifiable
 
     public void setupStatementFactory(IStatementFactory statementFactory)
     {
-        _statementFactory = statementFactory;
+        _databaseConfig.setProperty(DatabaseConfig.PROPERTY_STATEMENT_FACTORY, statementFactory);
     }
 
+//    public void setupEscapePattern(String escapePattern)
+//    {
+//        _databaseConfig.setProperty(DatabaseConfig.PROPERTY_ESCAPE_PATTERN, escapePattern);
+//    }
+//
     public void setExpectedCloseCalls(int callsCount)
     {
         _closeCalls.setExpected(callsCount);
@@ -134,7 +140,13 @@ public class MockDatabaseConnection implements IDatabaseConnection, Verifiable
 
     public IStatementFactory getStatementFactory()
     {
-        return _statementFactory;
+        return (IStatementFactory)_databaseConfig.getProperty(
+                DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
+    }
+
+    public DatabaseConfig getConfig()
+    {
+        return _databaseConfig;
     }
 }
 

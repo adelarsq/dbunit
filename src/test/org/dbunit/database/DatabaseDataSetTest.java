@@ -37,8 +37,6 @@ import org.dbunit.dataset.datatype.DataType;
  */
 public class DatabaseDataSetTest extends AbstractDataSetTest
 {
-    private static final String ESCAPE_PATTERN_KEY = "dbunit.name.escapePattern";
-
     private IDatabaseConnection _connection;
 
     public DatabaseDataSetTest(String s)
@@ -96,7 +94,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         String expected = "select c1, c2, c3 from schema.table";
 
         ITableMetaData metaData = new DefaultTableMetaData(tableName, columns);
-        String sql = DatabaseDataSet.getSelectStatement(schemaName, metaData);
+        String sql = DatabaseDataSet.getSelectStatement(schemaName, metaData, null);
         assertEquals("select statement", expected, sql);
     }
 
@@ -111,17 +109,9 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         };
         String expected = "select 'c1', 'c2', 'c3' from 'schema'.'table'";
 
-        try
-        {
-            System.setProperty(ESCAPE_PATTERN_KEY, "'?'");
-            ITableMetaData metaData = new DefaultTableMetaData(tableName, columns);
-            String sql = DatabaseDataSet.getSelectStatement(schemaName, metaData);
-            assertEquals("select statement", expected, sql);
-        }
-        finally
-        {
-            System.getProperties().remove(ESCAPE_PATTERN_KEY);
-        }
+        ITableMetaData metaData = new DefaultTableMetaData(tableName, columns);
+        String sql = DatabaseDataSet.getSelectStatement(schemaName, metaData, "'?'");
+        assertEquals("select statement", expected, sql);
     }
 
     public void testGetSelectStatementWithPrimaryKeys() throws Exception
@@ -136,7 +126,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         String expected = "select c1, c2, c3 from schema.table order by c1, c2, c3";
 
         ITableMetaData metaData = new DefaultTableMetaData(tableName, columns, columns);
-        String sql = DatabaseDataSet.getSelectStatement(schemaName, metaData);
+        String sql = DatabaseDataSet.getSelectStatement(schemaName, metaData, null);
         assertEquals("select statement", expected, sql);
     }
 
@@ -144,29 +134,20 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
     {
         String[] expectedNames = getExpectedNames();
 
-        try
+        IDatabaseConnection connection = new DatabaseConnection(
+                _connection.getConnection(), _connection.getSchema());
+        connection.getConfig().setFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, true);
+
+        IDataSet dataSet = connection.createDataSet();
+        String[] actualNames = dataSet.getTableNames();
+
+        assertEquals("name count", expectedNames.length, actualNames.length);
+        for (int i = 0; i < actualNames.length; i++)
         {
-            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "true");
-
-            IDatabaseConnection connection = new DatabaseConnection(
-                    _connection.getConnection(), _connection.getSchema());
-
-            IDataSet dataSet = connection.createDataSet();
-            String[] actualNames = dataSet.getTableNames();
-//                sort(actualNames);
-
-            assertEquals("name count", expectedNames.length, actualNames.length);
-            for (int i = 0; i < actualNames.length; i++)
-            {
-                String expected = DataSetUtils.getQualifiedName(
-                        _connection.getSchema(), expectedNames[i]);
-                String actual = actualNames[i];
-                assertEquals("name", expected, actual);
-            }
-        }
-        finally
-        {
-            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "false");
+            String expected = DataSetUtils.getQualifiedName(
+                    _connection.getSchema(), expectedNames[i]);
+            String actual = actualNames[i];
+            assertEquals("name", expected, actual);
         }
     }
 
@@ -176,25 +157,18 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
                 _connection.getSchema(), "TEST_TABLE");
         String[] expected = {"COLUMN0", "COLUMN1", "COLUMN2", "COLUMN3"};
 
-        try
+        IDatabaseConnection connection = new DatabaseConnection(
+                _connection.getConnection(), _connection.getSchema());
+        connection.getConfig().setFeature(
+                DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, true);
+
+        ITableMetaData metaData = connection.createDataSet().getTableMetaData(tableName);
+        Column[] columns = metaData.getColumns();
+
+        assertEquals("column count", expected.length, columns.length);
+        for (int i = 0; i < columns.length; i++)
         {
-            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "true");
-
-            IDatabaseConnection connection = new DatabaseConnection(
-                    _connection.getConnection(), _connection.getSchema());
-
-            ITableMetaData metaData = connection.createDataSet().getTableMetaData(tableName);
-            Column[] columns = metaData.getColumns();
-
-            assertEquals("column count", expected.length, columns.length);
-            for (int i = 0; i < columns.length; i++)
-            {
-                assertEquals("column name", expected[i], columns[i].getColumnName());
-            }
-        }
-        finally
-        {
-            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "false");
+            assertEquals("column name", expected[i], columns[i].getColumnName());
         }
     }
 
@@ -204,25 +178,18 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
                 _connection.getSchema(), "PK_TABLE");
         String[] expected = {"PK0", "PK1", "PK2"};
 
-        try
+        IDatabaseConnection connection = new DatabaseConnection(
+                _connection.getConnection(), _connection.getSchema());
+        connection.getConfig().setFeature(
+                DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, true);
+
+        ITableMetaData metaData = connection.createDataSet().getTableMetaData(tableName);
+        Column[] columns = metaData.getPrimaryKeys();
+
+        assertEquals("column count", expected.length, columns.length);
+        for (int i = 0; i < columns.length; i++)
         {
-            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "true");
-
-            IDatabaseConnection connection = new DatabaseConnection(
-                    _connection.getConnection(), _connection.getSchema());
-
-            ITableMetaData metaData = connection.createDataSet().getTableMetaData(tableName);
-            Column[] columns = metaData.getPrimaryKeys();
-
-            assertEquals("column count", expected.length, columns.length);
-            for (int i = 0; i < columns.length; i++)
-            {
-                assertEquals("column name", expected[i], columns[i].getColumnName());
-            }
-        }
-        finally
-        {
-            System.setProperty(DatabaseDataSet.QUALIFIED_TABLE_NAMES, "false");
+            assertEquals("column name", expected[i], columns[i].getColumnName());
         }
     }
 

@@ -23,6 +23,7 @@
 package org.dbunit.operation;
 
 import org.dbunit.dataset.*;
+import org.dbunit.database.IDatabaseConnection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +44,8 @@ public class UpdateOperation extends AbstractBatchOperation
     ////////////////////////////////////////////////////////////////////////////
     // AbstractBatchOperation class
 
-    public OperationData getOperationData(String schemaName,
-            ITableMetaData metaData) throws DataSetException
+    public OperationData getOperationData(
+            ITableMetaData metaData, IDatabaseConnection connection) throws DataSetException
     {
         Column[] columns = metaData.getColumns();
         Column[] primaryKeys = metaData.getPrimaryKeys();
@@ -58,8 +59,8 @@ public class UpdateOperation extends AbstractBatchOperation
         // update table
         StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("update ");
-        sqlBuffer.append(DataSetUtils.getQualifiedName(schemaName,
-                metaData.getTableName(), true));
+        sqlBuffer.append(getQualifiedName(connection.getSchema(),
+                metaData.getTableName(), connection));
 
         // set
         boolean firstSet = true;
@@ -79,8 +80,8 @@ public class UpdateOperation extends AbstractBatchOperation
                 firstSet = false;
 
                 // escape column name
-                String columnName = DataSetUtils.getQualifiedName(null,
-                        column.getColumnName(), true);
+                String columnName = getQualifiedName(null,
+                        column.getColumnName(), connection);
                 sqlBuffer.append(columnName);
                 sqlBuffer.append(" = ?");
                 columnList.add(column);
@@ -99,8 +100,8 @@ public class UpdateOperation extends AbstractBatchOperation
             }
 
             // escape column name
-            String columnName = DataSetUtils.getQualifiedName(null,
-                    column.getColumnName(), true);
+            String columnName = getQualifiedName(null,
+                    column.getColumnName(), connection);
             sqlBuffer.append(columnName);
             sqlBuffer.append(" = ?");
             columnList.add(column);

@@ -22,6 +22,7 @@ package org.dbunit.operation;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.statement.IBatchStatement;
 import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.*;
@@ -63,7 +64,9 @@ public class DeleteAllOperation extends DatabaseOperation
     {
         IDataSet databaseDataSet = connection.createDataSet();
 
-        IStatementFactory statementFactory = connection.getStatementFactory();
+        DatabaseConfig databaseConfig = connection.getConfig();
+        IStatementFactory statementFactory = (IStatementFactory)databaseConfig.getProperty(
+                DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
         IBatchStatement statement = statementFactory.createBatchStatement(connection);
         try
         {
@@ -80,8 +83,7 @@ public class DeleteAllOperation extends DatabaseOperation
 
                 StringBuffer sqlBuffer = new StringBuffer(128);
                 sqlBuffer.append(getDeleteAllCommand());
-                sqlBuffer.append(DataSetUtils.getQualifiedName(
-                        connection.getSchema(), tableName, true));
+                sqlBuffer.append(getQualifiedName(connection.getSchema(), tableName, connection));
                 statement.addBatch(sqlBuffer.toString());
 
                 count++;

@@ -87,17 +87,16 @@ public class DataSetUtils
      */
     public static String getQualifiedName(String prefix, String name)
     {
-        return getQualifiedName(prefix, name, false);
+        return getQualifiedName(prefix, name, null);
     }
 
     public static String getQualifiedName(String prefix, String name,
-            boolean escape)
+            String escapePattern)
     {
-        if (escape)
+        if (escapePattern != null)
         {
-            String pattern = System.getProperty("dbunit.name.escapePattern");
-            prefix = getEscapedName(prefix, pattern);
-            name = getEscapedName(name, pattern);
+            prefix = getEscapedName(prefix, escapePattern);
+            name = getEscapedName(name, escapePattern);
         }
 
         if (prefix == null || prefix.equals("") || name.indexOf(".") >= 0)
@@ -108,18 +107,18 @@ public class DataSetUtils
         return prefix + "." + name;
     }
 
-    public static String getEscapedName(String name, String pattern)
+    public static String getEscapedName(String name, String escapePattern)
     {
-        if (name == null || pattern == null)
+        if (name == null || escapePattern == null)
         {
             return name;
         }
 
-        int index = pattern.indexOf("?");
+        int index = escapePattern.indexOf("?");
         if (index >=0 )
         {
-            String prefix = pattern.substring(0, index);
-            String suffix = pattern.substring(index + 1);
+            String prefix = escapePattern.substring(0, index);
+            String suffix = escapePattern.substring(index + 1);
 
             return prefix + name + suffix;
         }

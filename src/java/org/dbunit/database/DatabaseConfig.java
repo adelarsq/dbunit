@@ -1,0 +1,119 @@
+/*
+ *
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002, Manuel Laflamme
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+package org.dbunit.database;
+
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+import org.dbunit.database.statement.PreparedStatementFactory;
+
+import java.util.Set;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.HashMap;
+
+/**
+ *
+ * @author manuel.laflamme
+ * @since Jul 17, 2003
+ * @version $Revision$
+ */
+public class DatabaseConfig
+{
+    public static final String PROPERTY_STATEMENT_FACTORY =
+            "http://www.dbunit.org/properties/statementFactory";
+    public static final String PROPERTY_RESULTSET_TABLE_FACTORY =
+            "http://www.dbunit.org/properties/resultSetTableFactory";
+    public static final String PROPERTY_DATATYPE_FACTORY =
+            "http://www.dbunit.org/properties/datatypeFactory";
+    public static final String PROPERTY_ESCAPE_PATTERN =
+            "http://www.dbunit.org/properties/escapePattern";
+
+    public static final String FEATURE_QUALIFIED_TABLE_NAMES =
+            "http://www.dbunit.org/features/qualifiedTableNames";
+    public static final String FEATURE_BATCHED_STATEMENTS =
+            "http://www.dbunit.org/features/batchedStatements";
+
+    private Set _featuresSet = new HashSet();
+    private Map _propertyMap = new HashMap();
+
+    public DatabaseConfig()
+    {
+        setFeature(FEATURE_BATCHED_STATEMENTS, false);
+        setFeature(FEATURE_QUALIFIED_TABLE_NAMES, false);
+
+        setProperty(PROPERTY_STATEMENT_FACTORY, new PreparedStatementFactory());
+        setProperty(PROPERTY_RESULTSET_TABLE_FACTORY, new CachedResultSetTableFactory());
+        setProperty(PROPERTY_DATATYPE_FACTORY, new DefaultDataTypeFactory());
+        setProperty(PROPERTY_ESCAPE_PATTERN, null);
+    }
+
+    /**
+     * Set the value of a feature flag.
+     *
+     * @param name
+     * @param value
+     */
+    public void setFeature(String name, boolean value)
+    {
+        if (value)
+        {
+            _featuresSet.add(name);
+        }
+        else
+        {
+            _featuresSet.remove(name);
+        }
+    }
+
+    /**
+     * Look up the value of a feature flag.
+     *
+     * @param name
+     * @return
+     */
+    public boolean getFeature(String name)
+    {
+        return _featuresSet.contains(name);
+    }
+
+    /**
+     * Set the value of a property.
+     *
+     * @param name
+     * @param value
+     */
+    public void setProperty(String name, Object value)
+    {
+        _propertyMap.put(name, value);
+    }
+
+    /**
+     * Look up the value of a property.
+     *
+     * @param name
+     * @return
+     */
+    public Object getProperty(String name)
+    {
+       return _propertyMap.get(name);
+    }
+
+
+}
