@@ -26,7 +26,7 @@ public class MsSqlDataTypeFactoryTest extends TestCase {
 
     public void testCreateCharDataType() throws Exception
     {
-    	int sqlType = -8;
+    	int sqlType = MsSqlDataTypeFactory.NCHAR;
     	String sqlTypeName = "nchar";
 
     	DataType expected = DataType.CHAR;
@@ -36,7 +36,7 @@ public class MsSqlDataTypeFactoryTest extends TestCase {
 
     public void testCreateVarcharDataType() throws Exception
     {
-    	int sqlType = -9;
+    	int sqlType = MsSqlDataTypeFactory.NVARCHAR;
     	String sqlTypeName = "nvarchar";
 
     	DataType expected = DataType.VARCHAR;
@@ -46,7 +46,7 @@ public class MsSqlDataTypeFactoryTest extends TestCase {
 
     public void testCreateLongVarcharDataType() throws Exception
     {
-    	int sqlType = -10;
+    	int sqlType = MsSqlDataTypeFactory.NTEXT;
     	String sqlTypeName = "ntext";
 
     	DataType expected = DataType.LONGVARCHAR;
