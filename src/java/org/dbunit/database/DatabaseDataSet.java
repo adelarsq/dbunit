@@ -123,7 +123,7 @@ public class DatabaseDataSet implements IDataSet
                 {
                     String schemaName = resultSet.getString(2);
                     String tableName = resultSet.getString(3);
-                    String tableType = resultSet.getString(4);
+//                    String tableType = resultSet.getString(4);
 //                    System.out.println("schema=" + schemaName + ", table=" + tableName + ", type=" + tableType + "");
                     tableName = getQualifiedName(schemaName, tableName);
 

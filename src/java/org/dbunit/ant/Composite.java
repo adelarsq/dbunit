@@ -74,7 +74,7 @@ public class Composite extends Operation
      * Loops over the operations making up the composition, sets
      * their src and flat value, and calls execute on each one.
      *
-     * @param conn a <code>IDatabaseConnection</code> value
+     * @param connection a <code>IDatabaseConnection</code> value
      * @exception DatabaseUnitException if an error occurs
      */
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
@@ -115,7 +115,7 @@ public class Composite extends Operation
         while (operIter.hasNext())
         {
             Operation operation = (Operation)operIter.next();
-            result.append("\n    operation: " + type);
+            result.append("\n    operation: " + operation.getType());
         }
         return result.toString();
     }

@@ -134,9 +134,6 @@ public class RefreshOperation extends DatabaseOperation
         IStatementFactory factory = connection.getStatementFactory();
         String schema = connection.getSchema();
 
-        // this dataset is used to get metadata from database
-        IDataSet databaseDataSet = connection.createDataSet();
-
         // for each table
         ITable[] tables = dataSet.getTables();
         for (int i = 0; i < tables.length; i++)

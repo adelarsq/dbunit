@@ -94,8 +94,6 @@ public class InsertIdentityOperation extends DatabaseOperation
         Connection jdbcConnection = connection.getConnection();
         Statement statement = jdbcConnection.createStatement();
 
-        IDataSet databaseDataSet = connection.createDataSet();
-
         try
         {
             // INSERT_IDENTITY need to be enabled/disabled inside the

@@ -114,7 +114,7 @@ public class QueryDataSet implements IDataSet {
         try {
 
             Connection jdbcConnection = _connection.getConnection();
-            String schema = _connection.getSchema();
+//            String schema = _connection.getSchema();
             Statement statement = jdbcConnection.createStatement();
 
             try {

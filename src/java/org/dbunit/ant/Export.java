@@ -194,16 +194,16 @@ public class Export implements DbUnitTaskStep
         return result;
     }
 
-    private String[] convertListToStringArray(List list){
-        String []strArray = new String[list.size()];
-        for (int i = 0; i < list.size(); i++)
-        {
-            Table table = (Table)list.get(i);
-            strArray[i] = table.getName();
-        }
-        return strArray;
-    }
-
+//    private String[] convertListToStringArray(List list){
+//        String []strArray = new String[list.size()];
+//        for (int i = 0; i < list.size(); i++)
+//        {
+//            Table table = (Table)list.get(i);
+//            strArray[i] = table.getName();
+//        }
+//        return strArray;
+//    }
+//
     public String getLogMessage()
     {
         return "Executing export: "
