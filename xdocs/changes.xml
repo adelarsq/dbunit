@@ -3,9 +3,18 @@
   <properties>
     <title>Changes</title>
     <author email="epugh@upstate.com">Eric Pugh</author>
+    <author email="mlaflamm@users.sourceforge.net">Manuel Laflamme</author>
   </properties>
 
   <body>
+    <release version="1.5.6" date="October 5, 2003">
+     <action dev="" type="fix">
+	  <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=786543&amp;group_id=47439&amp;atid=449491">786543</a> - NULL primitive values incorrectly returned as zero (0).
+     </action>      	            
+     <action dev="" type="fix">
+	Not NULL Oracle CLOB values incorrectly returned as NULL. 
+     </action>         
+    </release>
     <release version="1.5.5" date="July 16, 2003">
      <action dev="" type="update">
 	  DatabaseDataSet improvements: faster access to metadata cache and keep original database table ordering.
@@ -13,8 +22,8 @@
      <action dev="" type="update">
 	Better handling of the various data types in general. <B>WARNING!</B> New abstract methods have been added to the DataType class. This change may break your environment if you have implemented your own data types. 
      </action>         
-     <action dev="" type="add">
-	New FlatXmlDataSet constructors that take an URL.
+     <action dev="" type="update">
+	Do not enable batched statement by default anymore. Many JDBC drivers have problems with this feature. 
      </action>          
      <action dev="" type="fix">
         Fixed table name issue with case sensitive database. 
@@ -32,30 +41,27 @@
             - Wrong scale for numeric value with the jConnect driver for Sybase ASE.
      </action>         
     </release>
-    <release version="1.5.1" date="Apr 4, 2003">
+    <release version="1.5.1" date="April 4, 2003">
      <action dev="" type="fix">
-       Multiple bugfixes:
-        <ul>
-          <li>Fixed DELETE operation that was not deleting tables in reverse order 
-            as expected.</li>
-          <li><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=712329&amp;group_id=47439&amp;atid=449491">712329</a> 
-            - setObject fails on BEA JDriver for MS-SQL.</li>
-
-          <li> Fixed DbUnitTask "supportBatchStatement" flag. </li>
-        </ul>
+          Fixed DELETE operation that was not deleting tables in reverse order 
+            as expected.
+     </action>    
+     <action dev="" type="fix">
+          <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=712329&amp;group_id=47439&amp;atid=449491">712329</a> 
+            - setObject fails on BEA JDriver for MS-SQL.
      </action>    
      
      <action dev="" type="update">
-       Optimizations
-        
-          <ul>
-          <li>DbUnitTask DTD export. </li>
-          <li>REFRESH operation.</li>
-        
-        </ul>
+          DbUnitTask DTD export optimization. 
+     </action>  
+     <action dev="" type="update">
+          REFRESH operation optimization.
      </action>  
     </release>        	            
-    <release version="1.5" date="Mar 1, 2003">
+    <release version="1.5" date="March 1, 2003">
+     <action dev="" type="fix">
+      Multiple bugfixes.
+     </action>                                      
      <action dev="" type="add">
       <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=533321&amp;group_id=47439&amp;atid=449491">533321</a> 
             - DbUnit is now case insensitive.
@@ -72,7 +78,7 @@
      </action> 
      <action dev="" type="add">
       <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=684610&amp;group_id=47439&amp;atid=449494">590245</a> 
-            / <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=590245&amp;group_id=47439&amp;atid=449494">684610</a> 
+            &amp; <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=590245&amp;group_id=47439&amp;atid=449494">684610</a> 
             - New <a class="code">Reader</a> and <a class="code">Writers</a> methods 
             to read and write XML datasets. <a class="code">InputStream</a> and 
             <a class="code">OutputStream</a> methods are now deprecated.
@@ -96,13 +102,10 @@
           <a href="howto.html#canoo">guide</a>.
 
      </action>  
-     <action dev="" type="fix">
-      Multiple bugfixes.
-     </action>                                      
     
     </release>   
     
-  <release version="1.4" date="Jul 17, 2002">
+  <release version="1.4" date="July 17, 2002">
      <action dev="" type="update">
      Moved the Base64 class to the <a class="code">org.dbunit.util</a> 
           package because Visual Age for Java is not able to handle classes located 
@@ -134,10 +137,96 @@
      <strong><em>DbUnitTask</em></strong> for Ant contributed by Timothy 
             Ruppert and Ben Cox.
      </action>    
-     <action dev="" type="update">
-     Support for BLOB and CLOB data types.
+     <action dev="" type="add">
+     Added support for BLOB and CLOB data types.
      </action>                       
   </release>      
+
+  <release version="1.3" date="April 4, 2002">
+     <action dev="" type="add">
+     Added support for binary data types: BINARY, VARBINARY and LONGVARBINARY. 
+          Binary data is persisted in xml datasets using the base64 encoding scheme.
+     </action>    
+     <action dev="" type="add">
+     Added the CaseInsentiveDataSet class.
+     </action>    
+     <action dev="" type="update">
+     Deprecated the DataSetUtils.assertEquals() methods. You should now 
+          use Assertion.assertEquals(). 
+     </action> 
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=533537&amp;group_id=47439&amp;atid=449491">533537</a> 
+            - FlatXmlDataSet and null values.
+     </action> 
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=534757&amp;group_id=47439&amp;atid=449491">533537</a> 
+            - Problem with single quotes.
+     </action>    
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=534810&amp;group_id=47439&amp;atid=449491">534810</a> 
+            - Problem when primary key include all columns
+     </action>   
+  </release>      
+
+  <release version="1.2.4" date="March 19, 2002">
+     <action dev="" type="add">
+     	Added support for multiple schemas per connection. See <a href="faq.html#multipleschema">FAQ 
+          </a> document.
+     </action>    
+     <action dev="" type="update">
+     	Removed element &lt;none/&gt; from dataset.dtd. This feature was incompatible 
+          with future support for the binary data types.
+     </action>    
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=530998&amp;group_id=47439&amp;atid=449491">530998</a> 
+          - DataSetUtils.AssertEquals(ITable table, ITable table). 
+     </action> 
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=533540&amp;group_id=47439&amp;atid=449491">533540</a> 
+          - Problem with DATE, TIME and TIMESTAMP.
+     </action> 
+  </release>      
+
+  <release version="1.2" date="March 15, 2002">
+     <action dev="" type="add">
+     	Added the flat xml dataset format. See the <a href="components.html#FlatXmlDataSet">FlatXmlDataSet</a> 
+          in Core Components document.
+     </action>    
+     <action dev="" type="add">
+     	Added database data verification feature. See <a href="howto.html#assertdata">Getting Started</a> document.
+     </action>    
+     <action dev="" type="update">
+     	Updated Electric XML parser to version 3.2. 
+     </action> 
+  </release>      
+
+  <release version="1.1" date="March 10, 2002">
+     <action dev="" type="update">
+     	Connections are now closed in each setUp() and tearDown(). You 
+              must override the DatabaseTestCase.closeConnection() and provide 
+              an empty body to modify this behavior. This is not recommended to bypass connection close if 
+              you use connection pooling.
+     </action>    
+     <action dev="" type="add">
+     	Added the IDatabaseConnection interface.
+     </action>    
+     <action dev="" type="add">
+     	Added the DatabaseDataSourceConnection class. This class provides 
+            support for accessing JDBC connections from a DataSource. JDBC connections 
+            are requested on demand from the DataSource.
+     </action> 
+     <action dev="" type="update">
+     	Multiple performance improvement.
+     </action>    
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=526235&amp;group_id=47439&amp;atid=449491">526235</a> 
+            - Cannot export tables with JDBC-ODBC bridge and MS-SQL.
+     </action>    
+  </release>      
+
+  <release version="1.0" date="Febuary 27, 2002" description="Initial public release.">
+  </release>      
+
   </body>
 </document>
 
