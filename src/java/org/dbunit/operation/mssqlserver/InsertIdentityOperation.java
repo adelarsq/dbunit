@@ -78,7 +78,7 @@ public class InsertIdentityOperation extends DatabaseOperation
         _operation = operation;
     }
 
-    private boolean hasIdentityColumn(ITableMetaData metaData)
+    protected boolean hasIdentityColumn(ITableMetaData metaData)
             throws DataSetException
     {
         // check all columns to see if they are an identity column
