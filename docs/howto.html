@@ -56,6 +56,7 @@
         <li><a href="#multipleschema">How to export data from or import data to
           multiple database schemas</a></li>
         <li><a href="#dtdsupport">How to associate a DTD with your schema to support NULL values in columns</a></li>
+        <li><a href="#integrate-webtest">How to Use DbUnit with WebTest to support testing database centric webapps</a></li>
       </ul>
       <hr>
       <a name="createtest">
@@ -370,6 +371,85 @@ public class DatabaseExportSample
         // Verify if database data match expected data
         Assertion.assertEquals(expectedData, databaseData);
       </pre>
+
+    <a name="integrate-webtest">
+      <h2>How to Use DbUnit with WebTest to support testing database centric webapps</h2>
+      </a> With Dbunit 1.4's new Ant tasks, Dbunit makes it much easier to run WebTest scripts for database centric applications.  <a href="http://webtest.canoo.com">WebTest</a> is a tool to simulate a user's browser clicking through the pages on a web site.  It allows you to create a series of Ant based tests for your website.  In fact, this can be used to perform User Acceptance tests for websites built using non Java technologies like ColdFusion or ASP!  This howto walks you through a suggested format for storing tests.
+      <br>
+      <h4>Step 1: Create your dataset file</h4>
+      Your first step is to create your dataset file that you wan to load into your database before running your WebTest script.  Use one of the various methods described above.  Put the various datasets you need in a <code>/data</code> directory.
+      <h4>Step 2: Create your Ant build.xml file</h4>
+      A suggested setup is to have a single build.xml file that is the entry point for all your tests.  This would include a couple targets like:
+      <ol>
+        <li> <code>test</code>: Runs all the testSuites that you have created
+        <li> <code>test:single</code>: Runs a single test in a specific testSuite
+        <li> <code>test:suite</code>: Runs all the tests for a specific testSuite
+      </ol>
+
+      <h4>Step 3: Create your various Test Suites</h4>
+      Once you have your build.xml file set up, you can now call the various TestSuites.  Create a separate TestSuiteXXX.xml for the various modules that you would like to test.  In your TestSuiteXXX.xml, you should have your default target testSuite call all the testcases you have definied:
+
+      <pre>
+      &lt;target name="testSuite"&gt;
+
+        &lt;antcall target="unsubscribeEmailAddressWithEmail"/&gt;
+        &lt;antcall target="unsubscribeEmailAddressWithEmailID"/&gt;
+        &lt;antcall target="unsubscribeEmailAddressWithNewEmailAddress"/&gt;
+
+        &lt;antcall target="subscribeEmailAddressWithOptedOutEmail"/&gt;
+        &lt;antcall target="subscribeEmailAddressWithNewEmailAddress"/&gt;
+        &lt;antcall target="subscribeEmailAddressWithInvalidEmailAddress"/&gt;
+
+      &lt;/target&gt;
+      </pre>
+
+      This way you can either run all the test's in your Test Suite, or just run a specific one, all from build.xml!
+
+      <br>
+      <h4>Step 4: Create your various Tests</h4>
+      Now you need to write your various testcases.  For more information on WebTest, please refer to <a href=http://webtest.canoo.com>the WebTest</a> home page.  If you have find you are duplicating pieces of XML, then place them in a <code>/includes</code> directory.
+
+      If you have a single set of properties, then load them as part of build.xml by specifing them in your build.properties file.  If you have multiple databases you need to connect to, then declare your sql connection properties in a TestSuiteXXX.properties file that you load on a per suite basis.  In this example, we are using doing a clean insert into the database, and using the MSSQL_CLEAN_INSERT instead of CLEAN_INSERT because of the requirement to do identity column inserts.
+      <pre>
+      &lt;target name="subscribeEmailAddressWithOptedOutEmail"&gt;
+        &lt;dbunit
+            driver="${sql.jdbcdriver}"
+            url="${sql.url}"
+            userid="${sql.username}"
+            password="${sql.password}"&gt;
+                &lt;operation type="MSSQL_CLEAN_INSERT" src="data/subscribeEmailAddressWithOptedOutEmail.xml"
+                format="flat"/&gt;
+        &lt;/dbunit&gt;
+        &lt;testSpec name="subscribeEmailAddressWithOptedOutEmail"&gt;
+          &sharedConfiguration;
+          &lt;steps&gt;
+            &lt;invoke stepid="main page"
+                    url="/edm/subscribe.asp?e=subscribeEmailAddressWithOptedOutEmail@test.com"
+              save="subscribeEmailAddressWithNewEmailAddress"/&gt;
+            &lt;verifytext stepid="Make sure we received the success message"
+              text="You have been subscribed to the mailing list"/&gt;
+
+          &lt;/steps&gt;
+        &lt;/testSpec&gt;
+      &lt;/target&gt;
+      </pre>
+
+      <br>
+      <h4>Sample Directory Layout</h4>
+      When you are done, you will have a series of files that look like this:
+      <pre>
+      \root\
+        <a href="sample_webtest/build.xml">build.xml</a>
+        <a href="sample_webtest/build.properties">build.properties</a>
+        <a href="sample_webtest/TestSuiteEmail.xml">TestSuiteEmail.xml</a>
+        <a href="sample_webtest/TestSuiteEmail.properties">TestSuiteEmail.properties</a>
+      \root\data\
+        <a href="sample_webtest/subscribeEmailAddressWithOptedOutEmail.xml">subscribeEmailAddressWithOptedOutEmail.xml</a>
+      \root\includes\
+        <a href="sample_webtest/sharedConfiguration.xml">sharedConfiguration.xml</a>
+      </pre>
+
+
 
 
       <!-- #EndEditable -->
