@@ -21,13 +21,16 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.*;
-
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.BitSet;
+import java.util.List;
+
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoPrimaryKeyException;
 
 /**
  * Updates the database from the dataset contents. This operation assumes that

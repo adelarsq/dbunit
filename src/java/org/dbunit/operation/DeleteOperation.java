@@ -21,12 +21,16 @@
 
 package org.dbunit.operation;
 
+import java.util.BitSet;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.*;
-
-import java.math.BigInteger;
-import java.util.BitSet;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoPrimaryKeyException;
 
 /**
  * Deletes only the dataset contents from the database. This operation does not

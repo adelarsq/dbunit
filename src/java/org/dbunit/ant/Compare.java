@@ -24,12 +24,10 @@ package org.dbunit.ant;
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.CompositeTable;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.FilteredTableMetaData;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 
 import java.io.File;

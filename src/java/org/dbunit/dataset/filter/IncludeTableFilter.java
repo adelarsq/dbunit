@@ -20,9 +20,6 @@
  */
 package org.dbunit.dataset.filter;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * This filter exposes only allowed tables from the filtered dataset. This
