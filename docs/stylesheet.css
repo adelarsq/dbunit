@@ -1,58 +1,58 @@
-body {
-	font-family: lucida, verdana;
-	font-size: 10pt;
-	color: #000000;
-	background-color: #FFFFFF
+BODY {
+	FONT-SIZE: 10pt; COLOR: #000000; FONT-FAMILY: lucida, verdana; BACKGROUND-COLOR: #EDE8E1; MARGIN: 0px;
 }
-
-a:link		{ color: #FF4444 }
-a:active	{ color: #4444FF }
-a:visited	{ color: #AA4444 }
-a:hover		{ color: #FF4444; background-color: #F4E5E5 }
-a:hover img	{ background-color: #FFFFFF }
-
+A:link {
+	COLOR: #264678
+}
+A:active {
+	COLOR: #86A6D8
+}
+A:visited {
+	COLOR: #6686B8
+}
+A:hover {
+	COLOR: #D6B781
+}
+TD.menu A:link {
+	COLOR: #D6B781
+}
+TD.menu A:active {
+	COLOR: #FFFFFF
+}
+TD.menu A:visited {
+	COLOR: #A68751
+}
+TD.menu A:hover {
+	COLOR: #EDE8E1
+}
 .pageTitle {
-	font-size: 2em;
-	font-weight: bold;
-	letter-spacing: 0.25em;
-	text-align: center;
-	color: #FFFFFF;
-	background-color: #980000
+	FONT-WEIGHT: bold; FONT-SIZE: 2em; COLOR: #ffffff; LETTER-SPACING: 0.25em; BACKGROUND-COLOR: #980000; TEXT-ALIGN: center
 }
-
 .sectionTitle {
-	font-weight: bold;
-	font-style: italic;
-	color: #000000;
-	background-color: #F4E5E5;
-	border-top-width: 1px;
-	border-bottom-width: 0;
-	border-left-width: 0;
-	border-right-width: 0;
-	border-style: solid;
-	border-color: #980000
+	BORDER-RIGHT: #980000 0px solid; BORDER-TOP: #980000 1px solid; FONT-WEIGHT: bold; BORDER-LEFT: #980000 0px solid; COLOR: #000000; BORDER-BOTTOM: #980000 0px solid; FONT-STYLE: italic; BACKGROUND-COLOR: #f4e5e5
 }
-
 .noteTable {
-	color: #FFFFFF;
-	background-color: #980000;
+	COLOR: #ffffff; BACKGROUND-COLOR: #980000
 }
-
 .noteText {
-	color: #000000;
-	background-color: #F4E5E5;
-	border-top-width: 1px;
-	border-bottom-width: 1px;
-	border-left-width: 1px;
-	border-right-width: 1px;
-	border-style: solid;
-	border-color: #980000;
+	BORDER-RIGHT: #980000 1px solid; BORDER-TOP: #980000 1px solid; BORDER-LEFT: #980000 1px solid; COLOR: #000000; BORDER-BOTTOM: #980000 1px solid; BACKGROUND-COLOR: #f4e5e5
 }
-
+H2 {
+	FONT-WEIGHT: normal; COLOR: #EDE8E1; BACKGROUND-COLOR: #A68751; BACKGROUND-IMAGE: url(images/band.jpg); BORDER: black 1px solid; PADDING: 2px 8px;
+}
+TD.logo {
+	BACKGROUND-COLOR: #A68751;
+; text-align: center; vertical-align: middle
+}
+TD.header {
+	BACKGROUND-COLOR: #A68751; BACKGROUND-IMAGE: url(images/header.jpg);
+; background-repeat: repeat; background-position: left center
+; border-style: none
+}
 TD.menu {
-	color: #000000;
-	background-color: #AAAAAA;
-; border-style: none; border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px}
-
-
-table {  padding-top: 8px; padding-right: 8px; padding-bottom: 8px; padding-left: 8px}
+	BACKGROUND-COLOR: #264678; BACKGROUND-IMAGE: url(images/menu.gif); PADDING: 16px 16px;
+}
+TD.body {
+	BACKGROUND-COLOR: #EDE8E1; BACKGROUND-IMAGE: url(images/body.gif); PADDING: 16px 16px;
+}
+pre {  font-size: smaller; color: #666666}

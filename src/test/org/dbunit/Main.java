@@ -22,18 +22,14 @@
 
 package org.dbunit;
 
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.FilteredDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-
-import java.io.File;
 import java.io.FileOutputStream;
+import java.io.File;
 import java.util.Arrays;
 
-import Base64;
 import electric.xml.*;
-import junit.framework.Assert;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 /**
  * @author Manuel Laflamme
@@ -43,20 +39,34 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        IDatabaseConnection connection =
-                DatabaseEnvironment.getInstance().getConnection();
-
-//        System.out.println(connection.createDataSet().getTableMetaData("EMPTY_MULTITYPE_TABLE"));
-        String[] tableNames = connection.createDataSet().getTableNames();
-        Arrays.sort(tableNames);
-        FlatXmlDataSet.writeDtd(new FilteredDataSet(tableNames,
-                connection.createDataSet()),
-                new FileOutputStream("test2.dtd"));
+//        IDatabaseConnection connection =
+//                DatabaseEnvironment.getInstance().getConnection();
+//
+//        String[] tableNames = connection.createDataSet().getTableNames();
+//        Arrays.sort(tableNames);
+//        FlatXmlDataSet.writeDtd(new FilteredDataSet(tableNames,
+//                connection.createDataSet()),
+//                new FileOutputStream("test.dtd"));
+//
+//
 //        FlatXmlDataSet.write(new FilteredDataSet(tableNames,
 //                connection.createDataSet()),
 //                new FileOutputStream("test.xml"));
 
-//        IDataSet dataSet = new FlatXmlDataSet(new FileInputStream("test.xml"));
+
+        ////////////////////////////////
+        Document document = new Document(new File("test.xml"));
+        DocType docType = document.getDocType();
+        System.out.println(docType);
+
+        // display children of DocType
+        for (Children decls = docType.getChildren(); decls.hasMoreElements();)
+        {
+            Child decl = decls.next();
+            String type = decl.getClass().getName();
+            System.out.println("decl = " + decl + ", class: " + type);
+        }
+
 //
 //        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 //        DatabaseOperation.DELETE.execute(connection, dataSet);
@@ -70,9 +80,10 @@ public class Main
 //        FlatXmlDataSet.write(new XmlDataSet(
 //                new FileInputStream("src/xml/refreshOperationTest.xml")),
 //                new FileOutputStream("src/xml/refreshOperationTestSetup.xml"));
-    }
+}
 
 }
+
 
 
 
