@@ -57,7 +57,7 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
     {
         _result += _statement.executeUpdate();
         _index = 0;
-        _statement.clearParameters();
+//        _statement.clearParameters();
     }
 
     public int executeBatch() throws SQLException
@@ -69,12 +69,13 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
 
     public void clearBatch() throws SQLException
     {
-        _statement.clearParameters();
+//        _statement.clearParameters();
         _index = 0;
         _result = 0;
     }
 
 }
+
 
 
 

@@ -70,10 +70,11 @@ public class PreparedBatchStatement extends AbstractPreparedBatchStatement
 
     public void clearBatch() throws SQLException
     {
-        _statement.clearParameters();
+//        _statement.clearParameters();
         _statement.clearBatch();
     }
 }
+
 
 
 
