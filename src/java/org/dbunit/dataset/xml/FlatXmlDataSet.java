@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URL;
 
 /**
  * Reads and writes flat XML dataset document. Each XML element corresponds to a table row.
@@ -97,11 +98,34 @@ public class FlatXmlDataSet extends CachedDataSet
     public FlatXmlDataSet(File xmlFile, boolean dtdMetadata)
             throws IOException, DataSetException
     {
-        super(new FlatXmlProducer(
-                new InputSource(xmlFile.toURL().toString()),
-                dtdMetadata));
+        this(xmlFile.toURL(), dtdMetadata);
     }
 
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml URL.
+     * Relative DOCTYPE uri are resolved from the xml file path.
+     *
+     * @param xmlUrl the xml URL
+     */
+    public FlatXmlDataSet(URL xmlUrl) throws IOException, DataSetException
+    {
+        this(xmlUrl, true);
+    }
+
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml URL.
+     * Relative DOCTYPE uri are resolved from the xml file path.
+     *
+     * @param xmlUrl the xml URL
+     * @param dtdMetadata if <code>false</code> do not use DTD as metadata
+     */
+    public FlatXmlDataSet(URL xmlUrl, boolean dtdMetadata)
+            throws IOException, DataSetException
+    {
+        super(new FlatXmlProducer(
+                new InputSource(xmlUrl.toString()), dtdMetadata));
+    }
+    
     /**
      * Creates an FlatXmlDataSet object with the specifed xml reader.
      * Relative DOCTYPE uri are resolved from the current working dicrectory.
