@@ -26,6 +26,7 @@ import java.sql.SQLException;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
 /**
@@ -49,7 +50,7 @@ public class CompositeOperation extends DatabaseOperation
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseOperation class
 
-    public void execute(DatabaseConnection connection, IDataSet dataSet)
+    public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
         for (int i = 0; i < _actions.length; i++)
@@ -59,3 +60,4 @@ public class CompositeOperation extends DatabaseOperation
         }
     }
 }
+

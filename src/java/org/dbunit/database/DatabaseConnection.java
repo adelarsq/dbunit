@@ -30,11 +30,10 @@ import org.dbunit.dataset.*;
  * @author Manuel Laflamme
  * @version 1.0
  */
-public class DatabaseConnection
+public class DatabaseConnection extends AbstractDatabaseConnection implements IDatabaseConnection
 {
     private final Connection _connection;
     private final String _schema;
-    private IDataSet _dataSet = null;
 
     public DatabaseConnection(Connection connection, String schema)
     {
@@ -58,62 +57,8 @@ public class DatabaseConnection
         return _schema;
     }
 
-    public IDataSet createDataSet() throws SQLException
+    public void close() throws SQLException
     {
-        if (_dataSet == null)
-        {
-            _dataSet = new DatabaseDataSet(this);
-        }
-
-        return _dataSet;
-    }
-
-    public IDataSet createDataSet(String[] tableNames) throws SQLException
-    {
-        return new FilteredDataSet(tableNames, createDataSet());
-    }
-
-    /**
-     * Creates a table with the result of the specified SQL statement. The table
-     * can be the result of a join statement.
-     *
-     * @param resultName The name tobe returned by {@link TableMetaData.getTableName}.
-     * @param sql The SQL <code>SELECT</code> statement
-     */
-    public ITable createQueryTable(String resultName, String sql)
-            throws DataSetException, SQLException
-    {
-        Statement statement = _connection.createStatement();
-        try
-        {
-            ResultSet resultSet = statement.executeQuery(sql);
-
-            try
-            {
-                ITableMetaData metaData = ResultSetTable.createTableMetaData(
-                        resultName, resultSet);
-                return new CachedResultSetTable(metaData, resultSet);
-            }
-            finally
-            {
-                resultSet.close();
-            }
-        }
-        finally
-        {
-            statement.close();
-        }
-    }
-
-    public BatchStatement createBatchStatment() throws SQLException
-    {
-        if (_connection.getMetaData().supportsBatchUpdates())
-        {
-            return new BatchStatement(_connection);
-        }
-        else
-        {
-            return new SimpleStatement(_connection);
-        }
+        _connection.close();
     }
 }

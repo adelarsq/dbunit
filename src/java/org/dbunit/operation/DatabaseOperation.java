@@ -26,6 +26,7 @@ import java.sql.SQLException;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
 /**
@@ -43,12 +44,12 @@ public abstract class DatabaseOperation
     public static final DatabaseOperation CLEAN_INSERT = new CompositeOperation(
             DELETE_ALL, INSERT);
 
-    public abstract void execute(DatabaseConnection connection,
+    public abstract void execute(IDatabaseConnection connection,
             IDataSet dataSet) throws DatabaseUnitException, SQLException;
 
     private static class DummyAction extends DatabaseOperation
     {
-        public void execute(DatabaseConnection connection, IDataSet dataSet)
+        public void execute(IDatabaseConnection connection, IDataSet dataSet)
         {
         }
     }

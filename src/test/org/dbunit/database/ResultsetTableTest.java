@@ -39,7 +39,7 @@ public class ResultsetTableTest extends AbstractTableTest
 
     protected ITable createTable() throws Exception
     {
-        DatabaseConnection connection =
+        IDatabaseConnection connection =
                 DatabaseEnvironment.getInstance().getConnection();
 
         String sql = "select * from TEST_TABLE order by COLUMN0";

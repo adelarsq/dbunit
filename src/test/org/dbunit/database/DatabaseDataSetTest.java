@@ -34,7 +34,7 @@ import org.dbunit.dataset.*;
  */
 public class DatabaseDataSetTest extends AbstractDataSetTest
 {
-    private DatabaseConnection _connection;
+    private IDatabaseConnection _connection;
 
     public DatabaseDataSetTest(String s)
     {

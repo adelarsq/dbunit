@@ -25,8 +25,7 @@ package org.dbunit.operation;
 import java.sql.SQLException;
 
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.BatchStatement;
-import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.*;
 import org.dbunit.dataset.*;
 
 /**
@@ -74,13 +73,13 @@ public abstract class AbstractRowOperation extends DatabaseOperation
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseOperation class
 
-    public void execute(DatabaseConnection connection, IDataSet dataSet)
+    public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
         // this dataset is used to get metadata from database
         IDataSet databaseDataSet = connection.createDataSet();
 
-        BatchStatement statement = connection.createBatchStatment();
+        BatchStatement statement = connection.createBatchStatement();
         try
         {
             String[] tableNames = getTableNames(dataSet);

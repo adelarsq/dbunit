@@ -27,6 +27,7 @@ import java.sql.Statement;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.*;
 
 /**
@@ -53,7 +54,7 @@ public class RefreshOperation extends DatabaseOperation
                 schema, table, row);
     }
 
-    private void executeRowAction(DatabaseConnection connection, ITable table,
+    private void executeRowAction(IDatabaseConnection connection, ITable table,
             int row) throws DatabaseUnitException, SQLException
     {
         Statement statement = connection.getConnection().createStatement();
@@ -78,7 +79,7 @@ public class RefreshOperation extends DatabaseOperation
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseOperation class
 
-    public void execute(DatabaseConnection connection, IDataSet dataSet)
+    public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
         // this dataset is used to get metadata from database

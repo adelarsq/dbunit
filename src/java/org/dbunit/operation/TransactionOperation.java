@@ -27,6 +27,7 @@ import java.sql.SQLException;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
 /**
@@ -45,10 +46,10 @@ public class TransactionOperation extends DatabaseOperation
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseOperation class
 
-    public void execute(DatabaseConnection connection, IDataSet dataSet)
+    public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        DatabaseConnection databaseConnection = connection;
+        IDatabaseConnection databaseConnection = connection;
         Connection jdbcConnection = databaseConnection.getConnection();
 
         if (jdbcConnection.getAutoCommit() == false)

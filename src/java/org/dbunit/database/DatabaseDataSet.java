@@ -1,5 +1,5 @@
 /*
- * XmlDataSet.java   Feb 17, 2002
+ * DatabaseDataSet.java   Feb 17, 2002
  *
  * The dbUnit database testing framework.
  * Copyright (C) 2002   Manuel Laflamme
@@ -39,7 +39,7 @@ public class DatabaseDataSet extends AbstractDataSet
     private final String _schema;
     private Map _tableMap = null;
 
-    DatabaseDataSet(DatabaseConnection connection) throws SQLException
+    DatabaseDataSet(IDatabaseConnection connection) throws SQLException
     {
         _connection = connection.getConnection();
         _schema = connection.getSchema();
@@ -72,7 +72,8 @@ public class DatabaseDataSet extends AbstractDataSet
     private String[] getPrimaryKeys(String tableName) throws SQLException
     {
         DatabaseMetaData databaseMetaData = _connection.getMetaData();
-        ResultSet resultSet = databaseMetaData.getPrimaryKeys("", _schema, tableName);
+        ResultSet resultSet = databaseMetaData.getPrimaryKeys(
+                _connection.getCatalog(), _schema, tableName);
 
         List list = new ArrayList();
         try
@@ -146,7 +147,7 @@ public class DatabaseDataSet extends AbstractDataSet
         {
             DatabaseMetaData databaseMetaData = _connection.getMetaData();
             ResultSet resultSet = databaseMetaData.getTables(
-                    "", _schema, "%", null);
+                    _connection.getCatalog(), _schema, "%", null);
 
             try
             {
@@ -198,7 +199,8 @@ public class DatabaseDataSet extends AbstractDataSet
         try
         {
             DatabaseMetaData databaseMetaData = _connection.getMetaData();
-            ResultSet resultSet = databaseMetaData.getColumns("", _schema, tableName, null);
+            ResultSet resultSet = databaseMetaData.getColumns(
+                    _connection.getCatalog(), _schema, tableName, null);
 
             try
             {

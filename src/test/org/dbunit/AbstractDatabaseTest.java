@@ -23,6 +23,7 @@
 package org.dbunit;
 
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.IDataSet;
 
@@ -32,7 +33,7 @@ import org.dbunit.dataset.IDataSet;
  */
 public abstract class AbstractDatabaseTest extends DatabaseTestCase
 {
-    protected DatabaseConnection _connection;
+    protected IDatabaseConnection _connection;
 
     public AbstractDatabaseTest(String s)
     {
@@ -71,7 +72,7 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseTestCase class
 
-    protected DatabaseConnection getConnection() throws Exception
+    protected IDatabaseConnection getConnection() throws Exception
     {
         return getEnvironment().getConnection();
     }
@@ -81,4 +82,7 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
         return getEnvironment().getInitDataSet();
     }
 
+    protected void closeConnection(IDatabaseConnection connection) throws Exception
+    {
+    }
 }

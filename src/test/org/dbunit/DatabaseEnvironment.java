@@ -29,6 +29,7 @@ import java.sql.DriverManager;
 import java.util.Properties;
 
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 
@@ -37,7 +38,7 @@ public class DatabaseEnvironment
     private static DatabaseEnvironment INSTANCE = null;
 
     private DatabaseProfile _profile = null;
-    private DatabaseConnection _connection = null;
+    private IDatabaseConnection _connection = null;
     private IDataSet _dataSet = null;
 
     public static DatabaseEnvironment getInstance() throws Exception
@@ -78,7 +79,7 @@ public class DatabaseEnvironment
         _dataSet = new XmlDataSet(new FileInputStream(file));
     }
 
-    public DatabaseConnection getConnection() throws Exception
+    public IDatabaseConnection getConnection() throws Exception
     {
         return _connection;
     }

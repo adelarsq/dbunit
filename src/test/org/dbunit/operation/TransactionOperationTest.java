@@ -29,6 +29,7 @@ import java.sql.SQLException;
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.XmlDataSet;
@@ -155,7 +156,7 @@ public class TransactionOperationTest extends AbstractDatabaseTest
             _exception = exception;
         }
 
-        public void execute(DatabaseConnection connection, IDataSet dataSet)
+        public void execute(IDatabaseConnection connection, IDataSet dataSet)
                 throws DatabaseUnitException, SQLException
         {
             if (_exception instanceof SQLException)

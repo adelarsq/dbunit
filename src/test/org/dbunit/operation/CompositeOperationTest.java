@@ -54,7 +54,9 @@ public class CompositeOperationTest extends AbstractDatabaseTest
         assertEquals("before", "1", tableBefore.getValue(1, columnName).toString());
         assertEquals("before", "2", tableBefore.getValue(2, columnName).toString());
 
-        DatabaseOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
+        DatabaseOperation operation = new CompositeOperation(
+                DatabaseOperation.DELETE_ALL, DatabaseOperation.INSERT);
+        operation.execute(_connection, xmlDataSet);
 
         ITable tableAfter = createOrderedTable(tableName, columnName);
         assertEquals("row count after", 2, tableAfter.getRowCount());
@@ -63,3 +65,4 @@ public class CompositeOperationTest extends AbstractDatabaseTest
     }
 
 }
+

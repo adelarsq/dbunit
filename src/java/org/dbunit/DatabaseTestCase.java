@@ -23,6 +23,7 @@
 package org.dbunit;
 
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import junit.framework.TestCase;
@@ -38,15 +39,36 @@ public abstract class DatabaseTestCase extends TestCase
         super(name);
     }
 
-    protected abstract DatabaseConnection getConnection() throws Exception;
+    /**
+     * Returns the test database connection.
+     */
+    protected abstract IDatabaseConnection getConnection() throws Exception;
 
+    /**
+     * Returns the test dataset.
+     */
     protected abstract IDataSet getDataSet() throws Exception;
 
+    /**
+     * Close the specified connection. Ovverride this method of you want to
+     * keep your connection alive between tests.
+     */
+    protected void closeConnection(IDatabaseConnection connection) throws Exception
+    {
+        connection.close();
+    }
+
+    /**
+     * Returns the database operation executed in test setup.
+     */
     protected DatabaseOperation getSetUpOperation() throws Exception
     {
         return DatabaseOperation.CLEAN_INSERT;
     }
 
+    /**
+     * Returns the database operation executed in test cleanup.
+     */
     protected DatabaseOperation getTearDownOperation() throws Exception
     {
         return DatabaseOperation.NONE;
@@ -59,13 +81,29 @@ public abstract class DatabaseTestCase extends TestCase
     {
         super.setUp();
 
-        getSetUpOperation().execute(getConnection(), getDataSet());
+        IDatabaseConnection connection = getConnection();
+        try
+        {
+            getSetUpOperation().execute(connection, getDataSet());
+        }
+        finally
+        {
+            closeConnection(connection);
+        }
     }
 
     protected void tearDown() throws Exception
     {
         super.tearDown();
 
-        getTearDownOperation().execute(getConnection(), getDataSet());
+        IDatabaseConnection connection = getConnection();
+        try
+        {
+            getTearDownOperation().execute(connection, getDataSet());
+        }
+        finally
+        {
+            closeConnection(connection);
+        }
     }
 }
