@@ -23,7 +23,9 @@
         How to build DbUnit?
       </question>
       <answer>
-      <p>Since version 2.0, DbUnit is build with <a href="http://maven.apache.org/">Maven 1.0-rc1</a>. See project <a href="dependencies.html">dependencies</a>.</p>
+      <p>Since version 2.0, DbUnit is build with <a href="http://maven.apache.org/">Maven 1.0-rc1</a>. See project <a href="dependencies.html">dependencies</a>. </p>
+      <p><b>NOTE:</b> There is currently one test from the DbUnit 2.0 source distribution that fails. You can safely ignore this failure when building DbUnit.
+      </p>
       </answer>
     </faq>
 
