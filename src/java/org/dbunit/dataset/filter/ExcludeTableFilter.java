@@ -54,11 +54,14 @@ public class ExcludeTableFilter extends AbstractTableFilter implements ITableFil
     }
 
     /**
-     * Add a new table name to exclude in this filter.
+     * Add a new table pattern name to exclude in this filter.
+     * The following special characters can be used:
+     * '*' matches zero or more characters,
+     * '?' matches one character.
      */
-    public void excludeTable(String tableName)
+    public void excludeTable(String patternName)
     {
-        _includeFilter.includeTable(tableName);
+        _includeFilter.includeTable(patternName);
     }
 
     ////////////////////////////////////////////////////////////////////////////
