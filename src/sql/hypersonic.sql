@@ -45,11 +45,11 @@ CREATE TABLE "ESCAPED TABLE"
 -----------------------------------------------------------------------------
 
 CREATE TABLE PK_TABLE
-  (PK0 NUMERIC(38, 0) NOT NULL PRIMARY KEY,
+  (PK0 NUMERIC(38, 0) NOT NULL,
    PK1 NUMERIC(38, 0) NOT NULL,
    PK2 NUMERIC(38, 0) NOT NULL,
    NORMAL0 VARCHAR(32),
-   NORMAL1 VARCHAR(32));
+   NORMAL1 VARCHAR(32), PRIMARY KEY (PK0, PK1, PK2));
 
 -----------------------------------------------------------------------------
 -- ONLY_PK_TABLE

@@ -37,7 +37,6 @@ public class DatabaseProfile
     private static final String SCHEMA = "schema";
     private static final String USER = "user";
     private static final String PASSWORD = "password";
-    private static final String PRIMARY_KEY_SUPPORT = "primaryKey";
 
     private final Properties _properties;
 
@@ -81,12 +80,6 @@ public class DatabaseProfile
         return _properties.getProperty(getPropertyKey(PASSWORD));
     }
 
-    public PrimaryKeySupport getPrimaryKeySupport()
-    {
-        String value = _properties.getProperty(
-                getPropertyKey(PRIMARY_KEY_SUPPORT));
-        return PrimaryKeySupport.forName(value);
-    }
 }
 
 

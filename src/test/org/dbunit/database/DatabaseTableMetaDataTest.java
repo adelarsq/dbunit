@@ -45,8 +45,8 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
     public void testGetPrimaryKeys() throws Exception
     {
         String tableName = "PK_TABLE";
-        String[] expected = {"PK0"};
-//        String[] expected = {"PK0", "PK1", "PK2"};
+//        String[] expected = {"PK0"};
+        String[] expected = {"PK0", "PK1", "PK2"};
 
         ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
         Column[] columns = metaData.getPrimaryKeys();

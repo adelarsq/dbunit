@@ -352,9 +352,9 @@ public class UpdateOperationTest extends AbstractDatabaseTest
             {
                 assertEquals("PK0", "1",
                         tableAfter.getValue(i, "PK0").toString());
-                assertEquals("PK1", "11",
+                assertEquals("PK1", "1",
                         tableAfter.getValue(i, "PK1").toString());
-                assertEquals("PK2", "111",
+                assertEquals("PK2", "1",
                         tableAfter.getValue(i, "PK2").toString());
                 assertEquals("NORMAL0", "toto",
                         tableAfter.getValue(i, "NORMAL0").toString());

@@ -220,7 +220,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
     {
         String tableName = DataSetUtils.getQualifiedName(
                 _connection.getSchema(), "PK_TABLE");
-        String[] expected = {"PK0"};
+        String[] expected = {"PK0", "PK1", "PK2"};
 
         try
         {

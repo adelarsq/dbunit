@@ -1,8 +1,6 @@
-<!-- edited with XML Spy v3.5 (http://www.xmlspy.com) by  () -->
 <dataset>
-	<PK_TABLE PK0="1" PK1="11" PK2="111" NORMAL0="toto" NORMAL1="qwerty"/>
-	<PK_TABLE PK0="3" PK1="33" PK2="333" NORMAL0="3333" NORMAL1="33333"/>
+	<PK_TABLE PK0="1" PK1="1" PK2="1" NORMAL0="toto" NORMAL1="qwerty"/>
+	<PK_TABLE PK0="3" PK1="3" PK2="3" NORMAL0="3333" NORMAL1="33333"/>
 	<ONLY_PK_TABLE PK0="0"/>
 	<ONLY_PK_TABLE PK0="1"/>
 </dataset>
-

@@ -115,7 +115,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         public int compareTo(Object o)
         {
             PrimaryKeyData data = (PrimaryKeyData)o;
-            return data.getIndex() - getIndex();
+            return getIndex() - data.getIndex();
         }
     }
 

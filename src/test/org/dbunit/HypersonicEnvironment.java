@@ -58,11 +58,6 @@ public class HypersonicEnvironment extends DatabaseEnvironment
         }
     }
 
-    public PrimaryKeySupport getPrimaryKeySupport() throws Exception
-    {
-        return PrimaryKeySupport.SINGLE;
-    }
-
 }
 
 
