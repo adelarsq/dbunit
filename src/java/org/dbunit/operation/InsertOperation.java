@@ -27,7 +27,7 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableMetaData;
 
-import java.math.BigInteger;
+import java.util.BitSet;
 
 /**
  * Inserts the dataset contents into the database. This operation assumes that
@@ -49,7 +49,7 @@ public class InsertOperation extends AbstractBatchOperation
     // AbstractBatchOperation class
 
     public OperationData getOperationData(ITableMetaData metaData,
-            BigInteger ignoreMapping, IDatabaseConnection connection) throws DataSetException
+            BitSet ignoreMapping, IDatabaseConnection connection) throws DataSetException
     {
         Column[] columns = metaData.getColumns();
 
@@ -64,7 +64,7 @@ public class InsertOperation extends AbstractBatchOperation
         String columnSeparator = "";
         for (int i = 0; i < columns.length; i++)
         {
-            if (!ignoreMapping.testBit(i))
+            if (!ignoreMapping.get(i))
             {
                 // escape column name
                 String columnName = getQualifiedName(null,
@@ -80,7 +80,7 @@ public class InsertOperation extends AbstractBatchOperation
         String valueSeparator = "";
         for (int i = 0; i < columns.length; i++)
         {
-            if (!ignoreMapping.testBit(i))
+            if (!ignoreMapping.get(i))
             {
                 sqlBuffer.append(valueSeparator);
                 sqlBuffer.append("?");
@@ -92,32 +92,30 @@ public class InsertOperation extends AbstractBatchOperation
         return new OperationData(sqlBuffer.toString(), columns);
     }
 
-    protected BigInteger getIgnoreMapping(ITable table, int row) throws DataSetException
+    protected BitSet getIgnoreMapping(ITable table, int row) throws DataSetException
     {
         Column[] columns = table.getTableMetaData().getColumns();
-        int n = columns.length;
-        int byteNum = n / 8;
-        byte[] result = new byte[byteNum + 2];
 
-        for (int i = 0; i < n; i++)
+        BitSet ignoreMapping = new BitSet();
+        for (int i = 0; i < columns.length; i++)
         {
             Object value = table.getValue(row, columns[i].getColumnName());
             if (value == ITable.NO_VALUE)
             {
-                result[result.length - (i / 8) - 1] |= (1 << (i % 8));
+                ignoreMapping.set(i);
             }
         }
-        return new BigInteger(result);
+        return ignoreMapping;
     }
 
-    protected boolean equalsIgnoreMapping(BigInteger ignoreMapping, ITable table,
+    protected boolean equalsIgnoreMapping(BitSet ignoreMapping, ITable table,
             int row) throws DataSetException
     {
         Column[] columns = table.getTableMetaData().getColumns();
 
         for (int i = 0; i < columns.length; i++)
         {
-            boolean bit = ignoreMapping.testBit(i);
+            boolean bit = ignoreMapping.get(i);
             Object value = table.getValue(row, columns[i].getColumnName());
             if ((bit && value != ITable.NO_VALUE) || (!bit && value == ITable.NO_VALUE))
             {

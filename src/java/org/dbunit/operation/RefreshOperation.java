@@ -25,13 +25,20 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.statement.IPreparedBatchStatement;
 import org.dbunit.database.statement.SimplePreparedStatement;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoPrimaryKeyException;
+import org.dbunit.dataset.RowOutOfBoundsException;
 import org.dbunit.dataset.datatype.DataType;
 
-import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.BitSet;
 
 /**
  * This operation literally refreshes dataset contents into the database. This
@@ -131,7 +138,7 @@ public class RefreshOperation extends AbstractOperation
     {
         protected IPreparedBatchStatement _statement;
         protected OperationData _operationData;
-        protected BigInteger _ignoreMapping;
+        protected BitSet _ignoreMapping;
 
         /**
          * Execute this operation on the sepcified table row.
@@ -144,7 +151,7 @@ public class RefreshOperation extends AbstractOperation
             for (int i = 0; i < columns.length; i++)
             {
                 // Bind value only if not in ignore mapping
-                if (_ignoreMapping == null || !_ignoreMapping.testBit(i))
+                if (_ignoreMapping == null || !_ignoreMapping.get(i))
                 {
                     Object value = table.getValue(row, columns[i].getColumnName());
                     _statement.addValue(value, columns[i].getDataType());

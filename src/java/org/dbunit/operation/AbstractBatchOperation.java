@@ -26,10 +26,16 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.statement.IPreparedBatchStatement;
 import org.dbunit.database.statement.IStatementFactory;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.RowOutOfBoundsException;
 
-import java.math.BigInteger;
 import java.sql.SQLException;
+import java.util.BitSet;
 
 /**
  * Base implementation for database operation that are executed in batch.
@@ -40,7 +46,7 @@ import java.sql.SQLException;
  */
 public abstract class AbstractBatchOperation extends AbstractOperation
 {
-    private static final BigInteger EMPTY_IGNORE_MAPPING = new BigInteger("0");
+    private static final BitSet EMPTY_BITSET = new BitSet();
     protected boolean _reverseRowOrder = false;
 
     static boolean isEmpty(ITable table) throws DataSetException
@@ -79,24 +85,24 @@ public abstract class AbstractBatchOperation extends AbstractOperation
      * Returns mapping of columns to ignore by this operation. Each bit set represent
      * a column to ignore.
      */
-    BigInteger getIgnoreMapping(ITable table, int row)
+    BitSet getIgnoreMapping(ITable table, int row)
             throws DataSetException
     {
-        return EMPTY_IGNORE_MAPPING;
+        return EMPTY_BITSET;
     }
 
     /**
      * Returns false if the specified table row have a different ignore mapping
      * than the specified mapping.
      */
-    boolean equalsIgnoreMapping(BigInteger ignoreMapping, ITable table,
+    boolean equalsIgnoreMapping(BitSet ignoreMapping, ITable table,
             int row) throws DataSetException
     {
         return true;
     }
 
     abstract OperationData getOperationData(ITableMetaData metaData,
-            BigInteger ignoreMapping, IDatabaseConnection connection) throws DataSetException;
+            BitSet ignoreMapping, IDatabaseConnection connection) throws DataSetException;
 
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseOperation class
@@ -122,7 +128,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
 
             ITableMetaData metaData = getOperationMetaData(connection,
                     table.getTableMetaData());
-            BigInteger ignoreMapping = null;
+            BitSet ignoreMapping = null;
             OperationData operationData = null;
             IPreparedBatchStatement statement = null;
 
@@ -162,7 +168,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                         for (int j = 0; j < columns.length; j++)
                         {
                             // Bind value only if not in ignore mapping
-                            if (!ignoreMapping.testBit(j))
+                            if (!ignoreMapping.get(j))
                             {
                                 Column column = columns[j];
                                 statement.addValue(table.getValue(row,
