@@ -56,3 +56,4 @@ TD.body {
 	BACKGROUND-COLOR: #EDE8E1; BACKGROUND-IMAGE: url(images/body.gif); PADDING: 16px 16px;
 }
 pre {  font-size: smaller; color: #666666}
+.code {  font-family: "Courier New", Courier, mono}

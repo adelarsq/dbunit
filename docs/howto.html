@@ -20,8 +20,8 @@
       
     <td class="menu" nowrap valign="top" > <a href="index.html">Home</a><br>
       <br>
-      <a href="components.html">Components</a><br>
-      <a href="howto.html">Howto Guides</a><br>
+      <a href="components.html">Core Classes</a><br>
+      <a href="howto.html">How-to guides</a><br>
       <a href="bestpractices.html">Best Practices</a><br>
       <a href="api/index.html">API Reference</a><br>
       <a href="faq.html">FAQ</a><br>
@@ -38,7 +38,7 @@
       src="images/silphid.gif" border=0></a></div>
     </td>
     <td class="body" valign="top"> <!-- #BeginEditable "body" --> 
-      <h2>How to Guides</h2>
+      <h2>How-to Guides</h2>
       <ul>
         <li><a href="#createtest">How to create a test case to setup your database</a></li>
         <li><a href="#noextend">How to setup your database in a test case that 
@@ -52,24 +52,26 @@
           multiple database schemas</a></li>
       </ul>
       <hr>
-      <h2><a name="createtest">How to create a test case to setup your database</a></h2>
-      To write a test case, please follow the steps described below.<br>
+      <a name="createtest">
+      <h2>How to create a test case to setup your database</h2>
+      </a> To write a test case, please follow the steps described below.<br>
       <br>
       <h4>Step 1: Create your dataset file</h4>
       Your test will obviously need some data to work with. This means you must 
       create a dataset. In most situations you will work with xml datasets. You 
       can manually create an xml dataset from scratch or create one by exporting 
-      some data from your database (see export sample).<br>
+      some data from your database (see <a href="#extract">how-to export</a>).<br>
       <br>
       <h4>Step 2: Extend the DatabaseTestCase class</h4>
       Now you need to create a test class. The easiest way to use Dbunit is to 
       make your test class extend the DatabaseTestCase class. DatabaseTestCase 
       extends the JUnit TestCase class. Two template methods are required to be 
-      implemented: getConnection() to return a connection to your database and 
-      getDataSet() to return the dataset you created in step 1.<br>
+      implemented: <a class="code">getConnection()</a> to return a connection 
+      to your database and <a class="code">getDataSet()</a> to return the dataset 
+      you created in step 1.<br>
       <br>
       Following is a sample implementation that returns a connection to a Hypersonic 
-      database and an xmldataset:<br>
+      database and an xml dataset:<br>
       <pre>
 public class SampleTest extends DatabaseTestCase
 {
@@ -94,13 +96,13 @@ public class SampleTest extends DatabaseTestCase
       <br>
       <h4>Step 3: (Optional) Implement getSetUpOperation() and getTearDownOperation() 
         methods</h4>
-      By default, Dbunit performs a CLEAN_INSERT operation before executing each 
-      test and performs no cleanup operation afterward. You can modify this behavior 
-      by overriding getSetUpOperation() and getTearDownOperation().<br>
-      <br>
-      The following example demonstrates how you can easily override the operation 
-      executed before or after your test.<br>
-      <br>
+      <p>By default, Dbunit performs a <a href="components.html#cleanInsert">CLEAN_INSERT</a> 
+        operation before executing each test and performs no cleanup operation 
+        afterward. You can modify this behavior by overriding <a class="code">getSetUpOperation()</a> 
+        and <a class="code">getTearDownOperation()</a>.</p>
+      <p>The following example demonstrates how you can easily override the operation 
+        executed before or after your test.<br>
+      </p>
       <pre>
 public class SampleTest extends DatabaseTestCase
 {
@@ -116,15 +118,14 @@ public class SampleTest extends DatabaseTestCase
     }
     ...
 }</pre>
-      <br>
       <h4>Step 4: Implement your testXXX() methods</h4>
       Implement your test methods as you normally would with JUnit. Your database 
       is now initialized before and cleaned-up after each test methods according 
       to what you did in previous steps.<br>
       <br>
-      <h2><a name="noextend">How to setup your database in a test case that does 
-        not extend DatabaseTestCase</a></h2>
-      In order to use Dbunit you are not required to extend the DatabaseTestCase 
+      <a name="noextend">
+      <h2>How to setup your database in a test case that does not extend DatabaseTestCase</h2>
+      </a> In order to use Dbunit you are not required to extend the DatabaseTestCase 
       class. Simply override the standard JUnit setUp() method and execute the 
       desired operation on your database. Do something similar in teardown() if 
       you need to perform any clean-up.<br>
@@ -161,11 +162,12 @@ public class SampleTest extends TestCase
     }
     ... 
 }</pre>
-      <h2><a name="extract">How to extract a dataset from your database</a></h2>
-      Since version 1.2, the <a href="components.html#FlatXmlDataSet">flat xml 
-      dataset</a> format is the prefered way to persist a dataset in xml. The 
-      following sample demonstrates how you can export one or many tables from 
-      a database to an flat xml dataset file.<br>
+      <a name="extract">
+      <h2>How to extract a dataset from your database</h2>
+      </a> Since version 1.2, the <a href="components.html#FlatXmlDataSet">flat 
+      xml dataset</a> format is the prefered way to persist a dataset in xml. 
+      The following sample demonstrates how you can export one or many tables 
+      from a database to an flat xml dataset file.<br>
       <pre>
 public class DatabaseExportSample
 {
@@ -187,8 +189,8 @@ public class DatabaseExportSample
         FlatDtdDataSet.write(fullDataSet, new FileOutputStream(&quot;full.xml&quot;));
     }
 }</pre>
-      <h2><a name="generatedtd">How to generate a flat xml dataset DTD from your 
-        database</a></h2>
+      <a name="generatedtd"><h2>How to generate a flat xml dataset DTD from your 
+        database</h2></a>
       <p>The following sample demonstrates how you can generate a flat xml dataset 
         DTD from a database.</p>
       <pre>
@@ -203,20 +205,18 @@ public class DatabaseExportSample
         IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
 
         // write DTD file
-        FlatXmlDataSet.writeDtd(connection.createDataSet(),<br>                new FileOutputStream(&quot;test.dtd&quot;));<br>    }
+        FlatDtdDataSet.write(connection.createDataSet(),<br>                new FileOutputStream(&quot;test.dtd&quot;));<br>    }
 }</pre>
-      <h2><a name="assertdata">How to verify your database data during a test</a> 
-        Case </h2>
-      Now that you know how to use Dbunit to setup your database before executing 
+      <a name="assertdata">
+      <h2>How to verify your database data during a test Case</h2>
+      </a> Now that you know how to use Dbunit to setup your database before executing 
       each test, you probably wonder how to easily verify the database data when 
-      your tests run. Since version 1.2, Dbunit provides support for verifying 
-      whether two tables or datasets contain identical data.<br>
-      <pre>public class DataSetUtils
+      your tests run. Dbunit provides support for verifying whether two tables 
+      or datasets contain identical data.<br>
+      <pre>public class Assertion
 {
-    ...
     public static void assertEquals(ITable expected, ITable actual) 
     public static void assertEquals(IDataSet expected, IDataSet actual)
-    ...
 }</pre>
       Therefore, you can put your expected table data into an xml dataset and 
       during your test query the database to verify its data against expected 
@@ -251,26 +251,25 @@ public class DatabaseExportSample
         ITable expectedData = expectedDataSet.getTable(&quot;EXPECTED_DATA&quot;);
 
         // Verify if database data match expected data
-        DataSetUtils.assertEquals(expectedData, databaseData);
+        Assertion.assertEquals(expectedData, databaseData);
     }
 }</pre>
-      <h3><a name="multipleschema">How to export data from or import data to multiple 
-        database schemas</a></h3>
-      Dbunit support multiple schemas per connection since version 1.2.3. To enable 
-      multiple schemas support, set the following system property before the creation 
-      of your database connection. 
+      <a name="multipleschema"> 
+      <h2>How to export data from or import data to multiple database schemas</h2>
+      </a> Dbunit support multiple schemas per connection since version 1.2.3. 
+      To enable multiple schemas support, set the following system property before 
+      the creation of your database connection. 
       <pre>
 	  System.setProperty(&quot;dbunit.qualified.table.names&quot;, &quot;true&quot;);</pre>
       <p>This tells to Dbunit to work with table names qualified by their schema 
         name. If this mode is enabled, all table names are assumed to have this 
         format: SCHEMA.TABLE. <br>
       </p>
-      <p>Example of xml dataset exported or imported when qualified table names 
-        mode is enabled:</p>
+      <p>Example of flat xml dataset exported or imported when qualified table 
+        names mode is enabled:</p>
       <pre>&lt;dataset&gt;
     &lt;SCHEMA1.TABLE1 COLUMN0=&quot;row 0 col 0&quot; COLUMN1=&quot;row 0 col 1&quot;/&
     &lt;SCHEMA1.TABLE1 COLUMN0=&quot;row 1 col 0&quot; COLUMN1=&quot;row 1 col 1&quot;/&gt;
-	
     &lt;SCHEMA2.TABLE2 COLUMN0=&quot;row 0 col 0&quot; COLUMN1=&quot;row 0 col 1&quot; COLUMN2=&quot;row 0 col 2&quot;/&gt;
 &lt;/dataset&gt;</pre>
       <!-- #EndEditable --> 
