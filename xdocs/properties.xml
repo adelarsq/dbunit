@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document><properties><title>The Dbunit Framework - Properties</title></properties><body><section>
-      <p>DbUnit does use System properties anymore since version 1.6/2.0. DbUnit 
-        use a configuration object, <a class="code">DatabaseConfig</a>, to query 
-        and set feature flags and property values for a <a class="code">IDatabaseConnection</a>. 
+      <h2>DbUnit features and properties</h2>
+      <p>DbUnit does not use System properties anymore since version 2.0. DbUnit 
+        use a configuration object, <code>DatabaseConfig</code>, to query 
+        and set feature flags and property values for a <code>IDatabaseConnection</code>. 
         It is possible to change DbUnit behaviors, such as using batched statements 
-        or not, using the <a class="code">getFeature</a>, <a class="code">setFeature</a>, 
-        <a class="code">getProperty</a>, and <a class="code">setProperty</a> methods 
-        of <a class="code">DatabaseConfig</a>: </p>
-      <pre>  String id = "http://www.dbunit.org/features/batchedStatements"; 
+        or not, using the <code>getFeature</code>, <code>setFeature</code>, 
+        <code>getProperty</code>, and <code>setProperty</code> methods 
+        of <code>DatabaseConfig</code>. </p>
+      <p>While feature flags are always boolean, property values are arbitrary objects. </p>
+        <p>The Following sample displays the <code>batched statement</code> feature status:
+      <source><![CDATA[  String id = "http://www.dbunit.org/features/batchedStatements"; 
   DatabaseConfig config = connection.getConfig(); 
   if (config.getFeature(id)) 
   { 
@@ -17,12 +20,9 @@
   { 
     System.out.println("Batched statements is disabled."); 
   } 
-</pre>
-      While feature flags are always boolean, property values are arbitrary objects. 
-      <br></br>
-      Here is the complete list of standard DbUnit feature flags and properties. 
-      <br></br>
-      <h2>Feature Flags</h2>
+]]></source></p>
+      <h3>Feature Flags</h3>
+      <h4>Batched statements</h4>
       <table border="1">
         <tr> 
           <td>Feature ID</td>
@@ -40,7 +40,8 @@
             with multiple schema</a>. </td>
         </tr>
       </table>
-      <p> <a name="qualifiedtablenames"></a>
+      <a name="qualifiedtablenames"></a>
+      <h4>Qualified table names</h4>
       <table border="1">
         <tr> 
           <td>Feature ID</td>
@@ -48,7 +49,7 @@
         </tr>
         <tr> 
           <td>Default</td>
-          <td>false (since 1.5.5)</td>
+          <td>false</td>
         </tr>
         <tr> 
           <td>Description</td>
@@ -59,8 +60,8 @@
           <td>This feature is not compatible with the <a href="#escapepattern">escape pattern</a> property.</td>
         </tr>
       </table>
-      </p><h2>Properties</h2>
-	  <p> <a name="escapepattern"></a> 
+      <h3>Properties</h3>
+      <h4><a name="escapepattern">Escape pattern</a></h4>
       <table border="1">
         <tr> 
           <td>Property ID</td>
@@ -83,7 +84,7 @@
             table names</a> feature.</td>
         </tr>
       </table>
-	  </p><p>
+      <h4>DataType factory</h4>
       <table border="1">
         <tr> 
           <td>Property ID</td>
@@ -100,7 +101,7 @@
             The Object must implement <a href="api/org/dbunit/dataset/datatype/IDataTypeFactory.html">org.dbunit.dataset.datatype.IDataTypeFactory</a>.</td>
         </tr>
       </table>
-	  </p><p>
+      <h4>Statement factory</h4>
       <table border="1">
         <tr> 
           <td>Property ID</td>
@@ -116,7 +117,7 @@
             org.dbunit.database.statement.IStatementFactory.</td>
         </tr>
       </table>
-	  </p>
+      <h4>ResultSetTable factory</h4>
       <table border="1">
         <tr> 
           <td>Property ID</td>

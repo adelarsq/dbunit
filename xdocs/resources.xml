@@ -1,38 +1,53 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document><properties><title>The Dbunit Framework - Ressources</title></properties><body><section>
-      <h2>Project Ressources</h2>
+      <h3>SourceForge Project Ressources</h3>
       <p><a href="http://sourceforge.net/projects/dbunit/">Project summary</a></p>
       <p><a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dbunit/">Browse 
         CVS repository</a></p>
       <p> 
-      </p><h2>Other Ressources</h2>
-      <p></p>
-      <p><a href="http://groups.yahoo.com/group/agileDatabases/">The Agile Database 
-        Mailing List</a> <font color="#FF0000">(new)</font><br></br>
-        Discussion about Database management with regards to Extreme Programming 
-        practices and principles.</p>
-      <p><a href="http://www.agiledata.org/">The Agile Data Home Page</a> <font color="#FF0000">(new)</font><br></br>
-        Scott W. Ambler's site about Agile Data methodology. Ambler is sharing 
-        multiple techniques about data-related software development issues. Online 
-        material is going to be published in its new book titled "Agile Database 
-        Techniques".<br></br>
-        <br></br>
-        <a href="http://www.martinfowler.com/articles/evodb.html">Evolutionary 
-        Database Design</a> <font color="#FF0000">(new)</font><br></br>
-        A Martin Fowler's white paper that describes techniques that allows a 
-        database design to evolve as an application develops<br></br>
-      </p>
-      <p><a href="http://webtest.canoo.com/">Canoo Webtest Home</a><br></br>
-        Canoo WebTest is a free open source tool for automated testing of web 
-        applications. </p>
-      <p><a href="http://www.junit.org">JUnit, Testing Resources for Extreme Programming</a><br></br>
-        The home of the Java JUnit software.<br></br>
-        <br></br>
-        <a name="RichardDallaway" href="http://www.dallaway.com/acad/dbunit.html">Unit 
-        testing database code</a><br></br>
-        Richard Dallaway notes about database unit testing.</p>
-      <p><a href="http://mockobjects.sourceforge.net/papers/jdbc_testfirst.html">Developing 
-        JDBC applications test-first</a><br></br>
-        The Mock Objects approach applied to JDBC development.<br></br>
+      </p><h3>Other Ressources</h3>
+      <p>
+      <table border="1">
+        <tr> 
+          <td><b>Document</b></td>
+          <td><b>Description</b></td>
+        </tr>
+        <tr> 
+          <td><a href="http://groups.yahoo.com/group/agileDatabases/">The Agile Database 
+        Mailing List</a></td>
+          <td>Discussion about Database management with regards to Extreme Programming 
+        practices and principles.</td>
+        </tr>
+        <tr> 
+          <td><a href="http://www.agiledata.org/">The Agile Data Home Page</a></td>
+          <td>Scott W. Ambler's site about Agile Data methodology. Ambler is sharing 
+        multiple techniques about data-related software development issues.</td>
+        </tr>
+        <tr> 
+          <td><a href="http://www.martinfowler.com/articles/evodb.html">Evolutionary 
+        Database Design</a></td>
+          <td>A Martin Fowler's white paper that describes techniques that allows a 
+        database design to evolve as an application develops</td>
+        </tr>
+        <tr> 
+          <td><a href="http://webtest.canoo.com/">Canoo Webtest Home</a></td>
+          <td>Canoo WebTest is a free open source tool for automated testing of web 
+        applications.</td>
+        </tr>
+        <tr> 
+          <td><a href="http://www.junit.org">JUnit</a></td>
+          <td>The home of the Java JUnit software.</td>
+        </tr>
+        <tr> 
+          <td><a name="RichardDallaway" href="http://www.dallaway.com/acad/dbunit.html">Unit 
+        testing database code</a></td>
+          <td>Richard Dallaway notes about database unit testing.</td>
+        </tr>
+        <tr> 
+          <td><a href="http://www.mockobjects.com/wiki/DevelopingJdbcApplicationsTestFirst">Developing 
+        JDBC applications test-first</a></td>
+          <td>The Mock Objects approach applied to JDBC development.</td>
+        </tr>
+      </table>
       </p>
 </section></body></document>

@@ -4,7 +4,7 @@
   <part id="general">
     <title>General</title>
    
-    <faq id="whats-foo">
+    <faq id="supportedvendors">
       <question>
         Which database system are supported?
       </question>
@@ -18,7 +18,7 @@
       </answer>
     </faq>
 
-    <faq id="whats-bar">
+    <faq id="identity">
       <question>
         Can I use DbUnit with IDENTITY or auto-increment 
           columns?
@@ -95,7 +95,7 @@
     
     <faq id="p6spy">
       <question>
-     How to use DbUnit with p6spy
+     How to see SQL statements issued by DbUnit using P6Spy?
       </question>
       <answer>
      <p><cite>p6spy</cite> is a trasparent JDBC proxy-driver 
@@ -124,7 +124,7 @@
       </answer>
     </faq>    
   </part>
-  
+  <!--
   <part id="install">
     <title>Installation</title>
    
@@ -137,4 +137,5 @@
       </answer>
     </faq>
   </part>  
+  -->
 </faqs>
