@@ -80,7 +80,8 @@ public abstract class AbstractDataSetTest extends TestCase
 
     /**
      * This method exclude BLOB_TABLE and CLOB_TABLE from the specified dataset
-     * because BLOB and CLOB are not supported by all database vendor.
+     * because BLOB and CLOB are not supported by all database vendor.  It also excludes
+     * tables with Identity columns (MSSQL) becasuse they are specific to MSSQL.
      * @todo Should be refactored into thee various DatabaseEnvironments!
      */
     public static IDataSet removeExtraTestTables(IDataSet dataSet) throws Exception
@@ -101,12 +102,14 @@ public abstract class AbstractDataSetTest extends TestCase
         nameList.remove("DBUNIT.dtproperties");
         nameList.remove("dtproperties");
         /*
-        This table is created specifically for testing identity columns on MSSQL server.
-        It should be ignored on other platforms.
+        These tables are created specifically for testing identity columns on MSSQL server.
+        They should be ignored on other platforms.
         */
         nameList.remove("DBUNIT.IDENTITY_TABLE");
         nameList.remove("IDENTITY_TABLE");
-//        nameList.remove("ESCAPED TABLE");
+        nameList.remove("DBUNIT.TEST_IDENTITY_NOT_PK");
+        nameList.remove("TEST_IDENTITY_NOT_PK");
+
         names = (String[])nameList.toArray(new String[0]);
 
         return new FilteredDataSet(names, dataSet);
