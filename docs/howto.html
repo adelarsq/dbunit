@@ -38,6 +38,8 @@
           your database</a></li>
         <li><a href="#assertdata">How to verify your database data during a test 
           case</a></li>
+        <li><a href="#multipleschema">How to export data from or import data to 
+          multiple database schemas</a></li>
       </ul>
       <hr>
       <h2><a name="createtest">How to create a test case to setup your database</a></h2>
@@ -241,12 +243,28 @@ public class DatabaseExportSample
         // Verify if database data match expected data
         DataSetUtils.assertEquals(expectedData, databaseData);
     }
-}
-
-
-</pre>
+}</pre>
+      <h3><a name="multipleschema">How to export data from or import data to multiple 
+        database schemas</a></h3>
+      Dbunit support multiple schemas per connection since version 1.2.2. To enable 
+      multiple schemas support, set the following system property before the creation 
+      of your database connection. 
+      <pre>
+	  System.setProperty(&quot;dbunit.qualified.table.names&quot;, &quot;true&quot;);</pre>
+      <p>This tells to Dbunit to work with table names qualified by their schema 
+        name. If this mode is enabled, all table names are assumed to have this 
+        format: SCHEMA.TABLE. <br>
+      </p>
+      <p>Example of xml dataset exported or imported when qualified table names 
+        mode is enabled:</p>
+      <pre>&lt;dataset&gt;
+    &lt;SCHEMA1.TABLE1 COLUMN0=&quot;row 0 col 0&quot; COLUMN1=&quot;row 0 col 1&quot;/&
+    &lt;SCHEMA1.TABLE1 COLUMN0=&quot;row 1 col 0&quot; COLUMN1=&quot;row 1 col 1&quot;/&gt;
+	
+    &lt;SCHEMA2.TABLE2 COLUMN0=&quot;row 0 col 0&quot; COLUMN1=&quot;row 0 col 1&quot; COLUMN2=&quot;row 0 col 2&quot;/&gt;
+&lt;/dataset&gt;</pre>
       <!-- #EndEditable --> 
-	  <hr>
+      <hr>
       <div align="center">
         <p><font size="2">Copyright &copy;2002, Manuel Laflamme, All Rights Reserved</font></p>
         <p><font size="1"><a href="index.html">Home</a> - <a href="components.html">Components</a> 
