@@ -25,6 +25,10 @@
   <section name="News">
       <table border="1">
         <tr> 
+          <td>2004-01-26</td>
+          <td>ONJava article: <a href="http://www.onjava.com/pub/a/onjava/2004/01/21/dbunit.html">Effective Unit Testing with DbUnit</a>.</td>
+        </tr>
+        <tr> 
           <td>2004-01-22</td>
           <td>Version 2.0 released. See <a href="changes-report.html#2.0">changes</a>.</td>
         </tr>
