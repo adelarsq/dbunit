@@ -1,0 +1,116 @@
+/*
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002, Manuel Laflamme
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+package org.dbunit.dataset.excel;
+
+import org.dbunit.dataset.*;
+import org.dbunit.dataset.datatype.DataType;
+
+import electric.xml.Document;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import java.io.*;
+
+/**
+ * @author Manuel Laflamme
+ * @since Feb 21, 2003
+ * @version $Revision$
+ */
+public class XlsDataSet extends AbstractDataSet
+{
+    private final ITable[] _tables;
+
+    public XlsDataSet(File file) throws IOException, DataSetException
+    {
+        this(new FileInputStream(file));
+    }
+
+    public XlsDataSet(InputStream in) throws IOException, DataSetException
+    {
+        HSSFWorkbook workbook = new HSSFWorkbook(in);
+        _tables = new ITable[workbook.getNumberOfSheets()];
+        for (int i = 0; i < _tables.length; i++)
+        {
+            _tables[i] = new XlsTable(workbook.getSheetName(i),
+                    workbook.getSheetAt(i));
+        }
+    }
+
+    /**
+     * Write the specified dataset to the specified output stream as a xls
+     * document.
+     */
+    public static void write(IDataSet dataSet, OutputStream out)
+            throws IOException, DataSetException
+    {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+
+        ITable[] tables = dataSet.getTables();
+        for (int i = 0; i < tables.length; i++)
+        {
+            // create the table i.e. sheet
+            ITable table = tables[i];
+            ITableMetaData metaData = table.getTableMetaData();
+            HSSFSheet sheet = workbook.createSheet(metaData.getTableName());
+
+            // write table metadata i.e. first row in sheet
+            workbook.setSheetName(i, metaData.getTableName());
+
+            HSSFRow headerRow = sheet.createRow(0);
+            Column[] columns = metaData.getColumns();
+            for (int j = 0; j < columns.length; j++)
+            {
+                Column column = columns[j];
+                HSSFCell cell = headerRow.createCell((short)j);
+                cell.setCellValue(column.getColumnName());
+            }
+
+            // write table data
+            for (int j = 0; j < table.getRowCount(); j++)
+            {
+                HSSFRow row = sheet.createRow(j + 1);
+                for (int k = 0; k < columns.length; k++)
+                {
+                    Column column = columns[k];
+                    Object value = table.getValue(j, column.getColumnName());
+                    if (value != null)
+                    {
+                        HSSFCell cell = row.createCell((short)k);
+                        cell.setCellValue(DataType.asString(value));
+                    }
+                }
+            }
+
+        }
+
+        // write xls document
+        workbook.write(out);
+        out.flush();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // IDataSet interface
+
+    public ITable[] getTables() throws DataSetException
+    {
+        return cloneTables(_tables);
+    }
+}

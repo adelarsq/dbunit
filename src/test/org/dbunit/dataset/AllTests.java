@@ -37,7 +37,7 @@ public class AllTests
     {
         TestSuite suite = new TestSuite();
         suite.addTest(org.dbunit.dataset.datatype.AllTests.suite());
-//        suite.addTest(org.dbunit.dataset.excel.AllTests.suite());
+        suite.addTest(org.dbunit.dataset.excel.AllTests.suite());
         suite.addTest(org.dbunit.dataset.filter.AllTests.suite());
         suite.addTest(org.dbunit.dataset.xml.AllTests.suite());
         suite.addTest(new TestSuite(BooleanDataSetTest.class));
