@@ -44,6 +44,17 @@ public class DefaultColumnFilter implements IColumnFilter
     }
 
     /**
+     * Add specified columns to accepted column name list.
+     */
+    public void includeColumns(Column[] columns)
+    {
+        for (int i = 0; i < columns.length; i++)
+        {
+            _includeMatcher.addPattern(columns[i].getColumnName());
+        }
+    }
+
+    /**
      * Add a new refused column name pattern for all tables.
      * The following wildcard characters are supported:
      * '*' matches zero or more characters,
@@ -52,6 +63,17 @@ public class DefaultColumnFilter implements IColumnFilter
     public void excludeColumn(String columnPattern)
     {
         _excludeMatcher.addPattern(columnPattern);
+    }
+
+    /**
+     * Add specified columns to excluded column name list.
+     */
+    public void excludeColumns(Column[] columns)
+    {
+        for (int i = 0; i < columns.length; i++)
+        {
+            _excludeMatcher.addPattern(columns[i].getColumnName());
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
