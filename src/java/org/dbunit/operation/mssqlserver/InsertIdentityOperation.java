@@ -29,8 +29,8 @@ import org.dbunit.operation.*;
 import java.sql.*;
 
 /**
- * This operation decorates an operation and disables the MS SQL Server
- * automatic identifier generation (IDENTITY) during its execution.
+ * This class disable the MS SQL Server automatic identifier generation for
+ * the execution of inserts.
  * <p>
  * If you are using the Microsoft driver (i.e.
  * <code>com.microsoft.jdbc.sqlserver.SQLServerDriver</code>), you'll need to
@@ -40,7 +40,7 @@ import java.sql.*;
  * <code>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor</code>
  * <p>
  * Thanks to <a href="mailto:epugh@upstate.com">Eric Pugh</a> for having
- * submitted the original patch and for the testing.
+ * submitted the original patch and for the beta testing.
  *
  * @author Manuel Laflamme
  * @version $Revision$
@@ -74,7 +74,7 @@ public class InsertIdentityOperation extends DatabaseOperation
         Column[] primaryKeys = metaData.getPrimaryKeys();
         for (int i = 0; i < primaryKeys.length; i++)
         {
-            if (primaryKeys[i].getSqlTypeName().endsWith("IDENTITY"))
+            if (primaryKeys[i].getSqlTypeName().endsWith("identity"))
             {
                 return true;
             }
@@ -91,6 +91,8 @@ public class InsertIdentityOperation extends DatabaseOperation
     {
         Connection jdbcConnection = connection.getConnection();
         Statement statement = jdbcConnection.createStatement();
+
+        IDataSet databaseDataSet = connection.createDataSet();
 
         try
         {
@@ -111,7 +113,9 @@ public class InsertIdentityOperation extends DatabaseOperation
                         connection.getSchema(), tableNames[i]);
 
                 // enable identity insert
-                boolean hasIdentityColumn = hasIdentityColumn(table.getTableMetaData());
+                ITableMetaData databaseMetaData = databaseDataSet.getTableMetaData(tableNames[i]);
+
+                boolean hasIdentityColumn = hasIdentityColumn(databaseMetaData);
                 if (hasIdentityColumn)
                 {
                     StringBuffer sqlBuffer = new StringBuffer(128);
@@ -147,7 +151,6 @@ public class InsertIdentityOperation extends DatabaseOperation
         }
     }
 }
-
 
 
 
