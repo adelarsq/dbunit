@@ -99,7 +99,12 @@ public class StringDataType extends AbstractDataType
             try
             {
                 Clob clobValue = (Clob)value;
-                return clobValue.getSubString(1, (int)clobValue.length());
+                int length = (int)clobValue.length();
+                if (length > 0)
+                {
+                    return clobValue.getSubString(1, length);
+                }
+                return "";
             }
             catch (SQLException e)
             {
