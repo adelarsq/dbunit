@@ -26,6 +26,10 @@ if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[TEST_TABLE
 drop table [dbo].[TEST_TABLE]
 GO
 
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[TEST_IDENTITY_NOT_PK]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dbo].[TEST_IDENTITY_NOT_PK]
+GO
+
 CREATE TABLE [dbo].[EMPTY_MULTITYPE_TABLE] (
     [VARCHAR_COL] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [NUMERIC_COL] [numeric](38, 0) NULL ,
@@ -49,9 +53,25 @@ CREATE TABLE [dbo].[IDENTITY_TABLE] (
 ) ON [PRIMARY]
 GO
 
+ALTER TABLE dbo.IDENTITY_TABLE ADD CONSTRAINT
+  PK_IDENTITY_TABLE PRIMARY KEY CLUSTERED 
+  (
+  IDENTITY_TABLE_ID
+  ) ON [PRIMARY]
+
+GO
+
 CREATE TABLE [dbo].[ONLY_PK_TABLE] (
     [PK0] [numeric](38, 0) NOT NULL 
 ) ON [PRIMARY]
+GO
+
+ALTER TABLE dbo.ONLY_PK_TABLE ADD CONSTRAINT
+  PK_ONLY_PK_TABLE PRIMARY KEY CLUSTERED 
+  (
+  PK0
+  ) ON [PRIMARY]
+
 GO
 
 CREATE TABLE [dbo].[PK_TABLE] (
@@ -61,6 +81,15 @@ CREATE TABLE [dbo].[PK_TABLE] (
     [NORMAL0] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [NORMAL1] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
 ) ON [PRIMARY]
+GO
+ALTER TABLE dbo.PK_TABLE ADD CONSTRAINT
+  PK_PK_TABLE PRIMARY KEY CLUSTERED 
+  (
+  PK0,
+  PK1,
+  PK2
+  ) ON [PRIMARY]
+
 GO
 
 CREATE TABLE [dbo].[SECOND_TABLE] (
@@ -78,4 +107,9 @@ CREATE TABLE [dbo].[TEST_TABLE] (
     [COLUMN3] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
 ) ON [PRIMARY]
 GO
-
+CREATE TABLE dbo.TEST_IDENTITY_NOT_PK
+  (
+  COL01 int NOT NULL IDENTITY (1, 1),
+  COL02 varchar(64) NULL
+  )  ON [PRIMARY]
+GO
