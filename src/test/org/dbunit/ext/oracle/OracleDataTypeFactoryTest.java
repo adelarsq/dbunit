@@ -63,6 +63,16 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         assertSame("type", expected, actual);
     }
 
+    public void testCreateNClobDataType() throws Exception
+    {
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "NCLOB";
+
+        DataType expected = DataType.CLOB;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
     public void testCreateTimestampDataType() throws Exception
     {
         int sqlType = Types.OTHER;

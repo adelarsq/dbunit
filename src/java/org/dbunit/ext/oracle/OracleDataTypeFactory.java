@@ -13,7 +13,8 @@ import java.sql.Types;
  * @author manuel.laflamme
  * @since Jul 17, 2003
  */
-public class OracleDataTypeFactory extends DefaultDataTypeFactory
+public class
+        OracleDataTypeFactory extends DefaultDataTypeFactory
 {
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
@@ -26,7 +27,7 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
             }
 
             // CLOB
-            if ("CLOB".equals(sqlTypeName))
+            if ("CLOB".equals(sqlTypeName) || "NCLOB".equals(sqlTypeName))
             {
                 return DataType.CLOB;
             }
