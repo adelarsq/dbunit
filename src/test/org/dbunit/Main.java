@@ -31,7 +31,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDocType;
+import org.dbunit.dataset.xml.FlatDtdDataSet;
 
 /**
  * @author Manuel Laflamme
@@ -71,12 +71,13 @@ public class Main
 
         IDataSet dataSet = new FlatXmlDataSet(
                 new FileInputStream("flatXmlDataSetTest.xml"));
-//        FlatXmlDocType.write(new FlatXmlDataSet(
+//        FlatDtdDataSet.write(new FlatXmlDataSet(
 //                new FileInputStream("src/xml/flatXmlDataSetTest.xml")),
 //                new FileOutputStream("src/dtd/flatXmlDataSetTest.dtd"));
     }
 
 }
+
 
 
 
