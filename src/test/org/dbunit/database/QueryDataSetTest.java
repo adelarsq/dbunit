@@ -81,7 +81,19 @@ public class QueryDataSetTest extends AbstractDataSetTest
         for (int i = 0; i < names.length; i++)
         {
             String name = names[i];
-            dataSet.addTable(name);
+            String query = "select * from " + name;
+            dataSet.addTable(name, query);
+/*
+            if (i % 2 == 0)
+            {
+                String query = "select * from " + name;
+                dataSet.addTable(name, query);
+            }
+            else
+            {
+                dataSet.addTable(name);
+            }
+*/
         }
         return dataSet;
     }
@@ -96,7 +108,7 @@ public class QueryDataSetTest extends AbstractDataSetTest
         dataSet.addTable(names[0], queryOneRow);
 
         // second table expect 0 row
-        String queryNoRow  = "select * from empty_table";
+        String queryNoRow = "select * from empty_table";
         dataSet.addTable(names[1], queryNoRow);
 
         // third table expect 2 row

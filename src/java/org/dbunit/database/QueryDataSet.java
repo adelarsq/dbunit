@@ -77,14 +77,7 @@ public class QueryDataSet extends AbstractDataSet
      */
     public void addTable(String tableName)
     {
-        String escapePattern = (String)_connection.getConfig().getProperty(
-                DatabaseConfig.PROPERTY_ESCAPE_PATTERN);
-        String schema = _connection.getSchema();
-
-        String selectStatement = "select * from " +
-                DataSetUtils.getQualifiedName(schema, tableName, escapePattern);
-
-        _tableEntries.add(new TableEntry(tableName, selectStatement));
+        _tableEntries.add(new TableEntry(tableName, null));
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -120,7 +113,6 @@ public class QueryDataSet extends AbstractDataSet
     {
         private final String _tableName;
         private final String _query;
-        private ITable _table;
 
         public TableEntry(String tableName, String query)
         {
@@ -136,16 +128,6 @@ public class QueryDataSet extends AbstractDataSet
         public String getQuery()
         {
             return _query;
-        }
-
-        public ITable getTable()
-        {
-            return _table;
-        }
-
-        public void setTable(ITable table)
-        {
-            _table = table;
         }
     }
 }

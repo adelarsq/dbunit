@@ -68,7 +68,25 @@ public class QueryTableIterator implements ITableIterator
 
     public ITableMetaData getTableMetaData() throws DataSetException
     {
-        return getTable().getTableMetaData();
+        QueryDataSet.TableEntry entry = (QueryDataSet.TableEntry)_tableEntries.get(_index);
+
+        // No query specified, use metadata from dataset
+        if (entry.getQuery() == null)
+        {
+            try
+            {
+                IDataSet dataSet = _connection.createDataSet();
+                return dataSet.getTableMetaData(entry.getTableName());
+            }
+            catch (SQLException e)
+            {
+                throw new DataSetException(e);
+            }
+        }
+        else
+        {
+            return getTable().getTableMetaData();
+        }
     }
 
     public ITable getTable() throws DataSetException
@@ -79,11 +97,20 @@ public class QueryTableIterator implements ITableIterator
             {
                 QueryDataSet.TableEntry entry = (QueryDataSet.TableEntry)_tableEntries.get(_index);
 
-                DatabaseConfig config = _connection.getConfig();
-                IResultSetTableFactory factory = (IResultSetTableFactory)config.getProperty(
-                        DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY);
+                // No query specified, use table from dataset
+                if (entry.getQuery() == null)
+                {
+                    IDataSet dataSet = _connection.createDataSet();
+                    _currentTable = (IResultSetTable)dataSet.getTable(entry.getTableName());
+                }
+                else
+                {
+                    DatabaseConfig config = _connection.getConfig();
+                    IResultSetTableFactory factory = (IResultSetTableFactory)config.getProperty(
+                            DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY);
 
-                _currentTable = factory.createTable(entry.getTableName(), entry.getQuery(), _connection);
+                    _currentTable = factory.createTable(entry.getTableName(), entry.getQuery(), _connection);
+                }
             }
             catch (SQLException e)
             {
