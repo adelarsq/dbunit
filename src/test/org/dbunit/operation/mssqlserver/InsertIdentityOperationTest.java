@@ -54,11 +54,48 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
 
 
 
-    public void testExecute() throws Exception
+    public void testExecuteXML() throws Exception
     {
         if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
             InputStream in = new FileInputStream("src/xml/insertIdentityOperationTest.xml");
             IDataSet xmlDataSet = new XmlDataSet(in);
+
+            ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
+            InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);
+            ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
+
+            assertEquals("table count", tablesBefore.length, tablesAfter.length);
+            for (int i = 0; i < tablesBefore.length; i++)
+            {
+                ITable table = tablesBefore[i];
+                String name = table.getTableMetaData().getTableName();
+
+
+                if (name.startsWith("IDENTITY"))
+                {
+
+                    assertTrue("Should have either 0 or 6", table.getRowCount()==0 | table.getRowCount()==6);
+                }
+            }
+
+            for (int i = 0; i < tablesAfter.length; i++)
+            {
+                ITable table = tablesAfter[i];
+                String name = table.getTableMetaData().getTableName();
+                if (name.startsWith("IDENTITY"))
+                {
+                    Assertion.assertEquals(xmlDataSet.getTable(name), table);
+                }
+            }
+        }
+
+    }
+
+    public void testExecuteFlatXML() throws Exception
+    {
+        if (DatabaseEnvironment.getInstance() instanceof MSSQLServerEnvironment){
+            InputStream in = new FileInputStream("src/xml/insertIdentityOperationTestFlat.xml");
+            IDataSet xmlDataSet = new FlatXmlDataSet(in);
 
             ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
             InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);

@@ -1,0 +1,10 @@
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Manuel Laflamme (Java development) -->
+<dataset>
+    <IDENTITY_TABLE IDENTITY_TABLE_ID='1' COLUMN0='row 0 col 1' COLUMN1='row 0 col 2'/>
+    <IDENTITY_TABLE IDENTITY_TABLE_ID='2' COLUMN0='row 1 col 1' COLUMN1='row 1 col 2'/>
+    <IDENTITY_TABLE IDENTITY_TABLE_ID='3' COLUMN0='row 2 col 1' COLUMN1='row 2 col 2'/>
+    <IDENTITY_TABLE IDENTITY_TABLE_ID='4' COLUMN0='row 3 col 1' COLUMN1='row 3 col 2'/>
+    <IDENTITY_TABLE IDENTITY_TABLE_ID='5' COLUMN0='row 4 col 1' COLUMN1='row 4 col 2'/>
+    <IDENTITY_TABLE IDENTITY_TABLE_ID='6' COLUMN0='row 5 col 1' COLUMN1='row 5 col 2'/>
+</dataset>
+
