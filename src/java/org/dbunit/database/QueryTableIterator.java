@@ -1,0 +1,95 @@
+/*
+ *
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002, Manuel Laflamme
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+package org.dbunit.database;
+
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.IDataSet;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.sql.SQLException;
+
+/**
+ * @author Manuel Laflamme
+ * @since Sep 15, 2003
+ * @version $Revision$
+ */
+public class QueryTableIterator implements ITableIterator
+{
+    private final List _tableEntries;
+    private final IDatabaseConnection _connection;
+    private IResultSetTable _currentTable;
+    private int _index = -1;
+
+    public QueryTableIterator(List tableEntries, IDatabaseConnection connection)
+    {
+        _tableEntries = tableEntries;
+        _connection = connection;
+        _currentTable = null;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // ITableIterator interface
+
+    public boolean next() throws DataSetException
+    {
+        _index++;
+
+        // Ensure previous table is closed
+        if (_currentTable != null)
+        {
+            _currentTable.close();
+            _currentTable = null;
+        }
+
+        return _index < _tableEntries.size();
+    }
+
+    public ITableMetaData getTableMetaData() throws DataSetException
+    {
+        return getTable().getTableMetaData();
+    }
+
+    public ITable getTable() throws DataSetException
+    {
+        if (_currentTable == null)
+        {
+            try
+            {
+                QueryDataSet.TableEntry entry = (QueryDataSet.TableEntry)_tableEntries.get(_index);
+
+                DatabaseConfig config = _connection.getConfig();
+                IResultSetTableFactory factory = (IResultSetTableFactory)config.getProperty(
+                        DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY);
+
+                _currentTable = factory.createTable(entry.getTableName(), entry.getQuery(), _connection);
+            }
+            catch (SQLException e)
+            {
+                throw new DataSetException(e);
+            }
+        }
+        return _currentTable;
+    }
+}

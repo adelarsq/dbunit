@@ -25,6 +25,7 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.RowOutOfBoundsException;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,7 +55,7 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
     public ForwardOnlyResultSetTable(String tableName, String selectStatement,
             IDatabaseConnection connection) throws DataSetException, SQLException
     {
-        super(tableName, selectStatement, connection, new DefaultDataTypeFactory());
+        super(tableName, selectStatement, connection);
     }
 
     ////////////////////////////////////////////////////////////////////////////

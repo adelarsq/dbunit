@@ -25,12 +25,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.dbunit.dataset.AbstractDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableIterator;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.DataSetUtils;
 
 /**
  * @author     Eric Pugh
@@ -41,7 +44,7 @@ public class QueryDataSet extends AbstractDataSet
 {
 
     private final IDatabaseConnection _connection;
-    private final List _tables = new ArrayList();
+    private final List _tableEntries = new ArrayList();
 
 
     /**
@@ -64,7 +67,24 @@ public class QueryDataSet extends AbstractDataSet
      */
     public void addTable(String tableName, String query)
     {
-        _tables.add(new TableEntry(tableName, query));
+        _tableEntries.add(new TableEntry(tableName, query));
+    }
+
+    /**
+     *  Adds a table with using 'SELECT * FROM <code>tableName</code>' as query.
+     *
+     * @param  tableName  The name of the table
+     */
+    public void addTable(String tableName)
+    {
+        String escapePattern = (String)_connection.getConfig().getProperty(
+                DatabaseConfig.PROPERTY_ESCAPE_PATTERN);
+        String schema = _connection.getSchema();
+
+        String selectStatement = "select * from " +
+                DataSetUtils.getQualifiedName(schema, tableName, escapePattern);
+
+        _tableEntries.add(new TableEntry(tableName, selectStatement));
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -72,30 +92,13 @@ public class QueryDataSet extends AbstractDataSet
 
     protected ITableIterator createIterator(boolean reversed) throws DataSetException
     {
-        try
+        List tableEntries = new ArrayList(_tableEntries);
+        if (reversed)
         {
-            List tableList = new ArrayList();
-            for (Iterator it = _tables.iterator(); it.hasNext();)
-            {
-                TableEntry entry = (TableEntry)it.next();
-
-                ITable table = entry.getTable();
-                if (table == null)
-                {
-                    table = _connection.createQueryTable(
-                            entry.getTableName(), entry.getQuery());
-                    entry.setTable(table);
-                }
-                tableList.add(table);
-            }
-
-            ITable[] tables = (ITable[])tableList.toArray(new ITable[0]);
-            return new DefaultTableIterator(tables, reversed);
+            Collections.reverse(tableEntries);
         }
-        catch (SQLException e)
-        {
-            throw new DataSetException(e);
-        }
+
+        return new QueryTableIterator(tableEntries, _connection);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -104,7 +107,7 @@ public class QueryDataSet extends AbstractDataSet
     public String[] getTableNames() throws DataSetException
     {
         List names = new ArrayList();
-        for (Iterator it = _tables.iterator(); it.hasNext();)
+        for (Iterator it = _tableEntries.iterator(); it.hasNext();)
         {
             TableEntry entry = (TableEntry)it.next();
             names.add(entry.getTableName());
@@ -113,7 +116,7 @@ public class QueryDataSet extends AbstractDataSet
         return (String[])names.toArray(new String[0]);
     }
 
-    private static class TableEntry
+    static class TableEntry
     {
         private final String _tableName;
         private final String _query;

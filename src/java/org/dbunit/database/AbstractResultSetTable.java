@@ -54,12 +54,16 @@ public abstract class AbstractResultSetTable extends AbstractTable
     }
 
     public AbstractResultSetTable(String tableName, String selectStatement,
-            IDatabaseConnection connection, IDataTypeFactory dataTypeFactory)
+            IDatabaseConnection connection)
             throws DataSetException, SQLException
     {
         Connection jdbcConnection = connection.getConnection();
         _statement = jdbcConnection.createStatement();
 //        _statement.setFetchDirection(ResultSet.FETCH_FORWARD);
+
+        DatabaseConfig config = connection.getConfig();
+        IDataTypeFactory dataTypeFactory = (IDataTypeFactory)config.getProperty(
+                DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
 
         try
         {

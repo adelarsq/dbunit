@@ -85,7 +85,7 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
     public ScrollableResultSetTable(String tableName, String selectStatement,
             IDatabaseConnection connection) throws DataSetException, SQLException
     {
-        super(tableName, selectStatement, connection, new DefaultDataTypeFactory());
+        super(tableName, selectStatement, connection);
 
         try
         {

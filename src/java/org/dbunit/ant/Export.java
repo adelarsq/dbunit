@@ -27,6 +27,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.ForwardOnlyResultSetTableFactory;
 import org.dbunit.database.CachedResultSetTableFactory;
+import org.dbunit.database.QueryDataSet;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -128,56 +129,32 @@ public class Export implements DbUnitTaskStep
             }
 
             // Retrieve the complete database if no tables or queries specified.
-            DatabaseConfig config = connection.getConfig();
             if (_tables.size() == 0)
             {
-                config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY,
-                        new ForwardOnlyResultSetTableFactory());
-
                 dataset = connection.createDataSet();
             }
-            // No query but some tables specified
-            else if (!_hasQuery)
-            {
-                config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY,
-                        new ForwardOnlyResultSetTableFactory());
-
-                List tableNameList = new ArrayList();
-                for (Iterator it = _tables.iterator(); it.hasNext();)
-                {
-                    Table table = (Table)it.next();
-                    tableNameList.add(table.getName());
-                }
-
-                String[] tableNames = (String[])tableNameList.toArray(new String[0]);
-                dataset = connection.createDataSet(tableNames);
-            }
-            // At least a query specified
             else
             {
-                config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY,
-                        new CachedResultSetTableFactory());
-
-                // TODO: Use the resultset factory in QueryDataSet implementation
-                List tableList = new ArrayList();
+                QueryDataSet queryDataset = new QueryDataSet(connection);
                 for (Iterator it = _tables.iterator(); it.hasNext();)
                 {
-                    Object table = it.next();
-                    if (table instanceof Query)
+                    Object item = it.next();
+                    if (item instanceof Query)
                     {
-                        tableList.add(createTable((Query)table, connection));
+                        Query queryItem = (Query)item;
+                        queryDataset.addTable(queryItem.getName(), queryItem.getSql());
                     }
                     else
                     {
-                        tableList.add(createTable((Table)table, connection));
+                        Table tableItem = (Table)item;
+                        queryDataset.addTable(tableItem.getName());
                     }
                 }
 
-                ITable[] tables = (ITable[])tableList.toArray(new ITable[0]);
-                dataset = new DefaultDataSet(tables);
-
+                dataset = queryDataset;
             }
-            // save the dataset
+
+            // Write the dataset
             Writer out = new FileWriter(_dest);
             try
             {
@@ -208,29 +185,6 @@ public class Export implements DbUnitTaskStep
         {
             throw new DatabaseUnitException(e);
         }
-    }
-
-    private ITable createTable(Table table, IDatabaseConnection connection)
-           throws DataSetException, SQLException
-    {
-        IDataSet databaseDataSet = connection.createDataSet();
-
-        // Optimization: do not fetch table data since DTD export only use
-        // table metadata.
-        if (_format.equalsIgnoreCase(FORMAT_DTD))
-        {
-            ITableMetaData metaData =
-                    databaseDataSet.getTableMetaData(table.getName());
-            return new DefaultTable(metaData, new ArrayList());
-        }
-
-        return databaseDataSet.getTable(table.getName());
-    }
-
-    private ITable createTable(Query query, IDatabaseConnection connection)
-            throws DataSetException, SQLException
-    {
-        return connection.createQueryTable(query.getName(), query.getSql());
     }
 
     public String getLogMessage()

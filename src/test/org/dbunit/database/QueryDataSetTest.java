@@ -27,6 +27,9 @@ import org.dbunit.dataset.AbstractDataSetTest;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.NoSuchColumnException;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.Column;
 import org.dbunit.operation.DatabaseOperation;
 
 /**
@@ -70,8 +73,6 @@ public class QueryDataSetTest extends AbstractDataSetTest
         return getExpectedLowerNames();
     }
 
-
-
     protected IDataSet createDataSet() throws Exception
     {
         String[] names = getExpectedNames();
@@ -80,8 +81,7 @@ public class QueryDataSetTest extends AbstractDataSetTest
         for (int i = 0; i < names.length; i++)
         {
             String name = names[i];
-            String query = "select * from " + name;
-            dataSet.addTable(name, query);
+            dataSet.addTable(name);
         }
         return dataSet;
     }
@@ -222,7 +222,6 @@ public class QueryDataSetTest extends AbstractDataSetTest
                 "SELECT * from second_table where COLUMN0='row 0 col 0' and COLUMN2='row 0 col 2'");
         ptds.addTable("PK_TABLE", null);
     }
-
 }
 
 
