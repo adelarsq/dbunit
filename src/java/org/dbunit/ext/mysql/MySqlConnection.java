@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.ext.oracle;
+package org.dbunit.ext.mysql;
 
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -28,15 +28,15 @@ import java.sql.Connection;
 /**
  *
  * @author manuel.laflamme
- * @since Sep 3, 2003
+ * @since Sep 4, 2003
  * @version $Revision$
  */
-public class OracleConnection extends DatabaseConnection
+public class MySqlConnection extends DatabaseConnection
 {
-    public OracleConnection(Connection connection, String schema)
+    public MySqlConnection(Connection connection, String schema)
     {
         super(connection, schema);
         getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
-                new OracleDataTypeFactory());
+                new MySqlDataTypeFactory());
     }
 }

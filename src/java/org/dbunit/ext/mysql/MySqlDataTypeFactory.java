@@ -18,25 +18,34 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.ext.oracle;
+package org.dbunit.ext.mysql;
 
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.DataTypeException;
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 
-import java.sql.Connection;
+import java.sql.Types;
 
 /**
- *
+ * Specialized factory that recognizes MySql data types.
+
  * @author manuel.laflamme
  * @since Sep 3, 2003
  * @version $Revision$
  */
-public class OracleConnection extends DatabaseConnection
+public class MySqlDataTypeFactory extends DefaultDataTypeFactory
 {
-    public OracleConnection(Connection connection, String schema)
+    public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
-        super(connection, schema);
-        getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
-                new OracleDataTypeFactory());
+        if (sqlType == Types.OTHER)
+        {
+            // CLOB
+            if ("longtext".equals(sqlTypeName))
+            {
+                return DataType.CLOB;
+            }
+        }
+
+        return super.createDataType(sqlType, sqlTypeName);
     }
 }

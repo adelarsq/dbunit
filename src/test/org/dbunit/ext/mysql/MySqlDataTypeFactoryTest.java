@@ -18,25 +18,39 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.ext.oracle;
+package org.dbunit.ext.mysql;
 
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.datatype.AbstractDataTypeFactoryTest;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 
-import java.sql.Connection;
+import java.sql.Types;
 
 /**
- *
- * @author manuel.laflamme
+ * @author Manuel Laflamme
  * @since Sep 3, 2003
  * @version $Revision$
  */
-public class OracleConnection extends DatabaseConnection
+public class MySqlDataTypeFactoryTest extends AbstractDataTypeFactoryTest
 {
-    public OracleConnection(Connection connection, String schema)
+    public MySqlDataTypeFactoryTest(String s)
     {
-        super(connection, schema);
-        getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
-                new OracleDataTypeFactory());
+        super(s);
     }
+
+    public IDataTypeFactory createFactory() throws Exception
+    {
+        return new MySqlDataTypeFactory();
+    }
+
+    public void testCreateLongtextDataType() throws Exception
+    {
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "longtext";
+
+        DataType expected = DataType.CLOB;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
 }

@@ -20,8 +20,6 @@
  */
 package org.dbunit.ext;
 
-import org.dbunit.ext.oracle.OracleDataTypeFactoryTest;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -36,6 +34,7 @@ public class AllTests
     {
         TestSuite suite = new TestSuite();
         suite.addTest(org.dbunit.ext.db2.AllTests.suite());
+        suite.addTest(org.dbunit.ext.mysql.AllTests.suite());
         suite.addTest(org.dbunit.ext.oracle.AllTests.suite());
         return suite;
     }

@@ -18,25 +18,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.ext.oracle;
+package org.dbunit.ext.mysql;
 
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-
-import java.sql.Connection;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
- *
- * @author manuel.laflamme
+ * @author Manuel Laflamme
  * @since Sep 3, 2003
  * @version $Revision$
  */
-public class OracleConnection extends DatabaseConnection
+public class AllTests
 {
-    public OracleConnection(Connection connection, String schema)
+    public static Test suite()
     {
-        super(connection, schema);
-        getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
-                new OracleDataTypeFactory());
+        TestSuite suite = new TestSuite();
+        suite.addTest(new TestSuite(MySqlDataTypeFactoryTest.class));
+        return suite;
     }
 }
