@@ -24,8 +24,7 @@ package org.dbunit.operation;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.database.statement.IPreparedBatchStatement;
-import org.dbunit.database.statement.IStatementFactory;
+import org.dbunit.database.statement.*;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 
@@ -57,7 +56,6 @@ public class RefreshOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        IStatementFactory factory = connection.getStatementFactory();
         String schema = connection.getSchema();
 
         // for each table
@@ -74,9 +72,9 @@ public class RefreshOperation extends DatabaseOperation
             ITableMetaData metaData = AbstractBatchOperation.getOperationMetaData(
                     connection, table.getTableMetaData());
             RowOperation updateRowOperation = createUpdateOperation(connection,
-                    factory, schema, metaData);
+                    schema, metaData);
             RowOperation insertRowOperation = new InsertRowOperation(connection,
-                    factory, schema, metaData);
+                    schema, metaData);
 
             // refresh all rows
             for (int j = 0; j < table.getRowCount(); j++)
@@ -95,17 +93,17 @@ public class RefreshOperation extends DatabaseOperation
     }
 
     private RowOperation createUpdateOperation(IDatabaseConnection connection,
-            IStatementFactory factory, String schema, ITableMetaData metaData)
+            String schema, ITableMetaData metaData)
             throws DataSetException, SQLException
     {
         // update only if columns are not all primary keys
         if (metaData.getColumns().length > metaData.getPrimaryKeys().length)
         {
-            return new UpdateRowOperation(connection, factory, schema, metaData);
+            return new UpdateRowOperation(connection, schema, metaData);
         }
 
         // otherwise, operation only verify if row exist
-        return new RowExistOperation(connection, factory, schema, metaData);
+        return new RowExistOperation(connection, schema, metaData);
     }
 
     /**
@@ -150,14 +148,14 @@ public class RefreshOperation extends DatabaseOperation
     private class InsertRowOperation extends RowOperation
     {
         public InsertRowOperation(IDatabaseConnection connection,
-            IStatementFactory factory, String schema, ITableMetaData metaData)
+                String schema, ITableMetaData metaData)
                 throws DataSetException, SQLException
         {
             // setup insert statement
             OperationData insertData = _insertOperation.getOperationData(schema,
                     metaData);
-            _statement = factory.createPreparedBatchStatement(
-                    insertData.getSql(), connection);
+            _statement = new SimplePreparedStatement(insertData.getSql(),
+                    connection.getConnection());
             _columns = insertData.getColumns();
         }
     }
@@ -170,14 +168,14 @@ public class RefreshOperation extends DatabaseOperation
         PreparedStatement _countStatement;
 
         public UpdateRowOperation(IDatabaseConnection connection,
-            IStatementFactory factory, String schema, ITableMetaData metaData)
+                String schema, ITableMetaData metaData)
                 throws DataSetException, SQLException
         {
             // setup update statement
             OperationData updateData = _updateOperation.getOperationData(schema,
                     metaData);
-            _statement = factory.createPreparedBatchStatement(
-                    updateData.getSql(), connection);
+            _statement = new SimplePreparedStatement(updateData.getSql(),
+                    connection.getConnection());
             _columns = updateData.getColumns();
         }
     }
@@ -190,7 +188,7 @@ public class RefreshOperation extends DatabaseOperation
         PreparedStatement _countStatement;
 
         public RowExistOperation(IDatabaseConnection connection,
-            IStatementFactory factory, String schema, ITableMetaData metaData)
+                String schema, ITableMetaData metaData)
                 throws DataSetException, SQLException
         {
             // setup select count statement
