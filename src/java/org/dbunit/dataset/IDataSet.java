@@ -41,7 +41,7 @@ public interface IDataSet
      * Returns the specified table metadata.
      *
      * @throws AmbiguousTableNameException if dataset contains multiple tables
-     *      having the specified name. Use {@link getTables} to access
+     *      having the specified name. Use {@link #getTables} to access
      *      to all tables.
      * @throws NoSuchTableException if dataset do not contains the specified
      *      table
@@ -53,7 +53,7 @@ public interface IDataSet
      * Returns the specified table.
      *
      * @throws AmbiguousTableNameException if dataset contains multiple tables
-     *      having the specified name. Use {@link getTables} to access
+     *      having the specified name. Use {@link #getTables} to access
      *      to all tables.
      * @throws NoSuchTableException if dataset do not contains the specified
      *      table

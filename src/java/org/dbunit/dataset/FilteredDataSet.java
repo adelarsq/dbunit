@@ -53,7 +53,7 @@ public class FilteredDataSet implements IDataSet
         boolean found = false;
         for (int i = 0; i < _tableNames.length; i++)
         {
-            if (tableName.equals(_tableNames[i]))
+            if (tableName.equalsIgnoreCase(_tableNames[i]))
             {
                 if (found)
                 {

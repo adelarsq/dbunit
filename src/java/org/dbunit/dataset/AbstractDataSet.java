@@ -28,7 +28,7 @@ import java.util.Arrays;
 
 /**
  * This abstract class provides the basic implementation of the IDataSet
- * interface. Subclass are only required to implement the {@link getTables}
+ * interface. Subclass are only required to implement the {@link #getTables}
  * method.
  *
  * @author Manuel Laflamme
@@ -73,7 +73,7 @@ public abstract class AbstractDataSet implements IDataSet
         for (int i = 0; i < tables.length; i++)
         {
             ITable table = tables[i];
-            if (tableName.equals(table.getTableMetaData().getTableName()))
+            if (tableName.equalsIgnoreCase(table.getTableMetaData().getTableName()))
             {
                 if (found != null)
                 {

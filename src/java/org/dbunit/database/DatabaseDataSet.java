@@ -159,20 +159,39 @@ public class DatabaseDataSet implements IDataSet
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
-        ITableMetaData metaData = (ITableMetaData)getTableMap().get(tableName);
-        if (metaData != null)
+        for (Iterator it = getTableMap().entrySet().iterator(); it.hasNext();)
         {
-            return metaData;
+            Map.Entry entry = (Map.Entry)it.next();
+            if (tableName.equalsIgnoreCase((String)entry.getKey()))
+            {
+                ITableMetaData metaData = (ITableMetaData)entry.getValue();
+                if (metaData != null)
+                {
+                    return metaData;
+                }
+
+                metaData = new DatabaseTableMetaData((String)entry.getKey(), _connection);
+                getTableMap().put(metaData.getTableName(), metaData);
+                return metaData;
+            }
         }
 
-        if (!getTableMap().containsKey(tableName))
-        {
-            throw new NoSuchTableException(tableName);
-        }
+        throw new NoSuchTableException(tableName);
 
-        metaData = new DatabaseTableMetaData(tableName, _connection);
-        getTableMap().put(tableName, metaData);
-        return metaData;
+//        ITableMetaData metaData = (ITableMetaData)getTableMap().get(tableName);
+//        if (metaData != null)
+//        {
+//            return metaData;
+//        }
+//
+//        if (!getTableMap().containsKey(tableName))
+//        {
+//            throw new NoSuchTableException(tableName);
+//        }
+//
+//        metaData = new DatabaseTableMetaData(tableName, _connection);
+//        getTableMap().put(tableName, metaData);
+//        return metaData;
     }
 
     public ITable getTable(String tableName) throws DataSetException

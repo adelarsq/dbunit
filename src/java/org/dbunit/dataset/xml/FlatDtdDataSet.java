@@ -23,7 +23,7 @@ import com.wutka.dtd.*;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class FlatDtdDataSet implements IDataSet
+public class FlatDtdDataSet extends AbstractDataSet
 {
     private static final List EMPTY_LIST = Arrays.asList(new Object[0]);
     private final List _tableNames = new ArrayList();
@@ -137,27 +137,27 @@ public class FlatDtdDataSet implements IDataSet
         return (String[])_tableNames.toArray(new String[0]);
     }
 
-    public ITableMetaData getTableMetaData(String tableName)
-            throws DataSetException
-    {
-        return getTable(tableName).getTableMetaData();
-    }
-
-    public ITable getTable(String tableName) throws DataSetException
-    {
-        if (_tableNames.indexOf(tableName) != _tableNames.lastIndexOf(tableName))
-        {
-            throw new AmbiguousTableNameException(tableName);
-        }
-
-        ITable table = (ITable)_tableMap.get(tableName);
-        if (table == null)
-        {
-            throw new NoSuchTableException(tableName);
-        }
-
-        return table;
-    }
+//    public ITableMetaData getTableMetaData(String tableName)
+//            throws DataSetException
+//    {
+//        return getTable(tableName).getTableMetaData();
+//    }
+//
+//    public ITable getTable(String tableName) throws DataSetException
+//    {
+//        if (_tableNames.indexOf(tableName) != _tableNames.lastIndexOf(tableName))
+//        {
+//            throw new AmbiguousTableNameException(tableName);
+//        }
+//
+//        ITable table = (ITable)_tableMap.get(tableName);
+//        if (table == null)
+//        {
+//            throw new NoSuchTableException(tableName);
+//        }
+//
+//        return table;
+//    }
 
     public ITable[] getTables() throws DataSetException
     {

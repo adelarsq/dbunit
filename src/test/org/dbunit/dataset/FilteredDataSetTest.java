@@ -65,6 +65,14 @@ public class FilteredDataSetTest extends AbstractDataSetTest
         return new FilteredDataSet(getExpectedDuplicateNames(), dataSet);
     }
 
+    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception
+    {
+        String[] names = getExpectedDuplicateNames();
+        names[0] = names[0].toLowerCase();
+
+        return new FilteredDataSet(names, createDuplicateDataSet());
+    }
+
     public void testGetFilteredTableNames() throws Exception
     {
         String[] originalNames = getExpectedNames();

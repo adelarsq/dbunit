@@ -296,7 +296,15 @@ public class QueryDataSetTest extends AbstractDataSetTest
         // Cannot test! Unsupported feature.
     }
 
+    public void testGetCaseInsensitiveDuplicateTable() throws Exception
+    {
+        // Cannot test! Unsupported feature.
+    }
 
+    public void testGetCaseInsensitiveDuplicateTableMetaData() throws Exception
+    {
+        // Cannot test! Unsupported feature.
+    }
 }
 
 

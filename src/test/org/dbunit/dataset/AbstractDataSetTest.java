@@ -60,7 +60,17 @@ public abstract class AbstractDataSetTest extends TestCase
     protected static String[] getExpectedNames() throws Exception
     {
         return (String[])TABLE_NAMES.clone();
+    }
 
+    protected static String[] getExpectedLowerNames() throws Exception
+    {
+        String[] names = (String[])TABLE_NAMES.clone();
+        for (int i = 0; i < names.length; i++)
+        {
+            names[i] = names[i].toLowerCase();
+        }
+
+        return names;
     }
 
     protected String[] getExpectedDuplicateNames()
@@ -115,13 +125,29 @@ public abstract class AbstractDataSetTest extends TestCase
         return new FilteredDataSet(names, dataSet);
     }
 
+    /**
+     * Create a dataset with duplicate tables having different char case in name
+     * @return
+     */
+    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception
+    {
+        IDataSet dataSet = createDuplicateDataSet();
+        ITable lowerTable = dataSet.getTables()[0];
+        dataSet = new DefaultDataSet(new ITable[]{
+            new CompositeTable(getDuplicateTableName().toLowerCase(), lowerTable),
+            dataSet.getTables()[1],
+            dataSet.getTables()[2],
+        });
+        return dataSet;
+    }
+
     protected abstract IDataSet createDataSet() throws Exception;
 
     protected abstract IDataSet createDuplicateDataSet() throws Exception;
 
     /**
      * Many tests in this class assume a known sequence of table. For some
-     * IDataSet implemntation (like OldDatabaseDataSet) we can't predict
+     * IDataSet implemntation (like DatabaseDataSet) we can't predict
      * any specific order. For supporting them, this method is called for both
      * the expected names and dataset names before comparing them.
      * <p>
@@ -305,6 +331,70 @@ public abstract class AbstractDataSetTest extends TestCase
         {
         }
     }
+
+    public void testGetCaseInsensitiveTable() throws Exception
+    {
+        String[] expectedNames = getExpectedLowerNames();
+
+        IDataSet dataSet = createDataSet();
+        for (int i = 0; i < expectedNames.length; i++)
+        {
+            String expected = expectedNames[i];
+            ITable table = dataSet.getTable(expected);
+            String actual = table.getTableMetaData().getTableName();
+
+            if (!expected.equalsIgnoreCase(actual))
+            {
+                assertEquals("name " + i, expected, actual);
+            }
+        }
+    }
+
+    public void testGetCaseInsensitiveTableMetaData() throws Exception
+    {
+        String[] expectedNames = getExpectedLowerNames();
+        IDataSet dataSet = createDataSet();
+
+        for (int i = 0; i < expectedNames.length; i++)
+        {
+            String expected = expectedNames[i];
+            ITableMetaData metaData = dataSet.getTableMetaData(expected);
+            String actual = metaData.getTableName();
+
+            if (!expected.equalsIgnoreCase(actual))
+            {
+                assertEquals("name " + i, expected, actual);
+            }
+        }
+    }
+
+    public void testGetCaseInsensitiveDuplicateTable() throws Exception
+    {
+        IDataSet dataSet = createMultipleCaseDuplicateDataSet();
+
+        try
+        {
+            dataSet.getTable(getDuplicateTableName().toLowerCase());
+            fail("Should throw AmbiguousTableNameException");
+        }
+        catch (AmbiguousTableNameException e)
+        {
+        }
+    }
+
+    public void testGetCaseInsensitiveDuplicateTableMetaData() throws Exception
+    {
+        IDataSet dataSet = createMultipleCaseDuplicateDataSet();
+        try
+        {
+            dataSet.getTableMetaData(getDuplicateTableName().toLowerCase());
+            fail("Should throw AmbiguousTableNameException");
+        }
+        catch (AmbiguousTableNameException e)
+        {
+        }
+    }
+
 }
 
 
