@@ -66,13 +66,6 @@ public class RefreshOperation extends AbstractOperation
         return AbstractBatchOperation.isEmpty(table);
     }
 
-    private ITableMetaData getOperationMetaData(IDatabaseConnection connection,
-            ITableMetaData metaData) throws DatabaseUnitException, SQLException
-    {
-        return AbstractBatchOperation.getOperationMetaData(
-                            connection, metaData);
-    }
-
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseOperation class
 
@@ -139,7 +132,7 @@ public class RefreshOperation extends AbstractOperation
     }
 
     /**
-     * This class represents a operation executable on a single table row.
+     * This class represents a operation executed on a single table row.
      */
     class RowOperation
     {
@@ -148,7 +141,7 @@ public class RefreshOperation extends AbstractOperation
         protected BigInteger _ignoreMapping;
 
         /**
-         * Execute this operation on the sepcfied table row.
+         * Execute this operation on the sepcified table row.
          * @return <code>true</code> if operation have been executed on the row.
          */
         public boolean execute(ITable table, int row)

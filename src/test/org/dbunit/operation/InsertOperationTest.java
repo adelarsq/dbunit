@@ -25,6 +25,7 @@ import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.TestFeature;
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
@@ -93,6 +94,57 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
         // execute operation
         new InsertOperation().execute(connection, dataSet);
+
+        statement.verify();
+        factory.verify();
+        connection.verify();
+    }
+
+    public void testExecuteUnknownColumn() throws Exception
+    {
+        String tableName = "table";
+
+        // setup table
+        Column[] columns = new Column[]{
+            new Column("column", DataType.VARCHAR),
+            new Column("unknown", DataType.VARCHAR),
+        };
+        DefaultTable table = new DefaultTable(tableName, columns);
+        table.addRow();
+        table.setValue(0, columns[0].getColumnName(), null);
+        table.setValue(0, columns[0].getColumnName(), "value");
+        IDataSet insertDataset = new DefaultDataSet(table);
+
+        IDataSet databaseDataSet = new DefaultDataSet(
+                new DefaultTable(tableName, new Column[]{
+                    new Column("column", DataType.VARCHAR),
+                }));
+
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.setExpectedExecuteBatchCalls(0);
+        statement.setExpectedClearBatchCalls(0);
+        statement.setExpectedCloseCalls(0);
+
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(0);
+        factory.setupStatement(statement);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(databaseDataSet);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // execute operation
+        try
+        {
+            new InsertOperation().execute(connection, insertDataset);
+            fail("Should not be here!");
+        }
+        catch (NoSuchColumnException e)
+        {
+
+        }
 
         statement.verify();
         factory.verify();

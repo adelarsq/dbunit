@@ -23,6 +23,16 @@ package org.dbunit.operation;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.NoSuchColumnException;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.DatabaseUnitException;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author Manuel Laflamme
@@ -39,5 +49,37 @@ public abstract class AbstractOperation extends DatabaseOperation
         return DataSetUtils.getQualifiedName(prefix, name, escapePattern);
     }
 
+    /**
+     * Returns the metadata to use in this operation.
+     *
+     * @param connection the database connection
+     * @param metaData the xml table metadata
+     */
+    static ITableMetaData getOperationMetaData(IDatabaseConnection connection,
+            ITableMetaData metaData) throws DatabaseUnitException, SQLException
+    {
+        IDataSet databaseDataSet = connection.createDataSet();
+        String tableName = metaData.getTableName();
 
+        ITableMetaData databaseMetaData = databaseDataSet.getTableMetaData(tableName);
+        Column[] databaseColumns = databaseMetaData.getColumns();
+        Column[] columns = metaData.getColumns();
+
+        List columnList = new ArrayList();
+        for (int j = 0; j < columns.length; j++)
+        {
+            String columnName = columns[j].getColumnName();
+            Column column = DataSetUtils.getColumn(
+                    columnName, databaseColumns);
+            if (column == null)
+            {
+                throw new NoSuchColumnException(tableName + "." + columnName);
+            }
+            columnList.add(column);
+        }
+
+        return new DefaultTableMetaData(databaseMetaData.getTableName(),
+                (Column[])columnList.toArray(new Column[0]),
+                databaseMetaData.getPrimaryKeys());
+    }
 }

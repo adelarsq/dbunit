@@ -25,15 +25,8 @@ import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.DefaultTable;
-import org.dbunit.dataset.DefaultTableMetaData;
-import org.dbunit.dataset.ForwardOnlyDataSet;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.LowerCaseDataSet;
-import org.dbunit.dataset.NoPrimaryKeyException;
+import org.dbunit.database.statement.MockBatchStatement;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
@@ -183,6 +176,56 @@ public class RefreshOperationTest extends AbstractDatabaseTest
         factory.verify();
         connection.verify();
     }
+
+    public void testExecuteUnknownColumn() throws Exception
+    {
+        String tableName = "table";
+
+        // setup table
+        Column[] columns = new Column[]{
+            new Column("unknown", DataType.VARCHAR),
+        };
+        DefaultTable table = new DefaultTable(tableName, columns);
+        table.addRow();
+        table.setValue(0, columns[0].getColumnName(), "value");
+        IDataSet insertDataset = new DefaultDataSet(table);
+
+        IDataSet databaseDataSet = new DefaultDataSet(
+                new DefaultTable(tableName, new Column[]{
+                    new Column("column", DataType.VARCHAR),
+                }));
+
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.setExpectedExecuteBatchCalls(0);
+        statement.setExpectedClearBatchCalls(0);
+        statement.setExpectedCloseCalls(0);
+
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(0);
+        factory.setupStatement(statement);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(databaseDataSet);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // execute operation
+        try
+        {
+            new RefreshOperation().execute(connection, insertDataset);
+            fail("Should not be here!");
+        }
+        catch (NoSuchColumnException e)
+        {
+
+        }
+
+        statement.verify();
+        factory.verify();
+        connection.verify();
+    }
+
 
 }
 
