@@ -38,12 +38,21 @@ public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
 {
     private final String _schema;
     private final DataSource _dataSource;
+    private final String _user;
+    private final String _password;
     private Connection _connection;
 
     public DatabaseDataSourceConnection(InitialContext context, String jndiName,
             String schema) throws NamingException, SQLException
     {
-        this((DataSource)context.lookup(jndiName), schema);
+        this((DataSource)context.lookup(jndiName), schema, null, null);
+    }
+
+    public DatabaseDataSourceConnection(InitialContext context, String jndiName,
+            String schema, String user, String password)
+            throws NamingException, SQLException
+    {
+        this((DataSource)context.lookup(jndiName), schema, user, password);
     }
 
     public DatabaseDataSourceConnection(InitialContext context, String jndiName)
@@ -52,17 +61,37 @@ public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
         this(context, jndiName, null);
     }
 
+    public DatabaseDataSourceConnection(InitialContext context, String jndiName,
+            String user, String password) throws NamingException, SQLException
+    {
+        this(context, jndiName, null, user, password);
+    }
+
     public DatabaseDataSourceConnection(DataSource dataSource)
             throws SQLException
     {
-        this(dataSource, null);
+        this(dataSource, null, null, null);
+    }
+
+    public DatabaseDataSourceConnection(DataSource dataSource, String user,
+            String password) throws SQLException
+    {
+        this(dataSource, null, user, password);
     }
 
     public DatabaseDataSourceConnection(DataSource dataSource, String schema)
             throws SQLException
     {
+        this(dataSource, schema, null, null);
+    }
+
+    public DatabaseDataSourceConnection(DataSource dataSource, String schema,
+            String user, String password) throws SQLException
+    {
         _dataSource = dataSource;
         _schema = schema;
+        _user = user;
+        _password = password;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -72,7 +101,14 @@ public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
     {
         if (_connection == null)
         {
-            _connection = _dataSource.getConnection();
+            if (_user != null)
+            {
+                _connection = _dataSource.getConnection(_user, _password);
+            }
+            else
+            {
+                _connection = _dataSource.getConnection();
+            }
         }
         return _connection;
     }
@@ -91,5 +127,6 @@ public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
         }
     }
 }
+
 
 
