@@ -35,6 +35,10 @@ public class DefaultDataSet extends AbstractDataSet
 {
     private final List _tableList = new ArrayList();
 
+    public DefaultDataSet()
+    {
+    }
+
     public DefaultDataSet(ITable table)
     {
         addTable(table);
@@ -46,6 +50,12 @@ public class DefaultDataSet extends AbstractDataSet
         {
             addTable(tables[i]);
         }
+    }
+
+    public DefaultDataSet(ITable table1, ITable table2)
+    {
+        addTable(table1);
+        addTable(table2);
     }
 
     /**
