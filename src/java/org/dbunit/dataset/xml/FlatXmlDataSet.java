@@ -134,9 +134,7 @@ public class FlatXmlDataSet extends CachedDataSet
     public FlatXmlDataSet(Reader xmlReader, Reader dtdReader)
             throws IOException, DataSetException
     {
-        super(new FlatXmlProducer(
-                new InputSource(xmlReader),
-                new DtdEntityResolver(dtdReader)));
+        this(xmlReader, new FlatDtdDataSet(dtdReader));
     }
 
     /**
@@ -187,9 +185,7 @@ public class FlatXmlDataSet extends CachedDataSet
     public FlatXmlDataSet(InputStream xmlStream, InputStream dtdStream)
             throws IOException, DataSetException
     {
-        super(new FlatXmlProducer(
-                new InputSource(xmlStream),
-                new DtdEntityResolver(dtdStream)));
+        this(xmlStream, new FlatDtdDataSet(dtdStream));
     }
 
     /**
@@ -243,33 +239,6 @@ public class FlatXmlDataSet extends CachedDataSet
             throws IOException, DataSetException
     {
         FlatDtdDataSet.write(dataSet, out);
-    }
-
-    private static class DtdEntityResolver implements EntityResolver
-    {
-        InputSource _dtdSource;
-
-        public DtdEntityResolver(InputSource dtdSource)
-        {
-            _dtdSource = dtdSource;
-        }
-
-        public DtdEntityResolver(Reader dtdReader)
-        {
-            this(new InputSource(dtdReader));
-        }
-
-        public DtdEntityResolver(InputStream dtdStream)
-        {
-            this(new InputSource(dtdStream));
-        }
-
-        public InputSource resolveEntity(String publicId, String systemId)
-                throws SAXException, IOException
-        {
-            return _dtdSource;
-        }
-
     }
 }
 
