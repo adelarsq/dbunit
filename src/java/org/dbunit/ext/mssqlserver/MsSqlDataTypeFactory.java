@@ -18,30 +18,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.dataset.datatype;
+package org.dbunit.ext.mssqlserver;
 
-import java.sql.Types;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.DataTypeException;
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 
 /**
- * Generic factory that handle standard JDBC types.
+ * Specialized factory that recognizes MS SQL Server data types.
  *
  * @author Manuel Laflamme
- * @since May 17, 2003
+ * @since May 19, 2003
  * @version $Revision$
  */
-public class DefaultDataTypeFactory implements IDataTypeFactory
+public class MsSqlDataTypeFactory extends DefaultDataTypeFactory
 {
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
-        DataType dataType = DataType.UNKNOWN;
-        if (sqlType != Types.OTHER)
-        {
-            dataType = DataType.forSqlType(sqlType);
-        }
-        else
-        {
-            dataType = DataType.forSqlTypeName(sqlTypeName);
-        }
-        return dataType;
+        // TODO : Process MS SQL Server custom datatype here
+//        if (sqlType == custom1)
+//        {
+//            return CUSTOM1;
+//        }
+//
+//        if (sqlType == custom2)
+//        {
+//            return CUSTOM2;
+//        }
+
+        return super.createDataType(sqlType, sqlTypeName);
     }
 }

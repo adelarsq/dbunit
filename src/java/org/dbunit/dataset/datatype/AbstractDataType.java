@@ -30,7 +30,7 @@ import java.sql.PreparedStatement;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-abstract class AbstractDataType extends DataType
+public abstract class AbstractDataType extends DataType
 {
     private final String _name;
     private final int _sqlType;
