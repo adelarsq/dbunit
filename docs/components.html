@@ -16,27 +16,27 @@
   </tr>
   </table>
   <table cellspadding = 0 cellspacing = 0 border = 0>
-    <tr> 
-      <td class="menu" nowrap valign="top" > <a href="index.html">Home</a><br>
-        <br>
-        <a href="components.html">Components</a><br>
-        <a href="howto.html">Howto Guides</a><br>
-        <a href="bestpractices.html">Best Practices</a><br>
-        <a href="api/index.html">API Reference</a><br>
-        <a href="faq.html">FAQ</a><br>
-        <br>
-        <a href="changes.html">News/Changes</a><br>
-        <a href="download.html">Download</a><br>
-        <a href="support.html">Support</a><br>
-        <a href="resources.html">Resources</a><br>
-        <br>
-        <div align="center"><a href="http://sourceforge.net"> <img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439"> 
-          </a></div>
-        <br>
-        <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations" 
+  <tr> 
+    <td class="menu" nowrap valign="top" > <a href="index.html">Home</a><br>
+      <br>
+      <a href="components.html">Components</a><br>
+      <a href="howto.html">Howto Guides</a><br>
+      <a href="bestpractices.html">Best Practices</a><br>
+      <a href="api/index.html">API Reference</a><br>
+      <a href="faq.html">FAQ</a><br>
+      <br>
+      <a href="changes.html">News/Changes</a><br>
+      <a href="download.html">Download</a><br>
+      <a href="support.html">Support</a><br>
+      <a href="resources.html">Resources</a><br>
+      <br>
+      <div align="center"><a href="http://sourceforge.net"> <img alt="SourceForge Logo" border="0" height="31" width="88" src="http://sourceforge.net/sflogo.php?group_id=47439"> 
+        </a></div>
+      <br>
+      <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations" 
       src="images/silphid.gif" border=0></a></div>
-      </td>
-      <td class="body" valign="top"> <!-- #BeginEditable "body" --> 
+    </td>
+    <td class="body" valign="top"> <!-- #BeginEditable "body" --> 
       <h2>Framework Components</h2>
       <p>Here is an introduction to the major Dbunit components: </p>
       <ul>
@@ -48,6 +48,7 @@
           <li><a href="#DefaultDataSet">DefaultDataSet</a></li>
           <li><a href="#CompositeDataSet">CompositeDataSet</a></li>
           <li><a href="#FilteredDataSet">FilteredDataSet</a></li>
+          <li><a href="#CaseInsentiveDataSet">CaseInsentiveDataSet</a></li>
         </ul>
         <li><a href="#databaseoperation">DatabaseOperation</a><br>
           <ul>
@@ -180,9 +181,14 @@ public interface IDataSet
       <h4><a name="CompositeDataSet">CompositeDataSet</a></h4>
       This class combines multiple datasets into a single one at runtime.<br>
       <h4><a name="FilteredDataSet">FilteredDataSet</a></h4>
-      <p>This is a decorator class which exposes only some tables from the decorated 
-        dataset.<br>
-      </p>
+      This is a decorator class which exposes only some tables from the decorated 
+      dataset. <br>
+      <h4><a name="CaseInsentiveDataSet">CaseInsentiveDataSet</a></h4>
+      This is a decorator class that allows access to a decorated dataset in a 
+      case insensitive way. Dataset implementations provided by the framework 
+      are case sensitive. This class allows using them in situation where case 
+      sensitiveness is not desirable. <br>
+      <br>
       <hr>
       <h3><a name="databaseoperation">DatabaseOperation</a></h3>
       The Dbunit framework uses dataset contents to perform operations on the 
@@ -270,18 +276,17 @@ public abstract class DatabaseOperation
       Decorates an operation and executes within the context of a transaction.<br>
       <br>
       <!-- #EndEditable --> 
-        <hr>
-        <div align="center"> 
-          <p><font size="2">Copyright &copy;2002, Manuel Laflamme, All Rights 
-            Reserved</font></p>
-          <p><font size="1"><a href="index.html">Home</a> - <a href="components.html">Components</a> 
-            - <a href="howto.html">Howto Guides</a> - <a href="bestpractices.html">Best 
-            Practices</a> - <a href="api/index.html">API Reference</a> - <a href="faq.html">FAQ</a> 
-            - <a href="changes.html">News &amp; Changes History</a> - <a href="download.html">Download</a> 
-            - <a href="support.html">Contact</a> - <a href="resources.html">Resources</a></font></p>
-        </div>
-      </td>
-    </tr>
+      <hr>
+      <div align="center"> 
+        <p><font size="2">Copyright &copy;2002, Manuel Laflamme, All Rights Reserved</font></p>
+        <p><font size="1"><a href="index.html">Home</a> - <a href="components.html">Components</a> 
+          - <a href="howto.html">Howto Guides</a> - <a href="bestpractices.html">Best 
+          Practices</a> - <a href="api/index.html">API Reference</a> - <a href="faq.html">FAQ</a> 
+          - <a href="changes.html">News &amp; Changes History</a> - <a href="download.html">Download</a> 
+          - <a href="support.html">Contact</a> - <a href="resources.html">Resources</a></font></p>
+      </div>
+    </td>
+  </tr>
 </table>
 </body>
 <!-- #EndTemplate --></html>

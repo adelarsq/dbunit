@@ -13,7 +13,7 @@ package org.dbunit.dataset;
 /**
  * Allows access to a decorated dataset in a case insensitive way. Dataset
  * implementations provided by the framework are case sensitive. This class
- * allows using them in situation where case sensitiveness is problematic.
+ * allows using them in situation where case sensitiveness is not desirable.
  *
  * @author Manuel Laflamme
  * @version 1.0
@@ -62,3 +62,4 @@ public class CaseInsensitiveDataSet implements IDataSet
         return new CaseInsensitiveTable(table);
     }
 }
+

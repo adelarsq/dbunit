@@ -36,10 +36,12 @@
         <div align="center"><a href="http://www.silphid.com/"><img alt="Silphid Creations" 
       src="images/silphid.gif" border=0></a></div>
       </td>
-      <td class="body" valign="top"> <!-- #BeginEditable "body" --> 
+      
+    <td class="body" valign="top"> <!-- #BeginEditable "body" --> 
       <h2>News</h2>
       <ul>
         <!--<li>2002-??-?? - The java API documentation is now available <a href="api/index.html">online</a>.</li>-->
+        <li>2002-04-04 - Version 1.3 released. See <a href="#1.3">changes</a>.</li>
         <li>2002-04-04 - New website design done by <a href="http://www.silphid.com/">Silphid 
           Creations</a>.</li>
         <li>2002-03-19 - Version 1.2.4 released. See <a href="#1.2.4">changes</a>.</li>
@@ -54,25 +56,36 @@
         <li>2002-02-27 - Version 1.0 released. This is the first public release.</li>
       </ul>
       <hr>
-      <!--
       <h2><a name="1.3">Changes in version 1.3 from 1.2.4</a></h2>
       <ul>
         <li>Added support for binary data types: BINARY, VARBINARY and LONGVARBINARY. 
           Binary data is persisted in xml datasets using the base64 encoding scheme.</li>
+        <li>Added the <a href="components.html#CaseInsentiveDataSet">CaseInsentiveDataSet</a> 
+          class. </li>
         <li>Deprecated the DataSetUtils.assertEquals() methods. You should now 
           use Assertion.assertEquals().</li>
-        <li>Fixed bug 533537 - FlatXmlDataSet and null values.</li>
+        <li>Multiple bugfixes:</li>
+        <ul>
+          <li><a href="https://sourceforge.net/tracker/index.php?func=detail&aid=533321&group_id=47439&atid=449491">533321</a> 
+            - Identifiers are case sensitive. See <a href="components.html#CaseInsentiveDataSet">CaseInsentiveDataSet</a>.</li>
+          <li><a href="https://sourceforge.net/tracker/index.php?func=detail&aid=533537&group_id=47439&atid=449491">533537</a> 
+            - FlatXmlDataSet and null values.</li>
+          <li><a href="https://sourceforge.net/tracker/index.php?func=detail&aid=534757&group_id=47439&atid=449491">533537</a> 
+            - Problem with single quotes.</li>
+          <li><a href="https://sourceforge.net/tracker/index.php?func=detail&aid=534810&group_id=47439&atid=449491">534810</a> 
+            - Problem when primary key included all columns</li>
+        </ul>
       </ul>
-	  -->
       <h2><a name="1.2.4">Changes in version 1.2.4 from 1.2</a></h2>
       <ul>
         <li>Added support for multiple schemas per connection. See <a href="howto.html#multipleschema">How 
           to</a> documentation.</li>
         <li>Removed element &lt;none/&gt; from dataset.dtd. This feature was incompatible 
           with future support for the binary data types. </li>
-        <li>Fixed bug 530998 - DataSetUtils.AssertEquals(ITable table, ITable 
-          table).</li>
-        <li>Fixed bug 533540 - Problem with DATE, TIME and TIMESTAMP.<br>
+        <li>Fixed bug <a href="https://sourceforge.net/tracker/index.php?func=detail&aid=530998&group_id=47439&atid=449491">530998</a> 
+          - DataSetUtils.AssertEquals(ITable table, ITable table).</li>
+        <li>Fixed bug <a href="https://sourceforge.net/tracker/index.php?func=detail&aid=533540&group_id=47439&atid=449491">533540</a> 
+          - Problem with DATE, TIME and TIMESTAMP.<br>
         </li>
       </ul>
       <h2><a name="1.2">Changes in version 1.2 from 1.1</a></h2>
@@ -105,11 +118,12 @@
             support for accessing jdbc connections from a DataSource. Jdbc connections 
             are requested on demand from the DataSource. </li>
           <li>Improved performance. </li>
-          <li>Fixed bug 526235 - Cannot export tables (jdbc-odbc with MS-SQL 7).</li>
+          <li>Fixed bug <a href="https://sourceforge.net/tracker/index.php?func=detail&aid=526235&group_id=47439&atid=449491">526235</a> 
+            - Cannot export tables (jdbc-odbc with MS-SQL 7).</li>
         </ul>
       </ul>
       <!-- #EndEditable --> 
-        <hr>
+      <hr>
         <div align="center"> 
           <p><font size="2">Copyright &copy;2002, Manuel Laflamme, All Rights 
             Reserved</font></p>
