@@ -48,6 +48,20 @@ public class PreparedBatchStatement extends AbstractPreparedBatchStatement
     public void addValue(Object value, DataType dataType)
             throws TypeCastException, SQLException
     {
+        if (dataType == DataType.CLOB)
+        {
+            _statement.setObject(++_index, dataType.typeCast(value),
+                    DataType.LONGVARCHAR.getSqlType());
+            return;
+        }
+
+        if (dataType == DataType.BLOB)
+        {
+            _statement.setObject(++_index, dataType.typeCast(value),
+                    DataType.LONGVARBINARY.getSqlType());
+            return;
+        }
+
         _statement.setObject(++_index, dataType.typeCast(value), dataType.getSqlType());
     }
 
@@ -74,6 +88,7 @@ public class PreparedBatchStatement extends AbstractPreparedBatchStatement
         _statement.clearBatch();
     }
 }
+
 
 
 

@@ -34,6 +34,7 @@ public class StringDataTypeTest extends AbstractDataTypeTest
         DataType.CHAR,
         DataType.VARCHAR,
         DataType.LONGVARCHAR,
+        DataType.CLOB,
     };
 
     public StringDataTypeTest(String name)
@@ -43,7 +44,7 @@ public class StringDataTypeTest extends AbstractDataTypeTest
 
     public void testToString() throws Exception
     {
-        String[] expected = {"CHAR", "VARCHAR", "LONGVARCHAR"};
+        String[] expected = {"CHAR", "VARCHAR", "LONGVARCHAR", "CLOB"};
 
         assertEquals("type count", expected.length, TYPES.length);
         for (int i = 0; i < TYPES.length; i++)
@@ -132,12 +133,13 @@ public class StringDataTypeTest extends AbstractDataTypeTest
 
     public void testSqlType() throws Exception
     {
-        int[] sqlTypes = {Types.CHAR, Types.VARCHAR, Types.LONGVARCHAR};
+        int[] sqlTypes = {Types.CHAR, Types.VARCHAR, Types.LONGVARCHAR, Types.CLOB};
 
         assertEquals("count", sqlTypes.length, TYPES.length);
         for (int i = 0; i < TYPES.length; i++)
         {
             assertEquals("forSqlType", TYPES[i], DataType.forSqlType(sqlTypes[i]));
+            assertEquals("forSqlTypeName", TYPES[i], DataType.forSqlTypeName(TYPES[i].toString()));
             assertEquals("getSqlType", sqlTypes[i], TYPES[i].getSqlType());
         }
     }
@@ -166,5 +168,6 @@ public class StringDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+
 
 

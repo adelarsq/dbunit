@@ -74,11 +74,18 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
 
     public void testExecute() throws Exception
     {
-
-        ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
-        DatabaseOperation.DELETE_ALL.execute(_connection,
+        IDataSet databaseDataSet = AbstractDataSetTest.removeExtraTestTables(
                 _connection.createDataSet());
-        ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
+
+        ITable[] tablesBefore = DataSetUtils.getTables(databaseDataSet);
+        DatabaseOperation.DELETE_ALL.execute(_connection, databaseDataSet);
+        ITable[] tablesAfter = DataSetUtils.getTables(databaseDataSet);
+
+
+//        ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
+//        DatabaseOperation.DELETE_ALL.execute(_connection,
+//                _connection.createDataSet());
+//        ITable[] tablesAfter = DataSetUtils.getTables(_connection.createDataSet());
 
         assertTrue("table count > 0", tablesBefore.length > 0);
         assertEquals("table count", tablesBefore.length, tablesAfter.length);
@@ -103,6 +110,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
     }
 
 }
+
 
 
 

@@ -78,9 +78,9 @@ public abstract class DataType
             "BLOB", Types.BLOB);
 
     private static final DataType[] TYPES = {
-        VARCHAR, CHAR, LONGVARCHAR, /*CLOB,*/ NUMERIC, DECIMAL, BOOLEAN, INTEGER,
+        VARCHAR, CHAR, LONGVARCHAR, CLOB, NUMERIC, DECIMAL, BOOLEAN, INTEGER,
         TINYINT, SMALLINT, BIGINT, REAL, DOUBLE, FLOAT, DATE, TIME, TIMESTAMP,
-        VARBINARY, BINARY, LONGVARBINARY, /*BLOB,*/
+        VARBINARY, BINARY, LONGVARBINARY, BLOB,
     };
 
     /**
@@ -131,6 +131,24 @@ public abstract class DataType
     }
 
     /**
+     * Returns the <code>DataType</code> corresponding to the specified Sql
+     * type name.
+     *
+     */
+    public static DataType forSqlTypeName(String sqlTypeName) throws DataTypeException
+    {
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            if (sqlTypeName.equals(TYPES[i].toString()))
+            {
+                return TYPES[i];
+            }
+        }
+
+        return UNKNOWN;
+    }
+
+    /**
      * Returns the <code>DataType</code> corresponding to the specified value
      * runtime class. This method returns <code>DataType.UNKNOWN</code>
      * if the value is <code>null</code> or runtime class not recognized.
@@ -154,6 +172,7 @@ public abstract class DataType
         return UNKNOWN;
     }
 }
+
 
 
 

@@ -29,10 +29,12 @@ import java.util.List;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.*;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
 import org.dbunit.database.MockDatabaseConnection;
+import junit.framework.Test;
 
 /**
  * @author Manuel Laflamme
@@ -44,6 +46,31 @@ public class UpdateOperationTest extends AbstractDatabaseTest
     {
         super(s);
     }
+
+    public static Test suite()
+    {
+        return new UpdateOperationTest("testUpdateBlob");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
+
+    protected IDataSet getDataSet() throws Exception
+    {
+        if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
+        {
+            return new CompositeDataSet(new IDataSet[] {
+                new FlatXmlDataSet(new File("src/xml/clobInsertTest.xml")),
+                new FlatXmlDataSet(new File("src/xml/blobInsertTest.xml")),
+                super.getDataSet(),
+            });
+        }
+
+        return super.getDataSet();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
 
     public void testMockExecute() throws Exception
     {
@@ -131,6 +158,68 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         }
     }
 
+    public void testUpdateClob() throws Exception
+    {
+        String tableName = "CLOB_TABLE";
+
+        // execute this test only if the target database support CLOB
+        if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
+        {
+            {
+                IDataSet beforeDataSet = new FlatXmlDataSet(
+                        new File("src/xml/clobInsertTest.xml"));
+
+                ITable tableBefore = _connection.createDataSet().getTable(tableName);
+                assertEquals("count before", 3, _connection.getRowCount(tableName));
+                Assertion.assertEquals(beforeDataSet.getTable(tableName), tableBefore);
+            }
+
+            IDataSet afterDataSet = new FlatXmlDataSet(
+                    new File("src/xml/clobUpdateTest.xml"));
+            DatabaseOperation.REFRESH.execute(_connection, afterDataSet);
+
+            {
+                ITable tableAfter = _connection.createDataSet().getTable(tableName);
+                assertEquals("count after", 4, tableAfter.getRowCount());
+                Assertion.assertEquals(afterDataSet.getTable(tableName), tableAfter);
+            }
+        }
+    }
+
+    public void testUpdateBlob() throws Exception
+    {
+        String tableName = "BLOB_TABLE";
+
+        // execute this test only if the target database support CLOB
+        if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
+        {
+            {
+                IDataSet beforeDataSet = new FlatXmlDataSet(
+                        new File("src/xml/blobInsertTest.xml"));
+
+                ITable tableBefore = _connection.createDataSet().getTable(tableName);
+                assertEquals("count before", 1, _connection.getRowCount(tableName));
+                Assertion.assertEquals(beforeDataSet.getTable(tableName), tableBefore);
+
+//                System.out.println("****** BEFORE *******");
+//                FlatXmlDataSet.write(_connection.createDataSet(), System.out);
+            }
+
+            IDataSet afterDataSet = new FlatXmlDataSet(
+                    new File("src/xml/blobUpdateTest.xml"));
+            DatabaseOperation.REFRESH.execute(_connection, afterDataSet);
+
+            {
+                ITable tableAfter = _connection.createDataSet().getTable(tableName);
+                assertEquals("count after", 2, tableAfter.getRowCount());
+                Assertion.assertEquals(afterDataSet.getTable(tableName), tableAfter);
+
+//                System.out.println("****** AFTER *******");
+//                FlatXmlDataSet.write(_connection.createDataSet(), System.out);
+            }
+        }
+    }
+
     public void testExecute() throws Exception
     {
         String tableName = "PK_TABLE";
@@ -181,6 +270,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
 
 }
+
 
 
 

@@ -120,6 +120,7 @@ public class BooleanDataTypeTest extends AbstractDataTypeTest
     public void testSqlType() throws Exception
     {
         assertEquals("forSqlType", THIS_TYPE, DataType.forSqlType(Types.BIT));
+        assertEquals("forSqlTypeName", THIS_TYPE, DataType.forSqlTypeName(THIS_TYPE.toString()));
         assertEquals("getSqlType", Types.BIT, THIS_TYPE.getSqlType());
     }
 
@@ -152,5 +153,6 @@ public class BooleanDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+
 
 

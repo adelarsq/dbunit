@@ -134,6 +134,7 @@ public class LongDataTypeTest extends AbstractDataTypeTest
     public void testSqlType() throws Exception
     {
         assertEquals(THIS_TYPE, DataType.forSqlType(Types.BIGINT));
+        assertEquals("forSqlTypeName", THIS_TYPE, DataType.forSqlTypeName(THIS_TYPE.toString()));
         assertEquals(Types.BIGINT, THIS_TYPE.getSqlType());
     }
 
@@ -165,5 +166,6 @@ public class LongDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+
 
 

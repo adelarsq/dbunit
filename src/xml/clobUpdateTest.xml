@@ -1,0 +1,8 @@
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Manuel Laflamme (Java development) -->
+<dataset>
+	<CLOB_TABLE PK="0" CLOB="newClob0"/>
+	<CLOB_TABLE PK="1" CLOB="newClob1"/>
+	<CLOB_TABLE PK="2" CLOB="newClob2"/>
+	<CLOB_TABLE PK="3" CLOB="clob3"/>
+</dataset>
+

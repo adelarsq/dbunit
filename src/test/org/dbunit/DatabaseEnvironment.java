@@ -53,6 +53,10 @@ public class DatabaseEnvironment
             {
                 INSTANCE = new HypersonicEnvironment(profile);
             }
+            else if (profileName.equals("oracle"))
+            {
+                INSTANCE = new OracleEnvironment(profile);
+            }
             else
             {
                 INSTANCE = new DatabaseEnvironment(profile);
@@ -94,6 +98,7 @@ public class DatabaseEnvironment
     }
 
 }
+
 
 
 

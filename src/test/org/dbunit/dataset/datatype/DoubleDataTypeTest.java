@@ -137,6 +137,7 @@ public class DoubleDataTypeTest extends AbstractDataTypeTest
         for (int i = 0; i < TYPES.length; i++)
         {
             assertEquals("forSqlType", TYPES[i], DataType.forSqlType(sqlTypes[i]));
+            assertEquals("forSqlTypeName", TYPES[i], DataType.forSqlTypeName(TYPES[i].toString()));
             assertEquals("getSqlType", sqlTypes[i], TYPES[i].getSqlType());
         }
     }
@@ -167,5 +168,6 @@ public class DoubleDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+
 
 

@@ -42,14 +42,7 @@ public class Main
     {
         IDatabaseConnection connection =
                 DatabaseEnvironment.getInstance().getConnection();
-        ITable[] tables = DataSetUtils.getTables(connection.createDataSet());
-        for (int i = 0; i < tables.length; i++)
-        {
-            ITable table = tables[i];
-            table.toString();
-        }
 
-//
 //        String[] tableNames = connection.createDataSet().getTableNames();
 //        Arrays.sort(tableNames);
 //        FlatXmlDataSet.writeDtd(new FilteredDataSet(tableNames,
@@ -83,6 +76,7 @@ public class Main
     }
 
 }
+
 
 
 

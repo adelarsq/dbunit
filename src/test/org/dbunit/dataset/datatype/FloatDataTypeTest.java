@@ -126,6 +126,7 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
     public void testSqlType() throws Exception
     {
         assertEquals(THIS_TYPE, DataType.forSqlType(Types.REAL));
+        assertEquals("forSqlTypeName", THIS_TYPE, DataType.forSqlTypeName(THIS_TYPE.toString()));
         assertEquals(Types.REAL, THIS_TYPE.getSqlType());
     }
 
@@ -158,5 +159,6 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+
 
 

@@ -156,11 +156,21 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                     {
                         String columnName = resultSet.getString(4);
                         int sqlType = resultSet.getInt(5);
-//                        String sqlTypeName = resultSet.getString(6);
+                        String sqlTypeName = resultSet.getString(6);
 //                        int columnSize = resultSet.getInt(7);
                         int nullable = resultSet.getInt(11);
 
-                        DataType dataType = DataType.forSqlType(sqlType);
+                        // convert sql type to DataType
+                        DataType dataType = DataType.UNKNOWN;
+                        if (sqlType != Types.OTHER)
+                        {
+                            dataType = DataType.forSqlType(sqlType);
+                        }
+                        else
+                        {
+                            dataType = DataType.forSqlTypeName(sqlTypeName);
+                        }
+
                         if (dataType != DataType.UNKNOWN)
                         {
                             Column column = new Column(columnName, dataType,
@@ -217,6 +227,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         }
     }
 }
+
 
 
 

@@ -81,12 +81,26 @@ public class StringDataType extends AbstractDataType
             return Base64.encodeBytes((byte[])value);
         }
 
+        if (value instanceof Blob)
+        {
+            try
+            {
+                Blob blob = (Blob)value;
+                byte[] blobValue = blob.getBytes(1, (int)blob.length());
+                return typeCast(blobValue);
+            }
+            catch (SQLException e)
+            {
+                throw new TypeCastException(e);
+            }
+        }
+
         if (value instanceof Clob)
         {
             try
             {
                 Clob clobValue = (Clob)value;
-                clobValue.getSubString(1, (int)clobValue.length());
+                return clobValue.getSubString(1, (int)clobValue.length());
             }
             catch (SQLException e)
             {
@@ -97,6 +111,7 @@ public class StringDataType extends AbstractDataType
         throw new TypeCastException(value.toString());
     }
 }
+
 
 
 

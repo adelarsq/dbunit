@@ -29,9 +29,12 @@ import java.util.List;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.*;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.*;
+import junit.framework.Test;
+import junit.textui.TestRunner;
 
 /**
  * @author Manuel Laflamme
@@ -43,6 +46,11 @@ public class InsertOperationTest extends AbstractDatabaseTest
     {
         super(s);
     }
+
+//    public static Test suite()
+//    {
+//        return new InsertOperationTest("testInsertBlob");
+//    }
 
     public void testMockExecute() throws Exception
     {
@@ -118,11 +126,10 @@ public class InsertOperationTest extends AbstractDatabaseTest
         String tableName = "CLOB_TABLE";
 
         // execute this test only if the target database support CLOB
-        String profile = DatabaseEnvironment.getInstance().getProfile().getActiveProfile();
-        if (profile.equals("oracle")
+        if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
         {
-            InputStream in = new FileInputStream(new File("src/xml/clobTest.xml"));
-            IDataSet xmlDataSet = new XmlDataSet(in);
+            InputStream in = new FileInputStream(new File("src/xml/clobInsertTest.xml"));
+            IDataSet xmlDataSet = new FlatXmlDataSet(in);
 
             assertEquals("count before", 0, _connection.getRowCount(tableName));
 
@@ -139,18 +146,17 @@ public class InsertOperationTest extends AbstractDatabaseTest
         String tableName = "BLOB_TABLE";
 
         // execute this test only if the target database support CLOB
-        String profile = DatabaseEnvironment.getInstance().getProfile().getActiveProfile();
-        if (profile.equals("oracle")
+        if (DatabaseEnvironment.getInstance() instanceof OracleEnvironment)
         {
-            InputStream in = new FileInputStream(new File("src/xml/blobTest.xml"));
-            IDataSet xmlDataSet = new XmlDataSet(in);
+            InputStream in = new FileInputStream(new File("src/xml/blobInsertTest.xml"));
+            IDataSet xmlDataSet = new FlatXmlDataSet(in);
 
             assertEquals("count before", 0, _connection.getRowCount(tableName));
 
             DatabaseOperation.INSERT.execute(_connection, xmlDataSet);
 
             ITable tableAfter = _connection.createDataSet().getTable(tableName);
-            assertEquals("count after", 3, tableAfter.getRowCount());
+            assertEquals("count after", 1, tableAfter.getRowCount());
             Assertion.assertEquals(xmlDataSet.getTable(tableName), tableAfter);
         }
     }
@@ -191,6 +197,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
 
     }
 }
+
 
 
 

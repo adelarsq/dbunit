@@ -60,12 +60,13 @@ public class BytesDataType extends AbstractDataType
             return Base64.decode((String)value);
         }
 
+
         if (value instanceof Blob)
         {
             try
             {
                 Blob blobValue = (Blob)value;
-                blobValue.getBytes(1, (int)blobValue.length());
+                return blobValue.getBytes(1, (int)blobValue.length());
             }
             catch (SQLException e)
             {
@@ -76,6 +77,7 @@ public class BytesDataType extends AbstractDataType
         throw new TypeCastException(value.toString());
     }
 }
+
 
 
 

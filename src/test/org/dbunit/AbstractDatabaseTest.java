@@ -22,10 +22,11 @@
 
 package org.dbunit;
 
+import java.util.*;
+
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.*;
 
 /**
  * @author Manuel Laflamme
@@ -90,6 +91,7 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
     {
     }
 }
+
 
 
 

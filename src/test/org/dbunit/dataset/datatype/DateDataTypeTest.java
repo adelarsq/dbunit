@@ -117,6 +117,7 @@ public class DateDataTypeTest extends AbstractDataTypeTest
     public void testSqlType() throws Exception
     {
         assertEquals(THIS_TYPE, DataType.forSqlType(Types.DATE));
+        assertEquals("forSqlTypeName", THIS_TYPE, DataType.forSqlTypeName(THIS_TYPE.toString()));
         assertEquals(Types.DATE, THIS_TYPE.getSqlType());
     }
 
@@ -148,5 +149,6 @@ public class DateDataTypeTest extends AbstractDataTypeTest
     }
 
 }
+
 
 

@@ -118,7 +118,8 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
             IDatabaseConnection connection = new DatabaseConnection(
                     _connection.getConnection(), _connection.getSchema());
 
-            String[] actualNames = connection.createDataSet().getTableNames();
+            IDataSet dataSet = removeExtraTestTables(connection.createDataSet());
+            String[] actualNames = dataSet.getTableNames();
             sort(actualNames);
 
             assertEquals("name count", expectedNames.length, actualNames.length);
@@ -199,6 +200,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 //    }
 
 }
+
 
 
 
