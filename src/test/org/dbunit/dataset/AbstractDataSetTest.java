@@ -201,7 +201,7 @@ public abstract class AbstractDataSetTest extends AbstractTest
     public void testGetTablesDefensiveCopy() throws Exception
     {
         IDataSet dataSet = createDataSet();
-        assertTrue("Should not be same intance",
+        assertTrue("Should not be same instance",
                 dataSet.getTables() != dataSet.getTables());
     }
 
