@@ -33,6 +33,7 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.RowOutOfBoundsException;
+import org.dbunit.dataset.datatype.TypeCastException;
 
 import java.sql.SQLException;
 import java.util.BitSet;
@@ -171,8 +172,16 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                             if (!ignoreMapping.get(j))
                             {
                                 Column column = columns[j];
-                                statement.addValue(table.getValue(row,
-                                        column.getColumnName()), column.getDataType());
+                            	try
+								{
+	                                statement.addValue(table.getValue(row,
+	                                        column.getColumnName()), column.getDataType());
+								}
+                                catch (TypeCastException e)
+								{
+				                	throw new TypeCastException("Error casting value for table '" + table.getTableMetaData().getTableName() 
+				                			+"' and column '" + column.getColumnName() + "'", e);
+								}
                             }
                         }
                         statement.addBatch();

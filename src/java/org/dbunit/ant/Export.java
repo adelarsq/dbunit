@@ -21,23 +21,22 @@
 
 package org.dbunit.ant;
 
-import org.apache.tools.ant.Project;
-import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.csv.CsvDataSet;
-import org.dbunit.dataset.csv.CsvDataSetWriter;
-import org.dbunit.dataset.xml.FlatDtdDataSet;
-import org.dbunit.dataset.xml.FlatXmlWriter;
-import org.dbunit.dataset.xml.XmlDataSet;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.apache.tools.ant.Project;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.csv.CsvDataSetWriter;
+import org.dbunit.dataset.xml.FlatDtdDataSet;
+import org.dbunit.dataset.xml.FlatXmlWriter;
+import org.dbunit.dataset.xml.XmlDataSet;
 
 /**
  * The <code>Export</code> class is the step that facilitates exporting
@@ -144,7 +143,7 @@ public class Export extends AbstractStep
             // Write the dataset
             if (_format.equals(FORMAT_CSV))
             {
-                CsvDataSet.write(dataset, _dest);
+                CsvDataSetWriter.write(dataset, _dest);
             }
             else
             {

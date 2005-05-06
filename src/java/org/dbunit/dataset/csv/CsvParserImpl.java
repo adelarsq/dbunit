@@ -24,6 +24,7 @@ package org.dbunit.dataset.csv;
 import org.dbunit.dataset.csv.handlers.*;
 
 import java.io.*;
+import java.net.URL;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
@@ -61,20 +62,32 @@ public class CsvParserImpl implements CsvParser {
     }
 
     public List parse(File file) throws IOException, CsvParserException {
-
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+        return parse(reader, file.getAbsolutePath().toString());
+    }
+    
+    public List parse(URL url) throws IOException, CsvParserException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        return parse(reader, url.toString());
+    }
+    
+    public List parse(Reader reader, String source) throws IOException, CsvParserException {
         LineNumberReader lineNumberReader = new LineNumberReader(reader);
         List rows = new ArrayList();
-
-        List columnsInFirstLine = parseFirstLine(lineNumberReader, file, rows);
+        List columnsInFirstLine = parseFirstLine(lineNumberReader, source, rows);
         parseTheData(columnsInFirstLine, lineNumberReader, rows);
         return rows;
     }
 
     private List parseFirstLine(LineNumberReader lineNumberReader, File file, List rows) throws IOException, CsvParserException {
+    	return parseFirstLine(lineNumberReader, file.getAbsolutePath().toString(), rows);
+    }
+
+    /** parse the first line of data from the given source */
+    private List parseFirstLine(LineNumberReader lineNumberReader, String source, List rows) throws IOException, CsvParserException {
         String firstLine = lineNumberReader.readLine();
         if (firstLine == null)
-            throw new CsvParserException("The null first line in file " + file.getAbsolutePath());
+            throw new CsvParserException("The first line of " + source + " is null");
 
         final List columnsInFirstLine = parse(firstLine);
         rows.add(columnsInFirstLine);

@@ -123,6 +123,24 @@ public class CsvParserTest extends TestCase {
         }
     }
 
+    public void testWhitespacePreservedOnQuotedStrings() throws PipelineException, IllegalInputCharacterException {
+        String csv = "\" Hello, \",world";
+        List parsed = parser.parse(csv);
+        assertEquals(2, parsed.size());
+        assertEquals(" Hello, ", parsed.get(0));
+        assertEquals("world", parsed.get(1));
+        csv = " Hello, world";
+        parsed = parser.parse(csv);
+        assertEquals(2, parsed.size());
+        assertEquals("Hello", parsed.get(0));
+        assertEquals("world", parsed.get(1));
+        csv = "\" Hello, \",\" world \"";;
+        parsed = parser.parse(csv);
+        assertEquals(2, parsed.size());
+        assertEquals(" Hello, ", parsed.get(0));
+        assertEquals(" world ", parsed.get(1));
+    }
+
     protected void setUp() throws Exception {
         parser = new CsvParserImpl();
     }

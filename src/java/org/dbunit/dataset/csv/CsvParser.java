@@ -1,10 +1,11 @@
 package org.dbunit.dataset.csv;
 
-import org.dbunit.dataset.csv.handlers.PipelineException;
-
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+
+import org.dbunit.dataset.csv.handlers.PipelineException;
 
 /**
  * Created By:   fede
@@ -17,6 +18,6 @@ import java.util.List;
  */
 public interface CsvParser {
     List parse(File file) throws IOException, CsvParserException;
-
+    List parse(URL url) throws IOException, CsvParserException;
     List parse(String csv) throws PipelineException, IllegalInputCharacterException;
 }

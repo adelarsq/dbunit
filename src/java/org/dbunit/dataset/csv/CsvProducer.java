@@ -21,6 +21,16 @@
 
 package org.dbunit.dataset.csv;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableMetaData;
@@ -30,11 +40,6 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
-
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * @author Federico Spinazzi
@@ -68,26 +73,24 @@ public class CsvProducer implements IDataSetProducer {
             throw new DataSetException("'" + _theDirectory + "' should be a directory");
         }
 
-        // @todo: move in a class by itself, somewhere
-        FilenameFilter filter = new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".csv") && !dir.isFile();
-            }
-        };
-
         _consumer.startDataSet();
+        try {
+        	List tableSpecs = CsvProducer.getTables(dir.toURL(), "table-ordering.txt");
+        	for (Iterator tableIter = tableSpecs.iterator(); tableIter.hasNext();) {
+				String table = (String) tableIter.next();
+	            try {
+	                produceFromFile(new File(dir, table + ".csv"));
+	            } catch (CsvParserException e) {
+	                throw new DataSetException("error producing dataset for table '" + table + "'", e);
+	            } catch (DataSetException e) {
+	            	throw new DataSetException("error producing dataset for table '" + table + "'", e);
+	            }
 
-        File[] children = dir.listFiles(filter);
-        for (int i = 0; i < children.length; i++) {
-            try {
-                produceFromFile(children[i]);
-            } catch (CsvParserException e) {
-                throw new DataSetException(e);
-            }
+			}
+            _consumer.endDataSet();
+        } catch (IOException e) {
+        	throw new DataSetException("error getting list of tables", e);
         }
-
-        _consumer.endDataSet();
-
     }
 
     private void produceFromFile(File theDataFile) throws DataSetException, CsvParserException {
@@ -106,7 +109,11 @@ public class CsvProducer implements IDataSetProducer {
             _consumer.startTable(metaData);
             for (int i = 1 ; i < readData.size(); i++) {
                 List rowList = (List)readData.get(i);
-                _consumer.row(rowList.toArray());
+                Object[] row = rowList.toArray();
+                for(int col = 0; col < row.length; col++) {
+                    row[col] = row[col].equals(CsvDataSetWriter.NULL) ? null : row[col];
+                }
+                _consumer.row(row);
             }
             _consumer.endTable();
         } catch (PipelineException e) {
@@ -117,5 +124,25 @@ public class CsvProducer implements IDataSetProducer {
             throw new DataSetException(e);
         }
     }
+
+	/**
+	 * Get a list of tables that this producer will create
+	 * @return a list of Strings, where each item is a CSV file relative to the base URL
+	 * @throws IOException when IO on the base URL has issues.
+	 */
+	public static List getTables(URL base, String tableList) throws IOException {
+		List orderedNames = new ArrayList();
+		InputStream tableListStream = new URL(base, tableList).openStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(tableListStream));
+		String line = null;
+		while((line = reader.readLine()) != null) {
+			String table = line.trim();
+			if (table.length() > 0) {
+				orderedNames.add(table);
+			}
+		}
+		reader.close();
+		return orderedNames;
+	}
 
 }
