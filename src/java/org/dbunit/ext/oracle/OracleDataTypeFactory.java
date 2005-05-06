@@ -29,7 +29,6 @@ import java.sql.Types;
 
 /**
  * Specialized factory that recognizes Oracle data types.
-
  * @author manuel.laflamme
  * @since Jul 17, 2003
  * @version $Revision$
@@ -38,6 +37,7 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
 {
     public static final DataType ORACLE_BLOB = new OracleBlobDataType();
     public static final DataType ORACLE_CLOB = new OracleClobDataType();
+    public static final DataType ORACLE_NCLOB = new OracleNClobDataType();
     public static final DataType LONG_RAW = new BinaryStreamDataType(
             "LONG RAW", Types.LONGVARBINARY);
 
@@ -62,9 +62,15 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
         }
 
         // CLOB
-        if ("CLOB".equals(sqlTypeName) || "NCLOB".equals(sqlTypeName))
+        if ("CLOB".equals(sqlTypeName))
         {
             return ORACLE_CLOB;
+        }
+        
+        // NCLOB
+        if  ("NCLOB".equals(sqlTypeName))
+        {
+            return ORACLE_NCLOB;
         }
 
         // NVARCHAR2

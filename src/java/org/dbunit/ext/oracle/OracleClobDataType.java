@@ -56,7 +56,7 @@ public class OracleClobDataType extends ClobDataType
         statement.setObject(column, getClob(value, statement.getConnection()));
     }
 
-    private Object getClob(Object value, Connection connection)
+    protected Object getClob(Object value, Connection connection)
             throws TypeCastException
     {
         Object tempClob = null;
@@ -122,7 +122,7 @@ public class OracleClobDataType extends ClobDataType
     }
 
 
-    private void freeTemporaryClob(Object tempClob) throws TypeCastException
+    protected void freeTemporaryClob(Object tempClob) throws TypeCastException
     {
         if (tempClob == null)
         {

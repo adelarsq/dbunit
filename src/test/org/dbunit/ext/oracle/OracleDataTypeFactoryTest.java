@@ -68,7 +68,7 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         int sqlType = Types.OTHER;
         String sqlTypeName = "NCLOB";
 
-        DataType expected = OracleDataTypeFactory.ORACLE_CLOB;
+        DataType expected = OracleDataTypeFactory.ORACLE_NCLOB;
         DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
         assertSame("type", expected, actual);
     }
