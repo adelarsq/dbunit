@@ -346,7 +346,7 @@
   </target>
 
   <target name="test-classpath">
-    <dbunit driver="org.gjt.mm.mysql.Driver"
+    <dbunit driver="${dbunit.profile.driverClass}"
             url="jdbc:mysql://localhost:3306/dbunit"
             userid="root"
             password="">
@@ -358,7 +358,7 @@
   </target>
 
   <target name="test-drivernotinclasspath">
-    <dbunit driver="org.gjt.mm.mysql.Driver"
+    <dbunit driver="org.dbunit.imaginary.Driver"
             url="jdbc:mysql://localhost:3306/dbunit"
             userid="root"
             password="">

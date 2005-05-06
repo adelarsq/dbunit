@@ -88,8 +88,8 @@
    <developer>
       <name>David Eric Pugh</name>
       <id>dep4b</id>
-      <email>epugh@upstate.com</email>
-      <organization>Upstate</organization>
+      <email>epugh@opensourceconnections.com</email>
+      <organization>OpenSource Connections</organization>
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -214,12 +214,7 @@
      <artifactId>mmmockobjects</artifactId>
      <version>1.12.0</version>
     </dependency>
-    <!--
-    <dependency>
-     <id>mm-mysql</id>
-     <version>2.0.13-bin</version>      
-    </dependency>           
-    -->
+
   </dependencies>
   
   <!-- build information for the project -->
