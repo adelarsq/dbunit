@@ -8,9 +8,9 @@
 
   <body>
     <release version="2.2-dev" date="IN CVS" description="">    
-    <action dev="dep4b" type="add" due-to="Dion Gillard" issue-id="1114490">Support CSV files from a URL (e.g. jar file) + CSV fixes</action>
+    <action dev="dep4b" type="add" due-to="Dion Gillard" issue="1114490">Support CSV files from a URL (e.g. jar file) + CSV fixes</action>
      <action dev="dep4b" type="fix">Fix the driver in classpath/driver not in classpath to always work regardless of configured driver.</action>
-     <action dev="dep4b" type="fix" due-to="Dion Gillard" issue-id="1114487">Typo in test class AbstractDataSetTest</action>
+     <action dev="dep4b" type="fix" due-to="Dion Gillard" issue="1114487">Typo in test class AbstractDataSetTest</action>
      <action dev="dep4b" type="add" due-to="Klas Axell">new HsqldbDataTypeFactory for working with booleans in HsqlDB.</action>
     </release>
     <release version="2.1" date="May 31, 2004" description="Multiple bugfixes and enhancements.">
