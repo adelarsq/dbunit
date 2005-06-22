@@ -165,7 +165,7 @@ public class SampleTest extends TestCase
         ITable expectedTable = expectedDataSet.getTable("TABLE_NAME");
 
         // Assert actual database table match expected table
-        Assertion.assertEquals(expectedTable, expectedTable);
+        Assertion.assertEquals(expectedTable, actualTable);
     }
 }</source>      </p>
       <p>The actual dataset is a database snapshot you 
