@@ -4,7 +4,7 @@
 
   <properties>
     <title>About DbUnit</title>
-    <author email="epugh@upstate.com">Eric Pugh</author>
+    <author email="epugh@uopensourceconnections.com">Eric Pugh</author>
   </properties>
 
   <body>
@@ -17,7 +17,7 @@
       causes subsequent tests to fail or exacerbate the damage.      
     </p>
     <p>
-            DbUnit has the ability to export and import your database data to and from XML datasets. Since version 2.0, DbUnit can works with very large dataset when use in streaming mode.
+      DbUnit has the ability to export and import your database data to and from XML datasets. Since version 2.0, DbUnit can works with very large dataset when use in streaming mode.
       DbUnit can also helps you to verify that your database data match expected set of values.
     </p>
   </section>
@@ -25,8 +25,12 @@
   <section name="News">
       <table border="1">
         <tr> 
+          <td>2005-08-19</td>
+          <td><b>Website Updated!</b> Link to wiki has been removed.  Many fixes in CVS for 2.2-dev, see <a href="changes-report.html#2.2">changes</a>.</td>
+        </tr>      
+        <tr> 
           <td>2004-05-31</td>
-          <td><b>Version 2.1 released.</b> Multiple bugfixes and enhancements. See <a href="changes-report.html#2.1">changes</a>.</td>
+          <td>Version 2.1 released. Multiple bugfixes and enhancements. See <a href="changes-report.html#2.1">changes</a>.</td>
         </tr>
         <tr> 
           <td>2004-04-28</td>
