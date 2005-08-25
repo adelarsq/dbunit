@@ -133,7 +133,7 @@ public class DbUnitTaskTest extends TaskdefsTest
 
     public void testResolveOperationTypes()
     {
-        assertOperationType("Should have been an DELETE_ALL operation",
+        assertOperationType("Should have been a NONE operation",
                 "test-type-none", DatabaseOperation.NONE);
         assertOperationType("Should have been an DELETE_ALL operation",
                 "test-type-delete-all", DatabaseOperation.DELETE_ALL);
