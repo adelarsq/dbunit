@@ -118,6 +118,17 @@
                   <p>No</p>
                 </td>
               </tr>
+              <tr> 
+                <td>transaction</td>
+                <td>Boolean indicating if this operation should be wrapped in a 
+                  transaction, ensuring that the entire operation completes or is 
+                  rolled back.  This may also dramatically improve performance of 
+                  large operations.  Possible values are "true" or "false".
+                  Defaults to <b>"false"</b>.</td>
+                <td> 
+                  <p>No</p>
+                </td>
+              </tr>
             </table>
           </td>
         </tr>

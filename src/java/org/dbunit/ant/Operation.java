@@ -26,6 +26,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.operation.TransactionOperation;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -48,6 +49,7 @@ public class Operation extends AbstractStep
     protected String _type = "CLEAN_INSERT";
     private String _format;
     private File _src;
+    private boolean _transaction = false;
     private DatabaseOperation _operation;
     private boolean _forwardOperation = true;
 
@@ -69,6 +71,11 @@ public class Operation extends AbstractStep
     public String getFormat()
     {
         return _format != null ? _format : DEFAULT_FORMAT;
+    }
+
+    public boolean isTransaction()
+    {
+        return _transaction;
     }
 
     public void setType(String type)
@@ -152,6 +159,11 @@ public class Operation extends AbstractStep
         }
     }
 
+    public void setTransaction(boolean transaction)
+    {
+        _transaction = transaction;
+    }
+
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
         if (_operation == null)
@@ -166,9 +178,9 @@ public class Operation extends AbstractStep
 
         try
         {
-            IDataSet dataset = getSrcDataSet(getSrc(),
-                    getFormat(), _forwardOperation);
-            _operation.execute(connection, dataset);
+        	    DatabaseOperation operation = (_transaction ? new TransactionOperation(_operation) : _operation);
+            IDataSet dataset = getSrcDataSet(getSrc(), getFormat(), _forwardOperation);
+            operation.execute(connection, dataset);
         }
         catch (SQLException e)
         {
