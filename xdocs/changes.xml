@@ -8,6 +8,7 @@
 
   <body>
     <release version="2.2" date="IN CVS" description="">    
+     <action dev="dep4b" due-to="John Lewis" type="add" issue="1264212">Add "transaction" attribute to ant tasks to wrap operations in a single transaction.  Can make operations faster.</action>
      <action dev="dep4b" due-to="Jeremy Frens" type="fix">Typo in howto example</action>
      <action dev="dep4b" due-to="Cris Daniluk" type="add">Properly support writing NCLOBs to Oracle</action>
      <action dev="dep4b" type="add" due-to="Dion Gillard" issue="1114490">Support CSV files from a URL (e.g. jar file) + CSV fixes</action>
