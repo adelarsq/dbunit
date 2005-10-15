@@ -46,7 +46,7 @@ import java.sql.Statement;
  * <p>
  * <code>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor</code>
  * <p>
- * Thanks to Jeremy Stein how have submited multiple patches.
+ * Thanks to Jeremy Stein who has submitted multiple patches.
  *
  * @author Manuel Laflamme
  * @author Eric Pugh
