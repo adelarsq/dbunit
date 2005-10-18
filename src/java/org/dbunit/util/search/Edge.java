@@ -1,0 +1,79 @@
+/*
+ *
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2005, DbUnit.org
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+package org.dbunit.util.search;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+/**
+ * Basic implementation of the IEdge interface.
+ * 
+ * @author Felipe Leme <dbunit@felipeal.net>
+ * @version $Revision$
+ * @since Aug 25, 2005
+ */
+public class Edge implements IEdge {
+
+  private final Comparable nodeFrom;
+
+  private final Comparable nodeTo;
+
+  public Edge(Comparable nodeFrom, Comparable nodeTo) {
+    if (nodeFrom == null) {
+      throw new IllegalArgumentException("node from cannot be null");
+    }
+    if (nodeTo == null) {
+      throw new IllegalArgumentException("node to cannot be null");
+    }
+    this.nodeFrom = nodeFrom;
+    this.nodeTo = nodeTo;
+  }
+
+  public Object getFrom() {
+    return this.nodeFrom;
+  }
+
+  public Object getTo() {
+    return this.nodeTo;
+  }
+
+  public String toString() {
+    return this.nodeFrom + "->" + this.nodeTo;
+  }
+
+  public int compareTo(Object o) {
+    Edge otherEdge = (Edge) o;
+    int result = this.nodeFrom.compareTo(otherEdge.getFrom());
+    if ( result == 0 ) {
+      result = this.nodeTo.compareTo(otherEdge.getTo());
+    }
+    return result;
+  }
+  
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals( this, obj );
+  }
+  
+  public int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this);
+  }
+
+}

@@ -7,8 +7,11 @@
   </properties>
 
   <body>
-    <release version="2.2" date="IN CVS" description="">    
-    <action dev="dep4b" due-to="Reuben Firmin" type="fix" issue="1328956">NPE In InsertIdentityOperation.</action>
+    <release version="2.2" date="IN CVS" description="">
+     <action dev="dep4b" type="remove" issue="1273949">Remove deprecated org.dbunit.operation.mssqlserver.InsertIdentityOperation.  Please use o.d.ext.mssql.InsertIdentityOperation</action>
+     <action dev="dep4b" due-to="Felipe Leme" type="fix" issue="1273949">Refactor <code>DatabaseSequenceFilter</code> to use the new depth-first algorithm - fixed the cyclic dependencies issue.</action>
+     <action dev="dep4b" due-to="Felipe Leme" type="add" issue="1273949">Add packages <code>org.dbunit.util.search</code> and <code>org.dbunit.database.search</code>, which provides a depth-first algorithm which is used to find the dependency on tables relationshipts</action>        
+     <action dev="dep4b" due-to="Reuben Firmin" type="fix" issue="1328956">NPE In InsertIdentityOperation.</action>
      <action dev="dep4b" due-to="John Lewis" type="add" issue="1264212">Add "transaction" attribute to ant tasks to wrap operations in a single transaction.  Can make operations faster.</action>
      <action dev="dep4b" due-to="Jeremy Frens" type="fix">Typo in howto example</action>
      <action dev="dep4b" due-to="Cris Daniluk" type="add">Properly support writing NCLOBs to Oracle</action>
@@ -150,7 +153,7 @@
      	INSERT, CLEAN_INSERT and REFRESH operations do not override database default values anymore with null values. Null values are now omitted from insert statements. Operations use multiple prepared statements for the same table, when null values vary from row to row.
      </action>         
      <action dev="" type="update">
-     	Moved InsertIdentityOperation to "org.dbunit.ext.mssql" package to be consistent with other vendor extensions. Temporary keep a deprecated copy in "org.dbunit.operation.mssqlserver" to ease transition to DbUnit 2. 
+     	Moved `Operation to "org.dbunit.ext.mssql" package to be consistent with other vendor extensions. Temporary keep a deprecated copy in "org.dbunit.operation.mssqlserver" to ease transition to DbUnit 2. 
      </action>         
     </release>
 

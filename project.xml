@@ -164,6 +164,9 @@
       </roles>
       -->
     </contributor>
+    <contributor>
+      <name>Felipe Leme</name>
+    </contributor>
   </contributors>
 
   <!-- jar files the project is dependent on -->
@@ -187,7 +190,7 @@
     </dependency>     
     <dependency>
      <id>hsqldb</id>
-     <version>1.7.1</version>      
+     <version>1.7.3.0</version>      
     </dependency>       
     <!--
     <dependency>
@@ -213,6 +216,26 @@
      <groupId>mockmaker</groupId>
      <artifactId>mmmockobjects</artifactId>
      <version>1.12.0</version>
+    </dependency>
+    <dependency>
+     <groupId>commons-lang</groupId>
+     <artifactId>commons-lang</artifactId>
+     <version>2.1</version>
+    </dependency>
+    <dependency>
+     <groupId>commons-collections</groupId>
+     <artifactId>commons-collections</artifactId>
+     <version>3.1</version>
+    </dependency>
+    <dependency>
+     <groupId>commons-logging</groupId>
+     <artifactId>commons-logging</artifactId>
+     <version>1.0.4</version>
+    </dependency>
+    <dependency>
+     <groupId>junit-addons</groupId>
+     <artifactId>junit-addons</artifactId>
+     <version>1.4</version>
     </dependency>
 
   </dependencies>

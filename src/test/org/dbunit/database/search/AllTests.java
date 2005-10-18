@@ -19,38 +19,28 @@
  *
  */
 
-package org.dbunit;
+package org.dbunit.database.search;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/**
- * @author Manuel Laflamme
+/**  
+ * @author Felipe Leme <dbunit@felipeal.net>
  * @version $Revision$
+ * @since Aug 28, 2005
  */
 public class AllTests
 {
     public static Test suite() throws Exception
     {
         TestSuite suite = new TestSuite();
-        suite.addTest(org.dbunit.ant.AllTests.suite());
-        suite.addTest(org.dbunit.database.AllTests.suite());
-        suite.addTest(org.dbunit.database.search.AllTests.suite());
-        suite.addTest(org.dbunit.dataset.AllTests.suite());
-        suite.addTest(org.dbunit.ext.AllTests.suite());
-        suite.addTest(org.dbunit.operation.AllTests.suite());
-        suite.addTest(org.dbunit.util.search.AllTests.suite());
-        suite.addTest(new TestSuite(AssertionTest.class));
+        suite.addTest(new TestSuite(ImportAndExportNodesFilterSearchCallbackTest.class));        
+        suite.addTest(new TestSuite(ImportNodesFilterSearchCallbackTest.class));        
+        suite.addTest(new TestSuite(ImportAndExportKeysSearchCallbackOwnFileTest.class));        
+        suite.addTest(new TestSuite(TablesDependencyHelperTest.class));        
         return suite;
     }
-
-    public static void main(String args[]) throws Exception
-    {
-        junit.textui.TestRunner.run(suite());
-        System.exit(0);
-    }
 }
-
 
 
 
