@@ -103,7 +103,7 @@ public class InsertIdentityOperation extends AbstractOperation
         Column[] columns = metaData.getColumns();
         for (int i = 0; i < columns.length; i++)
         {
-            if (identityFilter.accept(null, columns[i]))
+            if (identityFilter.accept(metaData.getTableName(), columns[i]))
             {
                 return true;
             }
