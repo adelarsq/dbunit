@@ -47,7 +47,7 @@
        the connection element has the form:
        scm:<system>:<system specific connection string> -->
   <repository> 
-    <connection>scm:cvs:pserver:anonymous@cvs.dbunit.sourceforge.net:/cvsroot/dbunit:dbunit</connection>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/dbunit:dbunit</connection>
     <developerConnection>scm:cvs:ext:${maven.username}@cvs.sourceforge.net:/cvsroot/dbunit:dbunit</developerConnection>
     <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dbunit/dbunit</url>
    
