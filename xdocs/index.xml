@@ -25,6 +25,10 @@
   <section name="News">
       <table border="1">
         <tr> 
+          <td>2006-02-04</td>
+          <td>Felipe Leme joined the DbUnit developement team.</td>
+        </tr>        
+        <tr> 
           <td>2005-08-19</td>
           <td><b>Website Updated!</b> Link to wiki has been removed.  Many fixes in CVS for 2.2-dev, see <a href="changes-report.html#2.2">changes</a>.</td>
         </tr>      
