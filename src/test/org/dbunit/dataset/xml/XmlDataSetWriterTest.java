@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2005, DbUnit.org
+ * Copyright (C)2005-2006, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -97,5 +97,39 @@ public class XmlDataSetWriterTest extends TestCase
         assertEquals("output", expectedOutput, actualOutput);
     }
     
+    public void testWriteWithComments() throws Exception
+    {
+        String expectedOutput =
+                "<dataset>\n" +
+                "  <table name=\"TABLE1\">\n" +
+                "    <column>COL0</column>\n" +
+                "    <column>COL1</column>\n" +
+                "    <row>\n" +
+                "      <value>t1v1</value>\n" +
+                "      <!-- COL0 -->\n" +
+                "      <value>t1v2</value>\n" +
+                "      <!-- COL1 -->\n" +
+                "    </row>\n" +
+                "  </table>\n" +
+                "  <table name=\"TABLE2\">\n" +
+                "    <column>COL0</column>\n" +
+                "    <column>COL1</column>\n" +
+                "    <row>\n" +
+                "      <value>t2v1</value>\n" +
+                "      <!-- COL0 -->\n" +
+                "      <value>t2v2</value>\n" +
+                "      <!-- COL1 -->\n" +
+                "    </row>\n" +
+                "  </table>\n" +
+                "</dataset>\n";
+        StringWriter stringWriter = new StringWriter();
+        XmlDataSetWriter xmlWriter = new XmlDataSetWriter(stringWriter);
+        xmlWriter.setIncludeColumnComments(true);
+        IDataSet dataSet = getDefaultDataSet();
+        xmlWriter.write( dataSet );
+
+        String actualOutput = stringWriter.toString();
+        assertEquals("output", expectedOutput, actualOutput);
+    }
     
 }

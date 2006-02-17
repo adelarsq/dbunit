@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002-2004, DbUnit.org
+ * Copyright (C)2002-2006, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -171,7 +171,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
             {
                 String columnName = columns[i].getColumnName();
                 Object value = values[i];
-
+                
                 // null
                 if (value == null)
                 {
@@ -196,7 +196,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
                         }
                         else if (stringValue.length() > 0)
                         {
-                            _xmlWriter.writeText(stringValue);
+                            _xmlWriter.writeText( stringValue );
                         }
                         _xmlWriter.endElement();
                     }
@@ -208,13 +208,21 @@ public class XmlDataSetWriter implements IDataSetConsumer
                                 ", value=" + value, e);
                     }
                 }
+                if ( this.includeColumnComments ) {
+                  _xmlWriter.writeComment( columnName );
+                }
             }
-
             _xmlWriter.endElement();
         }
         catch (IOException e)
         {
             throw new DataSetException(e);
         }
+    }
+    
+    private boolean includeColumnComments = false;
+
+    public void setIncludeColumnComments(boolean b) {
+      this.includeColumnComments = b;
     }
 }
