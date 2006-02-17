@@ -121,6 +121,16 @@
        <!--  <role>Original Ant Task Contributor</role> -->
       </roles>
     </developer>
+   <developer>
+      <name>Felipe Leme</name>
+      <id>felipeal</id>
+      <email>dbunit@felipeal.net</email>
+      <organization>Falcon Informatica</organization>
+      <timezone>-3</timezone>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <contributors>
@@ -163,9 +173,6 @@
         <role>DbUnit evangelist</role>
       </roles>
       -->
-    </contributor>
-    <contributor>
-      <name>Felipe Leme</name>
     </contributor>
   </contributors>
 
