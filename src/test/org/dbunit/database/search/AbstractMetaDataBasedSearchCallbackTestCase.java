@@ -31,6 +31,7 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 
 import org.dbunit.HypersonicEnvironment;
+import org.dbunit.util.CollectionsHelper;
 import org.dbunit.util.search.DepthFirstSearch;
 import org.dbunit.util.search.ISearchCallback;
 
@@ -86,7 +87,7 @@ public abstract class AbstractMetaDataBasedSearchCallbackTestCase extends TestCa
        String[] expectedOutput = allExpectedOutput[i];
        DepthFirstSearch search = new DepthFirstSearch();
        Set result = search.search( input, callback );
-       String[] actualOutput = DepthFirstSearch.setToStrings( result ); 
+       String[] actualOutput = CollectionsHelper.setToStrings( result ); 
        ArrayAssert.assertEquals( "output didn't match for i=" + i, expectedOutput, actualOutput );
      }           
   }

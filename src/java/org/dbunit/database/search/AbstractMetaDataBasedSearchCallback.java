@@ -136,8 +136,8 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
       String schema, DatabaseMetaData metaData, SortedSet edges)
       throws SearchException {
 
-    if ( super.logger.isTraceEnabled() ) {
-      super.logger.trace("Getting edges for node " + node);
+    if ( super.logger.isDebugEnabled() ) {
+      super.logger.debug("Getting edges for node " + node);
     }
     try {
       if (!(node instanceof String)) {
@@ -160,8 +160,8 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
         String pkColumn = rs.getString( PK_INDEXES[type] );
         String fkColumn = rs.getString( FK_INDEXES[type] );
         IEdge edge = newEdge(rs, type, tableName, dependentTableName, fkColumn, pkColumn );
-        if ( super.logger.isTraceEnabled() ) {
-          super.logger.trace("Adding edge " + edge);
+        if ( super.logger.isDebugEnabled() ) {
+          super.logger.debug("Adding edge " + edge);
         }
         edges.add(edge);
       }
@@ -171,11 +171,24 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
 
   }
   
-  protected FKRelationshipEdge createFKEdge(ResultSet rs, int type, String from, String to, String fkColumn, String pkColumn)
+  /**
+   * Creates an edge representing a foreign key relationship between 2 tables.<br>
+   * @param rs database meta-data result set
+   * @param type type of relationship (IMPORT or EXPORT)
+   * @param from name of the table representing the 'from' node
+   * @param to name of the table representing the 'to' node
+   * @param fkColumn name of the foreign key column
+   * @param pkColumn name of the primary key column
+   * @return edge representing the relationship between the 2 tables, according to 
+   * the type
+   * @throws SearchException not thrown in this method (but might on sub-classes)
+   */
+  protected static ForeignKeyRelationshipEdge createFKEdge(ResultSet rs, int type, 
+      String from, String to, String fkColumn, String pkColumn)
   throws SearchException {
     return type == IMPORT ? 
-        new FKRelationshipEdge( from, to, fkColumn, pkColumn ) :
-          new FKRelationshipEdge( to, from, fkColumn, pkColumn );
+        new ForeignKeyRelationshipEdge( from, to, fkColumn, pkColumn ) :
+          new ForeignKeyRelationshipEdge( to, from, fkColumn, pkColumn );
   }
   
 
@@ -183,8 +196,15 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
    * This method can be overwritten by the sub-classes if they need to decorate
    * the edge (for instance, providing an Edge that contains the primary and 
    * foreign keys used).
-   * 
-   * @throws SearchException exception wrapper
+   * @param rs database meta-data result set
+   * @param type type of relationship (IMPORT or EXPORT)
+   * @param from name of the table representing the 'from' node
+   * @param to name of the table representing the 'to' node
+   * @param fkColumn name of the foreign key column
+   * @param pkColumn name of the primary key column
+   * @return edge representing the relationship between the 2 tables, according to 
+   * the type
+   * @throws SearchException not thrown in this method (but might on sub-classes)
    */
   protected IEdge newEdge(ResultSet rs, int type, String from, String to, String fkColumn, String pkColumn)
       throws SearchException {

@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002-2004, DbUnit.org
+ * Copyright (C)2005, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,34 +18,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+package org.dbunit.util;
 
-package org.dbunit.util.search;
-
-import org.dbunit.DatabaseUnitException;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
- * Base class for exceptions during the search.
- * 
  * @author Felipe Leme <dbunit@felipeal.net>
  * @version $Revision$
- * @since Aug 25, 2005
+ * @since Nov 5, 2005
+ * 
  */
-public class SearchException extends DatabaseUnitException {
-  
-  private static final long serialVersionUID = -8369726048539373231L;
+public class AllTests
+{
+    public static Test suite() throws Exception
+    {
+        TestSuite suite = new TestSuite();
+        suite.addTest(new TestSuite(CollectionsHelperTest.class));
+        return suite;
+    }
 
-  public SearchException() {
-  }
-
-  public SearchException(String msg) {
-    super(msg);
-  }
-
-  public SearchException(String msg, Throwable e) {
-    super(msg, e);
-  }
-
-  public SearchException(Throwable e) {
-    super(e);
-  }
 }

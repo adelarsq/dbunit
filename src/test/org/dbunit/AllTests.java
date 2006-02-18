@@ -39,6 +39,7 @@ public class AllTests
         suite.addTest(org.dbunit.dataset.AllTests.suite());
         suite.addTest(org.dbunit.ext.AllTests.suite());
         suite.addTest(org.dbunit.operation.AllTests.suite());
+        suite.addTest(org.dbunit.util.AllTests.suite());
         suite.addTest(org.dbunit.util.search.AllTests.suite());
         suite.addTest(new TestSuite(AssertionTest.class));
         return suite;

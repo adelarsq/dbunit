@@ -23,6 +23,7 @@ package org.dbunit.database;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.TestFeature;
 
@@ -44,6 +45,7 @@ public class AllTests
         suite.addTest(new TestSuite(DatabaseTableMetaDataTest.class));
         suite.addTest(new TestSuite(ForwardOnlyResultSetTableTest.class));
         suite.addTest(new TestSuite(QueryDataSetTest.class));
+        suite.addTest(new TestSuite(PrimaryKeyFilteredTableWrapperTest.class));        
 
         DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
         if (environment.support(TestFeature.SCOLLABLE_RESULTSET))

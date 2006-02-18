@@ -25,6 +25,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Basic implementation of the IEdge interface.
+ * TODO: add test cases (specially for the equals/compare methods)
  * 
  * @author Felipe Leme <dbunit@felipeal.net>
  * @version $Revision$
@@ -33,7 +34,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class Edge implements IEdge {
 
   private final Comparable nodeFrom;
-
   private final Comparable nodeTo;
 
   public Edge(Comparable nodeFrom, Comparable nodeTo) {
@@ -73,7 +73,7 @@ public class Edge implements IEdge {
   }
   
   public int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this);
+    return HashCodeBuilder.reflectionHashCode( this );
   }
 
 }

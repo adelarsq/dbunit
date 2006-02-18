@@ -29,6 +29,7 @@ import java.util.SortedSet;
 import org.apache.commons.collections.set.ListOrderedSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.dbunit.util.CollectionsHelper;
 
 /**
  * Search using depth-first algorithm.<br>
@@ -63,53 +64,11 @@ public class DepthFirstSearch implements ISearchAlgorithm {
   private boolean searching = false;
 
   /**
-   * Helper method, returns a Set from an array of objects.
-   * Note the Iterator returned by this Set mantains the order of the array.
-   * @param objects array of objects
-   * @return Set with the elements of the array
-   */
-  public static Set objectsToSet( Object[] objects ) {
-    Set set = new ListOrderedSet();
-    for (int i = 0; i < objects.length; i++) {
-      set.add(objects[i]);
-    }
-    return set;
-  }
-  
-  /**
-   * Helper method, returns an array of Objects from a Set.
-   * @param a Set 
-   * @return array of Objects with the elements of the Set
-   */
-  public static Object[] setToObjects( Set set ) {
-    Object[] objects = new Object[ set.size() ];
-    int i=0;
-    for (Iterator iter = set.iterator(); iter.hasNext(); i++) {
-      objects[i] = iter.next();      
-    }
-    return objects;
-  }
-  
-  /**
-   * Helper method, returns an array of Strings from a Set.
-   * @param a Set of Strings
-   * @return array of Strings with the elements of the Set
-   */
-  public static String[] setToStrings( Set set ) {
-    String[] strings = new String[ set.size() ];
-    int i=0;
-    for (Iterator iter = set.iterator(); iter.hasNext(); i++) {
-      strings[i] = (String) iter.next();      
-    }
-    return strings;
-  }
-
-  /**
    * Alternative option to search() that takes an array of nodes as input (instead of a Set)
    */
   public Set search(Object[] nodesFrom, ISearchCallback callback)
       throws SearchException {
-    return search(objectsToSet(nodesFrom), callback);
+    return search(CollectionsHelper.objectsToSet(nodesFrom), callback);
   }
   
   /**
@@ -195,8 +154,8 @@ public class DepthFirstSearch implements ISearchAlgorithm {
       return true;
     }
     if (!this.callback.searchNode(node)) {
-      if ( this.logger.isTraceEnabled() ) {
-        this.logger.trace( "Callback handler blocked filtered out node " + node );
+      if ( this.logger.isDebugEnabled() ) {
+        this.logger.debug( "Callback handler blocked search for node " + node );
       }
       return true;
     }
@@ -219,7 +178,10 @@ public class DepthFirstSearch implements ISearchAlgorithm {
     }
 
     // finally, add the node to the result
-    this.logger.trace( "Adding node " + node + " to the final result" );
+    if ( this.logger.isDebugEnabled() ) {
+      this.logger.debug( "Adding node " + node + " to the final result" );
+    }
+    // notify the callback a node was added
     this.callback.nodeAdded(node);
     result.add(node);
     
@@ -245,8 +207,8 @@ public class DepthFirstSearch implements ISearchAlgorithm {
     }
     
     if (!this.callback.searchNode(node)) {
-      if ( this.logger.isTraceEnabled() ) {
-        this.logger.trace( "callback handler blocked filtered out node (reverse) " + node );
+      if ( this.logger.isDebugEnabled() ) {
+        this.logger.debug( "callback handler blocked reverse search for node " + node );
       }
       return true;
     }

@@ -20,16 +20,17 @@
  */
 package org.dbunit.database.search;
 
-//import java.sql.SQLException;
-//import java.util.HashMap;
-//import java.util.Map;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.dbunit.database.IDatabaseConnection;
-//import org.dbunit.dataset.FilteredDataSet;
-//import org.dbunit.dataset.IDataSet;
-//import org.dbunit.dataset.filter.ITableFilter;
+import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.filter.ITableFilter;
 
+import org.dbunit.util.CollectionsHelper;
 import org.dbunit.util.search.DepthFirstSearch;
 import org.dbunit.util.search.SearchException;
 
@@ -74,7 +75,7 @@ public class TablesDependencyHelper {
     ImportedKeysSearchCallback callback = new ImportedKeysSearchCallback(connection);
     DepthFirstSearch search = new DepthFirstSearch();
     Set tables = search.search( rootTables, callback );
-    return (String[]) DepthFirstSearch.setToStrings( tables );
+    return (String[]) CollectionsHelper.setToStrings( tables );
   }
   
   /**
@@ -105,10 +106,11 @@ public class TablesDependencyHelper {
     ImportedAndExportedKeysSearchCallback callback = new ImportedAndExportedKeysSearchCallback(connection);
     DepthFirstSearch search = new DepthFirstSearch();
     Set tables = search.search( rootTables, callback );
-    return (String[]) DepthFirstSearch.setToStrings( tables );
+    return (String[]) CollectionsHelper.setToStrings( tables );
   }
 
-  /* TODO: not used yet (but will on second patch)
+  // TODO: javadoc (and unit tests) from down here...
+
   public static IDataSet getDataset( IDatabaseConnection connection, String rootTable, Set allowedIds ) throws SearchException, SQLException {
     HashMap map = new HashMap(1);
     map.put( rootTable, allowedIds );
@@ -119,17 +121,17 @@ public class TablesDependencyHelper {
     ImportedKeysSearchCallbackFilteredByPKs callback = new ImportedKeysSearchCallbackFilteredByPKs(connection, rootTables);
     ITableFilter filter = callback.getFilter();
     DepthFirstSearch search = new DepthFirstSearch();
-    String[] tableNames = DepthFirstSearch.setToStrings( rootTables.keySet() ); 
+    String[] tableNames = CollectionsHelper.setToStrings( rootTables.keySet() ); 
     Set tmpTables = search.search( tableNames, callback );
-    String[] dependentTables  = DepthFirstSearch.setToStrings( tmpTables );
+    String[] dependentTables  = CollectionsHelper.setToStrings( tmpTables );
     IDataSet tmpDataset = connection.createDataSet( dependentTables );
     FilteredDataSet dataset = new FilteredDataSet(filter, tmpDataset);
     return dataset;
   }
 
-  public static IDataSet getAllDataset( IDatabaseConnection connection, String rootTable, Set allowedIds ) throws SearchException, SQLException {
+  public static IDataSet getAllDataset( IDatabaseConnection connection, String rootTable, Set allowedPKs ) throws SearchException, SQLException {
     HashMap map = new HashMap(1);
-    map.put( rootTable, allowedIds );
+    map.put( rootTable, allowedPKs );
     return getAllDataset( connection, map );
   }
   
@@ -137,15 +139,13 @@ public class TablesDependencyHelper {
     ImportedAndExportedKeysSearchCallbackFilteredByPKs callback = new ImportedAndExportedKeysSearchCallbackFilteredByPKs(connection, rootTables);    
     ITableFilter filter = callback.getFilter();
     DepthFirstSearch search = new DepthFirstSearch();
-    String[] tableNames = DepthFirstSearch.setToStrings( rootTables.keySet() ); 
+    String[] tableNames = CollectionsHelper.setToStrings( rootTables.keySet() ); 
     Set tmpTables = search.search( tableNames, callback );
-    String[] dependentTables  = DepthFirstSearch.setToStrings( tmpTables );
+    String[] dependentTables  = CollectionsHelper.setToStrings( tmpTables );
     IDataSet tmpDataset = connection.createDataSet( dependentTables );
     FilteredDataSet dataset = new FilteredDataSet(filter, tmpDataset);
     return dataset;
   }
-  */
-  
   
   
 }

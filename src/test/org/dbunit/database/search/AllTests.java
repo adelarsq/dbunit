@@ -36,7 +36,13 @@ public class AllTests
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(ImportAndExportNodesFilterSearchCallbackTest.class));        
         suite.addTest(new TestSuite(ImportNodesFilterSearchCallbackTest.class));        
-        suite.addTest(new TestSuite(ImportAndExportKeysSearchCallbackOwnFileTest.class));        
+        suite.addTest(new TestSuite(ImportAndExportKeysSearchCallbackOwnFileTest.class));                
+        suite.addTest(new TestSuite(ImportedKeysFilteredByPKsCyclicTest.class));        
+        suite.addTest(new TestSuite(ImportedKeysFilteredByPKsSingleTest.class));        
+        suite.addTest(new TestSuite(ImportedKeysFilteredByPKsTest.class));        
+        suite.addTest(new TestSuite(ImportedAndExportedKeysFilteredByPKsCyclicTest.class));        
+        suite.addTest(new TestSuite(ImportedAndExportedKeysFilteredByPKsSingleTest.class));        
+        suite.addTest(new TestSuite(ImportedAndExportedKeysFilteredByPKsTest.class));        
         suite.addTest(new TestSuite(TablesDependencyHelperTest.class));        
         return suite;
     }
