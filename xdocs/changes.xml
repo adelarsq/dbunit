@@ -8,6 +8,7 @@
 
   <body>
     <release version="2.2" date="IN CVS" description="">    
+     <action dev="felipeal" type="add" issue="1482990">Added <code>pom.xml</code> so it can be build by <code>Maven 2</code>.</action>
      <action dev="felipeal" type="add"><code>XmlDataSetWriter</code> now has a flag to include column's name as comment.</action>
      <action dev="felipeal" type="add" issue="1273949">Added <code>org.dbunit.util.search</code> and <code>org.dbunit.database.search</code> packages, whose classes can be used to search tables depedencies for a given table.</action>
      <action dev="dep4b" due-to="John Lewis" type="add" issue="1264212">Add "transaction" attribute to ant tasks to wrap operations in a single transaction.  Can make operations faster.</action>

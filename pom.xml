@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.dbunit</groupId>
+  <artifactId>dbunit</artifactId>
+  <packaging>jar</packaging>
+  <version>2.2-SNAPSHOT</version>
+  <name>DbUnit Framework</name>
+  <url>http://dbunit.sf.net</url>
+<!-- TODO - stuff below changed on M2
+  <logo>http://dbunit.sourceforge.net/images/dbunit-logo.jpg</logo>
+  <package>org.dbunit</package>
+  <shortDescription>
+    DbUnit is a JUnit extension targeted for database-driven projects
+  </shortDescription>
+-->
+<!-- TODO: add SCM info so it can be built by Maven Continuum -->
+  <inceptionYear>2002</inceptionYear>
+  <description>
+    DbUnit is a JUnit extension (also usable from Ant) targeted for database-driven projects that, 
+    among other things, puts your database into a known state between test runs. This is an 
+    excellent way to avoid the myriad of problems that can occur when one test case corrupts 
+    the database and causes subsequent tests to fail or exacerbate the damage.
+  </description>
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License, Version 2.1</name>
+      <url>http://www.gnu.org/copyleft/lesser.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <mailingLists>
+    <mailingList>
+      <name>DbUnit User List</name>
+      <subscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-user</subscribe>
+      <unsubscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-user</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8154</archive>
+    </mailingList>
+    <mailingList>
+      <name>DbUnit Developer List</name>
+      <subscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-developer</subscribe>
+      <unsubscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-developer</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=9162</archive>
+    </mailingList>
+    <mailingList>
+      <name>DbUnit CVS Commit List</name>
+      <subscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-commit</subscribe>
+      <unsubscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-commit</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=9771</archive>
+    </mailingList>    
+  </mailingLists>
+  
+  <!-- who the developers are for the project -->
+  <developers>
+   <developer>
+      <name>Benjamin Cox</name>
+      <id>bdrum</id>
+      <roles>
+        <role>Java Developer</role>
+       <!--  <role>Original Ant Task Contributor</role> -->
+      </roles>
+    </developer>
+   <developer>
+      <name>David Eric Pugh</name>
+      <id>dep4b</id>
+      <email>epugh@opensourceconnections.com</email>
+      <organization>OpenSource Connections</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+   <developer>
+      <name>Federico Spinazzi</name>
+      <id>fspinazzi</id>
+      <email>f.spinazzi@masterhouse.it</email>
+      <organization>Master House S.r.l</organization>
+      <roles>
+        <role>Java Developer</role>
+       <!--  <role>DB2 Contributor</role> -->
+      </roles>
+    </developer>
+   <developer>
+      <name>Manuel Laflamme</name>
+      <id>mlaflamm</id>
+      <organization>Oz Communication</organization>
+      <roles>
+        <role>Project Founder</role>
+       <!--  <role>Java Developer</role> -->
+      </roles>
+    </developer>
+   <developer>
+      <name>Timothy J. Ruppert</name>
+      <id>zieggy</id>
+      <roles>
+        <role>Java Developer</role>
+       <!--  <role>Original Ant Task Contributor</role> -->
+      </roles>
+    </developer>
+   <developer>
+      <name>Felipe Leme</name>
+      <id>felipeal</id>
+      <email>dbunit@felipeal.net</email>
+      <organization>Falcon Informatica</organization>
+      <timezone>-3</timezone>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Klas Axel</name>
+       <!--  
+      <roles>
+        <role>HsqldbDataTypeFactory</role>
+      </roles>
+      -->
+    </contributor>  
+    <contributor>
+      <name>Erik Price</name>
+       <!--  
+      <roles>
+        <role>DatabaseSequenceOperation</role>
+      </roles>
+      -->
+    </contributor>
+    <contributor>
+      <name>Jeremy Stein</name>
+       <!--  
+      <roles>
+        <role>InsertIndentityOperation</role>
+      </roles>
+      -->
+    </contributor>
+    <contributor>
+      <name>Keven Kizer</name>
+       <!--  
+      <roles>
+        <role>Early guinea pig</role>
+      </roles>
+      -->
+    </contributor>
+    <contributor>
+      <name>Mike Bresnahan</name>
+       <!--  
+      <roles>
+        <role>DbUnit evangelist</role>
+      </roles>
+      -->
+    </contributor>
+  </contributors>
+
+
+  <dependencies>
+
+    <dependency>
+     <groupId>junit-addons</groupId>
+     <artifactId>junit-addons</artifactId>
+     <version>1.4</version>
+    </dependency>
+    <dependency>
+     <groupId>poi</groupId>
+     <artifactId>poi</artifactId>
+     <version>2.5.1-final-20040804</version>      
+    </dependency>       
+    <dependency>
+     <groupId>ant</groupId>
+     <artifactId>ant</artifactId>
+<!-- TODO: range-> 1.5.3-1 +
+     <version>1.6.5</version>
+ -->      
+     <version>1.5.4</version>
+    </dependency>  
+    <dependency>  
+     <groupId>commons-collections</groupId>
+     <artifactId>commons-collections</artifactId>
+     <version>3.1</version>
+    </dependency>
+    <dependency>
+     <groupId>commons-lang</groupId>
+     <artifactId>commons-lang</artifactId>
+     <version>2.1</version>
+    </dependency>
+    <dependency>
+     <groupId>mockobjects</groupId>
+     <artifactId>mockobjects-core</artifactId>
+     <version>0.07</version>  
+     <scope>test</scope>   
+    </dependency>       
+    <dependency>
+     <groupId>mockmaker</groupId>
+     <artifactId>mmmockobjects</artifactId>
+     <version>1.12.0</version>
+     <scope>test</scope>   
+    </dependency>
+<!-- TODO: check why follow dependency is necessary -->
+    <dependency>
+     <groupId>mockobjects</groupId>
+     <artifactId>mockobjects-jdk1.3</artifactId>
+     <version>0.07</version>
+     <scope>test</scope>   
+    </dependency>
+
+<!-- TODO: update to 1.8 -->
+    <dependency>
+     <groupId>hsqldb</groupId>
+     <artifactId>hsqldb</artifactId>
+<!--
+     <version>1.7.3.0</version>      
+-->
+     <version>1.8.0.1</version>      
+     <scope>test</scope>   
+    </dependency>       
+
+    <dependency>
+     <groupId>commons-logging</groupId>
+     <artifactId>commons-logging</artifactId>
+<!-- TODO: update -->
+     <version>1.0.4</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <defaultGoal>install</defaultGoal>
+    <sourceDirectory>src/java</sourceDirectory>
+    <testSourceDirectory>src/test</testSourceDirectory>
+
+ <!-- TODO: move to M2's expected path and separate java from test-->
+   <resources>
+      <resource>
+        <directory>src/java</directory>
+        <includes>
+          <include>**/dataset.dtd</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/csv</directory>
+        <includes>
+          <include>**/cvs-tests.properties</include>
+        </includes>
+      </resource>
+
+    </resources>
+<!--
+    <testResources>
+      <testResource>
+      </testResource>
+    </testResources>
+-->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/Abstract*.java</exclude>
+          </excludes>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+        </configuration>
+<!-- TODO: surefire fails if we define this instead:
+        <configuration>
+          <includes>
+            <include>org/dbunit/AllTests.java</include>
+          </includes>
+        </configuration>
+-->
+      </plugin>
+<!-- TODO: add java compiler and set it to jdk 1.3 -->
+
+    </plugins>
+
+  </build>
+
+<!-- TODO: add reports -->
+  <profiles>
+    <profile>
+      <id>official</id>
+      <activation>
+         <jdk>1.3</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>javax.sql</groupId>
+          <artifactId>jdbc-stdext</artifactId>
+          <version>2.0</version> 
+          <optional>true</optional>
+        </dependency>       
+      </dependencies>
+    </profile>
+  </profiles>
+
+</project>
+
