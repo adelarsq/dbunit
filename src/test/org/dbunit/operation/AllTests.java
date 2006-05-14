@@ -31,7 +31,7 @@ import org.dbunit.TestFeature;
  * @version $Revision$
  * @since Feb 19, 2002
  */
-public class AllTests
+public class AllTests extends TestSuite
 {
     public static Test suite() throws Exception
     {

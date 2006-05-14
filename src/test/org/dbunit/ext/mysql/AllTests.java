@@ -28,7 +28,7 @@ import junit.framework.TestSuite;
  * @since Sep 3, 2003
  * @version $Revision$
  */
-public class AllTests
+public class AllTests extends TestSuite
 {
     public static Test suite()
     {

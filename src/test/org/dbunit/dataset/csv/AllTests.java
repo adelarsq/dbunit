@@ -33,7 +33,7 @@ import junit.framework.TestSuite;
  * Date:         $Date$
  * Revision:     $Revision$
  */
-public class AllTests
+public class AllTests extends TestSuite
 {
     public static Test suite()
     {

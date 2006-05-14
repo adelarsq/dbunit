@@ -28,7 +28,7 @@ import junit.framework.TestSuite;
  * @author Manuel Laflamme
  * @version $Revision$
  */
-public class AllTests
+public class AllTests extends TestSuite
 {
     public static Test suite() throws Exception
     {
