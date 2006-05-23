@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import junit.framework.TestCase;
 
 /**
@@ -33,6 +36,8 @@ public abstract class AbstractTableTest extends TestCase
     protected static final int ROW_COUNT = 6;
     protected static final int COLUMN_COUNT = 4;
 
+    protected final Log logger = LogFactory.getLog(getClass());
+    
     public AbstractTableTest(String s)
     {
         super(s);
@@ -145,8 +150,9 @@ public abstract class AbstractTableTest extends TestCase
       if ( runTest(getName()) ) {
         super.runTest();
       } else { 
-        // TODO: log it 
-        System.out.println( "Skipping test " + getName() );
+        if ( logger.isDebugEnabled() ) {
+          logger.debug( "Skipping test " + getClass().getName() + "." + getName() );
+        }
       }
     }    
     

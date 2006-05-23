@@ -197,7 +197,7 @@
     </dependency>     
     <dependency>
      <id>hsqldb</id>
-     <version>1.7.3.0</version>      
+     <version>1.8.0.1</version>      
     </dependency>       
     <!--
     <dependency>

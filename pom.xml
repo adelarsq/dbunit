@@ -220,14 +220,10 @@
      <scope>test</scope>   
     </dependency>
 
-<!-- TODO: update to 1.8 - it breaks test-->
     <dependency>
      <groupId>hsqldb</groupId>
      <artifactId>hsqldb</artifactId>
-     <version>1.7.3.0</version>      
-<!--
      <version>1.8.0.1</version>      
--->
      <scope>test</scope>   
     </dependency>       
 

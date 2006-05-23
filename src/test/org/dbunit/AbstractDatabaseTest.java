@@ -21,6 +21,8 @@
 
 package org.dbunit;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
@@ -35,6 +37,8 @@ import org.dbunit.operation.DatabaseOperation;
 public abstract class AbstractDatabaseTest extends DatabaseTestCase
 {
     protected IDatabaseConnection _connection;
+    
+    protected final Log logger = LogFactory.getLog(getClass());
 
     public AbstractDatabaseTest(String s)
     {
@@ -115,8 +119,9 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
       if ( runTest(getName()) ) {
         super.runTest();
       } else { 
-        // TODO: log it 
-        System.out.println( "Skipping test " + getName() );
+        if ( logger.isDebugEnabled() ) {
+          logger.debug( "Skipping test " + getClass().getName() + "." + getName() );
+        }
       }
     }
     

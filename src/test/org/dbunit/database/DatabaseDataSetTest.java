@@ -191,8 +191,14 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 
     public void testGetPrimaryKeysWithColumnFilters() throws Exception
     {
-        String tableName = DataSetUtils.getQualifiedName(
-                _connection.getSchema(), "PK_TABLE");
+      
+      // TODO (felipeal): I don't know if PK_TABLE is a standard JDBC name or if
+      // it's HSQLDB specific. Anyway, now that HSQLDB's schema is set on property,
+      // we cannot add it as prefix here....
+      String tableName = "PK_TABLE";
+//        String tableName = DataSetUtils.getQualifiedName(
+//                _connection.getSchema(), "PK_TABLE");
+       
         String[] expected = {"PK0", "PK2"};
 
         DefaultColumnFilter filter = new DefaultColumnFilter();
