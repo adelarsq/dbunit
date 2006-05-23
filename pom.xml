@@ -160,6 +160,17 @@
 
   <dependencies>
 
+<!--  TODO: check which dependencies could marked as optional.
+      For instance, ant is optional because it's only necessary for the dbunit
+      Ant tasks. -->
+      
+     <!--  JUnit 3.8.2 fix that annoying 'expected: <....>' bug... -->      
+     <dependency>
+     <groupId>junit</groupId>
+     <artifactId>junit</artifactId>
+     <version>3.8.2</version>
+    </dependency>
+      
     <dependency>
      <groupId>junit-addons</groupId>
      <artifactId>junit-addons</artifactId>
@@ -177,6 +188,7 @@
      <version>1.6.5</version>
  -->      
      <version>1.5.4</version>
+     <optional>true</optional>
     </dependency>  
     <dependency>  
      <groupId>commons-collections</groupId>
@@ -208,14 +220,14 @@
      <scope>test</scope>   
     </dependency>
 
-<!-- TODO: update to 1.8 -->
+<!-- TODO: update to 1.8 - it breaks test-->
     <dependency>
      <groupId>hsqldb</groupId>
      <artifactId>hsqldb</artifactId>
-<!--
      <version>1.7.3.0</version>      
--->
+<!--
      <version>1.8.0.1</version>      
+-->
      <scope>test</scope>   
     </dependency>       
 
@@ -249,7 +261,8 @@
       </resource>
 
     </resources>
-<!--
+<!-- TODO: that are some resources on src that should be on test...
+
     <testResources>
       <testResource>
       </testResource>
@@ -259,7 +272,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-<!-- we should include all tests, but some are failing
         <configuration>
           <excludes>
             <exclude>**/Abstract*.java</exclude>
@@ -268,12 +280,13 @@
             <include>**/*Test.java</include>
           </includes>
         </configuration>
--->
+        <!--   it's much faster to run AllTests, but it's safer to run everything
         <configuration>
           <includes>
             <include>org/dbunit/AllTests.java</include>
           </includes>
         </configuration>
+        -->
       </plugin>
 <!-- TODO: add java compiler and set it to jdk 1.3 -->
 <!-- TODO: add cobertura and other plugins that would fail the build, like PMD, cobertura and checkstyle-->

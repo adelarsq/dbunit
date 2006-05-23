@@ -20,6 +20,8 @@
  */
 package org.dbunit.operation;
 
+import org.dbunit.TestFeature;
+
 /**
  * @author Manuel Laflamme
  * @since Apr 13, 2003
@@ -41,5 +43,10 @@ public class TruncateTableOperationTest extends DeleteAllOperationTest
     {
         return "truncate table " + tableName;
     }
+    
+    protected boolean runTest(String testName) {
+      return environmentHasFeature(TestFeature.TRUNCATE_TABLE);
+    }
+
 }
 

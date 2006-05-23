@@ -47,12 +47,6 @@ public class AllTests extends TestSuite
         suite.addTest(new TestSuite(QueryDataSetTest.class));
         suite.addTest(new TestSuite(PrimaryKeyFilteredTableWrapperTest.class));        
 
-        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
-        if (environment.support(TestFeature.SCOLLABLE_RESULTSET))
-        {
-            suite.addTest(new TestSuite(ScrollableResultSetTableTest.class));
-        }
-
         return suite;
     }
 }

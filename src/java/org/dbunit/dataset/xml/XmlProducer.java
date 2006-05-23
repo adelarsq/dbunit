@@ -251,7 +251,8 @@ public class XmlProducer extends DefaultHandler
             // row
             if (qName.equals(ROW))
             {
-                Object[] values = new Object[_activeMetaData.getColumns().length];
+                final int length = Math.max(_activeRowValues.size(), _activeMetaData.getColumns().length);
+                Object[] values = new Object[length];
                 for (int i = 0; i < values.length; i++)
                 {
                     values[i] = (i >= _activeRowValues.size()) ? ITable.NO_VALUE : _activeRowValues.get(i);

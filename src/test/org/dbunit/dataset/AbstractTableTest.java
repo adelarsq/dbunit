@@ -130,6 +130,26 @@ public abstract class AbstractTableTest extends TestCase
         {
         }
     }
+    
+    /**
+     * This method is used so sub-classes can disable the tests according to 
+     * some characteristics of the environment
+     * @param testName name of the test to be checked
+     * @return flag indicating if the test should be executed or not
+     */
+    protected boolean runTest(String testName) {
+      return true;
+    }
+
+    protected void runTest() throws Throwable {
+      if ( runTest(getName()) ) {
+        super.runTest();
+      } else { 
+        // TODO: log it 
+        System.out.println( "Skipping test " + getName() );
+      }
+    }    
+    
 }
 
 

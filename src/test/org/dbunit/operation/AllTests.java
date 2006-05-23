@@ -23,8 +23,6 @@ package org.dbunit.operation;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.dbunit.DatabaseEnvironment;
-import org.dbunit.TestFeature;
 
 /**
  * @author Manuel Laflamme
@@ -44,18 +42,8 @@ public class AllTests extends TestSuite
         suite.addTest(new TestSuite(DeleteOperationTest.class));
         suite.addTest(new TestSuite(InsertOperationTest.class));
         suite.addTest(new TestSuite(RefreshOperationTest.class));
-
-        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
-        if (environment.support(TestFeature.TRANSACTION))
-        {
-            suite.addTest(new TestSuite(TransactionOperationTest.class));
-        }
-
-        if (environment.support(TestFeature.TRUNCATE_TABLE))
-        {
-            suite.addTest(new TestSuite(TruncateTableOperationTest.class));
-        }
-
+        suite.addTest(new TestSuite(TransactionOperationTest.class));
+        suite.addTest(new TestSuite(TruncateTableOperationTest.class));
         suite.addTest(new TestSuite(UpdateOperationTest.class));
 
         return suite;

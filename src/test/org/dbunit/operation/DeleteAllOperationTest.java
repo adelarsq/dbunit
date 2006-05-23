@@ -48,7 +48,7 @@ public class DeleteAllOperationTest extends AbstractDatabaseTest
     {
         super(s);
     }
-
+    
     protected void setUp() throws Exception
     {
         super.setUp();

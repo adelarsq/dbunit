@@ -21,17 +21,18 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.AbstractDatabaseTest;
-import org.dbunit.DatabaseUnitException;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.xml.XmlDataSet;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.TestFeature;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.xml.XmlDataSet;
 
 /**
  * @author Manuel Laflamme
@@ -43,6 +44,10 @@ public class TransactionOperationTest extends AbstractDatabaseTest
     public TransactionOperationTest(String s)
     {
         super(s);
+    }
+    
+    protected boolean runTest(String testName) {
+      return environmentHasFeature(TestFeature.TRANSACTION);
     }
 
     public void testExecuteCommit() throws Exception

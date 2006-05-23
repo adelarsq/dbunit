@@ -23,6 +23,7 @@ package org.dbunit.ext.mssql;
 
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
+import org.dbunit.TestFeature;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
@@ -41,6 +42,10 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
     public InsertIdentityOperationTest(String s)
     {
         super(s);
+    }
+    
+    protected boolean runTest(String testName) {
+      return environmentHasFeature(TestFeature.INSERT_IDENTITY);
     }
 
     public void testExecuteXML() throws Exception

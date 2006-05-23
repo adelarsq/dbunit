@@ -22,8 +22,6 @@ package org.dbunit.ext.mssql;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.dbunit.DatabaseEnvironment;
-import org.dbunit.TestFeature;
 
 /**
  * @author Manuel Laflamme
@@ -36,11 +34,7 @@ public class AllTests extends TestSuite
     {
         TestSuite suite = new TestSuite();
 
-        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
-        if (environment.support(TestFeature.INSERT_IDENTITY))
-        {
-            suite.addTest(new TestSuite(InsertIdentityOperationTest.class));
-        }
+        suite.addTest(new TestSuite(InsertIdentityOperationTest.class));
         suite.addTest(new TestSuite(MsSqlDataTypeFactoryTest.class));
 
         return suite;

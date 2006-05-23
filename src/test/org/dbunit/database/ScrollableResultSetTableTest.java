@@ -21,7 +21,9 @@
 
 package org.dbunit.database;
 
+import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.DatabaseEnvironment;
+import org.dbunit.TestFeature;
 import org.dbunit.dataset.AbstractTableTest;
 import org.dbunit.dataset.ITable;
 import org.dbunit.operation.DatabaseOperation;
@@ -37,7 +39,11 @@ public class ScrollableResultSetTableTest extends AbstractTableTest
     {
         super(s);
     }
-
+    
+    protected boolean runTest(String testName) {
+      return AbstractDatabaseTest.environmentHasFeature(TestFeature.SCOLLABLE_RESULTSET);
+    }
+    
     protected ITable createTable() throws Exception
     {
         DatabaseEnvironment env = DatabaseEnvironment.getInstance();
