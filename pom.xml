@@ -7,7 +7,7 @@
   <version>2.2-SNAPSHOT</version>
   <name>DbUnit Framework</name>
   <url>http://dbunit.sf.net</url>
-<!-- TODO - stuff below changed on M2
+<!-- TODO - stuff below changed on M2; I think it went to Site plugin
   <logo>http://dbunit.sourceforge.net/images/dbunit-logo.jpg</logo>
   <package>org.dbunit</package>
   <shortDescription>
@@ -30,9 +30,7 @@
   </licenses>
   <scm> 
     <connection>scm:cvs:pserver:anonymous@dbunit.cvs.sourceforge.net:/cvsroot/dbunit:dbunit</connection>
-<!-- TODO: set it...
-    <developerConnection>scm:cvs:ext:${maven.username}@cvs.sourceforge.net:/cvsroot/dbunit:dbunit</developerConnection>
--->
+    <developerConnection>scm:cvs:ext:${maven.username}@dbunit.cvs.sourceforge.net:/cvsroot/dbunit:dbunit</developerConnection>
     <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dbunit/dbunit</url>
   </scm>
   <mailingLists>
@@ -269,22 +267,30 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
+<!--  In some machines (at least on mine :-(, running AllTests is much 
+faster then running all tests, but there is not guarantee that all tests will
+be run (i.e., a developer could create a new test file and forget to add it to
+AllTests)
+          <includes>
+            <include>org/dbunit/AllTests.java</include>
+          </includes>
+          -->
           <excludes>
-            <exclude>**/Abstract*.java</exclude>
+	    <exclude>**/Abstract*.java</exclude>
           </excludes>
           <includes>
             <include>**/*Test.java</include>
           </includes>
         </configuration>
-        <!--   it's much faster to run AllTests, but it's safer to run everything
-        <configuration>
-          <includes>
-            <include>org/dbunit/AllTests.java</include>
-          </includes>
-        </configuration>
-        -->
       </plugin>
-<!-- TODO: add java compiler and set it to jdk 1.3 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.3</source>
+          <target>1.3</target>
+        </configuration>
+      </plugin>
 <!-- TODO: add cobertura and other plugins that would fail the build, like PMD, cobertura and checkstyle-->
     </plugins>
   </build>
@@ -325,6 +331,18 @@
       </plugin>
     </plugins>
   </reporting>
+  
+	<distributionManagement>
+	  <snapshotRepository>
+	    <id>sf_snapshots</id>
+	    <name>SourceForge Snapshot</name>
+	    <url>scpexe://ssh.sf.net/home/groups/d/db/dbunit/htdocs/m2/repo</url>
+	  </snapshotRepository>
+  	<site>
+	    <id>sf_website</id>
+	    <url>scpexe://ssh.sf.net/home/groups/d/db/dbunit/htdocs/m2/site</url>
+	  </site>
+  </distributionManagement>   
 
   <profiles>
     <profile>
