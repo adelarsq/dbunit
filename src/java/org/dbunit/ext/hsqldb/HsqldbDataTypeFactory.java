@@ -24,8 +24,6 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 
-import java.sql.Types;
-
 /**
  * Specialized factory that recognizes Hsqldb data types.
  *
