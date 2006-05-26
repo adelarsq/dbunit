@@ -48,7 +48,6 @@ public class DatabaseConnection extends AbstractDatabaseConnection
     {
         _connection = connection;
         _schema = schema;
-        fixDatabaseConfig();
     }
 
     /**
@@ -61,27 +60,6 @@ public class DatabaseConnection extends AbstractDatabaseConnection
       this( connection, null );
     }
     
-    // dirty hack: fix factory for HSQLDB
-    // this is not an elegant solution, but it's better than requiring the 
-    // end users to do it...
-    private void fixDatabaseConfig() {
-      if ( _connection.getClass().getName().startsWith("org.hsqldb") ) {
-        // TODO: log it...
-        final DatabaseConfig config = getConfig();
-        final String className = "org.dbunit.ext.hsqldb.HsqldbDataTypeFactory";
-        try {
-          final Class clazz = Class.forName( className );
-          Object factory = clazz.newInstance();
-          config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, factory );          
-        } catch (Exception e) {
-          // TODO: log it (we are not throwing the exception ahead because we
-          // are 'doing a favor' for the user to automatically fix it
-          e.printStackTrace();
-        }
-      }
-    }
-    
-
     ////////////////////////////////////////////////////////////////////////////
     // IDatabaseConnection interface
 
