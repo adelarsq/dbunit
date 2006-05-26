@@ -53,4 +53,13 @@ public class MySqlDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         assertSame("type", expected, actual);
     }
 
+    public void testCreateBooleanDataType() throws Exception
+    {
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "bit";
+
+        DataType expected = DataType.BOOLEAN;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
 }

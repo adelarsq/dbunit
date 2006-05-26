@@ -44,6 +44,11 @@ public class MySqlDataTypeFactory extends DefaultDataTypeFactory
             {
                 return DataType.CLOB;
             }
+            // MySQL 5.0 Boolean
+            else if("bit".equals(sqlTypeName))
+            {
+                return DataType.BOOLEAN; 
+            }
         }
 
         return super.createDataType(sqlType, sqlTypeName);
