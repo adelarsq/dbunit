@@ -31,8 +31,12 @@
   <scm> 
     <connection>scm:cvs:pserver:anonymous@dbunit.cvs.sourceforge.net:/cvsroot/dbunit:dbunit</connection>
     <developerConnection>scm:cvs:ext:${maven.username}@dbunit.cvs.sourceforge.net:/cvsroot/dbunit:dbunit</developerConnection>
-    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dbunit/dbunit</url>
+    <url>http://dbunit.cvs.sourceforge.net/dbunit</url>
   </scm>
+  <issueManagement>
+    <system>SourceForge</system>
+    <url>http://sourceforge.net/tracker/?group_id=47439</url>
+  </issueManagement>
   <mailingLists>
     <mailingList>
       <name>DbUnit User List</name>
@@ -239,7 +243,8 @@
     <sourceDirectory>src/java</sourceDirectory>
     <testSourceDirectory>src/test</testSourceDirectory>
 
- <!-- TODO: move to M2's expected path and separate java from test-->
+ <!-- TODO: move to M2's expected path and separate java from test
+      (once SCM is migrated to SVN...) -->
    <resources>
       <resource>
         <directory>src/java</directory>
@@ -295,7 +300,7 @@ AllTests)
     </plugins>
   </build>
 
-<!-- TODO: move reports to other profile -->
+<!-- basic reports - available to all plugins -->
   <reporting>
     <plugins>
       <plugin>
@@ -305,29 +310,6 @@ AllTests)
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-<!-- TODO: remove
-        <version>2.0-SNAPSHOT</version>
--->
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>changes-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>changelog-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </reporting>
@@ -358,6 +340,33 @@ AllTests)
           <optional>true</optional>
         </dependency>       
       </dependencies>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+<!-- TODO: remove
+        <version>2.0-SNAPSHOT</version>
+-->
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>changes-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>changelog-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
     </profile>
   </profiles>
 
