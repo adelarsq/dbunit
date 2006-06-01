@@ -29,8 +29,8 @@
     </license>
   </licenses>
   <scm> 
-    <connection>scm:cvs:pserver:anonymous@dbunit.cvs.sourceforge.net:/cvsroot/dbunit:dbunit</connection>
-    <developerConnection>scm:cvs:ext:${maven.username}@dbunit.cvs.sourceforge.net:/cvsroot/dbunit:dbunit</developerConnection>
+    <connection>scm:svn:https://svn.sourceforge.net/svnroot/dbunit/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/dbunit/trunk/</developerConnection>
     <url>http://dbunit.cvs.sourceforge.net/dbunit</url>
   </scm>
   <issueManagement>
