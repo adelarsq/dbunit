@@ -6,7 +6,7 @@
   <packaging>jar</packaging>
   <version>2.2-SNAPSHOT</version>
   <name>DbUnit Framework</name>
-  <url>http://dbunit.sf.net</url>
+  <url>http://dbunit.sourceforge.net</url>
 <!-- TODO - stuff below changed on M2; I think it went to Site plugin
   <logo>http://dbunit.sourceforge.net/images/dbunit-logo.jpg</logo>
   <package>org.dbunit</package>
@@ -318,11 +318,11 @@ AllTests)
 	  <snapshotRepository>
 	    <id>sf_snapshots</id>
 	    <name>SourceForge Snapshot</name>
-	    <url>scpexe://ssh.sf.net/home/groups/d/db/dbunit/htdocs/m2/repo</url>
+	    <url>scpexe://ssh.sourceforge.net/home/groups/d/db/dbunit/htdocs/repo/snapshots</url>
 	  </snapshotRepository>
   	<site>
 	    <id>sf_website</id>
-	    <url>scpexe://ssh.sf.net/home/groups/d/db/dbunit/htdocs/m2/site</url>
+	    <url>scpexe://ssh.sourceforge.net/home/groups/d/db/dbunit/htdocs</url>
 	  </site>
   </distributionManagement>   
 

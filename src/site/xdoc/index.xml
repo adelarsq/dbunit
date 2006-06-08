@@ -26,7 +26,7 @@
       <table border="1">
         <tr> 
           <td>2006-05-28</td>
-          <td>Build has been ported to <a href="http://maven.apache.org">Maven 2</a> and snapshots for the 2.2 release are available in the <a href="http://dbunit.sourceforge.net/m2/repo/">repository</a>. </td>
+          <td>Build has been ported to <a href="http://maven.apache.org">Maven 2</a> and snapshots for the 2.2 release are available in the <a href="http://dbunit.sourceforge.net/repo/snapshots/">repository</a>. </td>
         </tr>        
         <tr> 
           <td>2006-02-04</td>
