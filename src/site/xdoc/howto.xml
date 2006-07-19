@@ -26,10 +26,14 @@
       <h4>Step 2: Extend the DatabaseTestCase class</h4>
       <p>Now you need to create a test class. The easiest way to use Dbunit is to
       make your test class extend the DatabaseTestCase class. DatabaseTestCase
-      extends the JUnit TestCase class. Two template methods are required to be
-      implemented: <a class="code">getConnection()</a> to return a connection
-      to your database and <a class="code">getDataSet()</a> to return the dataset
-      you created in step 1.</p>
+      extends the JUnit TestCase class. A template method is required to be
+      implemented: <a class="code">getDataSet()</a> to return the dataset
+      you created in step 1. DatabaseTestcase relies on a IDatabaseTester to do
+      its work, the default configuration uses PropertiesBasedJdbcDatabaseTester, it locates
+      configuration for DriverManager within the Sytem properties.
+      The easiest way to configure it would be in the constructor of your test class.
+      You can modify this behavior by overriding <a class="code">getDatabaseTester()</a>.</p>
+      by using one of the other 3 provided IDatabaseTester implementations or your own.
       <p>
       Following is a sample implementation that returns a connection to a Hypersonic
       database and an xml dataset:
@@ -39,14 +43,10 @@ public class SampleTest extends DatabaseTestCase
     public SampleTest(String name)
     {
         super(name);
-    }
-
-    protected IDatabaseConnection getConnection() throws Exception
-    {
-        Class driverClass = Class.forName("org.hsqldb.jdbcDriver");
-        Connection jdbcConnection = DriverManager.getConnection(
-                "jdbc:hsqldb:sample", "sa", "");
-        return new DatabaseConnection(jdbcConnection);
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, "org.hsqldb.jdbcDriver" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:hsqldb:sample" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "sa" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "" );
     }
 
     protected IDataSet getDataSet() throws Exception
@@ -87,7 +87,7 @@ public class SampleTest extends DatabaseTestCase
       
       
       <h3>Database setup with your own TestCase subclass</h3>
-      </a> 
+      </a>
       <p>In order to use Dbunit you are not required to extend the DatabaseTestCase
       class. You can override the standard JUnit setUp() method and execute the
       desired operation on your database. Do something similar in teardown() if
@@ -122,6 +122,53 @@ public class SampleTest extends TestCase
         {
             connection.close();
         }
+    }
+    ...
+}</source></p>
+      <p>Or you can use the new IDatabaseTester. As explained in the previous topic,
+      DatabaseTestCase uses a IDatabaseTester internally to do its work; your test class
+      can also use this feature to manipulate DataSets. Currently there are 4 convenient implementations:<br/>
+      <table>
+         <tr><td valign="top"><a class="code">JdbcDatabaseTester</a></td>
+             <td>uses a DriverManager to create connections.</td></tr>
+         <tr><td valign="top"><a class="code">PropertiesBasedJdbcDatabaseTester</a></td>
+             <td>also uses DriverManager, but the configuration is taken from system properties.<br/>
+                 This is the default implementation used by DatabaseTestCase.</td></tr>
+         <tr><td valign="top"><a class="code">DataSourceDatabaseTester</a></td>
+             <td>uses a javax.sql.DataSource to create connections.</td></tr>
+         <tr><td valign="top"><a class="code">JndiDatabaseTester</a></td>
+             <td>uses a javax.sql.DataSource located through JNDI.</td></tr>
+      </table><br/>
+      You can also provide your own implementation of IDatabaseTester. It is recommended to 
+      use AbstractDatabaseTester as a starting point.</p>
+      <p>
+      Example:
+      <source>
+public class SampleTest extends TestCase
+{
+    private IDatabaseTester databaseTester;
+
+    public SampleTest(String name)
+    {
+        super(name);
+    }
+
+    protected void setUp() throws Exception
+    {
+        databaseTester = new DMDatabaseTester("org.hsqldb.jdbcDriver",
+            "jdbc:hsqldb:sample", "sa", "");
+
+        // initialize your dataset here
+        IDataSet dataSet = null;
+        // ...
+
+        databaseTester.setDataSet( dataSet );
+        databaseTester.onSetUp();
+    }
+
+    protected void tearDown() throws Exception
+    {
+        databaseTester.onTearDown();
     }
     ...
 }</source></p>

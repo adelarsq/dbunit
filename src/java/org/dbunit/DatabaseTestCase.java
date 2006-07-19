@@ -30,9 +30,13 @@ import org.dbunit.operation.DatabaseOperation;
  * @author Manuel Laflamme
  * @version $Revision$
  * @since Feb 17, 2002
+ * TODO: mark it as deprecated use #{DBTestCase} instead.
  */
 public abstract class DatabaseTestCase extends TestCase
 {
+  
+  private IDatabaseTester tester;
+  
     public DatabaseTestCase()
     {
     }
@@ -53,12 +57,38 @@ public abstract class DatabaseTestCase extends TestCase
     protected abstract IDataSet getDataSet() throws Exception;
 
     /**
-     * Close the specified connection. Ovverride this method of you want to
+     * Creates a IDatabaseTester for this testCase.<br>
+     * 
+     * PropertiesBasedJdbcDatabaseTester is used by default.
+     * @throws Exception 
+     */
+    protected IDatabaseTester newDatabaseTester() throws Exception{
+      final IDatabaseConnection connection = getConnection();
+      final IDatabaseTester tester = new DefaultDatabaseTester(connection);
+      return tester;
+    }
+    
+    /**
+     * Gets the IDatabaseTester for this testCase.<br>
+     * If the IDatabaseTester is not set yet, this method calls
+     * newDatabaseTester() to obtain a new instance.
+     * @throws Exception 
+     */
+    protected IDatabaseTester getDatabaseTester() throws Exception {
+      if ( this.tester == null ) {
+        this.tester = newDatabaseTester();
+      }
+      return this.tester;
+    }
+    
+    /**
+     * Close the specified connection. Override this method of you want to
      * keep your connection alive between tests.
      */
     protected void closeConnection(IDatabaseConnection connection) throws Exception
     {
-        connection.close();
+        assertNotNull( "DatabaseTester is not set", getDatabaseTester() );
+        getDatabaseTester().closeConnection( connection );
     }
 
     /**
@@ -77,38 +107,30 @@ public abstract class DatabaseTestCase extends TestCase
         return DatabaseOperation.NONE;
     }
 
-    private void executeOperation(DatabaseOperation operation) throws Exception
-    {
-        if (operation != DatabaseOperation.NONE)
-        {
-            IDatabaseConnection connection = getConnection();
-            try
-            {
-                operation.execute(connection, getDataSet());
-            }
-            finally
-            {
-                closeConnection(connection);
-            }
-        }
-    }
-
-
     ////////////////////////////////////////////////////////////////////////////
     // TestCase class
 
     protected void setUp() throws Exception
     {
         super.setUp();
-
-        executeOperation(getSetUpOperation());
+        final IDatabaseTester databaseTester = getDatabaseTester();
+        assertNotNull( "DatabaseTester is not set", databaseTester );
+        databaseTester.setSetUpOperation( getSetUpOperation() );
+        databaseTester.setDataSet( getDataSet() );
+        databaseTester.onSetup();
     }
 
     protected void tearDown() throws Exception
     {
+      try {
+        final IDatabaseTester databaseTester = getDatabaseTester();
+        assertNotNull( "DatabaseTester is not set", databaseTester );
+        databaseTester.setTearDownOperation( getTearDownOperation() );
+        databaseTester.setDataSet( getDataSet() );
+        databaseTester.onTearDown();
+      } finally {
         super.tearDown();
-
-        executeOperation(getTearDownOperation());
+      }
     }
 }
 

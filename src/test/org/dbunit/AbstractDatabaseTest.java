@@ -66,7 +66,19 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
     {
         super.setUp();
 
-        _connection = getEnvironment().getConnection();
+        _connection = getDatabaseTester().getConnection();
+    }
+
+    protected IDatabaseTester getDatabaseTester() throws Exception
+    {
+       try{
+          return getEnvironment().getDatabaseTester();
+       }
+       catch( Exception e ){
+          logger.fatal( e );
+          // empty
+       }
+       return super.getDatabaseTester();
     }
 
     protected void tearDown() throws Exception

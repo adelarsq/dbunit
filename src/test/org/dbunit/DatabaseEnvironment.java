@@ -45,6 +45,7 @@ public class DatabaseEnvironment
     private DatabaseProfile _profile = null;
     private IDatabaseConnection _connection = null;
     private IDataSet _dataSet = null;
+    private IDatabaseTester _databaseTester = null;
 
     public static DatabaseEnvironment getInstance() throws Exception
     {
@@ -77,6 +78,9 @@ public class DatabaseEnvironment
         _profile = profile;
         File file = new File("src/xml/dataSetTest.xml");
         _dataSet = new XmlDataSet(new FileReader(file));
+        _databaseTester = new JdbcDatabaseTester( _profile.getDriverClass(),
+            _profile.getConnectionUrl(), _profile.getUser(), _profile.getPassword() );
+        _databaseTester.setSchema( _profile.getSchema() );
     }
 
     public IDatabaseConnection getConnection() throws Exception
@@ -92,6 +96,11 @@ public class DatabaseEnvironment
                     _profile.getSchema());
         }
         return _connection;
+    }
+    
+    public IDatabaseTester getDatabaseTester()
+    {
+        return _databaseTester;
     }
 
     public void closeConnection() throws Exception

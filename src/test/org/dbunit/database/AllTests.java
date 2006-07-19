@@ -24,9 +24,6 @@ package org.dbunit.database;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.dbunit.DatabaseEnvironment;
-import org.dbunit.TestFeature;
-
 /**
  * @author Manuel Laflamme
  * @version $Revision$
@@ -45,7 +42,9 @@ public class AllTests extends TestSuite
         suite.addTest(new TestSuite(DatabaseTableMetaDataTest.class));
         suite.addTest(new TestSuite(ForwardOnlyResultSetTableTest.class));
         suite.addTest(new TestSuite(QueryDataSetTest.class));
-        suite.addTest(new TestSuite(PrimaryKeyFilteredTableWrapperTest.class));        
+        suite.addTest(new TestSuite(PrimaryKeyFilteredTableWrapperTest.class));  
+        suite.addTest(new TestSuite(JdbcDatabaseTesterConnectionTest.class));
+        suite.addTest(new TestSuite(DefaultDatabaseTesterConnectionTest.class));
 
         return suite;
     }
