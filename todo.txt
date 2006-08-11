@@ -3,7 +3,6 @@ Documentation:
 
 * Add build instructions
 
-* << TESTING SVN COMMITS again (removed dbunit-commit@lists.sourceforge.net)  >>
 ---
 
 Features:
