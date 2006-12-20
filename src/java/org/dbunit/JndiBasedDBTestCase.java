@@ -20,9 +20,11 @@
  */
 package org.dbunit;
 
+import java.util.Properties;
+
 /**
  * TestCase that uses a JndiDatabaseTester.
- * 
+ *
  * @author Andres Almiray <aalmiray@users.sourceforge.net>
  */
 public abstract class JndiBasedDBTestCase extends DBTestCase
@@ -36,10 +38,29 @@ public abstract class JndiBasedDBTestCase extends DBTestCase
       super( name );
    }
 
+   /**
+    * Creates a new IDatabaseTester.<br>
+    * Default implementation returns a {@link JndiDatabaseTester} configured
+    * with the values returned from {@link getJNDIProperties()} and
+    * {@link getLookupName()}.
+    */
    protected IDatabaseTester newDatabaseTester()
    {
-      return new JndiDatabaseTester( getLookupName() );
+      return new JndiDatabaseTester( getJNDIProperties(), getLookupName() );
    }
 
+   /**
+    * Returns the JNDI lookup name for the test DataSource.
+    */
    protected abstract String getLookupName();
+
+   /**
+    * Returns the JNDI properties to use.<br>
+    * Subclasses must override this method to provide customized JNDI
+    * properties. Default implementation returns an empty Properties object.
+    */
+   protected Properties getJNDIProperties()
+   {
+      return new Properties();
+   }
 }

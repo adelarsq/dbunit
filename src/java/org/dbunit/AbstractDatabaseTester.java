@@ -30,7 +30,7 @@ import org.dbunit.operation.DatabaseOperation;
 /**
  * Basic implementation of IDatabaseTester.<br>
  * Implementations of IDatabaseTester may use this class as a starting point.
- * 
+ *
  * @author Andres Almiray <aalmiray@users.sourceforge.net>
  */
 public abstract class AbstractDatabaseTester implements IDatabaseTester
@@ -85,6 +85,10 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
       this.tearDownOperation = tearDownOperation;
    }
 
+   /**
+    * Asserts that propertyName is not a null String and has a length greater
+    * than zero.
+    */
    protected void assertNotNullNorEmpty( String propertyName, String property )
    {
       Assert.assertNotNull( propertyName + " is null", property );
@@ -92,21 +96,34 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
             .length() > 0 );
    }
 
+   /**
+    * Returs the schema value.
+    */
    protected String getSchema()
    {
       return schema;
    }
 
+   /**
+    * Returns the DatabaseOperation to call when starting the test.
+    */
    protected DatabaseOperation getSetUpOperation()
    {
       return setUpOperation;
    }
 
+   /**
+    * Returns the DatabaseOperation to call when ending the test.
+    */
    protected DatabaseOperation getTearDownOperation()
    {
       return tearDownOperation;
    }
 
+   /**
+    * Executes a DatabaseOperation with a IDatabaseConnection supplied by
+    * {@link getConnection()} and the test dataset.
+    */
    private void executeOperation( DatabaseOperation operation ) throws Exception
    {
       if( operation != DatabaseOperation.NONE ){

@@ -28,7 +28,7 @@ import org.dbunit.database.IDatabaseConnection;
 
 /**
  * DatabaseTester that uses JDBC's Driver Manager to create connections.<br>
- * 
+ *
  * @author Andres Almiray <aalmiray@users.sourceforge.net>
  * @author Felipe Leme <dbunit@felipeal.net>
  */
@@ -40,11 +40,26 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
    private String password;
    private String username;
 
+   /**
+    * Creates a new JdbcDatabaseTester with the specified properties.<br>
+    * Username and Password are set to null.
+    *
+    * @param driverClass the classname of the JDBC driver to use
+    * @param connectionUrl the connection url
+    */
    public JdbcDatabaseTester( String driverClass, String connectionUrl )
    {
       this( driverClass, connectionUrl, null, null );
    }
 
+   /**
+    * Creates a new JdbcDatabaseTester with the specified properties.
+    *
+    * @param driverClass the classname of the JDBC driver to use
+    * @param connectionUrl the connection url
+    * @param username a username that can has access to the database
+    * @param password the user's password
+    */
    public JdbcDatabaseTester( String driverClass, String connectionUrl, String username,
          String password )
    {
@@ -73,16 +88,27 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
       return new DatabaseConnection( conn );
    }
 
+   /**
+    * Sets the value of the user's password.
+    */
    public void setPassword( String password )
    {
       this.password = password;
    }
 
+   /**
+    * Sets the value of the username from the connection.
+    */
    public void setUsername( String username )
    {
       this.username = username;
    }
 
+   /**
+    * Verifies the configured properties and initializes the driver.<br>
+    * This method is called by {@link getConnection} if the tester has not been
+    * initialized yet.
+    */
    protected void initialize() throws Exception
    {
       assertNotNullNorEmpty( "driverClass", driverClass );
@@ -90,11 +116,17 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
       initialized = true;
    }
 
+   /**
+    * Sets the value of the connection url.
+    */
    protected void setConnectionUrl( String connectionUrl )
    {
       this.connectionUrl = connectionUrl;
    }
 
+   /**
+    * Sets the value of the JDBC driver classname.
+    */
    protected void setDriverClass( String driverClass )
    {
       this.driverClass = driverClass;

@@ -23,7 +23,7 @@ package org.dbunit;
 
 /**
  * TestCase that uses a JdbcDatabaseTester.
- * 
+ *
  * @author Andres Almiray <aalmiray@users.sourceforge.net>
  * @author Felipe Leme <dbunit@felipeal.net>
  */
@@ -39,22 +39,35 @@ public abstract class JdbcBasedDBTestCase extends DBTestCase
       super( name );
    }
 
+   /**
+    * Creates a new IDatabaseTester.<br>
+    * Default implementation returns a {@link JdbcDatabaseTester} configured
+    * with the values returned from {@link getDriverClass},
+    * {@link getConnectionUrl}, {@link getUsername} and {@link getPassword()}.
+    */
    protected IDatabaseTester newDatabaseTester()
    {
-      JdbcDatabaseTester databaseTester = new JdbcDatabaseTester( getDriverClass(), getConnectionUrl() );
+      JdbcDatabaseTester databaseTester = new JdbcDatabaseTester( getDriverClass(),
+            getConnectionUrl() );
       databaseTester.setUsername( getUsername() );
       databaseTester.setPassword( getPassword() );
       return databaseTester;
    }
 
+   /**
+    * Returns the test connection url.
+    */
    protected abstract String getConnectionUrl();
 
+   /**
+    * Returns the JDBC driver classname.
+    */
    protected abstract String getDriverClass();
 
    /**
     * Returns the password for the connection.<br>
     * Subclasses may override this method to provide a custom password.<br>
-    * Default implementations returns null;
+    * Default implementations returns null.
     */
    protected String getPassword()
    {
@@ -64,7 +77,7 @@ public abstract class JdbcBasedDBTestCase extends DBTestCase
    /**
     * Returns the username for the connection.<br>
     * Subclasses may override this method to provide a custom username.<br>
-    * Default implementations returns null;
+    * Default implementations returns null.
     */
    protected String getUsername()
    {

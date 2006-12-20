@@ -24,23 +24,37 @@ package org.dbunit;
 /**
  * DatabaseTester that configures a DriverManager from environment properties.<br>
  * This class defines a set of keys for system properties that need to be
- * present in the environment before using it. Example: <xmp>
+ * present in the environment before using it. Example:
+ * <xmp>
  * System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS,
- * "com.mycompany.myDriver" ); System.setProperty(
- * PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:mydb://host/dbname" );
- * System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "myuser" );
- * System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "mypasswd" ); </xmp>
- * 
+ *             "com.mycompany.myDriver" );
+ * System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL,
+ *             "jdbc:mydb://host/dbname" );
+ * System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME,
+ *             "myuser" );
+ * System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD,
+ *             "mypasswd" );
+ * System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA,
+ *             "myschema" );
+ * </xmp>
+ *
  * @author Andres Almiray <aalmiray@users.sourceforge.net>
  * @author Felipe Leme <dbunit@felipeal.net>
  */
 public class PropertiesBasedJdbcDatabaseTester extends JdbcDatabaseTester
 {
+   /** A key for property that defines the connection url */
    public static final String DBUNIT_CONNECTION_URL = "dbunit.connectionUrl";
+   /** A key for property that defines the driver classname */
    public static final String DBUNIT_DRIVER_CLASS = "dbunit.driverClass";
+   /** A key for property that defines the user's password */
    public static final String DBUNIT_PASSWORD = "dbunit.password";
+   /** A key for property that defines the username */
    public static final String DBUNIT_USERNAME = "dbunit.username";
+   /** A key for property that defines the database schema */
    public static final String DBUNIT_SCHEMA = "dbunit.schema";
+
+   /** A key for property that defines the connection url */
 
    public PropertiesBasedJdbcDatabaseTester()
    {

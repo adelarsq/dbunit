@@ -76,6 +76,13 @@
       to achieve good performance.
       <source>IDatabaseConnection connection = new DatabaseDataSourceConnection(
       new InitialContext(), "jdbc/myDataSource");</source>
+      An alternative since version 2.2 is to subclass JndiBasedDBTestCase and specify the JNDI lookup name.
+      <source>public class MyJNDIDatabaseTest extends JndiBasedDBTestCase {
+   protected String getLookupName(){
+      return "jdbc/myDatasource";
+   }
+   ...
+}</source>You may also use JndiDatabaseTester if you can't subclass JndiBasedDBTestCase.
       </p>
       
      

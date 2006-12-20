@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 
 /**
  * TestCase that uses a DataSourceDatabaseTester.
- * 
+ *
  * @author Andres Almiray <aalmiray@users.sourceforge.net>
  * @author Felipe Leme <dbunit@felipeal.net>
  */
@@ -39,10 +39,18 @@ public abstract class DataSourceBasedDBTestCase extends DBTestCase
       super( name );
    }
 
+   /**
+    * Creates a new IDatabaseTester.<br>
+    * Default implementation returns a {@link DataSourceDatabaseTester}
+    * configured with the value returned from {@link getDataSource()}.
+    */
    protected IDatabaseTester newDatabaseTester()
    {
       return new DataSourceDatabaseTester( getDataSource() );
    }
 
+   /**
+    * Returns the test DataSource.
+    */
    protected abstract DataSource getDataSource();
 }

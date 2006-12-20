@@ -34,9 +34,9 @@ import org.dbunit.operation.DatabaseOperation;
  */
 public abstract class DatabaseTestCase extends TestCase
 {
-  
+
   private IDatabaseTester tester;
-  
+
     public DatabaseTestCase()
     {
     }
@@ -58,21 +58,21 @@ public abstract class DatabaseTestCase extends TestCase
 
     /**
      * Creates a IDatabaseTester for this testCase.<br>
-     * 
-     * PropertiesBasedJdbcDatabaseTester is used by default.
-     * @throws Exception 
+     *
+     * A {@link DefaultDatabaseTester} is used by default.
+     * @throws Exception
      */
     protected IDatabaseTester newDatabaseTester() throws Exception{
       final IDatabaseConnection connection = getConnection();
       final IDatabaseTester tester = new DefaultDatabaseTester(connection);
       return tester;
     }
-    
+
     /**
      * Gets the IDatabaseTester for this testCase.<br>
      * If the IDatabaseTester is not set yet, this method calls
      * newDatabaseTester() to obtain a new instance.
-     * @throws Exception 
+     * @throws Exception
      */
     protected IDatabaseTester getDatabaseTester() throws Exception {
       if ( this.tester == null ) {
@@ -80,7 +80,7 @@ public abstract class DatabaseTestCase extends TestCase
       }
       return this.tester;
     }
-    
+
     /**
      * Close the specified connection. Override this method of you want to
      * keep your connection alive between tests.

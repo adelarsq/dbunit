@@ -3,7 +3,10 @@ package org.dbunit;
 import org.dbunit.database.IDatabaseConnection;
 
 /**
- * TODO: document it, and mention it uses PropertiesBasedJdbcDatabaseTester
+ * Base testCase for database testing.<br>
+ * Subclasses may override {@link newDatabaseTester()} to plug-in a different implementation
+ * of IDatabaseTester.<br> Default implementation uses a {@link PropertiesBasedJdbcDatabaseTester}.
+ *
  * @author Felipe Leme <dbunit@felipeal.net>
  */
 public abstract class DBTestCase extends DatabaseTestCase {
@@ -11,7 +14,7 @@ public abstract class DBTestCase extends DatabaseTestCase {
   public DBTestCase() {
     super();
   }
-  
+
   public DBTestCase(String name) {
     super(name);
   }
@@ -21,9 +24,13 @@ public abstract class DBTestCase extends DatabaseTestCase {
     assertNotNull( "DatabaseTester is not set", databaseTester );
     return databaseTester.getConnection();
  }
-  
+
+  /**
+   * Creates a new IDatabaseTester.
+   * Default implementation returns a {@link PropertiesBasedJdbcDatabaseTester}.
+   */
   protected IDatabaseTester newDatabaseTester() throws Exception {
     return new PropertiesBasedJdbcDatabaseTester();
   }
-    
+
 }

@@ -28,25 +28,46 @@ import org.dbunit.operation.DatabaseOperation;
  * This interface defines the behavior of a DatabaseTester, which is responsible
  * for adding DBUnit features as composition on existing test cases (instead of
  * extending DBTestCase directly).
- * 
+ *
  * @author Andres Almiray <aalmiray@users.sourceforge.net>
  */
 public interface IDatabaseTester
 {
+   /**
+    * Close the specified connection.
+    */
    void closeConnection( IDatabaseConnection connection ) throws Exception;
 
+   /**
+    * Returns the test database connection.
+    */
    IDatabaseConnection getConnection() throws Exception;
 
+   /**
+    * Returns the test dataset.
+    */
    IDataSet getDataSet();
 
+   /**
+    * Sets the test dataset to use.
+    */
    void setDataSet( IDataSet dataSet );
 
+   /**
+    * Sets the schema value.
+    */
    void setSchema( String schema );
 
+   /**
+    * Sets the DatabaseOperation to call when starting the test.
+    */
    void setSetUpOperation( DatabaseOperation setUpOperation );
-   
+
+   /**
+    * Sets the DatabaseOperation to call when ending the test.
+    */
    void setTearDownOperation( DatabaseOperation tearDownOperation );
-   
+
    /**
     * TestCases must call this method inside setUp()
     */
@@ -56,5 +77,4 @@ public interface IDatabaseTester
     * TestCases must call this method inside tearDown()
     */
    void onTearDown() throws Exception;
-
 }

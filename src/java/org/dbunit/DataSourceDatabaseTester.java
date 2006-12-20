@@ -28,7 +28,7 @@ import org.dbunit.database.IDatabaseConnection;
 
 /**
  * DatabaseTester that uses a DataSource to create connections.
- * 
+ *
  * @author Andres Almiray <aalmiray@users.sourceforge.net>
  * @author Felipe Leme <dbunit@felipeal.net>
  */
@@ -36,6 +36,11 @@ public class DataSourceDatabaseTester extends AbstractDatabaseTester
 {
    private DataSource dataSource;
 
+   /**
+    * Creates a new DataSourceDatabaseTester with the specified DataSource.
+    *
+    * @param dataSource the DataSource to pull connections from
+    */
    public DataSourceDatabaseTester( DataSource dataSource )
    {
       super();

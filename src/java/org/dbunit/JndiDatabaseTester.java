@@ -27,7 +27,7 @@ import org.dbunit.database.IDatabaseConnection;
 
 /**
  * DatabaseTester that pulls a DataSource from a JNDI location.
- * 
+ *
  * @author Andres Almiray <aalmiray@users.sourceforge.net>
  */
 public class JndiDatabaseTester extends AbstractDatabaseTester
@@ -37,6 +37,12 @@ public class JndiDatabaseTester extends AbstractDatabaseTester
    private boolean initialized = false;
    private String lookupName;
 
+   /**
+    * Creates a JndiDatabaseTester with specific JNDI properties.
+    *
+    * @param environment A Properties object with JNDI properties
+    * @param lookupName the name of the resource in the JNDI context
+    */
    public JndiDatabaseTester( Properties environment, String lookupName )
    {
       super();
@@ -44,6 +50,11 @@ public class JndiDatabaseTester extends AbstractDatabaseTester
       this.lookupName = lookupName;
    }
 
+   /**
+    * Creates a JndiDatabaseTester with default JNDI properties.
+    *
+    * @param lookupName the name of the resource in the JNDI context
+    */
    public JndiDatabaseTester( String lookupName )
    {
       this( null, lookupName );
@@ -58,6 +69,12 @@ public class JndiDatabaseTester extends AbstractDatabaseTester
       return new DatabaseConnection( dataSource.getConnection() );
    }
 
+   /**
+    * Verifies the configured properties and locates the Datasource through
+    * JNDI.<br>
+    * This method is called by {@link getConnection} if the tester has not been
+    * initialized yet.
+    */
    private void initialize() throws NamingException
    {
       Context context = new InitialContext( environment );
