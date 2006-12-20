@@ -24,11 +24,12 @@ package org.dbunit.util.search;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import org.apache.commons.collections.set.ListOrderedSet;
 
 import junit.framework.TestCase;
 
@@ -52,7 +53,7 @@ public abstract class AbstractSearchTestCase extends TestCase {
   
   protected final Set fAllEdgesSet = new HashSet();
 
-  protected final Set fExpectedOutput = new LinkedHashSet();
+  protected final Set fExpectedOutput = new ListOrderedSet();
 
   protected final Set fInput = new HashSet();
 

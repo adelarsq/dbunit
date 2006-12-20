@@ -136,7 +136,7 @@ public abstract class AbstractDatabaseTesterTest extends TestCase
          return runIt;
       }
       catch( Exception e ){
-         throw new RuntimeException( e );
+         throw new DatabaseUnitRuntimeException( e );
       }
    }
 }

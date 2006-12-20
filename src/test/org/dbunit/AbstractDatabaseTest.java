@@ -143,7 +143,7 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
         final boolean runIt = environment.support(feature);
         return runIt;
       } catch ( Exception e ) {
-        throw new RuntimeException(e);
+        throw new DatabaseUnitRuntimeException(e);
       }
     }
     
