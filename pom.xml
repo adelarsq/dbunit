@@ -308,6 +308,21 @@ AllTests)
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <configuration>
+          <issueLinkTemplate>%URL%?func=detail&amp;aid=%ISSUE%&amp;group_id=47439&amp;atid=449494</issueLinkTemplate>
+          <xmlPath>${basedir}/src/site/xdoc/changes.xml</xmlPath>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>changes-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
     </plugins>
   </reporting>
   
@@ -355,8 +370,8 @@ AllTests)
 -->
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>changes-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
