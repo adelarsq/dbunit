@@ -11,9 +11,9 @@
      <action dev="felipeal" type="add" issue="1473744" due-to="Andres Almiray">Enable TestCase compositions</action>    
      <action dev="felipeal" type="add">Migrate SCM to Subversion</action>    
      <action dev="felipeal" type="fix" issue="1494257" due-to="Bas Cancrinus">Support for MySQL 5.0 boolean datatype</action>    
-     <action dev="felipeal" type="add" issue="1482990">Added <code>pom.xml</code> so it can be built by <code>Maven 2</code>.</action>
-     <action dev="felipeal" type="add"><code>XmlDataSetWriter</code> now has a flag to include column's name as comment.</action>
-     <action dev="felipeal" type="add" issue="1273949">Added <code>org.dbunit.util.search</code> and <code>org.dbunit.database.search</code> packages, whose classes can be used to search tables depedencies for a given table.</action>
+     <action dev="felipeal" type="add" issue="1482990">Added pom.xml so it can be built by Maven 2.</action>
+     <action dev="felipeal" type="add">XmlDataSetWriter now has a flag to include column's name as comment.</action>
+     <action dev="felipeal" type="add" issue="1273949">Added org.dbunit.util.search and org.dbunit.database.search packages, whose classes can be used to search tables depedencies for a given table.</action>
      <action dev="dep4b" due-to="John Lewis" type="add" issue="1264212">Add "transaction" attribute to ant tasks to wrap operations in a single transaction.  Can make operations faster.</action>
      <action dev="dep4b" due-to="Jeremy Frens" type="fix">Typo in howto example</action>
      <action dev="dep4b" due-to="Cris Daniluk" type="add">Properly support writing NCLOBs to Oracle</action>
@@ -110,46 +110,46 @@
      	Flat XML dataset validation.
      </action>         
      <action dev="" type="add">
-     	New <code>ITableIterator</code> interface used to iterate thru dataset tables. Allows lazy tables initialization for some dataset implementations. The <code>IDataSet.getTables</code> method have been deprecated and usage should be avoided.
+     	New ITableIterator interface used to iterate thru dataset tables. Allows lazy tables initialization for some dataset implementations. The IDataSet.getTables method have been deprecated and usage should be avoided.
      </action>         
      <action dev="" type="update">
-     	Global System properties are not supported anymore. You must now use the new <code>DatabaseConfig</code> object to alter DbUnit behaviours. 
+     	Global System properties are not supported anymore. You must now use the new DatabaseConfig object to alter DbUnit behaviours. 
      </action>         
      <action dev="" type="add">
      	Configurable data type factory to easily integrates new data types with the DbUnit core. Factory implementations available for some database vendors. Submit your own!
      </action>         
      <action dev="" type="add">
-     	Oracle TIMESTAMP data type support via the <code>OracleDataTypeFactory</code>.
+     	Oracle TIMESTAMP data type support via the OracleDataTypeFactory.
      </action>         
      <action dev="" type="fix">
-     	Fix truncated Oracle DATE. Must use the <code>OracleDataTypeFactory</code>.
+     	Fix truncated Oracle DATE. Must use the OracleDataTypeFactory.
      </action>         
      <action dev="" type="fix">
-     	Fix for Oracle CLOB greater than 4000 bytes. Must use the <code>OracleDataTypeFactory</code>.
+     	Fix for Oracle CLOB greater than 4000 bytes. Must use the OracleDataTypeFactory.
      </action>         
      <action dev="" type="add">
-     	MySQL 'longtext' data type support via the <code>MySqlDataTypeFactory</code>.
+     	MySQL 'longtext' data type support via the MySqlDataTypeFactory.
      </action>         
      <action dev="" type="add">
-     	DB2 XML data types support via the <code>Db2DataTypeFactory</code>.
+     	DB2 XML data types support via the Db2DataTypeFactory.
      </action>         
      <action dev="" type="add">
      	Database views support.
      </action>         
      <action dev="" type="add">
-     	New pluggable filter strategies for <code>DataSetFilter</code>. You can now exclude/include tables using wildcard patterns.
+     	New pluggable filter strategies for DataSetFilter. You can now exclude/include tables using wildcard patterns.
      </action>         
      <action dev="" type="add">
-     	Ability to sort tables by their dependencies with the new <code>DatabaseSequenceFilter</code> strategy.
+     	Ability to sort tables by their dependencies with the new DatabaseSequenceFilter strategy.
      </action>         
      <action dev="" type="add">
-     	New <code>ReplacementDataSet</code> decorator, which can replace decorated dataset values on the fly. Can be used with flat XML dataset as a new way to specify null values.
+     	New ReplacementDataSet decorator, which can replace decorated dataset values on the fly. Can be used with flat XML dataset as a new way to specify null values.
      </action>         
      <action dev="" type="add">
-     	New <code>XlsDataSet</code>. An MS Excel dataset implementation. Uses the Jakarta POI package.
+     	New XlsDataSet. An MS Excel dataset implementation. Uses the Jakarta POI package.
      </action>         
      <action dev="" type="update">
-     	<code>Assertion.assertEquals</code> is now performing typed comparison instead of string representation comparison.
+     	Assertion.assertEquals is now performing typed comparison instead of string representation comparison.
      </action>         
      <action dev="" type="update">
      	INSERT, CLEAN_INSERT and REFRESH operations do not override database default values anymore with null values. Null values are now omitted from insert statements. Operations use multiple prepared statements for the same table, when null values vary from row to row.
