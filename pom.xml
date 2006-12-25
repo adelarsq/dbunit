@@ -51,12 +51,20 @@
       <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=9162</archive>
     </mailingList>
     <mailingList>
-      <name>DbUnit CVS Commit List</name>
+      <name>DbUnit SVN Commit List</name>
       <subscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-commit</subscribe>
       <unsubscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-commit</unsubscribe>
       <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=9771</archive>
     </mailingList>    
   </mailingLists>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>snapshots</id>
+      <url>http://people.apache.org/repo/m2-snapshot-repository/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   
   <!-- who the developers are for the project -->
   <developers>
@@ -229,7 +237,7 @@
     <dependency>
      <groupId>commons-logging</groupId>
      <artifactId>commons-logging</artifactId>
-<!-- TODO: update -->
+<!-- TODO: update or use range-->
      <version>1.0.4</version>
     </dependency>
 
@@ -375,20 +383,20 @@ AllTests)
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
       </plugin>
+<!-- disabled for now, as reports show 100% coverage - see
+http://www.dbunit.org/cobertura/index.html 
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-<!-- TODO: remove
-        <version>2.0-SNAPSHOT</version>
--->
       </plugin>
+-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>changelog-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changelog-plugin</artifactId>
       </plugin>
     </plugins>
   </reporting>

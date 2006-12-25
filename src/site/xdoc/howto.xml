@@ -283,7 +283,7 @@ A major limitation of this technique is that you cannot use a DTD with your expe
         document walks you through a suggested format for storing tests. 
       </p>
       <h4>Step 1: Create your dataset file</h4>
-      <p>Your first step is to create your dataset file that you wan to load into
+      <p>Your first step is to create your dataset file that you want to load into
       your database before running your WebTest script. Use one of the various
       methods <a href="#createdataset">described above</a>. Put the various datasets you need in a <code>/data</code>
       directory.</p>

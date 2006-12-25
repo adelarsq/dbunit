@@ -17,7 +17,7 @@
         How to build DbUnit?
       </question>
       <answer>
-      <p><a href=" http://www.dbunit.org/cgi-bin/wiki.pl?BuildingDbUnit">BuildingDbUnit</a> detailed instruction.</p>
+      <p><a href="building.html">Building DbUnit</a> detailed instruction.</p>
       </answer>
     </faq>
 
@@ -35,7 +35,7 @@
         <li>Put the p6spy.jar file in your classpath.
         </li><li>Move spy.properties into a directory listed in your classpath.  Unlike
         JAR files, you do not directly reference your property file in the
-        classpath (e.g.: if you have the file c:\r\proj\confspy.properties make sure you 
+        classpath (e.g.: if you have the file c:\r\proj\conf\spy.properties make sure you 
         put c:\r\proj\conf in the classpath).
         </li><li>Modify your application to use the P6Spy database driver i.e.
         com.p6spy.engine.spy.P6SpyDriver.
@@ -56,7 +56,7 @@
         How to learn more about known and fixed issues?
       </question>
       <answer>
-      <p>Look at <a href="http://www.dbunit.org/cgi-bin/wiki.pl?ChangesSinceLastRelease">ChangesSinceLastRelease</a> and at <a href="http://www.dbunit.org/issue-tracking.html">Issue Tracking</a>.</p>
+      <p>Look at <a href="changes-report.html">Changes Report</a> and at <a href="issue-tracking.html">Issue Tracking</a>.</p>
       </answer>
     </faq>
   </part>  
@@ -260,7 +260,7 @@ Don't hesitate to submit your own implementation if you encounter types not curr
 
 	<p>
 	Configure your DbUnit connection to use ForwardOnlyResultSetTable when exporting very 
-	large dataset. ForwardOnlyResultSetTable is a very efficient database table implemtation useful 
+	large dataset. ForwardOnlyResultSetTable is a very efficient database table implememtation, useful 
 	when random data access is not required. By default, DbUnit uses CachedResultSetTable which consume 
 	more memory but provides random data access.
         </p>

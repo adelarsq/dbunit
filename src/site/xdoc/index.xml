@@ -25,6 +25,10 @@
   <section name="News">
       <table border="1">
         <tr> 
+          <td>2006-12-20</td>
+          <td><a href="http://www.dbunit.org/cgi-bin/wiki.pl">Wiki</a> is back!. </td>
+        </tr>        
+        <tr> 
           <td>2006-05-28</td>
           <td>Build has been ported to <a href="http://maven.apache.org">Maven 2</a> and snapshots for the 2.2 release are available in the <a href="http://dbunit.sourceforge.net/repo/snapshots/">repository</a>. </td>
         </tr>        

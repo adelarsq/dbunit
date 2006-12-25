@@ -91,7 +91,7 @@
           <td><a name="xmldataset" href="apidocs/org/dbunit/dataset/xml/XmlDataSet.html">XmlDataSet</a></td>
           <td>
       Reads and writes original XML dataset document. This format 
-        is very verbiose and must conform to the following DTD:
+        is very verbose and must conform to the following DTD:
       <source><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT dataset (table+)>
@@ -210,7 +210,7 @@ Following sample shows how to load a flat XML dataset with the StreamingDataSet:
           independent and should work with any JDBC driver that implement the 
           <code>DatabaseMetaData.getExportedKeys()</code> method. 
           <br/>
-		Support simple multilevel dependency like this:
+		Support simple multi-level dependency like this:
 <source>
    A
   / \

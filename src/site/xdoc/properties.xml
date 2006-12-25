@@ -9,7 +9,7 @@
         <code>getProperty</code>, and <code>setProperty</code> methods 
         of <code>DatabaseConfig</code>. </p>
       <p>While feature flags are always boolean, property values are arbitrary objects. </p>
-        <p>The Following sample displays the <code>batched statement</code> feature status:
+        <p>The following sample displays the <code>batched statement</code> feature status:
       <source><![CDATA[  String id = "http://www.dbunit.org/features/batchedStatements"; 
   DatabaseConfig config = connection.getConfig(); 
   if (config.getFeature(id)) 
