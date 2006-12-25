@@ -1,0 +1,385 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Changes</title>
+    <author email="epugh@upstate.com">Eric Pugh</author>
+    <author email="mlaflamm@users.sourceforge.net">Manuel Laflamme</author>
+  </properties>
+
+  <body>
+    <release version="2.2" date="IN CVS" description="">    
+     <action dev="felipeal" type="add" issue="1473744" due-to="Andres Almiray">Enable TestCase compositions</action>    
+     <action dev="felipeal" type="add">Migrate SCM to Subversion</action>    
+     <action dev="felipeal" type="fix" issue="1494257" due-to="Bas Cancrinus">Support for MySQL 5.0 boolean datatype</action>    
+     <action dev="felipeal" type="add" issue="1482990">Added <code>pom.xml</code> so it can be built by <code>Maven 2</code>.</action>
+     <action dev="felipeal" type="add"><code>XmlDataSetWriter</code> now has a flag to include column's name as comment.</action>
+     <action dev="felipeal" type="add" issue="1273949">Added <code>org.dbunit.util.search</code> and <code>org.dbunit.database.search</code> packages, whose classes can be used to search tables depedencies for a given table.</action>
+     <action dev="dep4b" due-to="John Lewis" type="add" issue="1264212">Add "transaction" attribute to ant tasks to wrap operations in a single transaction.  Can make operations faster.</action>
+     <action dev="dep4b" due-to="Jeremy Frens" type="fix">Typo in howto example</action>
+     <action dev="dep4b" due-to="Cris Daniluk" type="add">Properly support writing NCLOBs to Oracle</action>
+     <action dev="dep4b" type="add" due-to="Dion Gillard" issue="1114490">Support CSV files from a URL (e.g. jar file) + CSV fixes</action>
+     <action dev="dep4b" type="fix">Fix the driver in classpath/driver not in classpath to always work regardless of configured driver.</action>
+     <action dev="dep4b" type="fix" due-to="Dion Gillard" issue="1114487">Typo in test class AbstractDataSetTest</action>
+     <action dev="dep4b" type="add" due-to="Klas Axell">new HsqldbDataTypeFactory for working with booleans in HsqlDB.</action>
+    </release>
+    <release version="2.1" date="May 31, 2004" description="Multiple bugfixes and enhancements.">
+     <action dev="" type="add">
+     	741394 - New database compare Ant tag. See Ant task documentation.
+     </action>         
+     <action dev="fspinazzi" type="add">
+     	New Comma Separated Values (CSV) dataset implementation.
+     </action>      	            
+     <action dev="" type="add">
+     	824328 &amp; 948479 - Ability to add DOCTYPE declaration when writing a flat Xml dataset. See FAQ.
+     </action>         
+     <action dev="" type="add">
+     	884422 - FlatDtdWriter has now the ability to generate DTDs with choice model instead of sequence model. 
+     </action>         
+     <action dev="" type="add">
+     	Ability to import external file for binary data types like BLOB; the value can be either a qualified URL or a file path name.
+     </action>         
+     <action dev="" type="update">
+     	Do not omit NULL values anymore in INSERT statements. Now only XmlDataSet's &lt;none/&gt; tag are omitted. With FlatXmlDataSet you must use the ReplacementDataSet to achieve the same behavior.
+     </action>         
+     <action dev="" type="fix">
+     	937732 - XlsDataSet now use UTF-16 encoding to support Asian characters. Patch submitted by Shuhei Kondo.
+     </action>         
+     <action dev="" type="fix">
+     	Applied XlsTable empty table detection patch submitted by Deepak Kaimal.
+     </action>         
+     <action dev="" type="fix">
+     	Added back FlatXmlDataSet constructors taking URL as argument missing in version 2.0.
+     </action>         
+     <action dev="" type="fix">
+     	918631 &amp; 925585 - Fixed FlatXmlDataSet constructors taking InputStream/Reader for loading DTD.
+     </action>         
+     <action dev="" type="fix">
+     	DELETE_ALL operation now deletes tables only *once* in reverse order they are encountered. Before, duplicate tables were resulting in multiple deletes. Patch submitted by John Hurst.
+     </action>         
+     <action dev="" type="update">
+     	DELETE_ALL operation now compatible with StreamingDataSet.
+     </action>         
+     <action dev="" type="fix">
+     	947330 - Now closing ResultSet before Statement to fix exceptions thrown by the Firebird JDBC driver and the OpenBase 8.0 JDBC driver.
+     </action>         
+     <action dev="" type="fix">
+     	921869 - Fixed ParameterIndexOutOfBoundsException with InterBase.
+     </action>         
+     <action dev="" type="update">
+     	947809 - Moved createMetaData() static method from AbstractResultSet to DatabaseTableMetaData and made it public. Can now be used to create ITable from a ResultSet.
+     </action>         
+     <action dev="" type="fix">
+     	Support for large Oracle BLOB. Must use OracleDataTypeFactory.
+     </action>         
+     <action dev="" type="add">
+     	Oracle LONG RAW data type support via OracleDataTypeFactory. Original patch submitted by Markus Muller.
+     </action>         
+     <action dev="" type="fix">
+     	Added back support for Oracle FLOAT missing in DbUnit 2.0. Must use OracleDataTypeFactory.
+     </action>         
+     <action dev="" type="add">
+     	Support for Oracle NCHAR2 as proposed by Deepak Kaimal. Must use OracleDataTypeFactory.
+     </action>         
+     <action dev="" type="update">
+     	Added DataType.isDateTime() method proposed by Ayman Mahfouz.
+     </action>         
+     <action dev="" type="add">
+     	726366 &amp; 884422 - Added IColumnFilter interface. Can be used to filter out some table columns. See FAQ.
+     </action>         
+     <action dev="" type="update">
+     	Renamed ITableFilter.isValidName() method to accept() to be consistent with the new IColumnFilter interface. 
+     </action>         
+     <action dev="" type="add">
+     	955354 - Ability to determine the primary keys with IColumnFilter interface instead of DatabaseMetaData.getPrimaryKeys(). Primary keys sequence is not predictable when using filter. See FAQ.
+     </action>         
+     <action dev="" type="add">
+     	Ability to plug custom IDENTITY column detection strategy for InsertIdentityOperation when using user defined types. See FAQ.
+     </action>         
+     <action dev="" type="add">
+     	Added DefaultTableFilter class, which combines capability of the Include/ExcludeTableFilter classes.
+     </action>         
+    </release>
+    <release version="2.0" date="January 22, 2004" description="Major release.">
+     <action dev="" type="update">
+     	Mavenized the build and the website!
+     </action>         
+     <action dev="" type="update">
+     	Now use SAX2 instead of Electric XML DOM parser. Streamed mode allows importing and exporting very large XML datasets with minimal memory consumption.
+     </action>      	            
+     <action dev="" type="add">
+     	Flat XML dataset validation.
+     </action>         
+     <action dev="" type="add">
+     	New <code>ITableIterator</code> interface used to iterate thru dataset tables. Allows lazy tables initialization for some dataset implementations. The <code>IDataSet.getTables</code> method have been deprecated and usage should be avoided.
+     </action>         
+     <action dev="" type="update">
+     	Global System properties are not supported anymore. You must now use the new <code>DatabaseConfig</code> object to alter DbUnit behaviours. 
+     </action>         
+     <action dev="" type="add">
+     	Configurable data type factory to easily integrates new data types with the DbUnit core. Factory implementations available for some database vendors. Submit your own!
+     </action>         
+     <action dev="" type="add">
+     	Oracle TIMESTAMP data type support via the <code>OracleDataTypeFactory</code>.
+     </action>         
+     <action dev="" type="fix">
+     	Fix truncated Oracle DATE. Must use the <code>OracleDataTypeFactory</code>.
+     </action>         
+     <action dev="" type="fix">
+     	Fix for Oracle CLOB greater than 4000 bytes. Must use the <code>OracleDataTypeFactory</code>.
+     </action>         
+     <action dev="" type="add">
+     	MySQL 'longtext' data type support via the <code>MySqlDataTypeFactory</code>.
+     </action>         
+     <action dev="" type="add">
+     	DB2 XML data types support via the <code>Db2DataTypeFactory</code>.
+     </action>         
+     <action dev="" type="add">
+     	Database views support.
+     </action>         
+     <action dev="" type="add">
+     	New pluggable filter strategies for <code>DataSetFilter</code>. You can now exclude/include tables using wildcard patterns.
+     </action>         
+     <action dev="" type="add">
+     	Ability to sort tables by their dependencies with the new <code>DatabaseSequenceFilter</code> strategy.
+     </action>         
+     <action dev="" type="add">
+     	New <code>ReplacementDataSet</code> decorator, which can replace decorated dataset values on the fly. Can be used with flat XML dataset as a new way to specify null values.
+     </action>         
+     <action dev="" type="add">
+     	New <code>XlsDataSet</code>. An MS Excel dataset implementation. Uses the Jakarta POI package.
+     </action>         
+     <action dev="" type="update">
+     	<code>Assertion.assertEquals</code> is now performing typed comparison instead of string representation comparison.
+     </action>         
+     <action dev="" type="update">
+     	INSERT, CLEAN_INSERT and REFRESH operations do not override database default values anymore with null values. Null values are now omitted from insert statements. Operations use multiple prepared statements for the same table, when null values vary from row to row.
+     </action>         
+     <action dev="" type="update">
+     	Moved InsertIdentityOperation to "org.dbunit.ext.mssql" package to be consistent with other vendor extensions. Temporary keep a deprecated copy in "org.dbunit.operation.mssqlserver" to ease transition to DbUnit 2. 
+     </action>         
+    </release>
+
+    <release version="1.5.6" date="October 5, 2003">
+     <action dev="" type="fix">
+	  <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=786543&amp;group_id=47439&amp;atid=449491">786543</a> - NULL primitive values incorrectly returned as zero (0).
+     </action>      	            
+     <action dev="" type="fix">
+	Fix Oracle CLOB values incorrectly returned as NULL.     </action>         
+    </release>
+    <release version="1.5.5" date="July 16, 2003">
+     <action dev="" type="update">
+	  DatabaseDataSet improvements: faster access to metadata cache and keep original database table ordering.
+     </action>      	            
+     <action dev="" type="update">
+	Better handling of the various data types in general. <B>WARNING!</B> New abstract methods have been 
+	added to the DataType class. This change may break your environment if you have implemented your 
+	own data types. 
+     </action>         
+     <action dev="" type="update">
+	More efficient XmlDataSet writing. Now put values in CData block only when necessary. 
+     </action>         
+     <action dev="" type="update">
+	Do not enable batched statement by default anymore. Many JDBC drivers have problems with this feature. 
+     </action>          
+     <action dev="" type="fix">
+        Fixed table name issue with case sensitive database. 
+     </action>          
+     <action dev="" type="fix">
+        <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=615636&amp;group_id=47439&amp;atid=449491">615636</a> &amp; <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=735095&amp;group_id=47439&amp;atid=449491">735095</a> 
+            - Incorrect XML encoding. Better handling of the XML encoding while writing and reading XML datasets. InputStream and OutputStream methods in XML dataset implementations are no more deprecated.
+     </action>        
+     <action dev="" type="fix">
+      <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=736439&amp;group_id=47439&amp;atid=449491">736439</a> 
+            - Problems with InsertOperation and triggers.
+     </action>    
+     <action dev="" type="fix">
+       <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=736967&amp;group_id=47439&amp;atid=449491">736967</a> 
+            - Wrong scale for numeric value with the jConnect driver for Sybase ASE.
+     </action>         
+    </release>
+    <release version="1.5.1" date="April 4, 2003">
+     <action dev="" type="fix">
+          Fixed DELETE operation that was not deleting tables in reverse order 
+            as expected.
+     </action>    
+     <action dev="" type="fix">
+          <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=712329&amp;group_id=47439&amp;atid=449491">712329</a> 
+            - setObject fails on BEA JDriver for MS-SQL.
+     </action>    
+     
+     <action dev="" type="update">
+          DbUnitTask DTD export optimization. 
+     </action>  
+     <action dev="" type="update">
+          REFRESH operation optimization.
+     </action>  
+    </release>        	            
+    <release version="1.5" date="March 1, 2003">
+     <action dev="" type="fix">
+      Multiple bugfixes.
+     </action>                                      
+     <action dev="" type="add">
+      <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=533321&amp;group_id=47439&amp;atid=449491">533321</a> 
+            - DbUnit is now case insensitive.
+     </action>    
+     <action dev="" type="add">
+      <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=555455&amp;group_id=47439&amp;atid=449491">555455</a> 
+            - Supports table names escaping (see <a href="properties.html#escapepattern">escapePattern 
+            property</a>).
+     </action>   
+     <action dev="" type="add">
+     <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=551925&amp;group_id=47439&amp;atid=449494">551925</a> 
+            - Allows duplicate table names in datasets. A new method, <a class="code">getTables()</a>, 
+            have been added in the <a class="code">IDataSet</a> interface.
+     </action> 
+     <action dev="" type="add">
+      <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=684610&amp;group_id=47439&amp;atid=449494">590245</a> 
+            &amp; <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=590245&amp;group_id=47439&amp;atid=449494">684610</a> 
+            - New <a class="code">Reader</a> and <a class="code">Writers</a> methods 
+            to read and write XML datasets. <a class="code">InputStream</a> and 
+            <a class="code">OutputStream</a> methods are now deprecated.
+     </action> 
+     <action dev="" type="add">
+      New <a class="code">SortedTable</a> and <a class="code">SortedDataSet</a> 
+            decorator classes.
+     </action>  
+     <action dev="" type="add">
+      <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=645691&amp;group_id=47439&amp;atid=449491">645691</a> 
+            - Added the <a class="code">&lt;classpath&gt;</a> nested element in 
+            <a class="code"> DbUnitTask</a> ant task; used to load the JDBC classes.
+     </action>  
+     <action dev="" type="add">
+      Added <a class="code">&lt;query&gt;</a> nested element in <a class="code">DbUnitTask 
+            &lt;export&gt;</a>. Allows exporting the result of a SELECT as a table 
+            of a dataset. See <a href="anttask.html">ant task documentation</a>.
+     </action>  
+     <action dev="" type="add">
+      New <a href="http://webtest.canoo.com/">Canoo Webtest</a> integration 
+          <a href="howto.html#canoo">guide</a>.
+
+     </action>  
+    
+    </release>   
+    
+  <release version="1.4" date="July 17, 2002">
+     <action dev="" type="add">
+     <strong><em>DbUnitTask</em></strong> for Ant contributed by Timothy 
+            Ruppert and Ben Cox.
+     </action>    
+     <action dev="" type="update">
+     Moved the Base64 class to the <a class="code">org.dbunit.util</a> 
+          package because Visual Age for Java is not able to handle classes located 
+          in the default package.
+     </action>    
+     <action dev="" type="update">
+     Added system properties documentation.
+     </action>    
+     <action dev="" type="update">
+     <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=542034&amp;group_id=47439&amp;atid=449494">542034</a> 
+            - Detect ambiguous table names. 
+     </action> 
+     <action dev="" type="add">
+     <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=542462&amp;group_id=47439&amp;atid=449494">542462</a> 
+            - Added a system property to disable usage of batch statement even 
+            if the target database support it..
+     </action> 
+     <action dev="" type="update">
+     <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=545238&amp;group_id=47439&amp;atid=449494">545238</a> 
+            - Sort tables prior to comparing them. DbUnit now generates an ORDER 
+            BY clause in the select statement used by <a class="code">DatabaseDataSet.getTable()</a>. 
+            Rows are sorted by primary keys.
+     </action>    
+     <action dev="" type="update">
+     <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=554249&amp;group_id=47439&amp;atid=449494">554249</a> 
+            - None column values.
+     </action>   
+     <action dev="" type="add">
+     Added support for BLOB and CLOB data types.
+     </action>                       
+  </release>      
+
+  <release version="1.3" date="April 4, 2002">
+     <action dev="" type="add">
+     Added support for binary data types: BINARY, VARBINARY and LONGVARBINARY. 
+          Binary data is persisted in xml datasets using the base64 encoding scheme.
+     </action>    
+     <action dev="" type="update">
+     Deprecated the DataSetUtils.assertEquals() methods. You should now 
+          use Assertion.assertEquals(). 
+     </action> 
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=533537&amp;group_id=47439&amp;atid=449491">533537</a> 
+            - FlatXmlDataSet and null values.
+     </action> 
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=534757&amp;group_id=47439&amp;atid=449491">533537</a> 
+            - Problem with single quotes.
+     </action>    
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=534810&amp;group_id=47439&amp;atid=449491">534810</a> 
+            - Problem when primary key include all columns
+     </action>   
+  </release>      
+
+  <release version="1.2.4" date="March 19, 2002">
+     <action dev="" type="add">
+     	Added support for multiple schemas per connection. See <a href="faq.html#multipleschema">FAQ 
+          </a> document.
+     </action>    
+     <action dev="" type="remove">
+     	Removed element &lt;none/&gt; from dataset.dtd. This feature was incompatible 
+          with future support for the binary data types.
+     </action>    
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=530998&amp;group_id=47439&amp;atid=449491">530998</a> 
+          - DataSetUtils.AssertEquals(ITable table, ITable table). 
+     </action> 
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=533540&amp;group_id=47439&amp;atid=449491">533540</a> 
+          - Problem with DATE, TIME and TIMESTAMP.
+     </action> 
+  </release>      
+
+  <release version="1.2" date="March 15, 2002">
+     <action dev="" type="add">
+     	Added the flat XML dataset format. See the <a href="components.html#FlatXmlDataSet">FlatXmlDataSet</a> 
+          in Core Components document.
+     </action>    
+     <action dev="" type="add">
+     	Added database data verification feature. See <a href="howto.html#assertdata">Getting Started</a> document.
+     </action>    
+     <action dev="" type="update">
+     	Updated Electric XML parser to version 3.2. 
+     </action> 
+  </release>      
+
+  <release version="1.1" date="March 10, 2002">
+     <action dev="" type="update">
+     	Connections are now closed in each setUp() and tearDown(). You 
+              must override the DatabaseTestCase.closeConnection() and provide 
+              an empty body to modify this behavior. This is not recommended to bypass connection close if 
+              you use connection pooling.
+     </action>    
+     <action dev="" type="add">
+     	Added the IDatabaseConnection interface.
+     </action>    
+     <action dev="" type="add">
+     	Added the DatabaseDataSourceConnection class. This class provides 
+            support for accessing JDBC connections from a DataSource. JDBC connections 
+            are requested on demand from the DataSource.
+     </action> 
+     <action dev="" type="update">
+     	Multiple performance improvement.
+     </action>    
+     <action dev="" type="fix">
+     	<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=526235&amp;group_id=47439&amp;atid=449491">526235</a> 
+            - Cannot export tables with JDBC-ODBC bridge and MS-SQL.
+     </action>    
+  </release>      
+
+  <release version="1.0" date="Febuary 27, 2002" description="Initial public release.">
+  </release>      
+
+  </body>
+</document>
+
