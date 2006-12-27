@@ -16,10 +16,7 @@
 -->
   <inceptionYear>2002</inceptionYear>
   <description>
-    DbUnit is a JUnit extension (also usable from Ant) targeted for database-driven projects that, 
-    among other things, puts your database into a known state between test runs. This is an 
-    excellent way to avoid the myriad of problems that can occur when one test case corrupts 
-    the database and causes subsequent tests to fail or exacerbate the damage.
+    DbUnit is a JUnit extension (also usable from Ant) targeted for database-driven projects that, among other things, puts your database into a known state between test runs. This is an excellent way to avoid the myriad of problems that can occur when one test case corrupts the database and causes subsequent tests to fail or exacerbate the damage.
   </description>
   <licenses>
     <license>
@@ -68,6 +65,18 @@
   
   <!-- who the developers are for the project -->
   <developers>
+   <!-- put my name first, so my email is used by the announcements-email
+        plugin -->
+   <developer>
+      <name>Felipe Leme</name>
+      <id>felipeal</id>
+      <email>dbunit@felipeal.net</email>
+      <organization>Falcon Informatica</organization>
+      <timezone>-3</timezone>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
    <developer>
       <name>Benjamin Cox</name>
       <id>bdrum</id>
@@ -110,16 +119,6 @@
       <roles>
         <role>Java Developer</role>
        <!--  <role>Original Ant Task Contributor</role> -->
-      </roles>
-    </developer>
-   <developer>
-      <name>Felipe Leme</name>
-      <id>felipeal</id>
-      <email>dbunit@felipeal.net</email>
-      <organization>Falcon Informatica</organization>
-      <timezone>-3</timezone>
-      <roles>
-        <role>Java Developer</role>
       </roles>
     </developer>
   </developers>
@@ -320,8 +319,15 @@ AllTests)
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
         <configuration>
+          <smtpHost>localhost</smtpHost>
+          <smtpPort implementation="java.lang.Integer">25</smtpPort>
+          <introduction>This is a long-awaited new DbUnit official release, generated more than 2 years after DbUnit 2.1!</introduction>
+          <toAddresses>
+            <toAddress implementation="java.lang.String">dbunit-developer@lists.sourceforge.net</toAddress>
+            <toAddress implementation="java.lang.String">dbunit-user@lists.sourceforge.net</toAddress>
+          </toAddresses>
+          <urlDownload>http://sourceforge.net/project/showfiles.php?group_id=47439&amp;release_id=242511</urlDownload>
           <issueLinkTemplate>%URL%?func=detail&amp;aid=%ISSUE%&amp;group_id=47439&amp;atid=449494</issueLinkTemplate>
-          <xmlPath>${basedir}/src/site/xdoc/changes.xml</xmlPath>
         </configuration>
         <reportSets>
           <reportSet>
