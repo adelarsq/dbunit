@@ -67,13 +67,13 @@ Cutting a release
 mvn -Pofficial release:prepare
 ---
 
-and then:
+ and then:
 
 ---
 mvn -Pofficial release:perform
 ---
 
- The fourth step must be done manually, logging in SourceForge and uploading the following files:
+ That last command has created all necesary files for the fourth and fifth steps in the XXX/target directory. So, for the fourth step, log in SourceForge and uploading the following files:
 
  * <dbunit-RELEASE.jar>
 
@@ -83,16 +83,9 @@ mvn -Pofficial release:perform
 
  []
 
- For the ibiblio artifacts, the bundle can be created running:
+ And for the fifth step, create a {{{http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&issuetype=3}Jira request}} and upload the <<<XXX/target/dbunit-RELEASE-bundle.jar>>>) file (see {{{http://maven.apache.org/guides/mini/guide-ibiblio-upload.html}Guide to uploading artifacts to The Central Repository}} for detailed instructions). 
 
----
- mvn -Pofficial source:jar javadoc:jar repository:bundle-create         
----
-
-Once the file is generated (at <<<target/dbunit-RELEASE-bundle.jar>>>), upload it on Maven's {{{http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&issuetype=3}Jira} (see {{{http://maven.apache.org/guides/mini/guide-ibiblio-upload.html}Guide to uploading artifacts to The Central Repository}} for detailed instructions).
-
-
- The final step can also be done by maven, using the {{{http://maven.apache.org/plugins/maven-changes-plugin/}Maven Changes Plugin}}:
+ The final step can also be done by Maven, using the {{{http://maven.apache.org/plugins/maven-changes-plugin/}Maven Changes Plugin}}:
 
 ---
 mvn changes:announcement-mail
