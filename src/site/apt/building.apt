@@ -47,7 +47,7 @@ Contributing patches
 
 Maintenance tasks
 
- The tasks described below describes how to maintain DbUnit
+ The tasks described below describes how to maintain DbUnit. Some of these tasks will use <ssh> to upload files to SourceForge, so it is necessary to setup your environment to allow it (typically using <ssh-agent> - see more details on {{{http://sourceforge.net/docman/display_doc.php?docid=761&group_id=1} SourceForge}}).
 
 Updating the repository and site
 
