@@ -70,7 +70,7 @@ mvn -Pofficial release:prepare
 and then:
 
 ---
-mvn release:perform
+mvn -Pofficial release:perform
 ---
 
 
