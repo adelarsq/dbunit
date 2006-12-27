@@ -54,14 +54,14 @@ Updating the repository and site
  Once new code is incorporated in the SVN code, it is necessary to update the Maven 2 repository with new snapshots, and also update the site. These 2 tasks can be done with a simple command:
 
 ---
-mvn -Pofficial clean site:site source:jar javadoc:jar deploy site:deploy>>>
+mvn -Pofficial clean source:jar javadoc:jar deploy site:deploy>>>
 ---
 
 Cutting a release
 
- Cutting a release requires 5 steps: creating a SVN tag, generating the artifacts, updating the site, uploading the artifacts into SourceForge and sending the announcement emails.
+ Cutting a release requires the following steps: creating a SVN tag, generating the artifacts, updating the site, uploading the artifacts into SourceForge, uploading the artifacts on {{{http://ibiblio.net/maven2}ibiblio}}, and sending the announcement emails.
  
- Fortunatelly, the first 3 steps can be achieve using {{{http://maven.apache.org/plugins/maven-release-plugin/}Maven Release Plugin}}, as follow:
+ Fortunatelly, most of the steps can be automated by Maven. The first 3 steps can be achieve using {{{http://maven.apache.org/plugins/maven-release-plugin/}Maven Release Plugin}}, as follow:
 
 ---
 mvn -Pofficial release:prepare
@@ -73,8 +73,6 @@ and then:
 mvn -Pofficial release:perform
 ---
 
-
-
  The fourth step must be done manually, logging in SourceForge and uploading the following files:
 
  * <dbunit-RELEASE.jar>
@@ -84,6 +82,15 @@ mvn -Pofficial release:perform
  * <dbunit-RELEASE-javadoc.jar>
 
  []
+
+ For the ibiblio artifacts, the bundle can be created running:
+
+---
+ mvn -Pofficial source:jar javadoc:jar repository:bundle-create         
+---
+
+Once the file is generated (at <<<target/dbunit-RELEASE-bundle.jar>>>), upload it on Maven's {{{http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&issuetype=3}Jira} (see {{{http://maven.apache.org/guides/mini/guide-ibiblio-upload.html}Guide to uploading artifacts to The Central Repository}} for detailed instructions).
+
 
  The final step can also be done by maven, using the {{{http://maven.apache.org/plugins/maven-changes-plugin/}Maven Changes Plugin}}:
 
