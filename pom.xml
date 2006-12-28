@@ -26,9 +26,9 @@
     </license>
   </licenses>
   <scm> 
-    <connection>scm:svn:https://svn.sourceforge.net/svnroot/dbunit/tags/dbunit-2.2</connection>
-    <developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/dbunit/tags/dbunit-2.2</developerConnection>
-    <url>http://dbunit.cvs.sourceforge.net/dbunit/tags/dbunit-2.2</url>
+    <connection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</connection>
+    <developerConnection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</developerConnection>
+    <url>http://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</url>
   </scm>
   <issueManagement>
     <system>SourceForge</system>
