@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-    <release version="2.2" date="IN CVS" description="">    
+    <release version="2.2" date="December 28, 2006" description="First official release in a long, long time...">    
      <action dev="felipeal" type="add" issue="1473744" due-to="Andres Almiray">Enable TestCase compositions</action>    
      <action dev="felipeal" type="add">Migrate SCM to Subversion</action>    
      <action dev="felipeal" type="fix" issue="1494257" due-to="Bas Cancrinus">Support for MySQL 5.0 boolean datatype</action>    

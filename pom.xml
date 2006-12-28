@@ -306,7 +306,7 @@ AllTests)
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
-          <goals>source:jar javadoc:jar deploy site:deploy repository:bundle-create</goals>
+          <goals>source:jar javadoc:jar deploy site:site site:deploy repository:bundle-create</goals>
         </configuration>
       </plugin>
 <!-- TODO: add cobertura and other plugins that would fail the build, like PMD, cobertura and checkstyle-->
@@ -330,7 +330,7 @@ AllTests)
         <configuration>
           <smtpHost>localhost</smtpHost>
           <smtpPort implementation="java.lang.Integer">25</smtpPort>
-          <introduction>This is a long-awaited new DbUnit official release, generated more than 2 years after DbUnit 2.1!</introduction>
+          <introduction>If you are reading this, the maintainer forgot to descrive what's the purpose of this release!!!</introduction>
           <toAddresses>
             <toAddress implementation="java.lang.String">dbunit-developer@lists.sourceforge.net</toAddress>
             <toAddress implementation="java.lang.String">dbunit-user@lists.sourceforge.net</toAddress>
@@ -356,7 +356,7 @@ AllTests)
 	    <url>scpexe://ssh.sourceforge.net/home/groups/d/db/dbunit/htdocs/repo/snapshots</url>
 	  </snapshotRepository>
 	  <repository>
-	    <id>sf_snapshots</id>
+	    <id>sf_official</id>
 	    <name>SourceForge Snapshot</name>
 	    <url>scpexe://ssh.sourceforge.net/home/groups/d/db/dbunit/htdocs/repo/official</url>
 	  </repository>

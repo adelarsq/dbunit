@@ -83,7 +83,7 @@ mvn -Pofficial release:perform
 
  []
 
- And for the fifth step, create a {{{http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&issuetype=3}Jira request}} and upload the <<<XXX/target/dbunit-RELEASE-bundle.jar>>>) file (see {{{http://maven.apache.org/guides/mini/guide-ibiblio-upload.html}Guide to uploading artifacts to The Central Repository}} for detailed instructions). 
+ And for the fifth step, create a {{{http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&issuetype=3}Jira request}} and upload the <<<XXX/target/dbunit-RELEASE-bundle.jar>>>) file (see {{{http://maven.apache.org/guides/mini/guide-ibiblio-upload.html}Guide to uploading artifacts to The Central Repository}} for detailed instructions). NOTE: it is also necessary to create dbunit-RELEASE.tar.gz and dbunit-RELEASE.zip - I think Maven does that, but could not test by the time of the 2.2 release.
 
  The final step can also be done by Maven, using the {{{http://maven.apache.org/plugins/maven-changes-plugin/}Maven Changes Plugin}}:
 
