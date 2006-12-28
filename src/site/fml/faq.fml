@@ -135,7 +135,7 @@ public class DatabaseExportSample
         Can I work with multiple database schemas having tables with identical name?
       </question>
       <answer>
-        Yes, see <a href="#AmbiguousTableNameException">Why I get a "AmbiguousTableNameException"?</a>.
+        Yes, see <a href="#AmbiguousTableNameException">Why do I get a "AmbiguousTableNameException"?</a>.
       </answer>
     </faq>
 
