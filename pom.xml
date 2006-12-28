@@ -355,6 +355,11 @@ AllTests)
 	    <name>SourceForge Snapshot</name>
 	    <url>scpexe://ssh.sourceforge.net/home/groups/d/db/dbunit/htdocs/repo/snapshots</url>
 	  </snapshotRepository>
+	  <repository>
+	    <id>sf_snapshots</id>
+	    <name>SourceForge Snapshot</name>
+	    <url>scpexe://ssh.sourceforge.net/home/groups/d/db/dbunit/htdocs/repo/official</url>
+	  </repository>
   	<site>
 	    <id>sf_website</id>
 	    <url>scpexe://ssh.sourceforge.net/home/groups/d/db/dbunit/htdocs</url>

@@ -73,7 +73,7 @@ mvn -Pofficial release:prepare
 mvn -Pofficial release:perform
 ---
 
- That last command has created all necesary files for the fourth and fifth steps in the XXX/target directory. So, for the fourth step, log in SourceForge and uploading the following files:
+ That last command has created all necesary files for the fourth and fifth steps in the <<<target/checkout/target>>> directory. So, for the fourth step, log in SourceForge and uploading the following files:
 
  * <dbunit-RELEASE.jar>
 
