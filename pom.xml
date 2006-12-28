@@ -4,7 +4,7 @@
   <groupId>org.dbunit</groupId>
   <artifactId>dbunit</artifactId>
   <packaging>jar</packaging>
-  <version>2.2-SNAPSHOT</version>
+  <version>2.2</version>
   <name>DbUnit Framework</name>
   <url>http://dbunit.sourceforge.net</url>
 <!-- TODO - stuff below changed on M2; I think it went to Site plugin
