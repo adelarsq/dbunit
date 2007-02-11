@@ -97,7 +97,7 @@ public class DatabaseExportSample
         String[] depTableNames = 
           TablesDependencyHelper.getAllDependentTables( connection, "X" );
         IDataSet depDataset = connection.createDataSet( depTableNames );
-        FlatXmlDataSet.write(depDataSet, new FileOutputStream("dependents.xml");          
+        FlatXmlDataSet.write(depDataSet, new FileOutputStream("dependents.xml"));          
         
     }
 }</source></p>      </answer>
