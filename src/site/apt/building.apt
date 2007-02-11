@@ -54,7 +54,7 @@ Updating the repository and site
  Once new code is incorporated in the SVN code, it is necessary to update the Maven 2 repository with new snapshots, and also update the site. These 2 tasks can be done with a simple command:
 
 ---
-mvn -Pofficial clean source:jar javadoc:jar deploy site:deploy>>>
+mvn -Pofficial clean source:jar javadoc:jar deploy site:deploy
 ---
 
 Cutting a release
