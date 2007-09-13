@@ -281,7 +281,7 @@ public class RefreshOperation extends AbstractOperation
                 {
                     sqlBuffer.append(" and ");
                 }
-                sqlBuffer.append(column.getColumnName());
+                sqlBuffer.append(getQualifiedName(null, column.getColumnName(), connection));
                 sqlBuffer.append(" = ?");
             }
 
@@ -325,6 +325,7 @@ public class RefreshOperation extends AbstractOperation
     }
 
 }
+
 
 
 

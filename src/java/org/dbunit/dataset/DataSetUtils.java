@@ -113,6 +113,12 @@ public class DataSetUtils
         {
             return name;
         }
+    
+        int split = name.indexOf(".");
+        if (split > 1)
+        {
+        	return getEscapedName(name.substring(0, split), escapePattern) + "." + getEscapedName(name.substring(split + 1), escapePattern);
+        }
 
         int index = escapePattern.indexOf("?");
         if (index >=0 )
@@ -270,6 +276,7 @@ public class DataSetUtils
     }
 
 }
+
 
 
 
