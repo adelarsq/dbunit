@@ -21,11 +21,19 @@
 
 package org.dbunit.dataset.csv.handlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.csv.IllegalInputCharacterException;
 
 import java.util.LinkedList;
 
 public class UnquotedFieldAssembler extends AbstractPipelineComponent {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(UnquotedFieldAssembler.class);
 
     LinkedList addedComponents;
 
@@ -37,19 +45,33 @@ public class UnquotedFieldAssembler extends AbstractPipelineComponent {
     }
 
     private LinkedList getAddedComponents() {
+        logger.debug("getAddedComponents() - start");
+
         return addedComponents;
     }
 
     private void setAddedComponents(LinkedList addedComponents) {
+        logger.debug("setAddedComponents(addedComponents=" + addedComponents + ") - start");
+
         this.addedComponents = addedComponents;
     }
 
     public boolean canHandle(char c) throws IllegalInputCharacterException {
+        logger.debug("canHandle(c=" + c + ") - start");
+
         return true;
     }
 
     static protected class ASSEMBLE extends Helper {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(ASSEMBLE.class);
+
         void helpWith(char c) {
+            logger.debug("helpWith(c=" + c + ") - start");
+
             getHandler().getPipeline().thePieceIsDone();
         }
     }

@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,12 @@ import java.util.List;
  */
 public class DefaultTable extends AbstractTable
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DefaultTable.class);
+
     private final ITableMetaData _metaData;
     private final List _rowList;
 
@@ -83,6 +92,8 @@ public class DefaultTable extends AbstractTable
      */
     public void addRow() throws DataSetException
     {
+        logger.debug("addRow() - start");
+
         int columnCount = _metaData.getColumns().length;
         _rowList.add(new Object[columnCount]);
     }
@@ -95,6 +106,8 @@ public class DefaultTable extends AbstractTable
      */
     public void addRow(Object[] values) throws DataSetException
     {
+        logger.debug("addRow(values=" + values + ") - start");
+
         _rowList.add(values);
     }
 
@@ -104,6 +117,8 @@ public class DefaultTable extends AbstractTable
      */
     public void addTableRows(ITable table) throws DataSetException
     {
+        logger.debug("addTableRows(table=" + table + ") - start");
+
         try
         {
             Column[] columns = _metaData.getColumns();
@@ -123,6 +138,8 @@ public class DefaultTable extends AbstractTable
         }
         catch(RowOutOfBoundsException e)
         {
+            logger.error("addTableRows()", e);
+
             // end of table
         }
     }
@@ -140,6 +157,8 @@ public class DefaultTable extends AbstractTable
     public Object setValue(int row, String column, Object value)
             throws RowOutOfBoundsException, NoSuchColumnException, DataSetException
     {
+        logger.debug("setValue(row=" + row + ", column=" + column + ", value=" + value + ") - start");
+
         assertValidRowIndex(row);
 
         Object[] rowValues = (Object[])_rowList.get(row);
@@ -154,16 +173,22 @@ public class DefaultTable extends AbstractTable
 
     public ITableMetaData getTableMetaData()
     {
+        logger.debug("getTableMetaData() - start");
+
         return _metaData;
     }
 
     public int getRowCount()
     {
+        logger.debug("getRowCount() - start");
+
         return _rowList.size();
     }
 
     public Object getValue(int row, String column) throws DataSetException
     {
+        logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+
         assertValidRowIndex(row);
 
         Object[] rowValues = (Object[])_rowList.get(row);

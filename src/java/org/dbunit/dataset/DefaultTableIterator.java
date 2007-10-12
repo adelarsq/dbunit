@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Manuel Laflamme
  * @since Apr 5, 2003
@@ -27,6 +30,12 @@ package org.dbunit.dataset;
  */
 public class DefaultTableIterator implements ITableIterator
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DefaultTableIterator.class);
+
     private final ITable[] _tables;
     private int _index = -1;
 
@@ -55,17 +64,23 @@ public class DefaultTableIterator implements ITableIterator
 
     public boolean next() throws DataSetException
     {
+        logger.debug("next() - start");
+
         _index++;
         return _index < _tables.length;
     }
 
     public ITableMetaData getTableMetaData() throws DataSetException
     {
+        logger.debug("getTableMetaData() - start");
+
         return getTable().getTableMetaData();
     }
 
     public ITable getTable() throws DataSetException
     {
+        logger.debug("getTable() - start");
+
         return _tables[_index];
     }
 }

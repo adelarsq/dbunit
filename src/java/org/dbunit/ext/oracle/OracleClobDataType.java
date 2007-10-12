@@ -20,6 +20,9 @@
  */
 package org.dbunit.ext.oracle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.datatype.ClobDataType;
 import org.dbunit.dataset.datatype.TypeCastException;
 
@@ -39,6 +42,12 @@ import java.sql.SQLException;
  */
 public class OracleClobDataType extends ClobDataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(OracleClobDataType.class);
+
     private static final Integer DURATION_SESSION = new Integer(1);
 //    private static final Integer DURATION_CALL = new Integer(2);
 //    private static final Integer MODE_READONLY = new Integer(0);
@@ -47,18 +56,24 @@ public class OracleClobDataType extends ClobDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
+        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+
         return typeCast(resultSet.getClob(column));
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
+        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+
         statement.setObject(column, getClob(value, statement.getConnection()));
     }
 
     protected Object getClob(Object value, Connection connection)
             throws TypeCastException
     {
+        logger.debug("getClob(value=" + value + ", connection=" + connection + ") - start");
+
         Object tempClob = null;
         try
         {
@@ -94,26 +109,36 @@ public class OracleClobDataType extends ClobDataType
         }
         catch (IllegalAccessException e)
         {
+            logger.error("getClob()", e);
+
             freeTemporaryClob(tempClob);
             throw new TypeCastException(value, this, e);
         }
         catch (NoSuchMethodException e)
         {
+            logger.error("getClob()", e);
+
             freeTemporaryClob(tempClob);
             throw new TypeCastException(value, this, e);
         }
         catch (IOException e)
         {
+            logger.error("getClob()", e);
+
             freeTemporaryClob(tempClob);
             throw new TypeCastException(value, this, e);
         }
         catch (InvocationTargetException e)
         {
+            logger.error("getClob()", e);
+
             freeTemporaryClob(tempClob);
             throw new TypeCastException(value, this, e.getTargetException());
         }
         catch (ClassNotFoundException e)
         {
+            logger.error("getClob()", e);
+
             freeTemporaryClob(tempClob);
             throw new TypeCastException(value, this, e);
         }
@@ -124,6 +149,8 @@ public class OracleClobDataType extends ClobDataType
 
     protected void freeTemporaryClob(Object tempClob) throws TypeCastException
     {
+        logger.debug("freeTemporaryClob(tempClob=" + tempClob + ") - start");
+
         if (tempClob == null)
         {
             return;
@@ -136,14 +163,20 @@ public class OracleClobDataType extends ClobDataType
         }
         catch (NoSuchMethodException e)
         {
+            logger.error("freeTemporaryClob()", e);
+
             throw new TypeCastException("Error freeing Oracle CLOB", e);
         }
         catch (IllegalAccessException e)
         {
+            logger.error("freeTemporaryClob()", e);
+
             throw new TypeCastException("Error freeing Oracle CLOB", e);
         }
         catch (InvocationTargetException e)
         {
+            logger.error("freeTemporaryClob()", e);
+
             throw new TypeCastException("Error freeing Oracle CLOB", e.getTargetException());
         }
     }

@@ -21,6 +21,9 @@
 
 package org.dbunit.operation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.Column;
 
 /**
@@ -30,6 +33,12 @@ import org.dbunit.dataset.Column;
  */
 public class OperationData
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(OperationData.class);
+
     private final String _sql;
     private final Column[] _columns;
 
@@ -41,11 +50,15 @@ public class OperationData
 
     public String getSql()
     {
+        logger.debug("getSql() - start");
+
         return _sql;
     }
 
     public Column[] getColumns()
     {
+        logger.debug("getColumns() - start");
+
         return _columns;
     }
 }

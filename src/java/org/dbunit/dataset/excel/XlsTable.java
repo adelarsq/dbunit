@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.excel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -39,6 +42,12 @@ import java.util.List;
  */
 class XlsTable extends AbstractTable
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(XlsTable.class);
+
     private final ITableMetaData _metaData;
     private final HSSFSheet _sheet;
 
@@ -59,6 +68,8 @@ class XlsTable extends AbstractTable
 
     static ITableMetaData createMetaData(String tableName, HSSFRow sampleRow)
     {
+        logger.debug("createMetaData(tableName=" + tableName + ", sampleRow=" + sampleRow + ") - start");
+
         List columnList = new ArrayList();
         for (int i = 0; ; i++)
         {
@@ -81,16 +92,22 @@ class XlsTable extends AbstractTable
 
     public int getRowCount()
     {
+        logger.debug("getRowCount() - start");
+
         return _sheet.getLastRowNum();
     }
 
     public ITableMetaData getTableMetaData()
     {
+        logger.debug("getTableMetaData() - start");
+
         return _metaData;
     }
 
     public Object getValue(int row, String column) throws DataSetException
     {
+        logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+
         assertValidRowIndex(row);
 
         int columnIndex = getColumnIndex(column);

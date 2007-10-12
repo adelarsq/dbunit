@@ -16,6 +16,9 @@
 
 package org.dbunit.util.concurrent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Efficient array-based bounded buffer class.
  * Adapted from CPJ, chapter 8, which describes design.
@@ -23,6 +26,11 @@ package org.dbunit.util.concurrent;
  **/
 
 public class BoundedBuffer implements BoundedChannel {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(BoundedBuffer.class);
 
   protected final Object[]  array_;      // the elements
 
@@ -60,11 +68,17 @@ public class BoundedBuffer implements BoundedChannel {
    * This is only a snapshot value, that may change
    * immediately after returning.
    **/
-  public synchronized int size() { return usedSlots_; }
+  public synchronized int size() {
+        logger.debug("size() - start");
+ return usedSlots_; }
 
-  public int capacity() { return array_.length; }
+  public int capacity() {
+        logger.debug("capacity() - start");
+ return array_.length; }
 
   protected void incEmptySlots() {
+        logger.debug("incEmptySlots() - start");
+
     synchronized(putMonitor_) {
       ++emptySlots_;
       putMonitor_.notify();
@@ -72,17 +86,23 @@ public class BoundedBuffer implements BoundedChannel {
   }
 
   protected synchronized void incUsedSlots() {
+        logger.debug("incUsedSlots() - start");
+
     ++usedSlots_;
     notify();
   }
 
-  protected final void insert(Object x) { // mechanics of put
+  protected final void insert(Object x) {
+        logger.debug("insert(x=" + x + ") - start");
+ // mechanics of put
     --emptySlots_;
     array_[putPtr_] = x;
     if (++putPtr_ >= array_.length) putPtr_ = 0;
   }
 
-  protected final Object extract() { // mechanics of take
+  protected final Object extract() {
+        logger.debug("extract() - start");
+ // mechanics of take
     --usedSlots_;
     Object old = array_[takePtr_];
     array_[takePtr_] = null;
@@ -91,6 +111,8 @@ public class BoundedBuffer implements BoundedChannel {
   }
 
   public Object peek() {
+        logger.debug("peek() - start");
+
     synchronized(this) {
       if (usedSlots_ > 0)
         return array_[takePtr_];
@@ -101,6 +123,8 @@ public class BoundedBuffer implements BoundedChannel {
 
 
   public void put(Object x) throws InterruptedException {
+        logger.debug("put(x=" + x + ") - start");
+
     if (x == null) throw new IllegalArgumentException();
     if (Thread.interrupted()) throw new InterruptedException();
 
@@ -108,6 +132,8 @@ public class BoundedBuffer implements BoundedChannel {
       while (emptySlots_ <= 0) {
 	try { putMonitor_.wait(); }
         catch (InterruptedException ex) {
+                    logger.error("put()", ex);
+
           putMonitor_.notify();
           throw ex;
         }
@@ -118,6 +144,8 @@ public class BoundedBuffer implements BoundedChannel {
   }
 
   public boolean offer(Object x, long msecs) throws InterruptedException {
+        logger.debug("offer(x=" + x + ", msecs=" + msecs + ") - start");
+
     if (x == null) throw new IllegalArgumentException();
     if (Thread.interrupted()) throw new InterruptedException();
 
@@ -128,6 +156,8 @@ public class BoundedBuffer implements BoundedChannel {
         if (waitTime <= 0) return false;
 	try { putMonitor_.wait(waitTime); }
         catch (InterruptedException ex) {
+                    logger.error("offer()", ex);
+
           putMonitor_.notify();
           throw ex;
         }
@@ -141,13 +171,17 @@ public class BoundedBuffer implements BoundedChannel {
 
 
 
-  public  Object take() throws InterruptedException { 
+  public  Object take() throws InterruptedException {
+        logger.debug("take() - start");
+ 
     if (Thread.interrupted()) throw new InterruptedException();
     Object old = null; 
     synchronized(this) { 
       while (usedSlots_ <= 0) {
         try { wait(); }
         catch (InterruptedException ex) {
+                    logger.error("take()", ex);
+
           notify();
           throw ex; 
         }
@@ -158,7 +192,9 @@ public class BoundedBuffer implements BoundedChannel {
     return old;
   }
 
-  public  Object poll(long msecs) throws InterruptedException { 
+  public  Object poll(long msecs) throws InterruptedException {
+        logger.debug("poll(msecs=" + msecs + ") - start");
+ 
     if (Thread.interrupted()) throw new InterruptedException();
     Object old = null; 
     synchronized(this) { 
@@ -169,6 +205,8 @@ public class BoundedBuffer implements BoundedChannel {
         if (waitTime <= 0) return null;
         try { wait(waitTime); }
         catch (InterruptedException ex) {
+                    logger.error("poll()", ex);
+
           notify();
           throw ex; 
         }

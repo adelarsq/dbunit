@@ -21,6 +21,9 @@
 
 package org.dbunit.database.statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -31,6 +34,12 @@ import java.sql.SQLException;
  */
 public class CompoundStatement extends AbstractBatchStatement
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CompoundStatement.class);
+
     private StringBuffer _buffer = new StringBuffer();
 
     CompoundStatement(Connection connection) throws SQLException
@@ -40,17 +49,23 @@ public class CompoundStatement extends AbstractBatchStatement
 
     public void addBatch(String sql) throws SQLException
     {
+        logger.debug("addBatch(sql=" + sql + ") - start");
+
         _buffer.append(sql);
         _buffer.append(";");
     }
 
     public int executeBatch() throws SQLException
     {
+        logger.debug("executeBatch() - start");
+
         return _statement.executeUpdate(_buffer.toString());
     }
 
     public void clearBatch() throws SQLException
     {
+        logger.debug("clearBatch() - start");
+
         _buffer = new StringBuffer();
     }
 }

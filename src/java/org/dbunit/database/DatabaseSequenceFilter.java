@@ -20,6 +20,9 @@
  */
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.filter.SequenceTableFilter;
 
@@ -46,6 +49,11 @@ import java.util.Set;
  */
 public class DatabaseSequenceFilter extends SequenceTableFilter
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseSequenceFilter.class);
   
     /** Cache for tablename/foreign key mappings. */
     private static Map _dependentMap;
@@ -84,6 +92,8 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
         throws DataSetException, SQLException
             // not sure why this throws DataSetException ? - ENP
     {
+        logger.debug("sortTableNames(connection=" + connection + ", tableNames=" + tableNames + ") - start");
+
         boolean reprocess = true;
         List tmpTableNames = Arrays.asList(tableNames);
         List sortedTableNames = null;
@@ -165,6 +175,8 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
         String tableName)
         throws SQLException
     {
+        logger.debug("getDependentTableNames(connection=" + connection + ", tableName=" + tableName + ") - start");
+
         if (_dependentMap.containsKey(tableName))
         {
             return (Set)_dependentMap.get(tableName);

@@ -21,6 +21,9 @@
 
 package org.dbunit.operation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.BitSet;
 
 import org.dbunit.DatabaseUnitException;
@@ -43,6 +46,12 @@ import org.dbunit.dataset.NoPrimaryKeyException;
  */
 public class DeleteOperation extends AbstractBatchOperation
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DeleteOperation.class);
+
     DeleteOperation()
     {
         _reverseRowOrder = true;
@@ -53,11 +62,16 @@ public class DeleteOperation extends AbstractBatchOperation
 
     protected ITableIterator iterator(IDataSet dataSet) throws DatabaseUnitException
     {
+        logger.debug("iterator(dataSet=" + dataSet + ") - start");
+
         return dataSet.reverseIterator();
     }
 
     public OperationData getOperationData(ITableMetaData metaData, BitSet ignoreMapping, IDatabaseConnection connection) throws DataSetException
     {
+        logger.debug("getOperationData(metaData=" + metaData + ", ignoreMapping=" + ignoreMapping + ", connection="
+                + connection + ") - start");
+
         // cannot construct where clause if no primary key
         Column[] primaryKeys = metaData.getPrimaryKeys();
         if (primaryKeys.length == 0)

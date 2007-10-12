@@ -20,6 +20,9 @@
  */
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.*;
 
 import java.sql.SQLException;
@@ -32,6 +35,12 @@ import java.util.List;
  */
 public class QueryTableIterator implements ITableIterator
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(QueryTableIterator.class);
+
     private final List _tableEntries;
     private final IDatabaseConnection _connection;
     private IResultSetTable _currentTable;
@@ -49,6 +58,8 @@ public class QueryTableIterator implements ITableIterator
 
     public boolean next() throws DataSetException
     {
+        logger.debug("next() - start");
+
         _index++;
 
         // Ensure previous table is closed
@@ -63,6 +74,8 @@ public class QueryTableIterator implements ITableIterator
 
     public ITableMetaData getTableMetaData() throws DataSetException
     {
+        logger.debug("getTableMetaData() - start");
+
         QueryDataSet.TableEntry entry = (QueryDataSet.TableEntry)_tableEntries.get(_index);
 
         // No query specified, use metadata from dataset
@@ -75,6 +88,8 @@ public class QueryTableIterator implements ITableIterator
             }
             catch (SQLException e)
             {
+                logger.error("getTableMetaData()", e);
+
                 throw new DataSetException(e);
             }
         }
@@ -86,6 +101,8 @@ public class QueryTableIterator implements ITableIterator
 
     public ITable getTable() throws DataSetException
     {
+        logger.debug("getTable() - start");
+
         if (_currentTable == null)
         {
             try
@@ -109,6 +126,8 @@ public class QueryTableIterator implements ITableIterator
             }
             catch (SQLException e)
             {
+                logger.error("getTable()", e);
+
                 throw new DataSetException(e);
             }
         }

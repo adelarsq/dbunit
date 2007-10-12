@@ -18,6 +18,9 @@
 
 package org.dbunit.util.concurrent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A rendezvous channel, similar to those used in CSP and Ada.  Each
  * put must wait for a take, and vice versa.  Synchronous channels
@@ -34,6 +37,11 @@ package org.dbunit.util.concurrent;
 **/
 
 public class SynchronousChannel implements BoundedChannel {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(SynchronousChannel.class);
 
   /*
     This implementation divides actions into two cases for puts:
@@ -69,10 +77,18 @@ public class SynchronousChannel implements BoundedChannel {
    * Simple FIFO queue class to hold waiting puts/takes.
    **/
   protected static class Queue {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(Queue.class);
+
     protected LinkedNode head;
     protected LinkedNode last;
 
-    protected void enq(LinkedNode p) { 
+    protected void enq(LinkedNode p) {
+            logger.debug("enq(p=" + p + ") - start");
+ 
       if (last == null) 
         last = head = p;
       else 
@@ -80,6 +96,8 @@ public class SynchronousChannel implements BoundedChannel {
     }
 
     protected LinkedNode deq() {
+            logger.debug("deq() - start");
+
       LinkedNode p = head;
       if (p != null && (head = p.next) == null) 
         last = null;
@@ -94,16 +112,22 @@ public class SynchronousChannel implements BoundedChannel {
    * @return zero --
    * Synchronous channels have no internal capacity.
    **/
-  public int capacity() { return 0; }
+  public int capacity() {
+        logger.debug("capacity() - start");
+ return 0; }
 
   /**
    * @return null --
    * Synchronous channels do not hold contents unless actively taken
    **/
-  public Object peek() {  return null;  }
+  public Object peek() {
+        logger.debug("peek() - start");
+  return null;  }
 
 
   public void put(Object x) throws InterruptedException {
+        logger.debug("put(x=" + x + ") - start");
+
     if (x == null) throw new IllegalArgumentException();
 
     // This code is conceptually straightforward, but messy
@@ -153,6 +177,8 @@ public class SynchronousChannel implements BoundedChannel {
             return;
           }
           catch (InterruptedException ie) {
+                        logger.error("put()", ie);
+
             // If item was taken, return normally but set interrupt status
             if (item.value == null) {
               Thread.currentThread().interrupt();
@@ -169,6 +195,8 @@ public class SynchronousChannel implements BoundedChannel {
   }
 
   public Object take() throws InterruptedException {
+        logger.debug("take() - start");
+
     // Entirely symmetric to put()
 
     for (;;) {
@@ -210,6 +238,8 @@ public class SynchronousChannel implements BoundedChannel {
             }
           }
           catch(InterruptedException ie) {
+                        logger.error("take()", ie);
+
             Object x = slot.value;
             if (x != null) {
               slot.value = null;
@@ -233,6 +263,8 @@ public class SynchronousChannel implements BoundedChannel {
 
 
   public boolean offer(Object x, long msecs) throws InterruptedException {
+        logger.debug("offer(x=" + x + ", msecs=" + msecs + ") - start");
+
     if (x == null) throw new IllegalArgumentException();
     long waitTime = msecs;
     long startTime = 0; // lazily initialize below if needed
@@ -284,6 +316,8 @@ public class SynchronousChannel implements BoundedChannel {
             }
           }
           catch (InterruptedException ie) {
+                        logger.error("offer()", ie);
+
             if (item.value == null) {
               Thread.currentThread().interrupt();
               return true;
@@ -299,6 +333,8 @@ public class SynchronousChannel implements BoundedChannel {
   }
 
   public Object poll(long msecs) throws InterruptedException {
+        logger.debug("poll(msecs=" + msecs + ") - start");
+
     long waitTime = msecs;
     long startTime = 0;
 
@@ -355,6 +391,8 @@ public class SynchronousChannel implements BoundedChannel {
             }
           }
           catch(InterruptedException ie) {
+                        logger.error("poll()", ie);
+
             Object x = slot.value;
             if (x != null) {
               slot.value = null;

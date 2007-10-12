@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.*;
 
 /**
@@ -31,6 +34,12 @@ import org.dbunit.dataset.*;
  */
 public class StreamingDataSet extends AbstractDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(StreamingDataSet.class);
+
     private IDataSetProducer _source;
     private int _iteratorCount;
 
@@ -45,6 +54,8 @@ public class StreamingDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         if (reversed)
         {
             throw new UnsupportedOperationException(
@@ -70,6 +81,8 @@ public class StreamingDataSet extends AbstractDataSet
      */
     public String[] getTableNames() throws DataSetException
     {
+        logger.debug("getTableNames() - start");
+
         throw new UnsupportedOperationException();
     }
 
@@ -79,6 +92,8 @@ public class StreamingDataSet extends AbstractDataSet
      */
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
+        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+
         throw new UnsupportedOperationException();
     }
 
@@ -88,6 +103,8 @@ public class StreamingDataSet extends AbstractDataSet
      */
     public ITable getTable(String tableName) throws DataSetException
     {
+        logger.debug("getTable(tableName=" + tableName + ") - start");
+
         throw new UnsupportedOperationException();
     }
 

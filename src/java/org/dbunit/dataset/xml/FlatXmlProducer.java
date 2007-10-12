@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
@@ -41,6 +44,12 @@ import java.io.StringReader;
 public class FlatXmlProducer extends DefaultHandler
         implements IDataSetProducer, ContentHandler
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(FlatXmlProducer.class);
+
     private static final IDataSetConsumer EMPTY_CONSUMER = new DefaultConsumer();
     private static final String DATASET = "dataset";
 
@@ -95,6 +104,8 @@ public class FlatXmlProducer extends DefaultHandler
     private ITableMetaData createTableMetaData(String tableName,
             Attributes attributes) throws DataSetException
     {
+        logger.debug("createTableMetaData(tableName=" + tableName + ", attributes=" + attributes + ") - start");
+
         if (_metaDataSet != null)
         {
             return _metaDataSet.getTableMetaData(tableName);
@@ -113,6 +124,8 @@ public class FlatXmlProducer extends DefaultHandler
 
     public void setValidating(boolean validating)
     {
+        logger.debug("setValidating(validating=" + validating + ") - start");
+
         _validating = validating;
     }
 
@@ -121,11 +134,15 @@ public class FlatXmlProducer extends DefaultHandler
 
     public void setConsumer(IDataSetConsumer consumer) throws DataSetException
     {
+        logger.debug("setConsumer(consumer=" + consumer + ") - start");
+
         _consumer = consumer;
     }
 
     public void produce() throws DataSetException
     {
+        logger.debug("produce() - start");
+
         try
         {
             SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
@@ -146,10 +163,14 @@ public class FlatXmlProducer extends DefaultHandler
         }
         catch (ParserConfigurationException e)
         {
+            logger.error("produce()", e);
+
             throw new DataSetException(e);
         }
         catch (SAXException e)
         {
+            logger.error("produce()", e);
+
             int lineNumber = -1;
             if (e instanceof SAXParseException)
             {
@@ -166,6 +187,8 @@ public class FlatXmlProducer extends DefaultHandler
         }
         catch (IOException e)
         {
+            logger.error("produce()", e);
+
             throw new DataSetException(e);
         }
     }
@@ -176,6 +199,8 @@ public class FlatXmlProducer extends DefaultHandler
     public InputSource resolveEntity(String publicId, String systemId)
             throws SAXException
     {
+        logger.debug("resolveEntity(publicId=" + publicId + ", systemId=" + systemId + ") - start");
+
         if (!_dtdMetadata)
         {
             return new InputSource(new StringReader(""));
@@ -188,6 +213,8 @@ public class FlatXmlProducer extends DefaultHandler
 
     public void error(SAXParseException e) throws SAXException
     {
+        logger.debug("error(e=" + e + ") - start");
+
         throw e;
 
     }
@@ -198,6 +225,9 @@ public class FlatXmlProducer extends DefaultHandler
     public void startElement(String uri, String localName, String qName,
             Attributes attributes) throws SAXException
     {
+        logger.debug("startElement(uri=" + uri + ", localName=" + localName + ", qName=" + qName + ", attributes="
+                + attributes + ") - start");
+
         try
         {
             // Start of dataset
@@ -237,12 +267,16 @@ public class FlatXmlProducer extends DefaultHandler
         }
         catch (DataSetException e)
         {
+            logger.error("startElement()", e);
+
             throw new SAXException(e);
         }
     }
 
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
+        logger.debug("endElement(uri=" + uri + ", localName=" + localName + ", qName=" + qName + ") - start");
+
         // End of dataset
         if (qName.equals(DATASET))
         {
@@ -259,6 +293,8 @@ public class FlatXmlProducer extends DefaultHandler
             }
             catch (DataSetException e)
             {
+                logger.error("endElement()", e);
+
                 throw new SAXException(e);
             }
         }
@@ -266,6 +302,12 @@ public class FlatXmlProducer extends DefaultHandler
 
     private class FlatDtdHandler extends FlatDtdProducer
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(FlatDtdHandler.class);
+
         public FlatDtdHandler()
         {
         }
@@ -276,6 +318,8 @@ public class FlatXmlProducer extends DefaultHandler
         public void startDTD(String name, String publicId, String systemId)
                 throws SAXException
         {
+            logger.debug("startDTD(name=" + name + ", publicId=" + publicId + ", systemId=" + systemId + ") - start");
+
             try
             {
                 // Cache the DTD content to use it as metadata
@@ -287,6 +331,8 @@ public class FlatXmlProducer extends DefaultHandler
             }
             catch (DataSetException e)
             {
+                logger.error("startDTD()", e);
+
                 throw new SAXException(e);
             }
         }

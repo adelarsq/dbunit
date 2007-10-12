@@ -20,6 +20,9 @@
  */
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
@@ -35,6 +38,12 @@ import java.sql.SQLException;
  */
 public class ForwardOnlyResultSetTable extends AbstractResultSetTable
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ForwardOnlyResultSetTable.class);
+
     private int _lastRow = -1;
     private boolean _eot = false;   // End of table flag
 
@@ -61,11 +70,15 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
 
     public int getRowCount()
     {
+        logger.debug("getRowCount() - start");
+
         throw new UnsupportedOperationException();
     }
 
     public Object getValue(int row, String columnName) throws DataSetException
     {
+        logger.debug("getValue(row=" + row + ", columnName=" + columnName + ") - start");
+
         try
         {
             // Move cursor forward up to specified row
@@ -93,6 +106,8 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
         }
         catch (SQLException e)
         {
+            logger.error("getValue()", e);
+
             throw new DataSetException(e);
         }
     }

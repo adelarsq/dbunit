@@ -13,6 +13,9 @@
  */
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -32,6 +35,12 @@ import org.dbunit.database.IDatabaseConnection;
  */
 public class JndiDatabaseTester extends AbstractDatabaseTester
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(JndiDatabaseTester.class);
+
    private DataSource dataSource;
    private Properties environment;
    private boolean initialized = false;
@@ -62,6 +71,8 @@ public class JndiDatabaseTester extends AbstractDatabaseTester
 
    public IDatabaseConnection getConnection() throws Exception
    {
+        logger.debug("getConnection() - start");
+
       if( !initialized ){
          initialize();
       }
@@ -77,6 +88,8 @@ public class JndiDatabaseTester extends AbstractDatabaseTester
     */
    private void initialize() throws NamingException
    {
+        logger.debug("initialize() - start");
+
       Context context = new InitialContext( environment );
       assertNotNullNorEmpty( "lookupName", lookupName );
       Object obj = context.lookup( lookupName );

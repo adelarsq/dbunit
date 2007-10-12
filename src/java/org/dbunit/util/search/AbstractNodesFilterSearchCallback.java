@@ -23,8 +23,8 @@ package org.dbunit.util.search;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Super-class for ISearchCallback implementations that needs to filter which
@@ -50,7 +50,7 @@ import org.apache.commons.logging.LogFactory;
 public abstract class AbstractNodesFilterSearchCallback implements
     ISearchCallback {
   
-  protected final Log logger = LogFactory.getLog(getClass());
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
 
   // internal modes
   protected static final int NO_MODE = 0;
@@ -73,6 +73,8 @@ public abstract class AbstractNodesFilterSearchCallback implements
    * @return which modes are allowed/denied, depending on the operation mode.
    */
   protected Set getFilteredNodes() {
+        logger.debug("getFilteredNodes() - start");
+
     return this.filteredNodes;
   }
   
@@ -81,6 +83,8 @@ public abstract class AbstractNodesFilterSearchCallback implements
    * @return operation mode
    */
   protected int getFilteringMode() {
+        logger.debug("getFilteringMode() - start");
+
     return this.filteringMode;
   }
   
@@ -89,6 +93,8 @@ public abstract class AbstractNodesFilterSearchCallback implements
    * @param filteredNodes which modes are allowed on the search.
    */  
   protected void setAllowedNodes(Set filteredNodes) {
+        logger.debug("setAllowedNodes(filteredNodes=" + filteredNodes + ") - start");
+
     setFilteredNodes(filteredNodes);
     this.filteringMode = ALLOW_MODE;
   }
@@ -98,6 +104,8 @@ public abstract class AbstractNodesFilterSearchCallback implements
    * @param filteredNodes which modes are allowed on the search.
    */  
   protected void setAllowedNodes(Object[] filteredNodes) {
+        logger.debug("setAllowedNodes(filteredNodes=" + filteredNodes + ") - start");
+
     setFilteredNodes(filteredNodes);
     this.filteringMode = ALLOW_MODE;
   }
@@ -107,6 +115,8 @@ public abstract class AbstractNodesFilterSearchCallback implements
    * @param filteredNodes which modes are not allowed on the search.
    */  
   protected void setDeniedNodes(Set filteredNodes) {
+        logger.debug("setDeniedNodes(filteredNodes=" + filteredNodes + ") - start");
+
     setFilteredNodes(filteredNodes);
     this.filteringMode = DENY_MODE;
   }
@@ -116,6 +126,8 @@ public abstract class AbstractNodesFilterSearchCallback implements
    * @param filteredNodes which modes are not allowed on the search.
    */  
   protected void setDeniedNodes(Object[] filteredNodes) {
+        logger.debug("setDeniedNodes(filteredNodes=" + filteredNodes + ") - start");
+
     setFilteredNodes(filteredNodes);
     this.filteringMode = DENY_MODE;
   }
@@ -128,6 +140,8 @@ public abstract class AbstractNodesFilterSearchCallback implements
   }
   
   public boolean searchNode(Object node) throws SearchException {
+        logger.debug("searchNode(node=" + node + ") - start");
+
     switch( this.filteringMode ) {
     case ALLOW_MODE:
       return getFilteredNodes().contains(node); 
@@ -139,10 +153,14 @@ public abstract class AbstractNodesFilterSearchCallback implements
   }
   
   private void setFilteredNodes(Set filteredNodes) {
+        logger.debug("setFilteredNodes(filteredNodes=" + filteredNodes + ") - start");
+
     this.filteredNodes = new HashSet(filteredNodes);
   }
 
   private void setFilteredNodes(Object[] filteredNodes) {
+        logger.debug("setFilteredNodes(filteredNodes=" + filteredNodes + ") - start");
+
     this.filteredNodes = new HashSet(filteredNodes.length);
     for (int i = 0; i < filteredNodes.length; i++) {
       this.filteredNodes.add(filteredNodes[i]);

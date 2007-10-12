@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,6 +37,12 @@ import java.sql.Clob;
  */
 public class ClobDataType extends StringDataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ClobDataType.class);
+
     public ClobDataType()
     {
         super("CLOB", Types.CLOB);
@@ -41,6 +50,8 @@ public class ClobDataType extends StringDataType
 
     public Object getSqlValue(int column, ResultSet resultSet) throws SQLException, TypeCastException
     {
+        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+
         Clob value = resultSet.getClob(column);
         if (value == null || resultSet.wasNull())
         {
@@ -51,6 +62,8 @@ public class ClobDataType extends StringDataType
 
     public void setSqlValue(Object value, int column, PreparedStatement statement) throws SQLException, TypeCastException
     {
+        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+
         statement.setObject(column, typeCast(value),
                 DataType.LONGVARCHAR.getSqlType());
     }

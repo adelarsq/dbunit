@@ -20,6 +20,9 @@
  */
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -34,6 +37,12 @@ import org.dbunit.database.IDatabaseConnection;
  */
 public class JdbcDatabaseTester extends AbstractDatabaseTester
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(JdbcDatabaseTester.class);
+
    private String connectionUrl;
    private String driverClass;
    private boolean initialized = false;
@@ -72,6 +81,8 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
 
    public IDatabaseConnection getConnection() throws Exception
    {
+        logger.debug("getConnection() - start");
+
       if( !initialized ){
          initialize();
       }
@@ -93,6 +104,8 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
     */
    public void setPassword( String password )
    {
+        logger.debug("setPassword(password=" + password + ") - start");
+
       this.password = password;
    }
 
@@ -101,6 +114,8 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
     */
    public void setUsername( String username )
    {
+        logger.debug("setUsername(username=" + username + ") - start");
+
       this.username = username;
    }
 
@@ -111,6 +126,8 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
     */
    protected void initialize() throws Exception
    {
+        logger.debug("initialize() - start");
+
       assertNotNullNorEmpty( "driverClass", driverClass );
       Class.forName( driverClass );
       initialized = true;
@@ -121,6 +138,8 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
     */
    protected void setConnectionUrl( String connectionUrl )
    {
+        logger.debug("setConnectionUrl(connectionUrl=" + connectionUrl + ") - start");
+
       this.connectionUrl = connectionUrl;
    }
 
@@ -129,6 +148,8 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
     */
    protected void setDriverClass( String driverClass )
    {
+        logger.debug("setDriverClass(driverClass=" + driverClass + ") - start");
+
       this.driverClass = driverClass;
    }
 }

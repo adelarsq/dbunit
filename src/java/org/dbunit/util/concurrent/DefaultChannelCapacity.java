@@ -13,6 +13,9 @@
 
 package org.dbunit.util.concurrent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A utility class to set the default capacity of
  * BoundedChannel
@@ -22,6 +25,11 @@ package org.dbunit.util.concurrent;
  **/
 
 public class DefaultChannelCapacity {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DefaultChannelCapacity.class);
 
   /** The initial value of the default capacity is 1024 **/
   public static final int INITIAL_DEFAULT_CAPACITY = 1024;
@@ -37,6 +45,8 @@ public class DefaultChannelCapacity {
    * @exception IllegalArgumentException if capacity less or equal to zero
    */
   public static void set(int capacity) {
+        logger.debug("set(capacity=" + capacity + ") - start");
+
     if (capacity <= 0) throw new IllegalArgumentException();
     defaultCapacity_.set(capacity);
   }
@@ -49,6 +59,8 @@ public class DefaultChannelCapacity {
    * @see #INITIAL_DEFAULT_CAPACITY
    */
   public static int get() {
+        logger.debug("get() - start");
+
     return defaultCapacity_.get();
   }
 }

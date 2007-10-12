@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Types;
 
 /**
@@ -31,8 +34,16 @@ import java.sql.Types;
  */
 public class DefaultDataTypeFactory implements IDataTypeFactory
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DefaultDataTypeFactory.class);
+
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
+        logger.debug("createDataType(sqlType=" + sqlType + ", sqlTypeName=" + sqlTypeName + ") - start");
+
         DataType dataType = DataType.UNKNOWN;
         if (sqlType != Types.OTHER)
         {

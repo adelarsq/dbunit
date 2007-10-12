@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -34,6 +37,12 @@ import java.util.ListIterator;
  */
 public class CompositeDataSet extends AbstractDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CompositeDataSet.class);
+
     private ITable[] _tables;
 
     /**
@@ -143,6 +152,9 @@ public class CompositeDataSet extends AbstractDataSet
 
     private void addTable(ITable newTable, List tableList, boolean combine)
     {
+        logger.debug("addTable(newTable=" + newTable + ", tableList=" + tableList + ", combine=" + combine
+                + ") - start");
+
         // No merge required, simply add new table at then end of the list
         if (!combine)
         {
@@ -173,6 +185,8 @@ public class CompositeDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         return new DefaultTableIterator(_tables, reversed);
     }
 }

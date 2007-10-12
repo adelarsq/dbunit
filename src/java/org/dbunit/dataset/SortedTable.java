@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.dataset.datatype.DataType;
 
@@ -37,6 +40,12 @@ import java.util.Comparator;
  */
 public class SortedTable extends AbstractTable
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(SortedTable.class);
+
     private final ITable _table;
     private final Column[] _columns;
     private Integer[] _indexes;
@@ -86,6 +95,8 @@ public class SortedTable extends AbstractTable
 
     private int getOriginalRowIndex(int row) throws DataSetException
     {
+        logger.debug("getOriginalRowIndex(row=" + row + ") - start");
+
         if (_indexes == null)
         {
             Integer[] indexes = new Integer[getRowCount()];
@@ -100,6 +111,8 @@ public class SortedTable extends AbstractTable
             }
             catch (DatabaseUnitRuntimeException e)
             {
+                logger.error("getOriginalRowIndex()", e);
+
                 throw (DataSetException)e.getException();
             }
 
@@ -114,16 +127,22 @@ public class SortedTable extends AbstractTable
 
     public ITableMetaData getTableMetaData()
     {
+        logger.debug("getTableMetaData() - start");
+
         return _table.getTableMetaData();
     }
 
     public int getRowCount()
     {
+        logger.debug("getRowCount() - start");
+
         return _table.getRowCount();
     }
 
     public Object getValue(int row, String column) throws DataSetException
     {
+        logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+
         assertValidRowIndex(row);
 
         return _table.getValue(getOriginalRowIndex(row), column);
@@ -134,8 +153,16 @@ public class SortedTable extends AbstractTable
 
     private class RowComparator implements Comparator
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(RowComparator.class);
+
         public int compare(Object o1, Object o2)
         {
+            logger.debug("compare(o1=" + o1 + ", o2=" + o2 + ") - start");
+
             Integer i1 = (Integer)o1;
             Integer i2 = (Integer)o2;
 
@@ -173,6 +200,8 @@ public class SortedTable extends AbstractTable
             }
             catch (DataSetException e)
             {
+                logger.error("compare()", e);
+
                 throw new DatabaseUnitRuntimeException(e);
             }
 

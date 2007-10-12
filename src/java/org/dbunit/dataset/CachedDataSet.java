@@ -21,6 +21,9 @@
  
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
 
@@ -36,6 +39,12 @@ import java.util.List;
  */
 public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CachedDataSet.class);
+
     private ITable[] _tables;
 
     private List _tableList;
@@ -77,6 +86,8 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         return new DefaultTableIterator(_tables, reversed);
     }
 
@@ -85,24 +96,32 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public void startDataSet() throws DataSetException
     {
+        logger.debug("startDataSet() - start");
+
         _tableList = new ArrayList();
         _tables = null;
     }
 
     public void endDataSet() throws DataSetException
     {
+        logger.debug("endDataSet() - start");
+
         _tables = (ITable[])_tableList.toArray(new ITable[0]);
         _tableList = null;
     }
 
     public void startTable(ITableMetaData metaData) throws DataSetException
     {
+        logger.debug("startTable(metaData=" + metaData + ") - start");
+
         _activeTable = new DefaultTable(metaData);
 //        System.out.println("START " + _activeMetaData.getTableName());
     }
 
     public void endTable() throws DataSetException
     {
+        logger.debug("endTable() - start");
+
 //         System.out.println("END " + _activeMetaData.getTableName());
         _tableList.add(_activeTable);
         _activeTable = null;
@@ -110,6 +129,8 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public void row(Object[] values) throws DataSetException
     {
+        logger.debug("row(values=" + values + ") - start");
+
         _activeTable.addRow(values);
     }
 }

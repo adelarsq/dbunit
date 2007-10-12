@@ -20,6 +20,9 @@
  */
 package org.dbunit.ext.mssql;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
@@ -33,12 +36,20 @@ import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
  */
 public class MsSqlDataTypeFactory extends DefaultDataTypeFactory
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(MsSqlDataTypeFactory.class);
+
     public static final int NCHAR = -8;
     public static final int NVARCHAR = -9;
     public static final int NTEXT = -10;
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
+        logger.debug("createDataType(sqlType=" + sqlType + ", sqlTypeName=" + sqlTypeName + ") - start");
+
         // TODO : Process MS SQL Server custom datatype here
         switch(sqlType) {
             case NCHAR: return DataType.CHAR; // nchar

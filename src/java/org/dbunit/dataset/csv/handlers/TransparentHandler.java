@@ -21,17 +21,29 @@
 
 package org.dbunit.dataset.csv.handlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.csv.IllegalInputCharacterException;
 
 public class TransparentHandler extends AbstractPipelineComponent {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(TransparentHandler.class);
+
     private TransparentHandler() {}
 
     public static final PipelineComponent IGNORE () {
+        logger.debug("IGNORE() - start");
+
         return createPipelineComponent(new TransparentHandler(), new IGNORE());
     }
 
     public boolean canHandle(char c) throws IllegalInputCharacterException {
+        logger.debug("canHandle(c=" + c + ") - start");
+
         return false;
     }
 }

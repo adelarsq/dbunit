@@ -21,6 +21,9 @@
 
 package org.dbunit.operation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
@@ -41,6 +44,12 @@ import java.util.BitSet;
  */
 public class InsertOperation extends AbstractBatchOperation
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(InsertOperation.class);
+
     InsertOperation()
     {
     }
@@ -51,6 +60,9 @@ public class InsertOperation extends AbstractBatchOperation
     public OperationData getOperationData(ITableMetaData metaData,
             BitSet ignoreMapping, IDatabaseConnection connection) throws DataSetException
     {
+        logger.debug("getOperationData(metaData=" + metaData + ", ignoreMapping=" + ignoreMapping + ", connection="
+                + connection + ") - start");
+
         Column[] columns = metaData.getColumns();
 
         // insert
@@ -94,6 +106,8 @@ public class InsertOperation extends AbstractBatchOperation
 
     protected BitSet getIgnoreMapping(ITable table, int row) throws DataSetException
     {
+        logger.debug("getIgnoreMapping(table=" + table + ", row=" + row + ") - start");
+
         Column[] columns = table.getTableMetaData().getColumns();
 
         BitSet ignoreMapping = new BitSet();
@@ -111,6 +125,9 @@ public class InsertOperation extends AbstractBatchOperation
     protected boolean equalsIgnoreMapping(BitSet ignoreMapping, ITable table,
             int row) throws DataSetException
     {
+        logger.debug("equalsIgnoreMapping(ignoreMapping=" + ignoreMapping + ", table=" + table + ", row=" + row
+                + ") - start");
+
         Column[] columns = table.getTableMetaData().getColumns();
 
         for (int i = 0; i < columns.length; i++)

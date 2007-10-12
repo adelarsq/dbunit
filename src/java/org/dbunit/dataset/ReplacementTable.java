@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -34,6 +37,12 @@ import java.util.Map;
  */
 public class ReplacementTable implements ITable
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ReplacementTable.class);
+
     private final ITable _table;
     private final Map _objectMap;
     private final Map _substringMap;
@@ -68,6 +77,9 @@ public class ReplacementTable implements ITable
      */
     public void addReplacementObject(Object originalObject, Object replacementObject)
     {
+        logger.debug("addReplacementObject(originalObject=" + originalObject + ", replacementObject="
+                + replacementObject + ") - start");
+
         _objectMap.put(originalObject, replacementObject);
     }
 
@@ -80,6 +92,9 @@ public class ReplacementTable implements ITable
     public void addReplacementSubstring(String originalSubstring,
             String replacementSubstring)
     {
+        logger.debug("addReplacementSubstring(originalSubstring=" + originalSubstring + ", replacementSubstring="
+                + replacementSubstring + ") - start");
+
         if (originalSubstring == null || replacementSubstring == null)
         {
             throw new NullPointerException();
@@ -93,6 +108,9 @@ public class ReplacementTable implements ITable
      */
     public void setSubstringDelimiters(String startDelimiter, String endDelimiter)
     {
+        logger.debug("setSubstringDelimiters(startDelimiter=" + startDelimiter + ", endDelimiter=" + endDelimiter
+                + ") - start");
+
         if (startDelimiter == null || endDelimiter == null)
         {
             throw new NullPointerException();
@@ -104,6 +122,8 @@ public class ReplacementTable implements ITable
 
     private String replaceSubstrings(String value)
     {
+        logger.debug("replaceSubstrings(value=" + value + ") - start");
+
         StringBuffer buffer = null;
 
         for (Iterator it = _substringMap.entrySet().iterator(); it.hasNext();)
@@ -141,6 +161,8 @@ public class ReplacementTable implements ITable
 
     private String replaceDelimitedSubstrings(String value)
     {
+        logger.debug("replaceDelimitedSubstrings(value=" + value + ") - start");
+
         StringBuffer buffer = null;
 
         int startIndex = 0;
@@ -195,16 +217,22 @@ public class ReplacementTable implements ITable
 
     public ITableMetaData getTableMetaData()
     {
+        logger.debug("getTableMetaData() - start");
+
         return _table.getTableMetaData();
     }
 
     public int getRowCount()
     {
+        logger.debug("getRowCount() - start");
+
         return _table.getRowCount();
     }
 
     public Object getValue(int row, String column) throws DataSetException
     {
+        logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+
         Object value = _table.getValue(row, column);
 
         // Object replacement

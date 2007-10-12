@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableMetaData;
@@ -62,7 +62,7 @@ public class PrimaryKeyFilteredTableWrapper implements ITable {
    */
   private final List filteredRowsMapping;  
   /** logger */
-  protected final Log logger = LogFactory.getLog(getClass());
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
   
   /**
    * Creates a PKFilteredTable given an original table and the allowed primary keys
@@ -121,14 +121,20 @@ public class PrimaryKeyFilteredTableWrapper implements ITable {
   // ITable methods
 
   public ITableMetaData getTableMetaData() {
+        logger.debug("getTableMetaData() - start");
+
     return this.originalTable.getTableMetaData();
   }
 
   public int getRowCount() {
+        logger.debug("getRowCount() - start");
+
     return this.filteredRowsMapping.size();
   }
 
   public Object getValue(int row, String column) throws DataSetException {
+        logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+
     int max = this.filteredRowsMapping.size();
     if ( row < max ) {
       int realRow = ((Integer) this.filteredRowsMapping.get( row )).intValue();

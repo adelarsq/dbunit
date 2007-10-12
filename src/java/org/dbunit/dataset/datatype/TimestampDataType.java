@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.ITable;
 
 import java.sql.*;
@@ -32,6 +35,12 @@ import java.sql.*;
  */
 public class TimestampDataType extends AbstractDataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(TimestampDataType.class);
+
     TimestampDataType()
     {
         super("TIMESTAMP", Types.TIMESTAMP, Timestamp.class, false);
@@ -42,6 +51,8 @@ public class TimestampDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
+        logger.debug("typeCast(value=" + value + ") - start");
+
         if (value == null || value == ITable.NO_VALUE)
         {
             return null;
@@ -78,6 +89,8 @@ public class TimestampDataType extends AbstractDataType
                 }
                 catch (IllegalArgumentException e)
                 {
+                    logger.error("typeCast()", e);
+
                     // Was not a java.sql.Date, let Timestamp handle this value
                 }
             }
@@ -88,6 +101,8 @@ public class TimestampDataType extends AbstractDataType
             }
             catch (IllegalArgumentException e)
             {
+                logger.error("typeCast()", e);
+
                 throw new TypeCastException(value, this, e);
             }
         }
@@ -97,12 +112,16 @@ public class TimestampDataType extends AbstractDataType
 
     public boolean isDateTime()
     {
+        logger.debug("isDateTime() - start");
+
         return true;
     }
 
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
+        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+
         Timestamp value = resultSet.getTimestamp(column);
         if (value == null || resultSet.wasNull())
         {
@@ -114,6 +133,8 @@ public class TimestampDataType extends AbstractDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
+        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+
         statement.setTimestamp(column, (java.sql.Timestamp)typeCast(value));
     }
 }

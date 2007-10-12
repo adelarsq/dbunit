@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Specialized IDataSet decorator that convert the table name and
@@ -33,6 +36,12 @@ package org.dbunit.dataset;
  */
 public class LowerCaseDataSet extends AbstractDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(LowerCaseDataSet.class);
+
     private final IDataSet _dataSet;
 
     public LowerCaseDataSet(ITable table) throws DataSetException
@@ -52,6 +61,8 @@ public class LowerCaseDataSet extends AbstractDataSet
 
     private ITable createLowerTable(ITable table) throws DataSetException
     {
+        logger.debug("createLowerTable(table=" + table + ") - start");
+
         return new CompositeTable(
                 new LowerCaseTableMetaData(table.getTableMetaData()), table);
     }
@@ -62,6 +73,8 @@ public class LowerCaseDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         return new LowerCaseIterator(reversed ?
                 _dataSet.reverseIterator() : _dataSet.iterator());
     }
@@ -71,6 +84,8 @@ public class LowerCaseDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
+        logger.debug("getTableNames() - start");
+
         String[] tableNames = super.getTableNames();
         for (int i = 0; i < tableNames.length; i++)
         {
@@ -81,11 +96,15 @@ public class LowerCaseDataSet extends AbstractDataSet
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
+        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+
         return new LowerCaseTableMetaData(super.getTableMetaData(tableName));
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
+        logger.debug("getTable(tableName=" + tableName + ") - start");
+
         return createLowerTable(super.getTable(tableName));
     }
 
@@ -94,6 +113,12 @@ public class LowerCaseDataSet extends AbstractDataSet
 
     private class LowerCaseIterator implements ITableIterator
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(LowerCaseIterator.class);
+
         private final ITableIterator _iterator;
 
         public LowerCaseIterator(ITableIterator iterator)
@@ -106,16 +131,22 @@ public class LowerCaseDataSet extends AbstractDataSet
 
         public boolean next() throws DataSetException
         {
+            logger.debug("next() - start");
+
             return _iterator.next();
         }
 
         public ITableMetaData getTableMetaData() throws DataSetException
         {
+            logger.debug("getTableMetaData() - start");
+
             return new LowerCaseTableMetaData(_iterator.getTableMetaData());
         }
 
         public ITable getTable() throws DataSetException
         {
+            logger.debug("getTable() - start");
+
             return createLowerTable(_iterator.getTable());
         }
     }

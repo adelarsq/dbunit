@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.dataset.*;
 import org.dbunit.util.concurrent.BoundedBuffer;
@@ -34,6 +37,12 @@ import org.dbunit.util.concurrent.Takable;
  */
 public class StreamingIterator implements ITableIterator
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(StreamingIterator.class);
+
     private static final Object EOD = new Object(); // end of dataset marker
 
     private final Takable _channel;
@@ -58,6 +67,8 @@ public class StreamingIterator implements ITableIterator
         }
         catch (InterruptedException e)
         {
+            logger.error("StreamingIterator()", e);
+
             throw new DataSetException(e);
         }
     }
@@ -67,6 +78,8 @@ public class StreamingIterator implements ITableIterator
 
     public boolean next() throws DataSetException
     {
+        logger.debug("next() - start");
+
         // End of dataset has previously been reach
         if (_eod)
         {
@@ -100,11 +113,15 @@ public class StreamingIterator implements ITableIterator
 
     public ITableMetaData getTableMetaData() throws DataSetException
     {
+        logger.debug("getTableMetaData() - start");
+
         return _activeTable.getTableMetaData();
     }
 
     public ITable getTable() throws DataSetException
     {
+        logger.debug("getTable() - start");
+
         return _activeTable;
     }
 
@@ -113,6 +130,12 @@ public class StreamingIterator implements ITableIterator
 
     private class StreamingTable extends AbstractTable
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(StreamingTable.class);
+
         private ITableMetaData _metaData;
         private int _lastRow = -1;
         private boolean _eot = false;
@@ -125,6 +148,8 @@ public class StreamingIterator implements ITableIterator
 
         boolean next() throws DataSetException
         {
+            logger.debug("next() - start");
+
             // End of table has previously been reach
             if (_eot)
             {
@@ -146,6 +171,8 @@ public class StreamingIterator implements ITableIterator
             }
             catch (InterruptedException e)
             {
+                logger.error("next()", e);
+
                 throw new DataSetException();
             }
         }
@@ -155,16 +182,22 @@ public class StreamingIterator implements ITableIterator
 
         public ITableMetaData getTableMetaData()
         {
+            logger.debug("getTableMetaData() - start");
+
             return _metaData;
         }
 
         public int getRowCount()
         {
+            logger.debug("getRowCount() - start");
+
             throw new UnsupportedOperationException();
         }
 
         public Object getValue(int row, String column) throws DataSetException
         {
+            logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+
             // Iterate up to specified row
             while (!_eot && row > _lastRow)
             {
@@ -191,6 +224,12 @@ public class StreamingIterator implements ITableIterator
 
     private static class AsynchronousConsumer implements Runnable, IDataSetConsumer
     {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(AsynchronousConsumer.class);
+
         private final IDataSetProducer _producer;
         private final Puttable _channel;
 
@@ -205,6 +244,8 @@ public class StreamingIterator implements ITableIterator
 
         public void run()
         {
+            logger.debug("run() - start");
+
             try
             {
                 _producer.setConsumer(this);
@@ -213,6 +254,8 @@ public class StreamingIterator implements ITableIterator
             }
             catch (DataSetException e)
             {
+                logger.error("run()", e);
+
                 throw new DatabaseUnitRuntimeException(e);
             }
         }
@@ -226,24 +269,32 @@ public class StreamingIterator implements ITableIterator
 
         public void endDataSet() throws DataSetException
         {
+            logger.debug("endDataSet() - start");
+
             try
             {
                 _channel.put(EOD);
             }
             catch (InterruptedException e)
             {
+                logger.error("endDataSet()", e);
+
                 throw new DataSetException();
             }
         }
 
         public void startTable(ITableMetaData metaData) throws DataSetException
         {
+            logger.debug("startTable(metaData=" + metaData + ") - start");
+
             try
             {
                 _channel.put(metaData);
             }
             catch (InterruptedException e)
             {
+                logger.error("startTable()", e);
+
                 throw new DataSetException();
             }
         }
@@ -254,12 +305,16 @@ public class StreamingIterator implements ITableIterator
 
         public void row(Object[] values) throws DataSetException
         {
+            logger.debug("row(values=" + values + ") - start");
+
             try
             {
                 _channel.put(values);
             }
             catch (InterruptedException e)
             {
+                logger.error("row()", e);
+
                 throw new DataSetException();
             }
         }

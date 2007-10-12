@@ -21,6 +21,9 @@
 
 package org.dbunit.ant;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
@@ -45,6 +48,12 @@ import java.util.List;
  */
 public class Compare extends AbstractStep
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Compare.class);
+
     private static final String DEFAULT_FORMAT = FORMAT_FLAT;
 
     private String _format;
@@ -54,26 +63,36 @@ public class Compare extends AbstractStep
 
     public File getSrc()
     {
+        logger.debug("getSrc() - start");
+
         return _src;
     }
 
     public void setSrc(File src)
     {
+        logger.debug("setSrc(src=" + src + ") - start");
+
         _src = src;
     }
 
     public void setSort(boolean sort)
     {
+        logger.debug("setSort(sort=" + sort + ") - start");
+
         _sort = sort;
     }
 
     public String getFormat()
     {
+        logger.debug("getFormat() - start");
+
         return _format != null ? _format : DEFAULT_FORMAT;
     }
 
     public void setFormat(String format)
     {
+        logger.debug("setFormat(format=" + format + ") - start");
+
         if (format.equalsIgnoreCase(FORMAT_FLAT)
                 || format.equalsIgnoreCase(FORMAT_XML)
                 || format.equalsIgnoreCase(FORMAT_CSV)
@@ -89,21 +108,29 @@ public class Compare extends AbstractStep
 
     public List getTables()
     {
+        logger.debug("getTables() - start");
+
         return _tables;
     }
 
     public void addTable(Table table)
     {
+        logger.debug("addTable(table=" + table + ") - start");
+
         _tables.add(table);
     }
 
     public void addQuery(Query query)
     {
+        logger.debug("addQuery(query=" + query + ") - start");
+
         _tables.add(query);
     }
 
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
+        logger.debug("execute(connection=" + connection + ") - start");
+
         IDataSet expectedDataset = getSrcDataSet(_src, getFormat(), false);
         IDataSet actualDataset = getDatabaseDataSet(connection, _tables, false);
 
@@ -142,6 +169,8 @@ public class Compare extends AbstractStep
 
     public String getLogMessage()
     {
+        logger.debug("getLogMessage() - start");
+
         return "Executing compare: "
                 + "\n          from file: " + ((_src == null) ? null : _src.getAbsolutePath())
                 + "\n          with format: " + _format;
@@ -149,6 +178,8 @@ public class Compare extends AbstractStep
 
     public String toString()
     {
+        logger.debug("toString() - start");
+
         StringBuffer result = new StringBuffer();
         result.append("Compare: ");
         result.append(" src=" + _src.getAbsolutePath());

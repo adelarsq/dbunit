@@ -13,6 +13,10 @@
 */
 
 package org.dbunit.util.concurrent;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -29,6 +33,11 @@ import java.lang.reflect.InvocationTargetException;
 **/
 
 public class Slot extends SemaphoreControlledChannel {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Slot.class);
 
   /**
    * Create a buffer with the given capacity, using
@@ -64,18 +73,24 @@ public class Slot extends SemaphoreControlledChannel {
 
 
   /** Set the item in preparation for a take **/
-  protected synchronized void insert(Object x) { 
+  protected synchronized void insert(Object x) {
+        logger.debug("insert(x=" + x + ") - start");
+ 
     item_ = x; 
   }
 
   /** Take item known to exist **/
-  protected synchronized Object extract() { 
+  protected synchronized Object extract() {
+        logger.debug("extract() - start");
+ 
     Object x = item_;
     item_ = null;
     return x;
   }
 
   public synchronized Object peek() {
+        logger.debug("peek() - start");
+
     return item_;
   }
 

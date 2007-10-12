@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
@@ -43,6 +46,12 @@ import java.util.List;
 public class XmlProducer extends DefaultHandler
         implements IDataSetProducer, ContentHandler, ErrorHandler
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(XmlProducer.class);
+
     private static final IDataSetConsumer EMPTY_CONSUMER = new DefaultConsumer();
 
     private static final String DATASET = "dataset";
@@ -74,6 +83,8 @@ public class XmlProducer extends DefaultHandler
 
     private ITableMetaData createMetaData(String tableName, List _columnNames)
     {
+        logger.debug("createMetaData(tableName=" + tableName + ", _columnNames=" + _columnNames + ") - start");
+
         Column[] columns = new Column[_columnNames.size()];
         for (int i = 0; i < columns.length; i++)
         {
@@ -87,6 +98,8 @@ public class XmlProducer extends DefaultHandler
 
     public void setValidating(boolean validating)
     {
+        logger.debug("setValidating(validating=" + validating + ") - start");
+
         _validating = validating;
     }
 
@@ -95,11 +108,15 @@ public class XmlProducer extends DefaultHandler
 
     public void setConsumer(IDataSetConsumer consumer) throws DataSetException
     {
+        logger.debug("setConsumer(consumer=" + consumer + ") - start");
+
         _consumer = consumer;
     }
 
     public void produce() throws DataSetException
     {
+        logger.debug("produce() - start");
+
         try
         {
             SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
@@ -113,15 +130,21 @@ public class XmlProducer extends DefaultHandler
         }
         catch (ParserConfigurationException e)
         {
+            logger.error("produce()", e);
+
             throw new DataSetException(e);
         }
         catch (SAXException e)
         {
+            logger.error("produce()", e);
+
             Exception exception = e.getException() == null ? e : e.getException();
             throw new DataSetException(exception);
         }
         catch (IOException e)
         {
+            logger.error("produce()", e);
+
             throw new DataSetException(e);
         }
     }
@@ -132,6 +155,8 @@ public class XmlProducer extends DefaultHandler
     public InputSource resolveEntity(String publicId, String systemId)
             throws SAXException
     {
+        logger.debug("resolveEntity(publicId=" + publicId + ", systemId=" + systemId + ") - start");
+
         InputStream in = getClass().getClassLoader().getResourceAsStream(
                 "org/dbunit/dataset/xml/dataset.dtd");
         return (new InputSource(in));
@@ -143,6 +168,9 @@ public class XmlProducer extends DefaultHandler
     public void startElement(String uri, String localName, String qName,
             Attributes attributes) throws SAXException
     {
+        logger.debug("startElement(uri=" + uri + ", localName=" + localName + ", qName=" + qName + ", attributes="
+                + attributes + ") - start");
+
         try
         {
             // dataset
@@ -207,12 +235,16 @@ public class XmlProducer extends DefaultHandler
         }
         catch (DataSetException e)
         {
+            logger.error("startElement()", e);
+
             throw new SAXException(e);
         }
     }
 
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
+        logger.debug("endElement(uri=" + uri + ", localName=" + localName + ", qName=" + qName + ") - start");
+
         try
         {
             // dataset
@@ -286,6 +318,8 @@ public class XmlProducer extends DefaultHandler
         }
         catch (DataSetException e)
         {
+            logger.error("endElement()", e);
+
             throw new SAXException(e);
         }
     }
@@ -293,6 +327,8 @@ public class XmlProducer extends DefaultHandler
     public void characters(char ch[], int start, int length)
             throws SAXException
     {
+        logger.debug("characters(ch=" + ch + ", start=" + start + ", length=" + length + ") - start");
+
         if (_activeCharacters != null)
         {
             _activeCharacters.append(ch, start, length);
@@ -311,6 +347,8 @@ public class XmlProducer extends DefaultHandler
     public void error(SAXParseException e)
             throws SAXException
     {
+        logger.debug("error(e=" + e + ") - start");
+
         throw e;
     }
 

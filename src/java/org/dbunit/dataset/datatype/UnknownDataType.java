@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.ITable;
 
 import java.sql.Types;
@@ -31,6 +34,12 @@ import java.sql.Types;
  */
 public class UnknownDataType extends AbstractDataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(UnknownDataType.class);
+
     UnknownDataType()
     {
         super("UNKNOWN", Types.OTHER, Object.class, false);
@@ -41,6 +50,8 @@ public class UnknownDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
+        logger.debug("typeCast(value=" + value + ") - start");
+
         if (value == ITable.NO_VALUE)
         {
             return null;
@@ -51,6 +62,8 @@ public class UnknownDataType extends AbstractDataType
 
     public int compare(Object o1, Object o2) throws TypeCastException
     {
+        logger.debug("compare(o1=" + o1 + ", o2=" + o2 + ") - start");
+
         return super.compare(asString(o1), asString(o2));
     }
 }

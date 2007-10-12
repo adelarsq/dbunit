@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.database.AmbiguousTableNameException;
 
 import java.util.ArrayList;
@@ -38,8 +41,16 @@ import java.util.List;
  */
 public abstract class AbstractDataSet implements IDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AbstractDataSet.class);
+
     protected ITable[] cloneTables(ITable[] tables)
     {
+        logger.debug("cloneTables(tables=" + tables + ") - start");
+
         ITable[] clones = new ITable[tables.length];
         for (int i = 0; i < tables.length; i++)
         {
@@ -56,6 +67,8 @@ public abstract class AbstractDataSet implements IDataSet
 
     public String[] getTableNames() throws DataSetException
     {
+        logger.debug("getTableNames() - start");
+
         List tableNameList = new ArrayList();
         ITableIterator iterator = createIterator(false);
         while (iterator.next())
@@ -67,11 +80,15 @@ public abstract class AbstractDataSet implements IDataSet
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
+        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+
         return getTable(tableName).getTableMetaData();
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
+        logger.debug("getTable(tableName=" + tableName + ") - start");
+
         ITable found = null;
         ITableIterator iterator = createIterator(false);
         while (iterator.next())
@@ -98,6 +115,8 @@ public abstract class AbstractDataSet implements IDataSet
 
     public ITable[] getTables() throws DataSetException
     {
+        logger.debug("getTables() - start");
+
         List tableList = new ArrayList();
         ITableIterator iterator = createIterator(false);
         while (iterator.next())
@@ -109,11 +128,15 @@ public abstract class AbstractDataSet implements IDataSet
 
     public ITableIterator iterator() throws DataSetException
     {
+        logger.debug("iterator() - start");
+
         return createIterator(false);
     }
 
     public ITableIterator reverseIterator() throws DataSetException
     {
+        logger.debug("reverseIterator() - start");
+
         return createIterator(true);
     }
 
@@ -122,12 +145,16 @@ public abstract class AbstractDataSet implements IDataSet
 
     public String toString()
     {
+        logger.debug("toString() - start");
+
         try
         {
             return Arrays.asList(getTableNames()).toString();
         }
         catch (DataSetException e)
         {
+            logger.error("toString()", e);
+
             return super.toString();
         }
     }

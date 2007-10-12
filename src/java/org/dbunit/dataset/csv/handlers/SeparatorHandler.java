@@ -21,27 +21,43 @@
 
 package org.dbunit.dataset.csv.handlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.csv.IllegalInputCharacterException;
 
 public class SeparatorHandler extends AbstractPipelineComponent {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(SeparatorHandler.class);
+
     private SeparatorHandler() {}
 
     public static final PipelineComponent ACCEPT () {
+        logger.debug("ACCEPT() - start");
+
         return createPipelineComponent(new SeparatorHandler(), new ACCEPT());
     }
 
     public static final PipelineComponent IGNORE () {
+        logger.debug("IGNORE() - start");
+
         return createPipelineComponent(new SeparatorHandler(), new IGNORE());
     }
 
     public static final PipelineComponent ENDPIECE () {
+        logger.debug("ENDPIECE() - start");
+
         return createPipelineComponent(new SeparatorHandler(), new ENDPIECE());
     }
 
     public static final char SEPARATOR_CHAR = ',';
 
     public boolean canHandle(char c) throws IllegalInputCharacterException {
+        logger.debug("canHandle(c=" + c + ") - start");
+
         if (c == SEPARATOR_CHAR) {
             return true;
         }
@@ -49,7 +65,15 @@ public class SeparatorHandler extends AbstractPipelineComponent {
     }
 
     static protected class ENDPIECE extends Helper {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(ENDPIECE.class);
+
         void helpWith(char c) throws PipelineException {
+            logger.debug("helpWith(c=" + c + ") - start");
+
             // we are done with the piece
             getHandler().getPipeline().thePieceIsDone();
         }

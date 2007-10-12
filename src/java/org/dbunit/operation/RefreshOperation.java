@@ -21,6 +21,9 @@
 
 package org.dbunit.operation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.statement.IPreparedBatchStatement;
@@ -52,6 +55,12 @@ import java.util.BitSet;
  */
 public class RefreshOperation extends AbstractOperation
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(RefreshOperation.class);
+
     private final InsertOperation _insertOperation;
     private final UpdateOperation _updateOperation;
 
@@ -63,6 +72,8 @@ public class RefreshOperation extends AbstractOperation
 
     private boolean isEmpty(ITable table) throws DataSetException
     {
+        logger.debug("isEmpty(table=" + table + ") - start");
+
         return AbstractBatchOperation.isEmpty(table);
     }
 
@@ -72,6 +83,7 @@ public class RefreshOperation extends AbstractOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
+        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
         
         // for each table
         ITableIterator iterator = dataSet.iterator();
@@ -105,6 +117,8 @@ public class RefreshOperation extends AbstractOperation
             }
             catch (RowOutOfBoundsException e)
             {
+                logger.error("execute()", e);
+
                 // end of table
             }
             finally
@@ -121,6 +135,8 @@ public class RefreshOperation extends AbstractOperation
             ITableMetaData metaData)
             throws DataSetException, SQLException
     {
+        logger.debug("createUpdateOperation(connection=" + connection + ", metaData=" + metaData + ") - start");
+
         // update only if columns are not all primary keys
         if (metaData.getColumns().length > metaData.getPrimaryKeys().length)
         {
@@ -136,6 +152,12 @@ public class RefreshOperation extends AbstractOperation
      */
     class RowOperation
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(RowOperation.class);
+
         protected IPreparedBatchStatement _statement;
         protected OperationData _operationData;
         protected BitSet _ignoreMapping;
@@ -147,6 +169,8 @@ public class RefreshOperation extends AbstractOperation
         public boolean execute(ITable table, int row)
                 throws DataSetException, SQLException
         {
+            logger.debug("execute(table=" + table + ", row=" + row + ") - start");
+
             Column[] columns = _operationData.getColumns();
             for (int i = 0; i < columns.length; i++)
             {
@@ -169,6 +193,8 @@ public class RefreshOperation extends AbstractOperation
          */
         public void close() throws SQLException
         {
+            logger.debug("close() - start");
+
             if (_statement != null)
             {
                 _statement.close();
@@ -181,6 +207,12 @@ public class RefreshOperation extends AbstractOperation
      */
     private class InsertRowOperation extends RowOperation
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(InsertRowOperation.class);
+
         private IDatabaseConnection _connection;
         private ITableMetaData _metaData;
 
@@ -195,6 +227,8 @@ public class RefreshOperation extends AbstractOperation
         public boolean execute(ITable table, int row)
                 throws DataSetException, SQLException
         {
+            logger.debug("execute(table=" + table + ", row=" + row + ") - start");
+
             // If current row have a diffrent ignore value mapping than
             // previous one, we generate a new statement
             if (_ignoreMapping == null ||
@@ -242,6 +276,12 @@ public class RefreshOperation extends AbstractOperation
      */
     private class RowExistOperation extends RowOperation
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(RowExistOperation.class);
+
         PreparedStatement _countStatement;
 
         public RowExistOperation(IDatabaseConnection connection,
@@ -257,6 +297,8 @@ public class RefreshOperation extends AbstractOperation
         private OperationData getSelectCountData(
                 ITableMetaData metaData, IDatabaseConnection connection) throws DataSetException
         {
+            logger.debug("getSelectCountData(metaData=" + metaData + ", connection=" + connection + ") - start");
+
             Column[] primaryKeys = metaData.getPrimaryKeys();
 
             // cannot construct where clause if no primary key
@@ -298,6 +340,8 @@ public class RefreshOperation extends AbstractOperation
         public boolean execute(ITable table, int row)
                 throws DataSetException, SQLException
         {
+            logger.debug("execute(table=" + table + ", row=" + row + ") - start");
+
             Column[] columns = _operationData.getColumns();
             for (int i = 0; i < columns.length; i++)
             {
@@ -320,6 +364,8 @@ public class RefreshOperation extends AbstractOperation
 
         public void close() throws SQLException
         {
+            logger.debug("close() - start");
+
             _countStatement.close();
         }
     }

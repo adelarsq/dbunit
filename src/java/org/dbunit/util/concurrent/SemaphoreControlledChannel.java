@@ -14,6 +14,10 @@
 */
 
 package org.dbunit.util.concurrent;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -24,6 +28,12 @@ import java.lang.reflect.InvocationTargetException;
  **/
 
 public abstract class SemaphoreControlledChannel implements BoundedChannel {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(SemaphoreControlledChannel.class);
+
   protected final Semaphore putGuard_;
   protected final Semaphore takeGuard_;
   protected int capacity_;
@@ -75,7 +85,9 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
 
 
 
-  public int  capacity() { return capacity_; }
+  public int  capacity() {
+        logger.debug("capacity() - start");
+ return capacity_; }
 
   /** 
    * Return the number of elements in the buffer.
@@ -83,7 +95,9 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
    * immediately after returning.
    **/
 
-  public int size() { return (int)(takeGuard_.permits());  }
+  public int size() {
+        logger.debug("size() - start");
+ return (int)(takeGuard_.permits());  }
 
   /**
    * Internal mechanics of put.
@@ -96,6 +110,8 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
   protected abstract Object extract();
 
   public void put(Object x) throws InterruptedException {
+        logger.debug("put(x=" + x + ") - start");
+
     if (x == null) throw new IllegalArgumentException();
     if (Thread.interrupted()) throw new InterruptedException();
     putGuard_.acquire();
@@ -104,12 +120,16 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
       takeGuard_.release();
     }
     catch (ClassCastException ex) {
+            logger.error("put()", ex);
+
       putGuard_.release();
       throw ex;
     }
   }
 
   public boolean offer(Object x, long msecs) throws InterruptedException {
+        logger.debug("offer(x=" + x + ", msecs=" + msecs + ") - start");
+
     if (x == null) throw new IllegalArgumentException();
     if (Thread.interrupted()) throw new InterruptedException();
     if (!putGuard_.attempt(msecs)) 
@@ -121,6 +141,8 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
         return true;
       }
       catch (ClassCastException ex) {
+                logger.error("offer()", ex);
+
         putGuard_.release();
         throw ex;
       }
@@ -128,6 +150,8 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
   }
 
   public Object take() throws InterruptedException {
+        logger.debug("take() - start");
+
     if (Thread.interrupted()) throw new InterruptedException();
     takeGuard_.acquire();
     try {
@@ -136,12 +160,16 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
       return x;
     }
     catch (ClassCastException ex) {
+            logger.error("take()", ex);
+
       takeGuard_.release();
       throw ex;
     }
   }
 
   public Object poll(long msecs) throws InterruptedException {
+        logger.debug("poll(msecs=" + msecs + ") - start");
+
     if (Thread.interrupted()) throw new InterruptedException();
     if (!takeGuard_.attempt(msecs))
       return null;
@@ -152,6 +180,8 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
         return x;
       }
       catch (ClassCastException ex) {
+                logger.error("poll()", ex);
+
         takeGuard_.release();
         throw ex;
       }

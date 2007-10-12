@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.database.AmbiguousTableNameException;
 import org.dbunit.dataset.*;
 
@@ -39,6 +42,12 @@ import java.util.List;
  */
 public class SequenceTableFilter implements ITableFilter
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(SequenceTableFilter.class);
+
     private final String[] _tableNames;
 
     /**
@@ -52,6 +61,9 @@ public class SequenceTableFilter implements ITableFilter
     private boolean accept(String tableName, String[] tableNames,
             boolean verifyDuplicate) throws AmbiguousTableNameException
     {
+        logger.debug("accept(tableName=" + tableName + ", tableNames=" + tableNames + ", verifyDuplicate="
+                + verifyDuplicate + ") - start");
+
         boolean found = false;
         for (int i = 0; i < tableNames.length; i++)
         {
@@ -78,11 +90,15 @@ public class SequenceTableFilter implements ITableFilter
 
     public boolean accept(String tableName) throws DataSetException
     {
+        logger.debug("accept(tableName=" + tableName + ") - start");
+
         return accept(tableName, _tableNames, true);
     }
 
     public String[] getTableNames(IDataSet dataSet) throws DataSetException
     {
+        logger.debug("getTableNames(dataSet=" + dataSet + ") - start");
+
         List nameList = new ArrayList();
         for (int i = 0; i < _tableNames.length; i++)
         {
@@ -96,6 +112,8 @@ public class SequenceTableFilter implements ITableFilter
             }
             catch (NoSuchTableException e)
             {
+                logger.error("getTableNames()", e);
+
                 // Skip this table name because the filtered dataset does not
                 // contains it.
             }
@@ -107,6 +125,8 @@ public class SequenceTableFilter implements ITableFilter
     public ITableIterator iterator(IDataSet dataSet, boolean reversed)
             throws DataSetException
     {
+        logger.debug("iterator(dataSet=" + dataSet + ", reversed=" + reversed + ") - start");
+
         String[] tableNames = getTableNames(dataSet);
         return new SequenceTableIterator(reversed ?
                 DataSetUtils.reverseStringArray(tableNames) : tableNames, dataSet);

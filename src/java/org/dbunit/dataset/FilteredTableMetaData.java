@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.filter.IColumnFilter;
 
 import java.util.List;
@@ -33,6 +36,12 @@ import java.util.ArrayList;
  */
 public class FilteredTableMetaData extends AbstractTableMetaData
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(FilteredTableMetaData.class);
+
     private final String _tableName;
     private final Column[] _columns;
     private final Column[] _primaryKeys;
@@ -48,6 +57,9 @@ public class FilteredTableMetaData extends AbstractTableMetaData
     public static Column[] getFilteredColumns(String tableName,
             Column[] columns, IColumnFilter columnFilter)
     {
+        logger.debug("getFilteredColumns(tableName=" + tableName + ", columns=" + columns + ", columnFilter="
+                + columnFilter + ") - start");
+
         if (columns == null)
         {
             return new Column[0];
@@ -70,16 +82,22 @@ public class FilteredTableMetaData extends AbstractTableMetaData
 
     public String getTableName()
     {
+        logger.debug("getTableName() - start");
+
         return _tableName;
     }
 
     public Column[] getColumns() throws DataSetException
     {
+        logger.debug("getColumns() - start");
+
         return _columns;
     }
 
     public Column[] getPrimaryKeys() throws DataSetException
     {
+        logger.debug("getPrimaryKeys() - start");
+
         return _primaryKeys;
     }
 }

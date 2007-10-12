@@ -13,6 +13,9 @@
 
 package org.dbunit.util.concurrent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Base class for simple,  small classes 
  * maintaining single values that are always accessed
@@ -178,6 +181,11 @@ package org.dbunit.util.concurrent;
 
 public class SynchronizedVariable implements Executor {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(SynchronizedVariable.class);
+
   protected final Object lock_;
 
   /** Create a SynchronizedVariable using the supplied lock **/
@@ -189,7 +197,9 @@ public class SynchronizedVariable implements Executor {
   /**
    * Return the lock used for all synchronization for this object
    **/
-  public Object getLock() { return lock_; }
+  public Object getLock() {
+        logger.debug("getLock() - start");
+ return lock_; }
 
   /**
    * If current thread is not interrupted, execute the given command 
@@ -197,6 +207,8 @@ public class SynchronizedVariable implements Executor {
    **/
 
   public void execute(Runnable command) throws InterruptedException {
+        logger.debug("execute(command=" + command + ") - start");
+
     if (Thread.interrupted()) throw new InterruptedException();
     synchronized (lock_) { 
       command.run();

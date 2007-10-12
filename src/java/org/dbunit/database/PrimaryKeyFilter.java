@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //TODO: should not have dependency on sub-package!
 import org.dbunit.database.search.ForeignKeyRelationshipEdge;
 import org.dbunit.dataset.DataSetException;
@@ -65,7 +65,7 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   
   private final boolean reverseScan;
   
-  protected final Log logger = LogFactory.getLog(getClass());
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
   
   // cache de primary keys
   private final Map pkColumnPerTable = new HashMap();
@@ -107,6 +107,8 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   public void nodeAdded(Object node) {
+        logger.debug("nodeAdded(node=" + node + ") - start");
+
     this.tableNames.add( node );
     if ( this.logger.isDebugEnabled() ) {
       this.logger.debug("nodeAdded: " + node );
@@ -152,6 +154,8 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
    * @see AbstractTableFilter
    */
   public boolean isValidName(String tableName) throws DataSetException {
+        logger.debug("isValidName(tableName=" + tableName + ") - start");
+
     //    boolean isValid = this.allowedIds.containsKey(tableName);
     //    return isValid;
     return true;
@@ -165,6 +169,8 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
     try {
       searchPKs(dataSet);
     } catch (SQLException e) {
+            logger.error("iterator()", e);
+
       throw new DataSetException( e );
     }
     return new FilterIterator(reversed ? dataSet.reverseIterator() : dataSet
@@ -172,6 +178,7 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   private void searchPKs(IDataSet dataSet) throws DataSetException, SQLException {
+        logger.debug("searchPKs(dataSet=" + dataSet + ") - start");
     
     int counter = 0;
     while ( ! this.pksToScanPerTable.isEmpty() ) {
@@ -204,6 +211,8 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   } 
 
   private void removeScannedTables() {
+        logger.debug("removeScannedTables() - start");
+
     Iterator iterator = this.pksToScanPerTable.entrySet().iterator();
     List tablesToRemove = new ArrayList();
     while ( iterator.hasNext() ) {
@@ -229,6 +238,8 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   private void allowPKs(String table, Set newAllowedPKs) {
+        logger.debug("allowPKs(table=" + table + ", newAllowedPKs=" + newAllowedPKs + ") - start");
+
     // first, obtain the current allowed ids for that table
     Set currentAllowedIds = (Set) this.allowedPKsPerTable.get( table );
     if ( currentAllowedIds == null ) {
@@ -256,6 +267,8 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
   
   private void scanPKs( String table, String pkColumn, Set allowedIds ) throws SQLException {
+        logger.debug("scanPKs(table=" + table + ", pkColumn=" + pkColumn + ", allowedIds=" + allowedIds + ") - start");
+
     Set fkEdges = (Set) this.fkEdgesPerTable.get( table );
     if ( fkEdges == null || fkEdges.isEmpty() ) {
       return;
@@ -307,11 +320,15 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
         }
       }
     } catch (SQLException e) {
+            logger.error("scanPKs()", e);
+
       SQLHelper.close( rs, pstmt );
     }        
   }
   
   private void scanReversePKs(String table, Set pksToScan) throws SQLException {
+        logger.debug("scanReversePKs(table=" + table + ", pksToScan=" + pksToScan + ") - start");
+
     if ( ! this.reverseScan ) {
       return; 
     }
@@ -327,6 +344,8 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   private void addReverseEdge(ForeignKeyRelationshipEdge edge, Set idsToScan) throws SQLException {
+        logger.debug("addReverseEdge(edge=" + edge + ", idsToScan=" + idsToScan + ") - start");
+
     String fkTable = (String) edge.getFrom();
     String fkColumn = edge.getFKColumn();
     String pkColumn = getPKColumn( fkTable );
@@ -340,6 +359,8 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
       }
       pstmt = this.connection.getConnection().prepareStatement( sql );
     } catch (SQLException e) {
+            logger.error("addReverseEdge()", e);
+
       SQLHelper.close( pstmt );
     }        
     ResultSet rs = null;
@@ -364,6 +385,8 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
 
   // TODO: support PKs with multiple values
   private String getPKColumn( String table ) throws SQLException {
+        logger.debug("getPKColumn(table=" + table + ") - start");
+
     String pkColumn = (String) this.pkColumnPerTable.get( table );
     if ( pkColumn == null ) {
       pkColumn = SQLHelper.getPrimaryKeyColumn( this.connection.getConnection(), table );
@@ -373,6 +396,8 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
   
   private void removePKsToScan(String table, Set ids) {
+        logger.debug("removePKsToScan(table=" + table + ", ids=" + ids + ") - start");
+
     Set pksToScan = (Set) this.pksToScanPerTable.get(table);
     if ( pksToScan != null ) {
       if ( pksToScan == ids ) {   
@@ -384,6 +409,8 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   private void addPKToScan(String table, Object pk) {
+        logger.debug("addPKToScan(table=" + table + ", pk=" + pk + ") - start");
+
     // first, check if it wasn't added yet
     Set scannedIds = (Set) this.allowedPKsPerTable.get( table );
     if ( scannedIds != null && scannedIds.contains(pk)) {
@@ -402,6 +429,12 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   private class FilterIterator implements ITableIterator {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(FilterIterator.class);
+
     private final ITableIterator _iterator;
 
     public FilterIterator(ITableIterator iterator) {

@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,6 +36,12 @@ import java.sql.Types;
  */
 public abstract class DataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DataType.class);
+
     public static final DataType UNKNOWN = new UnknownDataType();
 
     public static final DataType CHAR = new StringDataType(
@@ -139,6 +148,8 @@ public abstract class DataType
      */
     public static String asString(Object value) throws TypeCastException
     {
+        logger.debug("asString(value=" + value + ") - start");
+
         return (String)DataType.VARCHAR.typeCast(value);
     }
 
@@ -149,6 +160,8 @@ public abstract class DataType
      */
     public static DataType forSqlType(int sqlType) throws DataTypeException
     {
+        logger.debug("forSqlType(sqlType=" + sqlType + ") - start");
+
         for (int i = 0; i < TYPES.length; i++)
         {
             if (sqlType == TYPES[i].getSqlType())
@@ -168,6 +181,8 @@ public abstract class DataType
      */
     public static DataType forSqlTypeName(String sqlTypeName) throws DataTypeException
     {
+        logger.debug("forSqlTypeName(sqlTypeName=" + sqlTypeName + ") - start");
+
         for (int i = 0; i < TYPES.length; i++)
         {
             if (sqlTypeName.equals(TYPES[i].toString()))
@@ -186,6 +201,8 @@ public abstract class DataType
      */
     public static DataType forObject(Object value)
     {
+        logger.debug("forObject(value=" + value + ") - start");
+
         if (value == null)
         {
             return UNKNOWN;

@@ -21,6 +21,9 @@
 
 package org.dbunit.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Iterator;
 import java.util.Set;
 
@@ -36,6 +39,11 @@ import org.apache.commons.collections.set.ListOrderedSet;
  */
 
 public class CollectionsHelper {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CollectionsHelper.class);
   
   // class is "static"
   private CollectionsHelper() {}
@@ -47,6 +55,8 @@ public class CollectionsHelper {
    * @return Set with the elements of the array or null if entry is null
    */
   public static Set objectsToSet( Object[] objects ) {
+        logger.debug("objectsToSet(objects=" + objects + ") - start");
+
     if ( objects == null ) {
       return null;
     }
@@ -63,6 +73,8 @@ public class CollectionsHelper {
    * @return array of Objects with the elements of the Set or null if set is null
    */
   public static Object[] setToObjects( Set set ) {
+        logger.debug("setToObjects(set=" + set + ") - start");
+
     if ( set == null ) {
       return null;
     }
@@ -80,6 +92,8 @@ public class CollectionsHelper {
    * @return array of Strings with the elements of the Set or null if set is null
    */
   public static String[] setToStrings( Set set ) {
+        logger.debug("setToStrings(set=" + set + ") - start");
+
     if ( set == null ) {
       return null;
     }

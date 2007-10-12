@@ -21,6 +21,9 @@
 
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import junit.framework.Assert;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
@@ -36,6 +39,12 @@ import java.util.Comparator;
  */
 public class Assertion
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Assertion.class);
+
     private static final ColumnComparator COLUMN_COMPARATOR = new ColumnComparator();
 
     private Assertion()
@@ -49,6 +58,9 @@ public class Assertion
     public static void assertEquals(IDataSet expectedDataSet,
             IDataSet actualDataSet) throws DatabaseUnitException
     {
+        logger.debug("assertEquals(expectedDataSet=" + expectedDataSet + ", actualDataSet=" + actualDataSet
+                + ") - start");
+
         // do not continue if same instance
         if (expectedDataSet == actualDataSet)
         {
@@ -92,6 +104,8 @@ public class Assertion
     public static void assertEquals(ITable expectedTable, ITable actualTable)
             throws DatabaseUnitException
     {
+        logger.debug("assertEquals(expectedTable=" + expectedTable + ", actualTable=" + actualTable + ") - start");
+
         // Do not continue if same instance
         if (expectedTable == actualTable)
         {
@@ -155,6 +169,9 @@ public class Assertion
     static DataType getComparisonDataType(String tableName, Column expectedColumn,
             Column actualColumn)
     {
+        logger.debug("getComparisonDataType(tableName=" + tableName + ", expectedColumn=" + expectedColumn
+                + ", actualColumn=" + actualColumn + ") - start");
+
         DataType expectedDataType = expectedColumn.getDataType();
         DataType actualDataType = actualColumn.getDataType();
 
@@ -191,6 +208,8 @@ public class Assertion
     private static Column[] getSortedColumns(ITableMetaData metaData)
             throws DataSetException
     {
+        logger.debug("getSortedColumns(metaData=" + metaData + ") - start");
+
         Column[] columns = metaData.getColumns();
         Column[] sortColumns = new Column[columns.length];
         System.arraycopy(columns, 0, sortColumns, 0, columns.length);
@@ -200,6 +219,8 @@ public class Assertion
 
     private static String getColumnNamesAsString(Column[] columns)
     {
+        logger.debug("getColumnNamesAsString(columns=" + columns + ") - start");
+
         String[] names = new String[columns.length];
         for (int i = 0; i < columns.length; i++)
         {
@@ -212,6 +233,8 @@ public class Assertion
     private static String[] getSortedUpperTableNames(IDataSet dataSet)
             throws DataSetException
     {
+        logger.debug("getSortedUpperTableNames(dataSet=" + dataSet + ") - start");
+
         String[] names = dataSet.getTableNames();
         for (int i = 0; i < names.length; i++)
         {
@@ -226,8 +249,16 @@ public class Assertion
 
     private static class ColumnComparator implements Comparator
     {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(ColumnComparator.class);
+
         public int compare(Object o1, Object o2)
         {
+            logger.debug("compare(o1=" + o1 + ", o2=" + o2 + ") - start");
+
             Column column1 = (Column)o1;
             Column column2 = (Column)o2;
 

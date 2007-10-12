@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.csv;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -49,6 +52,11 @@ import org.dbunit.dataset.stream.IDataSetProducer;
 
 public class CsvProducer implements IDataSetProducer {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CsvProducer.class);
+
     private static final IDataSetConsumer EMPTY_CONSUMER = new DefaultConsumer();
     private IDataSetConsumer _consumer = EMPTY_CONSUMER;
     private String _theDirectory;
@@ -62,10 +70,13 @@ public class CsvProducer implements IDataSetProducer {
     }
 
     public void setConsumer(IDataSetConsumer consumer) throws DataSetException {
+        logger.debug("setConsumer(consumer=" + consumer + ") - start");
+
         _consumer = consumer;
     }
 
     public void produce() throws DataSetException {
+        logger.debug("produce() - start");
 
         File dir = new File(_theDirectory);
 
@@ -81,19 +92,27 @@ public class CsvProducer implements IDataSetProducer {
 	            try {
 	                produceFromFile(new File(dir, table + ".csv"));
 	            } catch (CsvParserException e) {
+                    logger.error("produce()", e);
+
 	                throw new DataSetException("error producing dataset for table '" + table + "'", e);
 	            } catch (DataSetException e) {
+                    logger.error("produce()", e);
+
 	            	throw new DataSetException("error producing dataset for table '" + table + "'", e);
 	            }
 
 			}
             _consumer.endDataSet();
         } catch (IOException e) {
+            logger.error("produce()", e);
+
         	throw new DataSetException("error getting list of tables", e);
         }
     }
 
     private void produceFromFile(File theDataFile) throws DataSetException, CsvParserException {
+        logger.debug("produceFromFile(theDataFile=" + theDataFile + ") - start");
+
         try {
             CsvParser parser = new CsvParserImpl();
             List readData = parser.parse(theDataFile);
@@ -117,10 +136,16 @@ public class CsvProducer implements IDataSetProducer {
             }
             _consumer.endTable();
         } catch (PipelineException e) {
+            logger.error("produceFromFile()", e);
+
             throw new DataSetException(e);
         } catch (IllegalInputCharacterException e) {
+            logger.error("produceFromFile()", e);
+
             throw new DataSetException(e);
         } catch (IOException e) {
+            logger.error("produceFromFile()", e);
+
             throw new DataSetException(e);
         }
     }
@@ -131,6 +156,8 @@ public class CsvProducer implements IDataSetProducer {
 	 * @throws IOException when IO on the base URL has issues.
 	 */
 	public static List getTables(URL base, String tableList) throws IOException {
+        logger.debug("getTables(base=" + base + ", tableList=" + tableList + ") - start");
+
 		List orderedNames = new ArrayList();
 		InputStream tableListStream = new URL(base, tableList).openStream();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(tableListStream));

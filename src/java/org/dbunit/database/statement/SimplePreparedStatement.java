@@ -21,6 +21,9 @@
 
 package org.dbunit.database.statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
@@ -35,6 +38,12 @@ import java.sql.SQLException;
  */
 public class SimplePreparedStatement extends AbstractPreparedBatchStatement
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(SimplePreparedStatement.class);
+
     private int _index;
     private int _result;
 
@@ -52,6 +61,8 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
     public void addValue(Object value, DataType dataType)
             throws TypeCastException, SQLException
     {
+        logger.debug("addValue(value=" + value + ", dataType=" + dataType + ") - start");
+
         // Special NULL handling
         if (value == null || value == ITable.NO_VALUE)
         {
@@ -64,6 +75,8 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
 
     public void addBatch() throws SQLException
     {
+        logger.debug("addBatch() - start");
+
         boolean result = _statement.execute();
         if (!result)
         {
@@ -75,6 +88,8 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
 
     public int executeBatch() throws SQLException
     {
+        logger.debug("executeBatch() - start");
+
         int result = _result;
         clearBatch();
         return result;
@@ -82,6 +97,8 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
 
     public void clearBatch() throws SQLException
     {
+        logger.debug("clearBatch() - start");
+
 //        _statement.clearParameters();
         _index = 0;
         _result = 0;

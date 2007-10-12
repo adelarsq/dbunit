@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -34,6 +37,12 @@ import java.io.Writer;
  */
 public class FlatDtdWriter //implements IDataSetConsumer
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(FlatDtdWriter.class);
+
     public static final ContentModel SEQUENCE = new SequenceModel();
     public static final ContentModel CHOICE = new ChoiceModel();
 
@@ -48,11 +57,15 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
     public void setContentModel(ContentModel contentModel)
     {
+        logger.debug("setContentModel(contentModel=" + contentModel + ") - start");
+
         _contentModel = contentModel;
     }
 
     public void write(IDataSet dataSet) throws DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ") - start");
+
         PrintWriter printOut = new PrintWriter(_writer);
         String[] tableNames = dataSet.getTableNames();
 
@@ -102,6 +115,12 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
     public static abstract class ContentModel
     {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(ContentModel.class);
+
         private final String _name;
 
         private ContentModel(String name)
@@ -111,6 +130,8 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
         public String toString()
         {
+            logger.debug("toString() - start");
+
             return _name;
         }
 
@@ -120,6 +141,12 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
     public static class SequenceModel extends ContentModel
     {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(SequenceModel.class);
+
         private SequenceModel()
         {
             super("sequence");
@@ -127,6 +154,9 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
         public void write(PrintWriter writer, String tableName, int tableIndex, int tableCount)
         {
+            logger.debug("write(writer=" + writer + ", tableName=" + tableName + ", tableIndex=" + tableIndex
+                    + ", tableCount=" + tableCount + ") - start");
+
             boolean last = (tableIndex + 1) == tableCount;
 
             writer.print("    ");
@@ -141,6 +171,12 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
     public static class ChoiceModel extends ContentModel
     {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(ChoiceModel.class);
+
         private ChoiceModel()
         {
             super("sequence");
@@ -148,6 +184,9 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
         public void write(PrintWriter writer, String tableName, int tableIndex, int tableCount)
         {
+            logger.debug("write(writer=" + writer + ", tableName=" + tableName + ", tableIndex=" + tableIndex
+                    + ", tableCount=" + tableCount + ") - start");
+
             boolean first = tableIndex == 0;
             boolean last = (tableIndex + 1) == tableCount;
 

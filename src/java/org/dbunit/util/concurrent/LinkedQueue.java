@@ -16,6 +16,9 @@
 
 package org.dbunit.util.concurrent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A linked list based channel implementation.
  * The algorithm avoids contention between puts
@@ -29,6 +32,11 @@ package org.dbunit.util.concurrent;
  **/
 
 public class LinkedQueue implements Channel {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(LinkedQueue.class);
 
 
   /** 
@@ -62,7 +70,9 @@ public class LinkedQueue implements Channel {
   }
 
   /** Main mechanics for put/offer **/
-  protected void insert(Object x) { 
+  protected void insert(Object x) {
+        logger.debug("insert(x=" + x + ") - start");
+ 
     synchronized(putLock_) {
       LinkedNode p = new LinkedNode(x);
       synchronized(last_) {
@@ -76,6 +86,8 @@ public class LinkedQueue implements Channel {
 
   /** Main mechanics for take/poll **/
   protected synchronized Object extract() {
+        logger.debug("extract() - start");
+
     synchronized(head_) {
       Object x = null;
       LinkedNode first = head_.next;
@@ -90,12 +102,16 @@ public class LinkedQueue implements Channel {
 
 
   public void put(Object x) throws InterruptedException {
+        logger.debug("put(x=" + x + ") - start");
+
     if (x == null) throw new IllegalArgumentException();
     if (Thread.interrupted()) throw new InterruptedException();
     insert(x); 
   }
 
-  public boolean offer(Object x, long msecs) throws InterruptedException { 
+  public boolean offer(Object x, long msecs) throws InterruptedException {
+        logger.debug("offer(x=" + x + ", msecs=" + msecs + ") - start");
+ 
     if (x == null) throw new IllegalArgumentException();
     if (Thread.interrupted()) throw new InterruptedException();
     insert(x); 
@@ -103,6 +119,8 @@ public class LinkedQueue implements Channel {
   }
 
   public Object take() throws InterruptedException {
+        logger.debug("take() - start");
+
     if (Thread.interrupted()) throw new InterruptedException();
     // try to extract. If fail, then enter wait-based retry loop
     Object x = extract();
@@ -123,7 +141,9 @@ public class LinkedQueue implements Channel {
             }
           }
         }
-        catch(InterruptedException ex) { 
+        catch(InterruptedException ex) {
+                    logger.error("take()", ex);
+ 
           --waitingForTake_; 
           putLock_.notify();
           throw ex; 
@@ -133,6 +153,8 @@ public class LinkedQueue implements Channel {
   }
 
   public Object peek() {
+        logger.debug("peek() - start");
+
     synchronized(head_) {
       LinkedNode first = head_.next;
       if (first != null) 
@@ -144,12 +166,16 @@ public class LinkedQueue implements Channel {
 
 
   public boolean isEmpty() {
+        logger.debug("isEmpty() - start");
+
     synchronized(head_) {
       return head_.next == null;
     }
   }    
 
   public Object poll(long msecs) throws InterruptedException {
+        logger.debug("poll(msecs=" + msecs + ") - start");
+
     if (Thread.interrupted()) throw new InterruptedException();
     Object x = extract();
     if (x != null) 
@@ -172,7 +198,9 @@ public class LinkedQueue implements Channel {
             }
           }
         }
-        catch(InterruptedException ex) { 
+        catch(InterruptedException ex) {
+                    logger.error("poll()", ex);
+ 
           --waitingForTake_; 
           putLock_.notify();
           throw ex; 

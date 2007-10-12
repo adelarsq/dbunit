@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * This filter exposes only allowed tables from the filtered dataset. This
@@ -32,6 +35,12 @@ package org.dbunit.dataset.filter;
  */
 public class IncludeTableFilter extends AbstractTableFilter implements ITableFilter
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(IncludeTableFilter.class);
+
     private final PatternMatcher _patternMatcher = new PatternMatcher();
 
     /**
@@ -62,11 +71,15 @@ public class IncludeTableFilter extends AbstractTableFilter implements ITableFil
      */
     public void includeTable(String patternName)
     {
+        logger.debug("includeTable(patternName=" + patternName + ") - start");
+
         _patternMatcher.addPattern(patternName);
     }
 
     public boolean isEmpty()
     {
+        logger.debug("isEmpty() - start");
+
         return _patternMatcher.isEmpty();
     }
 
@@ -75,6 +88,8 @@ public class IncludeTableFilter extends AbstractTableFilter implements ITableFil
 
     public boolean isValidName(String tableName)
     {
+        logger.debug("isValidName(tableName=" + tableName + ") - start");
+
         return _patternMatcher.accept(tableName);
     }
 }

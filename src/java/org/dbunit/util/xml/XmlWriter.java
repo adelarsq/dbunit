@@ -1,5 +1,8 @@
 package org.dbunit.util.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -71,6 +74,11 @@ import java.util.Stack;
 public class XmlWriter
 {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(XmlWriter.class);
+
     private Writer out;      // underlying writer
     private String encoding;
     private Stack stack = new Stack();        // of xml element names
@@ -108,6 +116,8 @@ public class XmlWriter
      */
     public void enablePrettyPrint(boolean enable)
     {
+        logger.debug("enablePrettyPrint(enable=" + enable + ") - start");
+
         this.pretty = enable;
     }
 
@@ -121,6 +131,8 @@ public class XmlWriter
      */
     public void setIndent(String indent)
     {
+        logger.debug("setIndent(indent=" + indent + ") - start");
+
         this.indent = indent;
     }
 
@@ -136,6 +148,8 @@ public class XmlWriter
      */
     public void setNewline(String newline)
     {
+        logger.debug("setNewline(newline=" + newline + ") - start");
+
         this.newline = newline;
     }
 
@@ -147,6 +161,8 @@ public class XmlWriter
      */
     public XmlWriter writeElementWithText(String name, String text) throws IOException
     {
+        logger.debug("writeElementWithText(name=" + name + ", text=" + text + ") - start");
+
         writeElement(name);
         writeText(text);
         return endElement();
@@ -159,6 +175,8 @@ public class XmlWriter
      */
     public XmlWriter writeEmptyElement(String name) throws IOException
     {
+        logger.debug("writeEmptyElement(name=" + name + ") - start");
+
         writeElement(name);
         return endElement();
     }
@@ -171,6 +189,8 @@ public class XmlWriter
      */
     public XmlWriter writeElement(String name) throws IOException
     {
+        logger.debug("writeElement(name=" + name + ") - start");
+
         return openElement(name);
     }
 
@@ -181,6 +201,8 @@ public class XmlWriter
      */
     private XmlWriter openElement(String name) throws IOException
     {
+        logger.debug("openElement(name=" + name + ") - start");
+
         boolean wasClosed = this.closed;
         closeOpeningTag();
         this.closed = false;
@@ -211,6 +233,8 @@ public class XmlWriter
     // close off the opening tag
     private void closeOpeningTag() throws IOException
     {
+        logger.debug("closeOpeningTag() - start");
+
         if (!this.closed)
         {
             writeAttributes();
@@ -222,6 +246,8 @@ public class XmlWriter
     // write out all current attributes
     private void writeAttributes() throws IOException
     {
+        logger.debug("writeAttributes() - start");
+
         if (this.attrs != null)
         {
             this.out.write(this.attrs.toString());
@@ -241,6 +267,7 @@ public class XmlWriter
      */
     public XmlWriter writeAttribute(String attr, String value) throws IOException
     {
+        logger.debug("writeAttribute(attr=" + attr + ", value=" + value + ") - start");
 
         // maintain api
         if (false) throw new IOException();
@@ -264,6 +291,8 @@ public class XmlWriter
      */
     public XmlWriter endElement() throws IOException
     {
+        logger.debug("endElement() - start");
+
         if (this.stack.empty())
         {
             throw new IOException("Called endElement too many times. ");
@@ -305,6 +334,8 @@ public class XmlWriter
      */
     public void close() throws IOException
     {
+        logger.debug("close() - start");
+
         this.out.flush();
 
         if (!this.stack.empty())
@@ -319,6 +350,8 @@ public class XmlWriter
      */
     public XmlWriter writeText(String text) throws IOException
     {
+        logger.debug("writeText(text=" + text + ") - start");
+
         closeOpeningTag();
         this.empty = false;
         this.wroteText = true;
@@ -334,6 +367,8 @@ public class XmlWriter
      */
     public XmlWriter writeCData(String cdata) throws IOException
     {
+        logger.debug("writeCData(cdata=" + cdata + ") - start");
+
         closeOpeningTag();
         this.empty = false;
         this.wroteText = true;
@@ -351,12 +386,16 @@ public class XmlWriter
      */
     public XmlWriter writeComment(String comment) throws IOException
     {
+        logger.debug("writeComment(comment=" + comment + ") - start");
+
         writeChunk("<!-- " + comment + " -->");
         return this;
     }
 
     private void writeChunk(String data) throws IOException
     {
+        logger.debug("writeChunk(data=" + data + ") - start");
+
         closeOpeningTag();
         this.empty = false;
         if (this.pretty && !this.wroteText)
@@ -379,12 +418,16 @@ public class XmlWriter
     // <person name="fred" age="12"><phone>425343</phone><bob/></person>
     static public void main(String[] args) throws IOException
     {
+        logger.debug("main(args=" + args + ") - start");
+
         test1();
         test2();
     }
 
     static public void test1() throws IOException
     {
+        logger.debug("test1() - start");
+
         Writer writer = new java.io.StringWriter();
         XmlWriter xmlwriter = new XmlWriter(writer);
         xmlwriter.writeElement("person").writeAttribute("name", "fred").writeAttribute("age", "12").writeElement("phone").writeText("4254343").endElement().writeElement("friends").writeElement("bob").endElement().writeElement("jim").endElement().endElement().endElement();
@@ -394,6 +437,8 @@ public class XmlWriter
 
     static public void test2() throws IOException
     {
+        logger.debug("test2() - start");
+
         Writer writer = new java.io.StringWriter();
         XmlWriter xmlwriter = new XmlWriter(writer);
         xmlwriter.writeComment("Example of XmlWriter running");
@@ -420,6 +465,8 @@ public class XmlWriter
 
     private String escapeXml(String str)
     {
+        logger.debug("escapeXml(str=" + str + ") - start");
+
         str = replace(str, "&", "&amp;");
         str = replace(str, "<", "&lt;");
         str = replace(str, ">", "&gt;");
@@ -430,6 +477,10 @@ public class XmlWriter
 
     private String replace(String value, String original, String replacement)
     {
+        logger
+                .debug("replace(value=" + value + ", original=" + original + ", replacement=" + replacement
+                        + ") - start");
+
         StringBuffer buffer = null;
 
         int startIndex = 0;
@@ -460,6 +511,8 @@ public class XmlWriter
 
     private void setEncoding(String encoding)
     {
+        logger.debug("setEncoding(encoding=" + encoding + ") - start");
+
         if (encoding == null && out instanceof OutputStreamWriter)
             encoding = ((OutputStreamWriter)out).getEncoding();
 
@@ -521,6 +574,8 @@ public class XmlWriter
      */
     final public void setWriter(Writer writer, String encoding)
     {
+        logger.debug("setWriter(writer=" + writer + ", encoding=" + encoding + ") - start");
+
         if (this.out != null)
             throw new IllegalStateException(
                     "can't change stream in mid course");
@@ -533,6 +588,8 @@ public class XmlWriter
 
     public XmlWriter writeDeclaration() throws IOException
     {
+        logger.debug("writeDeclaration() - start");
+
         if (this.encoding != null)
         {
             this.out.write("<?xml version='1.0'");
@@ -546,6 +603,8 @@ public class XmlWriter
 
     public XmlWriter writeDoctype(String systemId, String publicId) throws IOException
     {
+        logger.debug("writeDoctype(systemId=" + systemId + ", publicId=" + publicId + ") - start");
+
         if (systemId != null || publicId != null)
         {
             this.out.write("<!DOCTYPE dataset");

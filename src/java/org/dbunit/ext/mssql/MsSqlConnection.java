@@ -20,6 +20,9 @@
  */
 package org.dbunit.ext.mssql;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
@@ -37,6 +40,12 @@ import java.sql.SQLException;
  */
 public class MsSqlConnection extends DatabaseConnection
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(MsSqlConnection.class);
+
     private final ITableFilter _filter = new ExcludeTableFilter(
             new String[] {"dtproperties"});
 
@@ -70,12 +79,16 @@ public class MsSqlConnection extends DatabaseConnection
 
     public IDataSet createDataSet() throws SQLException
     {
+        logger.debug("createDataSet() - start");
+
         IDataSet dataSet = super.createDataSet();
         return new FilteredDataSet(_filter, dataSet);
     }
 
     public IDataSet createDataSet(String[] tableNames) throws SQLException
     {
+        logger.debug("createDataSet(tableNames=" + tableNames + ") - start");
+
         IDataSet dataSet = super.createDataSet(tableNames);
         return new FilteredDataSet(_filter, dataSet);
     }

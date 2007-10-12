@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,12 @@ import java.util.List;
  */
 public class DefaultDataSet extends AbstractDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DefaultDataSet.class);
+
     private final List _tableList = new ArrayList();
 
     public DefaultDataSet()
@@ -62,6 +71,8 @@ public class DefaultDataSet extends AbstractDataSet
      */
     public void addTable(ITable table)
     {
+        logger.debug("addTable(table=" + table + ") - start");
+
         _tableList.add(table);
     }
 
@@ -71,6 +82,8 @@ public class DefaultDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         ITable[] tables = (ITable[])_tableList.toArray(new ITable[0]);
         return new DefaultTableIterator(tables, reversed);
     }

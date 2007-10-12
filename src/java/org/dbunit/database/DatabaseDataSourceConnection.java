@@ -21,6 +21,9 @@
 
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -38,6 +41,12 @@ import java.sql.SQLException;
 public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
         implements IDatabaseConnection
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseDataSourceConnection.class);
+
     private final String _schema;
     private final DataSource _dataSource;
     private final String _user;
@@ -101,6 +110,8 @@ public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
 
     public Connection getConnection() throws SQLException
     {
+        logger.debug("getConnection() - start");
+
         if (_connection == null)
         {
             if (_user != null)
@@ -117,11 +128,15 @@ public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
 
     public String getSchema()
     {
+        logger.debug("getSchema() - start");
+
         return _schema;
     }
 
     public void close() throws SQLException
     {
+        logger.debug("close() - start");
+
         if (_connection != null)
         {
             _connection.close();

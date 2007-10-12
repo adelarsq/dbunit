@@ -20,6 +20,9 @@
  */
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.sql.DataSource;
 
 /**
@@ -30,6 +33,12 @@ import javax.sql.DataSource;
  */
 public abstract class DataSourceBasedDBTestCase extends DBTestCase
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DataSourceBasedDBTestCase.class);
+
    public DataSourceBasedDBTestCase()
    {
    }
@@ -46,6 +55,8 @@ public abstract class DataSourceBasedDBTestCase extends DBTestCase
     */
    protected IDatabaseTester newDatabaseTester()
    {
+        logger.debug("newDatabaseTester() - start");
+
       return new DataSourceDatabaseTester( getDataSource() );
    }
 

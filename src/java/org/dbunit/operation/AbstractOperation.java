@@ -20,6 +20,9 @@
  */
 package org.dbunit.operation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
@@ -36,8 +39,17 @@ import java.util.List;
  */
 public abstract class AbstractOperation extends DatabaseOperation
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AbstractOperation.class);
+
     protected String getQualifiedName(String prefix, String name, IDatabaseConnection connection)
     {
+        logger.debug("getQualifiedName(prefix=" + prefix + ", name=" + name + ", connection=" + connection
+                + ") - start");
+
         String escapePattern = (String)connection.getConfig().getProperty(
                 DatabaseConfig.PROPERTY_ESCAPE_PATTERN);
 
@@ -53,6 +65,8 @@ public abstract class AbstractOperation extends DatabaseOperation
     static ITableMetaData getOperationMetaData(IDatabaseConnection connection,
             ITableMetaData metaData) throws DatabaseUnitException, SQLException
     {
+        logger.debug("getOperationMetaData(connection=" + connection + ", metaData=" + metaData + ") - start");
+
         IDataSet databaseDataSet = connection.createDataSet();
         String tableName = metaData.getTableName();
 

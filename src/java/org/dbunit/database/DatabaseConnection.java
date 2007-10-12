@@ -21,6 +21,9 @@
 
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -35,6 +38,12 @@ import java.sql.SQLException;
 public class DatabaseConnection extends AbstractDatabaseConnection
         implements IDatabaseConnection
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+
     private final Connection _connection;
     private final String _schema;
 
@@ -65,16 +74,22 @@ public class DatabaseConnection extends AbstractDatabaseConnection
 
     public Connection getConnection() throws SQLException
     {
+        logger.debug("getConnection() - start");
+
         return _connection;
     }
 
     public String getSchema()
     {
+        logger.debug("getSchema() - start");
+
         return _schema;
     }
 
     public void close() throws SQLException
     {
+        logger.debug("close() - start");
+
         _connection.close();
     }
 }

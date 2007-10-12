@@ -21,6 +21,9 @@
 
 package org.dbunit.database.search;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -44,6 +47,11 @@ import org.dbunit.util.search.SearchException;
  */
 public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesFilterSearchCallback {
 
+  /**
+   * Logger for this class
+   */
+  private static final Logger logger = LoggerFactory.getLogger(AbstractMetaDataBasedSearchCallback.class);
+
   private final IDatabaseConnection connection;
 
   /**
@@ -59,6 +67,8 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
    * @return the connection where the edges will be calculated from
    */
   public IDatabaseConnection getConnection() {
+        logger.debug("getConnection() - start");
+
     return connection;
   }
 
@@ -82,6 +92,8 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
    */
   protected SortedSet getNodesFromImportedKeys(Object node)
       throws SearchException {
+        logger.debug("getNodesFromImportedKeys(node=" + node + ") - start");
+
     return getNodes(IMPORT, node);
   }
 
@@ -100,6 +112,8 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
    */
   protected SortedSet getNodesFromExportedKeys(Object node)
       throws SearchException {
+        logger.debug("getNodesFromExportedKeys(node=" + node + ") - start");
+
     return getNodes(EXPORT, node);
   }
 
@@ -113,6 +127,8 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
    */
   protected SortedSet getNodesFromImportAndExportKeys(Object node)
       throws SearchException {
+        logger.debug("getNodesFromImportAndExportKeys(node=" + node + ") - start");
+
     SortedSet importedNodes = getNodesFromImportedKeys( node );
     SortedSet exportedNodes = getNodesFromExportedKeys( node );
     importedNodes.addAll( exportedNodes );
@@ -120,6 +136,8 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
   }
 
   private SortedSet getNodes(int type, Object node) throws SearchException {
+        logger.debug("getNodes(type=" + type + ", node=" + node + ") - start");
+
     try {
       Connection conn = this.connection.getConnection();
       String schema = this.connection.getSchema();
@@ -128,6 +146,8 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
       getNodes(type, node, conn, schema, metaData, edges);
       return edges;
     } catch (SQLException e) {
+            logger.error("getNodes()", e);
+
       throw new SearchException(e);
     }
   }
@@ -135,9 +155,11 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
   private void getNodes(int type, Object node, Connection conn,
       String schema, DatabaseMetaData metaData, SortedSet edges)
       throws SearchException {
+        logger.debug("getNodes(type=" + type + ", node=" + node + ", conn=" + conn + ", schema=" + schema
+                + ", metaData=" + metaData + ", edges=" + edges + ") - start");
 
-    if ( super.logger.isDebugEnabled() ) {
-      super.logger.debug("Getting edges for node " + node);
+    if ( logger.isDebugEnabled() ) {
+      logger.debug("Getting edges for node " + node);
     }
     try {
       if (!(node instanceof String)) {
@@ -160,12 +182,14 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
         String pkColumn = rs.getString( PK_INDEXES[type] );
         String fkColumn = rs.getString( FK_INDEXES[type] );
         IEdge edge = newEdge(rs, type, tableName, dependentTableName, fkColumn, pkColumn );
-        if ( super.logger.isDebugEnabled() ) {
-          super.logger.debug("Adding edge " + edge);
+        if ( logger.isDebugEnabled() ) {
+          logger.debug("Adding edge " + edge);
         }
         edges.add(edge);
       }
     } catch (SQLException e) {
+            logger.error("getNodes()", e);
+
       throw new SearchException(e);
     }
 
@@ -186,6 +210,9 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
   protected static ForeignKeyRelationshipEdge createFKEdge(ResultSet rs, int type, 
       String from, String to, String fkColumn, String pkColumn)
   throws SearchException {
+        logger.debug("createFKEdge(rs=" + rs + ", type=" + type + ", from=" + from + ", to=" + to + ", fkColumn="
+                + fkColumn + ", pkColumn=" + pkColumn + ") - start");
+
     return type == IMPORT ? 
         new ForeignKeyRelationshipEdge( from, to, fkColumn, pkColumn ) :
           new ForeignKeyRelationshipEdge( to, from, fkColumn, pkColumn );
@@ -208,6 +235,9 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
    */
   protected IEdge newEdge(ResultSet rs, int type, String from, String to, String fkColumn, String pkColumn)
       throws SearchException {
+        logger.debug("newEdge(rs=" + rs + ", type=" + type + ", from=" + from + ", to=" + to + ", fkColumn=" + fkColumn
+                + ", pkColumn=" + pkColumn + ") - start");
+
     return createFKEdge( rs, type, from, to, fkColumn, pkColumn );
   }
             

@@ -21,6 +21,9 @@
 
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
@@ -30,6 +33,12 @@ import java.io.PrintWriter;
  */
 public class DatabaseUnitException extends Exception
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseUnitException.class);
+
     private final Throwable _e;
 
     /**
@@ -77,6 +86,8 @@ public class DatabaseUnitException extends Exception
      */
     public Throwable getException()
     {
+        logger.debug("getException() - start");
+
         return _e;
     }
 
@@ -88,6 +99,8 @@ public class DatabaseUnitException extends Exception
      */
     public void printStackTrace()
     {
+        logger.debug("printStackTrace() - start");
+
         super.printStackTrace();
         if (_e != null)
             _e.printStackTrace();
@@ -98,6 +111,8 @@ public class DatabaseUnitException extends Exception
      */
     public void printStackTrace(PrintStream s)
     {
+        logger.debug("printStackTrace(s=" + s + ") - start");
+
         super.printStackTrace(s);
         if (_e != null)
             _e.printStackTrace(s);
@@ -108,6 +123,8 @@ public class DatabaseUnitException extends Exception
      */
     public void printStackTrace(PrintWriter s)
     {
+        logger.debug("printStackTrace(s=" + s + ") - start");
+
         super.printStackTrace(s);
         if (_e != null)
             _e.printStackTrace(s);

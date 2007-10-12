@@ -21,6 +21,9 @@
 
 package org.dbunit.ext.mssql;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.DatabaseConfig;
@@ -55,6 +58,12 @@ import java.sql.Statement;
  */
 public class InsertIdentityOperation extends AbstractOperation
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(InsertIdentityOperation.class);
+
     public static final String PROPERTY_IDENTITY_COLUMN_FILTER =
             "http://www.dbunit.org/properties/mssql/identityColumnFilter";
 
@@ -72,6 +81,8 @@ public class InsertIdentityOperation extends AbstractOperation
     {
         public boolean accept(String tableName, Column column)
         {
+            logger.debug("accept(tableName=" + tableName + ", column=" + column + ") - start");
+
             return column.getSqlTypeName().endsWith("identity");
         }
     };
@@ -91,6 +102,8 @@ public class InsertIdentityOperation extends AbstractOperation
     private boolean hasIdentityColumn(ITableMetaData metaData, IDatabaseConnection connection)
             throws DataSetException
     {
+        logger.debug("hasIdentityColumn(metaData=" + metaData + ", connection=" + connection + ") - start");
+
         DatabaseConfig config = connection.getConfig();
         IColumnFilter identityFilter = (IColumnFilter)config.getProperty(
                 PROPERTY_IDENTITY_COLUMN_FILTER);
@@ -118,6 +131,8 @@ public class InsertIdentityOperation extends AbstractOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
+        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+
         Connection jdbcConnection = connection.getConnection();
         Statement statement = jdbcConnection.createStatement();
 

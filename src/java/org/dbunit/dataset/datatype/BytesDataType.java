@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.ITable;
 import org.dbunit.util.Base64;
 
@@ -39,6 +42,12 @@ import java.sql.SQLException;
  */
 public class BytesDataType extends AbstractDataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(BytesDataType.class);
+
     private static final int MAX_URI_LENGTH = 256;
 
     BytesDataType(String name, int sqlType)
@@ -48,6 +57,8 @@ public class BytesDataType extends AbstractDataType
 
     private byte[] toByteArray(InputStream in, int length) throws IOException
     {
+        logger.debug("toByteArray(in=" + in + ", length=" + length + ") - start");
+
         ByteArrayOutputStream out = new ByteArrayOutputStream(length);
         in = new BufferedInputStream(in);
         int i = in.read();
@@ -64,6 +75,8 @@ public class BytesDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
+        logger.debug("typeCast(value=" + value + ") - start");
+
         if (value == null || value == ITable.NO_VALUE)
         {
             return null;
@@ -94,6 +107,8 @@ public class BytesDataType extends AbstractDataType
                 }
                 catch (MalformedURLException e1)
                 {
+                    logger.error("typeCast()", e1);
+
                     try
                     {
                         // Not an URL, try as file name
@@ -103,6 +118,8 @@ public class BytesDataType extends AbstractDataType
                     }
                     catch (FileNotFoundException e2)
                     {
+                        logger.error("typeCast()", e2);
+
                         // Not a file name either
                         return Base64.decode((String)value);
                     }
@@ -110,6 +127,8 @@ public class BytesDataType extends AbstractDataType
             }
             catch (IOException e)
             {
+                logger.error("typeCast()", e);
+
                 throw new TypeCastException(value, this, e);
             }
         }
@@ -123,6 +142,8 @@ public class BytesDataType extends AbstractDataType
             }
             catch (SQLException e)
             {
+                logger.error("typeCast()", e);
+
                 throw new TypeCastException(value, this, e);
             }
         }
@@ -135,6 +156,8 @@ public class BytesDataType extends AbstractDataType
             }
             catch (IOException e)
             {
+                logger.error("typeCast()", e);
+
                 throw new TypeCastException(value, this, e);
             }
         }
@@ -149,6 +172,8 @@ public class BytesDataType extends AbstractDataType
             }
             catch (IOException e)
             {
+                logger.error("typeCast()", e);
+
                 throw new TypeCastException(value, this, e);
             }
         }
@@ -158,6 +183,8 @@ public class BytesDataType extends AbstractDataType
 
     public int compare(Object o1, Object o2) throws TypeCastException
     {
+        logger.debug("compare(o1=" + o1 + ", o2=" + o2 + ") - start");
+
         try
         {
             byte[] value1 = (byte[])typeCast(o1);
@@ -182,12 +209,16 @@ public class BytesDataType extends AbstractDataType
         }
         catch (ClassCastException e)
         {
+            logger.error("compare()", e);
+
             throw new TypeCastException(e);
         }
     }
 
     public int compare(byte[] v1, byte[] v2) throws TypeCastException
     {
+        logger.debug("compare(v1=" + v1 + ", v2=" + v2 + ") - start");
+
         int len1 = v1.length;
         int len2 = v2.length;
         int n = Math.min(len1, len2);
@@ -227,6 +258,8 @@ public class BytesDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
+        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+
         byte[] value = resultSet.getBytes(column);
         if (value == null || resultSet.wasNull())
         {
@@ -238,6 +271,8 @@ public class BytesDataType extends AbstractDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
+        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+
         super.setSqlValue(value, column, statement);
     }
 

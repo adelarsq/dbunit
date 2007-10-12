@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * @author Manuel Laflamme
@@ -29,6 +32,12 @@ package org.dbunit.dataset;
  */
 public class SortedDataSet extends AbstractDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(SortedDataSet.class);
+
     private final IDataSet _dataSet;
 
     public SortedDataSet(IDataSet dataSet) throws DataSetException
@@ -42,6 +51,8 @@ public class SortedDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         return new SortedIterator(reversed ?
                 _dataSet.reverseIterator() : _dataSet.iterator());
     }
@@ -51,16 +62,22 @@ public class SortedDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
+        logger.debug("getTableNames() - start");
+
         return _dataSet.getTableNames();
     }
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
+        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+
         return _dataSet.getTableMetaData(tableName);
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
+        logger.debug("getTable(tableName=" + tableName + ") - start");
+
         return new SortedTable(_dataSet.getTable(tableName));
     }
 
@@ -69,6 +86,12 @@ public class SortedDataSet extends AbstractDataSet
 
     private class SortedIterator implements ITableIterator
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(SortedIterator.class);
+
         private final ITableIterator _iterator;
 
         public SortedIterator(ITableIterator iterator)
@@ -81,16 +104,22 @@ public class SortedDataSet extends AbstractDataSet
 
         public boolean next() throws DataSetException
         {
+            logger.debug("next() - start");
+
             return _iterator.next();
         }
 
         public ITableMetaData getTableMetaData() throws DataSetException
         {
+            logger.debug("getTableMetaData() - start");
+
             return _iterator.getTableMetaData();
         }
 
         public ITable getTable() throws DataSetException
         {
+            logger.debug("getTable() - start");
+
             return new SortedTable(_iterator.getTable());
         }
     }

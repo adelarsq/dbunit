@@ -20,6 +20,9 @@
  */
 package org.dbunit.database.search;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.SortedSet;
 
 import org.dbunit.database.IDatabaseConnection;
@@ -38,11 +41,18 @@ import org.dbunit.util.search.SearchException;
 public class ImportedAndExportedKeysSearchCallback extends
     AbstractMetaDataBasedSearchCallback {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ImportedAndExportedKeysSearchCallback.class);
+
   public ImportedAndExportedKeysSearchCallback(IDatabaseConnection connection) {
     super(connection);
   }
 
   public SortedSet getEdges(Object node) throws SearchException {
+        logger.debug("getEdges(node=" + node + ") - start");
+
     return getNodesFromImportAndExportKeys(node);
   }
 

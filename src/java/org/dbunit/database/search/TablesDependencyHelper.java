@@ -20,6 +20,9 @@
  */
 package org.dbunit.database.search;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +47,11 @@ import org.dbunit.util.search.SearchException;
  * @since Aug 26, 2005
  */
 public class TablesDependencyHelper {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(TablesDependencyHelper.class);
   
   // this is a "static" class
   private TablesDependencyHelper() {
@@ -59,6 +67,8 @@ public class TablesDependencyHelper {
    * @throws SearchException if an exception occurred while calculating the order
    */
   public static String[] getDependentTables( IDatabaseConnection connection, String rootTable ) throws SearchException {
+        logger.debug("getDependentTables(connection=" + connection + ", rootTable=" + rootTable + ") - start");
+
     return getDependentTables( connection, new String[] { rootTable } );    
   }
   
@@ -72,6 +82,8 @@ public class TablesDependencyHelper {
    * @throws SearchException if an exception occurred while calculating the order
    */
   public static String[] getDependentTables( IDatabaseConnection connection, String[] rootTables ) throws SearchException {
+        logger.debug("getDependentTables(connection=" + connection + ", rootTables=" + rootTables + ") - start");
+
     ImportedKeysSearchCallback callback = new ImportedKeysSearchCallback(connection);
     DepthFirstSearch search = new DepthFirstSearch();
     Set tables = search.search( rootTables, callback );
@@ -89,6 +101,8 @@ public class TablesDependencyHelper {
    * @throws SearchException if an exception occurred while calculating the order
    */
   public static String[] getAllDependentTables( IDatabaseConnection connection, String rootTable ) throws SearchException {
+        logger.debug("getAllDependentTables(connection=" + connection + ", rootTable=" + rootTable + ") - start");
+
     return getAllDependentTables( connection, new String[] { rootTable } );    
   }
   
@@ -103,6 +117,8 @@ public class TablesDependencyHelper {
    * @throws SearchException if an exception occurred while calculating the order
    */
   public static String[] getAllDependentTables( IDatabaseConnection connection, String[] rootTables ) throws SearchException {
+        logger.debug("getAllDependentTables(connection=" + connection + ", rootTables=" + rootTables + ") - start");
+
     ImportedAndExportedKeysSearchCallback callback = new ImportedAndExportedKeysSearchCallback(connection);
     DepthFirstSearch search = new DepthFirstSearch();
     Set tables = search.search( rootTables, callback );
@@ -112,12 +128,17 @@ public class TablesDependencyHelper {
   // TODO: javadoc (and unit tests) from down here...
 
   public static IDataSet getDataset( IDatabaseConnection connection, String rootTable, Set allowedIds ) throws SearchException, SQLException {
+        logger.debug("getDataset(connection=" + connection + ", rootTable=" + rootTable + ", allowedIds=" + allowedIds
+                + ") - start");
+
     HashMap map = new HashMap(1);
     map.put( rootTable, allowedIds );
     return getDataset( connection, map );
   }
   
   public static IDataSet getDataset( IDatabaseConnection connection, Map rootTables ) throws SearchException, SQLException {
+        logger.debug("getDataset(connection=" + connection + ", rootTables=" + rootTables + ") - start");
+
     ImportedKeysSearchCallbackFilteredByPKs callback = new ImportedKeysSearchCallbackFilteredByPKs(connection, rootTables);
     ITableFilter filter = callback.getFilter();
     DepthFirstSearch search = new DepthFirstSearch();
@@ -130,12 +151,17 @@ public class TablesDependencyHelper {
   }
 
   public static IDataSet getAllDataset( IDatabaseConnection connection, String rootTable, Set allowedPKs ) throws SearchException, SQLException {
+        logger.debug("getAllDataset(connection=" + connection + ", rootTable=" + rootTable + ", allowedPKs="
+                + allowedPKs + ") - start");
+
     HashMap map = new HashMap(1);
     map.put( rootTable, allowedPKs );
     return getAllDataset( connection, map );
   }
   
   public static IDataSet getAllDataset( IDatabaseConnection connection, Map rootTables ) throws SearchException, SQLException {
+        logger.debug("getAllDataset(connection=" + connection + ", rootTables=" + rootTables + ") - start");
+
     ImportedAndExportedKeysSearchCallbackFilteredByPKs callback = new ImportedAndExportedKeysSearchCallbackFilteredByPKs(connection, rootTables);    
     ITableFilter filter = callback.getFilter();
     DepthFirstSearch search = new DepthFirstSearch();

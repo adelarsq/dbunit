@@ -1,5 +1,8 @@
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.database.IDatabaseConnection;
 
 /**
@@ -11,6 +14,11 @@ import org.dbunit.database.IDatabaseConnection;
  */
 public abstract class DBTestCase extends DatabaseTestCase {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DBTestCase.class);
+
   public DBTestCase() {
     super();
   }
@@ -20,6 +28,8 @@ public abstract class DBTestCase extends DatabaseTestCase {
   }
 
   protected IDatabaseConnection getConnection() throws Exception {
+        logger.debug("getConnection() - start");
+
     final IDatabaseTester databaseTester = getDatabaseTester();
     assertNotNull( "DatabaseTester is not set", databaseTester );
     return databaseTester.getConnection();
@@ -30,6 +40,8 @@ public abstract class DBTestCase extends DatabaseTestCase {
    * Default implementation returns a {@link PropertiesBasedJdbcDatabaseTester}.
    */
   protected IDatabaseTester newDatabaseTester() throws Exception {
+        logger.debug("newDatabaseTester() - start");
+
     return new PropertiesBasedJdbcDatabaseTester();
   }
 

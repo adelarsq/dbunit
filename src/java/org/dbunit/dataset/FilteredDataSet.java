@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.filter.SequenceTableFilter;
 
@@ -38,6 +41,12 @@ import org.dbunit.dataset.filter.SequenceTableFilter;
  */
 public class FilteredDataSet extends AbstractDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(FilteredDataSet.class);
+
     private final IDataSet _dataSet;
     private final ITableFilter _filter;
 
@@ -71,6 +80,8 @@ public class FilteredDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         return _filter.iterator(_dataSet, reversed);
     }
 
@@ -79,12 +90,16 @@ public class FilteredDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
+        logger.debug("getTableNames() - start");
+
         return _filter.getTableNames(_dataSet);
     }
 
     public ITableMetaData getTableMetaData(String tableName)
             throws DataSetException
     {
+        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+
         if (!_filter.accept(tableName))
         {
             throw new NoSuchTableException(tableName);
@@ -95,6 +110,8 @@ public class FilteredDataSet extends AbstractDataSet
 
     public ITable getTable(String tableName) throws DataSetException
     {
+        logger.debug("getTable(tableName=" + tableName + ") - start");
+
         if (!_filter.accept(tableName))
         {
             throw new NoSuchTableException(tableName);

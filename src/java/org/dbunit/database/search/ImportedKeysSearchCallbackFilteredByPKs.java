@@ -21,6 +21,9 @@
 
 package org.dbunit.database.search;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.ResultSet;
 import java.util.Map;
 
@@ -38,6 +41,11 @@ import org.dbunit.util.search.SearchException;
  * @since Sep 9, 2005
  */
 public class ImportedKeysSearchCallbackFilteredByPKs extends ImportedKeysSearchCallback {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ImportedKeysSearchCallbackFilteredByPKs.class);
 
   // primary key filter associated with the call back
   private final PrimaryKeyFilter pksFilter;
@@ -58,15 +66,22 @@ public class ImportedKeysSearchCallbackFilteredByPKs extends ImportedKeysSearchC
    * @return primary key filter associated with the call back
    */
   public ITableFilter getFilter() {
+        logger.debug("getFilter() - start");
+
     return this.pksFilter;
   }
   
   
   public void nodeAdded(Object node) throws SearchException {
+        logger.debug("nodeAdded(node=" + node + ") - start");
+
     this.pksFilter.nodeAdded( node );
   }
   
   protected IEdge newEdge(ResultSet rs, int type, String from, String to, String fkColumn, String pkColumn) throws SearchException {
+        logger.debug("newEdge(rs=" + rs + ", type=" + type + ", from=" + from + ", to=" + to + ", fkColumn=" + fkColumn
+                + ", pkColumn=" + pkColumn + ") - start");
+
     ForeignKeyRelationshipEdge edge = createFKEdge( rs, type, from, to, fkColumn, pkColumn );
     this.pksFilter.edgeAdded( edge );
     return edge;

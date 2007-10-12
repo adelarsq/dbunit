@@ -21,6 +21,9 @@
 
 package org.dbunit.database.statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,6 +36,12 @@ import java.util.List;
  */
 public class SimpleStatement extends AbstractBatchStatement
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(SimpleStatement.class);
+
     private final List _list = new ArrayList();
 
     SimpleStatement(Connection connection) throws SQLException
@@ -42,11 +51,15 @@ public class SimpleStatement extends AbstractBatchStatement
 
     public void addBatch(String sql) throws SQLException
     {
+        logger.debug("addBatch(sql=" + sql + ") - start");
+
         _list.add(sql);
     }
 
     public int executeBatch() throws SQLException
     {
+        logger.debug("executeBatch() - start");
+
         int result = 0;
         for (int i = 0; i < _list.size(); i++)
         {
@@ -62,6 +75,8 @@ public class SimpleStatement extends AbstractBatchStatement
 
     public void clearBatch() throws SQLException
     {
+        logger.debug("clearBatch() - start");
+
         _list.clear();
     }
 }

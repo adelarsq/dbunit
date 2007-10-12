@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.CompositeTable;
@@ -36,6 +39,12 @@ import org.dbunit.dataset.DataSetException;
  */
 public class DefaultColumnFilter implements IColumnFilter
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DefaultColumnFilter.class);
+
     private final PatternMatcher _includeMatcher = new PatternMatcher();
     private final PatternMatcher _excludeMatcher = new PatternMatcher();
 
@@ -47,6 +56,8 @@ public class DefaultColumnFilter implements IColumnFilter
      */
     public void includeColumn(String columnPattern)
     {
+        logger.debug("includeColumn(columnPattern=" + columnPattern + ") - start");
+
         _includeMatcher.addPattern(columnPattern);
     }
 
@@ -55,6 +66,8 @@ public class DefaultColumnFilter implements IColumnFilter
      */
     public void includeColumns(Column[] columns)
     {
+        logger.debug("includeColumns(columns=" + columns + ") - start");
+
         for (int i = 0; i < columns.length; i++)
         {
             _includeMatcher.addPattern(columns[i].getColumnName());
@@ -69,6 +82,8 @@ public class DefaultColumnFilter implements IColumnFilter
      */
     public void excludeColumn(String columnPattern)
     {
+        logger.debug("excludeColumn(columnPattern=" + columnPattern + ") - start");
+
         _excludeMatcher.addPattern(columnPattern);
     }
 
@@ -77,6 +92,8 @@ public class DefaultColumnFilter implements IColumnFilter
      */
     public void excludeColumns(Column[] columns)
     {
+        logger.debug("excludeColumns(columns=" + columns + ") - start");
+
         for (int i = 0; i < columns.length; i++)
         {
             _excludeMatcher.addPattern(columns[i].getColumnName());
@@ -90,6 +107,8 @@ public class DefaultColumnFilter implements IColumnFilter
     public static ITable includedColumnsTable(ITable table, String[] columnNames)
             throws DataSetException
     {
+        logger.debug("includedColumnsTable(table=" + table + ", columnNames=" + columnNames + ") - start");
+
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
         for (int i = 0; i < columnNames.length; i++)
         {
@@ -109,6 +128,8 @@ public class DefaultColumnFilter implements IColumnFilter
     public static ITable includedColumnsTable(ITable table, Column[] columns)
             throws DataSetException
     {
+        logger.debug("includedColumnsTable(table=" + table + ", columns=" + columns + ") - start");
+
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
         columnFilter.includeColumns(columns);
 
@@ -124,6 +145,8 @@ public class DefaultColumnFilter implements IColumnFilter
     public static ITable excludedColumnsTable(ITable table, String[] columnNames)
             throws DataSetException
     {
+        logger.debug("excludedColumnsTable(table=" + table + ", columnNames=" + columnNames + ") - start");
+
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
         for (int i = 0; i < columnNames.length; i++)
         {
@@ -143,6 +166,8 @@ public class DefaultColumnFilter implements IColumnFilter
     public static ITable excludedColumnsTable(ITable table, Column[] columns)
             throws DataSetException
     {
+        logger.debug("excludedColumnsTable(table=" + table + ", columns=" + columns + ") - start");
+
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
         columnFilter.excludeColumns(columns);
 
@@ -156,6 +181,8 @@ public class DefaultColumnFilter implements IColumnFilter
 
     public boolean accept(String tableName, Column column)
     {
+        logger.debug("accept(tableName=" + tableName + ", column=" + column + ") - start");
+
         if (_includeMatcher.isEmpty() ||
                 _includeMatcher.accept(column.getColumnName()))
         {

@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
@@ -37,6 +40,12 @@ import java.io.Writer;
  */
 public class XmlDataSetWriter implements IDataSetConsumer
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(XmlDataSetWriter.class);
+
     private static final String DATASET = "dataset";
     private static final String TABLE = "table";
     private static final String NAME = "name";
@@ -68,6 +77,8 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     public void write(IDataSet dataSet) throws DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ") - start");
+
         DataSetProducerAdapter provider = new DataSetProducerAdapter(dataSet);
         provider.setConsumer(this);
         provider.produce();
@@ -75,6 +86,8 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     boolean needsCData(String text)
     {
+        logger.debug("needsCData(text=" + text + ") - start");
+
         if (text == null)
         {
             return false;
@@ -99,6 +112,8 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     public void startDataSet() throws DataSetException
     {
+        logger.debug("startDataSet() - start");
+
         try
         {
             _xmlWriter.writeDeclaration();
@@ -106,12 +121,16 @@ public class XmlDataSetWriter implements IDataSetConsumer
         }
         catch (IOException e)
         {
+            logger.error("startDataSet()", e);
+
             throw new DataSetException(e);
         }
     }
 
     public void endDataSet() throws DataSetException
     {
+        logger.debug("endDataSet() - start");
+
         try
         {
             _xmlWriter.endElement();
@@ -119,12 +138,16 @@ public class XmlDataSetWriter implements IDataSetConsumer
         }
         catch (IOException e)
         {
+            logger.error("endDataSet()", e);
+
             throw new DataSetException(e);
         }
     }
 
     public void startTable(ITableMetaData metaData) throws DataSetException
     {
+        logger.debug("startTable(metaData=" + metaData + ") - start");
+
         try
         {
             _activeMetaData = metaData;
@@ -142,6 +165,8 @@ public class XmlDataSetWriter implements IDataSetConsumer
         }
         catch (IOException e)
         {
+            logger.error("startTable()", e);
+
             throw new DataSetException(e);
         }
 
@@ -149,6 +174,8 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     public void endTable() throws DataSetException
     {
+        logger.debug("endTable() - start");
+
         try
         {
             _xmlWriter.endElement();
@@ -156,12 +183,16 @@ public class XmlDataSetWriter implements IDataSetConsumer
         }
         catch (IOException e)
         {
+            logger.error("endTable()", e);
+
             throw new DataSetException(e);
         }
     }
 
     public void row(Object[] values) throws DataSetException
     {
+        logger.debug("row(values=" + values + ") - start");
+
         try
         {
             _xmlWriter.writeElement(ROW);
@@ -202,6 +233,8 @@ public class XmlDataSetWriter implements IDataSetConsumer
                     }
                     catch (TypeCastException e)
                     {
+                        logger.error("row()", e);
+
                         throw new DataSetException("table=" +
                                 _activeMetaData.getTableName() + ", row=" + i +
                                 ", column=" + columnName +
@@ -216,6 +249,8 @@ public class XmlDataSetWriter implements IDataSetConsumer
         }
         catch (IOException e)
         {
+            logger.error("row()", e);
+
             throw new DataSetException(e);
         }
     }
@@ -223,6 +258,8 @@ public class XmlDataSetWriter implements IDataSetConsumer
     private boolean includeColumnComments = false;
 
     public void setIncludeColumnComments(boolean b) {
+        logger.debug("setIncludeColumnComments(b=" + b + ") - start");
+
       this.includeColumnComments = b;
     }
 }

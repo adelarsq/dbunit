@@ -1,6 +1,9 @@
 
 package org.dbunit.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * <p>
  * I am placing this code in the Public Domain. Do with it as you will.
@@ -16,6 +19,11 @@ package org.dbunit.util;
  */
 public class Base64
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Base64.class);
 
     /** Specify encoding (value is <tt>true</tt>). */
     public final static boolean ENCODE = true;
@@ -105,6 +113,8 @@ public class Base64
     /** Testing. */
     public static void main(String[] args)
     {
+        logger.debug("main(args=" + args + ") - start");
+
         String s = "Hello, world";
         s = "abcd";
         //s = System.getProperties().toString();
@@ -126,6 +136,8 @@ public class Base64
         }   // end try
         catch (Exception e)
         {
+            logger.error("main()", e);
+
             e.printStackTrace();
         }
     }
@@ -144,6 +156,8 @@ public class Base64
      */
     private static byte[] encode3to4(byte[] threeBytes)
     {
+        logger.debug("encode3to4(threeBytes=" + threeBytes + ") - start");
+
         return encode3to4(threeBytes, 3);
     }   // end encodeToBytes
 
@@ -163,6 +177,8 @@ public class Base64
      */
     private static byte[] encode3to4(byte[] threeBytes, int numSigBytes)
     {
+        logger.debug("encode3to4(threeBytes=" + threeBytes + ", numSigBytes=" + numSigBytes + ") - start");
+
         byte[] dest = new byte[4];
         encode3to4(threeBytes, 0, numSigBytes, dest, 0);
         return dest;
@@ -194,6 +210,9 @@ public class Base64
             byte[] source, int srcOffset, int numSigBytes,
             byte[] destination, int destOffset)
     {
+        logger.debug("encode3to4(source=" + source + ", srcOffset=" + srcOffset + ", numSigBytes=" + numSigBytes
+                + ", destination=" + destination + ", destOffset=" + destOffset + ") - start");
+
         //           1         2         3
         // 01234567890123456789012345678901 Bit position
         // --------000000001111111122222222 Array position from threeBytes
@@ -250,6 +269,8 @@ public class Base64
      */
     public static String encodeObject(java.io.Serializable serializableObject)
     {
+        logger.debug("encodeObject(serializableObject=" + serializableObject + ") - start");
+
         java.io.ByteArrayOutputStream baos = null;
         java.io.OutputStream b64os = null;
         java.io.ObjectOutputStream oos = null;
@@ -264,6 +285,8 @@ public class Base64
         }   // end try
         catch (java.io.IOException e)
         {
+            logger.error("encodeObject()", e);
+
             e.printStackTrace();
             return null;
         }   // end catch
@@ -275,6 +298,7 @@ public class Base64
             }
             catch (Exception e)
             {
+                logger.error("encodeObject()", e);
             }
             try
             {
@@ -282,6 +306,7 @@ public class Base64
             }
             catch (Exception e)
             {
+                logger.error("encodeObject()", e);
             }
             try
             {
@@ -289,6 +314,7 @@ public class Base64
             }
             catch (Exception e)
             {
+                logger.error("encodeObject()", e);
             }
         }   // end finally
 
@@ -306,6 +332,8 @@ public class Base64
      */
     public static String encodeBytes(byte[] source)
     {
+        logger.debug("encodeBytes(source=" + source + ") - start");
+
         return encodeBytes(source, 0, source.length);
     }   // end encodeBytes
 
@@ -320,6 +348,8 @@ public class Base64
      */
     public static String encodeBytes(byte[] source, int off, int len)
     {
+        logger.debug("encodeBytes(source=" + source + ", off=" + off + ", len=" + len + ") - start");
+
         int len43 = len * 4 / 3;
         byte[] outBuff = new byte[(len43)                      // Main 4:3
                 + ((len % 3) > 0 ? 4 : 0)      // Account for padding
@@ -361,6 +391,8 @@ public class Base64
      */
     public static String encodeString(String s)
     {
+        logger.debug("encodeString(s=" + s + ") - start");
+
         return encodeBytes(s.getBytes());
     }   // end encodeString
 
@@ -381,6 +413,8 @@ public class Base64
      */
     private static byte[] decode4to3(byte[] fourBytes)
     {
+        logger.debug("decode4to3(fourBytes=" + fourBytes + ") - start");
+
         byte[] outBuff1 = new byte[3];
         int count = decode4to3(fourBytes, 0, outBuff1, 0);
         byte[] outBuff2 = new byte[count];
@@ -416,6 +450,9 @@ public class Base64
      */
     private static int decode4to3(byte[] source, int srcOffset, byte[] destination, int destOffset)
     {
+        logger.debug("decode4to3(source=" + source + ", srcOffset=" + srcOffset + ", destination=" + destination
+                + ", destOffset=" + destOffset + ") - start");
+
         // Example: Dk==
         if (source[srcOffset + 2] == EQUALS_SIGN)
         {
@@ -463,6 +500,8 @@ public class Base64
      */
     public static byte[] decode(String s)
     {
+        logger.debug("decode(s=" + s + ") - start");
+
         byte[] bytes = s.getBytes();
         return decode(bytes, 0, bytes.length);
     }   // end decode
@@ -480,6 +519,8 @@ public class Base64
      */
     public static String decodeToString(String s)
     {
+        logger.debug("decodeToString(s=" + s + ") - start");
+
         return new String(decode(s));
     }   // end decodeToString
 
@@ -494,6 +535,8 @@ public class Base64
      */
     public static Object decodeToObject(String encodedObject)
     {
+        logger.debug("decodeToObject(encodedObject=" + encodedObject + ") - start");
+
         byte[] objBytes = decode(encodedObject);
 
         java.io.ByteArrayInputStream bais = null;
@@ -508,11 +551,15 @@ public class Base64
         }   // end try
         catch (java.io.IOException e)
         {
+            logger.error("decodeToObject()", e);
+
             e.printStackTrace();
             return null;
         }   // end catch
         catch (ClassNotFoundException e)
         {
+            logger.error("decodeToObject()", e);
+
             e.printStackTrace();
             return null;
         }   // end catch
@@ -524,6 +571,7 @@ public class Base64
             }
             catch (Exception e)
             {
+                logger.error("decodeToObject()", e);
             }
             try
             {
@@ -531,6 +579,7 @@ public class Base64
             }
             catch (Exception e)
             {
+                logger.error("decodeToObject()", e);
             }
         }   // end finally
     }   // end decodeObject
@@ -548,6 +597,8 @@ public class Base64
      */
     public static byte[] decode(byte[] source, int off, int len)
     {
+        logger.debug("decode(source=" + source + ", off=" + off + ", len=" + len + ") - start");
+
         int len34 = len * 3 / 4;
         byte[] outBuff = new byte[len34]; // Upper limit on size of output
         int outBuffPosn = 0;
@@ -610,6 +661,12 @@ public class Base64
      */
     public static class InputStream extends java.io.FilterInputStream
     {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(InputStream.class);
+
         private boolean encode;         // Encoding or decoding
         private int position;       // Current position in the buffer
         private byte[] buffer;         // Small buffer holding converted data
@@ -657,6 +714,8 @@ public class Base64
          */
         public int read() throws java.io.IOException
         {
+            logger.debug("read() - start");
+
             // Do we need to get data?
             if (position < 0)
             {
@@ -680,6 +739,8 @@ public class Base64
                         }   // end try: read
                         catch (java.io.IOException e)
                         {
+                            logger.error("read()", e);
+
                             // Only a problem if we got no data at all.
                             if (i == 0)
                                 throw e;
@@ -758,6 +819,8 @@ public class Base64
          */
         public int read(byte[] dest, int off, int len) throws java.io.IOException
         {
+            logger.debug("read(dest=" + dest + ", off=" + off + ", len=" + len + ") - start");
+
             int i;
             int b;
             for (i = 0; i < len; i++)
@@ -794,6 +857,12 @@ public class Base64
      */
     public static class OutputStream extends java.io.FilterOutputStream
     {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(OutputStream.class);
+
         private boolean encode;
         private int position;
         private byte[] buffer;
@@ -848,6 +917,8 @@ public class Base64
          */
         public void write(int theByte) throws java.io.IOException
         {
+            logger.debug("write(theByte=" + theByte + ") - start");
+
             buffer[position++] = (byte)theByte;
             if (position >= bufferLength)
             {
@@ -881,6 +952,8 @@ public class Base64
          */
         public void write(byte[] theBytes, int off, int len) throws java.io.IOException
         {
+            logger.debug("write(theBytes=" + theBytes + ", off=" + off + ", len=" + len + ") - start");
+
             for (int i = 0; i < len; i++)
             {
                 write(theBytes[off + i]);
@@ -898,6 +971,8 @@ public class Base64
          */
         public void flush() throws java.io.IOException
         {
+            logger.debug("flush() - start");
+
             if (position > 0)
             {
                 if (encode)
@@ -922,6 +997,8 @@ public class Base64
          */
         public void close() throws java.io.IOException
         {
+            logger.debug("close() - start");
+
             this.flush();
 
             super.close();

@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Manuel Laflamme
  * @since Apr 9, 2003
@@ -27,6 +30,12 @@ package org.dbunit.dataset;
  */
 public class ForwardOnlyTable implements ITable
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ForwardOnlyTable.class);
+
     private final ITable _table;
     private int _lastRow = -1;
 
@@ -40,16 +49,22 @@ public class ForwardOnlyTable implements ITable
 
     public ITableMetaData getTableMetaData()
     {
+        logger.debug("getTableMetaData() - start");
+
         return _table.getTableMetaData();
     }
 
     public int getRowCount()
     {
+        logger.debug("getRowCount() - start");
+
         throw new UnsupportedOperationException();
     }
 
     public Object getValue(int row, String column) throws DataSetException
     {
+        logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+
         if (row < _lastRow)
         {
             throw new UnsupportedOperationException("Cannot go backward!");

@@ -20,9 +20,17 @@
  */
 package org.dbunit.dataset.csv.handlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.csv.IllegalInputCharacterException;
 
 public abstract class AbstractPipelineComponent implements PipelineComponent {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AbstractPipelineComponent.class);
 
     private PipelineComponent successor;
     private Pipeline pipeline;
@@ -30,27 +38,39 @@ public abstract class AbstractPipelineComponent implements PipelineComponent {
     private Helper helper;
 
     protected PipelineComponent getSuccessor() {
+        logger.debug("getSuccessor() - start");
+
         return successor;
     }
 
     public Pipeline getPipeline() {
+        logger.debug("getPipeline() - start");
+
         return pipeline;
     }
 
     public void setPipeline(Pipeline pipeline) {
+        logger.debug("setPipeline(pipeline=" + pipeline + ") - start");
+
         this.pipeline = pipeline;
     }
 
     public void setSuccessor(PipelineComponent successor) {
+        logger.debug("setSuccessor(successor=" + successor + ") - start");
+
         this.successor = successor;
     }
 
 
     private StringBuffer getThePiece() {
+        logger.debug("getThePiece() - start");
+
         return getPipeline().getCurrentProduct();
     }
 
     public void handle(char c) throws IllegalInputCharacterException, PipelineException {
+        logger.debug("handle(c=" + c + ") - start");
+
         if (!canHandle(c)) {
             getSuccessor().handle(c);
         } else {
@@ -59,6 +79,8 @@ public abstract class AbstractPipelineComponent implements PipelineComponent {
     }
 
     public void noMoreInput() {
+        logger.debug("noMoreInput() - start");
+
         if (allowForNoMoreInput()) {
             if (getSuccessor()!= null)
                 getSuccessor().noMoreInput();
@@ -66,10 +88,14 @@ public abstract class AbstractPipelineComponent implements PipelineComponent {
     }
 
     public boolean allowForNoMoreInput() {
+        logger.debug("allowForNoMoreInput() - start");
+
         return getHelper().allowForNoMoreInput();
     }
 
     protected static PipelineComponent createPipelineComponent(AbstractPipelineComponent handler, Helper helper) {
+        logger.debug("createPipelineComponent(handler=" + handler + ", helper=" + helper + ") - start");
+
         helper.setHandler(handler);
         handler.setHelper(helper);
         return handler;
@@ -80,18 +106,29 @@ public abstract class AbstractPipelineComponent implements PipelineComponent {
      * @param c
      */
     public void accept(char c) {
+        logger.debug("accept(c=" + c + ") - start");
+
         getThePiece().append(c);
     }
 
     protected Helper getHelper() {
+        logger.debug("getHelper() - start");
+
         return helper;
     }
 
     private void setHelper(Helper helper) {
+        logger.debug("setHelper(helper=" + helper + ") - start");
+
         this.helper = helper;
     }
 
     static protected class IGNORE extends Helper {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(IGNORE.class);
 
         public void helpWith(char c) {
             // IGNORE
@@ -100,7 +137,14 @@ public abstract class AbstractPipelineComponent implements PipelineComponent {
 
     static protected class ACCEPT extends Helper {
 
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(ACCEPT.class);
+
         public void helpWith(char c) {
+            logger.debug("helpWith(c=" + c + ") - start");
+
             getHandler().accept(c);
         }
     }

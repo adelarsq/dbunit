@@ -20,6 +20,9 @@
  */
 package org.dbunit.database.statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
 
@@ -32,6 +35,12 @@ import java.sql.SQLException;
  */
 public class AutomaticPreparedBatchStatement implements IPreparedBatchStatement
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AutomaticPreparedBatchStatement.class);
+
     private final IPreparedBatchStatement _statement;
     private int _batchCount = 0;
     private int _threshold;
@@ -49,11 +58,15 @@ public class AutomaticPreparedBatchStatement implements IPreparedBatchStatement
     public void addValue(Object value, DataType dataType) throws TypeCastException,
             SQLException
     {
+        logger.debug("addValue(value=" + value + ", dataType=" + dataType + ") - start");
+
         _statement.addValue(value, dataType);
     }
 
     public void addBatch() throws SQLException
     {
+        logger.debug("addBatch() - start");
+
         _statement.addBatch();
         _batchCount++;
 
@@ -65,18 +78,24 @@ public class AutomaticPreparedBatchStatement implements IPreparedBatchStatement
 
     public int executeBatch() throws SQLException
     {
+        logger.debug("executeBatch() - start");
+
         _result += _statement.executeBatch();
         return _result;
     }
 
     public void clearBatch() throws SQLException
     {
+        logger.debug("clearBatch() - start");
+
         _statement.clearBatch();
         _batchCount = 0;
     }
 
     public void close() throws SQLException
     {
+        logger.debug("close() - start");
+
         _statement.close();
     }
 }

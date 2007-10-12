@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Manuel Laflamme
  * @version $Revision$
@@ -28,6 +31,12 @@ package org.dbunit.dataset;
  */
 public class CompositeTable extends AbstractTable
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CompositeTable.class);
+
     private final ITableMetaData _metaData;
     private final ITable[] _tables;
 
@@ -79,11 +88,15 @@ public class CompositeTable extends AbstractTable
 
     public ITableMetaData getTableMetaData()
     {
+        logger.debug("getTableMetaData() - start");
+
         return _metaData;
     }
 
     public int getRowCount()
     {
+        logger.debug("getRowCount() - start");
+
         int totalCount = 0;
         for (int i = 0; i < _tables.length; i++)
         {
@@ -96,6 +109,8 @@ public class CompositeTable extends AbstractTable
 
     public Object getValue(int row, String column) throws DataSetException
     {
+        logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+
         if (row < 0)
         {
             throw new RowOutOfBoundsException(row + " < 0 ");

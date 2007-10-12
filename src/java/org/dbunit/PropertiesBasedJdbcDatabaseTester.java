@@ -21,6 +21,9 @@
 
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * DatabaseTester that configures a DriverManager from environment properties.<br>
  * This class defines a set of keys for system properties that need to be
@@ -43,6 +46,12 @@ package org.dbunit;
  */
 public class PropertiesBasedJdbcDatabaseTester extends JdbcDatabaseTester
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(PropertiesBasedJdbcDatabaseTester.class);
+
    /** A key for property that defines the connection url */
    public static final String DBUNIT_CONNECTION_URL = "dbunit.connectionUrl";
    /** A key for property that defines the driver classname */
@@ -63,6 +72,8 @@ public class PropertiesBasedJdbcDatabaseTester extends JdbcDatabaseTester
 
    protected void initialize() throws Exception
    {
+        logger.debug("initialize() - start");
+
       setDriverClass( System.getProperty( DBUNIT_DRIVER_CLASS ) );
       setConnectionUrl( System.getProperty( DBUNIT_CONNECTION_URL ) );
       setUsername( System.getProperty( DBUNIT_USERNAME ) );

@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Specialized ITableMetaData implementation that convert the table name and
@@ -33,6 +36,12 @@ package org.dbunit.dataset;
  */
 public class LowerCaseTableMetaData extends AbstractTableMetaData
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(LowerCaseTableMetaData.class);
+
     private final String _tableName;
     private final Column[] _columns;
     private final Column[] _primaryKeys;
@@ -65,6 +74,8 @@ public class LowerCaseTableMetaData extends AbstractTableMetaData
 
     private Column[] createLowerColumns(Column[] columns)
     {
+        logger.debug("createLowerColumns(columns=" + columns + ") - start");
+
         Column[] lowerColumns = new Column[columns.length];
         for (int i = 0; i < columns.length; i++)
         {
@@ -76,6 +87,8 @@ public class LowerCaseTableMetaData extends AbstractTableMetaData
 
     private Column createLowerColumn(Column column)
     {
+        logger.debug("createLowerColumn(column=" + column + ") - start");
+
         return new Column(
                 column.getColumnName().toLowerCase(),
                 column.getDataType(),
@@ -88,16 +101,22 @@ public class LowerCaseTableMetaData extends AbstractTableMetaData
 
     public String getTableName()
     {
+        logger.debug("getTableName() - start");
+
         return _tableName;
     }
 
     public Column[] getColumns()
     {
+        logger.debug("getColumns() - start");
+
         return _columns;
     }
 
     public Column[] getPrimaryKeys()
     {
+        logger.debug("getPrimaryKeys() - start");
+
         return _primaryKeys;
     }
 }

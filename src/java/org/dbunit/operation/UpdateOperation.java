@@ -21,6 +21,9 @@
 
 package org.dbunit.operation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -42,6 +45,12 @@ import org.dbunit.dataset.NoPrimaryKeyException;
  */
 public class UpdateOperation extends AbstractBatchOperation
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(UpdateOperation.class);
+
     UpdateOperation()
     {
     }
@@ -51,6 +60,9 @@ public class UpdateOperation extends AbstractBatchOperation
 
     public OperationData getOperationData(ITableMetaData metaData, BitSet ignoreMapping, IDatabaseConnection connection) throws DataSetException
     {
+        logger.debug("getOperationData(metaData=" + metaData + ", ignoreMapping=" + ignoreMapping + ", connection="
+                + connection + ") - start");
+
         Column[] columns = metaData.getColumns();
         Column[] primaryKeys = metaData.getPrimaryKeys();
 

@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,6 +37,12 @@ import java.sql.Blob;
  */
 public class BlobDataType extends BytesDataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(BlobDataType.class);
+
     public BlobDataType()
     {
         super("BLOB", Types.BLOB);
@@ -41,6 +50,8 @@ public class BlobDataType extends BytesDataType
 
     public Object getSqlValue(int column, ResultSet resultSet) throws SQLException, TypeCastException
     {
+        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+
         Blob value = resultSet.getBlob(column);
         if (value == null || resultSet.wasNull())
         {
@@ -51,6 +62,8 @@ public class BlobDataType extends BytesDataType
 
     public void setSqlValue(Object value, int column, PreparedStatement statement) throws SQLException, TypeCastException
     {
+        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+
         statement.setObject(column, typeCast(value),
                 DataType.LONGVARBINARY.getSqlType());
     }

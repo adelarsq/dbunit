@@ -20,6 +20,9 @@
  */
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Properties;
 
 /**
@@ -29,6 +32,12 @@ import java.util.Properties;
  */
 public abstract class JndiBasedDBTestCase extends DBTestCase
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(JndiBasedDBTestCase.class);
+
    public JndiBasedDBTestCase()
    {
    }
@@ -46,6 +55,8 @@ public abstract class JndiBasedDBTestCase extends DBTestCase
     */
    protected IDatabaseTester newDatabaseTester()
    {
+        logger.debug("newDatabaseTester() - start");
+
       return new JndiDatabaseTester( getJNDIProperties(), getLookupName() );
    }
 
@@ -61,6 +72,8 @@ public abstract class JndiBasedDBTestCase extends DBTestCase
     */
    protected Properties getJNDIProperties()
    {
+        logger.debug("getJNDIProperties() - start");
+
       return new Properties();
    }
 }

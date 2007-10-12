@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -50,6 +53,12 @@ import java.io.*;
  */
 public class XmlDataSet extends CachedDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(XmlDataSet.class);
+
     private static final String DEFAULT_ENCODING = "UTF8";
 
     /**
@@ -74,6 +83,8 @@ public class XmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ", out=" + out + ") - start");
+
         OutputStreamWriter writer = new OutputStreamWriter(out, DEFAULT_ENCODING);
         write(dataSet, writer);
     }
@@ -84,6 +95,8 @@ public class XmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, Writer writer)
             throws IOException, DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ", writer=" + writer + ") - start");
+
         write(dataSet, writer, null);
     }
 
@@ -93,6 +106,8 @@ public class XmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, Writer writer, String encoding)
             throws IOException, DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ", writer=" + writer + ", encoding=" + encoding + ") - start");
+
         XmlDataSetWriter datasetWriter = new XmlDataSetWriter(writer, encoding);
         datasetWriter.write(dataSet);
     }

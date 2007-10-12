@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.DataSetException;
 
 /**
@@ -33,6 +36,12 @@ import org.dbunit.dataset.DataSetException;
  */
 public class DefaultTableFilter extends AbstractTableFilter implements ITableFilter
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DefaultTableFilter.class);
+
     private final IncludeTableFilter _includeFilter = new IncludeTableFilter();
     private final ExcludeTableFilter _excludeFilter = new ExcludeTableFilter();
 
@@ -44,6 +53,8 @@ public class DefaultTableFilter extends AbstractTableFilter implements ITableFil
      */
     public void includeTable(String patternName)
     {
+        logger.debug("includeTable(patternName=" + patternName + ") - start");
+
         _includeFilter.includeTable(patternName);
     }
 
@@ -55,6 +66,8 @@ public class DefaultTableFilter extends AbstractTableFilter implements ITableFil
      */
     public void excludeTable(String patternName)
     {
+        logger.debug("excludeTable(patternName=" + patternName + ") - start");
+
         _excludeFilter.excludeTable(patternName);
     }
 
@@ -63,6 +76,8 @@ public class DefaultTableFilter extends AbstractTableFilter implements ITableFil
 
     public boolean isValidName(String tableName) throws DataSetException
     {
+        logger.debug("isValidName(tableName=" + tableName + ") - start");
+
         if (_includeFilter.isEmpty() || _includeFilter.accept(tableName))
         {
             return _excludeFilter.accept(tableName);

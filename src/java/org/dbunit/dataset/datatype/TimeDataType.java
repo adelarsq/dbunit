@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.ITable;
 
 import java.sql.*;
@@ -32,6 +35,12 @@ import java.sql.*;
  */
 public class TimeDataType extends AbstractDataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(TimeDataType.class);
+
     TimeDataType()
     {
         super("TIME", Types.TIME, Time.class, false);
@@ -42,6 +51,8 @@ public class TimeDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
+        logger.debug("typeCast(value=" + value + ") - start");
+
         if (value == null || value == ITable.NO_VALUE)
         {
             return null;
@@ -72,6 +83,8 @@ public class TimeDataType extends AbstractDataType
             }
             catch (IllegalArgumentException e)
             {
+                logger.error("typeCast()", e);
+
                 throw new TypeCastException(value, this, e);
             }
         }
@@ -81,12 +94,16 @@ public class TimeDataType extends AbstractDataType
 
     public boolean isDateTime()
     {
+        logger.debug("isDateTime() - start");
+
         return true;
     }
 
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
+        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+
         Time value = resultSet.getTime(column);
         if (value == null || resultSet.wasNull())
         {
@@ -98,6 +115,8 @@ public class TimeDataType extends AbstractDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
+        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+
         statement.setTime(column, (java.sql.Time)typeCast(value));
     }
 }

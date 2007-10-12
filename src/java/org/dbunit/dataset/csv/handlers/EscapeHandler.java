@@ -21,9 +21,17 @@
 
 package org.dbunit.dataset.csv.handlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.csv.IllegalInputCharacterException;
 
 public class EscapeHandler extends AbstractPipelineComponent {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(EscapeHandler.class);
 
     public static final char ESCAPE_CHAR = '\\';
 
@@ -31,19 +39,26 @@ public class EscapeHandler extends AbstractPipelineComponent {
     }
 
     public static final PipelineComponent ACCEPT() {
+        logger.debug("ACCEPT() - start");
+
         return createPipelineComponent(new EscapeHandler(), new ACCEPT());
     }
 
     // @todo: make sense?
     public static final PipelineComponent IGNORE() {
+        logger.debug("IGNORE() - start");
+
         return createPipelineComponent(new EscapeHandler(), new IGNORE());
     }
 
     public static final PipelineComponent ESCAPE() {
+        logger.debug("ESCAPE() - start");
+
         return createPipelineComponent(new EscapeHandler(), new ESCAPE());
     }
 
     public boolean canHandle(char c) throws IllegalInputCharacterException {
+        logger.debug("canHandle(c=" + c + ") - start");
 
         if (c == ESCAPE_CHAR) {
             return true;
@@ -53,7 +68,14 @@ public class EscapeHandler extends AbstractPipelineComponent {
 
     static private class ESCAPE extends Helper {
 
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(ESCAPE.class);
+
         public void helpWith(char c) {
+            logger.debug("helpWith(c=" + c + ") - start");
+
             getHandler().getPipeline().putFront(EnforceHandler.ENFORCE(
                     new PipelineComponent [] {
                         QuoteHandler.ACCEPT(), EscapeHandler.ACCEPT()

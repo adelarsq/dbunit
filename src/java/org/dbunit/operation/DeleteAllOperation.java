@@ -20,6 +20,9 @@
 
 package org.dbunit.operation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
@@ -52,12 +55,20 @@ import java.util.Stack;
  */
 public class DeleteAllOperation extends AbstractOperation
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DeleteAllOperation.class);
+
     DeleteAllOperation()
     {
     }
 
     protected String getDeleteAllCommand()
     {
+        logger.debug("getDeleteAllCommand() - start");
+
         return "delete from ";
     }
 
@@ -67,6 +78,8 @@ public class DeleteAllOperation extends AbstractOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
+        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+
         IDataSet databaseDataSet = connection.createDataSet();
 
         DatabaseConfig databaseConfig = connection.getConfig();

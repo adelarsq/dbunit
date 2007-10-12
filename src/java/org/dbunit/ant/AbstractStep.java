@@ -20,6 +20,9 @@
  */
 package org.dbunit.ant;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -42,6 +45,12 @@ import org.xml.sax.InputSource;
  */
 public abstract class AbstractStep implements DbUnitTaskStep
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AbstractStep.class);
+
     public static final String FORMAT_FLAT = "flat";
     public static final String FORMAT_XML = "xml";
     public static final String FORMAT_DTD = "dtd";
@@ -53,6 +62,9 @@ public abstract class AbstractStep implements DbUnitTaskStep
     protected IDataSet getDatabaseDataSet(IDatabaseConnection connection,
             List tables, boolean forwardonly) throws DatabaseUnitException
     {
+        logger.debug("getDatabaseDataSet(connection=" + connection + ", tables=" + tables + ", forwardonly="
+                + forwardonly + ") - start");
+
         try
         {
             // Setup the ResultSet table factory
@@ -109,6 +121,8 @@ public abstract class AbstractStep implements DbUnitTaskStep
         }
         catch (SQLException e)
         {
+            logger.error("getDatabaseDataSet()", e);
+
             throw new DatabaseUnitException(e);
         }
     }
@@ -117,6 +131,8 @@ public abstract class AbstractStep implements DbUnitTaskStep
 	protected IDataSet getSrcDataSet(File src, String format,
             boolean forwardonly) throws DatabaseUnitException
     {
+        logger.debug("getSrcDataSet(src=" + src + ", format=" + format + ", forwardonly=" + forwardonly + ") - start");
+
         try
         {
             IDataSetProducer producer = null;
@@ -149,12 +165,15 @@ public abstract class AbstractStep implements DbUnitTaskStep
         }
         catch (IOException e)
         {
+            logger.error("getSrcDataSet()", e);
+
             throw new DatabaseUnitException(e);
         }
     }
     
 	private QueryDataSet getQueryDataSetForQuerySet
 		(IDatabaseConnection connection, QuerySet querySet) throws SQLException {
+        logger.debug("getQueryDataSetForQuerySet(connection=" + connection + ", querySet=" + querySet + ") - start");
 		
 		//incorporate queries from referenced queryset
 		String refid = querySet.getRefid();
@@ -178,14 +197,20 @@ public abstract class AbstractStep implements DbUnitTaskStep
 
 	
 	public Task getParentTask() {
+        logger.debug("getParentTask() - start");
+
 		return parentTask;
 	}
 
 	public void setParentTask(Task task) {
+        logger.debug("setParentTask(task=" + task + ") - start");
+
 		parentTask = task;
 	}
 	
 	public void log(String msg, int level) {
+        logger.debug("log(msg=" + msg + ", level=" + level + ") - start");
+
 		if(parentTask != null)
 			parentTask.log(msg, level);
 	}

@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.datatype.DataType;
 
 import java.sql.DatabaseMetaData;
@@ -34,6 +37,12 @@ import java.sql.DatabaseMetaData;
  */
 public class Column
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Column.class);
+
     /**
      * Indicates that the column might not allow <code>NULL</code> values.
      */
@@ -94,6 +103,8 @@ public class Column
      */
     public String getColumnName()
     {
+        logger.debug("getColumnName() - start");
+
         return _columnName;
     }
 
@@ -102,6 +113,8 @@ public class Column
      */
     public DataType getDataType()
     {
+        logger.debug("getDataType() - start");
+
         return _dataType;
     }
 
@@ -110,6 +123,8 @@ public class Column
      */
     public String getSqlTypeName()
     {
+        logger.debug("getSqlTypeName() - start");
+
         return _sqlTypeName;
     }
 
@@ -118,6 +133,8 @@ public class Column
      */
     public Nullable getNullable()
     {
+        logger.debug("getNullable() - start");
+
         return _nullable;
     }
 
@@ -132,6 +149,8 @@ public class Column
      */
     public static Nullable nullableValue(int nullable)
     {
+        logger.debug("nullableValue(nullable=" + nullable + ") - start");
+
         switch (nullable)
         {
             case DatabaseMetaData.columnNoNulls:
@@ -156,6 +175,8 @@ public class Column
      */
     public static Nullable nullableValue(boolean nullable)
     {
+        logger.debug("nullableValue(nullable=" + nullable + ") - start");
+
         return nullable ? NULLABLE : NO_NULLS;
     }
 
@@ -164,12 +185,16 @@ public class Column
 
     public String toString()
     {
+        logger.debug("toString() - start");
+
         return "(" + _columnName + ", " + _dataType + ", " + _nullable + ")";
 //        return _columnName;
     }
 
     public boolean equals(Object o)
     {
+        logger.debug("equals(o=" + o + ") - start");
+
         if (this == o) return true;
         if (!(o instanceof Column)) return false;
 
@@ -185,6 +210,8 @@ public class Column
 
     public int hashCode()
     {
+        logger.debug("hashCode() - start");
+
         int result;
         result = _columnName.hashCode();
         result = 29 * result + _dataType.hashCode();
@@ -195,6 +222,11 @@ public class Column
 
     public static class Nullable
     {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(Nullable.class);
 
         private final String _name;
 
@@ -208,6 +240,8 @@ public class Column
 
         public String toString()
         {
+            logger.debug("toString() - start");
+
             return _name;
         }
     }

@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.ITable;
 
 import java.sql.PreparedStatement;
@@ -34,6 +37,12 @@ import java.sql.Types;
  */
 public class BooleanDataType extends AbstractDataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(BooleanDataType.class);
+
     BooleanDataType()
     {
         super("BIT", Types.BIT, Boolean.class, false);
@@ -44,6 +53,8 @@ public class BooleanDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
+        logger.debug("typeCast(value=" + value + ") - start");
+
         if (value == null || value == ITable.NO_VALUE)
         {
             return null;
@@ -82,6 +93,8 @@ public class BooleanDataType extends AbstractDataType
 
     public int compare(Object o1, Object o2) throws TypeCastException
     {
+        logger.debug("compare(o1=" + o1 + ", o2=" + o2 + ") - start");
+
         Boolean value1 = (Boolean)typeCast(o1);
         Boolean value2 = (Boolean)typeCast(o2);
 
@@ -116,6 +129,8 @@ public class BooleanDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
+        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+
         boolean value = resultSet.getBoolean(column);
         if (resultSet.wasNull())
         {
@@ -127,6 +142,8 @@ public class BooleanDataType extends AbstractDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
+        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+
         statement.setBoolean(column, ((Boolean)typeCast(value)).booleanValue());
     }
 

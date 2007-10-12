@@ -21,6 +21,9 @@
 
 package org.dbunit.ant;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The <code>Query</code> class is just a step placeholder for a table name
  * within an <code>Export</code>.
@@ -32,6 +35,11 @@ package org.dbunit.ant;
 public class Query
 {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Query.class);
+
     private String name;
     private String sql;
 
@@ -41,17 +49,23 @@ public class Query
 
     public String getName()
     {
+        logger.debug("getName() - start");
+
         return name;
     }
 
     public void setName(String name)
     {
+        logger.debug("setName(name=" + name + ") - start");
+
         this.name = name;
     }
 
 
     public String toString()
     {
+        logger.debug("toString() - start");
+
         StringBuffer result = new StringBuffer();
         result.append("Query: ");
         result.append(" name=" + name);
@@ -63,11 +77,15 @@ public class Query
 
     public String getSql()
     {
+        logger.debug("getSql() - start");
+
         return sql;
     }
 
     public void setSql(String sql)
     {
+        logger.debug("setSql(sql=" + sql + ") - start");
+
         this.sql = sql;
     }
 }

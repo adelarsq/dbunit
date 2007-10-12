@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Decorator that allows forward only access to decorated dataset.
  *
@@ -29,6 +32,12 @@ package org.dbunit.dataset;
  */
 public class ForwardOnlyDataSet extends AbstractDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ForwardOnlyDataSet.class);
+
     private final IDataSet _dataSet;
     private int _iteratorCount;
 
@@ -43,6 +52,8 @@ public class ForwardOnlyDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         if (reversed)
         {
             throw new UnsupportedOperationException(
@@ -63,16 +74,22 @@ public class ForwardOnlyDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
+        logger.debug("getTableNames() - start");
+
         throw new UnsupportedOperationException();
     }
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
+        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+
         throw new UnsupportedOperationException();
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
+        logger.debug("getTable(tableName=" + tableName + ") - start");
+
         throw new UnsupportedOperationException();
     }
 
@@ -81,6 +98,12 @@ public class ForwardOnlyDataSet extends AbstractDataSet
 
     private class ForwardOnlyIterator implements ITableIterator
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(ForwardOnlyIterator.class);
+
         private final ITableIterator _iterator;
 
         public ForwardOnlyIterator(ITableIterator iterator)
@@ -94,16 +117,22 @@ public class ForwardOnlyDataSet extends AbstractDataSet
 
         public boolean next() throws DataSetException
         {
+            logger.debug("next() - start");
+
             return _iterator.next();
         }
 
         public ITableMetaData getTableMetaData() throws DataSetException
         {
+            logger.debug("getTableMetaData() - start");
+
             return _iterator.getTableMetaData();
         }
 
         public ITable getTable() throws DataSetException
         {
+            logger.debug("getTable() - start");
+
             return new ForwardOnlyTable(_iterator.getTable());
         }
     }

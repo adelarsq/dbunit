@@ -15,6 +15,9 @@
 
 package org.dbunit.util.concurrent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Base class for counting semaphores.
  * Conceptually, a semaphore maintains a set of permits.
@@ -88,6 +91,12 @@ package org.dbunit.util.concurrent;
 
 
 public class Semaphore implements Sync  {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Semaphore.class);
+
   /** current number of available permits **/
   protected long permits_;
 
@@ -102,6 +111,8 @@ public class Semaphore implements Sync  {
 
   /** Wait until a permit is available, and take one **/
   public void acquire() throws InterruptedException {
+        logger.debug("acquire() - start");
+
     if (Thread.interrupted()) throw new InterruptedException();
     synchronized(this) {
       try {
@@ -109,6 +120,8 @@ public class Semaphore implements Sync  {
         --permits_;
       }
       catch (InterruptedException ex) {
+                logger.error("acquire()", ex);
+
         notify();
         throw ex;
       }
@@ -117,6 +130,8 @@ public class Semaphore implements Sync  {
 
   /** Wait at most msecs millisconds for a permit. **/
   public boolean attempt(long msecs) throws InterruptedException {
+        logger.debug("attempt(msecs=" + msecs + ") - start");
+
     if (Thread.interrupted()) throw new InterruptedException();
 
     synchronized(this) {
@@ -144,7 +159,9 @@ public class Semaphore implements Sync  {
             }
           }
         }
-        catch(InterruptedException ex) { 
+        catch(InterruptedException ex) {
+                    logger.error("attempt()", ex);
+ 
           notify();
           throw ex;
         }
@@ -154,6 +171,8 @@ public class Semaphore implements Sync  {
 
   /** Release a permit **/
   public synchronized void release() {
+        logger.debug("release() - start");
+
     ++permits_;
     notify();
   }
@@ -170,6 +189,8 @@ public class Semaphore implements Sync  {
    * @exception IllegalArgumentException if n is negative.
    **/
   public synchronized void release(long n) {
+        logger.debug("release(n=" + n + ") - start");
+
     if (n < 0) throw new IllegalArgumentException("Negative argument");
 
     permits_ += n;
@@ -182,6 +203,8 @@ public class Semaphore implements Sync  {
    * that may change immediately after returning.
    **/
   public synchronized long permits() {
+        logger.debug("permits() - start");
+
     return permits_;
   }
 

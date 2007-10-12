@@ -21,6 +21,9 @@
 
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
@@ -36,6 +39,12 @@ import java.sql.Statement;
  */
 public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AbstractDatabaseConnection.class);
+
     private IDataSet _dataSet = null;
     private DatabaseConfig _databaseConfig;
 
@@ -49,6 +58,8 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
     public IDataSet createDataSet() throws SQLException
     {
+        logger.debug("createDataSet() - start");
+
         if (_dataSet == null)
         {
             _dataSet = new DatabaseDataSet(this);
@@ -59,12 +70,16 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
     public IDataSet createDataSet(String[] tableNames) throws SQLException
     {
+        logger.debug("createDataSet(tableNames=" + tableNames + ") - start");
+
         return new FilteredDataSet(tableNames, createDataSet());
     }
 
     public ITable createQueryTable(String resultName, String sql)
             throws DataSetException, SQLException
     {
+        logger.debug("createQueryTable(resultName=" + resultName + ", sql=" + sql + ") - start");
+
         Statement statement = getConnection().createStatement();
         try
         {
@@ -91,11 +106,15 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
     public int getRowCount(String tableName) throws SQLException
     {
+        logger.debug("getRowCount(tableName=" + tableName + ") - start");
+
         return getRowCount(tableName, null);
     }
 
     public int getRowCount(String tableName, String whereClause) throws SQLException
     {
+        logger.debug("getRowCount(tableName=" + tableName + ", whereClause=" + whereClause + ") - start");
+
         StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("select count(*) from ");
         sqlBuffer.append(tableName);
@@ -127,11 +146,15 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
     public DatabaseConfig getConfig()
     {
+        logger.debug("getConfig() - start");
+
         return _databaseConfig;
     }
 
     public IStatementFactory getStatementFactory()
     {
+        logger.debug("getStatementFactory() - start");
+
         return (IStatementFactory)_databaseConfig.getProperty(
                 DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
     }

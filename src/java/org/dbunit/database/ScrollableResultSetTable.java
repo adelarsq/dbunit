@@ -21,6 +21,9 @@
 
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
@@ -35,6 +38,12 @@ import java.sql.SQLException;
  */
 public class ScrollableResultSetTable extends AbstractResultSetTable
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ScrollableResultSetTable.class);
+
     private final int _rowCount;
 
     public ScrollableResultSetTable(ITableMetaData metaData, ResultSet resultSet)
@@ -54,6 +63,8 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         }
         catch (SQLException e)
         {
+            logger.error("ScrollableResultSetTable()", e);
+
             close();
             throw e;
         }
@@ -76,6 +87,8 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         }
         catch (SQLException e)
         {
+            logger.error("ScrollableResultSetTable()", e);
+
             close();
             throw e;
         }
@@ -98,6 +111,8 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         }
         catch (SQLException e)
         {
+            logger.error("ScrollableResultSetTable()", e);
+
             close();
             throw e;
         }
@@ -108,11 +123,15 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
 
     public int getRowCount()
     {
+        logger.debug("getRowCount() - start");
+
         return _rowCount;
     }
 
     public Object getValue(int row, String columnName) throws DataSetException
     {
+        logger.debug("getValue(row=" + row + ", columnName=" + columnName + ") - start");
+
         assertValidRowIndex(row);
 
         try
@@ -125,6 +144,8 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         }
         catch (SQLException e)
         {
+            logger.error("getValue()", e);
+
             throw new DataSetException(e);
         }
     }

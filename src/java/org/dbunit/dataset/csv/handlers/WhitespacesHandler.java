@@ -21,22 +21,36 @@
 
 package org.dbunit.dataset.csv.handlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.csv.IllegalInputCharacterException;
 
 public class WhitespacesHandler extends AbstractPipelineComponent {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(WhitespacesHandler.class);
+
     private WhitespacesHandler() {}
 
     public static final PipelineComponent IGNORE () {
+        logger.debug("IGNORE() - start");
+
         return createPipelineComponent(new WhitespacesHandler(), new IGNORE());
     }
 
     public static final PipelineComponent ACCEPT () {
+        logger.debug("ACCEPT() - start");
+
         return createPipelineComponent(new WhitespacesHandler(), new ACCEPT());
     }
 
 
     public boolean canHandle(char c) throws IllegalInputCharacterException {
+        logger.debug("canHandle(c=" + c + ") - start");
+
         return Character.isWhitespace(c) ? true : false;
     }
 

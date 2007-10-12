@@ -20,6 +20,9 @@
  */
 package org.dbunit.util.search;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -32,6 +35,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @since Aug 25, 2005
  */
 public class Edge implements IEdge {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Edge.class);
 
   private final Comparable nodeFrom;
   private final Comparable nodeTo;
@@ -48,18 +56,26 @@ public class Edge implements IEdge {
   }
 
   public Object getFrom() {
+        logger.debug("getFrom() - start");
+
     return this.nodeFrom;
   }
 
   public Object getTo() {
+        logger.debug("getTo() - start");
+
     return this.nodeTo;
   }
 
   public String toString() {
+        logger.debug("toString() - start");
+
     return this.nodeFrom + "->" + this.nodeTo;
   }
 
   public int compareTo(Object o) {
+        logger.debug("compareTo(o=" + o + ") - start");
+
     Edge otherEdge = (Edge) o;
     int result = this.nodeFrom.compareTo(otherEdge.getFrom());
     if ( result == 0 ) {
@@ -69,10 +85,14 @@ public class Edge implements IEdge {
   }
   
   public boolean equals(Object obj) {
+        logger.debug("equals(obj=" + obj + ") - start");
+
     return EqualsBuilder.reflectionEquals( this, obj );
   }
   
   public int hashCode() {
+        logger.debug("hashCode() - start");
+
     return HashCodeBuilder.reflectionHashCode( this );
   }
 

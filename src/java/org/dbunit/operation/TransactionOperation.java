@@ -21,6 +21,9 @@
 
 package org.dbunit.operation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
@@ -37,6 +40,12 @@ import java.sql.SQLException;
  */
 public class TransactionOperation extends DatabaseOperation
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(TransactionOperation.class);
+
     private final DatabaseOperation _operation;
 
     /**
@@ -53,6 +62,8 @@ public class TransactionOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
+        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+
         IDatabaseConnection databaseConnection = connection;
         Connection jdbcConnection = databaseConnection.getConnection();
 
@@ -69,16 +80,22 @@ public class TransactionOperation extends DatabaseOperation
         }
         catch (DatabaseUnitException e)
         {
+            logger.error("execute()", e);
+
             jdbcConnection.rollback();
             throw e;
         }
         catch (SQLException e)
         {
+            logger.error("execute()", e);
+
             jdbcConnection.rollback();
             throw e;
         }
         catch (RuntimeException e)
         {
+            logger.error("execute()", e);
+
             jdbcConnection.rollback();
             throw e;
         }

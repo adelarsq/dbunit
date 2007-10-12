@@ -20,6 +20,9 @@
 */
 package org.dbunit.dataset.csv;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -44,6 +47,11 @@ import org.dbunit.dataset.stream.IDataSetProducer;
  * @author Federico Spinazzi
  */
 public class CsvURLProducer implements IDataSetProducer {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CsvURLProducer.class);
 
 	/** the default consumer - does nothing */
     private static final IDataSetConsumer EMPTY_CONSUMER = new DefaultConsumer();
@@ -76,6 +84,8 @@ public class CsvURLProducer implements IDataSetProducer {
 	 * @see IDataSetProducer#setConsumer(org.dbunit.dataset.stream.IDataSetConsumer)
 	 */
 	public void setConsumer(IDataSetConsumer consumer) throws DataSetException {
+        logger.debug("setConsumer(consumer=" + consumer + ") - start");
+
 		_consumer = consumer;
 	}
 
@@ -83,6 +93,8 @@ public class CsvURLProducer implements IDataSetProducer {
 	 * @see IDataSetProducer#produce()
 	 */
 	public void produce() throws DataSetException {
+        logger.debug("produce() - start");
+
         _consumer.startDataSet();
         try {
         	List tableSpecs = CsvProducer.getTables(base, tableList);
@@ -91,12 +103,16 @@ public class CsvURLProducer implements IDataSetProducer {
 	            try {
 	                produceFromURL(new URL(base, table + ".csv"));
 	            } catch (CsvParserException e) {
+                    logger.error("produce()", e);
+
 	                throw new DataSetException("error producing dataset for table '" + table + "'", e);
 	            }
 
 			}
             _consumer.endDataSet();
         } catch (IOException e) {
+            logger.error("produce()", e);
+
         	throw new DataSetException("error getting list of tables", e);
         }
 	}
@@ -107,6 +123,8 @@ public class CsvURLProducer implements IDataSetProducer {
 	 * @param url a url containing CSV data.
 	 */
 	private void produceFromURL(URL url) throws DataSetException {
+        logger.debug("produceFromURL(url=" + url + ") - start");
+
         try {
             CsvParser parser = new CsvParserImpl();
             List readData = parser.parse(url);
@@ -133,8 +151,12 @@ public class CsvURLProducer implements IDataSetProducer {
             }
             _consumer.endTable();
         } catch (CsvParserException e) {
+            logger.error("produceFromURL()", e);
+
         	throw new DataSetException("error parsing CSV for URL: '" + url + "'");
 		} catch (IOException e) {
+            logger.error("produceFromURL()", e);
+
         	throw new DataSetException("I/O error parsing CSV for URL: '" + url + "'");
 		}
 	}

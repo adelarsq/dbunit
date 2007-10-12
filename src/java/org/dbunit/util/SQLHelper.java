@@ -21,6 +21,9 @@
 
 package org.dbunit.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -38,6 +41,11 @@ import java.sql.Statement;
  */
 
 public class SQLHelper {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(SQLHelper.class);
   
   // class is "static"
   private SQLHelper() {}
@@ -50,6 +58,8 @@ public class SQLHelper {
    * @throws SQLException raised while getting the meta data
    */
   public static String getPrimaryKeyColumn( Connection conn, String table ) throws SQLException {
+        logger.debug("getPrimaryKeyColumn(conn=" + conn + ", table=" + table + ") - start");
+
     DatabaseMetaData metadata = conn.getMetaData();
     ResultSet rs = metadata.getPrimaryKeys( null, null, table );
     rs.next();
@@ -64,6 +74,8 @@ public class SQLHelper {
    * @throws SQLException exception raised in either close() method
    */
   public static void close(ResultSet rs, Statement stmt) throws SQLException {
+        logger.debug("close(rs=" + rs + ", stmt=" + stmt + ") - start");
+
     try {
       if ( rs != null ) {
         rs.close();
@@ -80,6 +92,8 @@ public class SQLHelper {
    * @throws SQLException exception raised while closing the statement
    */
   public static void close(Statement stmt) throws SQLException {
+        logger.debug("close(stmt=" + stmt + ") - start");
+
     if ( stmt != null ) { 
       stmt.close();
     }

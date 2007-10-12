@@ -21,6 +21,9 @@
 
 package org.dbunit.ant;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The <code>Table</code> class is just a step placeholder for a table name
  * within an <code>Export</code>.
@@ -33,6 +36,11 @@ package org.dbunit.ant;
 public class Table
 {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Table.class);
+
     private String name;
 
     public Table()
@@ -41,17 +49,23 @@ public class Table
 
     public String getName()
     {
+        logger.debug("getName() - start");
+
         return name;
     }
 
     public void setName(String name)
     {
+        logger.debug("setName(name=" + name + ") - start");
+
         this.name = name;
     }
 
 
     public String toString()
     {
+        logger.debug("toString() - start");
+
         StringBuffer result = new StringBuffer();
         result.append("Table: ");
         result.append(" name=" + name);

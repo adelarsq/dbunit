@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.*;
 
 
@@ -30,6 +33,12 @@ import org.dbunit.dataset.*;
  */
 public class DataSetProducerAdapter implements IDataSetProducer
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DataSetProducerAdapter.class);
+
     private static final IDataSetConsumer EMPTY_CONSUMER = new DefaultConsumer();
 
     private final ITableIterator _iterator;
@@ -50,11 +59,15 @@ public class DataSetProducerAdapter implements IDataSetProducer
 
     public void setConsumer(IDataSetConsumer consumer) throws DataSetException
     {
+        logger.debug("setConsumer(consumer=" + consumer + ") - start");
+
         _consumer = consumer;
     }
 
     public void produce() throws DataSetException
     {
+        logger.debug("produce() - start");
+
         _consumer.startDataSet();
         while(_iterator.next())
         {
@@ -84,6 +97,8 @@ public class DataSetProducerAdapter implements IDataSetProducer
             }
             catch (RowOutOfBoundsException e)
             {
+                logger.error("produce()", e);
+
                 // end of table
                 _consumer.endTable();
             }

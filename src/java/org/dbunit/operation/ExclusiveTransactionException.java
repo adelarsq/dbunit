@@ -30,6 +30,8 @@ import org.dbunit.DatabaseUnitException;
  */
 public class ExclusiveTransactionException extends DatabaseUnitException
 {
+    private static final long serialVersionUID = 1L;
+
     public ExclusiveTransactionException()
     {
     }

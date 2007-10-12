@@ -1,10 +1,18 @@
 package org.dbunit.database.search;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import org.dbunit.util.search.Edge;
 
 
 public class FKRelationshipEdge extends Edge {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(FKRelationshipEdge.class);
 
   // TODO: support multiple columns
   private String fkColumn;
@@ -17,14 +25,20 @@ public class FKRelationshipEdge extends Edge {
   }
 
   public String getFKColumn() {
+        logger.debug("getFKColumn() - start");
+
     return fkColumn;
   }
   
   public String getPKColumn() {
+        logger.debug("getPKColumn() - start");
+
     return pkColumn;
   }
   
   public String toString() {
+        logger.debug("toString() - start");
+
     return getFrom() + "(" + getFKColumn() + ")->" + getTo() + "(" + getPKColumn() + ")";
   }
   

@@ -21,6 +21,9 @@
 
 package org.dbunit.ext.db2;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
@@ -38,6 +41,12 @@ import java.sql.Types;
  */
 public class Db2DataTypeFactory extends DefaultDataTypeFactory
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Db2DataTypeFactory.class);
+
     static final DataType DB2XML_XMLVARCHAR = new StringDataType(
             "DB2XML.XMLVARCHAR", Types.DISTINCT);
     static final DataType DB2XML_XMLCLOB = new StringDataType(
@@ -47,6 +56,8 @@ public class Db2DataTypeFactory extends DefaultDataTypeFactory
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
+        logger.debug("createDataType(sqlType=" + sqlType + ", sqlTypeName=" + sqlTypeName + ") - start");
+
         if (sqlType == Types.DISTINCT)
         {
             if (sqlTypeName.equals(DB2XML_XMLVARCHAR.toString()))

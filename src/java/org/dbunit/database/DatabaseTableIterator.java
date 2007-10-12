@@ -20,6 +20,9 @@
  */
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.*;
 
 /**
@@ -29,6 +32,12 @@ import org.dbunit.dataset.*;
  */
 public class DatabaseTableIterator implements ITableIterator
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseTableIterator.class);
+
     private final String[] _tableNames;
     private final IDataSet _dataSet;
     private IResultSetTable _currentTable;
@@ -46,6 +55,8 @@ public class DatabaseTableIterator implements ITableIterator
 
     public boolean next() throws DataSetException
     {
+        logger.debug("next() - start");
+
         _index++;
 
         // Ensure previous table is closed
@@ -60,11 +71,15 @@ public class DatabaseTableIterator implements ITableIterator
 
     public ITableMetaData getTableMetaData() throws DataSetException
     {
+        logger.debug("getTableMetaData() - start");
+
         return _dataSet.getTableMetaData(_tableNames[_index]);
     }
 
     public ITable getTable() throws DataSetException
     {
+        logger.debug("getTable() - start");
+
         if (_currentTable == null)
         {
             _currentTable = (IResultSetTable)_dataSet.getTable(_tableNames[_index]);

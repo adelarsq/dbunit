@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.*;
 
 /**
@@ -29,6 +32,12 @@ import org.dbunit.dataset.*;
  */
 public class SequenceTableIterator implements ITableIterator
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(SequenceTableIterator.class);
+
     private final String[] _tableNames;
     private final IDataSet _dataSet;
     private int _index = -1;
@@ -44,17 +53,23 @@ public class SequenceTableIterator implements ITableIterator
 
     public boolean next() throws DataSetException
     {
+        logger.debug("next() - start");
+
         _index++;
         return _index < _tableNames.length;
     }
 
     public ITableMetaData getTableMetaData() throws DataSetException
     {
+        logger.debug("getTableMetaData() - start");
+
         return _dataSet.getTableMetaData(_tableNames[_index]);
     }
 
     public ITable getTable() throws DataSetException
     {
+        logger.debug("getTable() - start");
+
         return _dataSet.getTable(_tableNames[_index]);
     }
 }

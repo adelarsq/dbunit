@@ -20,6 +20,9 @@
 */
 package org.dbunit.ext.oracle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
@@ -35,11 +38,18 @@ import org.dbunit.dataset.datatype.TypeCastException;
  */
 public class OracleNClobDataType extends OracleClobDataType {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(OracleNClobDataType.class);
+
     protected static final Short FORM_NCHAR = new Short((short)2);
     
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
+        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+
         try 
         {
             Class statementClass = Class.forName("oracle.jdbc.OraclePreparedStatement");
@@ -48,18 +58,26 @@ public class OracleNClobDataType extends OracleClobDataType {
         }
         catch (IllegalAccessException e) 
         {
+            logger.error("setSqlValue()", e);
+
             throw new TypeCastException(value, this, e);
         } 
         catch (NoSuchMethodException e) 
         {
+            logger.error("setSqlValue()", e);
+
             throw new TypeCastException(value, this, e);
         } 
         catch (InvocationTargetException e) 
         {
+            logger.error("setSqlValue()", e);
+
             throw new TypeCastException(value, this, e.getTargetException());
         }
         catch (ClassNotFoundException e) 
         {
+            logger.error("setSqlValue()", e);
+
             throw new TypeCastException(value, this, e);
         }
         

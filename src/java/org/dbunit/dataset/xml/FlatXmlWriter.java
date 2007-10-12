@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -42,6 +45,12 @@ import java.io.Writer;
  */
 public class FlatXmlWriter implements IDataSetConsumer
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(FlatXmlWriter.class);
+
     private static final String DEFAULT_ENCODING = "UTF8";
     private static final String DATASET = "dataset";
 
@@ -71,16 +80,22 @@ public class FlatXmlWriter implements IDataSetConsumer
 
     public void setIncludeEmptyTable(boolean includeEmptyTable)
     {
+        logger.debug("setIncludeEmptyTable(includeEmptyTable=" + includeEmptyTable + ") - start");
+
         _includeEmptyTable = includeEmptyTable;
     }
 
     public void setDocType(String systemId)
     {
+        logger.debug("setDocType(systemId=" + systemId + ") - start");
+
         _systemId = systemId;
     }
 
     public void write(IDataSet dataSet) throws DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ") - start");
+
         DataSetProducerAdapter provider = new DataSetProducerAdapter(dataSet);
         provider.setConsumer(this);
         provider.produce();
@@ -91,6 +106,8 @@ public class FlatXmlWriter implements IDataSetConsumer
 
     public void startDataSet() throws DataSetException
     {
+        logger.debug("startDataSet() - start");
+
         try
         {
             _xmlWriter.writeDeclaration();
@@ -99,12 +116,16 @@ public class FlatXmlWriter implements IDataSetConsumer
         }
         catch (IOException e)
         {
+            logger.error("startDataSet()", e);
+
             throw new DataSetException(e);
         }
     }
 
     public void endDataSet() throws DataSetException
     {
+        logger.debug("endDataSet() - start");
+
         try
         {
             _xmlWriter.endElement();
@@ -112,18 +133,24 @@ public class FlatXmlWriter implements IDataSetConsumer
         }
         catch (IOException e)
         {
+            logger.error("endDataSet()", e);
+
             throw new DataSetException(e);
         }
     }
 
     public void startTable(ITableMetaData metaData) throws DataSetException
     {
+        logger.debug("startTable(metaData=" + metaData + ") - start");
+
         _activeMetaData = metaData;
         _activeRowCount = 0;
     }
 
     public void endTable() throws DataSetException
     {
+        logger.debug("endTable() - start");
+
         if (_includeEmptyTable && _activeRowCount == 0)
         {
             try
@@ -133,6 +160,8 @@ public class FlatXmlWriter implements IDataSetConsumer
             }
             catch (IOException e)
             {
+                logger.error("endTable()", e);
+
                 throw new DataSetException(e);
             }
         }
@@ -142,6 +171,8 @@ public class FlatXmlWriter implements IDataSetConsumer
 
     public void row(Object[] values) throws DataSetException
     {
+        logger.debug("row(values=" + values + ") - start");
+
         try
         {
             String tableName = _activeMetaData.getTableName();
@@ -166,6 +197,8 @@ public class FlatXmlWriter implements IDataSetConsumer
                 }
                 catch (TypeCastException e)
                 {
+                    logger.error("row()", e);
+
                     throw new DataSetException("table=" +
                             _activeMetaData.getTableName() + ", row=" + i +
                             ", column=" + columnName +
@@ -178,6 +211,8 @@ public class FlatXmlWriter implements IDataSetConsumer
         }
         catch (IOException e)
         {
+            logger.error("row()", e);
+
             throw new DataSetException(e);
         }
     }

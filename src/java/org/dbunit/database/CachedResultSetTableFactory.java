@@ -20,6 +20,9 @@
  */
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
 
@@ -33,9 +36,18 @@ import java.sql.SQLException;
  */
 public class CachedResultSetTableFactory implements IResultSetTableFactory
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CachedResultSetTableFactory.class);
+
     public IResultSetTable createTable(String tableName, String selectStatement,
             IDatabaseConnection connection) throws SQLException, DataSetException
     {
+        logger.debug("createTable(tableName=" + tableName + ", selectStatement=" + selectStatement + ", connection="
+                + connection + ") - start");
+
         return new CachedResultSetTable(new ForwardOnlyResultSetTable(
                 tableName, selectStatement, connection));
     }
@@ -43,6 +55,8 @@ public class CachedResultSetTableFactory implements IResultSetTableFactory
     public IResultSetTable createTable(ITableMetaData metaData,
             IDatabaseConnection connection) throws SQLException, DataSetException
     {
+        logger.debug("createTable(metaData=" + metaData + ", connection=" + connection + ") - start");
+
         return new CachedResultSetTable(metaData, connection);
     }
 }

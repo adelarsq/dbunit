@@ -21,6 +21,9 @@
 
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * TestCase that uses a JdbcDatabaseTester.
  *
@@ -29,6 +32,12 @@ package org.dbunit;
  */
 public abstract class JdbcBasedDBTestCase extends DBTestCase
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(JdbcBasedDBTestCase.class);
+
    public JdbcBasedDBTestCase()
    {
       super();
@@ -47,6 +56,8 @@ public abstract class JdbcBasedDBTestCase extends DBTestCase
     */
    protected IDatabaseTester newDatabaseTester()
    {
+        logger.debug("newDatabaseTester() - start");
+
       JdbcDatabaseTester databaseTester = new JdbcDatabaseTester( getDriverClass(),
             getConnectionUrl() );
       databaseTester.setUsername( getUsername() );
@@ -71,6 +82,8 @@ public abstract class JdbcBasedDBTestCase extends DBTestCase
     */
    protected String getPassword()
    {
+        logger.debug("getPassword() - start");
+
       return null;
    }
 
@@ -81,6 +94,8 @@ public abstract class JdbcBasedDBTestCase extends DBTestCase
     */
    protected String getUsername()
    {
+        logger.debug("getUsername() - start");
+
       return null;
    }
 }

@@ -20,6 +20,9 @@
  */
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.sql.DataSource;
 import junit.framework.Assert;
 
@@ -34,6 +37,12 @@ import org.dbunit.database.IDatabaseConnection;
  */
 public class DataSourceDatabaseTester extends AbstractDatabaseTester
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DataSourceDatabaseTester.class);
+
    private DataSource dataSource;
 
    /**
@@ -49,6 +58,8 @@ public class DataSourceDatabaseTester extends AbstractDatabaseTester
 
    public IDatabaseConnection getConnection() throws Exception
    {
+        logger.debug("getConnection() - start");
+
       Assert.assertNotNull( "DataSource is not set", dataSource );
       return new DatabaseConnection( dataSource.getConnection() );
    }

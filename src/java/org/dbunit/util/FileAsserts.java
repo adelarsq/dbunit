@@ -1,5 +1,8 @@
 package org.dbunit.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
  * From  "Dale E Martin" <dmartin@c..>
  * Date  Thursday, March 14, 2002 2:42 pm
@@ -30,11 +33,18 @@ import java.io.*;
 public class FileAsserts
 {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(FileAsserts.class);
+
     private static String processOneLine(int lineNumber,
             BufferedReader expectedData,
             BufferedReader actualData)
             throws IOException
     {
+        logger.debug("processOneLine(lineNumber=" + lineNumber + ", expectedData=" + expectedData + ", actualData="
+                + actualData + ") - start");
 
         String problem = null;
         String expectedLine = expectedData.readLine();
@@ -76,6 +86,8 @@ public class FileAsserts
     public static void assertEquals(BufferedReader expected,
             BufferedReader actual) throws Exception
     {
+        logger.debug("assertEquals(expected=" + expected + ", actual=" + actual + ") - start");
+
         Assert.assertNotNull(expected);
         Assert.assertNotNull(actual);
 
@@ -104,6 +116,8 @@ public class FileAsserts
     public static void assertEquals(InputStream expected, File actual)
             throws Exception
     {
+        logger.debug("assertEquals(expected=" + expected + ", actual=" + actual + ") - start");
+
         Assert.assertNotNull(expected);
         Assert.assertNotNull(actual);
 
@@ -119,6 +133,8 @@ public class FileAsserts
 
     public static void assertEquals(File expected, File actual) throws Exception
     {
+        logger.debug("assertEquals(expected=" + expected + ", actual=" + actual + ") - start");
+
         Assert.assertNotNull(expected);
         Assert.assertNotNull(actual);
 

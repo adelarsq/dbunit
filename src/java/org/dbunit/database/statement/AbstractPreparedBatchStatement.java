@@ -21,6 +21,9 @@
 
 package org.dbunit.database.statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -32,6 +35,12 @@ import java.sql.SQLException;
  */
 public abstract class AbstractPreparedBatchStatement implements IPreparedBatchStatement
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AbstractPreparedBatchStatement.class);
+
     protected final PreparedStatement _statement;
 
     AbstractPreparedBatchStatement(String sql, Connection connection)
@@ -42,6 +51,8 @@ public abstract class AbstractPreparedBatchStatement implements IPreparedBatchSt
 
     public void close() throws SQLException
     {
+        logger.debug("close() - start");
+
         _statement.close();
     }
 }

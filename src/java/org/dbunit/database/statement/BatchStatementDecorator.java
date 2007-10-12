@@ -21,6 +21,9 @@
 
 package org.dbunit.database.statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
@@ -37,6 +40,12 @@ import java.util.StringTokenizer;
  */
 public class BatchStatementDecorator implements IPreparedBatchStatement
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(BatchStatementDecorator.class);
+
     private final IBatchStatement _statement;
     private final String[] _sqlTemplate;
     private StringBuffer _sqlBuffer;
@@ -70,12 +79,16 @@ public class BatchStatementDecorator implements IPreparedBatchStatement
     public void addValue(Object value, DataType dataType)
             throws TypeCastException, SQLException
     {
+        logger.debug("addValue(value=" + value + ", dataType=" + dataType + ") - start");
+
         _sqlBuffer.append(DataSetUtils.getSqlValueString(value, dataType));
         _sqlBuffer.append(_sqlTemplate[_index++]);
     }
 
     public void addBatch() throws SQLException
     {
+        logger.debug("addBatch() - start");
+
         _statement.addBatch(_sqlBuffer.toString());
 
         // reset sql buffer
@@ -85,11 +98,15 @@ public class BatchStatementDecorator implements IPreparedBatchStatement
 
     public int executeBatch() throws SQLException
     {
+        logger.debug("executeBatch() - start");
+
         return _statement.executeBatch();
     }
 
     public void clearBatch() throws SQLException
     {
+        logger.debug("clearBatch() - start");
+
         _statement.clearBatch();
 
         // reset sql buffer
@@ -99,6 +116,8 @@ public class BatchStatementDecorator implements IPreparedBatchStatement
 
     public void close() throws SQLException
     {
+        logger.debug("close() - start");
+
         _statement.close();
     }
 }

@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.csv.handlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.csv.IllegalInputCharacterException;
 
 import java.util.ArrayList;
@@ -28,6 +31,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Pipeline implements Handler {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Pipeline.class);
 
 
     private LinkedList components;
@@ -54,14 +62,20 @@ public class Pipeline implements Handler {
     }
 
     public StringBuffer getCurrentProduct() {
+        logger.debug("getCurrentProduct() - start");
+
         return currentProduct;
     }
 
     public void setCurrentProduct(StringBuffer currentProduct) {
+        logger.debug("setCurrentProduct(currentProduct=" + currentProduct + ") - start");
+
         this.currentProduct = currentProduct;
     }
 
     private void prepareNewPiece() {
+        logger.debug("prepareNewPiece() - start");
+
         setCurrentProduct(new StringBuffer());
 
         // remove all the components down to a TrasparentHandler
@@ -70,45 +84,62 @@ public class Pipeline implements Handler {
                 removeFront();
             }
         } catch (PipelineException e) {
+            logger.error("prepareNewPiece()", e);
+
             throw new RuntimeException(e.getMessage());
         }
 
     }
 
     public void thePieceIsDone() {
+        logger.debug("thePieceIsDone() - start");
+
         getProducts().add(getCurrentProduct().toString());
         prepareNewPiece();
     }
 
     public List getProducts() {
+        logger.debug("getProducts() - start");
+
         return products;
     }
 
     protected void setProducts(List products) {
+        logger.debug("setProducts(products=" + products + ") - start");
+
         this.products = products;
     }
 
     private LinkedList getComponents() {
+        logger.debug("getComponents() - start");
+
         return components;
     }
 
     private void setComponents(LinkedList components) {
+        logger.debug("setComponents(components=" + components + ") - start");
+
         this.components = components;
     }
 
     public void putFront(PipelineComponent component) {
+        logger.debug("putFront(component=" + component + ") - start");
+
         component.setSuccessor((PipelineComponent) getComponents().getFirst());
         component.setPipeline(this);
         getComponents().addFirst(component);
     }
 
     public PipelineComponent removeFront() throws PipelineException {
+        logger.debug("removeFront() - start");
+
         PipelineComponent first = (PipelineComponent) getComponents().getFirst();
         remove(first);
         return first;
     }
 
     public void remove(PipelineComponent component) throws PipelineException {
+        logger.debug("remove(component=" + component + ") - start");
 
         if (component == getNoHandler()) {
             throw new PipelineException("Cannot remove the last handler");
@@ -120,30 +151,44 @@ public class Pipeline implements Handler {
     }
 
     public boolean canHandle(char c) throws IllegalInputCharacterException {
+        logger.debug("canHandle(c=" + c + ") - start");
+
         return true;
     }
 
     public void handle(char c) throws IllegalInputCharacterException, PipelineException {
+        logger.debug("handle(c=" + c + ") - start");
+
         ((Handler) getComponents().getFirst()).handle(c);
     }
 
     public boolean allowForNoMoreInput() {
+        logger.debug("allowForNoMoreInput() - start");
+
         throw new IllegalStateException("you cannot call Pipeline.allowForNoMoreInput");
     }
 
     private PipelineComponent getNoHandler() {
+        logger.debug("getNoHandler() - start");
+
         return noHandler;
     }
 
     private void setNoHandler(PipelineComponent noHandler) {
+        logger.debug("setNoHandler(noHandler=" + noHandler + ") - start");
+
         this.noHandler = noHandler;
     }
 
     public void resetProducts() {
+        logger.debug("resetProducts() - start");
+
         setProducts(new ArrayList());
     }
 
     public void noMoreInput() {
+        logger.debug("noMoreInput() - start");
+
         ((Handler) getComponents().getFirst()).noMoreInput();
         //thePieceIsDone();
     }

@@ -21,6 +21,9 @@
 
 package org.dbunit.ant;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
@@ -44,6 +47,12 @@ import java.sql.SQLException;
  */
 public class Operation extends AbstractStep
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Operation.class);
+
     private static final String DEFAULT_FORMAT = FORMAT_FLAT;
 
     protected String _type = "CLEAN_INSERT";
@@ -55,31 +64,43 @@ public class Operation extends AbstractStep
 
     public String getType()
     {
+        logger.debug("getType() - start");
+
         return _type;
     }
 
     public File getSrc()
     {
+        logger.debug("getSrc() - start");
+
         return _src;
     }
 
     public DatabaseOperation getDbOperation()
     {
+        logger.debug("getDbOperation() - start");
+
         return _operation;
     }
 
     public String getFormat()
     {
+        logger.debug("getFormat() - start");
+
         return _format != null ? _format : DEFAULT_FORMAT;
     }
 
     public boolean isTransaction()
     {
+        logger.debug("isTransaction() - start");
+
         return _transaction;
     }
 
     public void setType(String type)
     {
+        logger.debug("setType(type=" + type + ") - start");
+
         if ("UPDATE".equals(type))
         {
             _operation = DatabaseOperation.UPDATE;
@@ -141,11 +162,15 @@ public class Operation extends AbstractStep
 
     public void setSrc(File src)
     {
+        logger.debug("setSrc(src=" + src + ") - start");
+
         _src = src;
     }
 
     public void setFormat(String format)
     {
+        logger.debug("setFormat(format=" + format + ") - start");
+
         if (format.equalsIgnoreCase(FORMAT_FLAT)
                 || format.equalsIgnoreCase(FORMAT_XML)
                 || format.equalsIgnoreCase(FORMAT_CSV)
@@ -161,11 +186,15 @@ public class Operation extends AbstractStep
 
     public void setTransaction(boolean transaction)
     {
+        logger.debug("setTransaction(transaction=" + transaction + ") - start");
+
         _transaction = transaction;
     }
 
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
+        logger.debug("execute(connection=" + connection + ") - start");
+
         if (_operation == null)
         {
             throw new DatabaseUnitException("Operation.execute(): setType(String) must be called before execute()!");
@@ -184,12 +213,16 @@ public class Operation extends AbstractStep
         }
         catch (SQLException e)
         {
+            logger.error("execute()", e);
+
             throw new DatabaseUnitException(e);
         }
     }
 
     public String getLogMessage()
     {
+        logger.debug("getLogMessage() - start");
+
         return "Executing operation: " + _type
                 + "\n          on   file: " + ((_src == null) ? null : _src.getAbsolutePath())
                 + "\n          with format: " + _format;
@@ -198,6 +231,8 @@ public class Operation extends AbstractStep
 
     public String toString()
     {
+        logger.debug("toString() - start");
+
         StringBuffer result = new StringBuffer();
         result.append("Operation: ");
         result.append(" type=" + _type);

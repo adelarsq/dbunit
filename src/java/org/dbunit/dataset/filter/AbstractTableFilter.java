@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.*;
 
 import java.util.ArrayList;
@@ -38,6 +41,11 @@ public abstract class AbstractTableFilter implements ITableFilter
 {
 
     /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AbstractTableFilter.class);
+
+    /**
      * Returns <code>true</code> if specified table is allowed by this filter.
      * This legacy method, now replaced by accept, still exist for compatibily
      * with older environment
@@ -49,11 +57,15 @@ public abstract class AbstractTableFilter implements ITableFilter
 
     public boolean accept(String tableName) throws DataSetException
     {
+        logger.debug("accept(tableName=" + tableName + ") - start");
+
         return isValidName(tableName);
     }
 
     public String[] getTableNames(IDataSet dataSet) throws DataSetException
     {
+        logger.debug("getTableNames(dataSet=" + dataSet + ") - start");
+
         String[] tableNames = dataSet.getTableNames();
         List nameList = new ArrayList();
         for (int i = 0; i < tableNames.length; i++)
@@ -70,6 +82,8 @@ public abstract class AbstractTableFilter implements ITableFilter
     public ITableIterator iterator(IDataSet dataSet, boolean reversed)
             throws DataSetException
     {
+        logger.debug("iterator(dataSet=" + dataSet + ", reversed=" + reversed + ") - start");
+
         return new FilterIterator(reversed ?
                 dataSet.reverseIterator() : dataSet.iterator());
     }
@@ -79,6 +93,12 @@ public abstract class AbstractTableFilter implements ITableFilter
 
     private class FilterIterator implements ITableIterator
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(FilterIterator.class);
+
         private final ITableIterator _iterator;
 
         public FilterIterator(ITableIterator iterator)
@@ -91,6 +111,8 @@ public abstract class AbstractTableFilter implements ITableFilter
 
         public boolean next() throws DataSetException
         {
+            logger.debug("next() - start");
+
             while(_iterator.next())
             {
                 if (accept(_iterator.getTableMetaData().getTableName()))
@@ -103,11 +125,15 @@ public abstract class AbstractTableFilter implements ITableFilter
 
         public ITableMetaData getTableMetaData() throws DataSetException
         {
+            logger.debug("getTableMetaData() - start");
+
             return _iterator.getTableMetaData();
         }
 
         public ITable getTable() throws DataSetException
         {
+            logger.debug("getTable() - start");
+
             return _iterator.getTable();
         }
     }

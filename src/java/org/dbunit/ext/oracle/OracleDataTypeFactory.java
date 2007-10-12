@@ -20,6 +20,9 @@
  */
 package org.dbunit.ext.oracle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
@@ -35,6 +38,12 @@ import java.sql.Types;
  */
 public class OracleDataTypeFactory extends DefaultDataTypeFactory
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(OracleDataTypeFactory.class);
+
     public static final DataType ORACLE_BLOB = new OracleBlobDataType();
     public static final DataType ORACLE_CLOB = new OracleClobDataType();
     public static final DataType ORACLE_NCLOB = new OracleNClobDataType();
@@ -43,6 +52,8 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
+        logger.debug("createDataType(sqlType=" + sqlType + ", sqlTypeName=" + sqlTypeName + ") - start");
+
         // Map Oracle DATE to TIMESTAMP
         if (sqlType == Types.DATE)
         {

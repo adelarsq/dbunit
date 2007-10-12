@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.ITable;
 import org.dbunit.util.Base64;
 
@@ -32,6 +35,12 @@ import java.sql.*;
  */
 public class StringDataType extends AbstractDataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(StringDataType.class);
+
     public StringDataType(String name, int sqlType)
     {
         super(name, sqlType, String.class, false);
@@ -42,6 +51,8 @@ public class StringDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
+        logger.debug("typeCast(value=" + value + ") - start");
+
         if (value == null || value == ITable.NO_VALUE)
         {
             return null;
@@ -72,6 +83,8 @@ public class StringDataType extends AbstractDataType
             }
             catch (java.lang.NumberFormatException e)
             {
+                logger.error("typeCast()", e);
+
                 throw new TypeCastException(value, this, e);
             }
         }
@@ -91,6 +104,8 @@ public class StringDataType extends AbstractDataType
             }
             catch (SQLException e)
             {
+                logger.error("typeCast()", e);
+
                 throw new TypeCastException(value, this, e);
             }
         }
@@ -109,6 +124,8 @@ public class StringDataType extends AbstractDataType
             }
             catch (SQLException e)
             {
+                logger.error("typeCast()", e);
+
                 throw new TypeCastException(value, this, e);
             }
         }
@@ -119,6 +136,8 @@ public class StringDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
+        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+
         String value = resultSet.getString(column);
         if (value == null || resultSet.wasNull())
         {
@@ -130,6 +149,8 @@ public class StringDataType extends AbstractDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
+        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+
         statement.setString(column, asString(value));
     }
 }

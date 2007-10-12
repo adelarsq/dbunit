@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +36,12 @@ import java.util.Map;
  */
 public class ReplacementDataSet extends AbstractDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ReplacementDataSet.class);
+
     private final IDataSet _dataSet;
     private final Map _objectMap;
     private final Map _substringMap;
@@ -74,6 +83,9 @@ public class ReplacementDataSet extends AbstractDataSet
      */
     public void addReplacementObject(Object originalObject, Object replacementObject)
     {
+        logger.debug("addReplacementObject(originalObject=" + originalObject + ", replacementObject="
+                + replacementObject + ") - start");
+
         _objectMap.put(originalObject, replacementObject);
     }
 
@@ -86,6 +98,9 @@ public class ReplacementDataSet extends AbstractDataSet
     public void addReplacementSubstring(String originalSubstring,
             String replacementSubstring)
     {
+        logger.debug("addReplacementSubstring(originalSubstring=" + originalSubstring + ", replacementSubstring="
+                + replacementSubstring + ") - start");
+
         if (originalSubstring == null || replacementSubstring == null)
         {
             throw new NullPointerException();
@@ -99,6 +114,9 @@ public class ReplacementDataSet extends AbstractDataSet
      */
     public void setSubstringDelimiters(String startDelimiter, String endDelimiter)
     {
+        logger.debug("setSubstringDelimiters(startDelimiter=" + startDelimiter + ", endDelimiter=" + endDelimiter
+                + ") - start");
+
         if (startDelimiter == null || endDelimiter == null)
         {
             throw new NullPointerException();
@@ -110,6 +128,8 @@ public class ReplacementDataSet extends AbstractDataSet
 
     private ReplacementTable createReplacementTable(ITable table)
     {
+        logger.debug("createReplacementTable(table=" + table + ") - start");
+
         return new ReplacementTable(table, _objectMap, _substringMap,
                 _startDelim, _endDelim);
     }
@@ -120,6 +140,8 @@ public class ReplacementDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         return new ReplacementIterator(reversed ?
                 _dataSet.reverseIterator() : _dataSet.iterator());
     }
@@ -129,17 +151,23 @@ public class ReplacementDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
+        logger.debug("getTableNames() - start");
+
         return _dataSet.getTableNames();
     }
 
     public ITableMetaData getTableMetaData(String tableName)
             throws DataSetException
     {
+        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+
         return _dataSet.getTableMetaData(tableName);
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
+        logger.debug("getTable(tableName=" + tableName + ") - start");
+
         return createReplacementTable(_dataSet.getTable(tableName));
     }
 
@@ -148,6 +176,12 @@ public class ReplacementDataSet extends AbstractDataSet
 
     private class ReplacementIterator implements ITableIterator
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(ReplacementIterator.class);
+
         private final ITableIterator _iterator;
 
         public ReplacementIterator(ITableIterator iterator)
@@ -160,16 +194,22 @@ public class ReplacementDataSet extends AbstractDataSet
 
         public boolean next() throws DataSetException
         {
+            logger.debug("next() - start");
+
             return _iterator.next();
         }
 
         public ITableMetaData getTableMetaData() throws DataSetException
         {
+            logger.debug("getTableMetaData() - start");
+
             return _iterator.getTableMetaData();
         }
 
         public ITable getTable() throws DataSetException
         {
+            logger.debug("getTable() - start");
+
             return createReplacementTable(_iterator.getTable());
         }
     }

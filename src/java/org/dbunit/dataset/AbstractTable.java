@@ -22,6 +22,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * @author Manuel Laflamme
@@ -30,14 +33,24 @@ package org.dbunit.dataset;
  */
 public abstract class AbstractTable implements ITable
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AbstractTable.class);
+
     protected void assertValidRowIndex(int row) throws DataSetException
     {
+        logger.debug("assertValidRowIndex(row=" + row + ") - start");
+
         assertValidRowIndex(row, getRowCount());
     }
 
     protected void assertValidRowIndex(int row, int rowCount)
             throws DataSetException
     {
+        logger.debug("assertValidRowIndex(row=" + row + ", rowCount=" + rowCount + ") - start");
+
         if (row < 0)
         {
             throw new RowOutOfBoundsException(row + " < 0");
@@ -51,6 +64,8 @@ public abstract class AbstractTable implements ITable
 
     protected void assertValidColumn(String columnName) throws DataSetException
     {
+        logger.debug("assertValidColumn(columnName=" + columnName + ") - start");
+
         ITableMetaData metaData = getTableMetaData();
         if (DataSetUtils.getColumn(columnName, metaData.getColumns()) == null)
         {
@@ -60,6 +75,8 @@ public abstract class AbstractTable implements ITable
 
     protected int getColumnIndex(String columnName) throws DataSetException
     {
+        logger.debug("getColumnIndex(columnName=" + columnName + ") - start");
+
         ITableMetaData metaData = getTableMetaData();
         Column[] columns = metaData.getColumns();
         for (int i = 0; i < columns.length; i++)

@@ -21,6 +21,9 @@
 
 package org.dbunit.operation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
@@ -46,6 +49,12 @@ import java.sql.SQLException;
  */
 public class TruncateTableOperation extends DeleteAllOperation
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(TruncateTableOperation.class);
+
     TruncateTableOperation()
     {
     }
@@ -55,6 +64,8 @@ public class TruncateTableOperation extends DeleteAllOperation
 
     protected String getDeleteAllCommand()
     {
+        logger.debug("getDeleteAllCommand() - start");
+
         return "truncate table ";
     }
 
@@ -64,6 +75,8 @@ public class TruncateTableOperation extends DeleteAllOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
+        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+
         // Patch to make it work with MS SQL Server
         DatabaseConfig config = connection.getConfig();
         boolean oldValue = config.getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS);

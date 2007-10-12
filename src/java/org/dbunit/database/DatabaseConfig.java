@@ -20,6 +20,9 @@
  */
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.database.statement.PreparedStatementFactory;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 
@@ -36,6 +39,12 @@ import java.util.Set;
  */
 public class DatabaseConfig
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseConfig.class);
+
     public static final String PROPERTY_STATEMENT_FACTORY =
             "http://www.dbunit.org/properties/statementFactory";
     public static final String PROPERTY_RESULTSET_TABLE_FACTORY =
@@ -89,6 +98,8 @@ public class DatabaseConfig
      */
     public void setFeature(String name, boolean value)
     {
+        logger.debug("setFeature(name=" + name + ", value=" + value + ") - start");
+
         if (value)
         {
             _featuresSet.add(name);
@@ -107,6 +118,8 @@ public class DatabaseConfig
      */
     public boolean getFeature(String name)
     {
+        logger.debug("getFeature(name=" + name + ") - start");
+
         return _featuresSet.contains(name);
     }
 
@@ -118,6 +131,8 @@ public class DatabaseConfig
      */
     public void setProperty(String name, Object value)
     {
+        logger.debug("setProperty(name=" + name + ", value=" + value + ") - start");
+
         _propertyMap.put(name, value);
     }
 
@@ -129,6 +144,8 @@ public class DatabaseConfig
      */
     public Object getProperty(String name)
     {
+        logger.debug("getProperty(name=" + name + ") - start");
+
        return _propertyMap.get(name);
     }
 

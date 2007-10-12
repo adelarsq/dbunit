@@ -21,6 +21,9 @@
 
 package org.dbunit.database.statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -31,6 +34,12 @@ import java.sql.SQLException;
  */
 public class BatchStatement extends AbstractBatchStatement
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(BatchStatement.class);
+
     BatchStatement(Connection connection) throws SQLException
     {
         super(connection);
@@ -38,11 +47,15 @@ public class BatchStatement extends AbstractBatchStatement
 
     public void addBatch(String sql) throws SQLException
     {
+        logger.debug("addBatch(sql=" + sql + ") - start");
+
         _statement.addBatch(sql);
     }
 
     public int executeBatch() throws SQLException
     {
+        logger.debug("executeBatch() - start");
+
         int[] results = _statement.executeBatch();
         int result = 0;
         for (int i = 0; i < results.length; i++)
@@ -54,6 +67,8 @@ public class BatchStatement extends AbstractBatchStatement
 
     public void clearBatch() throws SQLException
     {
+        logger.debug("clearBatch() - start");
+
         _statement.clearBatch();
     }
 

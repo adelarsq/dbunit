@@ -21,21 +21,35 @@
 
 package org.dbunit.dataset.csv.handlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class Helper {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Helper.class);
 
     private PipelineComponent handler;
 
     abstract void helpWith(char c) throws PipelineException;
 
     public boolean allowForNoMoreInput() throws IllegalStateException {
+        logger.debug("allowForNoMoreInput() - start");
+
         return true;
     }
 
     PipelineComponent getHandler() {
+        logger.debug("getHandler() - start");
+
         return handler;
     }
 
     void setHandler(PipelineComponent handler) {
+        logger.debug("setHandler(handler=" + handler + ") - start");
+
         this.handler = handler;
     }
 }

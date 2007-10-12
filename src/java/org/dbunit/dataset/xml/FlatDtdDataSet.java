@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
@@ -36,6 +39,12 @@ import java.util.*;
  */
 public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(FlatDtdDataSet.class);
+
     private final List _tableNames = new ArrayList();
     private final Map _tableMap = new HashMap();
     private boolean _ready = false;
@@ -66,6 +75,8 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ", out=" + out + ") - start");
+
         write(dataSet, new OutputStreamWriter(out));
     }
 
@@ -75,6 +86,8 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
     public static void write(IDataSet dataSet, Writer out)
             throws IOException, DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ", out=" + out + ") - start");
+
         FlatDtdWriter datasetWriter = new FlatDtdWriter(out);
         datasetWriter.write(dataSet);
     }
@@ -85,6 +98,8 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         // Verify producer notifications completed
         if (!_ready)
         {
@@ -113,6 +128,8 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public String[] getTableNames() throws DataSetException
     {
+        logger.debug("getTableNames() - start");
+
         // Verify producer notifications completed
         if (!_ready)
         {
@@ -124,6 +141,8 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
+        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+
         // Verify producer notifications completed
         if (!_ready)
         {
@@ -142,6 +161,8 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public ITable getTable(String tableName) throws DataSetException
     {
+        logger.debug("getTable(tableName=" + tableName + ") - start");
+
         // Verify producer notifications completed
         if (!_ready)
         {
@@ -162,16 +183,22 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public void startDataSet() throws DataSetException
     {
+        logger.debug("startDataSet() - start");
+
         _ready = false;
     }
 
     public void endDataSet() throws DataSetException
     {
+        logger.debug("endDataSet() - start");
+
         _ready = true;
     }
 
     public void startTable(ITableMetaData metaData) throws DataSetException
     {
+        logger.debug("startTable(metaData=" + metaData + ") - start");
+
         String tableName = metaData.getTableName();
         _tableNames.add(tableName);
         _tableMap.put(tableName.toUpperCase(), new DefaultTable(metaData));

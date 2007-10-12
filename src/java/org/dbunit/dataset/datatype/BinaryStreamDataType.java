@@ -1,5 +1,8 @@
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,6 +13,12 @@ import java.sql.SQLException;
 
 public class BinaryStreamDataType extends BytesDataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(BinaryStreamDataType.class);
+
     public BinaryStreamDataType(String name, int sqlType)
     {
         super(name, sqlType);
@@ -18,6 +27,8 @@ public class BinaryStreamDataType extends BytesDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
+        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+
         InputStream in = resultSet.getBinaryStream(column);
         if (in == null || resultSet.wasNull())
         {
@@ -38,6 +49,8 @@ public class BinaryStreamDataType extends BytesDataType
         }
         catch (IOException e)
         {
+            logger.error("getSqlValue()", e);
+
             throw new TypeCastException(e);
         }
     }
@@ -45,6 +58,8 @@ public class BinaryStreamDataType extends BytesDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
+        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+
         byte[] bytes = (byte[])typeCast(value);
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);
         statement.setBinaryStream(column, in, bytes.length);

@@ -20,6 +20,9 @@
  */
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.AbstractTable;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
@@ -38,6 +41,12 @@ import java.sql.Statement;
 public abstract class AbstractResultSetTable extends AbstractTable
         implements IResultSetTable
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AbstractResultSetTable.class);
+
     protected ITableMetaData _metaData;
     private Statement _statement;
     protected ResultSet _resultSet;
@@ -69,6 +78,8 @@ public abstract class AbstractResultSetTable extends AbstractTable
         }
         catch (SQLException e)
         {
+            logger.error("AbstractResultSetTable()", e);
+
             _statement.close();
             _statement = null;
             throw e;
@@ -93,6 +104,8 @@ public abstract class AbstractResultSetTable extends AbstractTable
         }
         catch (SQLException e)
         {
+            logger.error("AbstractResultSetTable()", e);
+
             _statement.close();
             _statement = null;
             throw e;
@@ -102,6 +115,9 @@ public abstract class AbstractResultSetTable extends AbstractTable
     static String getSelectStatement(String schema, ITableMetaData metaData, String escapePattern)
             throws DataSetException
     {
+        logger.debug("getSelectStatement(schema=" + schema + ", metaData=" + metaData + ", escapePattern="
+                + escapePattern + ") - start");
+
         return DatabaseDataSet.getSelectStatement(schema, metaData, escapePattern);
     }
 
@@ -110,6 +126,8 @@ public abstract class AbstractResultSetTable extends AbstractTable
 
     public ITableMetaData getTableMetaData()
     {
+        logger.debug("getTableMetaData() - start");
+
         return _metaData;
     }
 
@@ -118,6 +136,8 @@ public abstract class AbstractResultSetTable extends AbstractTable
 
     public void close() throws DataSetException
     {
+        logger.debug("close() - start");
+
         try
         {
             if (_resultSet != null)
@@ -134,6 +154,8 @@ public abstract class AbstractResultSetTable extends AbstractTable
         }
         catch (SQLException e)
         {
+            logger.error("close()", e);
+
             throw new DataSetException(e);
         }
     }

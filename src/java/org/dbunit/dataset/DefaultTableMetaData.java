@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Arrays;
 
 
@@ -31,6 +34,12 @@ import java.util.Arrays;
  */
 public class DefaultTableMetaData extends AbstractTableMetaData
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DefaultTableMetaData.class);
+
     private final String _tableName;
     private final Column[] _columns;
     private final Column[] _primaryKeys;
@@ -59,6 +68,8 @@ public class DefaultTableMetaData extends AbstractTableMetaData
 
     public String toString()
     {
+        logger.debug("toString() - start");
+
         return "tableName=" + _tableName +
                 ", columns=" + Arrays.asList(_columns) +
                 ", keys=" + Arrays.asList(_primaryKeys) + "";
@@ -69,16 +80,22 @@ public class DefaultTableMetaData extends AbstractTableMetaData
 
     public String getTableName()
     {
+        logger.debug("getTableName() - start");
+
         return _tableName;
     }
 
     public Column[] getColumns()
     {
+        logger.debug("getColumns() - start");
+
         return _columns;
     }
 
     public Column[] getPrimaryKeys()
     {
+        logger.debug("getPrimaryKeys() - start");
+
         return _primaryKeys;
     }
 }

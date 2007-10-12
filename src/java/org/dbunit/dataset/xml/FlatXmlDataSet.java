@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -69,6 +72,12 @@ import java.net.URL;
  */
 public class FlatXmlDataSet extends CachedDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(FlatXmlDataSet.class);
+
     /**
      * Creates an FlatXmlDataSet object with the specifed InputSource.
      */
@@ -233,6 +242,8 @@ public class FlatXmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ", out=" + out + ") - start");
+
         FlatXmlWriter datasetWriter = new FlatXmlWriter(out);
         datasetWriter.setIncludeEmptyTable(true);
         datasetWriter.write(dataSet);
@@ -244,6 +255,8 @@ public class FlatXmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, Writer writer)
             throws IOException, DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ", writer=" + writer + ") - start");
+
         write(dataSet, writer, null);
     }
 
@@ -253,6 +266,8 @@ public class FlatXmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, Writer writer, String encoding)
             throws IOException, DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ", writer=" + writer + ", encoding=" + encoding + ") - start");
+
         FlatXmlWriter datasetWriter = new FlatXmlWriter(writer, encoding);
         datasetWriter.setIncludeEmptyTable(true);
         datasetWriter.write(dataSet);
@@ -265,6 +280,8 @@ public class FlatXmlDataSet extends CachedDataSet
     public static void writeDtd(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
+        logger.debug("writeDtd(dataSet=" + dataSet + ", out=" + out + ") - start");
+
         FlatDtdDataSet.write(dataSet, out);
     }
 }

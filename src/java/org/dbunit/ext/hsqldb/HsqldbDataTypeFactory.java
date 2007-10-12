@@ -20,6 +20,9 @@
  */
 package org.dbunit.ext.hsqldb;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
@@ -31,8 +34,16 @@ import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
  */
 public class HsqldbDataTypeFactory extends DefaultDataTypeFactory
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(HsqldbDataTypeFactory.class);
+
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
+        logger.debug("createDataType(sqlType=" + sqlType + ", sqlTypeName=" + sqlTypeName + ") - start");
+
         if (sqlTypeName.equals("BOOLEAN"))
         {
             return DataType.BOOLEAN;

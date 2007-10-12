@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.datatype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.ITable;
 
 import java.math.BigDecimal;
@@ -35,6 +38,12 @@ import java.sql.Types;
  */
 public class FloatDataType extends AbstractDataType
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(FloatDataType.class);
+
     FloatDataType()
     {
         super("REAL", Types.REAL, Float.class, true);
@@ -45,6 +54,8 @@ public class FloatDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
+        logger.debug("typeCast(value=" + value + ") - start");
+
         if (value == null || value == ITable.NO_VALUE)
         {
             return null;
@@ -61,6 +72,8 @@ public class FloatDataType extends AbstractDataType
         }
         catch (java.lang.NumberFormatException e)
         {
+            logger.error("typeCast()", e);
+
             throw new TypeCastException(value, this, e);
         }
     }
@@ -68,6 +81,8 @@ public class FloatDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
+        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+
         float value = resultSet.getFloat(column);
         if (resultSet.wasNull())
         {
@@ -79,6 +94,8 @@ public class FloatDataType extends AbstractDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
+        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+
         statement.setFloat(column, ((Number)typeCast(value)).floatValue());
     }
 }

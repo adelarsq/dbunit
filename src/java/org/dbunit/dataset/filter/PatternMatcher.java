@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -31,6 +34,12 @@ import java.util.Iterator;
  */
 class PatternMatcher
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(PatternMatcher.class);
+
     private final Set _acceptedNames = new HashSet();
     private final Set _acceptedPatterns = new HashSet();
 
@@ -42,6 +51,8 @@ class PatternMatcher
      */
     public void addPattern(String patternName)
     {
+        logger.debug("addPattern(patternName=" + patternName + ") - start");
+
         if (patternName.indexOf("*") != -1 || patternName.indexOf("?") != -1)
         {
             _acceptedPatterns.add(patternName);
@@ -54,6 +65,8 @@ class PatternMatcher
 
     public boolean isEmpty()
     {
+        logger.debug("isEmpty() - start");
+
         if (_acceptedNames.isEmpty() && _acceptedPatterns.isEmpty())
         {
             return true;
@@ -64,6 +77,8 @@ class PatternMatcher
 
     public boolean accept(String name)
     {
+        logger.debug("accept(name=" + name + ") - start");
+
         if (_acceptedNames.contains(name.toUpperCase()))
         {
             return true;
@@ -99,6 +114,10 @@ class PatternMatcher
      */
     private boolean match(String pattern, String str, boolean isCaseSensitive)
     {
+        logger
+                .debug("match(pattern=" + pattern + ", str=" + str + ", isCaseSensitive=" + isCaseSensitive
+                        + ") - start");
+
         /* Following pattern matching code taken from the Apache Ant project. */
 
         char[] patArr = pattern.toCharArray();

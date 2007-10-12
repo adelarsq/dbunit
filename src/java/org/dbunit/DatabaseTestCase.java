@@ -21,6 +21,9 @@
 
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import junit.framework.TestCase;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
@@ -34,6 +37,11 @@ import org.dbunit.operation.DatabaseOperation;
  */
 public abstract class DatabaseTestCase extends TestCase
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseTestCase.class);
 
   private IDatabaseTester tester;
 
@@ -63,6 +71,8 @@ public abstract class DatabaseTestCase extends TestCase
      * @throws Exception
      */
     protected IDatabaseTester newDatabaseTester() throws Exception{
+        logger.debug("newDatabaseTester() - start");
+
       final IDatabaseConnection connection = getConnection();
       final IDatabaseTester tester = new DefaultDatabaseTester(connection);
       return tester;
@@ -75,6 +85,8 @@ public abstract class DatabaseTestCase extends TestCase
      * @throws Exception
      */
     protected IDatabaseTester getDatabaseTester() throws Exception {
+        logger.debug("getDatabaseTester() - start");
+
       if ( this.tester == null ) {
         this.tester = newDatabaseTester();
       }
@@ -87,6 +99,8 @@ public abstract class DatabaseTestCase extends TestCase
      */
     protected void closeConnection(IDatabaseConnection connection) throws Exception
     {
+        logger.debug("closeConnection(connection=" + connection + ") - start");
+
         assertNotNull( "DatabaseTester is not set", getDatabaseTester() );
         getDatabaseTester().closeConnection( connection );
     }
@@ -96,6 +110,8 @@ public abstract class DatabaseTestCase extends TestCase
      */
     protected DatabaseOperation getSetUpOperation() throws Exception
     {
+        logger.debug("getSetUpOperation() - start");
+
         return DatabaseOperation.CLEAN_INSERT;
     }
 
@@ -104,6 +120,8 @@ public abstract class DatabaseTestCase extends TestCase
      */
     protected DatabaseOperation getTearDownOperation() throws Exception
     {
+        logger.debug("getTearDownOperation() - start");
+
         return DatabaseOperation.NONE;
     }
 
@@ -112,6 +130,8 @@ public abstract class DatabaseTestCase extends TestCase
 
     protected void setUp() throws Exception
     {
+        logger.debug("setUp() - start");
+
         super.setUp();
         final IDatabaseTester databaseTester = getDatabaseTester();
         assertNotNull( "DatabaseTester is not set", databaseTester );
@@ -122,6 +142,8 @@ public abstract class DatabaseTestCase extends TestCase
 
     protected void tearDown() throws Exception
     {
+        logger.debug("tearDown() - start");
+
       try {
         final IDatabaseTester databaseTester = getDatabaseTester();
         assertNotNull( "DatabaseTester is not set", databaseTester );

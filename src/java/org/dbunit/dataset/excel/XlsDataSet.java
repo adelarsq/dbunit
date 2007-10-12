@@ -18,6 +18,9 @@
  */
 package org.dbunit.dataset.excel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -38,6 +41,12 @@ import java.io.*;
  */
 public class XlsDataSet extends AbstractDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(XlsDataSet.class);
+
     private final ITable[] _tables;
 
     /**
@@ -68,6 +77,8 @@ public class XlsDataSet extends AbstractDataSet
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
+        logger.debug("write(dataSet=" + dataSet + ", out=" + out + ") - start");
+
         HSSFWorkbook workbook = new HSSFWorkbook();
 
         int index = 0;
@@ -123,6 +134,8 @@ public class XlsDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         return new DefaultTableIterator(_tables, reversed);
     }
 }

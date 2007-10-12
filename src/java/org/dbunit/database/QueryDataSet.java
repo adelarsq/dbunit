@@ -20,6 +20,9 @@
  */
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.AbstractDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableIterator;
@@ -39,6 +42,11 @@ import java.util.List;
  */
 public class QueryDataSet extends AbstractDataSet
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(QueryDataSet.class);
 
     private final IDatabaseConnection _connection;
     private final List _tableEntries = new ArrayList();
@@ -64,6 +72,8 @@ public class QueryDataSet extends AbstractDataSet
      */
     public void addTable(String tableName, String query)
     {
+        logger.debug("addTable(tableName=" + tableName + ", query=" + query + ") - start");
+
         _tableEntries.add(new TableEntry(tableName, query));
     }
 
@@ -74,6 +84,8 @@ public class QueryDataSet extends AbstractDataSet
      */
     public void addTable(String tableName)
     {
+        logger.debug("addTable(tableName=" + tableName + ") - start");
+
         _tableEntries.add(new TableEntry(tableName, null));
     }
 
@@ -82,6 +94,8 @@ public class QueryDataSet extends AbstractDataSet
 
     protected ITableIterator createIterator(boolean reversed) throws DataSetException
     {
+        logger.debug("createIterator(reversed=" + reversed + ") - start");
+
         List tableEntries = new ArrayList(_tableEntries);
         if (reversed)
         {
@@ -96,6 +110,8 @@ public class QueryDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
+        logger.debug("getTableNames() - start");
+
         List names = new ArrayList();
         for (Iterator it = _tableEntries.iterator(); it.hasNext();)
         {
@@ -108,6 +124,12 @@ public class QueryDataSet extends AbstractDataSet
 
     static class TableEntry
     {
+
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(TableEntry.class);
+
         private final String _tableName;
         private final String _query;
 
@@ -119,11 +141,15 @@ public class QueryDataSet extends AbstractDataSet
 
         public String getTableName()
         {
+            logger.debug("getTableName() - start");
+
             return _tableName;
         }
 
         public String getQuery()
         {
+            logger.debug("getQuery() - start");
+
             return _query;
         }
     }

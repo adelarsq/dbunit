@@ -21,6 +21,9 @@
 
 package org.dbunit.operation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
@@ -36,6 +39,12 @@ import java.sql.SQLException;
  */
 public class CloseConnectionOperation extends DatabaseOperation
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CloseConnectionOperation.class);
+
     private final DatabaseOperation _operation;
 
     /**
@@ -53,6 +62,8 @@ public class CloseConnectionOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection,
             IDataSet dataSet) throws DatabaseUnitException, SQLException
     {
+        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+
         try
         {
             _operation.execute(connection, dataSet);

@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Manuel Laflamme
  * @version $Revision$
@@ -29,6 +32,12 @@ package org.dbunit.dataset;
  */
 public class CaseInsensitiveTable implements ITable
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CaseInsensitiveTable.class);
+
     private final ITable _table;
 
     public CaseInsensitiveTable(ITable table)
@@ -39,6 +48,8 @@ public class CaseInsensitiveTable implements ITable
     private String getInternalColumnName(String columnName)
             throws DataSetException
     {
+        logger.debug("getInternalColumnName(columnName=" + columnName + ") - start");
+
         Column[] columns = _table.getTableMetaData().getColumns();
 
         for (int i = 0; i < columns.length; i++)
@@ -58,16 +69,22 @@ public class CaseInsensitiveTable implements ITable
 
     public ITableMetaData getTableMetaData()
     {
+        logger.debug("getTableMetaData() - start");
+
         return _table.getTableMetaData();
     }
 
     public int getRowCount()
     {
+        logger.debug("getRowCount() - start");
+
         return _table.getRowCount();
     }
 
     public Object getValue(int row, String column) throws DataSetException
     {
+        logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+
         return _table.getValue(row, getInternalColumnName(column));
     }
 }

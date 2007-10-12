@@ -20,6 +20,9 @@
  */
 package org.dbunit.ext.mysql;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
@@ -35,8 +38,16 @@ import java.sql.Types;
  */
 public class MySqlDataTypeFactory extends DefaultDataTypeFactory
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(MySqlDataTypeFactory.class);
+
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
+        logger.debug("createDataType(sqlType=" + sqlType + ", sqlTypeName=" + sqlTypeName + ") - start");
+
         if (sqlType == Types.OTHER)
         {
             // CLOB

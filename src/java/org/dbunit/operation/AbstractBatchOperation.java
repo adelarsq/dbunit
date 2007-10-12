@@ -21,6 +21,9 @@
 
 package org.dbunit.operation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
@@ -47,11 +50,19 @@ import java.util.BitSet;
  */
 public abstract class AbstractBatchOperation extends AbstractOperation
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AbstractBatchOperation.class);
+
     private static final BitSet EMPTY_BITSET = new BitSet();
     protected boolean _reverseRowOrder = false;
 
     static boolean isEmpty(ITable table) throws DataSetException
     {
+        logger.debug("isEmpty(table=" + table + ") - start");
+
         Column[] columns = table.getTableMetaData().getColumns();
 
         // No columns = empty
@@ -68,6 +79,8 @@ public abstract class AbstractBatchOperation extends AbstractOperation
         }
         catch (RowOutOfBoundsException e)
         {
+            logger.error("isEmpty()", e);
+
             // Not able to access first row thus empty
             return true;
         }
@@ -79,6 +92,8 @@ public abstract class AbstractBatchOperation extends AbstractOperation
      */
     protected ITableIterator iterator(IDataSet dataSet) throws DatabaseUnitException
     {
+        logger.debug("iterator(dataSet=" + dataSet + ") - start");
+
         return dataSet.iterator();
     }
 
@@ -89,6 +104,8 @@ public abstract class AbstractBatchOperation extends AbstractOperation
     BitSet getIgnoreMapping(ITable table, int row)
             throws DataSetException
     {
+        logger.debug("getIgnoreMapping(table=" + table + ", row=" + row + ") - start");
+
         return EMPTY_BITSET;
     }
 
@@ -99,6 +116,9 @@ public abstract class AbstractBatchOperation extends AbstractOperation
     boolean equalsIgnoreMapping(BitSet ignoreMapping, ITable table,
             int row) throws DataSetException
     {
+        logger.debug("equalsIgnoreMapping(ignoreMapping=" + ignoreMapping + ", table=" + table + ", row=" + row
+                + ") - start");
+
         return true;
     }
 
@@ -111,6 +131,8 @@ public abstract class AbstractBatchOperation extends AbstractOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
+        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+
         DatabaseConfig databaseConfig = connection.getConfig();
         IStatementFactory factory = (IStatementFactory)databaseConfig.getProperty(
                 DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
@@ -179,6 +201,8 @@ public abstract class AbstractBatchOperation extends AbstractOperation
 								}
                                 catch (TypeCastException e)
 								{
+                                    logger.error("execute()", e);
+
 				                	throw new TypeCastException("Error casting value for table '" + table.getTableMetaData().getTableName() 
 				                			+"' and column '" + column.getColumnName() + "'", e);
 								}
@@ -189,6 +213,8 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                 }
                 catch (RowOutOfBoundsException e)
                 {
+                    logger.error("execute()", e);
+
                     // end of table
                 }
 

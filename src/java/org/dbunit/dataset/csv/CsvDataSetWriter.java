@@ -20,6 +20,9 @@
  */
 package org.dbunit.dataset.csv;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -47,6 +50,11 @@ import org.dbunit.dataset.stream.IDataSetConsumer;
 public class CsvDataSetWriter implements IDataSetConsumer {
 
     /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CsvDataSetWriter.class);
+
+    /**
      * todo: customizable separators (field, lines), manage the writers opened for each table
      */
 
@@ -72,21 +80,29 @@ public class CsvDataSetWriter implements IDataSetConsumer {
     }
 
     public void write(IDataSet dataSet) throws DataSetException {
+        logger.debug("write(dataSet=" + dataSet + ") - start");
+
         DataSetProducerAdapter provider = new DataSetProducerAdapter(dataSet);
         provider.setConsumer(this);
         provider.produce();
     }
 
     public void startDataSet() throws DataSetException {
+        logger.debug("startDataSet() - start");
+
         try {
         	tableList = new LinkedList();
             new File(getTheDirectory()).mkdirs();
         } catch (Exception e) {
+            logger.error("startDataSet()", e);
+
             throw new DataSetException("Error while creating the destination directory '" + getTheDirectory() + "'", e);
         }
     }
 
     public void endDataSet() throws DataSetException {
+        logger.debug("endDataSet() - start");
+
     	// write out table ordering file
     	File orderingFile = new File(getTheDirectory(), "table-ordering.txt");
     	
@@ -98,11 +114,15 @@ public class CsvDataSetWriter implements IDataSetConsumer {
 			}
 			pw.close();
 		} catch (IOException e) {
+            logger.error("endDataSet()", e);
+
 			throw new DataSetException("problems writing the table ordering file", e);
 		}
     }
 
     public void startTable(ITableMetaData metaData) throws DataSetException {
+        logger.debug("startTable(metaData=" + metaData + ") - start");
+
         try {
             _activeMetaData = metaData;
             String tableName = _activeMetaData.getTableName();
@@ -110,12 +130,16 @@ public class CsvDataSetWriter implements IDataSetConsumer {
             writeColumnNames();
             getWriter().write(System.getProperty("line.separator"));
         } catch (IOException e) {
+            logger.error("startTable()", e);
+
             throw new DataSetException(e);
         }
 
     }
 
     private void writeColumnNames() throws DataSetException, IOException {
+        logger.debug("writeColumnNames() - start");
+
         Column[] columns = _activeMetaData.getColumns();
         for (int i = 0; i < columns.length; i++) {
             String columnName = columns[i].getColumnName();
@@ -125,16 +149,22 @@ public class CsvDataSetWriter implements IDataSetConsumer {
     }
 
     public void endTable() throws DataSetException {
+        logger.debug("endTable() - start");
+
         try {
             getWriter().close();
             tableList.add(_activeMetaData.getTableName());
             _activeMetaData = null;
         } catch (IOException e) {
+            logger.error("endTable()", e);
+
             throw new DataSetException(e);
         }
     }
 
     public void row(Object[] values) throws DataSetException {
+        logger.debug("row(values=" + values + ") - start");
+
         try {
 
             Column[] columns = _activeMetaData.getColumns();
@@ -157,6 +187,8 @@ public class CsvDataSetWriter implements IDataSetConsumer {
                         final String quoted = quote(stringValue);
                         getWriter().write(quoted);
                     } catch (TypeCastException e) {
+                        logger.error("row()", e);
+
                         throw new DataSetException("table=" +
                                 _activeMetaData.getTableName() + ", row=" + i +
                                 ", column=" + columnName +
@@ -167,15 +199,21 @@ public class CsvDataSetWriter implements IDataSetConsumer {
             }
             getWriter().write(System.getProperty("line.separator"));
         } catch (IOException e) {
+            logger.error("row()", e);
+
             throw new DataSetException(e);
         }
     }
 
     private String quote(String stringValue) {
+        logger.debug("quote(stringValue=" + stringValue + ") - start");
+
         return new StringBuffer(QUOTE).append(escape(stringValue)).append(QUOTE).toString();
     }
 
     protected static String escape(String stringValue) {
+        logger.debug("escape(stringValue=" + stringValue + ") - start");
+
         char [] array = stringValue.toCharArray();
         testExport = QUOTE.toCharArray()[0];
         final char escape = ESCAPE.toCharArray()[0];
@@ -191,27 +229,39 @@ public class CsvDataSetWriter implements IDataSetConsumer {
     }
 
     public Writer getWriter() {
+        logger.debug("getWriter() - start");
+
         return writer;
     }
 
     public void setWriter(Writer writer) {
+        logger.debug("setWriter(writer=" + writer + ") - start");
+
         this.writer = writer;
     }
 
     public String getTheDirectory() {
+        logger.debug("getTheDirectory() - start");
+
         return theDirectory;
     }
 
     public void setTheDirectory(String theDirectory) {
+        logger.debug("setTheDirectory(theDirectory=" + theDirectory + ") - start");
+
         this.theDirectory = theDirectory;
     }
 
     public static void write(IDataSet dataset, File dest) throws DataSetException {
+        logger.debug("write(dataset=" + dataset + ", dest=" + dest + ") - start");
+
         CsvDataSetWriter writer = new CsvDataSetWriter(dest);
         writer.write(dataset);
     }
 
     protected void finalize() throws Throwable {
+        logger.debug("finalize() - start");
+
         if (getWriter() != null) {
             getWriter().close();
         }

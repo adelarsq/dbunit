@@ -21,6 +21,9 @@
 
 package org.dbunit.ant;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.tools.ant.AntClassLoader;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -56,6 +59,11 @@ import java.util.Properties;
  */
 public class DbUnitTask extends Task
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DbUnitTask.class);
 
     /**
      * Database connection
@@ -120,6 +128,8 @@ public class DbUnitTask extends Task
      */
     public void setDriver(String driver)
     {
+        logger.debug("setDriver(driver=" + driver + ") - start");
+
         this.driver = driver;
     }
 
@@ -128,6 +138,8 @@ public class DbUnitTask extends Task
      */
     public void setUrl(String url)
     {
+        logger.debug("setUrl(url=" + url + ") - start");
+
         this.url = url;
     }
 
@@ -136,6 +148,8 @@ public class DbUnitTask extends Task
      */
     public void setUserid(String userId)
     {
+        logger.debug("setUserid(userId=" + userId + ") - start");
+
         this.userId = userId;
     }
 
@@ -144,6 +158,8 @@ public class DbUnitTask extends Task
      */
     public void setPassword(String password)
     {
+        logger.debug("setPassword(password=" + password + ") - start");
+
         this.password = password;
     }
 
@@ -152,6 +168,8 @@ public class DbUnitTask extends Task
      */
     public void setSchema(String schema)
     {
+        logger.debug("setSchema(schema=" + schema + ") - start");
+
         this.schema = schema;
     }
 
@@ -160,6 +178,8 @@ public class DbUnitTask extends Task
      */
     public void setUseQualifiedTableNames(boolean useQualifiedTableNames)
     {
+        logger.debug("setUseQualifiedTableNames(useQualifiedTableNames=" + useQualifiedTableNames + ") - start");
+
         this.useQualifiedTableNames = useQualifiedTableNames;
     }
 
@@ -170,21 +190,29 @@ public class DbUnitTask extends Task
      */
     public void setSupportBatchStatement(boolean supportBatchStatement)
     {
+        logger.debug("setSupportBatchStatement(supportBatchStatement=" + supportBatchStatement + ") - start");
+
         this.supportBatchStatement = supportBatchStatement;
     }
 
     public void setDatatypeWarning(boolean datatypeWarning)
     {
+        logger.debug("setDatatypeWarning(datatypeWarning=" + datatypeWarning + ") - start");
+
         this.datatypeWarning = datatypeWarning;
     }
 
     public void setDatatypeFactory(String datatypeFactory)
     {
+        logger.debug("setDatatypeFactory(datatypeFactory=" + datatypeFactory + ") - start");
+
         this.dataTypeFactory = datatypeFactory;
     }
 
     public void setEscapePattern(String escapePattern)
     {
+        logger.debug("setEscapePattern(escapePattern=" + escapePattern + ") - start");
+
         this.escapePattern = escapePattern;
     }
 
@@ -193,6 +221,8 @@ public class DbUnitTask extends Task
      */
     public void setClasspath(Path classpath)
     {
+        logger.debug("setClasspath(classpath=" + classpath + ") - start");
+
         if (this.classpath == null)
         {
             this.classpath = classpath;
@@ -208,6 +238,8 @@ public class DbUnitTask extends Task
      */
     public Path createClasspath()
     {
+        logger.debug("createClasspath() - start");
+
         if (this.classpath == null)
         {
             this.classpath = new Path(project);
@@ -220,6 +252,8 @@ public class DbUnitTask extends Task
      */
     public void setClasspathRef(Reference r)
     {
+        logger.debug("setClasspathRef(r=" + r + ") - start");
+
         createClasspath().setRefid(r);
     }
 
@@ -228,6 +262,8 @@ public class DbUnitTask extends Task
      */
     public List getSteps()
     {
+        logger.debug("getSteps() - start");
+
         return steps;
     }
 
@@ -236,6 +272,8 @@ public class DbUnitTask extends Task
      */
     public void addOperation(Operation operation)
     {
+        logger.debug("addOperation(operation=" + operation + ") - start");
+
         steps.add(operation);
     }
 
@@ -244,6 +282,8 @@ public class DbUnitTask extends Task
      */
     public void addCompare(Compare compare)
     {
+        logger.debug("addCompare(compare=" + compare + ") - start");
+
         steps.add(compare);
     }
 
@@ -252,6 +292,8 @@ public class DbUnitTask extends Task
      */
     public void addExport(Export export)
     {
+        logger.debug("addExport(export=" + export + ") - start");
+
     	export.setParentTask(this);
         steps.add(export);
     }
@@ -261,6 +303,8 @@ public class DbUnitTask extends Task
      */
     public void execute() throws BuildException
     {
+        logger.debug("execute() - start");
+
         try
         {
             IDatabaseConnection connection = createConnection();
@@ -275,10 +319,14 @@ public class DbUnitTask extends Task
         }
         catch (DatabaseUnitException e)
         {
+            logger.error("execute()", e);
+
             throw new BuildException(e, location);
         }
         catch (SQLException e)
         {
+            logger.error("execute()", e);
+
             throw new BuildException(e, location);
         }
         finally
@@ -292,12 +340,15 @@ public class DbUnitTask extends Task
             }
             catch (SQLException e)
             {
+                logger.error("execute()", e);
             }
         }
     }
 
     IDatabaseConnection createConnection() throws SQLException
     {
+        logger.debug("createConnection() - start");
+
         if (driver == null)
         {
             throw new BuildException("Driver attribute must be set!", location);
@@ -341,16 +392,22 @@ public class DbUnitTask extends Task
         }
         catch (ClassNotFoundException e)
         {
+            logger.error("createConnection()", e);
+
             throw new BuildException("Class Not Found: JDBC driver "
                     + driver + " could not be loaded", e, location);
         }
         catch (IllegalAccessException e)
         {
+            logger.error("createConnection()", e);
+
             throw new BuildException("Illegal Access: JDBC driver "
                     + driver + " could not be loaded", e, location);
         }
         catch (InstantiationException e)
         {
+            logger.error("createConnection()", e);
+
             throw new BuildException("Instantiation Exception: JDBC driver "
                     + driver + " could not be loaded", e, location);
         }
@@ -386,16 +443,22 @@ public class DbUnitTask extends Task
         }
         catch (ClassNotFoundException e)
         {
+            logger.error("createConnection()", e);
+
             throw new BuildException("Class Not Found: DataType factory "
                     + driver + " could not be loaded", e, location);
         }
         catch (IllegalAccessException e)
         {
+            logger.error("createConnection()", e);
+
             throw new BuildException("Illegal Access: DataType factory "
                     + driver + " could not be loaded", e, location);
         }
         catch (InstantiationException e)
         {
+            logger.error("createConnection()", e);
+
             throw new BuildException("Instantiation Exception: DataType factory "
                     + driver + " could not be loaded", e, location);
         }

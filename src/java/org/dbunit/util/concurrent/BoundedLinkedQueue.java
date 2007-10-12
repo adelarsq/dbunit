@@ -17,6 +17,9 @@
 
 package org.dbunit.util.concurrent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A bounded variant of 
  * LinkedQueue 
@@ -44,6 +47,11 @@ package org.dbunit.util.concurrent;
  **/
 
 public class BoundedLinkedQueue implements BoundedChannel {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(BoundedLinkedQueue.class);
 
   /*
    * It might be a bit nicer if this were declared as
@@ -130,6 +138,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
    * Call only under synch on puGuard_ AND this.
    **/
   protected final int reconcilePutPermits() {
+        logger.debug("reconcilePutPermits() - start");
+
     putSidePutPermits_ += takeSidePutPermits_;
     takeSidePutPermits_ = 0;
     return putSidePutPermits_;
@@ -137,7 +147,9 @@ public class BoundedLinkedQueue implements BoundedChannel {
 
 
   /** Return the current capacity of this queue **/
-  public synchronized int capacity() { return capacity_; }
+  public synchronized int capacity() {
+        logger.debug("capacity() - start");
+ return capacity_; }
 
 
   /** 
@@ -148,6 +160,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
    * estimate, for example for resource monitoring purposes.
    **/
   public synchronized int size() {
+        logger.debug("size() - start");
+
     /*
       This should ideally synch on putGuard_, but
       doing so would cause it to block waiting for an in-progress
@@ -168,6 +182,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
    **/
 
   public void setCapacity(int newCapacity) {
+        logger.debug("setCapacity(newCapacity=" + newCapacity + ") - start");
+
     if (newCapacity <= 0) throw new IllegalArgumentException();
     synchronized (putGuard_) {
       synchronized(this) {
@@ -184,6 +200,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
 
   /** Main mechanics for take/poll **/
   protected synchronized Object extract() {
+        logger.debug("extract() - start");
+
     synchronized(head_) {
       Object x = null;
       LinkedNode first = head_.next;
@@ -199,6 +217,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
   }
 
   public Object peek() {
+        logger.debug("peek() - start");
+
     synchronized(head_) {
       LinkedNode first = head_.next;
       if (first != null) 
@@ -209,6 +229,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
   }
 
   public Object take() throws InterruptedException {
+        logger.debug("take() - start");
+
     if (Thread.interrupted()) throw new InterruptedException();
     Object x = extract();
     if (x != null) 
@@ -227,6 +249,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
           }
         }
         catch(InterruptedException ex) {
+                    logger.error("take()", ex);
+
           takeGuard_.notify();
           throw ex; 
         }
@@ -235,6 +259,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
   }
 
   public Object poll(long msecs) throws InterruptedException {
+        logger.debug("poll(msecs=" + msecs + ") - start");
+
     if (Thread.interrupted()) throw new InterruptedException();
     Object x = extract();
     if (x != null) 
@@ -256,6 +282,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
           }
         }
         catch(InterruptedException ex) {
+                    logger.error("poll()", ex);
+
           takeGuard_.notify();
           throw ex; 
         }
@@ -265,6 +293,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
 
   /** Notify a waiting take if needed **/
   protected final void allowTake() {
+        logger.debug("allowTake() - start");
+
     synchronized(takeGuard_) {
       takeGuard_.notify();
     }
@@ -275,7 +305,9 @@ public class BoundedLinkedQueue implements BoundedChannel {
    * Create and insert a node.
    * Call only under synch on putGuard_
    **/
-  protected void insert(Object x) { 
+  protected void insert(Object x) {
+        logger.debug("insert(x=" + x + ") - start");
+ 
     --putSidePutPermits_;
     LinkedNode p = new LinkedNode(x);
     synchronized(last_) {
@@ -290,6 +322,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
   */
 
   public void put(Object x) throws InterruptedException {
+        logger.debug("put(x=" + x + ") - start");
+
     if (x == null) throw new IllegalArgumentException();
     if (Thread.interrupted()) throw new InterruptedException();
 
@@ -306,7 +340,9 @@ public class BoundedLinkedQueue implements BoundedChannel {
                 }
               }
             }
-            catch (InterruptedException ex) { 
+            catch (InterruptedException ex) {
+                            logger.error("put()", ex);
+ 
               notify(); 
               throw ex; 
             }
@@ -320,6 +356,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
   }
 
   public boolean offer(Object x, long msecs) throws InterruptedException {
+        logger.debug("offer(x=" + x + ", msecs=" + msecs + ") - start");
+
     if (x == null) throw new IllegalArgumentException();
     if (Thread.interrupted()) throw new InterruptedException();
 
@@ -348,7 +386,9 @@ public class BoundedLinkedQueue implements BoundedChannel {
                   }
                 }
               }
-              catch (InterruptedException ex) { 
+              catch (InterruptedException ex) {
+                                logger.error("offer()", ex);
+ 
                 notify(); 
                 throw ex; 
               }
@@ -365,6 +405,8 @@ public class BoundedLinkedQueue implements BoundedChannel {
   }
 
   public boolean isEmpty() {
+        logger.debug("isEmpty() - start");
+
     synchronized(head_) {
       return head_.next == null;
     }

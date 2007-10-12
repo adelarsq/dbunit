@@ -21,6 +21,9 @@
 
 package org.dbunit.dataset.csv;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.csv.handlers.*;
 
 import java.io.*;
@@ -32,6 +35,11 @@ import java.util.List;
 
 public class CsvParserImpl implements CsvParser {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CsvParserImpl.class);
+
     private Pipeline pipeline;
 
     public CsvParserImpl() {
@@ -39,6 +47,8 @@ public class CsvParserImpl implements CsvParser {
     }
 
     private void resetThePipeline() {
+        logger.debug("resetThePipeline() - start");
+
         pipeline = new Pipeline();
         getPipeline().putFront(SeparatorHandler.ENDPIECE());
         getPipeline().putFront(EscapeHandler.ACCEPT());
@@ -50,6 +60,7 @@ public class CsvParserImpl implements CsvParser {
     }
 
     public List parse(String csv) throws PipelineException, IllegalInputCharacterException {
+        logger.debug("parse(csv=" + csv + ") - start");
 
         getPipeline().resetProducts();
         CharacterIterator iterator = new StringCharacterIterator(csv);
@@ -62,16 +73,22 @@ public class CsvParserImpl implements CsvParser {
     }
 
     public List parse(File file) throws IOException, CsvParserException {
+        logger.debug("parse(file=" + file + ") - start");
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         return parse(reader, file.getAbsolutePath().toString());
     }
     
     public List parse(URL url) throws IOException, CsvParserException {
+        logger.debug("parse(url=" + url + ") - start");
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
         return parse(reader, url.toString());
     }
     
     public List parse(Reader reader, String source) throws IOException, CsvParserException {
+        logger.debug("parse(reader=" + reader + ", source=" + source + ") - start");
+
         LineNumberReader lineNumberReader = new LineNumberReader(reader);
         List rows = new ArrayList();
         List columnsInFirstLine = parseFirstLine(lineNumberReader, source, rows);
@@ -80,11 +97,17 @@ public class CsvParserImpl implements CsvParser {
     }
 
     private List parseFirstLine(LineNumberReader lineNumberReader, File file, List rows) throws IOException, CsvParserException {
+        logger.debug("parseFirstLine(lineNumberReader=" + lineNumberReader + ", file=" + file + ", rows=" + rows
+                + ") - start");
+
     	return parseFirstLine(lineNumberReader, file.getAbsolutePath().toString(), rows);
     }
 
     /** parse the first line of data from the given source */
     private List parseFirstLine(LineNumberReader lineNumberReader, String source, List rows) throws IOException, CsvParserException {
+        logger.debug("parseFirstLine(lineNumberReader=" + lineNumberReader + ", source=" + source + ", rows=" + rows
+                + ") - start");
+
         String firstLine = lineNumberReader.readLine();
         if (firstLine == null)
             throw new CsvParserException("The first line of " + source + " is null");
@@ -95,6 +118,9 @@ public class CsvParserImpl implements CsvParser {
     }
 
     private void parseTheData(final List columnsInFirstLine, LineNumberReader lineNumberReader, List rows) throws IOException, CsvParserException {
+        logger.debug("parseTheData(columnsInFirstLine=" + columnsInFirstLine + ", lineNumberReader=" + lineNumberReader
+                + ", rows=" + rows + ") - start");
+
         int nColumns = columnsInFirstLine.size();
         List columns;
         while ((columns = collectExpectedNumberOfColumns(nColumns, lineNumberReader)) != null) {
@@ -103,6 +129,8 @@ public class CsvParserImpl implements CsvParser {
     }
 
     private List collectExpectedNumberOfColumns(int expectedNumberOfColumns, LineNumberReader lineNumberReader) throws IOException, CsvParserException  {
+        logger.debug("collectExpectedNumberOfColumns(expectedNumberOfColumns=" + expectedNumberOfColumns
+                + ", lineNumberReader=" + lineNumberReader + ") - start");
 
         List columns = null;
         int columnsCollectedSoFar = 0;
@@ -117,6 +145,8 @@ public class CsvParserImpl implements CsvParser {
                 columns = parse(buffer.toString());
                 columnsCollectedSoFar = columns.size();
             } catch (IllegalStateException e) {
+                logger.error("collectExpectedNumberOfColumns()", e);
+
                 resetThePipeline();
                 anotherLine = lineNumberReader.readLine();
                 if(anotherLine == null)
@@ -137,10 +167,14 @@ public class CsvParserImpl implements CsvParser {
     }
 
     Pipeline getPipeline() {
+        logger.debug("getPipeline() - start");
+
         return pipeline;
     }
 
     void setPipeline(Pipeline pipeline) {
+        logger.debug("setPipeline(pipeline=" + pipeline + ") - start");
+
         this.pipeline = pipeline;
     }
 }

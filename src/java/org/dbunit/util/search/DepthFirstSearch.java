@@ -27,8 +27,8 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import org.apache.commons.collections.set.ListOrderedSet;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.dbunit.util.CollectionsHelper;
 
 /**
@@ -49,7 +49,7 @@ public class DepthFirstSearch implements ISearchAlgorithm {
   private Set scannedNodes;
   private Set reverseScannedNodes;
 
-  protected final Log logger = LogFactory.getLog(getClass());
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
   
   // result of the search
   private Set result;
@@ -68,6 +68,8 @@ public class DepthFirstSearch implements ISearchAlgorithm {
    */
   public Set search(Object[] nodesFrom, ISearchCallback callback)
       throws SearchException {
+        logger.debug("search(nodesFrom=" + nodesFrom + ", callback=" + callback + ") - start");
+
     return search(CollectionsHelper.objectsToSet(nodesFrom), callback);
   }
   
@@ -76,6 +78,8 @@ public class DepthFirstSearch implements ISearchAlgorithm {
    */
   public Set search(Set nodesFrom, ISearchCallback callback)
       throws SearchException {
+        logger.debug("search(nodesFrom=" + nodesFrom + ", callback=" + callback + ") - start");
+
     synchronized (this) {
       if (searching) {
         throw new IllegalStateException("already searching/searched");

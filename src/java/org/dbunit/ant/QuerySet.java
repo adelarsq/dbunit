@@ -21,6 +21,9 @@
 
  package org.dbunit.ant;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +97,12 @@ import org.apache.tools.ant.types.FilterSet;
  * @since Sep. 13 2004
  */
 public class QuerySet {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(QuerySet.class);
+
 	private String id;
 	private String refid;
 	private List queries = new ArrayList();
@@ -107,32 +116,46 @@ public class QuerySet {
 	}
 
 	public void addQuery(Query query) {
+        logger.debug("addQuery(query=" + query + ") - start");
+
 		queries.add(query);
 	}
 
 	public void addFilterSet(FilterSet filterSet) {
+        logger.debug("addFilterSet(filterSet=" + filterSet + ") - start");
+
 		filterSets.add(filterSet);
 	}
 
 	public String getId() {
+        logger.debug("getId() - start");
+
 		return id;
 	}
 
 	public String getRefid() {
+        logger.debug("getRefid() - start");
+
 		return refid;
 	}
 
 	public void setId(String string) {
+        logger.debug("setId(string=" + string + ") - start");
+
 		if(refid != null) throw new BuildException(ERR_MSG);
 		id = string;
 	}
 
 	public void setRefid(String string) {
+        logger.debug("setRefid(string=" + string + ") - start");
+
 		if(id != null) throw new BuildException(ERR_MSG);
 		refid = string;
 	}
 
 	protected List getQueries() {
+        logger.debug("getQueries() - start");
+
 		Iterator i = queries.iterator();
 		while(i.hasNext()) {
 			Query query = (Query)i.next();
@@ -144,6 +167,8 @@ public class QuerySet {
 	}
 
 	private void replaceTokens(Query query) {
+        logger.debug("replaceTokens(query=" + query + ") - start");
+
 		Iterator i = filterSets.iterator();
 		while(i.hasNext()) {
 			FilterSet filterSet = (FilterSet)i.next();
@@ -153,6 +178,8 @@ public class QuerySet {
 
 
 	public void copyQueriesFrom(QuerySet referenced) {
+        logger.debug("copyQueriesFrom(referenced=" + referenced + ") - start");
+
 		Iterator i = referenced.queries.iterator();
 		while(i.hasNext()) {
 			addQuery((Query)i.next());

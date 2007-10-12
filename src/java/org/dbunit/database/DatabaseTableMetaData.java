@@ -21,6 +21,9 @@
 
 package org.dbunit.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.dataset.datatype.DataType;
@@ -39,6 +42,12 @@ import java.util.List;
  */
 public class DatabaseTableMetaData extends AbstractTableMetaData
 {
+
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseTableMetaData.class);
+
     private final String _tableName;
     private final IDatabaseConnection _connection;
     private Column[] _columns;
@@ -55,6 +64,9 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             ResultSet resultSet, IDataTypeFactory dataTypeFactory)
             throws DataSetException, SQLException
     {
+        logger.debug("createMetaData(tableName=" + tableName + ", resultSet=" + resultSet + ", dataTypeFactory="
+                + dataTypeFactory + ") - start");
+
         ResultSetMetaData metaData = resultSet.getMetaData();
         Column[] columns = new Column[metaData.getColumnCount()];
         for (int i = 0; i < columns.length; i++)
@@ -77,6 +89,9 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             ResultSet resultSet, IDatabaseConnection connection)
             throws SQLException, DataSetException
     {
+        logger.debug("createMetaData(tableName=" + tableName + ", resultSet=" + resultSet + ", connection="
+                + connection + ") - start");
+
         DatabaseConfig config = connection.getConfig();
         IDataTypeFactory typeFactory = (IDataTypeFactory)config.getProperty(
                 DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
@@ -85,6 +100,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
     private String[] getPrimaryKeyNames() throws SQLException
     {
+        logger.debug("getPrimaryKeyNames() - start");
+
         // qualified names support
         String schemaName = _connection.getSchema();
         String tableName = _tableName;
@@ -128,6 +145,12 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
     private class PrimaryKeyData implements Comparable
     {
+
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(PrimaryKeyData.class);
+
         private final String _name;
         private final int _index;
 
@@ -139,11 +162,15 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
         public String getName()
         {
+            logger.debug("getName() - start");
+
             return _name;
         }
 
         public int getIndex()
         {
+            logger.debug("getIndex() - start");
+
             return _index;
         }
 
@@ -152,6 +179,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
         public int compareTo(Object o)
         {
+            logger.debug("compareTo(o=" + o + ") - start");
+
             PrimaryKeyData data = (PrimaryKeyData)o;
             return getIndex() - data.getIndex();
         }
@@ -162,11 +191,15 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
     public String getTableName()
     {
+        logger.debug("getTableName() - start");
+
         return _tableName;
     }
 
     public Column[] getColumns() throws DataSetException
     {
+        logger.debug("getColumns() - start");
+
         if (_columns == null)
         {
             try
@@ -235,6 +268,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             }
             catch (SQLException e)
             {
+                logger.error("getColumns()", e);
+
                 throw new DataSetException(e);
             }
         }
@@ -243,6 +278,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
     public Column[] getPrimaryKeys() throws DataSetException
     {
+        logger.debug("getPrimaryKeys() - start");
+
         if (_primaryKeys == null)
         {
             try
@@ -263,6 +300,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             }
             catch (SQLException e)
             {
+                logger.error("getPrimaryKeys()", e);
+
                 throw new DataSetException(e);
             }
         }
@@ -273,6 +312,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     // Object class
     public String toString()
     {
+        logger.debug("toString() - start");
+
         try
         {
             String tableName = getTableName();
@@ -282,6 +323,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         }
         catch (DataSetException e)
         {
+            logger.error("toString()", e);
+
             return super.toString();
         }
     }
