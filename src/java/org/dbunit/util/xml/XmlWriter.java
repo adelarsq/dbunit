@@ -472,6 +472,7 @@ public class XmlWriter
         str = replace(str, ">", "&gt;");
         str = replace(str, "\"", "&quot;");
         str = replace(str, "'", "&apos;");
+        str = replace(str, "	", "&#09;");
         return str;
     }
 
