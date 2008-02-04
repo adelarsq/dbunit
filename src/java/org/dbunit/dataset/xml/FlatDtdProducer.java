@@ -248,15 +248,27 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
                 // Support all sequence or choices model but not the mix of both.
                 String delim = (rootModel.indexOf(",") != -1) ? "," : "|";
                 StringTokenizer tokenizer = new StringTokenizer(rootModel, delim);
-                while (tokenizer.hasMoreTokens())
-                {
+                while (tokenizer.hasMoreTokens()) {
                     String tableName = tokenizer.nextToken();
 
                     // Prune ending occurrence operator
-                    if (tableName.endsWith("*") || tableName.endsWith("?") || tableName.endsWith("+"))
-                    {
+                    if (tableName.endsWith("*") || tableName.endsWith("?") || tableName.endsWith("+")) {
                         tableName = tableName.substring(0, tableName.length() - 1);
                     }
+
+					// Interestingly, sometimes a table comes in brackets, e.g. "(mytablename)"
+					// These must be removed because otherwise the list of columns associated with the table
+					// can not be retrieved from the map, i.e. the list of columns (columnList) is null.
+					// This leads to a NullPointerException in DB-Unit 2.2 when columnList is being accessed.
+					// Patch for NullPointerException starts here
+                    if (tableName.startsWith("(")) {
+                        tableName = tableName.substring(1, tableName.length() - 1);
+                    }
+
+                    if (tableName.endsWith(")")) {
+                        tableName = tableName.substring(0, tableName.length() - 1);
+                    }
+                    // Patch for NullPointerException ends here
 
                     List columnList = (List)_columnListMap.get(tableName);
                     Column[] columns = (Column[])columnList.toArray(new Column[0]);
