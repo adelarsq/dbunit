@@ -112,7 +112,7 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
 
     public void setConsumer(IDataSetConsumer consumer) throws DataSetException
     {
-        logger.debug("setConsumer(consumer=" + consumer + ") - start");
+        logger.debug("setConsumer(consumer) - start");
 
         _consumer = consumer;
     }

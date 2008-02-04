@@ -92,7 +92,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
      */
     protected ITableIterator iterator(IDataSet dataSet) throws DatabaseUnitException
     {
-        logger.debug("iterator(dataSet=" + dataSet + ") - start");
+        logger.debug("iterator(dataSet) - start");
 
         return dataSet.iterator();
     }
@@ -131,7 +131,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+        logger.debug("execute(connection=" + connection + ", dataSet) - start");
 
         DatabaseConfig databaseConfig = connection.getConfig();
         IStatementFactory factory = (IStatementFactory)databaseConfig.getProperty(

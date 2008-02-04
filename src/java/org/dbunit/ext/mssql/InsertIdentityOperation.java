@@ -131,7 +131,7 @@ public class InsertIdentityOperation extends AbstractOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+        logger.debug("execute(connection=" + connection + ", dataSet) - start");
 
         Connection jdbcConnection = connection.getConnection();
         Statement statement = jdbcConnection.createStatement();

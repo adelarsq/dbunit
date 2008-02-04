@@ -272,7 +272,7 @@ public class DbUnitTask extends Task
      */
     public void addOperation(Operation operation)
     {
-        logger.debug("addOperation(operation=" + operation + ") - start");
+        logger.debug("addOperation(operation) - start");
 
         steps.add(operation);
     }
@@ -282,7 +282,7 @@ public class DbUnitTask extends Task
      */
     public void addCompare(Compare compare)
     {
-        logger.debug("addCompare(compare=" + compare + ") - start");
+        logger.debug("addCompare(compare) - start");
 
         steps.add(compare);
     }
@@ -292,7 +292,7 @@ public class DbUnitTask extends Task
      */
     public void addExport(Export export)
     {
-        logger.debug("addExport(export=" + export + ") - start");
+        logger.debug("addExport(export) - start");
 
     	export.setParentTask(this);
         steps.add(export);
