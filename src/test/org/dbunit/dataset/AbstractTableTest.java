@@ -21,10 +21,10 @@
 
 package org.dbunit.dataset;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import junit.framework.TestCase;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
@@ -36,7 +36,7 @@ public abstract class AbstractTableTest extends TestCase
     protected static final int ROW_COUNT = 6;
     protected static final int COLUMN_COUNT = 4;
 
-    protected final Log logger = LogFactory.getLog(getClass());
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
     
     public AbstractTableTest(String s)
     {

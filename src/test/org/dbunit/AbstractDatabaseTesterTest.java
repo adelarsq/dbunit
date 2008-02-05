@@ -23,13 +23,13 @@ package org.dbunit;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.SortedTable;
 import org.dbunit.operation.DatabaseOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Andres Almiray <aalmiray@users.sourceforge.net>
@@ -39,7 +39,7 @@ public abstract class AbstractDatabaseTesterTest extends TestCase
    protected IDatabaseConnection _connection;
    protected IDatabaseTester _databaseTester;
 
-   protected final Log logger = LogFactory.getLog( getClass() );
+   protected final Logger logger = LoggerFactory.getLogger( getClass() );
 
    public AbstractDatabaseTesterTest( String s )
    {

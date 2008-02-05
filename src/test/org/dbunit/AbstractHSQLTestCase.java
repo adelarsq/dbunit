@@ -6,12 +6,13 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 
 import org.dbunit.util.CollectionsHelper;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractHSQLTestCase extends TestCase {
   
@@ -59,7 +60,7 @@ public abstract class AbstractHSQLTestCase extends TestCase {
   private final String sqlFile;
   private IDatabaseConnection connection;
   
-  protected final Log logger = LogFactory.getLog(getClass());
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
 
   public AbstractHSQLTestCase(String testName, String sqlFile) {
     super(testName);
