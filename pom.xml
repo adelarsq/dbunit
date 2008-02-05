@@ -236,13 +236,6 @@
     </dependency>       
 
     <dependency>
-     <groupId>commons-logging</groupId>
-     <artifactId>commons-logging</artifactId>
-<!-- TODO: update or use range-->
-     <version>1.0.4</version>
-    </dependency>
-
-    <dependency>
      <groupId>org.slf4j</groupId>
      <artifactId>slf4j-api</artifactId>
      <version>1.4.3</version>
@@ -252,7 +245,7 @@
      <groupId>org.slf4j</groupId>
      <artifactId>slf4j-nop</artifactId>
      <version>1.4.3</version>
-     <scope>test</scope>
+     <scope>runtime</scope>
     </dependency>
 
   </dependencies>
