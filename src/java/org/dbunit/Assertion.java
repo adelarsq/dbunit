@@ -58,8 +58,7 @@ public class Assertion
     public static void assertEquals(IDataSet expectedDataSet,
             IDataSet actualDataSet) throws DatabaseUnitException
     {
-        logger.debug("assertEquals(expectedDataSet=" + expectedDataSet + ", actualDataSet=" + actualDataSet
-                + ") - start");
+        logger.debug("assertEquals(expectedDataSet={}, actualDataSet={}) - start", expectedDataSet, actualDataSet);
 
         // do not continue if same instance
         if (expectedDataSet == actualDataSet)
@@ -104,7 +103,7 @@ public class Assertion
     public static void assertEquals(ITable expectedTable, ITable actualTable)
             throws DatabaseUnitException
     {
-        logger.debug("assertEquals(expectedTable=" + expectedTable + ", actualTable=" + actualTable + ") - start");
+        logger.debug("assertEquals(expectedTable={}, actualTable={}) - start", expectedTable, actualTable);
 
         // Do not continue if same instance
         if (expectedTable == actualTable)
@@ -169,8 +168,7 @@ public class Assertion
     static DataType getComparisonDataType(String tableName, Column expectedColumn,
             Column actualColumn)
     {
-        logger.debug("getComparisonDataType(tableName=" + tableName + ", expectedColumn=" + expectedColumn
-                + ", actualColumn=" + actualColumn + ") - start");
+        logger.debug("getComparisonDataType(tableName={}, expectedColumn={}, actualColumn={}) - start", new Object[] {tableName, expectedColumn, actualColumn});
 
         DataType expectedDataType = expectedColumn.getDataType();
         DataType actualDataType = actualColumn.getDataType();
@@ -208,7 +206,7 @@ public class Assertion
     private static Column[] getSortedColumns(ITableMetaData metaData)
             throws DataSetException
     {
-        logger.debug("getSortedColumns(metaData=" + metaData + ") - start");
+        logger.debug("getSortedColumns(metaData={}) - start", metaData);
 
         Column[] columns = metaData.getColumns();
         Column[] sortColumns = new Column[columns.length];
@@ -219,7 +217,7 @@ public class Assertion
 
     private static String getColumnNamesAsString(Column[] columns)
     {
-        logger.debug("getColumnNamesAsString(columns=" + columns + ") - start");
+        logger.debug("getColumnNamesAsString(columns={}) - start", columns);
 
         String[] names = new String[columns.length];
         for (int i = 0; i < columns.length; i++)
@@ -233,7 +231,7 @@ public class Assertion
     private static String[] getSortedUpperTableNames(IDataSet dataSet)
             throws DataSetException
     {
-        logger.debug("getSortedUpperTableNames(dataSet=" + dataSet + ") - start");
+        logger.debug("getSortedUpperTableNames(dataSet={}) - start", dataSet);
 
         String[] names = dataSet.getTableNames();
         for (int i = 0; i < names.length; i++)
@@ -257,7 +255,7 @@ public class Assertion
 
         public int compare(Object o1, Object o2)
         {
-            logger.debug("compare(o1=" + o1 + ", o2=" + o2 + ") - start");
+            logger.debug("compare(o1={}, o2={}) - start", o1, o2);
 
             Column column1 = (Column)o1;
             Column column2 = (Column)o2;

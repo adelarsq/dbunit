@@ -39,10 +39,10 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractDatabaseTester implements IDatabaseTester
 {
 
-    /**
-     * Logger for this class
-     */
-    private static final Logger logger = LoggerFactory.getLogger(AbstractDatabaseTester.class);
+   /**
+    * Logger for this class
+    */
+   private static final Logger logger = LoggerFactory.getLogger(AbstractDatabaseTester.class);
 
    private IDataSet dataSet;
    private String schema;
@@ -56,7 +56,7 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
 
    public void closeConnection( IDatabaseConnection connection ) throws Exception
    {
-        logger.debug("closeConnection(connection=" + connection + ") - start");
+        logger.debug("closeConnection(connection={}) - start",connection);
 
       connection.close();
    }
@@ -78,34 +78,33 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
    public void onTearDown() throws Exception
    {
         logger.debug("onTearDown() - start");
-
       executeOperation( getTearDownOperation() );
    }
 
    public void setDataSet( IDataSet dataSet )
    {
-        logger.debug("setDataSet(dataSet=" + dataSet + ") - start");
+        logger.debug("setDataSet(dataSet={}) - start", dataSet);
 
       this.dataSet = dataSet;
    }
 
    public void setSchema( String schema )
    {
-        logger.debug("setSchema(schema=" + schema + ") - start");
+        logger.debug("setSchema(schema={}) - start", schema);
 
       this.schema = schema;
    }
 
    public void setSetUpOperation( DatabaseOperation setUpOperation )
    {
-        logger.debug("setSetUpOperation(setUpOperation=" + setUpOperation + ") - start");
+        logger.debug("setSetUpOperation(setUpOperation={}) - start", setUpOperation);
 
       this.setUpOperation = setUpOperation;
    }
 
    public void setTearDownOperation( DatabaseOperation tearDownOperation )
    {
-        logger.debug("setTearDownOperation(tearDownOperation=" + tearDownOperation + ") - start");
+        logger.debug("setTearDownOperation(tearDownOperation={}) - start", tearDownOperation);
 
       this.tearDownOperation = tearDownOperation;
    }
@@ -116,7 +115,7 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
     */
    protected void assertNotNullNorEmpty( String propertyName, String property )
    {
-        logger.debug("assertNotNullNorEmpty(propertyName=" + propertyName + ", property=" + property + ") - start");
+        logger.debug("assertNotNullNorEmpty(propertyName={}, property={}) - start", propertyName, property);
 
       Assert.assertNotNull( propertyName + " is null", property );
       Assert.assertTrue( "Invalid " + propertyName, property.trim()
@@ -128,7 +127,7 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
     */
    protected String getSchema()
    {
-        logger.debug("getSchema() - start");
+        logger.trace("getSchema() - start");
 
       return schema;
    }
@@ -138,7 +137,7 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
     */
    protected DatabaseOperation getSetUpOperation()
    {
-        logger.debug("getSetUpOperation() - start");
+        logger.trace("getSetUpOperation() - start");
 
       return setUpOperation;
    }
@@ -148,7 +147,7 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
     */
    protected DatabaseOperation getTearDownOperation()
    {
-        logger.debug("getTearDownOperation() - start");
+        logger.trace("getTearDownOperation() - start");
 
       return tearDownOperation;
    }
@@ -159,7 +158,7 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
     */
    private void executeOperation( DatabaseOperation operation ) throws Exception
    {
-        logger.debug("executeOperation(operation=" + operation + ") - start");
+        logger.debug("executeOperation(operation={}) - start", operation);
 
       if( operation != DatabaseOperation.NONE ){
          IDatabaseConnection connection = getConnection();
