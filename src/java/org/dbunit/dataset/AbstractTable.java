@@ -58,7 +58,7 @@ public abstract class AbstractTable implements ITable
 
         if (row >= rowCount)
         {
-            throw new RowOutOfBoundsException(row + " > " + rowCount);
+            throw new RowOutOfBoundsException(row + " >= " + rowCount);
         }
     }
 
