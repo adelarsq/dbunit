@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002-2004, DbUnit.org
+ * Copyright (C)2008, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.ext.hsqldb;
+package org.dbunit.ext.h2;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,21 +26,23 @@ import org.slf4j.LoggerFactory;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
 
 /**
- * Specialized factory that recognizes Hsqldb data types.
- * TODO: this class is pretty much the same as {@link H2DataTypeFactory}, so they should derive from a common
+ * Specialized factory that recognizes H2 data types.
+ * TODO: this class is pretty much the same as {@link HsqldbDataTypeFactory}, so they should derive from a common
  * superclass - see issue 1897620
+
  *
- * @author Klas Axell
+ * @author Felipe Leme
  */
-public class HsqldbDataTypeFactory extends DefaultDataTypeFactory
+public class H2DataTypeFactory extends DefaultDataTypeFactory
 {
 
     /**
      * Logger for this class
      */
-    private static final Logger logger = LoggerFactory.getLogger(HsqldbDataTypeFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(H2DataTypeFactory.class);
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {

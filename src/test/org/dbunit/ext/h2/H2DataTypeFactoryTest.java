@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002-2004, DbUnit.org
+ * Copyright (C)2008, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.ext.hsqldb;
+package org.dbunit.ext.h2;
 
 import org.dbunit.dataset.datatype.AbstractDataTypeFactoryTest;
 import org.dbunit.dataset.datatype.DataType;
@@ -27,21 +27,22 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
 import java.sql.Types;
 
 /**
- * @author Klas Axell
+ * @author Felipe Leme
  */
-public class HsqldbDataTypeFactoryTest extends AbstractDataTypeFactoryTest
+public class H2DataTypeFactoryTest extends AbstractDataTypeFactoryTest
 {
-    public HsqldbDataTypeFactoryTest(String s)
+    public H2DataTypeFactoryTest(String s)
     {
         super(s);
     }
 
     public IDataTypeFactory createFactory() throws Exception
     {
-        return new HsqldbDataTypeFactory();
+        return new H2DataTypeFactory();
     }
 
     // TODO: this test case is wrong, as it pass even if the custom code on createDataType() is removed
+    // see issue 1897620
     public void testCreateBooleanDataType() throws Exception
     {
         int sqlType = Types.BIT;

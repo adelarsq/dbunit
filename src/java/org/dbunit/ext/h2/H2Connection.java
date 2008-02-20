@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002-2004, DbUnit.org
+ * Copyright (C)2008, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,27 +18,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.ext;
+package org.dbunit.ext.h2;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.DatabaseConnection;
+
+import java.sql.Connection;
 
 /**
- * @author Manuel Laflamme
- * @since Aug 13, 2003
- * @version $Revision$
+ *
+ * @author Felipe Leme
  */
-public class AllTests extends TestSuite
+public class H2Connection extends DatabaseConnection
 {
-    public static Test suite() throws Exception
+    public H2Connection(Connection connection, String schema)
     {
-        TestSuite suite = new TestSuite();
-        suite.addTest(org.dbunit.ext.db2.AllTests.suite());
-        suite.addTest(org.dbunit.ext.mssql.AllTests.suite());
-        suite.addTest(org.dbunit.ext.mysql.AllTests.suite());
-        suite.addTest(org.dbunit.ext.oracle.AllTests.suite());
-        suite.addTest(org.dbunit.ext.hsqldb.AllTests.suite());
-        suite.addTest(org.dbunit.ext.h2.AllTests.suite());
-        return suite;
+        super(connection, schema);
+        getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
+                new H2DataTypeFactory());
     }
 }
