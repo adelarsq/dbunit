@@ -60,6 +60,10 @@ public class MySqlDataTypeFactory extends DefaultDataTypeFactory
             {
                 return DataType.BOOLEAN; 
             }
+            else if("point".equals(sqlTypeName))
+            {
+                return DataType.BINARY; 
+            }
         }
 
         return super.createDataType(sqlType, sqlTypeName);

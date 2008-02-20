@@ -62,4 +62,15 @@ public class MySqlDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
         assertSame("type", expected, actual);
     }
+    
+    public void testCreatePointDataType() throws Exception
+    {
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "point";
+
+        DataType expected = DataType.BINARY;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+    
 }
