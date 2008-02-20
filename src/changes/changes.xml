@@ -8,6 +8,7 @@
 
   <body>
     <release version="2.2.1-SNAPSHOT" date="TBD" description="Another official release after a long, long time...">    
+     <action dev="felipeal" type="fix" issue="1897627" >Removed JUnit dependency on IDatabaseTester implementations</action>    
      <action dev="felipeal" type="add" issue="1897612" >Created H2 data factory</action>    
      <action dev="felipeal" type="add" issue="1798605" due-to="Vera Wahler">New point Datatype on MySqlDataTypeFactory</action>    
      <action dev="felipeal" type="fix" issue="1735506" due-to="Greg Morgan">Improvements on M2 build - Additional files</action>    

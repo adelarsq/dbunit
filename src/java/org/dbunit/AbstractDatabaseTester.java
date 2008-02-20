@@ -21,8 +21,6 @@
 
 package org.dbunit;
 
-import junit.framework.Assert;
-
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
@@ -117,12 +115,24 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
    {
         logger.debug("assertNotNullNorEmpty(propertyName={}, property={}) - start", propertyName, property);
 
-      Assert.assertNotNull( propertyName + " is null", property );
-      Assert.assertTrue( "Invalid " + propertyName, property.trim()
+      assertTrue( propertyName + " is null", property != null );
+      assertTrue( "Invalid " + propertyName, property.trim()
             .length() > 0 );
    }
 
    /**
+    * Method used to avoid JUnit dependency
+    * @param message message displayed if assertion is false
+    * @param condition condition to be tested
+    */
+   protected void assertTrue(String message, boolean condition) {
+     if (!condition) {
+       throw new AssertionFailedError( message );
+     }
+    
+  }
+
+  /**
     * Returs the schema value.
     */
    protected String getSchema()
@@ -170,4 +180,22 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
          }
       }
    }
+
+   /**
+    * Exception used to avoid JUnit dependency.
+    * @author Felipe Leme
+    *
+    */
+   public static class AssertionFailedError extends Error {
+
+     private static final long serialVersionUID= 1L;
+     
+     public AssertionFailedError () {
+     }
+     public AssertionFailedError (String message) {
+       super (message);
+     }
+   }
+   
 }
+

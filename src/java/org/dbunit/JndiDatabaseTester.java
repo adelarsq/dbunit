@@ -23,8 +23,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import junit.framework.Assert;
-
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 
@@ -93,11 +91,11 @@ public class JndiDatabaseTester extends AbstractDatabaseTester
       Context context = new InitialContext( environment );
       assertNotNullNorEmpty( "lookupName", lookupName );
       Object obj = context.lookup( lookupName );
-      Assert.assertNotNull( "JNDI object with [" + lookupName + "] not found", obj );
-      Assert.assertTrue( "Object [" + obj + "] at JNDI location [" + lookupName
+      assertTrue( "JNDI object with [" + lookupName + "] not found", obj!=null );
+      assertTrue( "Object [" + obj + "] at JNDI location [" + lookupName
             + "] is not of type [" + DataSource.class.getName() + "]", obj instanceof DataSource );
       dataSource = (DataSource) obj;
-      Assert.assertNotNull( "DataSource is not set", dataSource );
+      assertTrue( "DataSource is not set", dataSource!=null );
       initialized = true;
    }
 }
