@@ -1,7 +1,53 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="DbUnit">
 
+  <bannerLeft>
+    <name>${project.name}</name>
+    <src>/images/dbunit-logo.jpg</src>
+    <href>http://www.dbunit.org</href>
+  </bannerLeft>
+
+  <bannerRight>
+    <name>DbUnit.org</name>
+    <src>http://sourceforge.net/sflogo.php?group_id=47439&amp;type=5</src>
+    <href>http://www.sourceforge.net/projects/dbunit</href>
+  </bannerRight>
+
+  <!-- position can be
+       right, left, navigation-top, navigation-bottom, bottom
+    -->
+  <publishDate format="dd-MMM-yyyy" position="navigation-bottom" />
+
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <!-- 
+         The choices are
+         maven-application-skin
+         maven-classic-skin
+         maven-default-skin
+         maven-stylus-skin
+         Perform a "mvn clean site" after a skin change.
+      -->
+    <artifactId>maven-default-skin</artifactId>
+  </skin>
+
   <body>
+
+    <head>
+      <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+      <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    </head>
+
+    <breadcrumbs>
+      <item name="JUnit" href="http://www.junit.org/index.htm"/>
+      <item name="DBUnit" href="http://www.dbunit.org"/>
+    </breadcrumbs>
+
+    <links>
+      <item name="JUnit" href="http://www.junit.org/index.htm"/>
+      <item name="DBUnit" href="http://www.dbunit.org"/>
+    </links>
+
     <menu name="Quick Links">
       <item name="Maven 1.x Plugin" href="http://maven-plugins.sourceforge.net/maven-dbunit-plugin/index.html"/>      
       <item name="Maven 2 Plugin"  href="http://mojo.codehaus.org/dbunit-maven-plugin/"/>      
@@ -14,6 +60,7 @@
       <item name="Browse source" href="/jxr-report.html"/>          
       <item name="JavaDocs"        href="/apidocs/index.html"/>          
     </menu>
+
     <menu name="Overview">
       <item name="About DbUnit"            href="/index.html"/>  
       <item name="Database Testing" href="/intro.html"/>   
@@ -25,6 +72,11 @@
       <item name="Building DbUnit"    	   href="/building.html"/>
       <item name="Resources"       href="/resources.html"/> 
     </menu>
-    ${reports}
+
+    <menu ref="parent"/>
+    <menu ref="modules"/>
+    <menu ref="reports"/>
+
   </body>
+
 </project>
