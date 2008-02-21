@@ -121,6 +121,15 @@
        <!--  <role>Original Ant Task Contributor</role> -->
       </roles>
     </developer>
+    <developer>
+      <name>Roberto Lo Giacco</name>
+      <id>rlogiacco</id>
+      <email>rlogiacco@users.sourceforge.net</email>
+      <organization>SmartLab</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <contributors>
