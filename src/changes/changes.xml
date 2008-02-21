@@ -12,6 +12,11 @@
      <action dev="felipeal" type="add" issue="1897612" >Created H2 data factory</action>    
      <action dev="felipeal" type="add" issue="1798605" due-to="Vera Wahler">New point Datatype on MySqlDataTypeFactory</action>    
      <action dev="felipeal" type="fix" issue="1735506" due-to="Greg Morgan">Improvements on M2 build - Additional files</action>    
+     <action dev="rlogiacco" type="fix" issue="1849219" due-to="JensFransson">NPE in FlatDtdProducer.java at line 224</action>
+     <action dev="rlogiacco" type="fix" issue="1849165" due-to="Markus Thielen">Bug in XmlWriter / escapeXml</action>
+     <action dev="rlogiacco" type="fix" issue="1786425" >Database schema with escape pattern doesn't work</action>
+     <action dev="rlogiacco" type="fix" issue="1712122" due-to="Chris R. Salch">Misleading error reported by RowOutOfBoundsException</action>
+     <action dev="rlogiacco" type="fix" issue="1328956" due-to="Reuben Firmin">NPE In InsertIdentityOperation</action>
     </release>
     <release version="2.2" date="December 28, 2006" description="First official release in a long, long time...">    
      <action dev="felipeal" type="add" issue="1473744" due-to="Andres Almiray">Enable TestCase compositions</action>    
