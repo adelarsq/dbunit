@@ -32,14 +32,15 @@ import org.dbunit.dataset.datatype.TypeCastException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-    public class OracleLongVarCharDataType extends StringDataType {
-/**
+    public class OracleLongDataType extends StringDataType {
+
+    /**
      * Logger for this class
      */
-    private static final Logger logger = LoggerFactory.getLogger(OracleLongVarCharDataType.class);
+    private static final Logger logger = LoggerFactory.getLogger(OracleLongDataType.class);
 
-        public OracleLongVarCharDataType() {
-            super("LONG", Types.LONGVARCHAR);
+        public OracleLongDataType() {
+            super("LONGVARCHAR", Types.LONGVARCHAR);
         }
 
         public void setSqlValue(Object value, int column,

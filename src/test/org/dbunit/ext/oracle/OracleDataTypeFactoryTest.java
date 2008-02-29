@@ -132,5 +132,15 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
         assertSame("type", expected, actual);
     }
+    
+    public void testCreateLongDataType() throws Exception
+    {
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "LONG";
+
+        DataType expected = DataType.LONGVARCHAR;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
 
 }
