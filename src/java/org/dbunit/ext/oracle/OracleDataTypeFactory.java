@@ -49,7 +49,8 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
     public static final DataType ORACLE_NCLOB = new OracleNClobDataType();
     public static final DataType LONG_RAW = new BinaryStreamDataType(
             "LONG RAW", Types.LONGVARBINARY);
-
+    public static final DataType LONG_VAR_CHAR = new OracleLongVarCharDataType();
+    
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
         logger.debug("createDataType(sqlType=" + sqlType + ", sqlTypeName=" + sqlTypeName + ") - start");
@@ -107,7 +108,11 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
         {
             return LONG_RAW;
         }
-
+        
+        if (sqlType == Types.LONGVARCHAR || "LONG".equals(sqlTypeName)) 
+        {
+            return LONG_VAR_CHAR;
+        }
         return super.createDataType(sqlType, sqlTypeName);
     }
 }
