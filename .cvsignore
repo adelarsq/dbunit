@@ -1,9 +1,0 @@
-*.log
-.classpath
-target
-*.ser
-junit*.properties
-.project
-spy.*
-tmp
-idea
