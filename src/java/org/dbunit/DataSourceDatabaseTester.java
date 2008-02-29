@@ -60,6 +60,10 @@ public class DataSourceDatabaseTester extends AbstractDatabaseTester
         logger.debug("getConnection() - start");
 
       assertTrue( "DataSource is not set", dataSource!=null );
-      return new DatabaseConnection( dataSource.getConnection() );
+      if( getSchema() != null ){
+         return new DatabaseConnection( dataSource.getConnection(), getSchema() );
+      }else{
+         return new DatabaseConnection( dataSource.getConnection() );
+      }
    }
 }

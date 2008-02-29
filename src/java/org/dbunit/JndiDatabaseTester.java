@@ -75,7 +75,11 @@ public class JndiDatabaseTester extends AbstractDatabaseTester
          initialize();
       }
 
-      return new DatabaseConnection( dataSource.getConnection() );
+      if( getSchema() != null ){
+         return new DatabaseConnection( dataSource.getConnection(), getSchema() );
+      }else{
+         return new DatabaseConnection( dataSource.getConnection() );
+      }
    }
 
    /**

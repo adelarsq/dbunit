@@ -18,6 +18,7 @@
      <action dev="rlogiacco" type="fix" issue="1712122" due-to="Chris R. Salch">Misleading error reported by RowOutOfBoundsException</action>
      <action dev="rlogiacco" type="fix" issue="1328956" due-to="Reuben Firmin">NPE In InsertIdentityOperation</action>
      <action dev="rlogiacco" type="fix" issue="1600498" due-to="Maxx">Oracle "LONG" datatype NOT supported</action>
+     <action dev="rlogiacco" type="fix" issue="1328956" due-to="Will Sargent">DataSourceDatabaseTest does not use setSchema()</action>
     </release>
     <release version="2.2" date="December 28, 2006" description="First official release in a long, long time...">    
      <action dev="felipeal" type="add" issue="1473744" due-to="Andres Almiray">Enable TestCase compositions</action>    
