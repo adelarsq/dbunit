@@ -24,6 +24,14 @@
 
   <section name="News">
       <table border="1">
+        <tr>
+          <td>2008-02-29</td>
+          <td>Release 2.2.1 is on it's first steps. Snapshot release available on <a href="http://dbunit.sourceforge.net/repo/snapshots">DbUnit Snapshots Maven Repo</a>.</td>
+        </tr>
+        <tr>
+          <td>2007-12-01</td>
+          <td>Roberto Lo Giacco joined the project team.</td>
+        </tr>
         <tr> 
           <td>2006-12-28</td>
           <td>Version 2.2 finally released!!!. See <a href="changes-report.html#2.2">changes</a>.</td>
