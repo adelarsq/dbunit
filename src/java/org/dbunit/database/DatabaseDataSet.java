@@ -96,7 +96,8 @@ public class DatabaseDataSet extends AbstractDataSet
             {
                 sqlBuffer.append(", ");
             }
-            sqlBuffer.append(primaryKeys[i].getColumnName());
+            sqlBuffer.append(DataSetUtils.getQualifiedName(null, primaryKeys[i]
+					.getColumnName(), escapePattern));
 
         }
 
@@ -263,6 +264,7 @@ public class DatabaseDataSet extends AbstractDataSet
         }
     }
 }
+
 
 
 

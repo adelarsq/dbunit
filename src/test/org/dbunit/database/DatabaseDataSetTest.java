@@ -109,6 +109,24 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         String sql = DatabaseDataSet.getSelectStatement(schemaName, metaData, "'?'");
         assertEquals("select statement", expected, sql);
     }
+    
+    public void testGetSelectStatementWithEscapedNamesAndOrderBy() throws Exception
+    {
+        String schemaName = "schema";
+        String tableName = "table";
+        Column[] columns = new Column[]{
+            new Column("c1", DataType.UNKNOWN),
+            new Column("c2", DataType.UNKNOWN),
+            new Column("c3", DataType.UNKNOWN),
+        };
+        String expected = "select 'c1', 'c2', 'c3' from 'schema'.'table' order by 'c1', 'c2'";
+        
+        String[] primaryKeys = { "c1", "c2" };
+
+        ITableMetaData metaData = new DefaultTableMetaData(tableName, columns, primaryKeys);
+        String sql = DatabaseDataSet.getSelectStatement(schemaName, metaData, "'?'");
+        assertEquals("select statement", expected, sql);
+    }
 
     public void testGetSelectStatementWithPrimaryKeys() throws Exception
     {
@@ -266,6 +284,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         // Cannot test! Unsupported feature.
     }
 }
+
 
 
 
