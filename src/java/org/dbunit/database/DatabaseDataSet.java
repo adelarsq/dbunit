@@ -147,8 +147,14 @@ public class DatabaseDataSet extends AbstractDataSet
                 {
                     String schemaName = resultSet.getString(2);
                     String tableName = resultSet.getString(3);
-//                    String tableType = resultSet.getString(4);
-//                    System.out.println("schema=" + schemaName + ", table=" + tableName + ", type=" + tableType + "");
+
+                    // skip oracle 10g recycle bin system tables if enabled
+                    if(_connection.getConfig().getFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES)) {
+                        // Oracle 10g workaround
+                        // don't process system tables (oracle recycle bin tables) which
+                        // are reported to the application due a bug in the oracle JDBC driver
+                        if (tableName.startsWith("BIN$")) continue;	
+                    }
                     tableName = getQualifiedName(schemaName, tableName);
 
                     // prevent table name conflict
@@ -264,6 +270,7 @@ public class DatabaseDataSet extends AbstractDataSet
         }
     }
 }
+
 
 
 

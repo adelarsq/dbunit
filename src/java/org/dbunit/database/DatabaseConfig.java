@@ -64,6 +64,8 @@ public class DatabaseConfig
             "http://www.dbunit.org/features/batchedStatements";
     public static final String FEATURE_DATATYPE_WARNING =
             "http://www.dbunit.org/features/datatypeWarning";
+    public static final String FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES =
+            "http://www.dbunit.org/features/skipOracleRecycleBinTables";
 
     private static final DefaultDataTypeFactory DEFAULT_DATA_TYPE_FACTORY =
             new DefaultDataTypeFactory();

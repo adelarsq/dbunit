@@ -75,7 +75,27 @@
           <td>Description</td>
           <td>Enable or disable the warning message displayed when DbUnit encounter an unsupported data type.</td>
         </tr>
-      </table>
+     </table>
+      
+      <a name="skiporaclereyclebintables"></a>
+      <h4>Skip Oracle 10g Recyclebin tables</h4>
+      <table border="1">
+        <tr> 
+          <td>Feature ID</td>
+          <td>http://www.dbunit.org/features/skipOracleRecycleBinTables</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>false</td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Enable or disable the processing of oracle recycle bin tables (tables starting with BIN$).
+          Oracle 10g recyle bin tables may break DbUnit's assumption of tables name uniqueness within a schema
+          since these table are case sensitive. Enable this feature for Oracle 10g databases until the
+          bug in the oracle driver is fixed, which incorrectly reports this system tables to DbUnit.</td>
+        </tr>
+      </table> 
 
       <h3>Properties</h3>
       <h4><a name="escapepattern">Escape pattern</a></h4>
