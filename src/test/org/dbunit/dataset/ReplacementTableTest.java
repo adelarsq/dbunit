@@ -164,6 +164,58 @@ public class ReplacementTableTest extends AbstractTableTest
         Assertion.assertEquals(expectedTable, actualTable);
     }
 
+    public void testSubstringReplacementWithMultipleReplacementStrings() throws Exception
+    {
+        String tableName = "TABLE_NAME";
+
+        Column[] columns = new Column[] {
+            new Column("ONLY_SUBSTRING", DataType.CHAR),
+            new Column("START_SUBSTRING", DataType.CHAR),
+            new Column("MIDDLE_SUBSTRING", DataType.CHAR),
+            new Column("END_SUBSTRING", DataType.CHAR),
+            new Column("MULTIPLE_SUBSTRING", DataType.CHAR),
+            new Column("NO_SUBSTRING", DataType.CHAR),
+            new Column("NOT_A_STRING", DataType.NUMERIC),
+            new Column("NULL_VALUE", DataType.CHAR),
+        };
+
+        // Setup actual table
+        Object[] actualRow = new Object[] {
+            "substring",
+            "substring_",
+            "_substring_",
+            "_substring",
+            "substringsubstring substring",
+            "this is a string",
+            new Long(0),
+            null,
+        };
+
+        DefaultTable originalTable = new DefaultTable(tableName, columns);
+        originalTable.addRow(actualRow);
+        ReplacementTable actualTable = new ReplacementTable(originalTable);
+        actualTable.addReplacementSubstring("aaaa", "value");
+        actualTable.addReplacementSubstring("substring", "replacement");
+        actualTable.addReplacementSubstring("zzzz", "value");
+
+        // Setup expected table
+        Object[] expectedRow = new Object[] {
+            "replacement",
+            "replacement_",
+            "_replacement_",
+            "_replacement",
+            "replacementreplacement replacement",
+            "this is a string",
+            new Long(0),
+            null,
+        };
+
+        DefaultTable expectedTable = new DefaultTable(tableName, columns);
+        expectedTable.addRow(expectedRow);
+
+        Assertion.assertEquals(expectedTable, actualTable);
+    }
+    
     public void testDelimitedSubstringReplacement() throws Exception
     {
         String tableName = "TABLE_NAME";

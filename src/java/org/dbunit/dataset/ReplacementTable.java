@@ -120,96 +120,40 @@ public class ReplacementTable implements ITable
         _endDelim = endDelimiter;
     }
 
-    private String replaceSubstrings(String value)
-    {
-        logger.debug("replaceSubstrings(value=" + value + ") - start");
-
-        StringBuffer buffer = null;
+    /**
+     * Replace occurrences of source in text with target. Operates directly on text.
+     */
+    private void replaceAll(StringBuffer text, String source, String target) {
+        int index = 0;
+        while((index = text.toString().indexOf(source, index)) != -1)
+        {
+            text.replace(index, index+source.length(), target);
+            index += target.length();
+        }
+    }
+    
+    private String replaceStrings(String value, String lDelim, String rDelim) {
+        StringBuffer buffer = new StringBuffer(value);
 
         for (Iterator it = _substringMap.entrySet().iterator(); it.hasNext();)
         {
             Map.Entry entry = (Map.Entry)it.next();
             String original = (String)entry.getKey();
             String replacement = (String)entry.getValue();
-
-            int startIndex = 0;
-            int lastEndIndex = 0;
-            for(;;)
-            {
-                startIndex = value.indexOf(original, lastEndIndex);
-                if (startIndex == -1)
-                {
-                    if (buffer != null)
-                    {
-                        buffer.append(value.substring(lastEndIndex));
-                    }
-                    break;
-                }
-
-                if (buffer == null)
-                {
-                    buffer = new StringBuffer();
-                }
-                buffer.append(value.substring(lastEndIndex, startIndex));
-                buffer.append(replacement);
-                lastEndIndex = startIndex + original.length();
-            }
+            replaceAll(buffer, lDelim + original + rDelim, replacement);
         }
 
-        return buffer == null ? value : buffer.toString();
+        return buffer == null ? value : buffer.toString();        
     }
+    
+    private String replaceSubstrings(String value)
+    {
+        return replaceStrings(value, "", "");
+    }    
 
     private String replaceDelimitedSubstrings(String value)
     {
-        logger.debug("replaceDelimitedSubstrings(value=" + value + ") - start");
-
-        StringBuffer buffer = null;
-
-        int startIndex = 0;
-        int endIndex = 0;
-        int lastEndIndex = 0;
-        for(;;)
-        {
-            startIndex = value.indexOf(_startDelim, lastEndIndex);
-            if (startIndex != -1)
-            {
-                endIndex = value.indexOf(_endDelim, startIndex + _startDelim.length());
-                if (endIndex != -1)
-                {
-                    if (buffer == null)
-                    {
-                        buffer = new StringBuffer();
-                    }
-
-                    String substring = value.substring(
-                            startIndex + _startDelim.length(), endIndex);
-                    if (_substringMap.containsKey(substring))
-                    {
-                        buffer.append(value.substring(lastEndIndex, startIndex));
-                        buffer.append(_substringMap.get(substring));
-                    }
-                    else
-                    {
-                        buffer.append(value.substring(
-                                lastEndIndex, endIndex + _endDelim.length()));
-                    }
-
-                    lastEndIndex = endIndex + _endDelim.length();
-                }
-            }
-
-            // No more delimited substring
-            if (startIndex == -1 || endIndex == -1)
-            {
-                if (buffer != null)
-                {
-                    buffer.append(value.substring(lastEndIndex));
-                }
-                break;
-            }
-        }
-
-        return buffer == null ? value : buffer.toString();
+        return replaceStrings(value, _startDelim, _endDelim);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -255,4 +199,5 @@ public class ReplacementTable implements ITable
         return replaceSubstrings((String)value);
     }
 }
+
 

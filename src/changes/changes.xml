@@ -19,6 +19,7 @@
      <action dev="rlogiacco" type="fix" issue="1328956" due-to="Reuben Firmin">NPE In InsertIdentityOperation</action>
      <action dev="rlogiacco" type="fix" issue="1710743" due-to="Will Sargent">DataSourceDatabaseTest does not use setSchema()</action>
      <action dev="rlogiacco" type="fix" issue="1637089" due-to="Chuck Hill">Columns in ORDER BY Not Quoted</action>
+     <action dev="rlogiacco" type="fix" issue="1214536" due-to="Sebastien Le Callonec">ReplacementTable broken for multiple replacements</action>
     </release>
     <release version="2.2" date="December 28, 2006" description="First official release in a long, long time...">    
      <action dev="felipeal" type="add" issue="1473744" due-to="Andres Almiray">Enable TestCase compositions</action>    
