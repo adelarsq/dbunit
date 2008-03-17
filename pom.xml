@@ -367,17 +367,17 @@ AllTests)
 	<distributionManagement>
 	  <snapshotRepository>
 	    <id>sf_snapshots</id>
-	    <name>SourceForge Snapshot</name>
-	    <url>scpexe://ssh.sourceforge.net/home/groups/d/db/dbunit/htdocs/repo/snapshots</url>
+	    <name>SourceForge Snapshots Repo</name>
+	    <url>scp://shell.sourceforge.net/home/groups/d/db/dbunit/htdocs/repo/snapshots</url>
 	  </snapshotRepository>
 	  <repository>
 	    <id>sf_official</id>
-	    <name>SourceForge Snapshot</name>
-	    <url>scpexe://ssh.sourceforge.net/home/groups/d/db/dbunit/htdocs/repo/official</url>
+	    <name>SourceForge Releases Repo</name>
+	    <url>scp://shell.sourceforge.net/home/groups/d/db/dbunit/htdocs/repo/official</url>
 	  </repository>
   	<site>
 	    <id>sf_website</id>
-	    <url>scpexe://ssh.sourceforge.net/home/groups/d/db/dbunit/htdocs</url>
+	    <url>scp://shell.sourceforge.net/home/groups/d/db/dbunit/htdocs</url>
 	  </site>
   </distributionManagement>   
 
