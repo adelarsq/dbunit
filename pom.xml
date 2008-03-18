@@ -7,13 +7,6 @@
   <version>2.2.2-SNAPSHOT</version>
   <name>DbUnit Framework</name>
   <url>http://dbunit.sourceforge.net</url>
-<!-- TODO - stuff below changed on M2; I think it went to Site plugin
-  <logo>http://dbunit.sourceforge.net/images/dbunit-logo.jpg</logo>
-  <package>org.dbunit</package>
-  <shortDescription>
-    DbUnit is a JUnit extension targeted for database-driven projects
-  </shortDescription>
--->
   <inceptionYear>2002</inceptionYear>
   <description>
     DbUnit is a JUnit extension (also usable from Ant) targeted for database-driven projects that, among other things, puts your database into a known state between test runs. This is an excellent way to avoid the myriad of problems that can occur when one test case corrupts the database and causes subsequent tests to fail or exacerbate the damage.
@@ -68,6 +61,15 @@
    <!-- put my name first, so my email is used by the announcements-email
         plugin -->
    <developer>
+      <name>Roberto Lo Giacco</name>
+      <id>rlogiacco</id>
+      <email>rlogiacco@users.sourceforge.net</email>
+      <organization>SmartLab</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+   <developer>
       <name>Felipe Leme</name>
       <id>felipeal</id>
       <email>dbunit@felipeal.net</email>
@@ -119,15 +121,6 @@
       <roles>
         <role>Java Developer</role>
        <!--  <role>Original Ant Task Contributor</role> -->
-      </roles>
-    </developer>
-    <developer>
-      <name>Roberto Lo Giacco</name>
-      <id>rlogiacco</id>
-      <email>rlogiacco@users.sourceforge.net</email>
-      <organization>SmartLab</organization>
-      <roles>
-        <role>Java Developer</role>
       </roles>
     </developer>
   </developers>
@@ -321,7 +314,7 @@ AllTests)
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
-          <goals>source:jar javadoc:jar deploy site:site site:deploy repository:bundle-create</goals>
+          <goals>source:jar javadoc:jar deploy site:site site:deploy</goals>
         </configuration>
       </plugin>
 <!-- TODO: add cobertura and other plugins that would fail the build, like PMD, cobertura and checkstyle-->
