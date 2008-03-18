@@ -25,6 +25,10 @@
   <section name="News">
       <table border="1">
         <tr>
+          <td>2008-03-18</td>
+          <td>Release 2.2.1 is finally out and available for <a href="http://sourceforge.net/project/showfiles.php?group_id=47439">download</a>.</td>
+        </tr>
+        <tr>
           <td>2008-02-29</td>
           <td>Release 2.2.1 is on it's first steps. Snapshot release available on <a href="http://dbunit.sourceforge.net/repo/snapshots">DbUnit Snapshots Maven Repo</a>.</td>
         </tr>
