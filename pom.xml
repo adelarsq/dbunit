@@ -314,7 +314,7 @@ AllTests)
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
-          <goals>source:jar javadoc:jar deploy site:site site:deploy</goals>
+          <goals>source:jar javadoc:jar deploy site:site site:deploy changes:announcement-generate</goals>
         </configuration>
       </plugin>
 <!-- TODO: add cobertura and other plugins that would fail the build, like PMD, cobertura and checkstyle-->
