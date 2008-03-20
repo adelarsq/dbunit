@@ -25,8 +25,16 @@
   <section name="News">
       <table border="1">
         <tr>
+          <td>2008-03-19</td>
+          <td><a href="http://dbunit.wikidot.com/">Wiki</a> is back.... again!</td>
+        </tr>
+        <tr>
           <td>2008-03-18</td>
           <td>Release 2.2.1 is finally out!!! See <a href="changes-report.html#a2.2.1">changes</a>.</td>
+        </tr>
+        <tr>
+          <td>2008-03-12</td>
+          <td>Sebastien Le Callonec joined the project team.</td>
         </tr>
         <tr>
           <td>2008-02-29</td>

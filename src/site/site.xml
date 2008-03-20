@@ -50,27 +50,27 @@
 
     <menu name="Quick Links">
       <item name="Maven 1.x Plugin" href="http://maven-plugins.sourceforge.net/maven-dbunit-plugin/index.html"/>      
-      <item name="Maven 2 Plugin"  href="http://mojo.codehaus.org/dbunit-maven-plugin/"/>      
-      <item name="Download"        href="http://sourceforge.net/project/showfiles.php?group_id=47439&amp;release_id=242511"/>
-      <item name="Changes"         href="/changes-report.html"/>
-      <item name="FAQ"             href="/faq.html"/> 
-      <item name="Wiki"             href="/cgi-bin/wiki.pl"/> 
-      <item name="Get Support"     href="http://sourceforge.net/support/getsupport.php?group_id=47439"/>          
-      <item name="Get source" href="/source-repository.html"/>          
-      <item name="Browse source" href="/jxr-report.html"/>          
-      <item name="JavaDocs"        href="/apidocs/index.html"/>          
+      <item name="Maven 2 Plugin"   href="http://mojo.codehaus.org/dbunit-maven-plugin/"/>      
+      <item name="Download"         href="http://sourceforge.net/project/showfiles.php?group_id=47439&amp;release_id=242511"/>
+      <item name="Changes"          href="/changes-report.html"/>
+      <item name="FAQ"              href="/faq.html"/> 
+      <item name="Wiki"             href="http://dbunit.wikidot.com/"/> 
+      <item name="Get Support"      href="http://sourceforge.net/support/getsupport.php?group_id=47439"/>          
+      <item name="Get source"       href="/source-repository.html"/>          
+      <item name="Browse source"    href="/jxr-report.html"/>          
+      <item name="JavaDocs"         href="/apidocs/index.html"/>          
     </menu>
 
     <menu name="Overview">
-      <item name="About DbUnit"            href="/index.html"/>  
+      <item name="About DbUnit"     href="/index.html"/>  
       <item name="Database Testing" href="/intro.html"/>   
-      <item name="Getting Started" href="/howto.html"/>             
-      <item name="Best Practices"  href="/bestpractices.html"/>
-      <item name="Core Components"      href="/components.html"/>
-      <item name="Properties"      href="/properties.html"/>    
-      <item name="Ant Task"    	   href="/anttask.html"/>
-      <item name="Building DbUnit"    	   href="/building.html"/>
-      <item name="Resources"       href="/resources.html"/> 
+      <item name="Getting Started"  href="/howto.html"/>             
+      <item name="Best Practices"   href="/bestpractices.html"/>
+      <item name="Core Components"  href="/components.html"/>
+      <item name="Properties"       href="/properties.html"/>    
+      <item name="Ant Task"    	    href="/anttask.html"/>
+      <item name="Building DbUnit"  href="/building.html"/>
+      <item name="Resources"        href="/resources.html"/> 
     </menu>
 
     <menu ref="parent"/>
