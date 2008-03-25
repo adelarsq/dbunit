@@ -97,8 +97,6 @@ public class DataSetProducerAdapter implements IDataSetProducer
             }
             catch (RowOutOfBoundsException e)
             {
-                logger.error("produce()", e);
-
                 // end of table
                 _consumer.endTable();
             }
