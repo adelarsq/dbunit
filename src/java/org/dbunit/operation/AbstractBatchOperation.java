@@ -79,9 +79,11 @@ public abstract class AbstractBatchOperation extends AbstractOperation
         }
         catch (RowOutOfBoundsException e)
         {
-            logger.error("isEmpty()", e);
-
             // Not able to access first row thus empty
+        	if (logger.isDebugEnabled())
+        	{
+        		logger.debug("isEmpty()", e);
+        	}
             return true;
         }
     }
@@ -213,8 +215,12 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                 }
                 catch (RowOutOfBoundsException e)
                 {
-                    logger.error("execute()", e);
-
+                	// This exception occurs when records are exhausted
+                	// and we reach the end of the table.  Ignore this error
+                	if (logger.isDebugEnabled())
+                	{
+                		logger.debug("execute()", e);
+                	}
                     // end of table
                 }
 

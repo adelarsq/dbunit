@@ -8,7 +8,7 @@
 
   <body>
     <release version="2.2.2-SNAPSHOT" date="TBD" description="">
-      <action dev="slecallonnec" type="fix" issue="1925603">Reverting change to fix RowOutOfBoundsException introduced when migrating to slf4j.</action>
+      <action dev="slecallonnec" type="fix" issue="1925603">Changed logger.error into logger.debug when the exception can be disregarded.</action>
     </release>
     <release version="2.2.1" date="March 17, 2008" description="Another official release after a long, long time...">    
      <action dev="felipeal" type="fix" issue="1897627" >Removed JUnit dependency on IDatabaseTester implementations</action>    
