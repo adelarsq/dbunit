@@ -64,7 +64,6 @@ public class ClobDataType extends StringDataType
     {
         logger.debug("setSqlValue(value={}, column=" + column + ", statement={}) - start", value, statement);
 
-        statement.setObject(column, typeCast(value),
-                DataType.LONGVARCHAR.getSqlType());
+        statement.setObject(column, typeCast(value), getSqlType());
     }
 }
