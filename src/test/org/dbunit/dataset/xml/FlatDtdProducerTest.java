@@ -130,4 +130,29 @@ public class FlatDtdProducerTest extends AbstractProducerTest
         producer.produce();
         consumer.verify();
     }
+    
+    public void testCleanupTableName() throws Exception {
+        // Setup consumer
+        MockDataSetConsumer consumer = new MockDataSetConsumer();
+        consumer.addExpectedStartDataSet();
+        consumer.addExpectedEmptyTableIgnoreColumns("TABLE_1");
+        consumer.addExpectedEmptyTableIgnoreColumns("TABLE_2");
+        consumer.addExpectedEmptyTableIgnoreColumns("TABLE_3");
+        consumer.addExpectedEndDataSet();
+        
+        // Setup producer
+        String content =
+                "<!ELEMENT dataset (TABLE_1,(TABLE_2,TABLE_3+)?)+>" +
+                "<!ELEMENT TABLE_1 EMPTY>" +
+                "<!ELEMENT TABLE_2 EMPTY>" +
+                "<!ELEMENT TABLE_3 EMPTY>";
+
+        InputSource source = new InputSource(new StringReader(content));
+        FlatDtdProducer producer = new FlatDtdProducer(source);
+        producer.setConsumer(consumer);
+
+        // Produce and verify consumer
+        producer.produce();
+        consumer.verify();
+    }
 }
