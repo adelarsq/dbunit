@@ -86,7 +86,7 @@ public class LongDataTypeTest extends AbstractDataTypeTest
             new Double(5.49),
             "-99.9",
             new Double(1.5E6),
-            new BigDecimal(1234),
+            new BigDecimal((double)1234),
         };
 
         Long[] expected = {
@@ -153,7 +153,7 @@ public class LongDataTypeTest extends AbstractDataTypeTest
             new Double(5.49),
             "-99.9",
             new Double(1.5E6),
-            new BigDecimal(1234),
+            new BigDecimal((double)1234),
         };
 
         Object[] values2 = {

@@ -60,8 +60,8 @@ public class ReplacementTableTest extends AbstractTableTest
     public void testObjectReplacement() throws Exception
     {
         String tableName = "TABLE_NAME";
-        BigDecimal trueObject = new BigDecimal(1);
-        BigDecimal falseObject = new BigDecimal(0);
+        BigDecimal trueObject = new BigDecimal((double)1);
+        BigDecimal falseObject = new BigDecimal((double)0);
         Date now = new Date(System.currentTimeMillis());
 
         Column[] columns = new Column[] {

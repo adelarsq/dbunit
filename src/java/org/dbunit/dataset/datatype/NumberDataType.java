@@ -44,8 +44,8 @@ public class NumberDataType extends AbstractDataType
      */
     private static final Logger logger = LoggerFactory.getLogger(NumberDataType.class);
 
-    private static final Number TRUE = new BigDecimal(1);
-    private static final Number FALSE = new BigDecimal(0);
+    private static final Number TRUE = new BigDecimal((double)1);
+    private static final Number FALSE = new BigDecimal((double)0);
 
     NumberDataType(String name, int sqlType)
     {

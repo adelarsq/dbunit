@@ -102,7 +102,7 @@ public class IntegerDataTypeTest extends AbstractDataTypeTest
             new Double(5.49),
             "-99.9",
             new Double(1.5E2),
-            new BigDecimal(1234),
+            new BigDecimal((double)1234),
         };
 
         Integer[] expected = {
@@ -182,7 +182,7 @@ public class IntegerDataTypeTest extends AbstractDataTypeTest
             new Double(5.49),
             "-99.9",
             new Double(1.5E2),
-            new BigDecimal(1234),
+            new BigDecimal((double)1234),
         };
 
         Object[] values2 = {

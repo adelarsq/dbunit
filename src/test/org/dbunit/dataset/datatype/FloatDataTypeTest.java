@@ -73,7 +73,7 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
             new Double(0.666),
             new Double(5.49879),
             "-99.9",
-            new BigDecimal(1234),
+            new BigDecimal((double)1234),
         };
 
         Float[] expected = {
@@ -132,7 +132,7 @@ public class FloatDataTypeTest extends AbstractDataTypeTest
             new Double(0.666),
             new Double(5.49879),
             "-99.9",
-            new BigDecimal(1234),
+            new BigDecimal((double)1234),
         };
 
         Float[] values2 = {

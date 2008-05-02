@@ -81,7 +81,7 @@ public class NumberDataTypeTest extends AbstractDataTypeTest
     {
         Object[] values = {
             null,
-            new BigDecimal(1234),
+            new BigDecimal((double)1234),
             "1234",
             "12.34",
             Boolean.TRUE,
@@ -89,8 +89,8 @@ public class NumberDataTypeTest extends AbstractDataTypeTest
         };
         BigDecimal[] expected = {
             null,
-            new BigDecimal(1234),
-            new BigDecimal(1234),
+            new BigDecimal((double)1234),
+            new BigDecimal((double)1234),
             new BigDecimal("12.34"),
             new BigDecimal("1"),
             new BigDecimal("0"),
@@ -141,7 +141,7 @@ public class NumberDataTypeTest extends AbstractDataTypeTest
     {
         Object[] values1 = {
             null,
-            new BigDecimal(1234),
+            new BigDecimal((double)1234),
             "1234",
             "12.34",
             Boolean.TRUE,
@@ -151,7 +151,7 @@ public class NumberDataTypeTest extends AbstractDataTypeTest
         };
         Object[] values2 = {
             null,
-            new BigDecimal(1234),
+            new BigDecimal((double)1234),
             new BigDecimal(1234),
             new BigDecimal("12.34"),
             new BigDecimal("1"),
@@ -255,7 +255,7 @@ public class NumberDataTypeTest extends AbstractDataTypeTest
 
     public void testForObject() throws Exception
     {
-        assertEquals(DataType.NUMERIC, DataType.forObject(new BigDecimal(1234)));
+        assertEquals(DataType.NUMERIC, DataType.forObject(new BigDecimal((double)1234)));
     }
 
     public void testAsString() throws Exception
