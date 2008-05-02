@@ -8,6 +8,8 @@
 
   <body>
     <release version="2.2.2-SNAPSHOT" date="TBD" description="">
+      <action dev="rlogiacco" type="fix" issue="1955929">junit jar-file should be JDK 1.4 compatible</action>
+      <action dev="rlogiacco" type="fix" issue="1475565">Version 2.2-dev, Java 1.4 compatibility issue</action>
       <action dev="slecallonnec" type="fix" issue="1925603">Changed logger.error into logger.debug when the exception can be disregarded.</action>
       <action dev="slecallonnec" type="fix" issue="1806363" due-to="Brian Atkinson">Fixed issue with CLOB datatype in Derby.</action>
     </release>
