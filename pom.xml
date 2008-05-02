@@ -68,7 +68,7 @@
       <roles>
         <role>Java Developer</role>
       </roles>
-    </developer>
+   </developer>
    <developer>
       <name>Felipe Leme</name>
       <id>felipeal</id>
@@ -121,6 +121,14 @@
       <roles>
         <role>Java Developer</role>
        <!--  <role>Original Ant Task Contributor</role> -->
+      </roles>
+    </developer>
+    <developer>
+      <name>Sebastien Le Callonec</name>
+      <id>slecallonnec</id>
+      <email>slecallonnec@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer</role>
       </roles>
     </developer>
   </developers>
