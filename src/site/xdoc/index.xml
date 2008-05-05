@@ -25,6 +25,10 @@
   <section name="News">
       <table border="1">
         <tr>
+          <td>2008-05-05</td>
+          <td>Release 2.2.2 is out and fixes some annoing bugs! Please see <a href="changes-report.html#a2.2.2">changes</a>.</td>
+        </tr>
+        <tr>
           <td>2008-03-19</td>
           <td><a href="http://dbunit.wikidot.com/">Wiki</a> is back.... again!</td>
         </tr>
