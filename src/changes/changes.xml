@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-    <release version="2.2.2-SNAPSHOT" date="TBD" description="">
+    <release version="2.2.2" date="May 5, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1953115" due-to="Mike Norrish">End of table name cut off when bracketed in FlatDtdProducer</action>
       <action dev="rlogiacco" type="fix" issue="1926302">IncompatibleClassChangeError with 2.2.1</action>
       <action dev="rlogiacco" type="fix" issue="1955929">junit jar-file should be JDK 1.4 compatible</action>
