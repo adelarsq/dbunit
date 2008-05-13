@@ -83,8 +83,6 @@ public class TimeDataType extends AbstractDataType
             }
             catch (IllegalArgumentException e)
             {
-                logger.error("typeCast()", e);
-
                 throw new TypeCastException(value, this, e);
             }
         }

@@ -175,8 +175,6 @@ public class DatabaseDataSet extends AbstractDataSet
         }
         catch (SQLException e)
         {
-            logger.error("initialize()", e);
-
             throw new DataSetException(e);
         }
     }
@@ -264,8 +262,6 @@ public class DatabaseDataSet extends AbstractDataSet
         }
         catch (SQLException e)
         {
-            logger.error("getTable()", e);
-
             throw new DataSetException(e);
         }
     }

@@ -138,9 +138,8 @@ public class DefaultTable extends AbstractTable
         }
         catch(RowOutOfBoundsException e)
         {
-            logger.error("addTableRows()", e);
-
             // end of table
+        	// ignore error.
         }
     }
 

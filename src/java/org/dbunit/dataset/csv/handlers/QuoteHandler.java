@@ -109,8 +109,6 @@ public class QuoteHandler extends AbstractPipelineComponent {
                 getHandler().getPipeline().removeFront();
                 getHandler().getPipeline().removeFront();
             } catch (PipelineException e) {
-                logger.error("helpWith()", e);
-
                 throw new RuntimeException(e.getMessage());
             }
             // ignore the char

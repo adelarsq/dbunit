@@ -100,10 +100,7 @@ public class DataSetProducerAdapter implements IDataSetProducer
             	// This exception occurs when records are exhausted
             	// and we reach the end of the table.  Ignore this error
             	// and close table.
-            	if (logger.isDebugEnabled())
-            	{
-            		logger.debug("end produce()", e);
-            	}
+
                 // end of table
                 _consumer.endTable();
             }

@@ -78,8 +78,6 @@ public abstract class AbstractResultSetTable extends AbstractTable
         }
         catch (SQLException e)
         {
-            logger.error("AbstractResultSetTable()", e);
-
             _statement.close();
             _statement = null;
             throw e;
@@ -104,8 +102,6 @@ public abstract class AbstractResultSetTable extends AbstractTable
         }
         catch (SQLException e)
         {
-            logger.error("AbstractResultSetTable()", e);
-
             _statement.close();
             _statement = null;
             throw e;
@@ -154,8 +150,6 @@ public abstract class AbstractResultSetTable extends AbstractTable
         }
         catch (SQLException e)
         {
-            logger.error("close()", e);
-
             throw new DataSetException(e);
         }
     }

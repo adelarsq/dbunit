@@ -163,14 +163,10 @@ public class FlatXmlProducer extends DefaultHandler
         }
         catch (ParserConfigurationException e)
         {
-            logger.error("produce()", e);
-
             throw new DataSetException(e);
         }
         catch (SAXException e)
         {
-            logger.error("produce()", e);
-
             int lineNumber = -1;
             if (e instanceof SAXParseException)
             {
@@ -187,8 +183,6 @@ public class FlatXmlProducer extends DefaultHandler
         }
         catch (IOException e)
         {
-            logger.error("produce()", e);
-
             throw new DataSetException(e);
         }
     }
@@ -267,8 +261,6 @@ public class FlatXmlProducer extends DefaultHandler
         }
         catch (DataSetException e)
         {
-            logger.error("startElement()", e);
-
             throw new SAXException(e);
         }
     }
@@ -293,8 +285,6 @@ public class FlatXmlProducer extends DefaultHandler
             }
             catch (DataSetException e)
             {
-                logger.error("endElement()", e);
-
                 throw new SAXException(e);
             }
         }
@@ -331,8 +321,6 @@ public class FlatXmlProducer extends DefaultHandler
             }
             catch (DataSetException e)
             {
-                logger.error("startDTD()", e);
-
                 throw new SAXException(e);
             }
         }

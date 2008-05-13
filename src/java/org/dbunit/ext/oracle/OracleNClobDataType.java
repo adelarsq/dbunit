@@ -58,26 +58,18 @@ public class OracleNClobDataType extends OracleClobDataType {
         }
         catch (IllegalAccessException e) 
         {
-            logger.error("setSqlValue()", e);
-
             throw new TypeCastException(value, this, e);
         } 
         catch (NoSuchMethodException e) 
         {
-            logger.error("setSqlValue()", e);
-
             throw new TypeCastException(value, this, e);
         } 
         catch (InvocationTargetException e) 
         {
-            logger.error("setSqlValue()", e);
-
             throw new TypeCastException(value, this, e.getTargetException());
         }
         catch (ClassNotFoundException e) 
         {
-            logger.error("setSqlValue()", e);
-
             throw new TypeCastException(value, this, e);
         }
         

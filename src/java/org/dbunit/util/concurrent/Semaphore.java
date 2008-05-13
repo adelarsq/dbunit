@@ -120,8 +120,6 @@ public class Semaphore implements Sync  {
         --permits_;
       }
       catch (InterruptedException ex) {
-                logger.error("acquire()", ex);
-
         notify();
         throw ex;
       }
@@ -160,8 +158,6 @@ public class Semaphore implements Sync  {
           }
         }
         catch(InterruptedException ex) {
-                    logger.error("attempt()", ex);
- 
           notify();
           throw ex;
         }

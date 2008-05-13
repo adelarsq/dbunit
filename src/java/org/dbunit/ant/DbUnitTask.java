@@ -319,14 +319,10 @@ public class DbUnitTask extends Task
         }
         catch (DatabaseUnitException e)
         {
-            logger.error("execute()", e);
-
             throw new BuildException(e, location);
         }
         catch (SQLException e)
         {
-            logger.error("execute()", e);
-
             throw new BuildException(e, location);
         }
         finally
@@ -392,22 +388,16 @@ public class DbUnitTask extends Task
         }
         catch (ClassNotFoundException e)
         {
-            logger.error("createConnection()", e);
-
             throw new BuildException("Class Not Found: JDBC driver "
                     + driver + " could not be loaded", e, location);
         }
         catch (IllegalAccessException e)
         {
-            logger.error("createConnection()", e);
-
             throw new BuildException("Illegal Access: JDBC driver "
                     + driver + " could not be loaded", e, location);
         }
         catch (InstantiationException e)
         {
-            logger.error("createConnection()", e);
-
             throw new BuildException("Instantiation Exception: JDBC driver "
                     + driver + " could not be loaded", e, location);
         }
@@ -443,22 +433,16 @@ public class DbUnitTask extends Task
         }
         catch (ClassNotFoundException e)
         {
-            logger.error("createConnection()", e);
-
             throw new BuildException("Class Not Found: DataType factory "
                     + driver + " could not be loaded", e, location);
         }
         catch (IllegalAccessException e)
         {
-            logger.error("createConnection()", e);
-
             throw new BuildException("Illegal Access: DataType factory "
                     + driver + " could not be loaded", e, location);
         }
         catch (InstantiationException e)
         {
-            logger.error("createConnection()", e);
-
             throw new BuildException("Instantiation Exception: DataType factory "
                     + driver + " could not be loaded", e, location);
         }

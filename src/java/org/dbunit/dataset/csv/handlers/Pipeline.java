@@ -84,8 +84,6 @@ public class Pipeline implements Handler {
                 removeFront();
             }
         } catch (PipelineException e) {
-            logger.error("prepareNewPiece()", e);
-
             throw new RuntimeException(e.getMessage());
         }
 

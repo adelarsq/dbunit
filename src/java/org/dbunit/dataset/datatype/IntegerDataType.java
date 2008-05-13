@@ -71,8 +71,6 @@ public class IntegerDataType extends AbstractDataType
         }
         catch (java.lang.NumberFormatException e)
         {
-            logger.error("typeCast()", e);
-
             throw new TypeCastException(value, this, e);
         }
     }

@@ -94,8 +94,6 @@ public class CsvDataSetWriter implements IDataSetConsumer {
         	tableList = new LinkedList();
             new File(getTheDirectory()).mkdirs();
         } catch (Exception e) {
-            logger.error("startDataSet()", e);
-
             throw new DataSetException("Error while creating the destination directory '" + getTheDirectory() + "'", e);
         }
     }
@@ -114,8 +112,6 @@ public class CsvDataSetWriter implements IDataSetConsumer {
 			}
 			pw.close();
 		} catch (IOException e) {
-            logger.error("endDataSet()", e);
-
 			throw new DataSetException("problems writing the table ordering file", e);
 		}
     }
@@ -130,8 +126,6 @@ public class CsvDataSetWriter implements IDataSetConsumer {
             writeColumnNames();
             getWriter().write(System.getProperty("line.separator"));
         } catch (IOException e) {
-            logger.error("startTable()", e);
-
             throw new DataSetException(e);
         }
 
@@ -156,8 +150,6 @@ public class CsvDataSetWriter implements IDataSetConsumer {
             tableList.add(_activeMetaData.getTableName());
             _activeMetaData = null;
         } catch (IOException e) {
-            logger.error("endTable()", e);
-
             throw new DataSetException(e);
         }
     }
@@ -187,8 +179,6 @@ public class CsvDataSetWriter implements IDataSetConsumer {
                         final String quoted = quote(stringValue);
                         getWriter().write(quoted);
                     } catch (TypeCastException e) {
-                        logger.error("row()", e);
-
                         throw new DataSetException("table=" +
                                 _activeMetaData.getTableName() + ", row=" + i +
                                 ", column=" + columnName +
@@ -199,8 +189,6 @@ public class CsvDataSetWriter implements IDataSetConsumer {
             }
             getWriter().write(System.getProperty("line.separator"));
         } catch (IOException e) {
-            logger.error("row()", e);
-
             throw new DataSetException(e);
         }
     }

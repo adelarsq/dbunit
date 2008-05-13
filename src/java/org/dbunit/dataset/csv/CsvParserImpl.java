@@ -145,8 +145,6 @@ public class CsvParserImpl implements CsvParser {
                 columns = parse(buffer.toString());
                 columnsCollectedSoFar = columns.size();
             } catch (IllegalStateException e) {
-                logger.error("collectExpectedNumberOfColumns()", e);
-
                 resetThePipeline();
                 anotherLine = lineNumberReader.readLine();
                 if(anotherLine == null)

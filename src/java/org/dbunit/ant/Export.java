@@ -207,8 +207,6 @@ public class Export extends AbstractStep
         }
         catch (IOException e)
         {
-            logger.error("execute()", e);
-
             throw new DatabaseUnitException(e);
         }
     }

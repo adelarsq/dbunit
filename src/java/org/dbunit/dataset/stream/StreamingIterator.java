@@ -67,8 +67,6 @@ public class StreamingIterator implements ITableIterator
         }
         catch (InterruptedException e)
         {
-            logger.error("StreamingIterator()", e);
-
             throw new DataSetException(e);
         }
     }
@@ -171,7 +169,6 @@ public class StreamingIterator implements ITableIterator
             }
             catch (InterruptedException e)
             {
-                logger.error("next()", e);
 
                 throw new DataSetException();
             }
@@ -254,8 +251,6 @@ public class StreamingIterator implements ITableIterator
             }
             catch (DataSetException e)
             {
-                logger.error("run()", e);
-
                 throw new DatabaseUnitRuntimeException(e);
             }
         }
@@ -277,8 +272,6 @@ public class StreamingIterator implements ITableIterator
             }
             catch (InterruptedException e)
             {
-                logger.error("endDataSet()", e);
-
                 throw new DataSetException();
             }
         }
@@ -293,8 +286,6 @@ public class StreamingIterator implements ITableIterator
             }
             catch (InterruptedException e)
             {
-                logger.error("startTable()", e);
-
                 throw new DataSetException();
             }
         }
@@ -313,8 +304,6 @@ public class StreamingIterator implements ITableIterator
             }
             catch (InterruptedException e)
             {
-                logger.error("row()", e);
-
                 throw new DataSetException();
             }
         }

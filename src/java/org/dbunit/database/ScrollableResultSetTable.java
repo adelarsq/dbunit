@@ -63,8 +63,6 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         }
         catch (SQLException e)
         {
-            logger.error("ScrollableResultSetTable()", e);
-
             close();
             throw e;
         }
@@ -87,8 +85,6 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         }
         catch (SQLException e)
         {
-            logger.error("ScrollableResultSetTable()", e);
-
             close();
             throw e;
         }
@@ -111,8 +107,6 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         }
         catch (SQLException e)
         {
-            logger.error("ScrollableResultSetTable()", e);
-
             close();
             throw e;
         }
@@ -144,8 +138,6 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         }
         catch (SQLException e)
         {
-            logger.error("getValue()", e);
-
             throw new DataSetException(e);
         }
     }

@@ -121,8 +121,6 @@ public abstract class AbstractStep implements DbUnitTaskStep
         }
         catch (SQLException e)
         {
-            logger.error("getDatabaseDataSet()", e);
-
             throw new DatabaseUnitException(e);
         }
     }
@@ -165,8 +163,6 @@ public abstract class AbstractStep implements DbUnitTaskStep
         }
         catch (IOException e)
         {
-            logger.error("getSrcDataSet()", e);
-
             throw new DatabaseUnitException(e);
         }
     }

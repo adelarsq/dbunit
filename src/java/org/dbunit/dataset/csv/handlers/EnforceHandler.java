@@ -119,12 +119,8 @@ public class EnforceHandler extends AbstractPipelineComponent {
                 handler.getTheHandlerComponent().handle(c);
                 getHandler().getPipeline().removeFront();
             } catch (PipelineException e) {
-                logger.error("helpWith()", e);
-
                 throw new RuntimeException(e.getMessage());
             } catch (IllegalInputCharacterException e) {
-                logger.error("helpWith()", e);
-
                 throw new RuntimeException(e.getMessage());
             }
             // ignore the char

@@ -169,8 +169,6 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
     try {
       searchPKs(dataSet);
     } catch (SQLException e) {
-            logger.error("iterator()", e);
-
       throw new DataSetException( e );
     }
     return new FilterIterator(reversed ? dataSet.reverseIterator() : dataSet
@@ -320,8 +318,7 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
         }
       }
     } catch (SQLException e) {
-            logger.error("scanPKs()", e);
-
+      logger.error("scanPKs()", e);
       SQLHelper.close( rs, pstmt );
     }        
   }
@@ -359,8 +356,7 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
       }
       pstmt = this.connection.getConnection().prepareStatement( sql );
     } catch (SQLException e) {
-            logger.error("addReverseEdge()", e);
-
+      logger.error("addReverseEdge()", e);
       SQLHelper.close( pstmt );
     }        
     ResultSet rs = null;

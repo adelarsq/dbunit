@@ -177,8 +177,6 @@ public class SynchronousChannel implements BoundedChannel {
             return;
           }
           catch (InterruptedException ie) {
-                        logger.error("put()", ie);
-
             // If item was taken, return normally but set interrupt status
             if (item.value == null) {
               Thread.currentThread().interrupt();
@@ -238,8 +236,6 @@ public class SynchronousChannel implements BoundedChannel {
             }
           }
           catch(InterruptedException ie) {
-                        logger.error("take()", ie);
-
             Object x = slot.value;
             if (x != null) {
               slot.value = null;
@@ -316,8 +312,6 @@ public class SynchronousChannel implements BoundedChannel {
             }
           }
           catch (InterruptedException ie) {
-                        logger.error("offer()", ie);
-
             if (item.value == null) {
               Thread.currentThread().interrupt();
               return true;
@@ -391,8 +385,6 @@ public class SynchronousChannel implements BoundedChannel {
             }
           }
           catch(InterruptedException ie) {
-                        logger.error("poll()", ie);
-
             Object x = slot.value;
             if (x != null) {
               slot.value = null;

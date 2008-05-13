@@ -132,8 +132,6 @@ public class BoundedBuffer implements BoundedChannel {
       while (emptySlots_ <= 0) {
 	try { putMonitor_.wait(); }
         catch (InterruptedException ex) {
-                    logger.error("put()", ex);
-
           putMonitor_.notify();
           throw ex;
         }
@@ -156,8 +154,6 @@ public class BoundedBuffer implements BoundedChannel {
         if (waitTime <= 0) return false;
 	try { putMonitor_.wait(waitTime); }
         catch (InterruptedException ex) {
-                    logger.error("offer()", ex);
-
           putMonitor_.notify();
           throw ex;
         }
@@ -180,8 +176,6 @@ public class BoundedBuffer implements BoundedChannel {
       while (usedSlots_ <= 0) {
         try { wait(); }
         catch (InterruptedException ex) {
-                    logger.error("take()", ex);
-
           notify();
           throw ex; 
         }
@@ -205,8 +199,6 @@ public class BoundedBuffer implements BoundedChannel {
         if (waitTime <= 0) return null;
         try { wait(waitTime); }
         catch (InterruptedException ex) {
-                    logger.error("poll()", ex);
-
           notify();
           throw ex; 
         }

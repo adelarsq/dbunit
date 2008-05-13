@@ -249,8 +249,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                         {
                             System.out.println(
                                     "WARNING - " + tableName + "." + columnName +
-                                    " data type (" + sqlType + ", ‘" + sqlTypeName +
-                                    "’) not recognized and will be ignored. See FAQ for more information.");
+                                    " data type (" + sqlType + ", ï¿½" + sqlTypeName +
+                                    "ï¿½) not recognized and will be ignored. See FAQ for more information.");
                         }
                     }
 
@@ -268,8 +268,6 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             }
             catch (SQLException e)
             {
-                logger.error("getColumns()", e);
-
                 throw new DataSetException(e);
             }
         }
@@ -300,8 +298,6 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             }
             catch (SQLException e)
             {
-                logger.error("getPrimaryKeys()", e);
-
                 throw new DataSetException(e);
             }
         }
@@ -323,8 +319,6 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         }
         catch (DataSetException e)
         {
-            logger.error("toString()", e);
-
             return super.toString();
         }
     }

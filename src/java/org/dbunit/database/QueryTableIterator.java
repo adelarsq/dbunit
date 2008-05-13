@@ -88,8 +88,6 @@ public class QueryTableIterator implements ITableIterator
             }
             catch (SQLException e)
             {
-                logger.error("getTableMetaData()", e);
-
                 throw new DataSetException(e);
             }
         }
@@ -126,8 +124,6 @@ public class QueryTableIterator implements ITableIterator
             }
             catch (SQLException e)
             {
-                logger.error("getTable()", e);
-
                 throw new DataSetException(e);
             }
         }

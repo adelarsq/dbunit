@@ -111,8 +111,6 @@ public class SortedTable extends AbstractTable
             }
             catch (DatabaseUnitRuntimeException e)
             {
-                logger.error("getOriginalRowIndex()", e);
-
                 throw (DataSetException)e.getException();
             }
 
@@ -200,8 +198,6 @@ public class SortedTable extends AbstractTable
             }
             catch (DataSetException e)
             {
-                logger.error("compare()", e);
-
                 throw new DatabaseUnitRuntimeException(e);
             }
 

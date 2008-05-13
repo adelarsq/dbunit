@@ -119,10 +119,7 @@ public class RefreshOperation extends AbstractOperation
             {
             	// This exception occurs when records are exhausted
             	// and we reach the end of the table.  Ignore this error.
-            	if (logger.isDebugEnabled())
-            	{
-            		logger.debug("execute()", e);
-            	}
+
                 // end of table
             }
             finally

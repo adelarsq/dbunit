@@ -89,8 +89,6 @@ public class TimestampDataType extends AbstractDataType
                 }
                 catch (IllegalArgumentException e)
                 {
-                    logger.error("typeCast()", e);
-
                     // Was not a java.sql.Date, let Timestamp handle this value
                 }
             }
@@ -101,8 +99,6 @@ public class TimestampDataType extends AbstractDataType
             }
             catch (IllegalArgumentException e)
             {
-                logger.error("typeCast()", e);
-
                 throw new TypeCastException(value, this, e);
             }
         }

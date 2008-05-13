@@ -116,8 +116,6 @@ public class FlatXmlWriter implements IDataSetConsumer
         }
         catch (IOException e)
         {
-            logger.error("startDataSet()", e);
-
             throw new DataSetException(e);
         }
     }
@@ -133,8 +131,6 @@ public class FlatXmlWriter implements IDataSetConsumer
         }
         catch (IOException e)
         {
-            logger.error("endDataSet()", e);
-
             throw new DataSetException(e);
         }
     }
@@ -160,8 +156,6 @@ public class FlatXmlWriter implements IDataSetConsumer
             }
             catch (IOException e)
             {
-                logger.error("endTable()", e);
-
                 throw new DataSetException(e);
             }
         }
@@ -197,8 +191,6 @@ public class FlatXmlWriter implements IDataSetConsumer
                 }
                 catch (TypeCastException e)
                 {
-                    logger.error("row()", e);
-
                     throw new DataSetException("table=" +
                             _activeMetaData.getTableName() + ", row=" + i +
                             ", column=" + columnName +
@@ -211,8 +203,6 @@ public class FlatXmlWriter implements IDataSetConsumer
         }
         catch (IOException e)
         {
-            logger.error("row()", e);
-
             throw new DataSetException(e);
         }
     }

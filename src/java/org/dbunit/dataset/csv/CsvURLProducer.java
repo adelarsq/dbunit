@@ -103,16 +103,12 @@ public class CsvURLProducer implements IDataSetProducer {
 	            try {
 	                produceFromURL(new URL(base, table + ".csv"));
 	            } catch (CsvParserException e) {
-                    logger.error("produce()", e);
-
 	                throw new DataSetException("error producing dataset for table '" + table + "'", e);
 	            }
 
 			}
             _consumer.endDataSet();
         } catch (IOException e) {
-            logger.error("produce()", e);
-
         	throw new DataSetException("error getting list of tables", e);
         }
 	}
@@ -151,12 +147,8 @@ public class CsvURLProducer implements IDataSetProducer {
             }
             _consumer.endTable();
         } catch (CsvParserException e) {
-            logger.error("produceFromURL()", e);
-
         	throw new DataSetException("error parsing CSV for URL: '" + url + "'");
 		} catch (IOException e) {
-            logger.error("produceFromURL()", e);
-
         	throw new DataSetException("I/O error parsing CSV for URL: '" + url + "'");
 		}
 	}

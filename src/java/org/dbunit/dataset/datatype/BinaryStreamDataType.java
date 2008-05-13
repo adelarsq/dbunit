@@ -49,8 +49,6 @@ public class BinaryStreamDataType extends BytesDataType
         }
         catch (IOException e)
         {
-            logger.error("getSqlValue()", e);
-
             throw new TypeCastException(e);
         }
     }

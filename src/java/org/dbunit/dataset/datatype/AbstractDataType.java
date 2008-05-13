@@ -86,8 +86,6 @@ public abstract class AbstractDataType extends DataType
         }
         catch (ClassCastException e)
         {
-            logger.error("compare()", e);
-
             throw new TypeCastException(e);
         }
     }

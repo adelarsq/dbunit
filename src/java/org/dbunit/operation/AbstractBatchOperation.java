@@ -80,10 +80,6 @@ public abstract class AbstractBatchOperation extends AbstractOperation
         catch (RowOutOfBoundsException e)
         {
             // Not able to access first row thus empty
-        	if (logger.isDebugEnabled())
-        	{
-        		logger.debug("isEmpty()", e);
-        	}
             return true;
         }
     }
@@ -203,8 +199,6 @@ public abstract class AbstractBatchOperation extends AbstractOperation
 								}
                                 catch (TypeCastException e)
 								{
-                                    logger.error("execute()", e);
-
 				                	throw new TypeCastException("Error casting value for table '" + table.getTableMetaData().getTableName() 
 				                			+"' and column '" + column.getColumnName() + "'", e);
 								}
@@ -217,10 +211,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                 {
                 	// This exception occurs when records are exhausted
                 	// and we reach the end of the table.  Ignore this error
-                	if (logger.isDebugEnabled())
-                	{
-                		logger.debug("execute()", e);
-                	}
+
                     // end of table
                 }
 

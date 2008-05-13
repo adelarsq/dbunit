@@ -92,20 +92,14 @@ public class CsvProducer implements IDataSetProducer {
 	            try {
 	                produceFromFile(new File(dir, table + ".csv"));
 	            } catch (CsvParserException e) {
-                    logger.error("produce()", e);
-
 	                throw new DataSetException("error producing dataset for table '" + table + "'", e);
 	            } catch (DataSetException e) {
-                    logger.error("produce()", e);
-
 	            	throw new DataSetException("error producing dataset for table '" + table + "'", e);
 	            }
 
 			}
             _consumer.endDataSet();
         } catch (IOException e) {
-            logger.error("produce()", e);
-
         	throw new DataSetException("error getting list of tables", e);
         }
     }
@@ -136,16 +130,10 @@ public class CsvProducer implements IDataSetProducer {
             }
             _consumer.endTable();
         } catch (PipelineException e) {
-            logger.error("produceFromFile()", e);
-
             throw new DataSetException(e);
         } catch (IllegalInputCharacterException e) {
-            logger.error("produceFromFile()", e);
-
             throw new DataSetException(e);
         } catch (IOException e) {
-            logger.error("produceFromFile()", e);
-
             throw new DataSetException(e);
         }
     }

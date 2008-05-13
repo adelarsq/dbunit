@@ -146,8 +146,6 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
       getNodes(type, node, conn, schema, metaData, edges);
       return edges;
     } catch (SQLException e) {
-            logger.error("getNodes()", e);
-
       throw new SearchException(e);
     }
   }
@@ -188,8 +186,6 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
         edges.add(edge);
       }
     } catch (SQLException e) {
-            logger.error("getNodes()", e);
-
       throw new SearchException(e);
     }
 

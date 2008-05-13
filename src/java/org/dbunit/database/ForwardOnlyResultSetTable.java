@@ -106,8 +106,6 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
         }
         catch (SQLException e)
         {
-            logger.error("getValue()", e);
-
             throw new DataSetException(e);
         }
     }

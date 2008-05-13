@@ -213,8 +213,6 @@ public class Operation extends AbstractStep
         }
         catch (SQLException e)
         {
-            logger.error("execute()", e);
-
             throw new DatabaseUnitException(e);
         }
     }

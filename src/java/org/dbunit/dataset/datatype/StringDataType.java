@@ -83,8 +83,6 @@ public class StringDataType extends AbstractDataType
             }
             catch (java.lang.NumberFormatException e)
             {
-                logger.error("typeCast()", e);
-
                 throw new TypeCastException(value, this, e);
             }
         }
@@ -104,8 +102,6 @@ public class StringDataType extends AbstractDataType
             }
             catch (SQLException e)
             {
-                logger.error("typeCast()", e);
-
                 throw new TypeCastException(value, this, e);
             }
         }
@@ -124,8 +120,6 @@ public class StringDataType extends AbstractDataType
             }
             catch (SQLException e)
             {
-                logger.error("typeCast()", e);
-
                 throw new TypeCastException(value, this, e);
             }
         }

@@ -154,7 +154,6 @@ public abstract class AbstractDataSet implements IDataSet
         catch (DataSetException e)
         {
             logger.error("toString()", e);
-
             return super.toString();
         }
     }

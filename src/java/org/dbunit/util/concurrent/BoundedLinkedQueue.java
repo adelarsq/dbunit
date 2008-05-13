@@ -249,8 +249,6 @@ public class BoundedLinkedQueue implements BoundedChannel {
           }
         }
         catch(InterruptedException ex) {
-                    logger.error("take()", ex);
-
           takeGuard_.notify();
           throw ex; 
         }
@@ -282,8 +280,6 @@ public class BoundedLinkedQueue implements BoundedChannel {
           }
         }
         catch(InterruptedException ex) {
-                    logger.error("poll()", ex);
-
           takeGuard_.notify();
           throw ex; 
         }
@@ -341,8 +337,6 @@ public class BoundedLinkedQueue implements BoundedChannel {
               }
             }
             catch (InterruptedException ex) {
-                            logger.error("put()", ex);
- 
               notify(); 
               throw ex; 
             }
@@ -387,8 +381,6 @@ public class BoundedLinkedQueue implements BoundedChannel {
                 }
               }
               catch (InterruptedException ex) {
-                                logger.error("offer()", ex);
- 
                 notify(); 
                 throw ex; 
               }

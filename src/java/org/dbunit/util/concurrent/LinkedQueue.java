@@ -142,8 +142,6 @@ public class LinkedQueue implements Channel {
           }
         }
         catch(InterruptedException ex) {
-                    logger.error("take()", ex);
- 
           --waitingForTake_; 
           putLock_.notify();
           throw ex; 
@@ -199,8 +197,6 @@ public class LinkedQueue implements Channel {
           }
         }
         catch(InterruptedException ex) {
-                    logger.error("poll()", ex);
- 
           --waitingForTake_; 
           putLock_.notify();
           throw ex; 

@@ -109,36 +109,26 @@ public class OracleBlobDataType extends BlobDataType
         }
         catch (IllegalAccessException e)
         {
-            logger.error("getBlob()", e);
-
             freeTemporaryBlob(tempBlob);
             throw new TypeCastException(value, this, e);
         }
         catch (NoSuchMethodException e)
         {
-            logger.error("getBlob()", e);
-
             freeTemporaryBlob(tempBlob);
             throw new TypeCastException(value, this, e);
         }
         catch (IOException e)
         {
-            logger.error("getBlob()", e);
-
             freeTemporaryBlob(tempBlob);
             throw new TypeCastException(value, this, e);
         }
         catch (InvocationTargetException e)
         {
-            logger.error("getBlob()", e);
-
             freeTemporaryBlob(tempBlob);
             throw new TypeCastException(value, this, e);
         }
         catch (ClassNotFoundException e)
         {
-            logger.error("getBlob()", e);
-
             freeTemporaryBlob(tempBlob);
             throw new TypeCastException(value, this, e);
         }
@@ -163,20 +153,14 @@ public class OracleBlobDataType extends BlobDataType
         }
         catch (NoSuchMethodException e)
         {
-            logger.error("freeTemporaryBlob()", e);
-
             throw new TypeCastException("Error freeing Oracle BLOB", e);
         }
         catch (IllegalAccessException e)
         {
-            logger.error("freeTemporaryBlob()", e);
-
             throw new TypeCastException("Error freeing Oracle BLOB", e);
         }
         catch (InvocationTargetException e)
         {
-            logger.error("freeTemporaryBlob()", e);
-
             throw new TypeCastException("Error freeing Oracle BLOB", e.getTargetException());
         }
     }

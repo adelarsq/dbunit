@@ -80,22 +80,16 @@ public class TransactionOperation extends DatabaseOperation
         }
         catch (DatabaseUnitException e)
         {
-            logger.error("execute()", e);
-
             jdbcConnection.rollback();
             throw e;
         }
         catch (SQLException e)
         {
-            logger.error("execute()", e);
-
             jdbcConnection.rollback();
             throw e;
         }
         catch (RuntimeException e)
         {
-            logger.error("execute()", e);
-
             jdbcConnection.rollback();
             throw e;
         }

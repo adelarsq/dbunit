@@ -130,21 +130,15 @@ public class XmlProducer extends DefaultHandler
         }
         catch (ParserConfigurationException e)
         {
-            logger.error("produce()", e);
-
             throw new DataSetException(e);
         }
         catch (SAXException e)
         {
-            logger.error("produce()", e);
-
             Exception exception = e.getException() == null ? e : e.getException();
             throw new DataSetException(exception);
         }
         catch (IOException e)
         {
-            logger.error("produce()", e);
-
             throw new DataSetException(e);
         }
     }
@@ -235,8 +229,6 @@ public class XmlProducer extends DefaultHandler
         }
         catch (DataSetException e)
         {
-            logger.error("startElement()", e);
-
             throw new SAXException(e);
         }
     }
@@ -318,8 +310,6 @@ public class XmlProducer extends DefaultHandler
         }
         catch (DataSetException e)
         {
-            logger.error("endElement()", e);
-
             throw new SAXException(e);
         }
     }

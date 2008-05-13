@@ -120,8 +120,6 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
       takeGuard_.release();
     }
     catch (ClassCastException ex) {
-            logger.error("put()", ex);
-
       putGuard_.release();
       throw ex;
     }
@@ -141,8 +139,6 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
         return true;
       }
       catch (ClassCastException ex) {
-                logger.error("offer()", ex);
-
         putGuard_.release();
         throw ex;
       }
@@ -160,8 +156,6 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
       return x;
     }
     catch (ClassCastException ex) {
-            logger.error("take()", ex);
-
       takeGuard_.release();
       throw ex;
     }
@@ -180,8 +174,6 @@ public abstract class SemaphoreControlledChannel implements BoundedChannel {
         return x;
       }
       catch (ClassCastException ex) {
-                logger.error("poll()", ex);
-
         takeGuard_.release();
         throw ex;
       }
