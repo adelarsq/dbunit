@@ -20,21 +20,31 @@
  */
 package org.dbunit.dataset.xml;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.StringReader;
 
-import org.dbunit.dataset.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
-import org.xml.sax.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
-import java.io.IOException;
-import java.io.StringReader;
 
 /**
  * @author Manuel Laflamme
@@ -58,6 +68,11 @@ public class FlatXmlProducer extends DefaultHandler
     private final boolean _dtdMetadata;
     private boolean _validating = false;
     private IDataSet _metaDataSet;
+
+    private int _lineNumber = 0;
+    private int _columnNumberInFirstLine = 0;
+    // Needed as _dtdMetadata can be true even with no dtd.
+    private boolean _dtdPresent = false;
 
     private IDataSetConsumer _consumer = EMPTY_CONSUMER;
     private ITableMetaData _activeMetaData;
@@ -243,12 +258,28 @@ public class FlatXmlProducer extends DefaultHandler
 
                 // Notify start of new table to consumer
                 _activeMetaData = createTableMetaData(qName, attributes);
+                
+                // Reinitialize line number in the table.
+                _lineNumber = 0;
                 _consumer.startTable(_activeMetaData);
             }
 
             // Row notification
             if (attributes.getLength() > 0)
             {
+            	if (_lineNumber == 0) 
+            	{
+            		_columnNumberInFirstLine = attributes.getLength();
+            	}
+            	else if (!_dtdPresent && attributes.getLength() > _columnNumberInFirstLine)
+            	{
+            		logger.warn("Extra columns on line " + (_lineNumber+1) 
+            				+ ".  Those columns will be ignored.");
+            		logger.warn("Please add the extra columns to line 1,"
+            				+ " or use a DTD to make sure the value of those columns are populated.");
+            		logger.warn("See FAQ for more details.");
+            	}
+            	_lineNumber++;
                 Column[] columns = _activeMetaData.getColumns();
                 Object[] rowValues = new Object[columns.length];
                 for (int i = 0; i < columns.length; i++)
@@ -256,6 +287,7 @@ public class FlatXmlProducer extends DefaultHandler
                     Column column = columns[i];
                     rowValues[i] = attributes.getValue(column.getColumnName());
                 }
+                
                 _consumer.row(rowValues);
             }
         }
@@ -310,6 +342,7 @@ public class FlatXmlProducer extends DefaultHandler
         {
             logger.debug("startDTD(name=" + name + ", publicId=" + publicId + ", systemId=" + systemId + ") - start");
 
+            _dtdPresent = true;
             try
             {
                 // Cache the DTD content to use it as metadata
