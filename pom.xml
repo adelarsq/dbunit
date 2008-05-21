@@ -14,7 +14,7 @@
     <licenses>
         <license>
             <name>GNU Lesser General Public License, Version 2.1</name>
-            <url>http://www.gnu.org/copyleft/lesser.html</url>
+            <url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -269,6 +269,12 @@
       (once SCM is migrated to SVN...) -->
         <resources>
             <resource>
+                <directory>/</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                </includes>
+            </resource>
+            <resource>
                 <directory>src/java</directory>
                 <includes>
                     <include>**/dataset.dtd</include>
@@ -325,6 +331,16 @@ AllTests)
                     <goals>source:jar javadoc:jar deploy site:site site:deploy changes:announcement-generate</goals>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>/LICENSE.txt</include>
+                        <include>**</include>
+                    </includes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -357,6 +373,7 @@ AllTests)
                     <reportSet>
                         <reports>
                             <report>changes-report</report>
+                            <report>license</report>
                         </reports>
                     </reportSet>
                 </reportSets>
