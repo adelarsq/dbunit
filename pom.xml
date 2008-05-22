@@ -177,8 +177,8 @@
     <dependencies>
 
         <!--  TODO: check which dependencies could marked as optional.
-      For instance, ant is optional because it's only necessary for the dbunit
-      Ant tasks. -->
+    For instance, ant is optional because it's only necessary for the dbunit
+    Ant tasks. -->
 
         <!-- TODO: add exclusion for dependencies that include xerces/xalan -->
 
@@ -203,8 +203,8 @@
             <groupId>ant</groupId>
             <artifactId>ant</artifactId>
             <!-- TODO: range-> 1.5.3-1 +
-     <version>1.6.5</version>
- -->      
+    <version>1.6.5</version>
+-->      
             <version>1.5.4</version>
             <optional>true</optional>
         </dependency>  
@@ -266,7 +266,7 @@
         <testSourceDirectory>src/test</testSourceDirectory>
 
         <!-- TODO: move to M2's expected path and separate java from test
-      (once SCM is migrated to SVN...) -->
+    (once SCM is migrated to SVN...) -->
         <resources>
             <resource>
                 <directory>/</directory>
@@ -291,8 +291,8 @@
         <!-- TODO: that are some resources on src that should be on test...
 
     <testResources>
-      <testResource>
-      </testResource>
+    <testResource>
+    </testResource>
     </testResources>
 -->
         <plugins>
@@ -307,7 +307,7 @@ AllTests)
     <includes>
         <include>org/dbunit/AllTests.java</include>
     </includes>
-     -->
+    -->
                     <excludes>
                         <exclude>**/Abstract*.java</exclude>
                     </excludes>
@@ -328,7 +328,7 @@ AllTests)
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
-                    <goals>source:jar javadoc:jar deploy site:site site:deploy changes:announcement-generate</goals>
+                    <goals>javadoc:javadoc source:jar javadoc:jar deploy site changes:announcement-generate assembly:assembly</goals>
                 </configuration>
             </plugin>
             <plugin>
@@ -341,6 +341,14 @@ AllTests)
                     </includes>
                 </configuration>
             </plugin>
+            <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>assembly.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>
         </plugins>
     </build>
 
@@ -354,6 +362,22 @@ AllTests)
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <destDir>apidocs</destDir>
+                    <quiet>true</quiet>
+                    <stylesheet>maven</stylesheet>
+                    <tags>
+                        <tag>
+                            <name>TODO</name>
+                            <placement>a</placement>
+                            <head>To do:</head>
+                        </tag>
+                    </tags>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
