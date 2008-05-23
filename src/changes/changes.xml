@@ -7,7 +7,10 @@
   </properties>
 
   <body>
-    <release version="2.2.3-SNAPSHOT" date="TBD" description="">
+    <release version="2.3.0-SNAPSHOT" date="Jun 23, 2008" description="Features added">
+      
+    </release>
+    <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>
       <action dev="slecallonnec" type="fix" issue="1925603">Removed redundant and erroneous ERROR logging.</action>
       <action dev="rlogiacco" type="fix" issue="1955585">Memory leak.</action>
