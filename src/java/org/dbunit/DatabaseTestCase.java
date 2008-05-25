@@ -150,8 +150,8 @@ public abstract class DatabaseTestCase extends TestCase
         databaseTester.setTearDownOperation( getTearDownOperation() );
         databaseTester.setDataSet( getDataSet() );
         databaseTester.onTearDown();
-        tester = null;
       } finally {
+        tester = null;
         super.tearDown();
       }
     }
