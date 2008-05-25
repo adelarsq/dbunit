@@ -79,8 +79,12 @@ class XlsTable extends AbstractTable
                 break;
             }
 
-            Column column = new Column(cell.getStringCellValue(),
-                    DataType.UNKNOWN);
+            String columnName = cell.getStringCellValue();
+            if (columnName != null)
+            {
+            	columnName = columnName.trim();
+            }
+            Column column = new Column(columnName, DataType.UNKNOWN);
             columnList.add(column);
         }
         Column[] columns = (Column[])columnList.toArray(new Column[0]);

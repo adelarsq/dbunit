@@ -8,7 +8,7 @@
 
   <body>
     <release version="2.3.0-SNAPSHOT" date="Jun 23, 2008" description="Features added">
-      
+      <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names no prevent NoSuchColumnException.</action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>

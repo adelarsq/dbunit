@@ -22,6 +22,7 @@ package org.dbunit.dataset.excel;
 
 import org.dbunit.Assertion;
 import org.dbunit.dataset.AbstractDataSetTest;
+import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
@@ -155,6 +156,14 @@ public class XlsDataSetTest extends AbstractDataSetTest
         {
             tempFile.delete();
         }
+    }
+    
+    public void testColumnNameWithSpace() throws Exception
+    {
+    		IDataSet dataSet = new XlsDataSet(new FileInputStream("./src/xml/contactor.xls"));
+    		ITable customerTable = dataSet.getTable("customer");
+            Column column = DataSetUtils.getColumn("name",  customerTable.getTableMetaData().getColumns());
+            assertNotNull(column);
     }
 
 }
