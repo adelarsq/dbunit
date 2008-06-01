@@ -133,7 +133,7 @@ public class PrimaryKeyFilteredTableWrapper implements ITable {
   }
 
   public Object getValue(int row, String column) throws DataSetException {
-        logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+        logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
 
     int max = this.filteredRowsMapping.size();
     if ( row < max ) {

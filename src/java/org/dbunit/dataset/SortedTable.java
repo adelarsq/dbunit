@@ -95,7 +95,7 @@ public class SortedTable extends AbstractTable
 
     private int getOriginalRowIndex(int row) throws DataSetException
     {
-        logger.debug("getOriginalRowIndex(row=" + row + ") - start");
+        logger.debug("getOriginalRowIndex(row={}) - start", Integer.toString(row));
 
         if (_indexes == null)
         {
@@ -139,7 +139,7 @@ public class SortedTable extends AbstractTable
 
     public Object getValue(int row, String column) throws DataSetException
     {
-        logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+        logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
 
         assertValidRowIndex(row);
 

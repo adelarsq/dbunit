@@ -60,8 +60,7 @@ public class DataSetUtils
     public static void assertEquals(IDataSet expectedDataSet,
             IDataSet actualDataSet) throws Exception
     {
-        logger.debug("assertEquals(expectedDataSet=" + expectedDataSet + ", actualDataSet=" + actualDataSet
-                + ") - start");
+        logger.debug("assertEquals(expectedDataSet={}, actualDataSet={}) - start", expectedDataSet, actualDataSet);
 
         Assertion.assertEquals(expectedDataSet, actualDataSet);
     }
@@ -77,7 +76,7 @@ public class DataSetUtils
     public static void assertEquals(ITable expectedTable, ITable actualTable)
             throws Exception
     {
-        logger.debug("assertEquals(expectedTable=" + expectedTable + ", actualTable=" + actualTable + ") - start");
+        logger.debug("assertEquals(expectedTable={}, actualTable={}) - start", expectedTable, actualTable);
 
         Assertion.assertEquals(expectedTable, actualTable);
     }
@@ -101,7 +100,7 @@ public class DataSetUtils
      */
     public static String getQualifiedName(String prefix, String name)
     {
-        logger.debug("getQualifiedName(prefix=" + prefix + ", name=" + name + ") - start");
+        logger.debug("getQualifiedName(prefix={}, name={}) - start", prefix, name);
 
         return getQualifiedName(prefix, name, null);
     }
@@ -109,8 +108,7 @@ public class DataSetUtils
     public static String getQualifiedName(String prefix, String name,
             String escapePattern)
     {
-        logger.debug("getQualifiedName(prefix=" + prefix + ", name=" + name + ", escapePattern=" + escapePattern
-                + ") - start");
+        logger.debug("getQualifiedName(prefix={}, name={}, escapePattern={}) - start", new String[] {prefix, name, escapePattern});
 
         if (escapePattern != null)
         {
@@ -128,7 +126,7 @@ public class DataSetUtils
 
     public static String getEscapedName(String name, String escapePattern)
     {
-        logger.debug("getEscapedName(name=" + name + ", escapePattern=" + escapePattern + ") - start");
+        logger.debug("getEscapedName(name={}, escapePattern={}) - start", name, escapePattern);
 
         if (name == null || escapePattern == null)
         {
@@ -164,7 +162,7 @@ public class DataSetUtils
     public static String getSqlValueString(Object value, DataType dataType)
             throws TypeCastException
     {
-        logger.debug("getSqlValueString(value=" + value + ", dataType=" + dataType + ") - start");
+        logger.debug("getSqlValueString(value={}, dataType={}) - start", value, dataType);
 
         if (value == null || value == ITable.NO_VALUE)
         {
@@ -226,7 +224,7 @@ public class DataSetUtils
      */
     public static Column getColumn(String columnName, Column[] columns)
     {
-        logger.debug("getColumn(columnName=" + columnName + ", columns=" + columns + ") - start");
+        logger.debug("getColumn(columnName={}, columns={}) - start", columnName, columns);
 
         for (int i = 0; i < columns.length; i++)
         {
@@ -250,7 +248,7 @@ public class DataSetUtils
     public static ITable[] getTables(String[] names, IDataSet dataSet)
             throws DataSetException
     {
-        logger.debug("getTables(names=" + names + ", dataSet=" + dataSet + ") - start");
+        logger.debug("getTables(names={}, dataSet={}) - start", names, dataSet);
 
         ITable[] tables = new ITable[names.length];
         for (int i = 0; i < names.length; i++)
@@ -267,7 +265,7 @@ public class DataSetUtils
      */
     public static ITable[] getTables(IDataSet dataSet) throws DataSetException
     {
-        logger.debug("getTables(dataSet=" + dataSet + ") - start");
+        logger.debug("getTables(dataSet={}) - start", dataSet);
 
         return getTables(dataSet.iterator());
     }
@@ -277,7 +275,7 @@ public class DataSetUtils
      */
     public static ITable[] getTables(ITableIterator iterator) throws DataSetException
     {
-        logger.debug("getTables(iterator=" + iterator + ") - start");
+        logger.debug("getTables(iterator={}) - start", iterator);
 
         List tableList = new ArrayList();
         while(iterator.next())
@@ -293,14 +291,14 @@ public class DataSetUtils
     public static String[] getReverseTableNames(IDataSet dataSet)
             throws DataSetException
     {
-        logger.debug("getReverseTableNames(dataSet=" + dataSet + ") - start");
+        logger.debug("getReverseTableNames(dataSet={}) - start", dataSet);
 
         return reverseStringArray(dataSet.getTableNames());
     }
 
     public static String[] reverseStringArray(String[] array)
     {
-        logger.debug("reverseStringArray(array=" + array + ") - start");
+        logger.debug("reverseStringArray(array={}) - start", array);
 
         String[] newArray = new String[array.length];
         for (int i = 0; i < array.length; i++)
@@ -311,12 +309,3 @@ public class DataSetUtils
     }
 
 }
-
-
-
-
-
-
-
-
-

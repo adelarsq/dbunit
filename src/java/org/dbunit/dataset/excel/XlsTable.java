@@ -110,7 +110,7 @@ class XlsTable extends AbstractTable
 
     public Object getValue(int row, String column) throws DataSetException
     {
-        logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+        logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
 
         assertValidRowIndex(row);
 

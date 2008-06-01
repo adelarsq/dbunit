@@ -49,7 +49,7 @@ public abstract class AbstractDataSet implements IDataSet
 
     protected ITable[] cloneTables(ITable[] tables)
     {
-        logger.debug("cloneTables(tables=" + tables + ") - start");
+        logger.debug("cloneTables(tables={}) - start", tables);
 
         ITable[] clones = new ITable[tables.length];
         for (int i = 0; i < tables.length; i++)
@@ -80,14 +80,14 @@ public abstract class AbstractDataSet implements IDataSet
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
-        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+        logger.debug("getTableMetaData(tableName={}) - start", tableName);
 
         return getTable(tableName).getTableMetaData();
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
-        logger.debug("getTable(tableName=" + tableName + ") - start");
+        logger.debug("getTable(tableName={}) - start", tableName);
 
         ITable found = null;
         ITableIterator iterator = createIterator(false);

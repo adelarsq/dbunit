@@ -193,7 +193,7 @@ public class StreamingIterator implements ITableIterator
 
         public Object getValue(int row, String column) throws DataSetException
         {
-            logger.debug("getValue(row=" + row + ", column=" + column + ") - start");
+            logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
 
             // Iterate up to specified row
             while (!_eot && row > _lastRow)

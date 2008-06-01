@@ -41,7 +41,7 @@ public abstract class AbstractTable implements ITable
 
     protected void assertValidRowIndex(int row) throws DataSetException
     {
-        logger.debug("assertValidRowIndex(row=" + row + ") - start");
+        logger.debug("assertValidRowIndex(row={}) - start", Integer.toString(row));
 
         assertValidRowIndex(row, getRowCount());
     }
@@ -49,7 +49,7 @@ public abstract class AbstractTable implements ITable
     protected void assertValidRowIndex(int row, int rowCount)
             throws DataSetException
     {
-        logger.debug("assertValidRowIndex(row=" + row + ", rowCount=" + rowCount + ") - start");
+        logger.debug("assertValidRowIndex(row={}, rowCount={}) - start", Integer.toString(row), Integer.toString(rowCount));
 
         if (row < 0)
         {

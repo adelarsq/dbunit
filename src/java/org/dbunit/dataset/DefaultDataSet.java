@@ -71,7 +71,7 @@ public class DefaultDataSet extends AbstractDataSet
      */
     public void addTable(ITable table)
     {
-        logger.debug("addTable(table=" + table + ") - start");
+        logger.debug("addTable(table={}) - start", table);
 
         _tableList.add(table);
     }
@@ -82,7 +82,7 @@ public class DefaultDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
+        logger.debug("createIterator(reversed={}) - start", Boolean.toString(reversed));
 
         ITable[] tables = (ITable[])_tableList.toArray(new ITable[0]);
         return new DefaultTableIterator(tables, reversed);

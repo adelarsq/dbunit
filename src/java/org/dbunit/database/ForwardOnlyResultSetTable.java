@@ -77,7 +77,7 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
 
     public Object getValue(int row, String columnName) throws DataSetException
     {
-        logger.debug("getValue(row=" + row + ", columnName=" + columnName + ") - start");
+        logger.debug("getValue(row={}, columnName={}) - start", Integer.toString(row), columnName);
 
         try
         {
