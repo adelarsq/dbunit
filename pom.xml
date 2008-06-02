@@ -269,7 +269,7 @@
     (once SCM is migrated to SVN...) -->
         <resources>
             <resource>
-                <directory>/</directory>
+                <directory>.</directory>
                 <includes>
                     <include>LICENSE.txt</include>
                 </includes>
