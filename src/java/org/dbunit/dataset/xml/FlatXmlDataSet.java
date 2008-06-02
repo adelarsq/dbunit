@@ -111,6 +111,21 @@ public class FlatXmlDataSet extends CachedDataSet
     }
 
     /**
+     * Creates an FlatXmlDataSet object with the specifed xml file.
+     * Relative DOCTYPE uri are resolved from the xml file path.
+     *
+     * @param xmlFile the xml file
+     * @param dtdMetadata if <code>false</code> do not use DTD as metadata
+     * @param columnSensing Whether or not the columns should be sensed automatically. Every XML row
+     * is scanned for columns that have not been there in a previous column.
+     */
+    public FlatXmlDataSet(File xmlFile, boolean dtdMetadata, boolean columnSensing)
+            throws IOException, DataSetException
+    {
+        this(xmlFile.toURL(), dtdMetadata, columnSensing);
+    }
+
+    /**
      * Creates an FlatXmlDataSet object with the specifed xml URL.
      * Relative DOCTYPE uri are resolved from the xml file path.
      *
@@ -131,10 +146,27 @@ public class FlatXmlDataSet extends CachedDataSet
     public FlatXmlDataSet(URL xmlUrl, boolean dtdMetadata)
             throws IOException, DataSetException
     {
-        super(new FlatXmlProducer(
-                new InputSource(xmlUrl.toString()), dtdMetadata));
+        this(xmlUrl, dtdMetadata, false);
     }
     
+
+    /**
+     * Creates an FlatXmlDataSet object with the specifed xml URL.
+     * Relative DOCTYPE uri are resolved from the xml file path.
+     *
+     * @param xmlUrl the xml URL
+     * @param dtdMetadata if <code>false</code> do not use DTD as metadata
+     * @param columnSensing Whether or not the columns should be sensed automatically. Every XML row
+     * is scanned for columns that have not been there in a previous column.
+     */
+    public FlatXmlDataSet(URL xmlUrl, boolean dtdMetadata, boolean columnSensing)
+            throws IOException, DataSetException
+    {
+        super(new FlatXmlProducer(
+                new InputSource(xmlUrl.toString()), dtdMetadata, columnSensing));
+    }
+
+
     /**
      * Creates an FlatXmlDataSet object with the specifed xml reader.
      * Relative DOCTYPE uri are resolved from the current working dicrectory.
@@ -285,6 +317,7 @@ public class FlatXmlDataSet extends CachedDataSet
         FlatDtdDataSet.write(dataSet, out);
     }
 }
+
 
 
 

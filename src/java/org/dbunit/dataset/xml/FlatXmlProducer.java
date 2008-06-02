@@ -28,10 +28,12 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.stream.BufferedConsumer;
 import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
@@ -73,6 +75,7 @@ public class FlatXmlProducer extends DefaultHandler
     private int _columnNumberInFirstLine = 0;
     // Needed as _dtdMetadata can be true even with no dtd.
     private boolean _dtdPresent = false;
+    private boolean _columnSensing = false;
 
     private IDataSetConsumer _consumer = EMPTY_CONSUMER;
     private ITableMetaData _activeMetaData;
@@ -93,6 +96,16 @@ public class FlatXmlProducer extends DefaultHandler
         _validating = false;
     }
 
+    public FlatXmlProducer(InputSource xmlSource, boolean dtdMetadata, boolean columnSensing)
+    {
+        _inputSource = xmlSource;
+        _resolver = this;
+        _dtdMetadata = dtdMetadata;
+        _validating = false;
+        _columnSensing = columnSensing;
+    }
+
+    
     public FlatXmlProducer(InputSource xmlSource, IDataSet metaDataSet)
     {
         _inputSource = xmlSource;
@@ -116,11 +129,23 @@ public class FlatXmlProducer extends DefaultHandler
 //        _xmlReader = xmlReader;
 //    }
 
+
     private ITableMetaData createTableMetaData(String tableName,
             Attributes attributes) throws DataSetException
     {
         logger.debug("createTableMetaData(tableName=" + tableName + ", attributes=" + attributes + ") - start");
+        return this.createTableMetaData(tableName, attributes, null);
+    }
 
+
+    // sourceforge Bug #1421590
+    private ITableMetaData createTableMetaData(String tableName,
+            Attributes attributes, ITableMetaData lastKnownTableMetaData) throws DataSetException
+    {
+        logger.debug("createTableMetaData(tableName=" + tableName + ", attributes=" + attributes + 
+        		", lastKnownTableMetaData=" + lastKnownTableMetaData + ") - start");
+        
+        // Is not null when a DTD handler was installed. Could also check the flag _dtdPresent
         if (_metaDataSet != null)
         {
             return _metaDataSet.getTableMetaData(tableName);
@@ -133,15 +158,29 @@ public class FlatXmlProducer extends DefaultHandler
             columns[i] = new Column(attributes.getQName(i),
                     DataType.UNKNOWN);
         }
+        
+        if(lastKnownTableMetaData!=null) 
+        {
+            Column[] lastKnownColumns = lastKnownTableMetaData.getColumns();
+        	// check include all formerly found attributes - might be that there is one attribute missing in this row that was present in one of the former rows
+            columns = DataSetUtils.mergeColumnsByName(lastKnownColumns, columns);
+        }
 
         return new DefaultTableMetaData(tableName, columns);
     }
-
+    
     public void setValidating(boolean validating)
     {
         logger.debug("setValidating(validating=" + validating + ") - start");
 
         _validating = validating;
+    }
+
+    public void setColumnSensing(boolean columnSensing)
+    {
+        logger.debug("setColumnSensing(columnSensing=" + columnSensing + ") - start");
+
+        _columnSensing = columnSensing;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -151,7 +190,12 @@ public class FlatXmlProducer extends DefaultHandler
     {
         logger.debug("setConsumer(consumer) - start");
 
-        _consumer = consumer;
+        if(this._columnSensing) {
+            _consumer = new BufferedConsumer(consumer);
+        }
+        else {
+            _consumer = consumer;
+        }
     }
 
     public void produce() throws DataSetException
@@ -271,8 +315,13 @@ public class FlatXmlProducer extends DefaultHandler
             	{
             		_columnNumberInFirstLine = attributes.getLength();
             	}
-            	else if (!_dtdPresent && attributes.getLength() > _columnNumberInFirstLine)
+            	// Omit "attributes.getLength() > _columnNumberInFirstLine" because column count could be same with different columns
+            	else if (!_dtdPresent && _columnSensing)
             	{
+            		_activeMetaData = createTableMetaData(qName, attributes, _activeMetaData);
+            		// We also need to recreate the table, copying the data already collected from the old one to the new one
+            		_consumer.startTable(_activeMetaData);
+            		
             		logger.warn("Extra columns on line " + (_lineNumber+1) 
             				+ ".  Those columns will be ignored.");
             		logger.warn("Please add the extra columns to line 1,"

@@ -29,6 +29,8 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -308,4 +310,38 @@ public class DataSetUtils
         return newArray;
     }
 
+	public static Column[] mergeColumnsByName(Column[] referenceColumns,
+			Column[] columnsToMerge) {
+		
+		List resultList = new ArrayList(Arrays.asList(referenceColumns));
+		List columnsToMergeNotInRefList = new ArrayList(Arrays.asList(columnsToMerge));
+		
+		// All columns that exist in the referenceColumns
+		for (int i = 0; i < referenceColumns.length; i++) {
+			Column refColumn = referenceColumns[i];
+			for (int k = 0; k < columnsToMerge.length; k++) {
+				Column columnToMerge = columnsToMerge[k];
+				// Check if this colToMerge exists in the refColumn
+				if(columnToMerge.getColumnName().equals(refColumn.getColumnName())) {
+					// We found the col in the refColumns - so no candidate for adding to the result list
+					columnsToMergeNotInRefList.remove(columnToMerge);
+					break;
+				}
+			}
+		}
+		
+		// Add all "columnsToMerge" that have not been found in the referenceColumnList
+		resultList.addAll(columnsToMergeNotInRefList);
+		return (Column[]) resultList.toArray(new Column[]{});
+	}
+
+	
+	public static class ColumnComparatorByName implements Comparator {
+		public int compare(Object o1, Object o2) {
+			Column col1 = (Column)o1;
+			Column col2 = (Column)o2;
+			return col1.getColumnName().compareTo(col2.getColumnName());
+		}
+		
+	}
 }

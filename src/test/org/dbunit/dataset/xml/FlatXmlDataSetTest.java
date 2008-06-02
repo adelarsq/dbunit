@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Writer;
+import java.util.Arrays;
 
 /**
  * @author Manuel Laflamme
@@ -79,6 +80,21 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
         assertEquals("column count", 2, columns.length);
     }
 
+    public void testMissingColumnAndDisableDtdMetadataAndSensing() throws Exception
+    {
+        IDataSet dataSet = new FlatXmlDataSet(
+                new File("src/xml/flatXmlTableTest.xml"), false, true);
+
+        ITable table = dataSet.getTable("MISSING_VALUES_SENSING");
+
+        Column[] columns = table.getTableMetaData().getColumns();
+        assertEquals("column count", 3, columns.length);
+        assertEquals("COLUMN0", columns[0].getColumnName());
+        assertEquals("COLUMN3", columns[1].getColumnName());
+        assertEquals("COLUMN1", columns[2].getColumnName());
+    }
+
+    
     public void testWrite() throws Exception
     {
         IDataSet expectedDataSet = createDataSet();
@@ -186,6 +202,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
     }
 
 }
+
 
 
 
