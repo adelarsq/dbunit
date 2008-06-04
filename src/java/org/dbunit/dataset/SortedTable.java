@@ -21,14 +21,14 @@
 
 package org.dbunit.dataset;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.dataset.datatype.DataType;
-
-import java.util.Arrays;
-import java.util.Comparator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is a ITable decorator that provide a sorted view of the decorated table.
@@ -52,15 +52,18 @@ public class SortedTable extends AbstractTable
 
     /**
      * Sort the decorated table by specified columns order.
+     * @throws DataSetException 
      */
-    public SortedTable(ITable table, Column[] columns)
+    public SortedTable(ITable table, Column[] columns) throws DataSetException
     {
         _table = table;
         _columns = columns;
+        validateColumns();
     }
 
-    /**
+	/**
      * Sort the decorated table by specified columns order.
+     * @throws DataSetException
      */
     public SortedTable(ITable table, String[] columnNames) throws DataSetException
     {
@@ -72,13 +75,43 @@ public class SortedTable extends AbstractTable
         {
             String columnName = columnNames[i];
             _columns[i] = DataSetUtils.getColumn(columnName, columns);
+            // If the column does not exist in the table, throw an exception
+            if (_columns[i] == null)
+            {
+				throw new NoSuchColumnException("Unknown column '" + columnName
+						+ "' for table '"
+						+ table.getTableMetaData().getTableName() + "'");
+			}
         }
     }
 
     /**
-     * Sort the decorated table by specified metadata columns order. All
-     * metadata columns will be used.
-     */
+	 * Verifies that all columns that are currently set really exist in the
+	 * given table
+	 * 
+	 * @throws DataSetException
+	 */
+    private void validateColumns() throws DataSetException 
+    {
+        Column[] columnsOfTable = _table.getTableMetaData().getColumns();
+        // Create a list for easy containment check
+        List columnsOfTableList = Arrays.asList(columnsOfTable);
+        for (int i = 0; i < _columns.length; i++) 
+        {
+        	Column sortColumn = _columns[i];
+        	if (!columnsOfTableList.contains(sortColumn))
+        	{
+				throw new NoSuchColumnException("Unknown column '"
+						+ sortColumn.getColumnName() + "' for table '"
+						+ _table.getTableMetaData().getTableName() + "'");
+			}
+        }
+	}
+
+    /**
+	 * Sort the decorated table by specified metadata columns order. All
+	 * metadata columns will be used.
+	 */
     public SortedTable(ITable table, ITableMetaData metaData) throws DataSetException
     {
         this(table, metaData.getColumns());

@@ -526,7 +526,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
                 else
                 {
                     SortedTable expectedTable = new SortedTable(
-                            dataSet.getTable(name), table.getTableMetaData());
+                            dataSet.getTable(name), dataSet.getTable(name).getTableMetaData());
                     SortedTable actualTable = new SortedTable(table);
                     Assertion.assertEquals(expectedTable, actualTable);
                 }

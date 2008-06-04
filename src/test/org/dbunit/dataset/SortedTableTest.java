@@ -21,9 +21,11 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-
 import java.io.File;
+import java.io.IOException;
+
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 /**
  * @author Manuel Laflamme
@@ -31,6 +33,8 @@ import java.io.File;
  */
 public class SortedTableTest extends AbstractTableTest
 {
+	private File sortedTableTestFile = new File("src/xml/sortedTableTest.xml");
+	
     public SortedTableTest(String s)
     {
         super(s);
@@ -43,11 +47,15 @@ public class SortedTableTest extends AbstractTableTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        return new SortedDataSet(new FlatXmlDataSet(
-                new File("src/xml/sortedTableTest.xml")));
+        return new SortedDataSet(createUnsortedDataSet());
     }
 
-    public void testGetMissingValue() throws Exception
+    private IDataSet createUnsortedDataSet() throws DataSetException, IOException 
+    {
+    	return new FlatXmlDataSet(sortedTableTestFile);
+    }
+
+	public void testGetMissingValue() throws Exception
     {
         String columnName = "COLUMN2";
         Object[] expected = {null, null, null, "0", "1"};
@@ -64,6 +72,34 @@ public class SortedTableTest extends AbstractTableTest
         }
     }
 
+    public void testCustomColumnsWithUnknownColumnName() throws Exception
+    {
+    	String[] sortColumnNames = new String[] {"COLUMN2", "COLUMNXY_UNDEFINED"};
+    	
+        ITable unsortedTable = createUnsortedDataSet().getTable("MISSING_VALUES");
+        try {
+	        new SortedTable(unsortedTable, sortColumnNames);
+	        fail("Should not be able to create a SortedTable with unexisting columns");
+        }catch(NoSuchColumnException expected) {
+        	assertEquals("Unknown column 'COLUMNXY_UNDEFINED' for table 'MISSING_VALUES'", expected.getMessage());
+        }
+    }
+
+    public void testCustomColumnsWithUnknownColumn() throws Exception
+    {
+    	Column[] sortColumns = new Column[] {
+    			new Column("COLUMN2", DataType.UNKNOWN, Column.NULLABLE),
+    			new Column("COLUMNXY_UNDEFINED", DataType.UNKNOWN, Column.NULLABLE) 
+		};
+    	
+        ITable unsortedTable = createUnsortedDataSet().getTable("MISSING_VALUES");
+        try {
+	        new SortedTable(unsortedTable, sortColumns);
+	        fail("Should not be able to create a SortedTable with unexisting columns");
+        }catch(NoSuchColumnException expected) {
+        	assertEquals("Unknown column 'COLUMNXY_UNDEFINED' for table 'MISSING_VALUES'", expected.getMessage());
+        }
+    }
 
 }
 
