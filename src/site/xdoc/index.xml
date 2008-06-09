@@ -25,6 +25,10 @@
   <section name="News">
       <table border="1">
         <tr>
+          <td>2008-06-08</td>
+          <td>Matthias Gommeringer joined the project team. Welcome Matthias!</td>
+        </tr>
+        <tr>
           <td>2008-05-23</td>
           <td>Well another bug fixing release is out: 2.2.3 fixes some annoing bugs! Please see <a href="changes-report.html#a2.2.3">changes</a>.</td>
         </tr>

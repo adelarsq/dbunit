@@ -131,6 +131,14 @@
                 <role>Java Developer</role>
             </roles>
         </developer>
+        <developer>
+            <name>Matthias Gommeringer</name>
+            <id>gommma</id>
+            <email>gommma@users.sourceforge.net</email>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <contributors>
