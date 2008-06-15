@@ -21,23 +21,27 @@
 
 package org.dbunit;
 
+import java.io.FileReader;
+import java.math.BigDecimal;
+
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
+
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.CompositeTable;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
-
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
-
-import java.io.FileReader;
-import java.math.BigDecimal;
+import org.dbunit.operation.DatabaseOperation;
 
 /**
  * @author Manuel Laflamme
@@ -149,6 +153,37 @@ public class AssertionTest extends TestCase
         }
     }
 
+    public void testAssertTablesWithColFilterAndValuesNotEqualExcluded() throws Exception
+    {
+        IDataSet dataSet = getDataSet();
+        
+        // Column2 has the wrong value, so exclude -> test should run successfully
+        String[] allColumnsThatAreNotEqual = new String[] {"COLUMN2"};
+        Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+                dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"),
+                allColumnsThatAreNotEqual );
+    }
+
+    public void testAssertTablesWithColFilterAndValuesNotEqualNotExcluded() throws Exception
+    {
+        IDataSet dataSet = getDataSet();
+        
+        // Column0 has correct value. Column2 has the wrong value but is not filtered.
+        // -> test should fail
+        String[] filteredColumns = new String[] {"COLUMN0"};
+        try {
+	        Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+	                dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"),
+	                filteredColumns );
+            throw new IllegalStateException("Should throw an AssertionFailedError");
+        }
+        catch (AssertionFailedError expected)
+        {
+        	String expectedMsg = "value (table=TEST_TABLE, row=1, col=COLUMN2): expected:<row 1 col 2> but was:<wrong value>";
+        	assertEquals(expectedMsg, expected.getMessage());
+        }
+    }
+
     public void testAssertTablesEqualsAndIncompatibleDataType() throws Exception
     {
         String tableName = "TABLE_NAME";
@@ -186,6 +221,52 @@ public class AssertionTest extends TestCase
         }
     }
 
+    public void testAssertTablesByQueryWithColFilterAndValuesNotEqualExcluded() throws Exception
+    {
+        DatabaseEnvironment env = DatabaseEnvironment.getInstance();
+        IDatabaseConnection connection = env.getConnection();
+
+        IDataSet dataSet = env.getInitDataSet();
+    	ITable expectedTable = dataSet.getTable("TEST_TABLE");
+
+		ITable table = dataSet.getTable("TEST_TABLE");
+		ITable filteredTable = new ModifyingTable(table, "COLUMN2");
+        DatabaseOperation.CLEAN_INSERT.execute(connection, new DefaultDataSet(filteredTable));
+
+    	// Ignore COLUMN2 which has been modified by the "ModifyingTable" above and hence does not match.
+        // When we ignore this column, the assertion should work without failure
+        String[] ignoreCols = new String[] {"COLUMN2"};
+        Assertion.assertEqualsByQuery(expectedTable, connection, "TEST_TABLE", "select * from TEST_TABLE", ignoreCols);
+    }
+    
+    public void testAssertTablesByQueryWithColFilterAndValuesNotEqualNotExcluded() throws Exception
+    {
+        DatabaseEnvironment env = DatabaseEnvironment.getInstance();
+        IDatabaseConnection connection = env.getConnection();
+
+        IDataSet dataSet = env.getInitDataSet();
+    	ITable expectedTable = dataSet.getTable("TEST_TABLE");
+
+		ITable table = dataSet.getTable("TEST_TABLE");
+		ITable filteredTable = new ModifyingTable(table, "COLUMN2");
+        DatabaseOperation.CLEAN_INSERT.execute(connection, new DefaultDataSet(filteredTable));
+
+    	// Ignore COLUMN1 which has NOT been modified by the "ModifyingTable". The modified COLUMN2 does
+        // not match and is not ignored. So the assertion should fail.
+        String[] ignoreCols = new String[] {"COLUMN1"};
+        try {
+        	Assertion.assertEqualsByQuery(expectedTable, connection, "TEST_TABLE", "select * from TEST_TABLE", ignoreCols);
+        	fail("The assertion should not work");
+        }
+        catch (AssertionFailedError expected)
+        {
+        	String expectedMsg = "value (table=TEST_TABLE, row=0, col=COLUMN2): expected:<row 0 col 2> but was:<row 0 col 2 some other value (modification for column COLUMN2)>";
+        	assertEquals(expectedMsg, expected.getMessage());
+        }
+    }
+
+    
+    
     public void testAssertTablesEqualsAndCompatibleDataType() throws Exception
     {
         String tableName = "TABLE_NAME";
@@ -327,6 +408,39 @@ public class AssertionTest extends TestCase
         {
         }
     }
+    
+    protected static class ModifyingTable implements ITable
+    {
+    	private ITable _wrappedTable;
+    	private String _columnToModify;
+    	
+    	public ModifyingTable(ITable originalTable, String columnToModify)
+    	{
+    		this._wrappedTable = originalTable;
+    		this._columnToModify = columnToModify;
+    	}
+
+		public int getRowCount() {
+			return this._wrappedTable.getRowCount();
+		}
+
+		public ITableMetaData getTableMetaData() {
+			return this._wrappedTable.getTableMetaData();
+		}
+
+		public Object getValue(int row, String column) throws DataSetException {
+			Object originalValue = _wrappedTable.getValue(row, column);
+
+			// Modify the value if column name matches
+			if(column.equalsIgnoreCase(this._columnToModify)) {
+				return String.valueOf(originalValue) + " some other value (modification for column "+_columnToModify +")";
+			}
+			return originalValue;
+}
+    	
+    	
+    }
+
 }
 
 

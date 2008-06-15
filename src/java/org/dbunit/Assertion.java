@@ -21,16 +21,23 @@
 
 package org.dbunit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import junit.framework.Assert;
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.datatype.UnknownDataType;
-
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Comparator;
+
+import junit.framework.Assert;
+
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.UnknownDataType;
+import org.dbunit.dataset.filter.DefaultColumnFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
@@ -51,6 +58,89 @@ public class Assertion
     {
     }
 
+    /**
+	 * Compare a one table present in two datasets ignoring specified columns.
+	 * 
+	 * @param expectedDataset First dataset.
+	 * @param actualDataset Second dataset.
+	 * @param tableName Table name of the table to be compared.
+	 * @param ignoreCols Columns to ignore while comparing.
+	 * @throws org.dbunit.DatabaseUnitException
+	 *             If an error occurs.
+	 */
+	public static void assertEquals(final IDataSet expectedDataset, final IDataSet actualDataset, 
+			final String tableName,	final String[] ignoreCols) throws DatabaseUnitException 
+	{
+        logger.debug("assertEquals(expectedDataset={}, actualDataset={}, tableName={}, ignoreCols={}) - start", 
+        		new Object[] {expectedDataset, actualDataset, tableName, Arrays.asList(ignoreCols)} );
+
+        Assertion.assertEquals(
+				expectedDataset.getTable(tableName), 
+				actualDataset.getTable(tableName),
+				ignoreCols);
+	}
+
+    /**
+	 * Compare a one table present in two datasets ignoring specified columns.
+	 * 
+	 * @param expectedTable First table.
+	 * @param actualTable Second table.
+	 * @param ignoreCols Columns to ignore while comparing.
+	 * @throws org.dbunit.DatabaseUnitException If an error occurs.
+	 */
+	public static void assertEquals(final ITable expectedTable, final ITable actualTable, 
+			final String[] ignoreCols) throws DatabaseUnitException 
+	{
+        logger.debug("assertEquals(expectedTable={}, actualTable={}, ignoreCols={}) - start", 
+        		new Object[] {expectedTable, actualTable, Arrays.asList(ignoreCols)} );
+
+        final ITable expectedTableFiltered = DefaultColumnFilter.excludedColumnsTable(expectedTable, ignoreCols);
+		final ITable actualTableFiltered = DefaultColumnFilter.excludedColumnsTable(actualTable, ignoreCols);
+		Assertion.assertEquals(expectedTableFiltered, actualTableFiltered);
+	}
+
+	/**
+	 * Compare a table from a dataset with a table generated from an sql query.
+	 * 
+	 * @param expectedDataset Dataset to retrieve the first table from.
+	 * @param connection Connection to use for the SQL statement.
+	 * @param sqlQuery SQL query that will build the data in returned second table rows.
+	 * @param tableName Table name of the table to compare
+	 * @param ignoreCols Columns to ignore while comparing.
+	 * @throws DatabaseUnitException If an error occurs while performing the comparison.
+	 * @throws java.sql.SQLException If an SQL error occurs.
+	 */
+	public static void assertEqualsByQuery(final IDataSet expectedDataset, 
+			final IDatabaseConnection connection, final String sqlQuery,
+			final String tableName, final String[] ignoreCols)
+    	throws DatabaseUnitException, SQLException
+    {
+		ITable expectedTable = expectedDataset.getTable(tableName);
+		Assertion.assertEqualsByQuery(expectedTable, connection, tableName, sqlQuery, ignoreCols);
+    }
+	
+	/**
+	 * Compare a table with a table generated from an sql query.
+	 * 
+	 * @param expectedTable Dataset to retrieve the first table from.
+	 * @param connection Connection to use for the SQL statement.
+	 * @param tableName The name of the table to query from the database
+	 * @param sqlQuery SQL query that will build the data in returned second table rows.
+	 * @param ignoreCols Columns to ignore while comparing.
+	 * @throws DatabaseUnitException If an error occurs while performing the comparison.
+	 * @throws java.sql.SQLException If an SQL error occurs.
+	 */
+	public static void assertEqualsByQuery(final ITable expectedTable, 
+			final IDatabaseConnection connection, final String tableName, final String sqlQuery, 
+			final String[] ignoreCols)
+    	throws DatabaseUnitException, SQLException
+    {
+		ITable expected = DefaultColumnFilter.excludedColumnsTable(expectedTable, ignoreCols);
+		ITable queriedTable = connection.createQueryTable(tableName, sqlQuery);
+		ITable actual = DefaultColumnFilter.excludedColumnsTable(queriedTable, ignoreCols);
+		Assertion.assertEquals(expected, actual);
+    }
+	
     /**
      * Asserts that the two specified dataset are equals. This method ignore
      * the tables order.
@@ -94,12 +184,11 @@ public class Assertion
 
     }
 
-
     /**
-     * Asserts that the two specified tables are equals. This method ignore the
-     * table names, the columns order, the columns data type and which columns
-     * are composing the primary keys.
-     */
+	 * Asserts that the two specified tables are equals. This method ignore the
+	 * table names, the columns order, the columns data type and which columns
+	 * are composing the primary keys.
+	 */
     public static void assertEquals(ITable expectedTable, ITable actualTable)
             throws DatabaseUnitException
     {
