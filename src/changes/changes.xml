@@ -14,6 +14,7 @@
       <action dev="gommma" type="add" issue="1969355" due-to="ymenager">Patch: some extra comparison methods for Assertion.</action>
       <action dev="gommma" type="add" issue="1966517">Assertion.equals to provide more info about failure</action>
       <action dev="slecallonnec" type="fix" issue="1636182">StreamingDataSet.toString() now returning default value rather UnsupportedOperationException.</action>
+      <action dev="gommma" type="add" issue="1993243">Performance optimization getColumnIndex() - Implies API change: new method ITableMetaData.getColumnIndex</action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>

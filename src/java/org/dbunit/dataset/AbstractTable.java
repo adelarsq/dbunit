@@ -75,20 +75,10 @@ public abstract class AbstractTable implements ITable
 
     protected int getColumnIndex(String columnName) throws DataSetException
     {
-        logger.debug("getColumnIndex(columnName=" + columnName + ") - start");
+        logger.debug("getColumnIndex(columnName={}) - start", columnName);
 
         ITableMetaData metaData = getTableMetaData();
-        Column[] columns = metaData.getColumns();
-        for (int i = 0; i < columns.length; i++)
-        {
-            Column column = columns[i];
-            if (column.getColumnName().equalsIgnoreCase(columnName))
-            {
-                return i;
-            }
-        }
-
-        throw new NoSuchColumnException(metaData.getTableName() + "." + columnName);
+        return metaData.getColumnIndex(columnName);
     }
 
     ////////////////////////////////////////////////////////////////////////////

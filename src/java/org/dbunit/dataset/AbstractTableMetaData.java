@@ -21,13 +21,13 @@
 
 package org.dbunit.dataset;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 import org.dbunit.dataset.filter.IColumnFilter;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
@@ -37,6 +37,8 @@ import java.util.List;
 public abstract class AbstractTableMetaData implements ITableMetaData
 {
 
+	private Hashtable _columnsToIndexes;
+	
     /**
      * Logger for this class
      */
@@ -84,6 +86,51 @@ public abstract class AbstractTableMetaData implements ITableMetaData
 
         return (Column[])keyList.toArray(new Column[0]);
     }
+
+	/**
+	 * Provides the index of the column with the given name within this table.
+	 * Uses method {@link ITableMetaData#getColumns()} to retrieve all available columns.
+	 * @throws DataSetException 
+	 * @see org.dbunit.dataset.ITableMetaData#getColumnIndex(java.lang.String)
+	 */
+	public int getColumnIndex(String columnName) throws DataSetException 
+	{
+        logger.debug("getColumnIndex(columnName={}) - start", columnName);
+
+        if(this._columnsToIndexes == null) 
+		{
+			// lazily create the map
+			this._columnsToIndexes = createColumnIndexesMap(this.getColumns());
+		}
+		
+        String columnNameUpperCase = columnName.toUpperCase();
+		Integer colIndex = (Integer) this._columnsToIndexes.get(columnNameUpperCase);
+		if(colIndex != null) 
+		{
+			return colIndex.intValue();
+		}
+		else 
+		{
+			throw new NoSuchColumnException(this.getTableName() + "." + columnNameUpperCase + 
+					" (Non-uppercase input column: "+columnName+") in ColumnNameToIndexes cache map. " +
+					"Note that the map's column names are NOT case sensitive.");
+		}
+	}
+
+	/**
+	 * @param columns The columns to be put into the hash table
+	 * @return A hashtable having the key value pair [columnName, columnIndexInInputArray]
+	 */
+	private Hashtable createColumnIndexesMap(Column[] columns) 
+	{
+		Hashtable colsToIndexes = new Hashtable(columns.length);
+		for (int i = 0; i < columns.length; i++) 
+		{
+			colsToIndexes.put(columns[i].getColumnName().toUpperCase(), new Integer(i));
+		}
+		return colsToIndexes;
+	}
+    
 }
 
 
