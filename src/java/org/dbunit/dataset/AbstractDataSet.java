@@ -145,15 +145,12 @@ public abstract class AbstractDataSet implements IDataSet
 
     public String toString()
     {
-        logger.debug("toString() - start");
-
         try
         {
             return Arrays.asList(getTableNames()).toString();
         }
-        catch (DataSetException e)
+        catch (Exception e)
         {
-            logger.error("toString()", e);
             return super.toString();
         }
     }
