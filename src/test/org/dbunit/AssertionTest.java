@@ -184,6 +184,31 @@ public class AssertionTest extends TestCase
         }
     }
 
+    public void testAssertTablesAndValuesNotEquals_AdditionalColumnInfo() throws Exception
+    {
+        IDataSet dataSet = getDataSet();
+
+        try
+        {
+        	Column[] additionalColInfo = new Column[]{
+        			new Column("COLUMN0", DataType.VARCHAR)
+        	};
+            Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+                    dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"),
+                    additionalColInfo);
+            throw new IllegalStateException("Should throw an AssertionFailedError");
+        }
+        catch (AssertionFailedError expected)
+        {
+        	String expectedMsg = "junit.framework.AssertionFailedError: value (table=TEST_TABLE, row=1, col=COLUMN2): " +
+        			"expected:<row 1 col 2> but was:<wrong value> " +
+        			"Additional row info: (col 'COLUMN0' values: expected=<row 1 col 0>, actual=<row 1 col 0>)";
+        	String actualMsg = expected.toString();
+        	assertEquals("Exception message did not match the expected one.", expectedMsg, actualMsg);
+        }
+    }
+
+    
     public void testAssertTablesEqualsAndIncompatibleDataType() throws Exception
     {
         String tableName = "TABLE_NAME";

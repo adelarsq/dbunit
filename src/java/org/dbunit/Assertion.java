@@ -122,7 +122,7 @@ public class Assertion
 	/**
 	 * Compare a table with a table generated from an sql query.
 	 * 
-	 * @param expectedTable Dataset to retrieve the first table from.
+	 * @param expectedTable Table containing all expected results.
 	 * @param connection Connection to use for the SQL statement.
 	 * @param tableName The name of the table to query from the database
 	 * @param sqlQuery SQL query that will build the data in returned second table rows.
@@ -185,14 +185,36 @@ public class Assertion
     }
 
     /**
-	 * Asserts that the two specified tables are equals. This method ignore the
+	 * Asserts that the two specified tables are equals. This method ignores the
 	 * table names, the columns order, the columns data type and which columns
 	 * are composing the primary keys.
+	 * @param expectedTable Table containing all expected results.
+	 * @param actualTable Table containing all actual results.
+     * @throws DatabaseUnitException
 	 */
     public static void assertEquals(ITable expectedTable, ITable actualTable)
             throws DatabaseUnitException
     {
         logger.debug("assertEquals(expectedTable={}, actualTable={}) - start", expectedTable, actualTable);
+        assertEquals(expectedTable, actualTable, (Column[])null);
+    }
+    
+    /**
+     * Asserts that the two specified tables are equals. This method ignores the
+     * table names, the columns order, the columns data type and which columns
+     * are composing the primary keys.
+     * 
+	 * @param expectedTable Table containing all expected results.
+	 * @param actualTable Table containing all actual results.
+     * @param additionalColumnInfo The columns to be printed out if the assert fails because of a data any mismatch.
+     * Provides some additional column values that can be needed to quickly identify the columns for which the mismatch
+     * occurred (for example a primary key column). 
+     * @throws DatabaseUnitException
+     */
+    public static void assertEquals(ITable expectedTable, ITable actualTable, Column[] additionalColumnInfo)
+            throws DatabaseUnitException
+    {
+        logger.debug("assertEquals(expectedTable={}, actualTable={}, rowValueProvider) - start", expectedTable, actualTable);
 
         // Do not continue if same instance
         if (expectedTable == actualTable)
@@ -246,15 +268,43 @@ public class Assertion
                         expectedTableName, expectedColumn, actualColumn);
                 if (dataType.compare(expectedValue, actualValue) != 0)
                 {
-                    Assert.fail("value (table=" + expectedTableName + ", " +
-                            "row=" + i + ", col=" + columnName + "): expected:<" +
-                            expectedValue + "> but was:<" + actualValue + ">");
+                	// add custom column values information for better identification of mismatching rows
+                	String additionalInfo = buildAdditionalColumnInfo(expectedTable, actualTable, i, additionalColumnInfo);
+                	
+                    // example message: "value (table=MYTAB, row=232, column=MYCOL): expected:<123> but was:<1234>. Additional row info: (column=MyIdCol, expected=444, actual=555)"
+                	String msg = "value (table=" + expectedTableName + ", row=" + i +
+                    ", col=" + columnName + "): expected:<" +
+                    expectedValue + "> but was:<" + actualValue + ">" + additionalInfo;
+                    Assert.fail(msg);
                 }
+                
             }
         }
     }
 
-    static DataType getComparisonDataType(String tableName, Column expectedColumn,
+
+	private static String buildAdditionalColumnInfo(ITable expectedTable,
+			ITable actualTable, int rowIndex, Column[] additionalColumnInfo) {
+		
+		String additionalInfo = "";
+    	if(additionalColumnInfo != null && additionalColumnInfo.length>0) {
+    		additionalInfo = " Additional row info:";
+    		for (int j = 0; j < additionalColumnInfo.length; j++) {
+    			String columnName = additionalColumnInfo[j].getColumnName();
+    			try {
+					Object expectedKeyValue = expectedTable.getValue(rowIndex, columnName);
+					Object actualKeyValue = actualTable.getValue(rowIndex, columnName);
+					additionalInfo += " (col '" + columnName + "' values: expected=<"+expectedKeyValue+">, actual=<"+actualKeyValue+">)";
+				} catch (DataSetException e) {
+					logger.debug("Exception while building additional info for column "+columnName, e);
+				}
+			}
+    	}
+    	return additionalInfo;
+	}
+
+	
+	static DataType getComparisonDataType(String tableName, Column expectedColumn,
             Column actualColumn)
     {
         logger.debug("getComparisonDataType(tableName={}, expectedColumn={}, actualColumn={}) - start", new Object[] {tableName, expectedColumn, actualColumn});
@@ -355,6 +405,7 @@ public class Assertion
         }
     }
 }
+
 
 
 

@@ -12,6 +12,7 @@
       <action dev="rlogiacco" type="fix" issue="1981449" due-to="gommma">Patch for Bug #1421590 "Problem in data import if all the columns are not populated"</action>
       <action dev="slecallonnec" type="fix" issue="1975499" due-to="gommma">NoSuchColumnException now thrown when column name does not exist.</action>
       <action dev="gommma" type="add" issue="1969355" due-to="ymenager">Patch: some extra comparison methods for Assertion.</action>
+      <action dev="gommma" type="add" issue="1966517">Assertion.equals to provide more info about failure</action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>
