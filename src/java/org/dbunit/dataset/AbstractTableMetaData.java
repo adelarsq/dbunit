@@ -22,8 +22,9 @@
 package org.dbunit.dataset;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractTableMetaData implements ITableMetaData
 {
 
-	private Hashtable _columnsToIndexes;
+	private Map _columnsToIndexes;
 	
     /**
      * Logger for this class
@@ -121,9 +122,9 @@ public abstract class AbstractTableMetaData implements ITableMetaData
 	 * @param columns The columns to be put into the hash table
 	 * @return A hashtable having the key value pair [columnName, columnIndexInInputArray]
 	 */
-	private Hashtable createColumnIndexesMap(Column[] columns) 
+	private Map createColumnIndexesMap(Column[] columns) 
 	{
-		Hashtable colsToIndexes = new Hashtable(columns.length);
+		Map colsToIndexes = new HashMap(columns.length);
 		for (int i = 0; i < columns.length; i++) 
 		{
 			colsToIndexes.put(columns[i].getColumnName().toUpperCase(), new Integer(i));
