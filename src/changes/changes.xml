@@ -18,6 +18,7 @@
       <action dev="gommma" type="add" issue="1959771">Support RowFilter on ITable</action>
       <action dev="gommma" type="add" issue="1961269">support for tolerated delta in floating-point comparisons - Implies API change: new method IDataTypeFactory.createDataType(int sqlType, String sqlTypeName, String tableName, String columnName)</action>
       <action dev="slecallonnec" type="add">Added batchSize as a parameter.</action>
+      <action dev="gommma" type="add" issue="1358137" due-to="rinkrank">Excel support in Ant task</action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>

@@ -20,22 +20,33 @@
  */
 package org.dbunit.ant;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.tools.ant.Task;
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.*;
-import org.dbunit.dataset.*;
+import org.dbunit.database.CachedResultSetTableFactory;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.ForwardOnlyResultSetTableFactory;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.IResultSetTableFactory;
+import org.dbunit.database.QueryDataSet;
+import org.dbunit.dataset.CachedDataSet;
+import org.dbunit.dataset.CompositeDataSet;
+import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.csv.CsvProducer;
+import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.stream.StreamingDataSet;
-import org.dbunit.dataset.xml.*;
+import org.dbunit.dataset.xml.FlatDtdProducer;
+import org.dbunit.dataset.xml.FlatXmlProducer;
+import org.dbunit.dataset.xml.XmlProducer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 /**
@@ -55,6 +66,7 @@ public abstract class AbstractStep implements DbUnitTaskStep
     public static final String FORMAT_XML = "xml";
     public static final String FORMAT_DTD = "dtd";
     public static final String FORMAT_CSV = "csv";
+    public static final String FORMAT_XLS = "xls";
 
 	// Needed a path to Project for logging and references.
 	private Task parentTask;
@@ -150,9 +162,13 @@ public abstract class AbstractStep implements DbUnitTaskStep
             {
                 producer = new FlatDtdProducer(new InputSource(src.toURL().toString()));
             }
+            else if (format.equalsIgnoreCase(FORMAT_XLS))
+            {
+                return new CachedDataSet(new XlsDataSet(src));
+            }
             else
             {
-                throw new IllegalArgumentException("Type must be either 'flat'(default), 'xml', 'csv' or 'dtd' but was: " + format);
+            	throw new IllegalArgumentException("Type must be either 'flat'(default), 'xml', 'csv', 'xls' or 'dtd' but was: " + format);
             }
 
             if (forwardonly)

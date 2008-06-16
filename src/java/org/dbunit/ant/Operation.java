@@ -174,6 +174,7 @@ public class Operation extends AbstractStep
         if (format.equalsIgnoreCase(FORMAT_FLAT)
                 || format.equalsIgnoreCase(FORMAT_XML)
                 || format.equalsIgnoreCase(FORMAT_CSV)
+                || format.equalsIgnoreCase(FORMAT_XLS)
         )
         {
             _format = format;
