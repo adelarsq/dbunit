@@ -122,8 +122,8 @@
               </tr>
               <tr> 
                 <td>format</td>
-                <td>Format type of supplied source file. Possible values are "flat" 
-                  or "xml". Defaults to <b>"flat"</b></td>
+                <td>Format type of supplied source file. Possible values are "flat", "xml", "csv", "dtd", "xls". 
+                    Defaults to <b>"flat"</b></td>
                 <td> 
                   <p>No</p>
                 </td>
