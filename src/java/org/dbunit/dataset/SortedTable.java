@@ -192,7 +192,7 @@ public class SortedTable extends AbstractTable
 
         public int compare(Object o1, Object o2)
         {
-            logger.debug("compare(o1=" + o1 + ", o2=" + o2 + ") - start");
+            logger.debug("compare(o1={}, o2={}) - start", o1, o2);
 
             Integer i1 = (Integer)o1;
             Integer i2 = (Integer)o2;
