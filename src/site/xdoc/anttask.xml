@@ -73,6 +73,16 @@
           <td>Set the <a href="properties.html#typefactory">datatype factory</a> property.</td>
           <td>No</td>
         </tr>
+        <tr> 
+          <td>skipOracleRecycleBinTables</td>
+          <td>Set the <a href="properties.html#skiporaclereyclebintables">skipOracleRecycleBinTables</a> feature.</td>
+          <td>No</td>
+        </tr>
+        <tr> 
+          <td>batchSize</td>
+          <td>Set the <a href="properties.html#batchsize">batch Size</a> property.</td>
+          <td>No</td>
+        </tr>
       </table>
       <h4>Parameters specified as nested elements</h4>
       <table cellspadding="0" border="1">
