@@ -123,13 +123,16 @@ public class DbUnitTask extends Task
 
     private String dataTypeFactory = "org.dbunit.dataset.datatype.DefaultDataTypeFactory";
 
+    private String batchSize = null;
+    
+    private boolean skipOracleRecycleBinTables = false;
+
     /**
      * Set the JDBC driver to be used.
      */
     public void setDriver(String driver)
     {
-        logger.debug("setDriver(driver=" + driver + ") - start");
-
+        logger.debug("setDriver(driver={}) - start", driver);
         this.driver = driver;
     }
 
@@ -138,8 +141,7 @@ public class DbUnitTask extends Task
      */
     public void setUrl(String url)
     {
-        logger.debug("setUrl(url=" + url + ") - start");
-
+        logger.debug("setUrl(url={}) - start", url);
         this.url = url;
     }
 
@@ -148,8 +150,7 @@ public class DbUnitTask extends Task
      */
     public void setUserid(String userId)
     {
-        logger.debug("setUserid(userId=" + userId + ") - start");
-
+        logger.debug("setUserid(userId={}) - start", userId);
         this.userId = userId;
     }
 
@@ -158,8 +159,7 @@ public class DbUnitTask extends Task
      */
     public void setPassword(String password)
     {
-        logger.debug("setPassword(password=" + password + ") - start");
-
+        logger.debug("setPassword(password=*****) - start");
         this.password = password;
     }
 
@@ -168,8 +168,7 @@ public class DbUnitTask extends Task
      */
     public void setSchema(String schema)
     {
-        logger.debug("setSchema(schema=" + schema + ") - start");
-
+        logger.debug("setSchema(schema={}) - start", schema);
         this.schema = schema;
     }
 
@@ -178,8 +177,7 @@ public class DbUnitTask extends Task
      */
     public void setUseQualifiedTableNames(boolean useQualifiedTableNames)
     {
-        logger.debug("setUseQualifiedTableNames(useQualifiedTableNames=" + useQualifiedTableNames + ") - start");
-
+        logger.debug("setUseQualifiedTableNames(useQualifiedTableNames={}) - start", new Boolean(useQualifiedTableNames));
         this.useQualifiedTableNames = useQualifiedTableNames;
     }
 
@@ -190,29 +188,25 @@ public class DbUnitTask extends Task
      */
     public void setSupportBatchStatement(boolean supportBatchStatement)
     {
-        logger.debug("setSupportBatchStatement(supportBatchStatement=" + supportBatchStatement + ") - start");
-
+        logger.debug("setSupportBatchStatement(supportBatchStatement={}) - start", new Boolean(supportBatchStatement));
         this.supportBatchStatement = supportBatchStatement;
     }
 
     public void setDatatypeWarning(boolean datatypeWarning)
     {
-        logger.debug("setDatatypeWarning(datatypeWarning=" + datatypeWarning + ") - start");
-
+        logger.debug("setDatatypeWarning(datatypeWarning={}) - start", new Boolean(datatypeWarning));
         this.datatypeWarning = datatypeWarning;
     }
 
     public void setDatatypeFactory(String datatypeFactory)
     {
-        logger.debug("setDatatypeFactory(datatypeFactory=" + datatypeFactory + ") - start");
-
+        logger.debug("setDatatypeFactory(datatypeFactory={}) - start", datatypeFactory);
         this.dataTypeFactory = datatypeFactory;
     }
 
     public void setEscapePattern(String escapePattern)
     {
-        logger.debug("setEscapePattern(escapePattern=" + escapePattern + ") - start");
-
+        logger.debug("setEscapePattern(escapePattern={}) - start", escapePattern);
         this.escapePattern = escapePattern;
     }
 
@@ -221,8 +215,7 @@ public class DbUnitTask extends Task
      */
     public void setClasspath(Path classpath)
     {
-        logger.debug("setClasspath(classpath=" + classpath + ") - start");
-
+        logger.debug("setClasspath(classpath={}) - start", classpath);
         if (this.classpath == null)
         {
             this.classpath = classpath;
@@ -252,7 +245,7 @@ public class DbUnitTask extends Task
      */
     public void setClasspathRef(Reference r)
     {
-        logger.debug("setClasspathRef(r=" + r + ") - start");
+        logger.debug("setClasspathRef(r={}) - start", r);
 
         createClasspath().setRefid(r);
     }
@@ -262,8 +255,6 @@ public class DbUnitTask extends Task
      */
     public List getSteps()
     {
-        logger.debug("getSteps() - start");
-
         return steps;
     }
 
@@ -272,7 +263,7 @@ public class DbUnitTask extends Task
      */
     public void addOperation(Operation operation)
     {
-        logger.debug("addOperation(operation) - start");
+        logger.debug("addOperation({}) - start", operation);
 
         steps.add(operation);
     }
@@ -282,7 +273,7 @@ public class DbUnitTask extends Task
      */
     public void addCompare(Compare compare)
     {
-        logger.debug("addCompare(compare) - start");
+        logger.debug("addCompare({}) - start", compare);
 
         steps.add(compare);
     }
@@ -297,8 +288,33 @@ public class DbUnitTask extends Task
     	export.setParentTask(this);
         steps.add(export);
     }
+    
+    
+    public String getBatchSize()
+	{
+		return batchSize;
+	}
 
     /**
+     * sets the size of batch inserts.
+     * @param batchSize
+     */
+	public void setBatchSize(String batchSize)
+	{
+		this.batchSize = batchSize;
+	}
+
+	public boolean isSkipOracleRecycleBinTables()
+	{
+		return skipOracleRecycleBinTables;
+	}
+
+	public void setSkipOracleRecycleBinTables(boolean skipOracleRecycleBinTables)
+	{
+		this.skipOracleRecycleBinTables = skipOracleRecycleBinTables;
+	}
+
+	/**
      * Load the step and then execute it
      */
     public void execute() throws BuildException
@@ -366,7 +382,7 @@ public class DbUnitTask extends Task
             throw new BuildException("Must declare at least one step in a <dbunit> task!");
         }
 
-        // Instanciate JDBC driver
+        // Instantiate JDBC driver
         Driver driverInstance = null;
         try
         {
@@ -420,9 +436,15 @@ public class DbUnitTask extends Task
         config.setFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, supportBatchStatement);
         config.setFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, useQualifiedTableNames);
         config.setFeature(DatabaseConfig.FEATURE_DATATYPE_WARNING, datatypeWarning);
+        config.setFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES, skipOracleRecycleBinTables);
+        
         config.setProperty(DatabaseConfig.PROPERTY_ESCAPE_PATTERN, escapePattern);
-        config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY,
-                new ForwardOnlyResultSetTableFactory());
+        config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY, new ForwardOnlyResultSetTableFactory());
+        if (batchSize != null)
+        {
+        	Integer batchSizeInteger = new Integer(batchSize);
+        	config.setProperty(DatabaseConfig.PROPERTY_BATCH_SIZE, batchSizeInteger);
+        }
 
         // Setup data type factory
         try

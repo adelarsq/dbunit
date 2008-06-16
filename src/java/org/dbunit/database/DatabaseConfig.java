@@ -57,6 +57,8 @@ public class DatabaseConfig
             "http://www.dbunit.org/properties/tableType";
     public static final String PROPERTY_PRIMARY_KEY_FILTER =
             "http://www.dbunit.org/properties/primaryKeyFilter";
+    public static final String PROPERTY_BATCH_SIZE =
+    		"http://www.dbunit.org/properties/batchSize";
 
     public static final String FEATURE_QUALIFIED_TABLE_NAMES =
             "http://www.dbunit.org/features/qualifiedTableNames";
@@ -75,6 +77,7 @@ public class DatabaseConfig
             new CachedResultSetTableFactory();
     private static final String DEFAULT_ESCAPE_PATTERN = null;
     private static final String[] DEFAULT_TABLE_TYPE = {"TABLE"};
+    private static final Integer DEFAULT_BATCH_SIZE = new Integer(100);
 
     private Set _featuresSet = new HashSet();
     private Map _propertyMap = new HashMap();
@@ -90,6 +93,7 @@ public class DatabaseConfig
         setProperty(PROPERTY_DATATYPE_FACTORY, DEFAULT_DATA_TYPE_FACTORY);
         setProperty(PROPERTY_ESCAPE_PATTERN, DEFAULT_ESCAPE_PATTERN);
         setProperty(PROPERTY_TABLE_TYPE, DEFAULT_TABLE_TYPE);
+        setProperty(PROPERTY_BATCH_SIZE, DEFAULT_BATCH_SIZE);
     }
 
     /**

@@ -233,4 +233,22 @@
             org.dbunit.dataset.filter.IColumnFilter.</td>
         </tr>
       </table>
+      
+      <a name="batchsize"></a>
+      <h4>Batch Size</h4>
+      <table border="1">
+        <tr> 
+          <td>Property ID</td>
+          <td>http://www.dbunit.org/properties/batchSize</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td><i>100</i></td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Integer object giving the size of batch updates.</td>
+        </tr>
+      </table>
+      
 </section></body></document>
