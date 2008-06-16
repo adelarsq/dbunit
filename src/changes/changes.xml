@@ -16,6 +16,7 @@
       <action dev="slecallonnec" type="fix" issue="1636182">StreamingDataSet.toString() now returning default value rather UnsupportedOperationException.</action>
       <action dev="gommma" type="add" issue="1993243">Performance optimization getColumnIndex() - Implies API change: new method ITableMetaData.getColumnIndex</action>
       <action dev="gommma" type="add" issue="1959771">Support RowFilter on ITable</action>
+      <action dev="gommma" type="add" issue="1961269">support for tolerated delta in floating-point comparisons - Implies API change: new method IDataTypeFactory.createDataType(int sqlType, String sqlTypeName, String tableName, String columnName)</action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>

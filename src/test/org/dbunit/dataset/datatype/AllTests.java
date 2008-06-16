@@ -42,6 +42,7 @@ public class AllTests extends TestSuite
         suite.addTest(new TestSuite(IntegerDataTypeTest.class));
         suite.addTest(new TestSuite(LongDataTypeTest.class));
         suite.addTest(new TestSuite(NumberDataTypeTest.class));
+        suite.addTest(new TestSuite(NumberTolerantDataTypeTest.class));
         suite.addTest(new TestSuite(StringDataTypeTest.class));
         suite.addTest(new TestSuite(TimeDataTypeTest.class));
         suite.addTest(new TestSuite(TimestampDataTypeTest.class));

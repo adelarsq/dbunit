@@ -21,19 +21,27 @@
 
 package org.dbunit.database;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.filter.IColumnFilter;
-import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.dbunit.dataset.AbstractTableMetaData;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoColumnsFoundException;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.dataset.filter.IColumnFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
@@ -73,10 +81,13 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         {
             int columnType = metaData.getColumnType(i + 1);
             String columnTypeName = metaData.getColumnTypeName(i + 1);
+            String columnName = metaData.getColumnName(i + 1);
+            
             DataType dataType = dataTypeFactory.createDataType(
-                    columnType, columnTypeName);
+	                    columnType, columnTypeName, tableName, columnName);
+            
             columns[i] = new Column(
-                    metaData.getColumnName(i + 1),
+                    columnName,
                     dataType,
                     columnTypeName,
                     Column.nullableValue(metaData.isNullable(i + 1)));
@@ -85,6 +96,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         return new DefaultTableMetaData(tableName, columns);
     }
 
+
+    
     public static ITableMetaData createMetaData(String tableName,
             ResultSet resultSet, IDatabaseConnection connection)
             throws SQLException, DataSetException
@@ -238,7 +251,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
                         // Convert SQL type to DataType
                         DataType dataType =
-                                dataTypeFactory.createDataType(sqlType, sqlTypeName);
+                                dataTypeFactory.createDataType(sqlType, sqlTypeName, tableName, columnName);
                         if (dataType != DataType.UNKNOWN)
                         {
                             Column column = new Column(columnName, dataType,
@@ -323,6 +336,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         }
     }
 }
+
 
 
 

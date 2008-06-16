@@ -20,6 +20,10 @@
  */
 package org.dbunit.dataset.datatype;
 
+import java.sql.Types;
+
+import org.dbunit.dataset.datatype.ToleratedDeltaMap.ToleratedDelta;
+
 
 
 /**
@@ -38,4 +42,53 @@ public class DefaultDataTypeFactoryTest extends AbstractDataTypeFactoryTest
     {
         return new DefaultDataTypeFactory();
     }
+    
+    public void testCreateNumberTolerantDataType_Numeric() throws Exception
+    {
+        int sqlType = Types.NUMERIC;
+        String sqlTypeName = "NUMBER";
+
+        DefaultDataTypeFactory factory = new DefaultDataTypeFactory();
+        factory.addToleratedDelta(new ToleratedDelta("TEST_TABLE", "COLUMN0", 1E-5));
+        DataType actual = factory.createDataType(sqlType, sqlTypeName, "TEST_TABLE", "COLUMN0");
+        assertEquals("type", NumberTolerantDataType.class, actual.getClass());
+        assertEquals(1E-5, ((NumberTolerantDataType)actual).getDelta(), 0D);
+    }
+
+    
+    public void testCreateNumberTolerantDataType_Decimal() throws Exception
+    {
+        int sqlType = Types.DECIMAL;
+        String sqlTypeName = "DECIMAL";
+
+        DefaultDataTypeFactory factory = new DefaultDataTypeFactory();
+        factory.addToleratedDelta(new ToleratedDelta("TEST_TABLE", "COLUMN0", 1E-5));
+        DataType actual = factory.createDataType(sqlType, sqlTypeName, "TEST_TABLE", "COLUMN0");
+        assertEquals("type", NumberTolerantDataType.class, actual.getClass());
+        assertEquals(1E-5, ((NumberTolerantDataType)actual).getDelta(), 0D);
+    }
+
+    
+    public void testCreateNumberTolerantDataTypeAndNoToleranceSetForColumn_Numeric() throws Exception
+    {
+        int sqlType = Types.NUMERIC;
+        String sqlTypeName = "NUMBER";
+
+        DefaultDataTypeFactory factory = new DefaultDataTypeFactory();
+        factory.addToleratedDelta(new ToleratedDelta("TEST_TABLE", "COLUMN0", 1E-5));
+        DataType actual = factory.createDataType(sqlType, sqlTypeName, "TEST_TABLE", "COLUMNXYZ-withoutTolerance");
+        assertSame("type", DataType.NUMERIC, actual);
+    }
+
+    public void testCreateNumberTolerantDataTypeAndNoToleranceSetForColumn_Decimal() throws Exception
+    {
+        int sqlType = Types.DECIMAL;
+        String sqlTypeName = "DECIMAL";
+
+        DefaultDataTypeFactory factory = new DefaultDataTypeFactory();
+        factory.addToleratedDelta(new ToleratedDelta("TEST_TABLE", "COLUMN0", 1E-5));
+        DataType actual = factory.createDataType(sqlType, sqlTypeName, "TEST_TABLE", "COLUMNXYZ-withoutTolerance");
+        assertSame("type", DataType.DECIMAL, actual);
+    }
+
 }
