@@ -57,7 +57,7 @@ public class NumberDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
-        logger.debug("typeCast(value=" + value + ") - start");
+        logger.debug("typeCast(value={}) - start", value);
 
         if (value == null || value == ITable.NO_VALUE)
         {
@@ -87,7 +87,7 @@ public class NumberDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+        logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
 
         BigDecimal value = resultSet.getBigDecimal(column);
         if (value == null || resultSet.wasNull())
@@ -100,7 +100,8 @@ public class NumberDataType extends AbstractDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
-        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+        logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
+        		new Object[]{value, new Integer(column), statement} );
 
         statement.setBigDecimal(column, (BigDecimal)typeCast(value));
     }

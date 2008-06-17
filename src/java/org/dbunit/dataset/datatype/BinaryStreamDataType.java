@@ -27,7 +27,7 @@ public class BinaryStreamDataType extends BytesDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+        logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
 
         InputStream in = resultSet.getBinaryStream(column);
         if (in == null || resultSet.wasNull())
@@ -56,7 +56,8 @@ public class BinaryStreamDataType extends BytesDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
-        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+        logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
+        		new Object[]{value, new Integer(column), statement} );
 
         byte[] bytes = (byte[])typeCast(value);
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);

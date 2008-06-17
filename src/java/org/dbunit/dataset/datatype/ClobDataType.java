@@ -50,7 +50,7 @@ public class ClobDataType extends StringDataType
 
     public Object getSqlValue(int column, ResultSet resultSet) throws SQLException, TypeCastException
     {
-        logger.debug("getSqlValue(column=" + column + ", resultSet={}) - start", resultSet);
+        logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
 
         Clob value = resultSet.getClob(column);
         if (value == null || resultSet.wasNull())
@@ -62,7 +62,8 @@ public class ClobDataType extends StringDataType
 
     public void setSqlValue(Object value, int column, PreparedStatement statement) throws SQLException, TypeCastException
     {
-        logger.debug("setSqlValue(value={}, column=" + column + ", statement={}) - start", value, statement);
+        logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
+        		new Object[]{value, new Integer(column), statement} );
 
         statement.setObject(column, typeCast(value), getSqlType());
     }

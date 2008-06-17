@@ -79,7 +79,7 @@ public class LongDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+        logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
 
         long value = resultSet.getLong(column);
         if (resultSet.wasNull())
@@ -92,7 +92,8 @@ public class LongDataType extends AbstractDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
-        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+        logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
+        		new Object[]{value, new Integer(column), statement} );
 
         statement.setLong(column, ((Number)typeCast(value)).longValue());
     }

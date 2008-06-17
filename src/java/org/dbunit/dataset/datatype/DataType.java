@@ -148,7 +148,7 @@ public abstract class DataType
      */
     public static String asString(Object value) throws TypeCastException
     {
-        logger.debug("asString(value=" + value + ") - start");
+        logger.debug("asString(value={}) - start", value);
 
         return (String)DataType.VARCHAR.typeCast(value);
     }
@@ -160,7 +160,7 @@ public abstract class DataType
      */
     public static DataType forSqlType(int sqlType) throws DataTypeException
     {
-        logger.debug("forSqlType(sqlType=" + sqlType + ") - start");
+        logger.debug("forSqlType(sqlType={}) - start", new Integer(sqlType));
 
         for (int i = 0; i < TYPES.length; i++)
         {
@@ -201,7 +201,7 @@ public abstract class DataType
      */
     public static DataType forObject(Object value)
     {
-        logger.debug("forObject(value=" + value + ") - start");
+        logger.debug("forObject(value={}) - start", value);
 
         if (value == null)
         {
