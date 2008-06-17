@@ -41,7 +41,7 @@
         com.p6spy.engine.spy.P6SpyDriver.
         </li><li>Modify the realdriver line in the spy.properties file to reflect the
         wrapped database driver. An example of a modified realdriver line follows:
-    	realdriver = oracle.jdbc.driver.OracleDriver
+        realdriver = oracle.jdbc.driver.OracleDriver
       </li></ol>
       Installation is complete. When you run your application, a spy.log file is
       generated in the same directory from where you run the application. 
@@ -251,22 +251,22 @@ Don't hesitate to submit your own implementation if you encounter types not curr
         <p>
         Historically, DbUnit has memory consumption issues when working with very large dataset files. DbUnit 2.0 includes many improvements, like using SAX2 instead of the Electric XML parser and and streamed XML dataset writing, to overcome the memory consumption problems. 
         </p>
-	<p>
+    <p>
         For compatibility reason, streamed export and import are not enabled by default. When working with large dataset, using this feature can make a huge difference.
         </p>
-	<h5>
-	Database Export:
+    <h5>
+    Database Export:
         </h5>
 
-	<p>
-	Configure your DbUnit connection to use ForwardOnlyResultSetTable when exporting very 
-	large dataset. ForwardOnlyResultSetTable is a very efficient database table implememtation, useful 
-	when random data access is not required. By default, DbUnit uses CachedResultSetTable which consume 
-	more memory but provides random data access.
+    <p>
+    Configure your DbUnit connection to use ForwardOnlyResultSetTable when exporting very 
+    large dataset. ForwardOnlyResultSetTable is a very efficient database table implememtation, useful 
+    when random data access is not required. By default, DbUnit uses CachedResultSetTable which consume 
+    more memory but provides random data access.
         </p>
 
-	<p>
-	Following sample shows how to configure your DbUnit connection to use
+    <p>
+    Following sample shows how to configure your DbUnit connection to use
 ForwardOnlyResultSetTable:
 <source>
     IDatabaseConnection connection = new DatabaseConnection(
@@ -277,13 +277,13 @@ ForwardOnlyResultSetTable:
             new ForwardOnlyResultSetTableFactory());
 </source>
         </p>
-	<h5>
-	Database Import:
-	</h5>
-	<p>
-	Use the very efficient <a href="components.html#streamingdataset">StreamingDataSet</a> to load your XML dataset when 
-	working with forward only database operations like UPDATE, INSERT, REFRESH. 
-	</p>
+    <h5>
+    Database Import:
+    </h5>
+    <p>
+    Use the very efficient <a href="components.html#streamingdataset">StreamingDataSet</a> to load your XML dataset when 
+    working with forward only database operations like UPDATE, INSERT, REFRESH. 
+    </p>
 
       </answer>
     </faq>    
@@ -360,9 +360,9 @@ ForwardOnlyResultSetTable:
         dataset and delete are done in reverse order. You must order your tables and rows 
         appropriately in your datasets to prevent foreign keys constraint violation.
         <br/>
-	Since version 2.0, the <a href="components.html#filtereddataset">DatabaseSequenceFilter</a> can now be used to automatically determine the tables order using foreign/exported keys information. 
+    Since version 2.0, the <a href="components.html#filtereddataset">DatabaseSequenceFilter</a> can now be used to automatically determine the tables order using foreign/exported keys information. 
         <br/>
-	The following sample demonstrate how to use this class to export a flat XML dataset:
+    The following sample demonstrate how to use this class to export a flat XML dataset:
 <source>
 IDatabaseConnection conn = new DatabaseConnection(jdbcConn);
 
@@ -376,11 +376,11 @@ FlatXmlDataSet.write(dataset, new File(fileName));
     </faq>    
     <faq id="doctypeexport">
       <question>
-	How to add the DOCTYPE declaration when writing a flat XML dataset?
+    How to add the DOCTYPE declaration when writing a flat XML dataset?
       </question>
       <answer>
       <p>
-	Use the setDocType() method of the FlatXmlWriter class like this:
+    Use the setDocType() method of the FlatXmlWriter class like this:
 <source>
     FlatXmlWriter datasetWriter = new FlatXmlWriter( 
             new FileOutputStream("dataset.xml")); 
@@ -430,7 +430,52 @@ See also <a href="howto.html#compareignorecolumns">Ignoring some columns in comp
 </p>
       </answer>
     </faq> 
-        
+    
+    <faq id="rowfilter">
+        <question>
+            How to filter rows of an ITable by checking their column values?
+        </question>
+        <answer>
+            <p>
+            By implementing the interface IRowFilter it is possible to query column values and to return either
+            <i>true</i> if this row should be accepted or <i>false</i> if it should be filtered out.
+            <source>
+                IRowFilter rowFilter = new IRowFilter() {
+                    public boolean accept(IRowValueProvider rowValueProvider) {
+                        Object columnValue = rowValueProvider.getColumnValue("COLUMN1");
+                        if(((String)columnValue).equalsIgnoreCase("customerAbroad")) {
+                            return true;
+                        }
+                        return false;
+                    }
+                };
+                ITable filteredTable = new RowFilterTable(iTable, rowFilter);
+            </source>
+            </p>
+        </answer>
+    </faq>
+
+    
+    <faq id="tolerateddelta">
+        <question>
+            Is there an equivalent to JUnit's <i>assertEquals(double expected, double actual, double delta)</i> 
+            to define a tolerance level when comparing numeric values?
+        </question>
+        <answer>
+            <p>
+            The DefaultDataTypeFactory provides the method "addToleratedDelta()" to define an allowed deviation of the
+            compared values for a specific database column.
+            <source>
+                DefaultDataTypeFactory datatypeFactory = new OracleDataTypeFactory();
+                datatypeFactory.addToleratedDelta(new ToleratedDelta("TEST_TABLE", "COLUMN0", 0.0001));
+                // Set the datatype factory
+                DatabaseConnection dbConnection = new DatabaseConnection(jdbcConnection);
+                dbConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, datatypeFactory);
+            </source>
+            </p>
+        </answer>
+    </faq>
+    
     <faq id="usertypeidentity">
       <question>
       How to use InsertIdentityOperation with user defined types?
