@@ -50,7 +50,7 @@ public class UnknownDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
-        logger.debug("typeCast(value=" + value + ") - start");
+        logger.debug("typeCast(value={}) - start", value);
 
         if (value == ITable.NO_VALUE)
         {
@@ -62,7 +62,7 @@ public class UnknownDataType extends AbstractDataType
 
     public int compare(Object o1, Object o2) throws TypeCastException
     {
-        logger.debug("compare(o1=" + o1 + ", o2=" + o2 + ") - start");
+        logger.debug("compare(o1={}, o2={}) - start", o1, o2);
 
         return super.compare(asString(o1), asString(o2));
     }

@@ -175,7 +175,7 @@ public class BytesDataType extends AbstractDataType
 
     public int compare(Object o1, Object o2) throws TypeCastException
     {
-        logger.debug("compare(o1=" + o1 + ", o2=" + o2 + ") - start");
+        logger.debug("compare(o1={}, o2={}) - start", o1, o2);
 
         try
         {
