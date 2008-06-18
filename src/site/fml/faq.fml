@@ -523,6 +523,15 @@ See also <a href="howto.html#compareignorecolumns">Ignoring some columns in comp
         define all the columns of the table in the first row (using NULL values for the empty columns), or use
         a DTD to define the metadata of the tables you use.
         </p>
+        <p>
+        Since DBUnit 2.3.0 there is a functionality called "column sensing" which basically reads in the whole XML into
+        a buffer and dynamically adds new columns as they appear. It can be used as demonstrated in the following example:
+          <source>
+            boolean enableColumnSensing = true;
+            IDataSet dataSet = new FlatXmlDataSet(
+                new File("src/xml/flatXmlTableTest.xml"), false, enableColumnSensing);
+          </source>
+        </p>
       </answer>
     </faq>
 

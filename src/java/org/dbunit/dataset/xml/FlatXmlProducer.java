@@ -139,11 +139,19 @@ public class FlatXmlProducer extends DefaultHandler
 
 
     // sourceforge Bug #1421590
+    /**
+     * Creates a new metadata object if necessary. The new metadata contains all columns that are known so far.
+     * @param tableName
+     * @param attributes
+     * @param lastKnownTableMetaData
+     * @return
+     * @throws DataSetException
+     */
     private ITableMetaData createTableMetaData(String tableName,
             Attributes attributes, ITableMetaData lastKnownTableMetaData) throws DataSetException
     {
-        logger.debug("createTableMetaData(tableName=" + tableName + ", attributes=" + attributes + 
-        		", lastKnownTableMetaData=" + lastKnownTableMetaData + ") - start");
+        logger.debug("createTableMetaData(tableName={}, attributes={} lastKnownTableMetaData={}) - start",
+        		new Object[]{tableName, attributes, lastKnownTableMetaData} );
         
         // Is not null when a DTD handler was installed. Could also check the flag _dtdPresent
         if (_metaDataSet != null)
@@ -316,17 +324,24 @@ public class FlatXmlProducer extends DefaultHandler
             		_columnNumberInFirstLine = attributes.getLength();
             	}
             	// Omit "attributes.getLength() > _columnNumberInFirstLine" because column count could be same with different columns
-            	else if (!_dtdPresent && _columnSensing)
+            	else if (!_dtdPresent) 
             	{
-            		_activeMetaData = createTableMetaData(qName, attributes, _activeMetaData);
-            		// We also need to recreate the table, copying the data already collected from the old one to the new one
-            		_consumer.startTable(_activeMetaData);
-            		
-            		logger.warn("Extra columns on line " + (_lineNumber+1) 
-            				+ ".  Those columns will be ignored.");
-            		logger.warn("Please add the extra columns to line 1,"
-            				+ " or use a DTD to make sure the value of those columns are populated.");
-            		logger.warn("See FAQ for more details.");
+            		if(_columnSensing) 
+            		{
+            			logger.debug("Column sensing enabled. Will create a new metaData with potentially new columns if needed");
+                		_activeMetaData = createTableMetaData(qName, attributes, _activeMetaData);
+                		// We also need to recreate the table, copying the data already collected from the old one to the new one
+                		_consumer.startTable(_activeMetaData);
+            		}
+            		else 
+            		{
+                		logger.warn("Extra columns on line " + (_lineNumber+1) 
+                				+ ".  Those columns will be ignored.");
+                		logger.warn("Please add the extra columns to line 1,"
+                				+ " or use a DTD to make sure the value of those columns are populated " +
+                						"or specify 'columnSensing=true' for your FlatXmlProducer.");
+                		logger.warn("See FAQ for more details.");
+            		}
             	}
             	_lineNumber++;
                 Column[] columns = _activeMetaData.getColumns();
