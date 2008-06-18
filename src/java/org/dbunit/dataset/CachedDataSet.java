@@ -129,7 +129,7 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public void row(Object[] values) throws DataSetException
     {
-        logger.debug("row(values=" + values + ") - start");
+        logger.debug("row(values={}) - start", values);
 
         _activeTable.addRow(values);
     }

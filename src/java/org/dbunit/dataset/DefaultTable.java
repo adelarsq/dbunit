@@ -106,7 +106,7 @@ public class DefaultTable extends AbstractTable
      */
     public void addRow(Object[] values) throws DataSetException
     {
-        logger.debug("addRow(values=" + values + ") - start");
+        logger.debug("addRow(values={}) - start", values);
 
         _rowList.add(values);
     }
@@ -117,7 +117,7 @@ public class DefaultTable extends AbstractTable
      */
     public void addTableRows(ITable table) throws DataSetException
     {
-        logger.debug("addTableRows(table=" + table + ") - start");
+        logger.debug("addTableRows(table={}) - start", table);
 
         try
         {
