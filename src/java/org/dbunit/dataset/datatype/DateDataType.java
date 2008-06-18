@@ -54,7 +54,7 @@ public class DateDataType extends AbstractDataType
 
     public Object typeCast(Object value) throws TypeCastException
     {
-        logger.debug("typeCast(value=" + value + ") - start");
+        logger.debug("typeCast(value={}) - start", value);
 
         if (value == null || value == ITable.NO_VALUE)
         {
