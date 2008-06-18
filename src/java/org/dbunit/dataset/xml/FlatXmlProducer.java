@@ -72,7 +72,6 @@ public class FlatXmlProducer extends DefaultHandler
     private IDataSet _metaDataSet;
 
     private int _lineNumber = 0;
-    private int _columnNumberInFirstLine = 0;
     // Needed as _dtdMetadata can be true even with no dtd.
     private boolean _dtdPresent = false;
     private boolean _columnSensing = false;
@@ -319,28 +318,30 @@ public class FlatXmlProducer extends DefaultHandler
             // Row notification
             if (attributes.getLength() > 0)
             {
-            	if (_lineNumber == 0) 
-            	{
-            		_columnNumberInFirstLine = attributes.getLength();
-            	}
             	// Omit "attributes.getLength() > _columnNumberInFirstLine" because column count could be same with different columns
-            	else if (!_dtdPresent) 
+            	if (!_dtdPresent) 
             	{
+            		// Create a new metaData object that contains also potentially new columns appeard in the current row
+            		// but not in the previous ones
+            		ITableMetaData currentRowMetaData = createTableMetaData(qName, attributes, _activeMetaData);
             		if(_columnSensing) 
             		{
             			logger.debug("Column sensing enabled. Will create a new metaData with potentially new columns if needed");
-                		_activeMetaData = createTableMetaData(qName, attributes, _activeMetaData);
+                		_activeMetaData = currentRowMetaData;
                 		// We also need to recreate the table, copying the data already collected from the old one to the new one
                 		_consumer.startTable(_activeMetaData);
             		}
             		else 
             		{
-                		logger.warn("Extra columns on line " + (_lineNumber+1) 
-                				+ ".  Those columns will be ignored.");
-                		logger.warn("Please add the extra columns to line 1,"
-                				+ " or use a DTD to make sure the value of those columns are populated " +
-                						"or specify 'columnSensing=true' for your FlatXmlProducer.");
-                		logger.warn("See FAQ for more details.");
+            			// Only print out the warning if the metadata actually changed
+            			if(currentRowMetaData.getColumns().length != this._activeMetaData.getColumns().length) {
+	                		logger.warn("Extra columns on line " + (_lineNumber+1) 
+	                				+ ".  Those columns will be ignored.");
+	                		logger.warn("Please add the extra columns to line 1,"
+	                				+ " or use a DTD to make sure the value of those columns are populated " +
+	                						"or specify 'columnSensing=true' for your FlatXmlProducer.");
+	                		logger.warn("See FAQ for more details.");
+            			}
             		}
             	}
             	_lineNumber++;
