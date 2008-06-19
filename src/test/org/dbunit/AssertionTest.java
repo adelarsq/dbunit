@@ -23,11 +23,13 @@ package org.dbunit;
 
 import java.io.FileReader;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.CompositeTable;
@@ -39,7 +41,9 @@ import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
@@ -68,10 +72,11 @@ public class AssertionTest extends TestCase
     {
         IDataSet dataSet = getDataSet();
         Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
-                dataSet.getTable("TEST_TABLE_WITH_SAME_VALUE"));
+                dataSet.getTable("TEST_TABLE_WITH_SAME_VALUE"), 
+                new Column[] {new Column("COLUMN0", DataType.VARCHAR)} );
     }
 
-    public void testAssertTablesEqualsColumnNamesCaseInsensitive() throws Exception
+	public void testAssertTablesEqualsColumnNamesCaseInsensitive() throws Exception
     {
         IDataSet dataSet = getDataSet();
         Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
@@ -159,7 +164,7 @@ public class AssertionTest extends TestCase
         
         // Column2 has the wrong value, so exclude -> test should run successfully
         String[] allColumnsThatAreNotEqual = new String[] {"COLUMN2"};
-        Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+        Assertion.assertEqualsIgnoreCols(dataSet.getTable("TEST_TABLE"),
                 dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"),
                 allColumnsThatAreNotEqual );
     }
@@ -172,7 +177,7 @@ public class AssertionTest extends TestCase
         // -> test should fail
         String[] filteredColumns = new String[] {"COLUMN0"};
         try {
-	        Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+	        Assertion.assertEqualsIgnoreCols(dataSet.getTable("TEST_TABLE"),
 	                dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"),
 	                filteredColumns );
             throw new IllegalStateException("Should throw an AssertionFailedError");
@@ -434,6 +439,10 @@ public class AssertionTest extends TestCase
         }
     }
     
+    
+    
+    
+    
     protected static class ModifyingTable implements ITable
     {
     	private ITable _wrappedTable;
@@ -461,7 +470,7 @@ public class AssertionTest extends TestCase
 				return String.valueOf(originalValue) + " some other value (modification for column "+_columnToModify +")";
 			}
 			return originalValue;
-}
+		}
     	
     	
     }

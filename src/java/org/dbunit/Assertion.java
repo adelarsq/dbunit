@@ -68,13 +68,13 @@ public class Assertion
 	 * @throws org.dbunit.DatabaseUnitException
 	 *             If an error occurs.
 	 */
-	public static void assertEquals(final IDataSet expectedDataset, final IDataSet actualDataset, 
+	public static void assertEqualsIgnoreCols(final IDataSet expectedDataset, final IDataSet actualDataset, 
 			final String tableName,	final String[] ignoreCols) throws DatabaseUnitException 
 	{
-        logger.debug("assertEquals(expectedDataset={}, actualDataset={}, tableName={}, ignoreCols={}) - start", 
+        logger.debug("assertEqualsIgnoreCols(expectedDataset={}, actualDataset={}, tableName={}, ignoreCols={}) - start", 
         		new Object[] {expectedDataset, actualDataset, tableName, Arrays.asList(ignoreCols)} );
 
-        Assertion.assertEquals(
+        Assertion.assertEqualsIgnoreCols(
 				expectedDataset.getTable(tableName), 
 				actualDataset.getTable(tableName),
 				ignoreCols);
@@ -88,7 +88,7 @@ public class Assertion
 	 * @param ignoreCols Columns to ignore while comparing.
 	 * @throws org.dbunit.DatabaseUnitException If an error occurs.
 	 */
-	public static void assertEquals(final ITable expectedTable, final ITable actualTable, 
+	public static void assertEqualsIgnoreCols(final ITable expectedTable, final ITable actualTable, 
 			final String[] ignoreCols) throws DatabaseUnitException 
 	{
         logger.debug("assertEquals(expectedTable={}, actualTable={}, ignoreCols={}) - start", 
