@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.TypeCastException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,20 +50,30 @@ public class SortedTable extends AbstractTable
     private final ITable _table;
     private final Column[] _columns;
     private Integer[] _indexes;
+    
+    /**
+     * The row comparator which is used for sorting
+     */
+    private AbstractRowComparator rowComparator;
 
     /**
      * Sort the decorated table by specified columns order.
-     * @throws DataSetException 
+     * @param table decorated table
+     * @param columns columns to be used for sorting
+     * @throws DataSetException
      */
     public SortedTable(ITable table, Column[] columns) throws DataSetException
     {
         _table = table;
         _columns = columns;
         validateColumns();
+        initialize();
     }
 
 	/**
      * Sort the decorated table by specified columns order.
+     * @param table decorated table
+     * @param columns names of columns to be used for sorting
      * @throws DataSetException
      */
     public SortedTable(ITable table, String[] columnNames) throws DataSetException
@@ -83,6 +94,31 @@ public class SortedTable extends AbstractTable
 						+ table.getTableMetaData().getTableName() + "'");
 			}
         }
+        initialize();
+    }
+
+    /**
+	 * Sort the decorated table by specified metadata columns order. All
+	 * metadata columns will be used.
+     * @param table The decorated table
+     * @param metaData The metadata used to retrieve all columns which in turn are used 
+     * for sorting the table
+     * @throws DataSetException
+     */
+    public SortedTable(ITable table, ITableMetaData metaData) throws DataSetException
+    {
+        this(table, metaData.getColumns());
+    }
+
+    /**
+     * Sort the decorated table by its own columns order. All
+     * table columns will be used.
+     * @param table The decorated table
+     * @throws DataSetException
+     */
+    public SortedTable(ITable table) throws DataSetException
+    {
+        this(table, table.getTableMetaData());
     }
 
     /**
@@ -108,23 +144,13 @@ public class SortedTable extends AbstractTable
         }
 	}
 
-    /**
-	 * Sort the decorated table by specified metadata columns order. All
-	 * metadata columns will be used.
-	 */
-    public SortedTable(ITable table, ITableMetaData metaData) throws DataSetException
-    {
-        this(table, metaData.getColumns());
-    }
-
-    /**
-     * Sort the decorated table by its own columns order. All
-     * table columns will be used.
-     */
-    public SortedTable(ITable table) throws DataSetException
-    {
-        this(table, table.getTableMetaData());
-    }
+	private void initialize() 
+	{
+        logger.debug("initialize() - start");
+        
+        // The default comparator is the one that sorts by string - for backwards compatibility
+		this.rowComparator = new RowComparatorByString(this._table, this._columns);		
+	}
 
     private int getOriginalRowIndex(int row) throws DataSetException
     {
@@ -140,7 +166,7 @@ public class SortedTable extends AbstractTable
 
             try
             {
-                Arrays.sort(indexes, new RowComparator());
+                Arrays.sort(indexes, rowComparator);
             }
             catch (DatabaseUnitRuntimeException e)
             {
@@ -152,6 +178,40 @@ public class SortedTable extends AbstractTable
 
         return _indexes[row].intValue();
     }
+    
+    /**
+	 * Whether or not the comparable interface should be used of the compared columns
+	 * instead of the plain strings
+	 * Default value is <code>false</code> for backwards compatibility
+     * Set whether or not to use the Comparable implementation of the corresponding column
+     * DataType for comparing values or not. Default value is <code>false</code> 
+     * which means that the old string comparison is used.
+     * <br>
+     * Fixes bug [ 1176380 ] Bad comparison in SortedTable
+     * @param useComparable
+	 * @since 2.3.0
+     */
+    public void setUseComparable(boolean useComparable)
+    {
+        logger.debug("setUseComparable(useComparable={}) - start", Boolean.valueOf(useComparable));
+        
+        if(_indexes != null)
+        {
+        	// TODO this is an ugly design to avoid increasing the number of constructors from 4 to 8. To be discussed how to implement it the best way.
+        	throw new IllegalStateException("Do not use this method after the table has been used (i.e. #getValue() has been called). " +
+        			"Please invoke this method immediately after the intialization of this object.");
+        }
+        
+    	if(useComparable)
+    	{
+    		this.rowComparator = new RowComparator(this._table, this._columns);
+    	}
+    	else 
+    	{
+    		this.rowComparator = new RowComparatorByString(this._table, this._columns);
+    	}
+    }
+    
 
     ////////////////////////////////////////////////////////////////////////////
     // ITable interface
@@ -182,15 +242,29 @@ public class SortedTable extends AbstractTable
     ////////////////////////////////////////////////////////////////////////////
     // Comparator interface
 
-    private class RowComparator implements Comparator
+    /**
+     * Abstract class for sorting the table rows of a given table in a specific order
+     */
+    protected static abstract class AbstractRowComparator implements Comparator
     {
-
         /**
          * Logger for this class
          */
-        private final Logger logger = LoggerFactory.getLogger(RowComparator.class);
+        private final Logger logger = LoggerFactory.getLogger(AbstractRowComparator.class);
+        private ITable _table;
+        private Column[] _sortColumns;
 
-        public int compare(Object o1, Object o2)
+		/**
+		 * @param table The wrapped table to be sorted
+		 * @param sortColumns The columns to be used for sorting in the given order
+		 */
+		public AbstractRowComparator(ITable table, Column[] sortColumns)
+		{
+			this._table = table;
+			this._sortColumns = sortColumns;
+		}
+
+		public int compare(Object o1, Object o2)
         {
             logger.debug("compare(o1={}, o2={}) - start", o1, o2);
 
@@ -199,9 +273,10 @@ public class SortedTable extends AbstractTable
 
             try
             {
-                for (int i = 0; i < _columns.length; i++)
+                for (int i = 0; i < _sortColumns.length; i++)
                 {
-                    String columnName = _columns[i].getColumnName();
+                    String columnName = _sortColumns[i].getColumnName();
+                    
                     Object value1 = _table.getValue(i1.intValue(), columnName);
                     Object value2 = _table.getValue(i2.intValue(), columnName);
 
@@ -220,9 +295,9 @@ public class SortedTable extends AbstractTable
                         return 1;
                     }
 
-                    String stringValue1 = DataType.asString(value1);
-                    String stringValue2 = DataType.asString(value2);
-                    int result = stringValue1.compareTo(stringValue2);
+                    // Compare the two values with each other for sorting
+                    int result = compare(_sortColumns[i], value1, value2);
+                    
                     if (result != 0)
                     {
                         return result;
@@ -236,7 +311,77 @@ public class SortedTable extends AbstractTable
 
             return 0;
         }
+
+		/**
+		 * @param column The column to be compared
+		 * @param value1 The first value of the given column
+		 * @param value2 The second value of the given column
+		 * @return 0 if both values are considered equal.
+		 * @throws TypeCastException
+		 */
+		protected abstract int compare(Column column, Object value1, Object value2) throws TypeCastException;
+
     }
+    
+    
+    /**
+     * Compares the rows with each other in order to sort them in the correct order using the
+     * data type and the Comparable implementation the current column has.
+     */
+    protected static class RowComparator extends AbstractRowComparator
+    {
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(RowComparator.class);
+
+		public RowComparator(ITable table, Column[] sortColumns)
+		{
+			super(table, sortColumns);
+		}
+
+		protected int compare(Column column, Object value1, Object value2) throws TypeCastException 
+		{
+            logger.debug("compare(column={}, value1={}, value2={}) - start", 
+            	new Object[]{column, value1, value2} );
+			
+			DataType dataType = column.getDataType();
+			int result = dataType.compare(value1, value2);
+			return result;
+		}
+		
+    }
+    
+    
+    /**
+     * Compares the rows with each other in order to sort them in the correct order using
+     * the string value of both values for the comparison.
+     */
+    protected static class RowComparatorByString extends AbstractRowComparator
+    {
+        /**
+         * Logger for this class
+         */
+        private final Logger logger = LoggerFactory.getLogger(RowComparatorByString.class);
+
+		public RowComparatorByString(ITable table, Column[] sortColumns)
+		{
+			super(table, sortColumns);
+		}
+
+		protected int compare(Column column, Object value1, Object value2) throws TypeCastException 
+		{
+            logger.debug("compare(column={}, value1={}, value2={}) - start", 
+                	new Object[]{column, value1, value2} );
+
+            // Default behaviour since ever
+			String stringValue1 = DataType.asString(value1);
+			String stringValue2 = DataType.asString(value2);
+			int result = stringValue1.compareTo(stringValue2);
+			return result;
+		}
+    }
+    
 }
 
 

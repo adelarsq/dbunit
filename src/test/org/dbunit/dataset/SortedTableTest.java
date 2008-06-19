@@ -55,6 +55,90 @@ public class SortedTableTest extends AbstractTableTest
     	return new FlatXmlDataSet(sortedTableTestFile);
     }
 
+    private ITable createNumericTable() throws Exception
+    {
+    	// Create a table that has numeric values in the first column
+    	Column[] columns = new Column[]{
+    			new Column("COLUMN0", DataType.NUMERIC),
+    			new Column("COLUMN1", DataType.VARCHAR)
+    	};
+    	DefaultTable table = new DefaultTable("TEST_TABLE", columns);
+    	Object[] row1 = new Object[]{new Integer(9), "row 9"};
+    	Object[] row2 = new Object[]{new Integer(10), "row 10"};
+    	Object[] row3 = new Object[]{new Integer(11), "row 11"};
+    	table.addRow(row1);
+    	table.addRow(row2);
+    	table.addRow(row3);
+    	return table;
+    }
+    
+    
+    public void testSetUseComparableTooLate() throws Exception
+    {
+    	ITable table = createTable();
+    	SortedTable sortedTable = new SortedTable(table);
+    	// access a value to initialize the array
+    	sortedTable.getValue(0, "COLUMN0");
+    	// now set the "useComparable" flag which should fail
+    	try
+    	{
+        	sortedTable.setUseComparable(true);
+        	fail("Should not be able to set 'useComparable' after table has already been in use");
+    	}
+    	catch(IllegalStateException expected)
+    	{
+    		String msgStart = "Do not use this method after the table has been used";
+    		assertTrue("Msg should start with: " + msgStart, expected.getMessage().startsWith(msgStart));
+    	}
+    }
+    
+    
+    public void testSortByComparable() throws Exception
+    {
+    	// Sort by column0 which is a numeric column
+        String columnName = "COLUMN0";
+
+        ITable table = createNumericTable();
+        SortedTable sortedTable = new SortedTable(table, new String[]{columnName});
+        sortedTable.setUseComparable(true);
+
+        Column[] columns = sortedTable.getTableMetaData().getColumns();
+        assertEquals("column count", 2, columns.length);
+        assertEquals("row count", 3, sortedTable.getRowCount());
+
+        Object[] expected = {new Integer(9), new Integer(10), new Integer(11)};
+        for (int i = 0; i < sortedTable.getRowCount(); i++)
+        {
+            assertEquals("value row " + i, expected[i],
+            		sortedTable.getValue(i, columnName));
+        }
+    }
+    
+    /**
+     * Tests the sort by string which is the default behaviour
+     * @throws Exception
+     */
+    public void testSortByString() throws Exception
+    {
+    	// Sort by column0 which is a numeric column
+        String columnName = "COLUMN0";
+
+        ITable table = createNumericTable();
+        SortedTable sortedTable = new SortedTable(table, new String[]{columnName});
+
+        Column[] columns = sortedTable.getTableMetaData().getColumns();
+        assertEquals("column count", 2, columns.length);
+        assertEquals("row count", 3, sortedTable.getRowCount());
+
+        Object[] expected = {new Integer(10), new Integer(11), new Integer(9)};
+        for (int i = 0; i < sortedTable.getRowCount(); i++)
+        {
+            assertEquals("value row " + i, expected[i],
+            		sortedTable.getValue(i, columnName));
+        }
+    }
+
+    
 	public void testGetMissingValue() throws Exception
     {
         String columnName = "COLUMN2";

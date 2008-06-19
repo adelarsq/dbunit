@@ -268,8 +268,25 @@ A major limitation of this technique is that you cannot use a DTD with your expe
       <p>You must order your database snapshot manually by using <code>IDatabaseConnection.createQueryTable</code>
         with an "ORDER BY" clause. Or you can use the <code>SortedTable</code>
         decorator class like this:
-      <source>        Assertion.assertEquals(new SortedTable(expected),
-                new SortedTable(actual, expected.getTableMetaData()));</source></p>
+      <source>
+          Assertion.assertEquals(new SortedTable(expected),
+                new SortedTable(actual, expected.getTableMetaData()));
+      </source>
+      Note that the SortedTable uses the string value of each column for doing the sort by default. So if you are
+      sorting a numeric column you notice that the sort order is like <i>1, 10, 11, 12, 2, 3, 4</i>. If you want to use
+      the columns datatype for sorting (to get the columns like <i>1, 2, 3, 4, 10, 11, 12</i>) you can do this as follows:
+      <source>
+          SortedTable sortedTable1 = new SortedTable(table1, new String[]{"COLUMN1"});
+          sortedTable1.setUseComparable(true); // must be invoked immediately after the constructor
+          SortedTable sortedTable2 = new SortedTable(table2, new String[]{"COLUMN1"});
+          sortedTable2.setUseComparable(true); // must be invoked immediately after the constructor
+          Assertion.assertEquals(sortedTable1, sortedTable2);
+      </source>
+      <i>The reason why the parameter is currently not in the constructor is that the number of constructors needed for
+        SortedTable would increase from 4 to 8 which is a lot. Discussion should go on about this feature on how to implement
+        it the best way in the future.
+      </i>
+      </p>
       <a name="canoo">
       <h3>DbUnit Ant task and Canoo WebTest</h3>
       </a>
