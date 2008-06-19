@@ -21,16 +21,17 @@
 
 package org.dbunit.database;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.database.statement.IStatementFactory;
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import org.dbunit.database.statement.IStatementFactory;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
@@ -80,28 +81,8 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
     {
         logger.debug("createQueryTable(resultName=" + resultName + ", sql=" + sql + ") - start");
 
-        Statement statement = getConnection().createStatement();
-        try
-        {
-            ResultSet resultSet = statement.executeQuery(sql);
-
-            try
-            {
-                IDataTypeFactory typeFactory = (IDataTypeFactory)_databaseConfig.getProperty(
-                        DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
-                ITableMetaData metaData = DatabaseTableMetaData.createMetaData(
-                        resultName, resultSet, typeFactory);
-                return new CachedResultSetTable(metaData, resultSet);
-            }
-            finally
-            {
-                resultSet.close();
-            }
-        }
-        finally
-        {
-            statement.close();
-        }
+        ForwardOnlyResultSetTable rsTable = new ForwardOnlyResultSetTable(resultName, sql, this);
+        return new CachedResultSetTable(rsTable);
     }
 
     public int getRowCount(String tableName) throws SQLException

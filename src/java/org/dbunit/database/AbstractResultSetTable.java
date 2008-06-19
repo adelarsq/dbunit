@@ -62,9 +62,7 @@ public abstract class AbstractResultSetTable extends AbstractTable
             IDatabaseConnection connection)
             throws DataSetException, SQLException
     {
-        Connection jdbcConnection = connection.getConnection();
-        _statement = jdbcConnection.createStatement();
-//        _statement.setFetchDirection(ResultSet.FETCH_FORWARD);
+    	_statement = createStatement(connection);
 
         DatabaseConfig config = connection.getConfig();
         IDataTypeFactory dataTypeFactory = (IDataTypeFactory)config.getProperty(
@@ -84,19 +82,19 @@ public abstract class AbstractResultSetTable extends AbstractTable
         }
     }
 
-    public AbstractResultSetTable(ITableMetaData metaData,
+	public AbstractResultSetTable(ITableMetaData metaData,
             IDatabaseConnection connection) throws DataSetException, SQLException
     {
-        Connection jdbcConnection = connection.getConnection();
+		_statement = createStatement(connection);
+		
         String escapePattern = (String)connection.getConfig().getProperty(
                 DatabaseConfig.PROPERTY_ESCAPE_PATTERN);
-        _statement = jdbcConnection.createStatement();
-//        _statement.setFetchDirection(ResultSet.FETCH_FORWARD);
 
         try
         {
             String schema = connection.getSchema();
             String selectStatement = getSelectStatement(schema, metaData, escapePattern);
+
             _resultSet = _statement.executeQuery(selectStatement);
             _metaData = metaData;
         }
@@ -107,6 +105,19 @@ public abstract class AbstractResultSetTable extends AbstractTable
             throw e;
         }
     }
+
+    private Statement createStatement(IDatabaseConnection connection) throws SQLException 
+    {
+        Connection jdbcConnection = connection.getConnection();
+        Statement stmt = jdbcConnection.createStatement();
+//        stmt.setFetchDirection(ResultSet.FETCH_FORWARD);
+        
+        DatabaseConfig config = connection.getConfig();
+        Integer fetchSize = (Integer)config.getProperty(DatabaseConfig.PROPERTY_FETCH_SIZE);
+        stmt.setFetchSize(fetchSize.intValue());
+        logger.info("Statement fetch size set to {}",fetchSize);
+        return stmt;
+	}
 
     static String getSelectStatement(String schema, ITableMetaData metaData, String escapePattern)
             throws DataSetException

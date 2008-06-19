@@ -68,10 +68,10 @@ public interface IDatabaseConnection
      * Creates a table with the result of the specified SQL statement. The
      * table can be the result of a join statement.
      *
-     * @param resultName The name to be returned by {@link org.dbunit.dataset.ITableMetaData#getTableName}.
+     * @param tableName The name to be returned by {@link org.dbunit.dataset.ITableMetaData#getTableName}.
      * @param sql The SQL <code>SELECT</code> statement
      */
-    public ITable createQueryTable(String resultName, String sql)
+    public ITable createQueryTable(String tableName, String sql)
             throws DataSetException, SQLException;
 
     /**

@@ -125,6 +125,8 @@ public class DbUnitTask extends Task
 
     private String batchSize = null;
     
+    private String fetchSize = null;
+
     private boolean skipOracleRecycleBinTables = false;
 
     /**
@@ -303,6 +305,17 @@ public class DbUnitTask extends Task
 	{
 		this.batchSize = batchSize;
 	}
+	
+
+	public String getFetchSize() 
+	{
+		return fetchSize;
+	}
+
+	public void setFetchSize(String fetchSize) 
+	{
+		this.fetchSize = fetchSize;
+	}
 
 	public boolean isSkipOracleRecycleBinTables()
 	{
@@ -444,6 +457,10 @@ public class DbUnitTask extends Task
         {
         	Integer batchSizeInteger = new Integer(batchSize);
         	config.setProperty(DatabaseConfig.PROPERTY_BATCH_SIZE, batchSizeInteger);
+        }
+        if (fetchSize != null)
+        {
+        	config.setProperty(DatabaseConfig.PROPERTY_FETCH_SIZE, new Integer(fetchSize));
         }
 
         // Setup data type factory

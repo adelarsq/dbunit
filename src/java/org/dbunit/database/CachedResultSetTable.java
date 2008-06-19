@@ -35,6 +35,13 @@ import java.sql.SQLException;
  */
 public class CachedResultSetTable extends CachedTable implements IResultSetTable
 {
+    /**
+     * @param metaData
+     * @param resultSet
+     * @throws SQLException
+     * @throws DataSetException
+     * @deprecated since 2.3.0 prefer direct usage of {@link ForwardOnlyResultSetTable#ForwardOnlyResultSetTable(ITableMetaData, ResultSet)}
+     */
     public CachedResultSetTable(ITableMetaData metaData, ResultSet resultSet)
             throws SQLException, DataSetException
     {
