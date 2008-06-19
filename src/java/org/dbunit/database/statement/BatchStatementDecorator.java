@@ -79,7 +79,7 @@ public class BatchStatementDecorator implements IPreparedBatchStatement
     public void addValue(Object value, DataType dataType)
             throws TypeCastException, SQLException
     {
-        logger.debug("addValue(value=" + value + ", dataType=" + dataType + ") - start");
+        logger.debug("addValue(value={}, dataType={}) - start", value, dataType);
 
         _sqlBuffer.append(DataSetUtils.getSqlValueString(value, dataType));
         _sqlBuffer.append(_sqlTemplate[_index++]);

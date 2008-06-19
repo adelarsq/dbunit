@@ -117,8 +117,6 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
 
     public int getRowCount()
     {
-        logger.debug("getRowCount() - start");
-
         return _rowCount;
     }
 
@@ -142,9 +140,3 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
         }
     }
 }
-
-
-
-
-
-

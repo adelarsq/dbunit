@@ -15,11 +15,6 @@ import org.dbunit.database.IDatabaseConnection;
 
 public class DefaultDatabaseTester extends AbstractDatabaseTester {
 
-    /**
-     * Logger for this class
-     */
-    private static final Logger logger = LoggerFactory.getLogger(DefaultDatabaseTester.class);
-
   final IDatabaseConnection connection;
 
   /**
@@ -30,8 +25,6 @@ public class DefaultDatabaseTester extends AbstractDatabaseTester {
   }
 
   public IDatabaseConnection getConnection() throws Exception {
-        logger.debug("getConnection() - start");
-
     return this.connection;
   }
 

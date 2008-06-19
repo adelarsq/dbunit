@@ -74,8 +74,11 @@ public abstract class AbstractStep implements DbUnitTaskStep
     protected IDataSet getDatabaseDataSet(IDatabaseConnection connection,
             List tables, boolean forwardonly) throws DatabaseUnitException
     {
-        logger.debug("getDatabaseDataSet(connection=" + connection + ", tables=" + tables + ", forwardonly="
-                + forwardonly + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+            logger.debug("getDatabaseDataSet(connection={}, tables={}, forwardonly={}) - start",
+            		new Object[] { connection, tables, new Boolean(forwardonly) });
+    	}
 
         try
         {
@@ -141,7 +144,11 @@ public abstract class AbstractStep implements DbUnitTaskStep
 	protected IDataSet getSrcDataSet(File src, String format,
             boolean forwardonly) throws DatabaseUnitException
     {
-        logger.debug("getSrcDataSet(src=" + src + ", format=" + format + ", forwardonly=" + forwardonly + ") - start");
+		if (logger.isDebugEnabled())
+		{
+			logger.debug("getSrcDataSet(src={}, format={}, forwardonly={}) - start",
+					new Object[]{ src, format, new Boolean(forwardonly) });
+		}
 
         try
         {
@@ -185,7 +192,7 @@ public abstract class AbstractStep implements DbUnitTaskStep
     
 	private QueryDataSet getQueryDataSetForQuerySet
 		(IDatabaseConnection connection, QuerySet querySet) throws SQLException {
-        logger.debug("getQueryDataSetForQuerySet(connection=" + connection + ", querySet=" + querySet + ") - start");
+        logger.debug("getQueryDataSetForQuerySet(connection={}, querySet={}) - start", connection, querySet);
 		
 		//incorporate queries from referenced queryset
 		String refid = querySet.getRefid();
@@ -209,19 +216,16 @@ public abstract class AbstractStep implements DbUnitTaskStep
 
 	
 	public Task getParentTask() {
-        logger.debug("getParentTask() - start");
-
 		return parentTask;
 	}
 
 	public void setParentTask(Task task) {
-        logger.debug("setParentTask(task=" + task + ") - start");
-
+        logger.debug("setParentTask(task={}) - start", task);
 		parentTask = task;
 	}
 	
 	public void log(String msg, int level) {
-        logger.debug("log(msg=" + msg + ", level=" + level + ") - start");
+        logger.debug("log(msg={}, level={}) - start", msg, new Integer(level));
 
 		if(parentTask != null)
 			parentTask.log(msg, level);

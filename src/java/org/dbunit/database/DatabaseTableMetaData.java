@@ -61,8 +61,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     private Column[] _columns;
     private Column[] _primaryKeys;
 
-    DatabaseTableMetaData(String tableName, IDatabaseConnection connection
-            )
+    DatabaseTableMetaData(String tableName, IDatabaseConnection connection)
     {
         _tableName = tableName;
         _connection = connection;
@@ -72,8 +71,11 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             ResultSet resultSet, IDataTypeFactory dataTypeFactory)
             throws DataSetException, SQLException
     {
-        logger.debug("createMetaData(tableName=" + tableName + ", resultSet=" + resultSet + ", dataTypeFactory="
-                + dataTypeFactory + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("createMetaData(tableName={}, resultSet={}, dataTypeFactory={}) - start",
+    				new Object[]{ tableName, resultSet, dataTypeFactory });
+    	}
 
         ResultSetMetaData metaData = resultSet.getMetaData();
         Column[] columns = new Column[metaData.getColumnCount()];
@@ -102,8 +104,11 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             ResultSet resultSet, IDatabaseConnection connection)
             throws SQLException, DataSetException
     {
-        logger.debug("createMetaData(tableName=" + tableName + ", resultSet=" + resultSet + ", connection="
-                + connection + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("createMetaData(tableName={}, resultSet={}, connection={}) - start",
+    				new Object[] { tableName, resultSet, connection });
+    	}
 
         DatabaseConfig config = connection.getConfig();
         IDataTypeFactory typeFactory = (IDataTypeFactory)config.getProperty(
@@ -158,12 +163,6 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
     private class PrimaryKeyData implements Comparable
     {
-
-        /**
-         * Logger for this class
-         */
-        private final Logger logger = LoggerFactory.getLogger(PrimaryKeyData.class);
-
         private final String _name;
         private final int _index;
 
@@ -182,8 +181,6 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
         public int getIndex()
         {
-            logger.debug("getIndex() - start");
-
             return _index;
         }
 
@@ -192,8 +189,6 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
         public int compareTo(Object o)
         {
-            logger.debug("compareTo(o=" + o + ") - start");
-
             PrimaryKeyData data = (PrimaryKeyData)o;
             return getIndex() - data.getIndex();
         }
@@ -204,8 +199,6 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
     public String getTableName()
     {
-        logger.debug("getTableName() - start");
-
         return _tableName;
     }
 
@@ -321,8 +314,6 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     // Object class
     public String toString()
     {
-        logger.debug("toString() - start");
-
         try
         {
             String tableName = getTableName();
@@ -336,14 +327,3 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-

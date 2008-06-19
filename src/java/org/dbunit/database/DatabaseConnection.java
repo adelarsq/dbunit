@@ -74,28 +74,17 @@ public class DatabaseConnection extends AbstractDatabaseConnection
 
     public Connection getConnection() throws SQLException
     {
-        logger.debug("getConnection() - start");
-
         return _connection;
     }
 
     public String getSchema()
     {
-        logger.debug("getSchema() - start");
-
         return _schema;
     }
 
     public void close() throws SQLException
     {
         logger.debug("close() - start");
-
         _connection.close();
     }
 }
-
-
-
-
-
-

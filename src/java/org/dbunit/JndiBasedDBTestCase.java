@@ -72,8 +72,6 @@ public abstract class JndiBasedDBTestCase extends DBTestCase
     */
    protected Properties getJNDIProperties()
    {
-        logger.debug("getJNDIProperties() - start");
-
       return new Properties();
    }
 }

@@ -67,8 +67,6 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
    * @return the connection where the edges will be calculated from
    */
   public IDatabaseConnection getConnection() {
-        logger.debug("getConnection() - start");
-
     return connection;
   }
 
@@ -92,7 +90,7 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
    */
   protected SortedSet getNodesFromImportedKeys(Object node)
       throws SearchException {
-        logger.debug("getNodesFromImportedKeys(node=" + node + ") - start");
+        logger.debug("getNodesFromImportedKeys(node={}) - start", node);
 
     return getNodes(IMPORT, node);
   }
@@ -112,7 +110,7 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
    */
   protected SortedSet getNodesFromExportedKeys(Object node)
       throws SearchException {
-        logger.debug("getNodesFromExportedKeys(node=" + node + ") - start");
+        logger.debug("getNodesFromExportedKeys(node={}) - start", node);
 
     return getNodes(EXPORT, node);
   }
@@ -127,7 +125,7 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
    */
   protected SortedSet getNodesFromImportAndExportKeys(Object node)
       throws SearchException {
-        logger.debug("getNodesFromImportAndExportKeys(node=" + node + ") - start");
+        logger.debug("getNodesFromImportAndExportKeys(node={}) - start", node);
 
     SortedSet importedNodes = getNodesFromImportedKeys( node );
     SortedSet exportedNodes = getNodesFromExportedKeys( node );
@@ -136,7 +134,7 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
   }
 
   private SortedSet getNodes(int type, Object node) throws SearchException {
-        logger.debug("getNodes(type=" + type + ", node=" + node + ") - start");
+        logger.debug("getNodes(type={}, node={}) - start", Integer.toString(type), node);
 
     try {
       Connection conn = this.connection.getConnection();
@@ -153,12 +151,12 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
   private void getNodes(int type, Object node, Connection conn,
       String schema, DatabaseMetaData metaData, SortedSet edges)
       throws SearchException {
-        logger.debug("getNodes(type=" + type + ", node=" + node + ", conn=" + conn + ", schema=" + schema
-                + ", metaData=" + metaData + ", edges=" + edges + ") - start");
-
-    if ( logger.isDebugEnabled() ) {
-      logger.debug("Getting edges for node " + node);
-    }
+	    if (logger.isDebugEnabled())
+		{
+			logger.debug("getNodes(type={}, node={}, conn={}, schema={}, metaData={}, edges={}) - start", 
+					new Object[] {String.valueOf(type), node, conn, schema, metaData, edges});
+			logger.debug("Getting edges for node " + node);
+		}
     try {
       if (!(node instanceof String)) {
         throw new IllegalArgumentException("node should be a String, not a "
@@ -206,8 +204,10 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
   protected static ForeignKeyRelationshipEdge createFKEdge(ResultSet rs, int type, 
       String from, String to, String fkColumn, String pkColumn)
   throws SearchException {
-        logger.debug("createFKEdge(rs=" + rs + ", type=" + type + ", from=" + from + ", to=" + to + ", fkColumn="
-                + fkColumn + ", pkColumn=" + pkColumn + ") - start");
+	  if (logger.isDebugEnabled()) {
+		  logger.debug("createFKEdge(rs={}, type={}, from={}, to={}, fkColumn={}, pkColumn={}) - start",
+        		new Object[] {rs, String.valueOf(type), from, to, fkColumn, pkColumn});
+	  }
 
     return type == IMPORT ? 
         new ForeignKeyRelationshipEdge( from, to, fkColumn, pkColumn ) :
@@ -231,8 +231,10 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
    */
   protected IEdge newEdge(ResultSet rs, int type, String from, String to, String fkColumn, String pkColumn)
       throws SearchException {
-        logger.debug("newEdge(rs=" + rs + ", type=" + type + ", from=" + from + ", to=" + to + ", fkColumn=" + fkColumn
-                + ", pkColumn=" + pkColumn + ") - start");
+	  if (logger.isDebugEnabled()) {
+		  logger.debug("newEdge(rs={}, type={}, from={}, to={}, fkColumn={}, pkColumn={}) - start",
+      		new Object[] {rs, String.valueOf(type), from, to, fkColumn, pkColumn});
+	  }
 
     return createFKEdge( rs, type, from, to, fkColumn, pkColumn );
   }

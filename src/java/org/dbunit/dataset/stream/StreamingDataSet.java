@@ -81,8 +81,6 @@ public class StreamingDataSet extends AbstractDataSet
      */
     public String[] getTableNames() throws DataSetException
     {
-        logger.debug("getTableNames() - start");
-
         throw new UnsupportedOperationException();
     }
 

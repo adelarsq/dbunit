@@ -110,8 +110,7 @@ public abstract class AbstractResultSetTable extends AbstractTable
     {
         Connection jdbcConnection = connection.getConnection();
         Statement stmt = jdbcConnection.createStatement();
-//        stmt.setFetchDirection(ResultSet.FETCH_FORWARD);
-        
+
         DatabaseConfig config = connection.getConfig();
         Integer fetchSize = (Integer)config.getProperty(DatabaseConfig.PROPERTY_FETCH_SIZE);
         stmt.setFetchSize(fetchSize.intValue());
@@ -122,9 +121,6 @@ public abstract class AbstractResultSetTable extends AbstractTable
     static String getSelectStatement(String schema, ITableMetaData metaData, String escapePattern)
             throws DataSetException
     {
-        logger.debug("getSelectStatement(schema=" + schema + ", metaData=" + metaData + ", escapePattern="
-                + escapePattern + ") - start");
-
         return DatabaseDataSet.getSelectStatement(schema, metaData, escapePattern);
     }
 
@@ -133,8 +129,6 @@ public abstract class AbstractResultSetTable extends AbstractTable
 
     public ITableMetaData getTableMetaData()
     {
-        logger.debug("getTableMetaData() - start");
-
         return _metaData;
     }
 

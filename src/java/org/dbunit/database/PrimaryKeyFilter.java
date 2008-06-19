@@ -107,8 +107,6 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   public void nodeAdded(Object node) {
-        logger.debug("nodeAdded(node=" + node + ") - start");
-
     this.tableNames.add( node );
     if ( this.logger.isDebugEnabled() ) {
       this.logger.debug("nodeAdded: " + node );
@@ -154,8 +152,6 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
    * @see AbstractTableFilter
    */
   public boolean isValidName(String tableName) throws DataSetException {
-        logger.debug("isValidName(tableName=" + tableName + ") - start");
-
     //    boolean isValid = this.allowedIds.containsKey(tableName);
     //    return isValid;
     return true;
@@ -176,7 +172,7 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   private void searchPKs(IDataSet dataSet) throws DataSetException, SQLException {
-        logger.debug("searchPKs(dataSet=" + dataSet + ") - start");
+        logger.debug("searchPKs(dataSet={}) - start", dataSet);
     
     int counter = 0;
     while ( ! this.pksToScanPerTable.isEmpty() ) {
@@ -236,7 +232,7 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   private void allowPKs(String table, Set newAllowedPKs) {
-        logger.debug("allowPKs(table=" + table + ", newAllowedPKs=" + newAllowedPKs + ") - start");
+        logger.debug("allowPKs(table={}, newAllowedPKs={}) - start", table, newAllowedPKs);
 
     // first, obtain the current allowed ids for that table
     Set currentAllowedIds = (Set) this.allowedPKsPerTable.get( table );
@@ -265,7 +261,11 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
   
   private void scanPKs( String table, String pkColumn, Set allowedIds ) throws SQLException {
-        logger.debug("scanPKs(table=" + table + ", pkColumn=" + pkColumn + ", allowedIds=" + allowedIds + ") - start");
+	  if (logger.isDebugEnabled())
+	  {
+		  logger.debug("scanPKs(table={}, pkColumn={}, allowedIds={}) - start",
+				  new Object[]{ table, pkColumn, allowedIds });
+	  }
 
     Set fkEdges = (Set) this.fkEdgesPerTable.get( table );
     if ( fkEdges == null || fkEdges.isEmpty() ) {
@@ -324,7 +324,7 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
   
   private void scanReversePKs(String table, Set pksToScan) throws SQLException {
-        logger.debug("scanReversePKs(table=" + table + ", pksToScan=" + pksToScan + ") - start");
+        logger.debug("scanReversePKs(table={}, pksToScan={}) - start", table, pksToScan);
 
     if ( ! this.reverseScan ) {
       return; 
@@ -341,7 +341,7 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   private void addReverseEdge(ForeignKeyRelationshipEdge edge, Set idsToScan) throws SQLException {
-        logger.debug("addReverseEdge(edge=" + edge + ", idsToScan=" + idsToScan + ") - start");
+        logger.debug("addReverseEdge(edge={}, idsToScan=) - start", edge, idsToScan);
 
     String fkTable = (String) edge.getFrom();
     String fkColumn = edge.getFKColumn();
@@ -381,7 +381,7 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
 
   // TODO: support PKs with multiple values
   private String getPKColumn( String table ) throws SQLException {
-        logger.debug("getPKColumn(table=" + table + ") - start");
+        logger.debug("getPKColumn(table={}) - start", table);
 
     String pkColumn = (String) this.pkColumnPerTable.get( table );
     if ( pkColumn == null ) {
@@ -392,7 +392,7 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
   
   private void removePKsToScan(String table, Set ids) {
-        logger.debug("removePKsToScan(table=" + table + ", ids=" + ids + ") - start");
+        logger.debug("removePKsToScan(table={}, ids={}) - start", table, ids);
 
     Set pksToScan = (Set) this.pksToScanPerTable.get(table);
     if ( pksToScan != null ) {
@@ -405,7 +405,7 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   private void addPKToScan(String table, Object pk) {
-        logger.debug("addPKToScan(table=" + table + ", pk=" + pk + ") - start");
+        logger.debug("addPKToScan(table={}, pk={}) - start", table, pk);
 
     // first, check if it wasn't added yet
     Set scannedIds = (Set) this.allowedPKsPerTable.get( table );
@@ -425,11 +425,6 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
   }
 
   private class FilterIterator implements ITableIterator {
-
-        /**
-         * Logger for this class
-         */
-        private final Logger logger = LoggerFactory.getLogger(FilterIterator.class);
 
     private final ITableIterator _iterator;
 

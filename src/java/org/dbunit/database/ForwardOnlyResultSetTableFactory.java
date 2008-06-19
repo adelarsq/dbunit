@@ -45,8 +45,11 @@ public class ForwardOnlyResultSetTableFactory implements IResultSetTableFactory
     public IResultSetTable createTable(String tableName, String selectStatement,
             IDatabaseConnection connection) throws SQLException, DataSetException
     {
-        logger.debug("createTable(tableName=" + tableName + ", selectStatement=" + selectStatement + ", connection="
-                + connection + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("createTable(tableName={}, selectStatement={}, connection={}) - start",
+                new Object[]{ tableName, selectStatement, connection});
+    	}
 
         return new ForwardOnlyResultSetTable(tableName, selectStatement, connection);
     }
@@ -54,7 +57,7 @@ public class ForwardOnlyResultSetTableFactory implements IResultSetTableFactory
     public IResultSetTable createTable(ITableMetaData metaData,
             IDatabaseConnection connection) throws SQLException, DataSetException
     {
-        logger.debug("createTable(metaData=" + metaData + ", connection=" + connection + ") - start");
+        logger.debug("createTable(metaData={}, connection={}) - start", metaData, connection);
 
         return new ForwardOnlyResultSetTable(metaData, connection);
     }

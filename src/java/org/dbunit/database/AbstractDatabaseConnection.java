@@ -71,7 +71,7 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
     public IDataSet createDataSet(String[] tableNames) throws SQLException
     {
-        logger.debug("createDataSet(tableNames=" + tableNames + ") - start");
+        logger.debug("createDataSet(tableNames={}) - start", tableNames);
 
         return new FilteredDataSet(tableNames, createDataSet());
     }
@@ -79,7 +79,7 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
     public ITable createQueryTable(String resultName, String sql)
             throws DataSetException, SQLException
     {
-        logger.debug("createQueryTable(resultName=" + resultName + ", sql=" + sql + ") - start");
+        logger.debug("createQueryTable(resultName={}, sql={}) - start", resultName, sql);
 
         ForwardOnlyResultSetTable rsTable = new ForwardOnlyResultSetTable(resultName, sql, this);
         return new CachedResultSetTable(rsTable);
@@ -87,14 +87,14 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
     public int getRowCount(String tableName) throws SQLException
     {
-        logger.debug("getRowCount(tableName=" + tableName + ") - start");
+        logger.debug("getRowCount(tableName={}) - start", tableName);
 
         return getRowCount(tableName, null);
     }
 
     public int getRowCount(String tableName, String whereClause) throws SQLException
     {
-        logger.debug("getRowCount(tableName=" + tableName + ", whereClause=" + whereClause + ") - start");
+        logger.debug("getRowCount(tableName={}, whereClause={}) - start", tableName, whereClause);
 
         StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("select count(*) from ");
@@ -127,26 +127,12 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
     public DatabaseConfig getConfig()
     {
-        logger.debug("getConfig() - start");
-
         return _databaseConfig;
     }
 
     public IStatementFactory getStatementFactory()
     {
-        logger.debug("getStatementFactory() - start");
-
-        return (IStatementFactory)_databaseConfig.getProperty(
-                DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
+        return (IStatementFactory)_databaseConfig.getProperty(DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
     }
 
 }
-
-
-
-
-
-
-
-
-

@@ -82,8 +82,6 @@ public abstract class JdbcBasedDBTestCase extends DBTestCase
     */
    protected String getPassword()
    {
-        logger.debug("getPassword() - start");
-
       return null;
    }
 
@@ -94,8 +92,6 @@ public abstract class JdbcBasedDBTestCase extends DBTestCase
     */
    protected String getUsername()
    {
-        logger.debug("getUsername() - start");
-
       return null;
    }
 }

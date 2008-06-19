@@ -63,29 +63,25 @@ public class Compare extends AbstractStep
 
     public File getSrc()
     {
-        logger.debug("getSrc() - start");
-
         return _src;
     }
 
     public void setSrc(File src)
     {
-        logger.debug("setSrc(src=" + src + ") - start");
+        logger.debug("setSrc(src={}) - start", src);
 
         _src = src;
     }
 
     public void setSort(boolean sort)
     {
-        logger.debug("setSort(sort=" + sort + ") - start");
+        logger.debug("setSort(sort={}) - start", String.valueOf(sort));
 
         _sort = sort;
     }
 
     public String getFormat()
     {
-        logger.debug("getFormat() - start");
-
         return _format != null ? _format : DEFAULT_FORMAT;
     }
 
@@ -108,28 +104,26 @@ public class Compare extends AbstractStep
 
     public List getTables()
     {
-        logger.debug("getTables() - start");
-
         return _tables;
     }
 
     public void addTable(Table table)
     {
-        logger.debug("addTable(table=" + table + ") - start");
+        logger.debug("addTable(table={}) - start", table);
 
         _tables.add(table);
     }
 
     public void addQuery(Query query)
     {
-        logger.debug("addQuery(query=" + query + ") - start");
+        logger.debug("addQuery(query={}) - start", query);
 
         _tables.add(query);
     }
 
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
-        logger.debug("execute(connection=" + connection + ") - start");
+        logger.debug("execute(connection={}) - start", connection);
 
         IDataSet expectedDataset = getSrcDataSet(_src, getFormat(), false);
         IDataSet actualDataset = getDatabaseDataSet(connection, _tables, false);
@@ -169,8 +163,6 @@ public class Compare extends AbstractStep
 
     public String getLogMessage()
     {
-        logger.debug("getLogMessage() - start");
-
         return "Executing compare: "
                 + "\n          from file: " + ((_src == null) ? null : _src.getAbsolutePath())
                 + "\n          with format: " + _format;
@@ -178,13 +170,14 @@ public class Compare extends AbstractStep
 
     public String toString()
     {
-        logger.debug("toString() - start");
-
         StringBuffer result = new StringBuffer();
         result.append("Compare: ");
-        result.append(" src=" + _src.getAbsolutePath());
-        result.append(", format= " + _format);
-        result.append(", tables= " + _tables);
+        result.append(" src=");
+        result.append(_src.getAbsolutePath());
+        result.append(", format= ");
+        result.append(_format);
+        result.append(", tables= ");
+        result.append(_tables);
 
         return result.toString();
     }

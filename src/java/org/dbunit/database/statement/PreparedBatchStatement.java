@@ -59,7 +59,7 @@ public class PreparedBatchStatement extends AbstractPreparedBatchStatement
     public void addValue(Object value, DataType dataType)
             throws TypeCastException, SQLException
     {
-        logger.debug("addValue(value=" + value + ", dataType=" + dataType + ") - start");
+        logger.debug("addValue(value={}, dataType={}) - start", value, dataType);
 
         // Special NULL handling
         if (value == null || value == ITable.NO_VALUE)
@@ -95,8 +95,6 @@ public class PreparedBatchStatement extends AbstractPreparedBatchStatement
     public void clearBatch() throws SQLException
     {
         logger.debug("clearBatch() - start");
-
-//        _statement.clearParameters();
         _statement.clearBatch();
     }
 }

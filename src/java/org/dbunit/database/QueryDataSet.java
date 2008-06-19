@@ -72,8 +72,7 @@ public class QueryDataSet extends AbstractDataSet
      */
     public void addTable(String tableName, String query)
     {
-        logger.debug("addTable(tableName=" + tableName + ", query=" + query + ") - start");
-
+        logger.debug("addTable(tableName={}, query={}) - start", tableName, query);
         _tableEntries.add(new TableEntry(tableName, query));
     }
 
@@ -84,8 +83,7 @@ public class QueryDataSet extends AbstractDataSet
      */
     public void addTable(String tableName)
     {
-        logger.debug("addTable(tableName=" + tableName + ") - start");
-
+        logger.debug("addTable(tableName={}) - start", tableName);
         _tableEntries.add(new TableEntry(tableName, null));
     }
 
@@ -94,8 +92,7 @@ public class QueryDataSet extends AbstractDataSet
 
     protected ITableIterator createIterator(boolean reversed) throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
-
+        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
         List tableEntries = new ArrayList(_tableEntries);
         if (reversed)
         {
@@ -124,12 +121,6 @@ public class QueryDataSet extends AbstractDataSet
 
     static class TableEntry
     {
-
-        /**
-         * Logger for this class
-         */
-        private static final Logger logger = LoggerFactory.getLogger(TableEntry.class);
-
         private final String _tableName;
         private final String _query;
 
@@ -141,15 +132,11 @@ public class QueryDataSet extends AbstractDataSet
 
         public String getTableName()
         {
-            logger.debug("getTableName() - start");
-
             return _tableName;
         }
 
         public String getQuery()
         {
-            logger.debug("getQuery() - start");
-
             return _query;
         }
     }

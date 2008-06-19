@@ -92,7 +92,7 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
         throws DataSetException, SQLException
             // not sure why this throws DataSetException ? - ENP
     {
-        logger.debug("sortTableNames(connection=" + connection + ", tableNames=" + tableNames + ") - start");
+        logger.debug("sortTableNames(connection={}, tableNames={}) - start", connection, tableNames);
 
         boolean reprocess = true;
         List tmpTableNames = Arrays.asList(tableNames);
@@ -175,7 +175,7 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
         String tableName)
         throws SQLException
     {
-        logger.debug("getDependentTableNames(connection=" + connection + ", tableName=" + tableName + ") - start");
+        logger.debug("getDependentTableNames(connection={}, tableName={}) - start", connection, tableName);
 
         if (_dependentMap.containsKey(tableName))
         {

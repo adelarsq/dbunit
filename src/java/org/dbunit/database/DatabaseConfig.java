@@ -109,7 +109,7 @@ public class DatabaseConfig
      */
     public void setFeature(String name, boolean value)
     {
-        logger.debug("setFeature(name=" + name + ", value=" + value + ") - start");
+        logger.debug("setFeature(name={}, value={}) - start", name, new Boolean(value));
 
         if (value)
         {
@@ -129,8 +129,7 @@ public class DatabaseConfig
      */
     public boolean getFeature(String name)
     {
-        logger.debug("getFeature(name=" + name + ") - start");
-
+        logger.debug("getFeature(name={}) - start", name);
         return _featuresSet.contains(name);
     }
 
@@ -142,8 +141,7 @@ public class DatabaseConfig
      */
     public void setProperty(String name, Object value)
     {
-        logger.debug("setProperty(name=" + name + ", value=" + value + ") - start");
-
+        logger.debug("setProperty(name={}, value={}) - start", name, value);
         _propertyMap.put(name, value);
     }
 
@@ -155,8 +153,7 @@ public class DatabaseConfig
      */
     public Object getProperty(String name)
     {
-        logger.debug("getProperty(name=" + name + ") - start");
-
+    	
        return _propertyMap.get(name);
     }
 

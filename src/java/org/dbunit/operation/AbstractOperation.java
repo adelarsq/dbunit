@@ -47,12 +47,13 @@ public abstract class AbstractOperation extends DatabaseOperation
 
     protected String getQualifiedName(String prefix, String name, IDatabaseConnection connection)
     {
-        logger.debug("getQualifiedName(prefix=" + prefix + ", name=" + name + ", connection=" + connection
-                + ") - start");
+    	if (logger.isDebugEnabled())	
+    	{
+    		logger.debug("getQualifiedName(prefix={}, name={}, connection={}) - start",
+    				new Object[] {prefix, name, connection});
+    	}
 
-        String escapePattern = (String)connection.getConfig().getProperty(
-                DatabaseConfig.PROPERTY_ESCAPE_PATTERN);
-
+        String escapePattern = (String)connection.getConfig().getProperty(DatabaseConfig.PROPERTY_ESCAPE_PATTERN);
         return DataSetUtils.getQualifiedName(prefix, name, escapePattern);
     }
 
@@ -65,7 +66,7 @@ public abstract class AbstractOperation extends DatabaseOperation
     static ITableMetaData getOperationMetaData(IDatabaseConnection connection,
             ITableMetaData metaData) throws DatabaseUnitException, SQLException
     {
-        logger.debug("getOperationMetaData(connection=" + connection + ", metaData=" + metaData + ") - start");
+        logger.debug("getOperationMetaData(connection={}, metaData={}) - start", connection, metaData);
 
         IDataSet databaseDataSet = connection.createDataSet();
         String tableName = metaData.getTableName();

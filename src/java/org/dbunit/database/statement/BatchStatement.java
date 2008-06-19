@@ -47,7 +47,7 @@ public class BatchStatement extends AbstractBatchStatement
 
     public void addBatch(String sql) throws SQLException
     {
-        logger.debug("addBatch(sql=" + sql + ") - start");
+        logger.debug("addBatch(sql={}) - start", sql);
 
         _statement.addBatch(sql);
     }

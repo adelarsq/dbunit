@@ -51,8 +51,7 @@ public class SimpleStatement extends AbstractBatchStatement
 
     public void addBatch(String sql) throws SQLException
     {
-        logger.debug("addBatch(sql=" + sql + ") - start");
-
+        logger.debug("addBatch(sql={}) - start", sql);
         _list.add(sql);
     }
 
@@ -76,7 +75,6 @@ public class SimpleStatement extends AbstractBatchStatement
     public void clearBatch() throws SQLException
     {
         logger.debug("clearBatch() - start");
-
         _list.clear();
     }
 }

@@ -50,7 +50,7 @@ public class ImportedKeysSearchCallback extends
   }
 
   public SortedSet getEdges(Object node) throws SearchException {
-        logger.debug("getEdges(node=" + node + ") - start");
+        logger.debug("getEdges(node={}) - start", node);
 
     return getNodesFromImportedKeys( node );
   }

@@ -49,7 +49,7 @@ public class CompoundStatement extends AbstractBatchStatement
 
     public void addBatch(String sql) throws SQLException
     {
-        logger.debug("addBatch(sql=" + sql + ") - start");
+        logger.debug("addBatch(sql={}) - start", sql);
 
         _buffer.append(sql);
         _buffer.append(";");

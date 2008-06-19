@@ -104,8 +104,6 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
     */
    public void setPassword( String password )
    {
-        logger.debug("setPassword(password=" + password + ") - start");
-
       this.password = password;
    }
 
@@ -114,7 +112,7 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
     */
    public void setUsername( String username )
    {
-        logger.debug("setUsername(username=" + username + ") - start");
+        logger.debug("setUsername(username={}) - start", username);
 
       this.username = username;
    }
@@ -138,18 +136,17 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
     */
    protected void setConnectionUrl( String connectionUrl )
    {
-        logger.debug("setConnectionUrl(connectionUrl=" + connectionUrl + ") - start");
+        logger.debug("setConnectionUrl(connectionUrl={}) - start", connectionUrl);
 
       this.connectionUrl = connectionUrl;
    }
 
    /**
-    * Sets the value of the JDBC driver classname.
-    */
-   protected void setDriverClass( String driverClass )
-   {
-        logger.debug("setDriverClass(driverClass=" + driverClass + ") - start");
-
-      this.driverClass = driverClass;
-   }
+	 * Sets the value of the JDBC driver classname.
+	 */
+	protected void setDriverClass(String driverClass)
+	{
+		logger.debug("setDriverClass(driverClass={}) - start", driverClass);
+		this.driverClass = driverClass;
+	}
 }

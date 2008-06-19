@@ -58,7 +58,7 @@ public class AutomaticPreparedBatchStatement implements IPreparedBatchStatement
     public void addValue(Object value, DataType dataType) throws TypeCastException,
             SQLException
     {
-        logger.debug("addValue(value=" + value + ", dataType=" + dataType + ") - start");
+        logger.debug("addValue(value={}, dataType={}) - start", value, dataType);
 
         _statement.addValue(value, dataType);
     }

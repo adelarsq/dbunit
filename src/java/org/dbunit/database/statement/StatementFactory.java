@@ -44,7 +44,7 @@ public class StatementFactory extends AbstractStatementFactory
     public IBatchStatement createBatchStatement(IDatabaseConnection connection)
             throws SQLException
     {
-        logger.debug("createBatchStatement(connection=" + connection + ") - start");
+        logger.debug("createBatchStatement(connection={}) - start", connection);
 
         if (supportBatchStatement(connection))
         {
@@ -59,7 +59,7 @@ public class StatementFactory extends AbstractStatementFactory
     public IPreparedBatchStatement createPreparedBatchStatement(String sql,
             IDatabaseConnection connection) throws SQLException
     {
-        logger.debug("createPreparedBatchStatement(sql=" + sql + ", connection=" + connection + ") - start");
+        logger.debug("createPreparedBatchStatement(sql={}, connection={}) - start", sql, connection);
 
         return new BatchStatementDecorator(sql, createBatchStatement(connection));
     }

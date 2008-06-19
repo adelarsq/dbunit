@@ -70,8 +70,6 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
 
     public int getRowCount()
     {
-        logger.debug("getRowCount() - start");
-
         throw new UnsupportedOperationException();
     }
 

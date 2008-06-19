@@ -121,14 +121,10 @@ public class PrimaryKeyFilteredTableWrapper implements ITable {
   // ITable methods
 
   public ITableMetaData getTableMetaData() {
-        logger.debug("getTableMetaData() - start");
-
     return this.originalTable.getTableMetaData();
   }
 
   public int getRowCount() {
-        logger.debug("getRowCount() - start");
-
     return this.filteredRowsMapping.size();
   }
 

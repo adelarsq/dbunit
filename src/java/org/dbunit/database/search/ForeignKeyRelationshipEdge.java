@@ -21,9 +21,6 @@
 
 package org.dbunit.database.search;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.dbunit.util.search.Edge;
 
 /**
@@ -41,11 +38,6 @@ import org.dbunit.util.search.Edge;
  */
 
 public class ForeignKeyRelationshipEdge extends Edge {
-
-    /**
-     * Logger for this class
-     */
-    private static final Logger logger = LoggerFactory.getLogger(ForeignKeyRelationshipEdge.class);
 
   private String fkColumn;
   private String pkColumn;
@@ -69,8 +61,6 @@ public class ForeignKeyRelationshipEdge extends Edge {
    * @return name of the foreign key column in the relationship.
    */
   public String getFKColumn() {
-        logger.debug("getFKColumn() - start");
-
     return fkColumn;
   }
   
@@ -79,14 +69,10 @@ public class ForeignKeyRelationshipEdge extends Edge {
    * @return name of the primary key column in the relationship.
    */
   public String getPKColumn() {
-        logger.debug("getPKColumn() - start");
-
     return pkColumn;
   }
   
   public String toString() {
-        logger.debug("toString() - start");
-
     return getFrom() + "(" + getFKColumn() + ")->" + getTo() + "(" + getPKColumn() + ")";
   }
   

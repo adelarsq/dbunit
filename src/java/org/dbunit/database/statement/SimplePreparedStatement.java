@@ -61,7 +61,7 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
     public void addValue(Object value, DataType dataType)
             throws TypeCastException, SQLException
     {
-        logger.debug("addValue(value=" + value + ", dataType=" + dataType + ") - start");
+    	logger.debug("addValue(value={}, dataType={}) - start", value, dataType);
 
         // Special NULL handling
         if (value == null || value == ITable.NO_VALUE)
@@ -83,7 +83,6 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
             _result += _statement.getUpdateCount();
         }
         _index = 0;
-//        _statement.clearParameters();
     }
 
     public int executeBatch() throws SQLException
@@ -99,7 +98,6 @@ public class SimplePreparedStatement extends AbstractPreparedBatchStatement
     {
         logger.debug("clearBatch() - start");
 
-//        _statement.clearParameters();
         _index = 0;
         _result = 0;
     }

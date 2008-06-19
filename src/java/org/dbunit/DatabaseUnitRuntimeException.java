@@ -35,6 +35,11 @@ public class DatabaseUnitRuntimeException extends RuntimeException
 {
 
     /**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -3238403495229458202L;
+
+	/**
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(DatabaseUnitRuntimeException.class);
@@ -86,8 +91,6 @@ public class DatabaseUnitRuntimeException extends RuntimeException
      */
     public Throwable getException()
     {
-        logger.debug("getException() - start");
-
         return _e;
     }
 
@@ -99,8 +102,6 @@ public class DatabaseUnitRuntimeException extends RuntimeException
      */
     public void printStackTrace()
     {
-        logger.debug("printStackTrace() - start");
-
         super.printStackTrace();
         if (_e != null)
             _e.printStackTrace();

@@ -50,7 +50,7 @@ public class BlobDataType extends BytesDataType
 
     public Object getSqlValue(int column, ResultSet resultSet) throws SQLException, TypeCastException
     {
-        logger.debug("getSqlValue(column=" + column + ", resultSet=" + resultSet + ") - start");
+    	logger.debug("getSqlValue(column={}, resultSet={}) - start", String.valueOf(column), resultSet);
 
         Blob value = resultSet.getBlob(column);
         if (value == null || resultSet.wasNull())
@@ -62,7 +62,11 @@ public class BlobDataType extends BytesDataType
 
     public void setSqlValue(Object value, int column, PreparedStatement statement) throws SQLException, TypeCastException
     {
-        logger.debug("setSqlValue(value=" + value + ", column=" + column + ", statement=" + statement + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
+    				new Object[]{ value, String.valueOf(column), statement});
+    	}
 
         statement.setObject(column, typeCast(value),
                 DataType.LONGVARBINARY.getSqlType());

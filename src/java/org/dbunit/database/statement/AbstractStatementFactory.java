@@ -48,7 +48,7 @@ public abstract class AbstractStatementFactory implements IStatementFactory
     protected boolean supportBatchStatement(IDatabaseConnection connection)
             throws SQLException
     {
-        logger.debug("supportBatchStatement(connection=" + connection + ") - start");
+        logger.debug("supportBatchStatement(connection={}) - start", connection);
 
         if (connection.getConfig().getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS))
         {

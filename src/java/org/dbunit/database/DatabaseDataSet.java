@@ -60,8 +60,11 @@ public class DatabaseDataSet extends AbstractDataSet
     static String getSelectStatement(String schema, ITableMetaData metaData, String escapePattern)
             throws DataSetException
     {
-        logger.debug("getSelectStatement(schema=" + schema + ", metaData=" + metaData + ", escapePattern="
-                + escapePattern + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("getSelectStatement(schema={}, metaData={}, escapePattern={}) - start", 
+    				new Object[] { schema, metaData, escapePattern });
+    	}
 
         Column[] columns = metaData.getColumns();
         Column[] primaryKeys = metaData.getPrimaryKeys();
@@ -106,7 +109,7 @@ public class DatabaseDataSet extends AbstractDataSet
 
     private String getQualifiedName(String prefix, String name)
     {
-        logger.debug("getQualifiedName(prefix=" + prefix + ", name=" + name + ") - start");
+        logger.debug("getQualifiedName(prefix={}, name={}) - start", prefix, name);
 
         DatabaseConfig config = _connection.getConfig();
         boolean feature = config.getFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES);
@@ -133,8 +136,7 @@ public class DatabaseDataSet extends AbstractDataSet
         {
             Connection jdbcConnection = _connection.getConnection();
             String schema = _connection.getSchema();
-            String[] tableType = (String[])_connection.getConfig().getProperty(
-                    DatabaseConfig.PROPERTY_TABLE_TYPE);
+            String[] tableType = (String[])_connection.getConfig().getProperty(DatabaseConfig.PROPERTY_TABLE_TYPE);
 
             DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
             ResultSet resultSet = databaseMetaData.getTables(
@@ -185,7 +187,7 @@ public class DatabaseDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
+        logger.debug("createIterator(reversed={}) - start", new Boolean(reversed));
 
         String[] names = getTableNames();
         if (reversed)
@@ -201,8 +203,6 @@ public class DatabaseDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
-        logger.debug("getTableNames() - start");
-
         initialize();
 
         return (String[])_nameList.toArray(new String[0]);
@@ -210,7 +210,7 @@ public class DatabaseDataSet extends AbstractDataSet
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
-        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+        logger.debug("getTableMetaData(tableName={}) - start", tableName);
 
         initialize();
 
@@ -247,7 +247,7 @@ public class DatabaseDataSet extends AbstractDataSet
 
     public ITable getTable(String tableName) throws DataSetException
     {
-        logger.debug("getTable(tableName=" + tableName + ") - start");
+        logger.debug("getTable(tableName={}) - start", tableName);
 
         initialize();
 
@@ -266,16 +266,3 @@ public class DatabaseDataSet extends AbstractDataSet
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

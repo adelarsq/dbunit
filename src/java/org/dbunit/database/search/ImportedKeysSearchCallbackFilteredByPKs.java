@@ -66,22 +66,22 @@ public class ImportedKeysSearchCallbackFilteredByPKs extends ImportedKeysSearchC
    * @return primary key filter associated with the call back
    */
   public ITableFilter getFilter() {
-        logger.debug("getFilter() - start");
-
     return this.pksFilter;
   }
   
   
   public void nodeAdded(Object node) throws SearchException {
-        logger.debug("nodeAdded(node=" + node + ") - start");
+        logger.debug("nodeAdded(node={}) - start", node);
 
     this.pksFilter.nodeAdded( node );
   }
   
   protected IEdge newEdge(ResultSet rs, int type, String from, String to, String fkColumn, String pkColumn) throws SearchException {
-        logger.debug("newEdge(rs=" + rs + ", type=" + type + ", from=" + from + ", to=" + to + ", fkColumn=" + fkColumn
-                + ", pkColumn=" + pkColumn + ") - start");
-
+	  if (logger.isDebugEnabled())
+	  {
+        logger.debug("newEdge(rs={}, type={}, from={}, to={}, fkColumn={}, pkColumn={}) - start",
+        		new Object[]{rs, String.valueOf(type), from, to, fkColumn, pkColumn});
+	  }
     ForeignKeyRelationshipEdge edge = createFKEdge( rs, type, from, to, fkColumn, pkColumn );
     this.pksFilter.edgeAdded( edge );
     return edge;

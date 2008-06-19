@@ -70,7 +70,7 @@ public class CompositeOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+        //logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
 
         for (int i = 0; i < _actions.length; i++)
         {

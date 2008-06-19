@@ -35,6 +35,11 @@ public class DatabaseUnitException extends Exception
 {
 
     /**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 7597982895850877156L;
+
+	/**
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(DatabaseUnitException.class);
@@ -86,8 +91,6 @@ public class DatabaseUnitException extends Exception
      */
     public Throwable getException()
     {
-        logger.debug("getException() - start");
-
         return _e;
     }
 
@@ -131,7 +134,3 @@ public class DatabaseUnitException extends Exception
     }
 
 }
-
-
-
-

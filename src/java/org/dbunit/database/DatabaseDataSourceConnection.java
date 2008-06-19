@@ -128,8 +128,6 @@ public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
 
     public String getSchema()
     {
-        logger.debug("getSchema() - start");
-
         return _schema;
     }
 
@@ -144,10 +142,3 @@ public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
         }
     }
 }
-
-
-
-
-
-
-

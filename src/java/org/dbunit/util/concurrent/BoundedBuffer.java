@@ -69,16 +69,14 @@ public class BoundedBuffer implements BoundedChannel {
    * immediately after returning.
    **/
   public synchronized int size() {
-        logger.debug("size() - start");
- return usedSlots_; }
+ return usedSlots_; 
+ }
 
   public int capacity() {
-        logger.debug("capacity() - start");
- return array_.length; }
+    return array_.length;
+ }
 
   protected void incEmptySlots() {
-        logger.debug("incEmptySlots() - start");
-
     synchronized(putMonitor_) {
       ++emptySlots_;
       putMonitor_.notify();
@@ -86,14 +84,12 @@ public class BoundedBuffer implements BoundedChannel {
   }
 
   protected synchronized void incUsedSlots() {
-        logger.debug("incUsedSlots() - start");
-
     ++usedSlots_;
     notify();
   }
 
   protected final void insert(Object x) {
-        logger.debug("insert(x=" + x + ") - start");
+        logger.debug("insert(x={}) - start", x);
  // mechanics of put
     --emptySlots_;
     array_[putPtr_] = x;
@@ -123,7 +119,7 @@ public class BoundedBuffer implements BoundedChannel {
 
 
   public void put(Object x) throws InterruptedException {
-        logger.debug("put(x=" + x + ") - start");
+        logger.debug("put(x={}) - start", x);
 
     if (x == null) throw new IllegalArgumentException();
     if (Thread.interrupted()) throw new InterruptedException();
@@ -142,7 +138,7 @@ public class BoundedBuffer implements BoundedChannel {
   }
 
   public boolean offer(Object x, long msecs) throws InterruptedException {
-        logger.debug("offer(x=" + x + ", msecs=" + msecs + ") - start");
+        logger.debug("offer(x={}, msecs={}) - start", x, new Long(msecs));
 
     if (x == null) throw new IllegalArgumentException();
     if (Thread.interrupted()) throw new InterruptedException();
@@ -187,7 +183,7 @@ public class BoundedBuffer implements BoundedChannel {
   }
 
   public  Object poll(long msecs) throws InterruptedException {
-        logger.debug("poll(msecs=" + msecs + ") - start");
+        logger.debug("poll(msecs={}) - start", new Long(msecs));
  
     if (Thread.interrupted()) throw new InterruptedException();
     Object old = null; 

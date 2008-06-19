@@ -72,42 +72,33 @@ public class Export extends AbstractStep
 
     private String getAbsolutePath(File filename)
     {
-        logger.debug("getAbsolutePath(filename=" + filename + ") - start");
-
         return filename != null ? filename.getAbsolutePath() : "null";
     }
 
     public File getDest()
     {
-        logger.debug("getDest() - start");
-
         return _dest;
     }
 
     public String getFormat()
     {
-        logger.debug("getFormat() - start");
-
         return _format;
     }
 
     public List getTables()
     {
-        logger.debug("getTables() - start");
-
         return _tables;
     }
 
     public void setDest(File dest)
     {
-        logger.debug("setDest(dest=" + dest + ") - start");
-
+        logger.debug("setDest(dest={}) - start", dest);
         _dest = dest;
     }
 
     public void setFormat(String format)
     {
-        logger.debug("setFormat(format=" + format + ") - start");
+        logger.debug("setFormat(format={}) - start", format);
 
         if (format.equalsIgnoreCase(FORMAT_FLAT)
                 || format.equalsIgnoreCase(FORMAT_XML)
@@ -124,42 +115,36 @@ public class Export extends AbstractStep
 
     public void addTable(Table table)
     {
-        logger.debug("addTable(table=" + table + ") - start");
-
+        logger.debug("addTable(table={}) - start", table);
         _tables.add(table);
     }
 
     public void addQuery(Query query)
     {
-        logger.debug("addQuery(query=" + query + ") - start");
-
+        logger.debug("addQuery(query={}) - start", query);
         _tables.add(query);
     }
 
 	public void addQuerySet(QuerySet querySet) {
-        logger.debug("addQuerySet(querySet=" + querySet + ") - start");
-
+        logger.debug("addQuerySet(querySet={}) - start", querySet);
 		_tables.add(querySet);
 	}
 	
     
 	public String getDoctype()
     {
-        logger.debug("getDoctype() - start");
-
         return _doctype;
     }
 
     public void setDoctype(String doctype)
     {
-        logger.debug("setDoctype(doctype=" + doctype + ") - start");
-
+        logger.debug("setDoctype(doctype={}) - start", doctype);
         _doctype = doctype;
     }
 
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
     {
-        logger.debug("execute(connection=" + connection + ") - start");
+        logger.debug("execute(connection={}) - start", connection);
 
         try
         {
@@ -213,8 +198,6 @@ public class Export extends AbstractStep
 
     public String getLogMessage()
     {
-        logger.debug("getLogMessage() - start");
-
         return "Executing export: "
                 + "\n      in format: " + _format
                 + " to datafile: " + getAbsolutePath(_dest);
@@ -223,8 +206,6 @@ public class Export extends AbstractStep
 
     public String toString()
     {
-        logger.debug("toString() - start");
-
         StringBuffer result = new StringBuffer();
         result.append("Export: ");
         result.append(" dest=" + getAbsolutePath(_dest));
@@ -235,5 +216,3 @@ public class Export extends AbstractStep
         return result.toString();
     }
 }
-
-

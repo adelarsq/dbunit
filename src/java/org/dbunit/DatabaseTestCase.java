@@ -85,8 +85,6 @@ public abstract class DatabaseTestCase extends TestCase
      * @throws Exception
      */
     protected IDatabaseTester getDatabaseTester() throws Exception {
-        logger.debug("getDatabaseTester() - start");
-
       if ( this.tester == null ) {
         this.tester = newDatabaseTester();
       }
@@ -99,7 +97,7 @@ public abstract class DatabaseTestCase extends TestCase
      */
     protected void closeConnection(IDatabaseConnection connection) throws Exception
     {
-        logger.debug("closeConnection(connection=" + connection + ") - start");
+        logger.debug("closeConnection(connection={}) - start", connection);
 
         assertNotNull( "DatabaseTester is not set", getDatabaseTester() );
         getDatabaseTester().closeConnection( connection );
@@ -110,8 +108,6 @@ public abstract class DatabaseTestCase extends TestCase
      */
     protected DatabaseOperation getSetUpOperation() throws Exception
     {
-        logger.debug("getSetUpOperation() - start");
-
         return DatabaseOperation.CLEAN_INSERT;
     }
 
@@ -120,8 +116,6 @@ public abstract class DatabaseTestCase extends TestCase
      */
     protected DatabaseOperation getTearDownOperation() throws Exception
     {
-        logger.debug("getTearDownOperation() - start");
-
         return DatabaseOperation.NONE;
     }
 
@@ -156,8 +150,3 @@ public abstract class DatabaseTestCase extends TestCase
       }
     }
 }
-
-
-
-
-

@@ -49,23 +49,18 @@ public class Table
 
     public String getName()
     {
-        logger.debug("getName() - start");
-
         return name;
     }
 
     public void setName(String name)
     {
-        logger.debug("setName(name=" + name + ") - start");
-
+        logger.debug("setName(name={}) - start", name);
         this.name = name;
     }
 
 
     public String toString()
     {
-        logger.debug("toString() - start");
-
         StringBuffer result = new StringBuffer();
         result.append("Table: ");
         result.append(" name=" + name);

@@ -67,9 +67,8 @@ public class TablesDependencyHelper {
    * @throws SearchException if an exception occurred while calculating the order
    */
   public static String[] getDependentTables( IDatabaseConnection connection, String rootTable ) throws SearchException {
-        logger.debug("getDependentTables(connection=" + connection + ", rootTable=" + rootTable + ") - start");
-
-    return getDependentTables( connection, new String[] { rootTable } );    
+        logger.debug("getDependentTables(connection={}, rootTable=) - start", connection, rootTable);
+        return getDependentTables( connection, new String[] { rootTable } );    
   }
   
   /**

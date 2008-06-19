@@ -49,14 +49,12 @@ public class Query
 
     public String getName()
     {
-        logger.debug("getName() - start");
-
         return name;
     }
 
     public void setName(String name)
     {
-        logger.debug("setName(name=" + name + ") - start");
+        logger.debug("setName(name={}) - start", name);
 
         this.name = name;
     }
@@ -64,8 +62,6 @@ public class Query
 
     public String toString()
     {
-        logger.debug("toString() - start");
-
         StringBuffer result = new StringBuffer();
         result.append("Query: ");
         result.append(" name=" + name);
@@ -77,14 +73,12 @@ public class Query
 
     public String getSql()
     {
-        logger.debug("getSql() - start");
-
         return sql;
     }
 
     public void setSql(String sql)
     {
-        logger.debug("setSql(sql=" + sql + ") - start");
+        logger.debug("setSql(sql={}) - start", sql);
 
         this.sql = sql;
     }
