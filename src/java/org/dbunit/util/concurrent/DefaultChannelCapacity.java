@@ -45,8 +45,7 @@ public class DefaultChannelCapacity {
    * @exception IllegalArgumentException if capacity less or equal to zero
    */
   public static void set(int capacity) {
-        logger.debug("set(capacity=" + capacity + ") - start");
-
+    logger.debug("set(capacity={}) - start", String.valueOf(capacity));
     if (capacity <= 0) throw new IllegalArgumentException();
     defaultCapacity_.set(capacity);
   }
@@ -59,8 +58,6 @@ public class DefaultChannelCapacity {
    * @see #INITIAL_DEFAULT_CAPACITY
    */
   public static int get() {
-        logger.debug("get() - start");
-
     return defaultCapacity_.get();
   }
 }

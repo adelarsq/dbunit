@@ -53,7 +53,6 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * Return the current value 
    **/
   public final int get() {
-        logger.debug("get() - start");
  synchronized(lock_) { return value_; } }
 
   /** 
@@ -62,7 +61,7 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    **/
 
   public int set(int newValue) {
-        logger.debug("set(newValue=" + newValue + ") - start");
+        logger.debug("set(newValue={}) - start", String.valueOf(newValue));
  
     synchronized (lock_) {
       int old = value_;
@@ -76,7 +75,7 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * @return true if successful
    **/
   public boolean commit(int assumedValue, int newValue) {
-        logger.debug("commit(assumedValue=" + assumedValue + ", newValue=" + newValue + ") - start");
+        logger.debug("commit(assumedValue={}, newValue={}) - start", String.valueOf(assumedValue), String.valueOf(newValue));
 
     synchronized(lock_) {
       boolean success = (assumedValue == value_);
@@ -96,7 +95,7 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    **/
 
   public int swap(SynchronizedInt other) {
-        logger.debug("swap(other=" + other + ") - start");
+        logger.debug("swap(other={}) - start", other);
 
     if (other == this) return get();
     SynchronizedInt fst = this;
@@ -118,8 +117,6 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * @return the new value 
    **/
   public int increment() {
-        logger.debug("increment() - start");
- 
     synchronized (lock_) {
       return ++value_; 
     }
@@ -130,8 +127,6 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * @return the new value 
    **/
   public int decrement() {
-        logger.debug("decrement() - start");
- 
     synchronized (lock_) {
       return --value_; 
     }
@@ -142,8 +137,6 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * @return the new value 
    **/
   public int add(int amount) {
-        logger.debug("add(amount=" + amount + ") - start");
- 
     synchronized (lock_) {
       return value_ += amount; 
     }
@@ -154,8 +147,6 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * @return the new value 
    **/
   public int subtract(int amount) {
-        logger.debug("subtract(amount=" + amount + ") - start");
- 
     synchronized (lock_) {
       return value_ -= amount; 
     }
@@ -166,8 +157,6 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * @return the new value 
    **/
   public synchronized int multiply(int factor) {
-        logger.debug("multiply(factor=" + factor + ") - start");
- 
     synchronized (lock_) {
       return value_ *= factor; 
     }
@@ -178,8 +167,6 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * @return the new value 
    **/
   public int divide(int factor) {
-        logger.debug("divide(factor=" + factor + ") - start");
- 
     synchronized (lock_) {
       return value_ /= factor; 
     }
@@ -189,9 +176,7 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * Set the value to the negative of its old value
    * @return the new value 
    **/
-  public  int negate() {
-        logger.debug("negate() - start");
- 
+  public int negate() {
     synchronized (lock_) {
       value_ = -value_;
       return value_;
@@ -203,8 +188,6 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * @return the new value 
    **/
   public  int complement() {
-        logger.debug("complement() - start");
- 
     synchronized (lock_) {
       value_ = ~value_;
       return value_;
@@ -216,8 +199,6 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * @return the new value 
    **/
   public  int and(int b) {
-        logger.debug("and(b=" + b + ") - start");
- 
     synchronized (lock_) {
       value_ = value_ & b;
       return value_;
@@ -229,8 +210,6 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * @return the new value 
    **/
   public  int or(int b) {
-        logger.debug("or(b=" + b + ") - start");
- 
     synchronized (lock_) {
       value_ = value_ | b;
       return value_;
@@ -243,8 +222,6 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
    * @return the new value 
    **/
   public  int xor(int b) {
-        logger.debug("xor(b=" + b + ") - start");
- 
     synchronized (lock_) {
       value_ = value_ ^ b;
       return value_;
@@ -252,27 +229,23 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
   }
 
   public int compareTo(int other) {
-        logger.debug("compareTo(other=" + other + ") - start");
-
+    logger.debug("compareTo(other={}) - start", String.valueOf(other));
     int val = get();
     return (val < other)? -1 : (val == other)? 0 : 1;
   }
 
   public int compareTo(SynchronizedInt other) {
-        logger.debug("compareTo(other=" + other + ") - start");
-
+     logger.debug("compareTo(other={}) - start", other);
     return compareTo(other.get());
   }
 
   public int compareTo(Object other) {
-        logger.debug("compareTo(other=" + other + ") - start");
-
+    logger.debug("compareTo(other={}) - start", other);
     return compareTo((SynchronizedInt)other);
   }
 
   public boolean equals(Object other) {
-        logger.debug("equals(other=" + other + ") - start");
-
+    logger.debug("equals(other={}) - start", other);
     if (other != null &&
         other instanceof SynchronizedInt)
       return get() == ((SynchronizedInt)other).get();
@@ -281,12 +254,12 @@ public class SynchronizedInt extends SynchronizedVariable implements Comparable,
   }
 
   public int hashCode() {
-        logger.debug("hashCode() - start");
- return get(); }
+    return get();
+  }
 
   public String toString() {
-        logger.debug("toString() - start");
- return String.valueOf(get()); }
+    return String.valueOf(get());
+  }
 
 }
 

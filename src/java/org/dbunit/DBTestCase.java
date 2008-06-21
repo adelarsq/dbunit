@@ -40,8 +40,6 @@ public abstract class DBTestCase extends DatabaseTestCase {
    * Default implementation returns a {@link PropertiesBasedJdbcDatabaseTester}.
    */
   protected IDatabaseTester newDatabaseTester() throws Exception {
-        logger.debug("newDatabaseTester() - start");
-
     return new PropertiesBasedJdbcDatabaseTester();
   }
 

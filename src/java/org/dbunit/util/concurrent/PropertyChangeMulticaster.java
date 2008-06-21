@@ -109,8 +109,6 @@ public class PropertyChangeMulticaster implements Serializable {
    **/
 
   protected synchronized PropertyChangeMulticaster getChild(String propertyName) {
-        logger.debug("getChild(propertyName=" + propertyName + ") - start");
-
     return (children == null)? null : 
       ((PropertyChangeMulticaster)children.get(propertyName));
   }
@@ -142,7 +140,7 @@ public class PropertyChangeMulticaster implements Serializable {
    */
   
   public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
-        logger.debug("addPropertyChangeListener(listener=" + listener + ") - start");
+        logger.debug("addPropertyChangeListener(listener={}) - start", listener);
 
     if (listener == null) throw new NullPointerException();
 
@@ -167,7 +165,7 @@ public class PropertyChangeMulticaster implements Serializable {
    */
   
   public synchronized void addPropertyChangeListenerIfAbsent(PropertyChangeListener listener) {
-        logger.debug("addPropertyChangeListenerIfAbsent(listener=" + listener + ") - start");
+        logger.debug("addPropertyChangeListenerIfAbsent(listener={}) - start", listener);
 
     if (listener == null) throw new NullPointerException();
 
@@ -197,7 +195,7 @@ public class PropertyChangeMulticaster implements Serializable {
    */
   
   public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
-        logger.debug("removePropertyChangeListener(listener=" + listener + ") - start");
+        logger.debug("removePropertyChangeListener(listener={}) - start", listener);
 
     int newlen = listeners.length-1;
     if (newlen < 0 || listener == null) return;
@@ -236,7 +234,7 @@ public class PropertyChangeMulticaster implements Serializable {
   
   public void addPropertyChangeListener(String propertyName,
                                         PropertyChangeListener listener) {
-        logger.debug("addPropertyChangeListener(propertyName=" + propertyName + ", listener=" + listener + ") - start");
+        logger.debug("addPropertyChangeListener(propertyName={}, listener={}) - start", propertyName, listener);
 
     if (listener == null) throw new NullPointerException();
 
@@ -270,8 +268,7 @@ public class PropertyChangeMulticaster implements Serializable {
   
   public void addPropertyChangeListenerIfAbsent(String propertyName,
                                         PropertyChangeListener listener) {
-        logger.debug("addPropertyChangeListenerIfAbsent(propertyName=" + propertyName + ", listener=" + listener
-                + ") - start");
+        logger.debug("addPropertyChangeListenerIfAbsent(propertyName={}, listener={}) - start", propertyName, listener);
 
     if (listener == null) throw new NullPointerException();
 
@@ -304,8 +301,7 @@ public class PropertyChangeMulticaster implements Serializable {
   
   public void removePropertyChangeListener(String propertyName,
                                            PropertyChangeListener listener) {
-        logger.debug("removePropertyChangeListener(propertyName=" + propertyName + ", listener=" + listener
-                + ") - start");
+        logger.debug("removePropertyChangeListener(propertyName={}, listener={}) - start", propertyName, listener);
 
     PropertyChangeMulticaster child = getChild(propertyName);
     if (child != null) 
@@ -319,7 +315,7 @@ public class PropertyChangeMulticaster implements Serializable {
    **/
 
   protected void multicast(PropertyChangeEvent evt) {
-        logger.debug("multicast(evt=" + evt + ") - start");
+        logger.debug("multicast(evt={}) - start", evt);
 
     PropertyChangeListener[] array;  // bind in synch block below
     PropertyChangeMulticaster child = null;
@@ -351,8 +347,11 @@ public class PropertyChangeMulticaster implements Serializable {
    */
   public void firePropertyChange(String propertyName, 
                                  Object oldValue, Object newValue) {
-        logger.debug("firePropertyChange(propertyName=" + propertyName + ", oldValue=" + oldValue + ", newValue="
-                + newValue + ") - start");
+	  if (logger.isDebugEnabled())
+	  {
+		  logger.debug("firePropertyChange(propertyName={}, oldValue={}, newValue={}) - start",
+				  new Object[]{ propertyName, oldValue, newValue });
+	  }
    
     if (oldValue == null || newValue == null || !oldValue.equals(newValue)) {
       multicast(new PropertyChangeEvent(source,
@@ -377,8 +376,11 @@ public class PropertyChangeMulticaster implements Serializable {
    */
   public void firePropertyChange(String propertyName, 
                                  int oldValue, int newValue) {
-        logger.debug("firePropertyChange(propertyName=" + propertyName + ", oldValue=" + oldValue + ", newValue="
-                + newValue + ") - start");
+	  if (logger.isDebugEnabled())
+	  {
+		  logger.debug("firePropertyChange(propertyName={}, oldValue={}, newValue={}) - start",
+				  new Object[]{ propertyName, String.valueOf(oldValue), String.valueOf(newValue) });
+	  }
 
     if (oldValue != newValue) {
       multicast(new PropertyChangeEvent(source,
@@ -403,8 +405,11 @@ public class PropertyChangeMulticaster implements Serializable {
    */
   public void firePropertyChange(String propertyName, 
                                  boolean oldValue, boolean newValue) {
-        logger.debug("firePropertyChange(propertyName=" + propertyName + ", oldValue=" + oldValue + ", newValue="
-                + newValue + ") - start");
+	  if (logger.isDebugEnabled())
+	  {
+		  logger.debug("firePropertyChange(propertyName={}, oldValue={}, newValue={}) - start",
+				  new Object[]{ propertyName, String.valueOf(oldValue), String.valueOf(newValue) });
+	  }
 
     if (oldValue != newValue) {
       multicast(new PropertyChangeEvent(source,
@@ -421,7 +426,7 @@ public class PropertyChangeMulticaster implements Serializable {
    * @param evt  The PropertyChangeEvent object.
    */
   public void firePropertyChange(PropertyChangeEvent evt) {
-        logger.debug("firePropertyChange(evt=" + evt + ") - start");
+        logger.debug("firePropertyChange(evt={}) - start", evt);
 
     Object oldValue = evt.getOldValue();
     Object newValue = evt.getNewValue();
@@ -438,7 +443,7 @@ public class PropertyChangeMulticaster implements Serializable {
    * 
    */
   public boolean hasListeners(String propertyName) {
-        logger.debug("hasListeners(propertyName=" + propertyName + ") - start");
+        logger.debug("hasListeners(propertyName={}) - start", propertyName);
 
     PropertyChangeMulticaster child;
 
@@ -466,7 +471,7 @@ public class PropertyChangeMulticaster implements Serializable {
    *
    */
   private synchronized void writeObject(ObjectOutputStream s) throws IOException {
-        logger.debug("writeObject(s=" + s + ") - start");
+        logger.debug("writeObject(s={}) - start", s);
 
     s.defaultWriteObject();
     
@@ -480,7 +485,7 @@ public class PropertyChangeMulticaster implements Serializable {
   
   
   private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
-        logger.debug("readObject(s=" + s + ") - start");
+        logger.debug("readObject(s={}) - start", s);
 
     listeners = new PropertyChangeListener[0];     // paranoically reset
     s.defaultReadObject();

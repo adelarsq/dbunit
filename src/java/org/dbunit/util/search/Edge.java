@@ -56,25 +56,19 @@ public class Edge implements IEdge {
   }
 
   public Object getFrom() {
-        logger.debug("getFrom() - start");
-
     return this.nodeFrom;
   }
 
   public Object getTo() {
-        logger.debug("getTo() - start");
-
     return this.nodeTo;
   }
 
   public String toString() {
-        logger.debug("toString() - start");
-
     return this.nodeFrom + "->" + this.nodeTo;
   }
 
   public int compareTo(Object o) {
-        logger.debug("compareTo(o=" + o + ") - start");
+        logger.debug("compareTo(o={}) - start", o);
 
     Edge otherEdge = (Edge) o;
     int result = this.nodeFrom.compareTo(otherEdge.getFrom());
@@ -85,14 +79,11 @@ public class Edge implements IEdge {
   }
   
   public boolean equals(Object obj) {
-        logger.debug("equals(obj=" + obj + ") - start");
-
+        logger.debug("equals(obj={}) - start", obj);
     return EqualsBuilder.reflectionEquals( this, obj );
   }
   
   public int hashCode() {
-        logger.debug("hashCode() - start");
-
     return HashCodeBuilder.reflectionHashCode( this );
   }
 

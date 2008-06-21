@@ -74,8 +74,6 @@ public class Slot extends SemaphoreControlledChannel {
 
   /** Set the item in preparation for a take **/
   protected synchronized void insert(Object x) {
-        logger.debug("insert(x=" + x + ") - start");
- 
     item_ = x; 
   }
 
@@ -89,8 +87,6 @@ public class Slot extends SemaphoreControlledChannel {
   }
 
   public synchronized Object peek() {
-        logger.debug("peek() - start");
-
     return item_;
   }
 

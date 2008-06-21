@@ -198,8 +198,8 @@ public class SynchronizedVariable implements Executor {
    * Return the lock used for all synchronization for this object
    **/
   public Object getLock() {
-        logger.debug("getLock() - start");
- return lock_; }
+    return lock_;
+  }
 
   /**
    * If current thread is not interrupted, execute the given command 
@@ -207,8 +207,7 @@ public class SynchronizedVariable implements Executor {
    **/
 
   public void execute(Runnable command) throws InterruptedException {
-        logger.debug("execute(command=" + command + ") - start");
-
+    logger.debug("execute(command={}) - start", command);
     if (Thread.interrupted()) throw new InterruptedException();
     synchronized (lock_) { 
       command.run();

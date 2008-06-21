@@ -128,7 +128,7 @@ public class Semaphore implements Sync  {
 
   /** Wait at most msecs millisconds for a permit. **/
   public boolean attempt(long msecs) throws InterruptedException {
-        logger.debug("attempt(msecs=" + msecs + ") - start");
+        logger.debug("attempt(msecs={}) - start", String.valueOf(msecs));
 
     if (Thread.interrupted()) throw new InterruptedException();
 
@@ -185,7 +185,7 @@ public class Semaphore implements Sync  {
    * @exception IllegalArgumentException if n is negative.
    **/
   public synchronized void release(long n) {
-        logger.debug("release(n=" + n + ") - start");
+        logger.debug("release(n={}) - start", String.valueOf(n));
 
     if (n < 0) throw new IllegalArgumentException("Negative argument");
 
@@ -199,8 +199,6 @@ public class Semaphore implements Sync  {
    * that may change immediately after returning.
    **/
   public synchronized long permits() {
-        logger.debug("permits() - start");
-
     return permits_;
   }
 

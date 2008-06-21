@@ -73,8 +73,6 @@ public abstract class AbstractNodesFilterSearchCallback implements
    * @return which modes are allowed/denied, depending on the operation mode.
    */
   protected Set getFilteredNodes() {
-        logger.debug("getFilteredNodes() - start");
-
     return this.filteredNodes;
   }
   
@@ -83,8 +81,6 @@ public abstract class AbstractNodesFilterSearchCallback implements
    * @return operation mode
    */
   protected int getFilteringMode() {
-        logger.debug("getFilteringMode() - start");
-
     return this.filteringMode;
   }
   
