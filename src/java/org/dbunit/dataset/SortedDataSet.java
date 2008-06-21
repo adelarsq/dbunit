@@ -51,7 +51,7 @@ public class SortedDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
+        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
 
         return new SortedIterator(reversed ?
                 _dataSet.reverseIterator() : _dataSet.iterator());
@@ -62,22 +62,18 @@ public class SortedDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
-        logger.debug("getTableNames() - start");
-
         return _dataSet.getTableNames();
     }
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
-        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
-
+        logger.debug("getTableMetaData(tableName={}) - start", tableName);
         return _dataSet.getTableMetaData(tableName);
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
-        logger.debug("getTable(tableName=" + tableName + ") - start");
-
+        logger.debug("getTable(tableName={}) - start", tableName);
         return new SortedTable(_dataSet.getTable(tableName));
     }
 
@@ -86,12 +82,6 @@ public class SortedDataSet extends AbstractDataSet
 
     private class SortedIterator implements ITableIterator
     {
-
-        /**
-         * Logger for this class
-         */
-        private final Logger logger = LoggerFactory.getLogger(SortedIterator.class);
-
         private final ITableIterator _iterator;
 
         public SortedIterator(ITableIterator iterator)
@@ -104,30 +94,18 @@ public class SortedDataSet extends AbstractDataSet
 
         public boolean next() throws DataSetException
         {
-            logger.debug("next() - start");
-
             return _iterator.next();
         }
 
         public ITableMetaData getTableMetaData() throws DataSetException
         {
-            logger.debug("getTableMetaData() - start");
-
             return _iterator.getTableMetaData();
         }
 
         public ITable getTable() throws DataSetException
         {
-            logger.debug("getTable() - start");
-
             return new SortedTable(_iterator.getTable());
         }
     }
 
 }
-
-
-
-
-
-

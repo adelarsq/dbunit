@@ -52,18 +52,16 @@ public class ForwardOnlyDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
+        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
 
         if (reversed)
         {
-            throw new UnsupportedOperationException(
-                    "Reverse iterator not supported!");
+            throw new UnsupportedOperationException("Reverse iterator not supported!");
         }
 
         if (_iteratorCount > 0)
         {
-            throw new UnsupportedOperationException(
-                    "Only one iterator allowed!");
+            throw new UnsupportedOperationException("Only one iterator allowed!");
         }
 
         return new ForwardOnlyIterator(_dataSet.iterator());
@@ -74,22 +72,16 @@ public class ForwardOnlyDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
-        logger.debug("getTableNames() - start");
-
         throw new UnsupportedOperationException();
     }
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
-        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
-
         throw new UnsupportedOperationException();
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
-        logger.debug("getTable(tableName=" + tableName + ") - start");
-
         throw new UnsupportedOperationException();
     }
 
@@ -98,12 +90,6 @@ public class ForwardOnlyDataSet extends AbstractDataSet
 
     private class ForwardOnlyIterator implements ITableIterator
     {
-
-        /**
-         * Logger for this class
-         */
-        private final Logger logger = LoggerFactory.getLogger(ForwardOnlyIterator.class);
-
         private final ITableIterator _iterator;
 
         public ForwardOnlyIterator(ITableIterator iterator)
@@ -117,22 +103,16 @@ public class ForwardOnlyDataSet extends AbstractDataSet
 
         public boolean next() throws DataSetException
         {
-            logger.debug("next() - start");
-
             return _iterator.next();
         }
 
         public ITableMetaData getTableMetaData() throws DataSetException
         {
-            logger.debug("getTableMetaData() - start");
-
             return _iterator.getTableMetaData();
         }
 
         public ITable getTable() throws DataSetException
         {
-            logger.debug("getTable() - start");
-
             return new ForwardOnlyTable(_iterator.getTable());
         }
     }

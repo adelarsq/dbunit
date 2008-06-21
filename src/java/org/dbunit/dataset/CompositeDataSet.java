@@ -152,8 +152,11 @@ public class CompositeDataSet extends AbstractDataSet
 
     private void addTable(ITable newTable, List tableList, boolean combine)
     {
-        logger.debug("addTable(newTable=" + newTable + ", tableList=" + tableList + ", combine=" + combine
-                + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("addTable(newTable={}, tableList={}, combine={}) - start",
+    				new Object[] { newTable, tableList, String.valueOf(combine) });
+    	}
 
         // No merge required, simply add new table at then end of the list
         if (!combine)
@@ -185,15 +188,7 @@ public class CompositeDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
-
+        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
         return new DefaultTableIterator(_tables, reversed);
     }
 }
-
-
-
-
-
-
-

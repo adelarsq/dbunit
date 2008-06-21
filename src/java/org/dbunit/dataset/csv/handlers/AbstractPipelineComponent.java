@@ -38,33 +38,25 @@ public abstract class AbstractPipelineComponent implements PipelineComponent {
     private Helper helper;
 
     protected PipelineComponent getSuccessor() {
-        logger.debug("getSuccessor() - start");
-
         return successor;
     }
 
     public Pipeline getPipeline() {
-        logger.debug("getPipeline() - start");
-
         return pipeline;
     }
 
     public void setPipeline(Pipeline pipeline) {
-        logger.debug("setPipeline(pipeline=" + pipeline + ") - start");
-
+        logger.debug("setPipeline(pipeline={}) - start", pipeline);
         this.pipeline = pipeline;
     }
 
     public void setSuccessor(PipelineComponent successor) {
-        logger.debug("setSuccessor(successor=" + successor + ") - start");
-
+        logger.debug("setSuccessor(successor={}) - start", successor);
         this.successor = successor;
     }
 
 
     private StringBuffer getThePiece() {
-        logger.debug("getThePiece() - start");
-
         return getPipeline().getCurrentProduct();
     }
 
@@ -94,8 +86,7 @@ public abstract class AbstractPipelineComponent implements PipelineComponent {
     }
 
     protected static PipelineComponent createPipelineComponent(AbstractPipelineComponent handler, Helper helper) {
-        logger.debug("createPipelineComponent(handler=" + handler + ", helper=" + helper + ") - start");
-
+        logger.debug("createPipelineComponent(handler={}, helper={}) - start", handler, helper);
         helper.setHandler(handler);
         handler.setHelper(helper);
         return handler;
@@ -106,45 +97,27 @@ public abstract class AbstractPipelineComponent implements PipelineComponent {
      * @param c
      */
     public void accept(char c) {
-        logger.debug("accept(c=" + c + ") - start");
-
         getThePiece().append(c);
     }
 
     protected Helper getHelper() {
-        logger.debug("getHelper() - start");
-
         return helper;
     }
 
     private void setHelper(Helper helper) {
-        logger.debug("setHelper(helper=" + helper + ") - start");
-
+        logger.debug("setHelper(helper={}) - start", helper);
         this.helper = helper;
     }
 
     static protected class IGNORE extends Helper {
-
-        /**
-         * Logger for this class
-         */
-        private static final Logger logger = LoggerFactory.getLogger(IGNORE.class);
-
         public void helpWith(char c) {
             // IGNORE
         }
     }
 
     static protected class ACCEPT extends Helper {
-
-        /**
-         * Logger for this class
-         */
-        private static final Logger logger = LoggerFactory.getLogger(ACCEPT.class);
-
         public void helpWith(char c) {
-            logger.debug("helpWith(c=" + c + ") - start");
-
+            logger.debug("helpWith(c={}) - start", String.valueOf(c));
             getHandler().accept(c);
         }
     }

@@ -31,11 +31,6 @@ import org.slf4j.LoggerFactory;
 public class DefaultTableIterator implements ITableIterator
 {
 
-    /**
-     * Logger for this class
-     */
-    private static final Logger logger = LoggerFactory.getLogger(DefaultTableIterator.class);
-
     private final ITable[] _tables;
     private int _index = -1;
 
@@ -64,23 +59,17 @@ public class DefaultTableIterator implements ITableIterator
 
     public boolean next() throws DataSetException
     {
-        logger.debug("next() - start");
-
         _index++;
         return _index < _tables.length;
     }
 
     public ITableMetaData getTableMetaData() throws DataSetException
     {
-        logger.debug("getTableMetaData() - start");
-
         return getTable().getTableMetaData();
     }
 
     public ITable getTable() throws DataSetException
     {
-        logger.debug("getTable() - start");
-
         return _tables[_index];
     }
 }

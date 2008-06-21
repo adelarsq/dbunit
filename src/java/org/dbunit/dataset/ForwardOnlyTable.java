@@ -49,15 +49,11 @@ public class ForwardOnlyTable implements ITable
 
     public ITableMetaData getTableMetaData()
     {
-        logger.debug("getTableMetaData() - start");
-
         return _table.getTableMetaData();
     }
 
     public int getRowCount()
     {
-        logger.debug("getRowCount() - start");
-
         throw new UnsupportedOperationException();
     }
 

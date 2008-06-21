@@ -48,7 +48,7 @@ public class CaseInsensitiveTable implements ITable
     private String getInternalColumnName(String columnName)
             throws DataSetException
     {
-        logger.debug("getInternalColumnName(columnName=" + columnName + ") - start");
+        logger.debug("getInternalColumnName(columnName={}) - start", columnName);
 
         Column[] columns = _table.getTableMetaData().getColumns();
 
@@ -69,15 +69,11 @@ public class CaseInsensitiveTable implements ITable
 
     public ITableMetaData getTableMetaData()
     {
-        logger.debug("getTableMetaData() - start");
-
         return _table.getTableMetaData();
     }
 
     public int getRowCount()
     {
-        logger.debug("getRowCount() - start");
-
         return _table.getRowCount();
     }
 

@@ -83,8 +83,7 @@ public class ReplacementDataSet extends AbstractDataSet
      */
     public void addReplacementObject(Object originalObject, Object replacementObject)
     {
-        logger.debug("addReplacementObject(originalObject=" + originalObject + ", replacementObject="
-                + replacementObject + ") - start");
+        logger.debug("addReplacementObject(originalObject={}, replacementObject={}) - start", originalObject, replacementObject);
 
         _objectMap.put(originalObject, replacementObject);
     }
@@ -98,8 +97,7 @@ public class ReplacementDataSet extends AbstractDataSet
     public void addReplacementSubstring(String originalSubstring,
             String replacementSubstring)
     {
-        logger.debug("addReplacementSubstring(originalSubstring=" + originalSubstring + ", replacementSubstring="
-                + replacementSubstring + ") - start");
+        logger.debug("addReplacementSubstring(originalSubstring={}, replacementSubstring={}) - start", originalSubstring, replacementSubstring);
 
         if (originalSubstring == null || replacementSubstring == null)
         {

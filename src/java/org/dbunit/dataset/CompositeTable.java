@@ -88,8 +88,6 @@ public class CompositeTable extends AbstractTable
 
     public ITableMetaData getTableMetaData()
     {
-        logger.debug("getTableMetaData() - start");
-
         return _metaData;
     }
 
@@ -132,8 +130,3 @@ public class CompositeTable extends AbstractTable
         throw new RowOutOfBoundsException(row + " > " + totalCount);
     }
 }
-
-
-
-
-

@@ -36,20 +36,15 @@ public abstract class Helper {
     abstract void helpWith(char c) throws PipelineException;
 
     public boolean allowForNoMoreInput() throws IllegalStateException {
-        logger.debug("allowForNoMoreInput() - start");
-
         return true;
     }
 
     PipelineComponent getHandler() {
-        logger.debug("getHandler() - start");
-
         return handler;
     }
 
     void setHandler(PipelineComponent handler) {
-        logger.debug("setHandler(handler=" + handler + ") - start");
-
+        logger.debug("setHandler(handler={}) - start", handler);
         this.handler = handler;
     }
 }

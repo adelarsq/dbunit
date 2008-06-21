@@ -87,7 +87,7 @@ public class Compare extends AbstractStep
 
     public void setFormat(String format)
     {
-        logger.debug("setFormat(format=" + format + ") - start");
+        logger.debug("setFormat(format={}) - start", format);
 
         if (format.equalsIgnoreCase(FORMAT_FLAT)
                 || format.equalsIgnoreCase(FORMAT_XML)

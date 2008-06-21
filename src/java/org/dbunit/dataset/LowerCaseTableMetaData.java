@@ -74,7 +74,7 @@ public class LowerCaseTableMetaData extends AbstractTableMetaData
 
     private Column[] createLowerColumns(Column[] columns)
     {
-        logger.debug("createLowerColumns(columns=" + columns + ") - start");
+        logger.debug("createLowerColumns(columns={}) - start", columns);
 
         Column[] lowerColumns = new Column[columns.length];
         for (int i = 0; i < columns.length; i++)
@@ -87,7 +87,7 @@ public class LowerCaseTableMetaData extends AbstractTableMetaData
 
     private Column createLowerColumn(Column column)
     {
-        logger.debug("createLowerColumn(column=" + column + ") - start");
+        logger.debug("createLowerColumn(column={}) - start", column);
 
         return new Column(
                 column.getColumnName().toLowerCase(),
@@ -101,27 +101,16 @@ public class LowerCaseTableMetaData extends AbstractTableMetaData
 
     public String getTableName()
     {
-        logger.debug("getTableName() - start");
-
         return _tableName;
     }
 
     public Column[] getColumns()
     {
-        logger.debug("getColumns() - start");
-
         return _columns;
     }
 
     public Column[] getPrimaryKeys()
     {
-        logger.debug("getPrimaryKeys() - start");
-
         return _primaryKeys;
     }
 }
-
-
-
-
-

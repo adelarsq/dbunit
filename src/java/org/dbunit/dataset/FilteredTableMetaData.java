@@ -57,8 +57,11 @@ public class FilteredTableMetaData extends AbstractTableMetaData
     public static Column[] getFilteredColumns(String tableName,
             Column[] columns, IColumnFilter columnFilter)
     {
-        logger.debug("getFilteredColumns(tableName=" + tableName + ", columns=" + columns + ", columnFilter="
-                + columnFilter + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("getFilteredColumns(tableName={}, columns={}, columnFilter={}) - start",
+    				new Object[]{ tableName, columns, columnFilter });
+    	}
 
         if (columns == null)
         {
@@ -82,22 +85,16 @@ public class FilteredTableMetaData extends AbstractTableMetaData
 
     public String getTableName()
     {
-        logger.debug("getTableName() - start");
-
         return _tableName;
     }
 
     public Column[] getColumns() throws DataSetException
     {
-        logger.debug("getColumns() - start");
-
         return _columns;
     }
 
     public Column[] getPrimaryKeys() throws DataSetException
     {
-        logger.debug("getPrimaryKeys() - start");
-
         return _primaryKeys;
     }
 }

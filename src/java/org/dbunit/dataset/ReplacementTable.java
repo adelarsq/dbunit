@@ -77,8 +77,7 @@ public class ReplacementTable implements ITable
      */
     public void addReplacementObject(Object originalObject, Object replacementObject)
     {
-        logger.debug("addReplacementObject(originalObject=" + originalObject + ", replacementObject="
-                + replacementObject + ") - start");
+        logger.debug("addReplacementObject(originalObject={}, replacementObject={}) - start", originalObject, replacementObject);
 
         _objectMap.put(originalObject, replacementObject);
     }
@@ -92,8 +91,7 @@ public class ReplacementTable implements ITable
     public void addReplacementSubstring(String originalSubstring,
             String replacementSubstring)
     {
-        logger.debug("addReplacementSubstring(originalSubstring=" + originalSubstring + ", replacementSubstring="
-                + replacementSubstring + ") - start");
+        logger.debug("addReplacementSubstring(originalSubstring={}, replacementSubstring={}) - start", originalSubstring, replacementSubstring);
 
         if (originalSubstring == null || replacementSubstring == null)
         {
@@ -108,8 +106,7 @@ public class ReplacementTable implements ITable
      */
     public void setSubstringDelimiters(String startDelimiter, String endDelimiter)
     {
-        logger.debug("setSubstringDelimiters(startDelimiter=" + startDelimiter + ", endDelimiter=" + endDelimiter
-                + ") - start");
+        logger.debug("setSubstringDelimiters(startDelimiter={}, endDelimiter={}) - start", startDelimiter, endDelimiter);
 
         if (startDelimiter == null || endDelimiter == null)
         {
@@ -161,15 +158,11 @@ public class ReplacementTable implements ITable
 
     public ITableMetaData getTableMetaData()
     {
-        logger.debug("getTableMetaData() - start");
-
         return _table.getTableMetaData();
     }
 
     public int getRowCount()
     {
-        logger.debug("getRowCount() - start");
-
         return _table.getRowCount();
     }
 
@@ -199,5 +192,3 @@ public class ReplacementTable implements ITable
         return replaceSubstrings((String)value);
     }
 }
-
-

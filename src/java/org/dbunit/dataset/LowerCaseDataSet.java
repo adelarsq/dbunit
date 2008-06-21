@@ -61,7 +61,7 @@ public class LowerCaseDataSet extends AbstractDataSet
 
     private ITable createLowerTable(ITable table) throws DataSetException
     {
-        logger.debug("createLowerTable(table=" + table + ") - start");
+        logger.debug("createLowerTable(table={}) - start", table);
 
         return new CompositeTable(
                 new LowerCaseTableMetaData(table.getTableMetaData()), table);
@@ -73,7 +73,7 @@ public class LowerCaseDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
+        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
 
         return new LowerCaseIterator(reversed ?
                 _dataSet.reverseIterator() : _dataSet.iterator());
@@ -96,15 +96,13 @@ public class LowerCaseDataSet extends AbstractDataSet
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
-        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
-
+        logger.debug("getTableMetaData(tableName={}) - start", tableName);
         return new LowerCaseTableMetaData(super.getTableMetaData(tableName));
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
-        logger.debug("getTable(tableName=" + tableName + ") - start");
-
+        logger.debug("getTable(tableName={}) - start", tableName);
         return createLowerTable(super.getTable(tableName));
     }
 
@@ -113,11 +111,6 @@ public class LowerCaseDataSet extends AbstractDataSet
 
     private class LowerCaseIterator implements ITableIterator
     {
-
-        /**
-         * Logger for this class
-         */
-        private final Logger logger = LoggerFactory.getLogger(LowerCaseIterator.class);
 
         private final ITableIterator _iterator;
 
@@ -131,29 +124,17 @@ public class LowerCaseDataSet extends AbstractDataSet
 
         public boolean next() throws DataSetException
         {
-            logger.debug("next() - start");
-
             return _iterator.next();
         }
 
         public ITableMetaData getTableMetaData() throws DataSetException
         {
-            logger.debug("getTableMetaData() - start");
-
             return new LowerCaseTableMetaData(_iterator.getTableMetaData());
         }
 
         public ITable getTable() throws DataSetException
         {
-            logger.debug("getTable() - start");
-
             return createLowerTable(_iterator.getTable());
         }
     }
 }
-
-
-
-
-
-

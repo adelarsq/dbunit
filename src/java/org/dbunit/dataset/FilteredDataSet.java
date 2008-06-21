@@ -80,8 +80,7 @@ public class FilteredDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
-
+        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
         return _filter.iterator(_dataSet, reversed);
     }
 
@@ -90,16 +89,12 @@ public class FilteredDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
-        logger.debug("getTableNames() - start");
-
         return _filter.getTableNames(_dataSet);
     }
 
     public ITableMetaData getTableMetaData(String tableName)
             throws DataSetException
     {
-        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
-
         if (!_filter.accept(tableName))
         {
             throw new NoSuchTableException(tableName);
@@ -110,7 +105,7 @@ public class FilteredDataSet extends AbstractDataSet
 
     public ITable getTable(String tableName) throws DataSetException
     {
-        logger.debug("getTable(tableName=" + tableName + ") - start");
+        logger.debug("getTable(tableName={}) - start", tableName);
 
         if (!_filter.accept(tableName))
         {
