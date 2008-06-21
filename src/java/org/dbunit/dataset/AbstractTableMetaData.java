@@ -49,7 +49,7 @@ public abstract class AbstractTableMetaData implements ITableMetaData
 
     protected static Column[] getPrimaryKeys(Column[] columns, String[] keyNames)
     {
-        logger.debug("getPrimaryKeys(columns=" + columns + ", keyNames=" + keyNames + ") - start");
+        logger.debug("getPrimaryKeys(columns={}, keyNames={}) - start", columns, keyNames);
 
         if (keyNames == null || keyNames.length == 0)
         {
@@ -72,8 +72,11 @@ public abstract class AbstractTableMetaData implements ITableMetaData
     protected static Column[] getPrimaryKeys(String tableName, Column[] columns,
             IColumnFilter columnFilter)
     {
-        logger.debug("getPrimaryKeys(tableName=" + tableName + ", columns=" + columns + ", columnFilter="
-                + columnFilter + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("getPrimaryKeys(tableName={}, columns={}, columnFilter={}) - start",
+    				new Object[]{ tableName, columns, columnFilter });
+    	}
 
         List keyList = new ArrayList();
         for (int i = 0; i < columns.length; i++)
@@ -133,8 +136,3 @@ public abstract class AbstractTableMetaData implements ITableMetaData
 	}
     
 }
-
-
-
-
-

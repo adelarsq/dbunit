@@ -81,8 +81,6 @@ public class InsertIdentityOperation extends AbstractOperation
     {
         public boolean accept(String tableName, Column column)
         {
-            logger.debug("accept(tableName=" + tableName + ", column=" + column + ") - start");
-
             return column.getSqlTypeName().endsWith("identity");
         }
     };
@@ -102,7 +100,7 @@ public class InsertIdentityOperation extends AbstractOperation
     private boolean hasIdentityColumn(ITableMetaData metaData, IDatabaseConnection connection)
             throws DataSetException
     {
-        logger.debug("hasIdentityColumn(metaData=" + metaData + ", connection=" + connection + ") - start");
+        logger.debug("hasIdentityColumn(metaData={}, connection={}) - start", metaData, connection);
 
         DatabaseConfig config = connection.getConfig();
         IColumnFilter identityFilter = (IColumnFilter)config.getProperty(
@@ -131,7 +129,7 @@ public class InsertIdentityOperation extends AbstractOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        logger.debug("execute(connection=" + connection + ", dataSet) - start");
+        logger.debug("execute(connection={}, dataSet={}) - start", connection, dataSet);
 
         Connection jdbcConnection = connection.getConnection();
         Statement statement = jdbcConnection.createStatement();
@@ -199,9 +197,3 @@ public class InsertIdentityOperation extends AbstractOperation
         }
     }
 }
-
-
-
-
-
-

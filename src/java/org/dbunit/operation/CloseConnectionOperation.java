@@ -62,7 +62,7 @@ public class CloseConnectionOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection,
             IDataSet dataSet) throws DatabaseUnitException, SQLException
     {
-        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+        logger.debug("execute(connection={}, dataSet={}) - start", connection, dataSet);
 
         try
         {
@@ -74,8 +74,3 @@ public class CloseConnectionOperation extends DatabaseOperation
         }
     }
 }
-
-
-
-
-

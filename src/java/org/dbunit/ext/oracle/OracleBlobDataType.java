@@ -73,7 +73,7 @@ public class OracleBlobDataType extends BlobDataType
     private Object getBlob(Object value, Connection connection)
             throws TypeCastException
     {
-        logger.debug("getBlob(value=" + value + ", connection=" + connection + ") - start");
+        logger.debug("getBlob(value={}, connection={}) - start", value, connection);
 
         Object tempBlob = null;
         try
@@ -140,7 +140,7 @@ public class OracleBlobDataType extends BlobDataType
 
     private void freeTemporaryBlob(Object tempBlob) throws TypeCastException
     {
-        logger.debug("freeTemporaryBlob(tempBlob=" + tempBlob + ") - start");
+        logger.debug("freeTemporaryBlob(tempBlob={}) - start", tempBlob);
 
         if (tempBlob == null)
         {

@@ -61,7 +61,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
 
     static boolean isEmpty(ITable table) throws DataSetException
     {
-        logger.debug("isEmpty(table=" + table + ") - start");
+        logger.debug("isEmpty(table={}) - start", table);
 
         Column[] columns = table.getTableMetaData().getColumns();
 
@@ -91,7 +91,6 @@ public abstract class AbstractBatchOperation extends AbstractOperation
     protected ITableIterator iterator(IDataSet dataSet) throws DatabaseUnitException
     {
         logger.debug("iterator(dataSet) - start");
-
         return dataSet.iterator();
     }
 
@@ -99,11 +98,8 @@ public abstract class AbstractBatchOperation extends AbstractOperation
      * Returns mapping of columns to ignore by this operation. Each bit set represent
      * a column to ignore.
      */
-    BitSet getIgnoreMapping(ITable table, int row)
-            throws DataSetException
+    BitSet getIgnoreMapping(ITable table, int row) throws DataSetException
     {
-        logger.debug("getIgnoreMapping(table=" + table + ", row=" + row + ") - start");
-
         return EMPTY_BITSET;
     }
 
@@ -111,12 +107,8 @@ public abstract class AbstractBatchOperation extends AbstractOperation
      * Returns false if the specified table row have a different ignore mapping
      * than the specified mapping.
      */
-    boolean equalsIgnoreMapping(BitSet ignoreMapping, ITable table,
-            int row) throws DataSetException
+    boolean equalsIgnoreMapping(BitSet ignoreMapping, ITable table, int row) throws DataSetException
     {
-        logger.debug("equalsIgnoreMapping(ignoreMapping=" + ignoreMapping + ", table=" + table + ", row=" + row
-                + ") - start");
-
         return true;
     }
 
@@ -129,7 +121,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        logger.debug("execute(connection=" + connection + ", dataSet) - start");
+        logger.debug("execute(connection={}, dataSet={}) - start", connection, dataSet);
 
         DatabaseConfig databaseConfig = connection.getConfig();
         IStatementFactory factory = (IStatementFactory)databaseConfig.getProperty(
@@ -147,8 +139,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                 continue;
             }
 
-            ITableMetaData metaData = getOperationMetaData(connection,
-                    table.getTableMetaData());
+            ITableMetaData metaData = getOperationMetaData(connection, table.getTableMetaData());
             BitSet ignoreMapping = null;
             OperationData operationData = null;
             IPreparedBatchStatement statement = null;
@@ -165,7 +156,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                     {
                         int row = i;
 
-                        // If current row have a diffrent ignore value mapping than
+                        // If current row have a different ignore value mapping than
                         // previous one, we generate a new statement
                         if (ignoreMapping == null || !equalsIgnoreMapping(ignoreMapping, table, row))
                         {
@@ -194,8 +185,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                                 Column column = columns[j];
                             	try
 								{
-	                                statement.addValue(table.getValue(row,
-	                                        column.getColumnName()), column.getDataType());
+	                                statement.addValue(table.getValue(row, column.getColumnName()), column.getDataType());
 								}
                                 catch (TypeCastException e)
 								{
@@ -228,15 +218,3 @@ public abstract class AbstractBatchOperation extends AbstractOperation
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

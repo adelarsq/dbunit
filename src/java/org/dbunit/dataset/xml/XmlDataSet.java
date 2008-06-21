@@ -83,8 +83,7 @@ public class XmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ", out=" + out + ") - start");
-
+        logger.debug("write(dataSet={}, out={}) - start", dataSet, out);
         OutputStreamWriter writer = new OutputStreamWriter(out, DEFAULT_ENCODING);
         write(dataSet, writer);
     }
@@ -95,8 +94,7 @@ public class XmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, Writer writer)
             throws IOException, DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ", writer=" + writer + ") - start");
-
+        logger.debug("write(dataSet={}, writer={}) - start", dataSet, writer);
         write(dataSet, writer, null);
     }
 
@@ -106,7 +104,11 @@ public class XmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, Writer writer, String encoding)
             throws IOException, DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ", writer=" + writer + ", encoding=" + encoding + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("write(dataSet={}, writer={}, encoding={}) - start",
+    				new Object[]{ dataSet, writer, encoding });
+    	}
 
         XmlDataSetWriter datasetWriter = new XmlDataSetWriter(writer, encoding);
         datasetWriter.write(dataSet);

@@ -75,8 +75,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ", out=" + out + ") - start");
-
+        logger.debug("write(dataSet={}, out={}) - start", dataSet, out);
         write(dataSet, new OutputStreamWriter(out));
     }
 
@@ -86,8 +85,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
     public static void write(IDataSet dataSet, Writer out)
             throws IOException, DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ", out=" + out + ") - start");
-
+        logger.debug("write(dataSet={}, out={}) - start", dataSet, out);
         FlatDtdWriter datasetWriter = new FlatDtdWriter(out);
         datasetWriter.write(dataSet);
     }
@@ -98,7 +96,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
+        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
 
         // Verify producer notifications completed
         if (!_ready)
@@ -141,7 +139,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
-        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+        logger.debug("getTableMetaData(tableName={}) - start", tableName);
 
         // Verify producer notifications completed
         if (!_ready)
@@ -161,7 +159,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public ITable getTable(String tableName) throws DataSetException
     {
-        logger.debug("getTable(tableName=" + tableName + ") - start");
+        logger.debug("getTable(tableName={}) - start", tableName);
 
         // Verify producer notifications completed
         if (!_ready)
@@ -197,7 +195,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public void startTable(ITableMetaData metaData) throws DataSetException
     {
-        logger.debug("startTable(metaData=" + metaData + ") - start");
+        logger.debug("startTable(metaData={}) - start", metaData);
 
         String tableName = metaData.getTableName();
         _tableNames.add(tableName);

@@ -106,8 +106,7 @@ public class DeleteAllOperation extends AbstractOperation
                 String tableName = (String)tableNames.pop();
 
                 // Use database table name. Required to support case sensitive database.
-                ITableMetaData databaseMetaData =
-                        databaseDataSet.getTableMetaData(tableName);
+                ITableMetaData databaseMetaData = databaseDataSet.getTableMetaData(tableName);
                 tableName = databaseMetaData.getTableName();
 
                 StringBuffer sqlBuffer = new StringBuffer(128);
@@ -130,10 +129,3 @@ public class DeleteAllOperation extends AbstractOperation
         }
     }
 }
-
-
-
-
-
-
-

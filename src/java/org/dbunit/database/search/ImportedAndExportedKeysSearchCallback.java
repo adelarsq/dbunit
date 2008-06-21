@@ -38,22 +38,23 @@ import org.dbunit.util.search.SearchException;
  * @version $Revision$
  * @since Aug 25, 2005
  */
-public class ImportedAndExportedKeysSearchCallback extends
-    AbstractMetaDataBasedSearchCallback {
+public class ImportedAndExportedKeysSearchCallback extends AbstractMetaDataBasedSearchCallback 
+{
 
     /**
-     * Logger for this class
-     */
-    private static final Logger logger = LoggerFactory.getLogger(ImportedAndExportedKeysSearchCallback.class);
+	 * Logger for this class
+	 */
+	private static final Logger	logger = LoggerFactory.getLogger(ImportedAndExportedKeysSearchCallback.class);
 
-  public ImportedAndExportedKeysSearchCallback(IDatabaseConnection connection) {
-    super(connection);
-  }
+	public ImportedAndExportedKeysSearchCallback(IDatabaseConnection connection)
+	{
+		super(connection);
+	}
 
-  public SortedSet getEdges(Object node) throws SearchException {
-        logger.debug("getEdges(node={}) - start", node);
-
-    return getNodesFromImportAndExportKeys(node);
-  }
+	public SortedSet getEdges(Object node) throws SearchException
+	{
+		logger.debug("getEdges(node={}) - start", node);
+		return getNodesFromImportAndExportKeys(node);
+	}
 
 }

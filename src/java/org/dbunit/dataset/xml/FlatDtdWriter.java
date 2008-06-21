@@ -44,7 +44,7 @@ public class FlatDtdWriter //implements IDataSetConsumer
     private static final Logger logger = LoggerFactory.getLogger(FlatDtdWriter.class);
 
     public static final ContentModel SEQUENCE = new SequenceModel();
-    public static final ContentModel CHOICE = new ChoiceModel();
+    public static final ContentModel CHOICE   = new ChoiceModel();
 
     private Writer _writer;
     private ContentModel _contentModel;
@@ -57,14 +57,13 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
     public void setContentModel(ContentModel contentModel)
     {
-        logger.debug("setContentModel(contentModel=" + contentModel + ") - start");
-
+        logger.debug("setContentModel(contentModel={}) - start", contentModel);
         _contentModel = contentModel;
     }
 
     public void write(IDataSet dataSet) throws DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ") - start");
+        logger.debug("write(dataSet={}) - start", dataSet);
 
         PrintWriter printOut = new PrintWriter(_writer);
         String[] tableNames = dataSet.getTableNames();
@@ -115,12 +114,6 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
     public static abstract class ContentModel
     {
-
-        /**
-         * Logger for this class
-         */
-        private static final Logger logger = LoggerFactory.getLogger(ContentModel.class);
-
         private final String _name;
 
         private ContentModel(String name)
@@ -130,8 +123,6 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
         public String toString()
         {
-            logger.debug("toString() - start");
-
             return _name;
         }
 
@@ -154,8 +145,11 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
         public void write(PrintWriter writer, String tableName, int tableIndex, int tableCount)
         {
-            logger.debug("write(writer=" + writer + ", tableName=" + tableName + ", tableIndex=" + tableIndex
-                    + ", tableCount=" + tableCount + ") - start");
+        	if (logger.isDebugEnabled())
+        	{
+        		logger.debug("write(writer={}, tableName={}, tableIndex={}, tableCount={}) - start",
+        				new Object[]{ writer, tableName, String.valueOf(tableIndex), String.valueOf(tableCount)});
+        	}
 
             boolean last = (tableIndex + 1) == tableCount;
 
@@ -184,8 +178,11 @@ public class FlatDtdWriter //implements IDataSetConsumer
 
         public void write(PrintWriter writer, String tableName, int tableIndex, int tableCount)
         {
-            logger.debug("write(writer=" + writer + ", tableName=" + tableName + ", tableIndex=" + tableIndex
-                    + ", tableCount=" + tableCount + ") - start");
+        	if (logger.isDebugEnabled())
+        	{
+        		logger.debug("write(writer={}, tableName={}, tableIndex={}, tableCount={}) - start",
+        				new Object[]{ writer, tableName, String.valueOf(tableIndex), String.valueOf(tableCount)});
+        	}
 
             boolean first = tableIndex == 0;
             boolean last = (tableIndex + 1) == tableCount;

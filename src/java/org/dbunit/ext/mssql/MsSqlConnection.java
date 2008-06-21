@@ -87,7 +87,7 @@ public class MsSqlConnection extends DatabaseConnection
 
     public IDataSet createDataSet(String[] tableNames) throws SQLException
     {
-        logger.debug("createDataSet(tableNames=" + tableNames + ") - start");
+        logger.debug("createDataSet(tableNames={}) - start", tableNames);
 
         IDataSet dataSet = super.createDataSet(tableNames);
         return new FilteredDataSet(_filter, dataSet);

@@ -294,24 +294,26 @@ public class DataSetUtils
             throws DataSetException
     {
         logger.debug("getReverseTableNames(dataSet={}) - start", dataSet);
-
         return reverseStringArray(dataSet.getTableNames());
     }
 
+    /**
+     * reverses a String array.
+     * @param array
+     * @return String[] - reversed array.
+     */
     public static String[] reverseStringArray(String[] array)
-    {
-        logger.debug("reverseStringArray(array={}) - start", array);
-
+	{
+		logger.debug("reverseStringArray(array={}) - start", array);
         String[] newArray = new String[array.length];
         for (int i = 0; i < array.length; i++)
         {
             newArray[array.length - 1 - i] = array[i];
         }
         return newArray;
-    }
+	}
 
-	public static Column[] mergeColumnsByName(Column[] referenceColumns,
-			Column[] columnsToMerge) {
+	public static Column[] mergeColumnsByName(Column[] referenceColumns, Column[] columnsToMerge) {
 		
 		List resultList = new ArrayList(Arrays.asList(referenceColumns));
 		List columnsToMergeNotInRefList = new ArrayList(Arrays.asList(columnsToMerge));

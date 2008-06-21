@@ -57,7 +57,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     static char[] CDATA_DETECTION_CHARS = new char[] {
         0x20, '\n', '\r', '\t',     // whitespace
-        '&', '<',                   // forbiden char
+        '&', '<',                   // forbidden char
     };
 
     private XmlWriter _xmlWriter;
@@ -77,7 +77,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     public void write(IDataSet dataSet) throws DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ") - start");
+        logger.debug("write(dataSet{}) - start", dataSet);
 
         DataSetProducerAdapter provider = new DataSetProducerAdapter(dataSet);
         provider.setConsumer(this);
@@ -86,7 +86,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     boolean needsCData(String text)
     {
-        logger.debug("needsCData(text=" + text + ") - start");
+        logger.debug("needsCData(text={}) - start", text);
 
         if (text == null)
         {
@@ -142,7 +142,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     public void startTable(ITableMetaData metaData) throws DataSetException
     {
-        logger.debug("startTable(metaData=" + metaData + ") - start");
+        logger.debug("startTable(metaData={}) - start", metaData);
 
         try
         {
@@ -183,7 +183,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     public void row(Object[] values) throws DataSetException
     {
-        logger.debug("row(values=" + values + ") - start");
+        logger.debug("row(values={}) - start", values);
 
         try
         {
@@ -246,8 +246,6 @@ public class XmlDataSetWriter implements IDataSetConsumer
     private boolean includeColumnComments = false;
 
     public void setIncludeColumnComments(boolean b) {
-        logger.debug("setIncludeColumnComments(b=" + b + ") - start");
-
       this.includeColumnComments = b;
     }
 }

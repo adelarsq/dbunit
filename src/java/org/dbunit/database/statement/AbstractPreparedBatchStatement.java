@@ -56,6 +56,3 @@ public abstract class AbstractPreparedBatchStatement implements IPreparedBatchSt
         _statement.close();
     }
 }
-
-
-

@@ -62,7 +62,7 @@ public class TransactionOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+        logger.debug("execute(connection={}, dataSet={}) - start", connection, dataSet);
 
         IDatabaseConnection databaseConnection = connection;
         Connection jdbcConnection = databaseConnection.getConnection();
@@ -99,8 +99,3 @@ public class TransactionOperation extends DatabaseOperation
         }
     }
 }
-
-
-
-
-

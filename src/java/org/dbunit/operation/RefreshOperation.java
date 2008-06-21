@@ -72,8 +72,6 @@ public class RefreshOperation extends AbstractOperation
 
     private boolean isEmpty(ITable table) throws DataSetException
     {
-        logger.debug("isEmpty(table=" + table + ") - start");
-
         return AbstractBatchOperation.isEmpty(table);
     }
 
@@ -83,7 +81,7 @@ public class RefreshOperation extends AbstractOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        logger.debug("execute(connection=" + connection + ", dataSet) - start");
+        logger.debug("execute(connection={}, dataSet) - start", connection);
         
         // for each table
         ITableIterator iterator = dataSet.iterator();
@@ -136,7 +134,7 @@ public class RefreshOperation extends AbstractOperation
             ITableMetaData metaData)
             throws DataSetException, SQLException
     {
-        logger.debug("createUpdateOperation(connection=" + connection + ", metaData=" + metaData + ") - start");
+        logger.debug("createUpdateOperation(connection={}, metaData={}) - start", connection, metaData);
 
         // update only if columns are not all primary keys
         if (metaData.getColumns().length > metaData.getPrimaryKeys().length)
@@ -170,7 +168,7 @@ public class RefreshOperation extends AbstractOperation
         public boolean execute(ITable table, int row)
                 throws DataSetException, SQLException
         {
-            logger.debug("execute(table=" + table + ", row=" + row + ") - start");
+            logger.debug("execute(table={}, row={}) - start", table, String.valueOf(row));
 
             Column[] columns = _operationData.getColumns();
             for (int i = 0; i < columns.length; i++)
@@ -228,7 +226,7 @@ public class RefreshOperation extends AbstractOperation
         public boolean execute(ITable table, int row)
                 throws DataSetException, SQLException
         {
-            logger.debug("execute(table=" + table + ", row=" + row + ") - start");
+            logger.debug("execute(table={}, row={}) - start", table, String.valueOf(row));
 
             // If current row have a diffrent ignore value mapping than
             // previous one, we generate a new statement
@@ -298,7 +296,7 @@ public class RefreshOperation extends AbstractOperation
         private OperationData getSelectCountData(
                 ITableMetaData metaData, IDatabaseConnection connection) throws DataSetException
         {
-            logger.debug("getSelectCountData(metaData=" + metaData + ", connection=" + connection + ") - start");
+            logger.debug("getSelectCountData(metaData={}, connection={}) - start", metaData, connection);
 
             Column[] primaryKeys = metaData.getPrimaryKeys();
 
@@ -311,8 +309,7 @@ public class RefreshOperation extends AbstractOperation
             // select count
             StringBuffer sqlBuffer = new StringBuffer(128);
             sqlBuffer.append("select COUNT(*) from ");
-            sqlBuffer.append(getQualifiedName(connection.getSchema(),
-                    metaData.getTableName(), connection));
+            sqlBuffer.append(getQualifiedName(connection.getSchema(), metaData.getTableName(), connection));
 
             // where
             sqlBuffer.append(" where ");
@@ -341,7 +338,7 @@ public class RefreshOperation extends AbstractOperation
         public boolean execute(ITable table, int row)
                 throws DataSetException, SQLException
         {
-            logger.debug("execute(table=" + table + ", row=" + row + ") - start");
+            logger.debug("execute(table={}, row={}) - start", table, String.valueOf(row));
 
             Column[] columns = _operationData.getColumns();
             for (int i = 0; i < columns.length; i++)
@@ -372,17 +369,3 @@ public class RefreshOperation extends AbstractOperation
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

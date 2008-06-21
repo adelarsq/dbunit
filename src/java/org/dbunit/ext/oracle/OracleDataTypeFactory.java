@@ -52,7 +52,7 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
-        logger.debug("createDataType(sqlType=" + sqlType + ", sqlTypeName=" + sqlTypeName + ") - start");
+    	logger.debug("createDataType(sqlType={}, sqlTypeName={}) - start", String.valueOf(sqlType), sqlTypeName);
 
         // Map Oracle DATE to TIMESTAMP
         if (sqlType == Types.DATE)

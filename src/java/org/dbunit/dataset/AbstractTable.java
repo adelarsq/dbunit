@@ -64,7 +64,7 @@ public abstract class AbstractTable implements ITable
 
     protected void assertValidColumn(String columnName) throws DataSetException
     {
-        logger.debug("assertValidColumn(columnName=" + columnName + ") - start");
+        logger.debug("assertValidColumn(columnName={}) - start", columnName);
 
         ITableMetaData metaData = getTableMetaData();
         if (DataSetUtils.getColumn(columnName, metaData.getColumns()) == null)

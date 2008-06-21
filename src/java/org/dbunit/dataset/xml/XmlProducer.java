@@ -81,25 +81,22 @@ public class XmlProducer extends DefaultHandler
         _inputSource = inputSource;
     }
 
-    private ITableMetaData createMetaData(String tableName, List _columnNames)
+    private ITableMetaData createMetaData(String tableName, List columnNames)
     {
-        logger.debug("createMetaData(tableName=" + tableName + ", _columnNames=" + _columnNames + ") - start");
+        logger.debug("createMetaData(tableName={}, _columnNames={}) - start", tableName, columnNames);
 
-        Column[] columns = new Column[_columnNames.size()];
+        Column[] columns = new Column[columnNames.size()];
         for (int i = 0; i < columns.length; i++)
         {
-            String columnName = (String)_columnNames.get(i);
+            String columnName = (String)columnNames.get(i);
             columns[i] = new Column(columnName, DataType.UNKNOWN);
         }
-        DefaultTableMetaData metaData =
-                new DefaultTableMetaData(tableName, columns);
+        DefaultTableMetaData metaData = new DefaultTableMetaData(tableName, columns);
         return metaData;
     }
 
     public void setValidating(boolean validating)
     {
-        logger.debug("setValidating(validating=" + validating + ") - start");
-
         _validating = validating;
     }
 
@@ -108,8 +105,7 @@ public class XmlProducer extends DefaultHandler
 
     public void setConsumer(IDataSetConsumer consumer) throws DataSetException
     {
-        logger.debug("setConsumer(consumer) - start");
-
+        logger.debug("setConsumer(consumer={}) - start", consumer);
         _consumer = consumer;
     }
 
@@ -149,7 +145,7 @@ public class XmlProducer extends DefaultHandler
     public InputSource resolveEntity(String publicId, String systemId)
             throws SAXException
     {
-        logger.debug("resolveEntity(publicId=" + publicId + ", systemId=" + systemId + ") - start");
+        logger.debug("resolveEntity(publicId={}, systemId={}) - start", publicId, systemId);
 
         InputStream in = getClass().getClassLoader().getResourceAsStream(
                 "org/dbunit/dataset/xml/dataset.dtd");
@@ -159,11 +155,13 @@ public class XmlProducer extends DefaultHandler
     ////////////////////////////////////////////////////////////////////////
     // ContentHandler interface
 
-    public void startElement(String uri, String localName, String qName,
-            Attributes attributes) throws SAXException
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
     {
-        logger.debug("startElement(uri=" + uri + ", localName=" + localName + ", qName=" + qName + ", attributes="
-                + attributes + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("startElement(uri={}, localName={}, qName={}, attributes={}) - start",
+    				new Object[]{ uri, localName, qName, attributes });
+    	}
 
         try
         {
@@ -195,8 +193,7 @@ public class XmlProducer extends DefaultHandler
                 // End of metadata at first row
                 if (_activeColumnNames != null)
                 {
-                    _activeMetaData = createMetaData(_activeTableName,
-                            _activeColumnNames);
+                    _activeMetaData = createMetaData(_activeTableName,_activeColumnNames);
                     _consumer.startTable(_activeMetaData);
                     _activeColumnNames = null;
 
@@ -235,7 +232,11 @@ public class XmlProducer extends DefaultHandler
 
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
-        logger.debug("endElement(uri=" + uri + ", localName=" + localName + ", qName=" + qName + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("endElement(uri={}, localName={}, qName={}) - start",
+    				new Object[]{ uri, localName, qName });
+    	}
 
         try
         {
@@ -252,8 +253,7 @@ public class XmlProducer extends DefaultHandler
                 // End of metadata
                 if (_activeColumnNames != null)
                 {
-                    _activeMetaData = createMetaData(_activeTableName,
-                            _activeColumnNames);
+                    _activeMetaData = createMetaData(_activeTableName, _activeColumnNames);
                     _consumer.startTable(_activeMetaData);
                     _activeColumnNames = null;
                 }
@@ -317,8 +317,6 @@ public class XmlProducer extends DefaultHandler
     public void characters(char ch[], int start, int length)
             throws SAXException
     {
-        logger.debug("characters(ch=" + ch + ", start=" + start + ", length=" + length + ") - start");
-
         if (_activeCharacters != null)
         {
             _activeCharacters.append(ch, start, length);
@@ -337,8 +335,6 @@ public class XmlProducer extends DefaultHandler
     public void error(SAXParseException e)
             throws SAXException
     {
-        logger.debug("error(e=" + e + ") - start");
-
         throw e;
     }
 

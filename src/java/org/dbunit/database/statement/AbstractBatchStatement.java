@@ -57,6 +57,3 @@ public abstract class AbstractBatchStatement implements IBatchStatement
 
 
 }
-
-
-

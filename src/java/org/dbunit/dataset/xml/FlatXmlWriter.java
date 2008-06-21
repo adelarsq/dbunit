@@ -80,21 +80,17 @@ public class FlatXmlWriter implements IDataSetConsumer
 
     public void setIncludeEmptyTable(boolean includeEmptyTable)
     {
-        logger.debug("setIncludeEmptyTable(includeEmptyTable=" + includeEmptyTable + ") - start");
-
         _includeEmptyTable = includeEmptyTable;
     }
 
     public void setDocType(String systemId)
     {
-        logger.debug("setDocType(systemId=" + systemId + ") - start");
-
         _systemId = systemId;
     }
 
     public void write(IDataSet dataSet) throws DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ") - start");
+        logger.debug("write(dataSet={}) - start", dataSet);
 
         DataSetProducerAdapter provider = new DataSetProducerAdapter(dataSet);
         provider.setConsumer(this);
@@ -137,7 +133,7 @@ public class FlatXmlWriter implements IDataSetConsumer
 
     public void startTable(ITableMetaData metaData) throws DataSetException
     {
-        logger.debug("startTable(metaData=" + metaData + ") - start");
+        logger.debug("startTable(metaData={}) - start", metaData);
 
         _activeMetaData = metaData;
         _activeRowCount = 0;
@@ -165,7 +161,7 @@ public class FlatXmlWriter implements IDataSetConsumer
 
     public void row(Object[] values) throws DataSetException
     {
-        logger.debug("row(values=" + values + ") - start");
+        logger.debug("row(values={}) - start", values);
 
         try
         {

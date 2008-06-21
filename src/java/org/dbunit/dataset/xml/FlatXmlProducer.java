@@ -53,8 +53,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @since Apr 18, 2003
  * @version $Revision$
  */
-public class FlatXmlProducer extends DefaultHandler
-        implements IDataSetProducer, ContentHandler
+public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer, ContentHandler
 {
 
     /**
@@ -129,10 +128,9 @@ public class FlatXmlProducer extends DefaultHandler
 //    }
 
 
-    private ITableMetaData createTableMetaData(String tableName,
-            Attributes attributes) throws DataSetException
+    private ITableMetaData createTableMetaData(String tableName, Attributes attributes) throws DataSetException
     {
-        logger.debug("createTableMetaData(tableName=" + tableName + ", attributes=" + attributes + ") - start");
+        logger.debug("createTableMetaData(tableName={}, attributes={}) - start", tableName, attributes);
         return this.createTableMetaData(tableName, attributes, null);
     }
 
@@ -149,8 +147,11 @@ public class FlatXmlProducer extends DefaultHandler
     private ITableMetaData createTableMetaData(String tableName,
             Attributes attributes, ITableMetaData lastKnownTableMetaData) throws DataSetException
     {
-        logger.debug("createTableMetaData(tableName={}, attributes={} lastKnownTableMetaData={}) - start",
-        		new Object[]{tableName, attributes, lastKnownTableMetaData} );
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("createTableMetaData(tableName={}, attributes={} lastKnownTableMetaData={}) - start",
+    				new Object[]{tableName, attributes, lastKnownTableMetaData} );
+    	}
         
         // Is not null when a DTD handler was installed. Could also check the flag _dtdPresent
         if (_metaDataSet != null)
@@ -162,14 +163,14 @@ public class FlatXmlProducer extends DefaultHandler
         Column[] columns = new Column[attributes.getLength()];
         for (int i = 0; i < attributes.getLength(); i++)
         {
-            columns[i] = new Column(attributes.getQName(i),
-                    DataType.UNKNOWN);
+            columns[i] = new Column(attributes.getQName(i), DataType.UNKNOWN);
         }
         
         if(lastKnownTableMetaData!=null) 
         {
             Column[] lastKnownColumns = lastKnownTableMetaData.getColumns();
-        	// check include all formerly found attributes - might be that there is one attribute missing in this row that was present in one of the former rows
+        	// check include all formerly found attributes - 
+            // might be that there is one attribute missing in this row that was present in one of the former rows
             columns = DataSetUtils.mergeColumnsByName(lastKnownColumns, columns);
         }
 
@@ -178,15 +179,11 @@ public class FlatXmlProducer extends DefaultHandler
     
     public void setValidating(boolean validating)
     {
-        logger.debug("setValidating(validating=" + validating + ") - start");
-
         _validating = validating;
     }
 
     public void setColumnSensing(boolean columnSensing)
     {
-        logger.debug("setColumnSensing(columnSensing=" + columnSensing + ") - start");
-
         _columnSensing = columnSensing;
     }
 
@@ -259,7 +256,7 @@ public class FlatXmlProducer extends DefaultHandler
     public InputSource resolveEntity(String publicId, String systemId)
             throws SAXException
     {
-        logger.debug("resolveEntity(publicId=" + publicId + ", systemId=" + systemId + ") - start");
+        logger.debug("resolveEntity(publicId={}, systemId={}) - start", publicId, systemId);
 
         if (!_dtdMetadata)
         {
@@ -273,20 +270,19 @@ public class FlatXmlProducer extends DefaultHandler
 
     public void error(SAXParseException e) throws SAXException
     {
-        logger.debug("error(e=" + e + ") - start");
-
         throw e;
-
     }
 
     ////////////////////////////////////////////////////////////////////////
     // ContentHandler interface
 
-    public void startElement(String uri, String localName, String qName,
-            Attributes attributes) throws SAXException
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
     {
-        logger.debug("startElement(uri=" + uri + ", localName=" + localName + ", qName=" + qName + ", attributes="
-                + attributes + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("startElement(uri={}, localName={}, qName={}, attributes={}) - start",
+    				new Object[] { uri, localName, qName, attributes });
+    	}
 
         try
         {
@@ -298,8 +294,7 @@ public class FlatXmlProducer extends DefaultHandler
             }
 
             // New table
-            if (_activeMetaData == null ||
-                    !_activeMetaData.getTableName().equals(qName))
+            if (_activeMetaData == null || !_activeMetaData.getTableName().equals(qName))
             {
                 // If not first table, notify end of previous table to consumer
                 if (_activeMetaData != null)
@@ -364,7 +359,11 @@ public class FlatXmlProducer extends DefaultHandler
 
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
-        logger.debug("endElement(uri=" + uri + ", localName=" + localName + ", qName=" + qName + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("endElement(uri={}, localName={}, qName={}) - start",
+    				new Object[]{ uri, localName, qName });
+    	}
 
         // End of dataset
         if (qName.equals(DATASET))
@@ -405,7 +404,11 @@ public class FlatXmlProducer extends DefaultHandler
         public void startDTD(String name, String publicId, String systemId)
                 throws SAXException
         {
-            logger.debug("startDTD(name=" + name + ", publicId=" + publicId + ", systemId=" + systemId + ") - start");
+        	if (logger.isDebugEnabled())
+        	{
+        		logger.debug("startDTD(name={}, publicId={}, systemId={}) - start",
+        				new Object[] { name, publicId, systemId });
+        	}
 
             _dtdPresent = true;
             try

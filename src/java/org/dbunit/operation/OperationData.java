@@ -50,15 +50,11 @@ public class OperationData
 
     public String getSql()
     {
-        logger.debug("getSql() - start");
-
         return _sql;
     }
 
     public Column[] getColumns()
     {
-        logger.debug("getColumns() - start");
-
         return _columns;
     }
 }

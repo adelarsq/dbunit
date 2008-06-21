@@ -73,7 +73,7 @@ public class OracleClobDataType extends ClobDataType
     protected Object getClob(Object value, Connection connection)
             throws TypeCastException
     {
-        logger.debug("getClob(value=" + value + ", connection=" + connection + ") - start");
+        logger.debug("getClob(value={}, connection={}) - start", value, connection);
 
         Object tempClob = null;
         try
@@ -140,7 +140,7 @@ public class OracleClobDataType extends ClobDataType
 
     protected void freeTemporaryClob(Object tempClob) throws TypeCastException
     {
-        logger.debug("freeTemporaryClob(tempClob=" + tempClob + ") - start");
+        logger.debug("freeTemporaryClob(tempClob={}) - start", tempClob);
 
         if (tempClob == null)
         {

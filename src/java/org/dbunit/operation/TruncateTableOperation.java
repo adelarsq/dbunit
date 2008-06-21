@@ -64,8 +64,6 @@ public class TruncateTableOperation extends DeleteAllOperation
 
     protected String getDeleteAllCommand()
     {
-        logger.debug("getDeleteAllCommand() - start");
-
         return "truncate table ";
     }
 
@@ -75,7 +73,7 @@ public class TruncateTableOperation extends DeleteAllOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+        logger.debug("execute(connection={}, dataSet={}) - start", connection, dataSet);
 
         // Patch to make it work with MS SQL Server
         DatabaseConfig config = connection.getConfig();
@@ -91,10 +89,3 @@ public class TruncateTableOperation extends DeleteAllOperation
         }
     }
 }
-
-
-
-
-
-
-

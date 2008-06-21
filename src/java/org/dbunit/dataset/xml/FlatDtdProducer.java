@@ -87,23 +87,19 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
     public static void setDeclHandler(XMLReader xmlReader, DeclHandler handler)
             throws SAXNotRecognizedException, SAXNotSupportedException
     {
-        logger.debug("setDeclHandler(xmlReader=" + xmlReader + ", handler=" + handler + ") - start");
-
+        logger.debug("setDeclHandler(xmlReader={}, handler={}) - start", xmlReader, handler);
         xmlReader.setProperty(DECL_HANDLER_PROPERTY_NAME, handler);
     }
 
     public static void setLexicalHandler(XMLReader xmlReader, LexicalHandler handler)
             throws SAXNotRecognizedException, SAXNotSupportedException
     {
-        logger.debug("setLexicalHandler(xmlReader=" + xmlReader + ", handler=" + handler + ") - start");
-
+        logger.debug("setLexicalHandler(xmlReader={}, handler={}) - start", xmlReader, handler);
         xmlReader.setProperty(LEXICAL_HANDLER_PROPERTY_NAME, handler);
     }
 
     private List createColumnList()
     {
-        logger.debug("createColumnList() - start");
-
         return new LinkedList();
     }
 
@@ -112,8 +108,6 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
 
     public void setConsumer(IDataSetConsumer consumer) throws DataSetException
     {
-        logger.debug("setConsumer(consumer) - start");
-
         _consumer = consumer;
     }
 
@@ -152,8 +146,6 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
     public InputSource resolveEntity(String publicId, String systemId)
             throws SAXException
     {
-        logger.debug("resolveEntity(publicId=" + publicId + ", systemId=" + systemId + ") - start");
-
         return _inputSource;
     }
 
@@ -162,7 +154,7 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
 
     public void elementDecl(String name, String model) throws SAXException
     {
-        logger.debug("elementDecl(name=" + name + ", model=" + model + ") - start");
+        logger.debug("elementDecl(name={}, model={}) - start", name, model);
 
         // Root element
         if (name.equals(_rootName))
@@ -179,8 +171,11 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
     public void attributeDecl(String elementName, String attributeName,
             String type, String mode, String value) throws SAXException
     {
-        logger.debug("attributeDecl(elementName=" + elementName + ", attributeName=" + attributeName + ", type=" + type
-                + ", mode=" + mode + ", value=" + value + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("attributeDecl(elementName={}, attributeName={}, type={}, mode={}, value={}) - start",
+    				new Object[]{ elementName, attributeName, type, mode, value });
+    	}
 
         // Each element attribute represent a table column
         Column.Nullable nullable = (REQUIRED.equals(mode)) ?
@@ -212,7 +207,11 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
     public void startDTD(String name, String publicId, String systemId)
             throws SAXException
     {
-        logger.debug("startDTD(name=" + name + ", publicId=" + publicId + ", systemId=" + systemId + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("startDTD(name={}, publicId={}, systemId={}) - start",
+    				new Object[]{ name, publicId, systemId });
+    	}
 
         try
         {

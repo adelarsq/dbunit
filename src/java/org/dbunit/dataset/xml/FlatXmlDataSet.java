@@ -188,12 +188,11 @@ public class FlatXmlDataSet extends CachedDataSet
     public FlatXmlDataSet(Reader xmlReader, boolean dtdMetadata)
             throws IOException, DataSetException
     {
-        super(new FlatXmlProducer(
-                new InputSource(xmlReader), dtdMetadata));
+        super(new FlatXmlProducer(new InputSource(xmlReader), dtdMetadata));
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml and dtd readers.
+     * Creates an FlatXmlDataSet object with the specified xml and dtd readers.
      *
      * @param xmlReader the xml reader
      * @param dtdReader the dtd reader
@@ -205,7 +204,7 @@ public class FlatXmlDataSet extends CachedDataSet
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml reader.
+     * Creates an FlatXmlDataSet object with the specified xml reader.
      *
      * @param xmlReader the xml reader
      * @param metaDataSet the dataset used as metadata source.
@@ -213,13 +212,12 @@ public class FlatXmlDataSet extends CachedDataSet
     public FlatXmlDataSet(Reader xmlReader, IDataSet metaDataSet)
             throws IOException, DataSetException
     {
-        super(new FlatXmlProducer(
-                new InputSource(xmlReader), metaDataSet));
+        super(new FlatXmlProducer(new InputSource(xmlReader), metaDataSet));
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml input stream.
-     * Relative DOCTYPE uri are resolved from the current working dicrectory.
+     * Creates an FlatXmlDataSet object with the specified xml input stream.
+     * Relative DOCTYPE uri are resolved from the current working directory.
      *
      * @param xmlStream the xml input stream
      */
@@ -229,8 +227,8 @@ public class FlatXmlDataSet extends CachedDataSet
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml input stream.
-     * Relative DOCTYPE uri are resolved from the current working dicrectory.
+     * Creates an FlatXmlDataSet object with the specified xml input stream.
+     * Relative DOCTYPE uri are resolved from the current working directory.
      *
      * @param xmlStream the xml input stream
      * @param dtdMetadata if <code>false</code> do not use DTD as metadata
@@ -238,12 +236,11 @@ public class FlatXmlDataSet extends CachedDataSet
     public FlatXmlDataSet(InputStream xmlStream, boolean dtdMetadata)
             throws IOException, DataSetException
     {
-        super(new FlatXmlProducer(
-                new InputSource(xmlStream), dtdMetadata));
+        super(new FlatXmlProducer(new InputSource(xmlStream), dtdMetadata));
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml and dtd input
+     * Creates an FlatXmlDataSet object with the specified xml and dtd input
      * stream.
      *
      * @param xmlStream the xml input stream
@@ -264,8 +261,7 @@ public class FlatXmlDataSet extends CachedDataSet
     public FlatXmlDataSet(InputStream xmlStream, IDataSet metaDataSet)
             throws IOException, DataSetException
     {
-        super(new FlatXmlProducer(
-                new InputSource(xmlStream), metaDataSet));
+        super(new FlatXmlProducer(new InputSource(xmlStream), metaDataSet));
     }
 
     /**
@@ -274,7 +270,7 @@ public class FlatXmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ", out=" + out + ") - start");
+        logger.debug("write(dataSet={}, out={}) - start", dataSet, out);
 
         FlatXmlWriter datasetWriter = new FlatXmlWriter(out);
         datasetWriter.setIncludeEmptyTable(true);
@@ -287,8 +283,7 @@ public class FlatXmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, Writer writer)
             throws IOException, DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ", writer=" + writer + ") - start");
-
+        logger.debug("write(dataSet={}, writer={}) - start", dataSet, writer);
         write(dataSet, writer, null);
     }
 
@@ -298,7 +293,11 @@ public class FlatXmlDataSet extends CachedDataSet
     public static void write(IDataSet dataSet, Writer writer, String encoding)
             throws IOException, DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ", writer=" + writer + ", encoding=" + encoding + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("write(dataSet={}, writer={}, encoding={}) - start",
+    				new Object[]{ dataSet, writer, encoding });
+    	}
 
         FlatXmlWriter datasetWriter = new FlatXmlWriter(writer, encoding);
         datasetWriter.setIncludeEmptyTable(true);
@@ -312,8 +311,7 @@ public class FlatXmlDataSet extends CachedDataSet
     public static void writeDtd(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
-        logger.debug("writeDtd(dataSet=" + dataSet + ", out=" + out + ") - start");
-
+        logger.debug("writeDtd(dataSet={}, out={}) - start", dataSet, out);
         FlatDtdDataSet.write(dataSet, out);
     }
 }

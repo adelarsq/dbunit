@@ -62,15 +62,17 @@ public class DeleteOperation extends AbstractBatchOperation
 
     protected ITableIterator iterator(IDataSet dataSet) throws DatabaseUnitException
     {
-        logger.debug("iterator(dataSet=" + dataSet + ") - start");
-
+        logger.debug("iterator(dataSet={}) - start", dataSet);
         return dataSet.reverseIterator();
     }
 
     public OperationData getOperationData(ITableMetaData metaData, BitSet ignoreMapping, IDatabaseConnection connection) throws DataSetException
     {
-        logger.debug("getOperationData(metaData=" + metaData + ", ignoreMapping=" + ignoreMapping + ", connection="
-                + connection + ") - start");
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("getOperationData(metaData={}, ignoreMapping={}, connection={}) - start",
+    				new Object[]{ metaData, ignoreMapping, connection });
+    	}
 
         // cannot construct where clause if no primary key
         Column[] primaryKeys = metaData.getPrimaryKeys();
@@ -105,11 +107,3 @@ public class DeleteOperation extends AbstractBatchOperation
     }
 
 }
-
-
-
-
-
-
-
-
