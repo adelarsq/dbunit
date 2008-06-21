@@ -11,14 +11,15 @@
 
   <section name="About DbUnit">
     <p>
-      DbUnit is a JUnit extension (also usable with Ant) targeted for database-driven projects that, 
-      among other things, puts your database into a known state between test runs. This is an excellent 
+      DbUnit is a JUnit extension (also usable with Ant) targeted at database-driven projects that, 
+      among other things, puts your database into a known state between test runs.  This is an excellent 
       way to avoid the myriad of problems that can occur when one test case corrupts the database and 
-      causes subsequent tests to fail or exacerbate the damage.      
+      causes subsequent tests to fail or exacerbate the damage.
     </p>
     <p>
-      DbUnit has the ability to export and import your database data to and from XML datasets. Since version 2.0, DbUnit can works with very large dataset when use in streaming mode.
-      DbUnit can also helps you to verify that your database data match expected set of values.
+      DbUnit has the ability to export and import your database data to and from XML datasets. 
+      Since version 2.0, DbUnit can also work with very large datasets when used in streaming mode.
+      DbUnit can also help you to verify that your database data match an expected set of values.
     </p>
   </section>
 

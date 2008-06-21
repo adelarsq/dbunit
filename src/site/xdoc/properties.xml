@@ -252,7 +252,7 @@
       </table>
 
       <a name="fetchsize"></a>
-      <h4>Batch Size</h4>
+      <h4>Fetch Size</h4>
       <table border="1">
         <tr> 
           <td>Property ID</td>
