@@ -32,27 +32,29 @@
 			<name>DbUnit User List</name>
 			<subscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-user</subscribe>
 			<unsubscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-user</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8154</archive>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum_name=dbunit-user</archive>
 		</mailingList>
 		<mailingList>
 			<name>DbUnit Developer List</name>
 			<subscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-developer</subscribe>
 			<unsubscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-developer</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum_id=9162</archive>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum_name=dbunit-developer</archive>
 		</mailingList>
 		<mailingList>
 			<name>DbUnit SVN Commit List</name>
 			<subscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-commit</subscribe>
 			<unsubscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-commit</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum_id=9771</archive>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum_name=dbunit-commit</archive>
 		</mailingList>    
 	</mailingLists>
 
 	<pluginRepositories>
+	<!--
 		<pluginRepository>
 			<id>snapshots</id>
 			<url>http://people.apache.org/repo/m2-snapshot-repository/</url>
 		</pluginRepository>
+	-->
 	</pluginRepositories>
 
 
