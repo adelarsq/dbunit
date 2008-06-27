@@ -156,7 +156,8 @@ public class DefaultTable extends AbstractTable
     public Object setValue(int row, String column, Object value)
             throws RowOutOfBoundsException, NoSuchColumnException, DataSetException
     {
-        logger.debug("setValue(row={}, column={}, value={}) - start", new Object[] {Integer.toString(row), column, value});
+        if(logger.isDebugEnabled())
+            logger.debug("setValue(row={}, column={}, value={}) - start", new Object[] {Integer.toString(row), column, value});
 
         assertValidRowIndex(row);
 
@@ -186,7 +187,8 @@ public class DefaultTable extends AbstractTable
 
     public Object getValue(int row, String column) throws DataSetException
     {
-        logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
+        if(logger.isDebugEnabled())
+            logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
 
         assertValidRowIndex(row);
 

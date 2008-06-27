@@ -230,13 +230,14 @@ public class SortedTable extends AbstractTable
         return _table.getRowCount();
     }
 
-    public Object getValue(int row, String column) throws DataSetException
+    public Object getValue(int row, String columnName) throws DataSetException
     {
-        logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
+        if(logger.isDebugEnabled())
+            logger.debug("getValue(row={}, columnName={}) - start", Integer.toString(row), columnName);
 
         assertValidRowIndex(row);
 
-        return _table.getValue(getOriginalRowIndex(row), column);
+        return _table.getValue(getOriginalRowIndex(row), columnName);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -342,8 +343,9 @@ public class SortedTable extends AbstractTable
 
 		protected int compare(Column column, Object value1, Object value2) throws TypeCastException 
 		{
-            logger.debug("compare(column={}, value1={}, value2={}) - start", 
-            	new Object[]{column, value1, value2} );
+		    if(logger.isDebugEnabled())
+		        logger.debug("compare(column={}, value1={}, value2={}) - start", 
+		                new Object[]{column, value1, value2} );
 			
 			DataType dataType = column.getDataType();
 			int result = dataType.compare(value1, value2);
@@ -371,8 +373,9 @@ public class SortedTable extends AbstractTable
 
 		protected int compare(Column column, Object value1, Object value2) throws TypeCastException 
 		{
-            logger.debug("compare(column={}, value1={}, value2={}) - start", 
-                	new Object[]{column, value1, value2} );
+		    if(logger.isDebugEnabled())
+		        logger.debug("compare(column={}, value1={}, value2={}) - start", 
+		                new Object[]{column, value1, value2} );
 
             // Default behaviour since ever
 			String stringValue1 = DataType.asString(value1);

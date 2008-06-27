@@ -105,9 +105,10 @@ public class CompositeTable extends AbstractTable
         return totalCount;
     }
 
-    public Object getValue(int row, String column) throws DataSetException
+    public Object getValue(int row, String columnName) throws DataSetException
     {
-        logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
+        if(logger.isDebugEnabled())
+            logger.debug("getValue(row={}, columnName={}) - start", Integer.toString(row), columnName);
 
         if (row < 0)
         {
@@ -122,7 +123,7 @@ public class CompositeTable extends AbstractTable
             int count = table.getRowCount();
             if (totalCount + count > row)
             {
-                return table.getValue(row - totalCount, column);
+                return table.getValue(row - totalCount, columnName);
             }
             totalCount += count;
         }

@@ -100,8 +100,10 @@ public class RowFilterTable implements ITable, IRowValueProvider {
 		return this.filteredRowIndexes.size();
 	}
 
-	public Object getValue(int row, String column) throws DataSetException {
-		logger.debug("getValue(row={}, column={}) - start", new Integer(row), column);
+	public Object getValue(int row, String column) throws DataSetException 
+	{
+	    if(logger.isDebugEnabled())
+	        logger.debug("getValue(row={}, columnName={}) - start", Integer.toString(row), column);
 
 		int max = this.filteredRowIndexes.size();
 		if ( row < max ) {

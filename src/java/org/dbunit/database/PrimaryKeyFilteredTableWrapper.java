@@ -128,8 +128,10 @@ public class PrimaryKeyFilteredTableWrapper implements ITable {
     return this.filteredRowsMapping.size();
   }
 
-  public Object getValue(int row, String column) throws DataSetException {
-        logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
+  public Object getValue(int row, String column) throws DataSetException 
+  {
+      if(logger.isDebugEnabled())
+          logger.debug("getValue(row={}, columnName={}) - start", Integer.toString(row), column);
 
     int max = this.filteredRowsMapping.size();
     if ( row < max ) {

@@ -168,7 +168,8 @@ public class ReplacementTable implements ITable
 
     public Object getValue(int row, String column) throws DataSetException
     {
-        logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
+        if(logger.isDebugEnabled())
+            logger.debug("getValue(row={}, columnName={}) - start", Integer.toString(row), column);
 
         Object value = _table.getValue(row, column);
 

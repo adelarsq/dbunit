@@ -307,7 +307,9 @@ public class Assertion
 	static DataType getComparisonDataType(String tableName, Column expectedColumn,
             Column actualColumn)
     {
-        logger.debug("getComparisonDataType(tableName={}, expectedColumn={}, actualColumn={}) - start", new Object[] {tableName, expectedColumn, actualColumn});
+		if(logger.isDebugEnabled())
+			logger.debug("getComparisonDataType(tableName={}, expectedColumn={}, actualColumn={}) - start", 
+					new Object[] {tableName, expectedColumn, actualColumn});
 
         DataType expectedDataType = expectedColumn.getDataType();
         DataType actualDataType = actualColumn.getDataType();

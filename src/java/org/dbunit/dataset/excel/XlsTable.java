@@ -68,7 +68,7 @@ class XlsTable extends AbstractTable
 
     static ITableMetaData createMetaData(String tableName, HSSFRow sampleRow)
     {
-        logger.debug("createMetaData(tableName=" + tableName + ", sampleRow=" + sampleRow + ") - start");
+        logger.debug("createMetaData(tableName={}, sampleRow={}) - start", tableName, sampleRow);
 
         List columnList = new ArrayList();
         for (int i = 0; ; i++)
@@ -110,7 +110,8 @@ class XlsTable extends AbstractTable
 
     public Object getValue(int row, String column) throws DataSetException
     {
-        logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
+        if(logger.isDebugEnabled())
+            logger.debug("getValue(row={}, columnName={}) - start", Integer.toString(row), column);
 
         assertValidRowIndex(row);
 

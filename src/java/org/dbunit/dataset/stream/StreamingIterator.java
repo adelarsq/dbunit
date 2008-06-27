@@ -191,9 +191,10 @@ public class StreamingIterator implements ITableIterator
             throw new UnsupportedOperationException();
         }
 
-        public Object getValue(int row, String column) throws DataSetException
+        public Object getValue(int row, String columnName) throws DataSetException
         {
-            logger.debug("getValue(row={}, column={}) - start", Integer.toString(row), column);
+            if(logger.isDebugEnabled())
+                logger.debug("getValue(row={}, columnName={}) - start", Integer.toString(row), columnName);
 
             // Iterate up to specified row
             while (!_eot && row > _lastRow)
@@ -211,7 +212,7 @@ public class StreamingIterator implements ITableIterator
                 throw new RowOutOfBoundsException(row + " > " + _lastRow);
             }
 
-            return _rowValues[getColumnIndex(column)];
+            return _rowValues[getColumnIndex(columnName)];
         }
 
     }
@@ -278,7 +279,7 @@ public class StreamingIterator implements ITableIterator
 
         public void startTable(ITableMetaData metaData) throws DataSetException
         {
-            logger.debug("startTable(metaData=" + metaData + ") - start");
+            logger.debug("startTable(metaData={}) - start", metaData);
 
             try
             {
@@ -296,7 +297,7 @@ public class StreamingIterator implements ITableIterator
 
         public void row(Object[] values) throws DataSetException
         {
-            logger.debug("row(values=" + values + ") - start");
+            logger.debug("row(values={}) - start", values);
 
             try
             {
