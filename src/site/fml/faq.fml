@@ -476,6 +476,24 @@ See also <a href="howto.html#compareignorecolumns">Ignoring some columns in comp
         </answer>
     </faq>
     
+    <faq id="additionalassertinfo">
+        <question>
+            Can I add more information to the result of an <i>assertEquals(double expected, double actual)</i> 
+            call so that I can easily identify the rows that mismatch?
+        </question>
+        <answer>
+            <p>
+            There is a method <i>assertEquals(ITable expectedTable, ITable actualTable, Column[] additionalColumnInfo)</i>
+            that allows to specify additional columns as third parameter. If two rows are not equal the values of the
+            given columns are printed out in the assertion text.
+            <source>
+                Assertion.assertEquals(iTableExpected, iTableActual, 
+                        new Column[] {new Column("COLUMN0", DataType.VARCHAR)} );
+            </source>
+            </p>
+        </answer>
+    </faq>
+
     <faq id="usertypeidentity">
       <question>
       How to use InsertIdentityOperation with user defined types?
