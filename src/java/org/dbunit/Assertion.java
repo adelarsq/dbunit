@@ -59,14 +59,13 @@ public class Assertion
     }
 
     /**
-	 * Compare a one table present in two datasets ignoring specified columns.
+	 * Compare one table present in two datasets ignoring specified columns.
 	 * 
 	 * @param expectedDataset First dataset.
 	 * @param actualDataset Second dataset.
 	 * @param tableName Table name of the table to be compared.
-	 * @param ignoreCols Columns to ignore while comparing.
-	 * @throws org.dbunit.DatabaseUnitException
-	 *             If an error occurs.
+     * @param ignoreCols Columns to be ignored in comparison.
+	 * @throws org.dbunit.DatabaseUnitException If an error occurs.
 	 */
 	public static void assertEqualsIgnoreCols(final IDataSet expectedDataset, final IDataSet actualDataset, 
 			final String tableName,	final String[] ignoreCols) throws DatabaseUnitException 
@@ -81,17 +80,17 @@ public class Assertion
 	}
 
     /**
-	 * Compare a one table present in two datasets ignoring specified columns.
+	 * Compare the given tables ignoring specified columns.
 	 * 
 	 * @param expectedTable First table.
 	 * @param actualTable Second table.
-	 * @param ignoreCols Columns to ignore while comparing.
+	 * @param ignoreCols Columns to be ignored in comparison.
 	 * @throws org.dbunit.DatabaseUnitException If an error occurs.
 	 */
 	public static void assertEqualsIgnoreCols(final ITable expectedTable, final ITable actualTable, 
 			final String[] ignoreCols) throws DatabaseUnitException 
 	{
-        logger.debug("assertEquals(expectedTable={}, actualTable={}, ignoreCols={}) - start", 
+        logger.debug("assertEqualsIgnoreCols(expectedTable={}, actualTable={}, ignoreCols={}) - start", 
         		new Object[] {expectedTable, actualTable, Arrays.asList(ignoreCols)} );
 
         final ITable expectedTableFiltered = DefaultColumnFilter.excludedColumnsTable(expectedTable, ignoreCols);
@@ -106,7 +105,7 @@ public class Assertion
 	 * @param connection Connection to use for the SQL statement.
 	 * @param sqlQuery SQL query that will build the data in returned second table rows.
 	 * @param tableName Table name of the table to compare
-	 * @param ignoreCols Columns to ignore while comparing.
+     * @param ignoreCols Columns to be ignored in comparison.
 	 * @throws DatabaseUnitException If an error occurs while performing the comparison.
 	 * @throws java.sql.SQLException If an SQL error occurs.
 	 */
@@ -115,6 +114,9 @@ public class Assertion
 			final String tableName, final String[] ignoreCols)
     	throws DatabaseUnitException, SQLException
     {
+        logger.debug("assertEqualsByQuery(expectedDataset={}, connection={}, tableName={}, sqlQuery={}, ignoreCols={}) - start", 
+                new Object[] {expectedDataset, connection, tableName, sqlQuery, ignoreCols} );
+	    
 		ITable expectedTable = expectedDataset.getTable(tableName);
 		Assertion.assertEqualsByQuery(expectedTable, connection, tableName, sqlQuery, ignoreCols);
     }
@@ -126,7 +128,7 @@ public class Assertion
 	 * @param connection Connection to use for the SQL statement.
 	 * @param tableName The name of the table to query from the database
 	 * @param sqlQuery SQL query that will build the data in returned second table rows.
-	 * @param ignoreCols Columns to ignore while comparing.
+     * @param ignoreCols Columns to be ignored in comparison.
 	 * @throws DatabaseUnitException If an error occurs while performing the comparison.
 	 * @throws java.sql.SQLException If an SQL error occurs.
 	 */
@@ -135,7 +137,10 @@ public class Assertion
 			final String[] ignoreCols)
     	throws DatabaseUnitException, SQLException
     {
-		ITable expected = DefaultColumnFilter.excludedColumnsTable(expectedTable, ignoreCols);
+        logger.debug("assertEqualsByQuery(expectedTable={}, connection={}, tableName={}, sqlQuery={}, ignoreCols={}) - start", 
+                new Object[] {expectedTable, connection, tableName, sqlQuery, ignoreCols} );
+
+	    ITable expected = DefaultColumnFilter.excludedColumnsTable(expectedTable, ignoreCols);
 		ITable queriedTable = connection.createQueryTable(tableName, sqlQuery);
 		ITable actual = DefaultColumnFilter.excludedColumnsTable(queriedTable, ignoreCols);
 		Assertion.assertEquals(expected, actual);
