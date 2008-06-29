@@ -77,8 +77,9 @@
       To specify null values, omit corresponding attribute. 
       In the above example, missing COL0 and COL2 attributes of TEST_TABLE second row represents null values.
       <br/>
-      Table metadata is deduced from the first row of each table. <b>Beware you may get a NoSuchColumnException 
-      if the first row of a table has one or more null values.</b>
+      Table metadata is deduced from the first row of each table by default, whereas it is possible to enable the
+      <i>column sensing</i> feature as described in <a name="FAQ-differentcolumnnumber" href="faq.html#differentcolumnnumber">differentcolumnnumber</a>
+      <b>Beware you may get a NoSuchColumnException if the first row of a table has one or more null values.</b>
       Because of that, this is highly recommended to use DTD. DbUnit will use the 
       columns declared in the DTD as table metadata. DbUnit only support external system URI. 
       The URI can be absolute or relative.

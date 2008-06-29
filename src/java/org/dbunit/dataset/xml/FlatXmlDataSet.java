@@ -60,12 +60,25 @@ import java.net.URL;
  * To specify null values, omit corresponding attribute.
  * In the above example, missing COL0 and COL2 attributes of TEST_TABLE second row represents null values.
  * <p>
- * Table metadata is deduced from the first row of each table. <b>Beware that DbUnit may think
- * a table miss some columns if the first row of that table has one or more null values.</b>
- * Because of that, this is highly recommended to use DTD. DbUnit will use the
- * columns declared in the DTD as table metadata. DbUnit only support external system URI.
- * The URI can be absolute or relative.
- *
+ * Table metadata is deduced from the first row of each table by default. 
+ * <b>Beware that DbUnit may think a table misses some columns if the first row of that table has one or more null values.</b>
+ * You can do one of the following things to avoid this:
+ * <ul>
+ * <li>Use a DTD. DbUnit will use the columns declared in the DTD as table metadata. 
+ * DbUnit only supports external system URI. The URI can be absolute or relative.
+ * </li>
+ * <li>Since DBUnit 2.3.0 there is a functionality called "column sensing" which basically 
+ * reads in the whole XML into a buffer and dynamically adds new columns as they appear. 
+ * It can be used as demonstrated in the following example:
+ * <pre>
+ *   boolean enableColumnSensing = true;
+ *   IDataSet dataSet = new FlatXmlDataSet(
+ *            new File("src/xml/flatXmlTableTest.xml"), false, enableColumnSensing);
+ * </pre>
+ * </li>
+ * </ul>
+ * </p>
+ * 
  * @author Manuel Laflamme
  * @version $Revision$
  * @since Mar 12, 2002
