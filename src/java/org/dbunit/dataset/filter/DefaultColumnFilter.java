@@ -190,4 +190,15 @@ public class DefaultColumnFilter implements IColumnFilter
         }
         return false;
     }
+    
+    
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append(getClass().getName()).append("[");
+        sb.append("_includeMatcher=").append(_includeMatcher);
+        sb.append(", _excludeMatcher=").append(_excludeMatcher);
+        sb.append("]");
+        return sb.toString();
+    }
 }

@@ -301,5 +301,17 @@ class PatternMatcher
         }
         return true;
     }
+    
+    
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append(getClass().getName()).append("[");
+        sb.append("_acceptedNames=").append(_acceptedNames);
+        sb.append(", _acceptedPatterns=").append(_acceptedPatterns);
+        sb.append("]");
+        return sb.toString();
+    }
+
 
 }
