@@ -252,6 +252,11 @@ ReplacementDataSet dataSet = new ReplacementDataSet(
         new FlatXmlDataSet(…)); 
 dataSet.addReplacementObject("[NULL]", null);]]></source>
           <br/>
+  You can choose to use a fail-fast replacement to ensure that all placeholders are actually set 
+  and no one is missing in the replacement map. If one is missing the replacement will fail immediately throwing an exception.
+  (Note that the default behaviour is to leave the non-replaced placeholder there and proceeding work silently):
+   <source>replacementDataSet.setStrictReplacement(true);</source>
+          <br/>
  </td>
         </tr>
       </table>

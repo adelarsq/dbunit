@@ -48,6 +48,7 @@ public class ReplacementTable implements ITable
     private final Map _substringMap;
     private String _startDelim;
     private String _endDelim;
+    private boolean _strictReplacement;
 
     /**
      * Create a new ReplacementTable object that decorates the specified table.
@@ -69,6 +70,16 @@ public class ReplacementTable implements ITable
         _endDelim = endDelimiter;
     }
 
+    /**
+     * Setting this property to true indicates that when no replacement
+     * is found for a delemited substring the replacement will fail fast.
+     * 
+     * @param strictReplacement true if replacement should be strict
+     */
+    public void setStrictReplacement(boolean strictReplacement) {
+        this._strictReplacement = strictReplacement;
+    }
+    
     /**
      * Add a new Object replacement mapping.
      *
@@ -148,9 +159,67 @@ public class ReplacementTable implements ITable
         return replaceStrings(value, "", "");
     }    
 
-    private String replaceDelimitedSubstrings(String value)
+    /**
+     * @throws DataSetException when stringReplacement fails
+     */
+    private String replaceDelimitedSubstrings(String value) throws DataSetException
     {
-        return replaceStrings(value, _startDelim, _endDelim);
+        StringBuffer buffer = null;
+
+        int startIndex = 0;
+        int endIndex = 0;
+        int lastEndIndex = 0;
+        for(;;)
+        {
+            startIndex = value.indexOf(_startDelim, lastEndIndex);
+            if (startIndex != -1)
+            {
+                endIndex = value.indexOf(_endDelim, startIndex + _startDelim.length());
+                if (endIndex != -1)
+                {
+                    if (buffer == null)
+                    {
+                        buffer = new StringBuffer();
+                    }
+
+                    String substring = value.substring(
+                            startIndex + _startDelim.length(), endIndex);
+                    if (_substringMap.containsKey(substring))
+                    {
+                        buffer.append(value.substring(lastEndIndex, startIndex));
+                        buffer.append(_substringMap.get(substring));
+                    }
+                    else if (_strictReplacement)
+                    {
+                        throw new DataSetException(
+                                "Strict Replacement was set to true, but no"
+                                + " replacement was found for substring '" 
+                                + substring + "' in the value '" + value + "'");
+                    }
+                    else
+                    {
+                        logger.debug("Did not find a replacement map entry for substring={}. " +
+                        		"Leaving original value there.", substring);
+                        buffer.append(value.substring(
+                                lastEndIndex, endIndex + _endDelim.length()));
+                    }
+
+                    lastEndIndex = endIndex + _endDelim.length();
+                }
+            }
+
+            // No more delimited substring
+            if (startIndex == -1 || endIndex == -1)
+            {
+                if (buffer != null)
+                {
+                    buffer.append(value.substring(lastEndIndex));
+                }
+                break;
+            }
+        }
+
+        return buffer == null ? value : buffer.toString();
     }
 
     ////////////////////////////////////////////////////////////////////////

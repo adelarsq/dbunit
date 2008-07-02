@@ -47,6 +47,7 @@ public class ReplacementDataSet extends AbstractDataSet
     private final Map _substringMap;
     private String _startDelim;
     private String _endDelim;
+    private boolean _strictReplacement;
 
 
     /**
@@ -75,6 +76,16 @@ public class ReplacementDataSet extends AbstractDataSet
         _substringMap = substringMap == null ? new HashMap() : substringMap;
     }
 
+    /**
+     * Setting this property to true indicates that when no replacement
+     * is found for a delemited substring the replacement will fail fast.
+     * 
+     * @param strictReplacement true if replacement should be strict
+     */
+    public void setStrictReplacement(boolean strictReplacement) {
+        this._strictReplacement = strictReplacement;
+    }
+    
     /**
      * Add a new Object replacement mapping.
      *
@@ -126,10 +137,12 @@ public class ReplacementDataSet extends AbstractDataSet
 
     private ReplacementTable createReplacementTable(ITable table)
     {
-        logger.debug("createReplacementTable(table=" + table + ") - start");
-
-        return new ReplacementTable(table, _objectMap, _substringMap,
-                _startDelim, _endDelim);
+        logger.debug("createReplacementTable(table={}) - start", table);
+        
+        ReplacementTable replacementTable = new ReplacementTable(
+                table, _objectMap, _substringMap, _startDelim, _endDelim);
+        replacementTable.setStrictReplacement(_strictReplacement);
+        return replacementTable;
     }
 
     ////////////////////////////////////////////////////////////////////////////

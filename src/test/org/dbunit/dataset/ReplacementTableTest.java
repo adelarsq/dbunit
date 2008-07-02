@@ -28,6 +28,8 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Date;
 
+import junit.framework.Assert;
+
 /**
  *
  * @author Manuel Laflamme
@@ -164,56 +166,80 @@ public class ReplacementTableTest extends AbstractTableTest
         Assertion.assertEquals(expectedTable, actualTable);
     }
 
-    public void testSubstringReplacementWithMultipleReplacementStrings() throws Exception
+    /**
+     * Tests that replacement will fail properly when strict replacement fails.
+     */
+    public void testStrictReplacement() throws Exception
     {
         String tableName = "TABLE_NAME";
+        String replacedColumnName = "REPLACED_COLUMN";
+        String notReplacedColumnName = "NOT_REPLACED_COLUMN";
 
+        String replacedValue = "replacement";
+        String notReplacedValue = "badstring";
+        String notReplacedDelimitedValue = "${" + notReplacedValue + "}";
+        
         Column[] columns = new Column[] {
-            new Column("ONLY_SUBSTRING", DataType.CHAR),
-            new Column("START_SUBSTRING", DataType.CHAR),
-            new Column("MIDDLE_SUBSTRING", DataType.CHAR),
-            new Column("END_SUBSTRING", DataType.CHAR),
-            new Column("MULTIPLE_SUBSTRING", DataType.CHAR),
-            new Column("NO_SUBSTRING", DataType.CHAR),
-            new Column("NOT_A_STRING", DataType.NUMERIC),
-            new Column("NULL_VALUE", DataType.CHAR),
+            new Column(replacedColumnName, DataType.CHAR),
+            new Column(notReplacedColumnName, DataType.CHAR),
         };
 
         // Setup actual table
         Object[] actualRow = new Object[] {
-            "substring",
-            "substring_",
-            "_substring_",
-            "_substring",
-            "substringsubstring substring",
-            "this is a string",
-            new Long(0),
-            null,
+            "${substring}",
+            notReplacedDelimitedValue,
         };
 
         DefaultTable originalTable = new DefaultTable(tableName, columns);
         originalTable.addRow(actualRow);
         ReplacementTable actualTable = new ReplacementTable(originalTable);
-        actualTable.addReplacementSubstring("aaaa", "value");
-        actualTable.addReplacementSubstring("substring", "replacement");
-        actualTable.addReplacementSubstring("zzzz", "value");
+        actualTable.addReplacementSubstring("substring", replacedValue);
+        actualTable.setSubstringDelimiters("${", "}");
 
         // Setup expected table
         Object[] expectedRow = new Object[] {
-            "replacement",
-            "replacement_",
-            "_replacement_",
-            "_replacement",
-            "replacementreplacement replacement",
-            "this is a string",
-            new Long(0),
-            null,
+            replacedValue,
+            notReplacedDelimitedValue,
         };
 
         DefaultTable expectedTable = new DefaultTable(tableName, columns);
         expectedTable.addRow(expectedRow);
 
         Assertion.assertEquals(expectedTable, actualTable);
+
+        String foundReplaced = (String) actualTable.getValue(0, replacedColumnName);
+        Assert.assertEquals(replacedValue, foundReplaced);
+        
+        // we should get back the non-replaced value with the delimiters in it
+        String foundNotReplaced = (String) actualTable.getValue(0, notReplacedColumnName);
+        Assert.assertEquals(notReplacedDelimitedValue, foundNotReplaced);
+        
+        // prior to this, it was just testing that it hooks up properly.
+        // now try some tests with the strict replacement set
+        actualTable.setStrictReplacement(true);
+
+        // this should still succeed
+        foundReplaced = (String) actualTable.getValue(0, replacedColumnName);
+        Assert.assertEquals(replacedValue, foundReplaced);
+
+        // this should fail
+        boolean failed;
+        try
+        {
+            actualTable.getValue(0, notReplacedColumnName);
+            failed = false;
+        }
+        catch (DataSetException dse)
+        {
+            failed = true;
+        }
+        Assert.assertTrue("Expecting a DataSetException", failed);
+        
+        // try again after adding the badstring as a replacement
+        String replacedValue2 = "replacement2";
+        actualTable.addReplacementSubstring(notReplacedValue, replacedValue2);
+        foundReplaced = (String) actualTable.getValue(0, notReplacedColumnName);
+        Assert.assertEquals(replacedValue2, foundReplaced);
     }
     
     public void testDelimitedSubstringReplacement() throws Exception
