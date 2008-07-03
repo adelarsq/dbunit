@@ -71,6 +71,7 @@
       <item name="Ant Task"    	    href="/anttask.html"/>
       <item name="Building DbUnit"  href="/building.html"/>
       <item name="Resources"        href="/resources.html"/> 
+	  <item name="Credits"          href="/credits.html"/> 
     </menu>
 
     <menu ref="parent"/>

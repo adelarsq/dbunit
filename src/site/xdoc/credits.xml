@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+
+  <properties>
+    <title>Credits</title>
+    <author>rlogiacco</author>
+  </properties>
+
+  <body>
+
+    <!-- The body of the document contains a number of sections -->
+    <section name="Credits">
+	  <p>As many open source projects <b>DbUnit</b> have to thanks not only the developers and the users community but some supporting companies too as they provide us licenses, bandwith, space adn all sort of things which usually you should pay for.</p>
+      <p>Here follows the list of companies supporting the project.</p>
+	      <ul>
+	      	<li>
+			  <a href="http://www.sourceforge.net">SourceForge</a> provides us the web space, the Subversion repository and all other tools in it's great platform;<br/>
+			  <a href="https://sourceforge.net/projects/smartweb/"><img style="float:none" src="http://sourceforge.net/sflogo.php?group_id=47439&amp;type=5" title="Hosted by SourceForge"/></a>
+			</li>
+	      	<li>
+			  <a href="http://www.cenqua.com">Cenqua</a> is providing us it's Clover code coverage tool with Maven plugin;<br/>
+			  <a href="http://www.cenqua.com/clover"><img style="float:none" src="http://www.cenqua.com/images/clovered.gif" title="Supported by Cenqua"/></a>
+			</li>
+	      	<li>
+			  <a href="http://www.gentleware.com">Gentleware</a> provides us it's UML diagramming tool;<br/>
+			  <a href="http://www.gentleware.com"><img style="float:none" src="http://www.gentleware.com/uploads/pics/apollo_withlogo_01.png" title="Sponsored by Apollo for Eclipse"/></a>
+			</li>
+	      	<li>
+			  <a href="http://www.ej-technologies.com">ejTechnologies</a> have issued free license of their profiling tool;<br/>
+			  <a href="http://www.ej-technologies.com/products/jprofiler/overview.html"><img style="float:none" src="http://www.ej-technologies.com/images/headlines/3453392302.png"/></a>
+			</li>
+	      </ul>
+		<p>To all of them our sincere thanks for their kindly support!</p>
+    </section>
+
+  </body>
+
+</document>
