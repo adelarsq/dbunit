@@ -87,4 +87,14 @@ public class DatabaseConnection extends AbstractDatabaseConnection
         logger.debug("close() - start");
         _connection.close();
     }
+    
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append(getClass().getName()).append("[");
+        sb.append("schema=").append(_schema);
+        sb.append(", connection=").append(_connection);
+        sb.append("]");
+        return sb.toString();
+    }
 }

@@ -27,6 +27,7 @@ import org.dbunit.database.AmbiguousTableNameException;
 import org.dbunit.dataset.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -128,6 +129,15 @@ public class SequenceTableFilter implements ITableFilter
         String[] tableNames = getTableNames(dataSet);
         return new SequenceTableIterator(reversed ?
                 DataSetUtils.reverseStringArray(tableNames) : tableNames, dataSet);
+    }
+    
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append(getClass().getName()).append("[");
+        sb.append("tableNames=").append(_tableNames==null ? "null" : Arrays.asList(_tableNames));
+        sb.append("]");
+        return sb.toString();
     }
 }
 

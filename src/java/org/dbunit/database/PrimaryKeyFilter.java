@@ -424,6 +424,21 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
     pksToScan.add( pk );
   }
 
+  public String toString() {
+      StringBuffer sb = new StringBuffer();
+      sb.append("tableNames=").append(tableNames);
+      sb.append(", allowedPKsInput=").append(allowedPKsInput);
+      sb.append(", allowedPKsPerTable=").append(allowedPKsPerTable);
+      sb.append(", fkEdgesPerTable=").append(fkEdgesPerTable);
+      sb.append(", fkReverseEdgesPerTable=").append(fkReverseEdgesPerTable);
+      sb.append(", pkColumnPerTable=").append(pkColumnPerTable);
+      sb.append(", pksToScanPerTable=").append(pksToScanPerTable);
+      sb.append(", reverseScan=").append(reverseScan);
+      sb.append(", connection=").append(connection);
+      return sb.toString();
+  }
+
+
   private class FilterIterator implements ITableIterator {
 
     private final ITableIterator _iterator;
@@ -468,5 +483,5 @@ public class PrimaryKeyFilter extends AbstractTableFilter {
       return table;
     }
   }
-
+  
 }
