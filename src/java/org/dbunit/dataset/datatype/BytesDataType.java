@@ -57,7 +57,10 @@ public class BytesDataType extends AbstractDataType
 
     private byte[] toByteArray(InputStream in, int length) throws IOException
     {
-        logger.debug("toByteArray(in=" + in + ", length=" + length + ") - start");
+        if (logger.isDebugEnabled())
+		{
+			logger.debug("toByteArray(in={}, length={}) - start", in, Integer.toString(length));
+		}
 
         ByteArrayOutputStream out = new ByteArrayOutputStream(length);
         in = new BufferedInputStream(in);
@@ -107,19 +110,14 @@ public class BytesDataType extends AbstractDataType
                 }
                 catch (MalformedURLException e1)
                 {
-                    logger.error("typeCast()", e1);
-
                     try
                     {
                         // Not an URL, try as file name
                         File file = new File(stringValue);
-                        return toByteArray(new FileInputStream(file),
-                                (int)file.length());
+                        return toByteArray(new FileInputStream(file), (int)file.length());
                     }
                     catch (FileNotFoundException e2)
                     {
-                        logger.error("typeCast()", e2);
-
                         // Not a file name either
                         return Base64.decode((String)value);
                     }
@@ -161,8 +159,7 @@ public class BytesDataType extends AbstractDataType
             try
             {
                 File file = (File)value;
-                return toByteArray(new FileInputStream(file),
-                        (int)file.length());
+                return toByteArray(new FileInputStream(file), (int)file.length());
             }
             catch (IOException e)
             {
@@ -207,7 +204,10 @@ public class BytesDataType extends AbstractDataType
 
     public int compare(byte[] v1, byte[] v2) throws TypeCastException
     {
-        logger.debug("compare(v1=" + v1 + ", v2=" + v2 + ") - start");
+        if (logger.isDebugEnabled())
+		{
+			logger.debug("compare(v1={}, v2={}) - start", v1, v2);
+		}
 
         int len1 = v1.length;
         int len2 = v2.length;
@@ -261,16 +261,13 @@ public class BytesDataType extends AbstractDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
-        logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
+    	if (logger.isDebugEnabled()) 
+    	{
+    		logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
         		new Object[]{value, new Integer(column), statement} );
+    	}
 
         super.setSqlValue(value, column, statement);
     }
 
 }
-
-
-
-
-
-
