@@ -135,7 +135,7 @@ public class SequenceTableFilter implements ITableFilter
     {
         StringBuffer sb = new StringBuffer();
         sb.append(getClass().getName()).append("[");
-        sb.append("tableNames=").append(_tableNames==null ? "null" : Arrays.asList(_tableNames));
+        sb.append("tableNames=").append(_tableNames==null ? "null" : Arrays.asList(_tableNames).toString());
         sb.append("]");
         return sb.toString();
     }
