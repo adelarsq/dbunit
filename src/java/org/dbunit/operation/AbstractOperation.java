@@ -79,7 +79,7 @@ public abstract class AbstractOperation extends DatabaseOperation
         for (int j = 0; j < columns.length; j++)
         {
             String columnName = columns[j].getColumnName();
-            Column column = DataSetUtils.getColumn(columnName, databaseColumns);
+            Column column = Columns.getColumn(columnName, databaseColumns);
             if (column == null)
             {
                 throw new NoSuchColumnException(tableName + "." + columnName);

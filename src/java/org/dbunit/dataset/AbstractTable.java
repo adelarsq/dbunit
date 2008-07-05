@@ -51,7 +51,8 @@ public abstract class AbstractTable implements ITable
             throws DataSetException
     {
         if(logger.isDebugEnabled())
-            logger.debug("assertValidRowIndex(row={}, rowCount={}) - start", Integer.toString(row), Integer.toString(rowCount));
+            logger.debug("assertValidRowIndex(row={}, rowCount={}) - start", 
+            		Integer.toString(row), Integer.toString(rowCount));
 
         if (row < 0)
         {
@@ -69,7 +70,8 @@ public abstract class AbstractTable implements ITable
 		logger.debug("assertValidColumn(columnName={}) - start", columnName);
 
         ITableMetaData metaData = getTableMetaData();
-        if (DataSetUtils.getColumn(columnName, metaData.getColumns()) == null)
+        // TODO Check if common method from Columns class can be reused -> "Columns.getColumnValidated()"
+        if (Columns.getColumn(columnName, metaData.getColumns()) == null)
         {
             throw new NoSuchColumnException(metaData.getTableName() + "." + columnName);
         }
@@ -82,31 +84,4 @@ public abstract class AbstractTable implements ITable
         ITableMetaData metaData = getTableMetaData();
         return metaData.getColumnIndex(columnName);
     }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Object class
-
-//    public String toString()
-//    {
-//
-//        try
-//        {
-//            ITableMetaData metaData = getTableMetaData();
-//            String tableName = metaData.getTableName();
-//            String columns = Arrays.asList(metaData.getColumns()).toString();
-//
-//            return "[name=" + tableName + ", rowCount=" + getRowCount() +
-//                    ", columns=" + columns + "]";
-//        }
-//        catch (DataSetException e)
-//        {
-//            return super.toString();
-//        }
-//    }
 }
-
-
-
-
-
-

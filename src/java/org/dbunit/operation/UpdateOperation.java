@@ -21,19 +21,18 @@
 
 package org.dbunit.operation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
+import org.dbunit.dataset.Columns;
 import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoPrimaryKeyException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Updates the database from the dataset contents. This operation assumes that
@@ -87,7 +86,7 @@ public class UpdateOperation extends AbstractBatchOperation
             Column column = columns[i];
 
             // set if not primary key
-            if (DataSetUtils.getColumn(column.getColumnName(), primaryKeys) == null)
+            if (Columns.getColumn(column.getColumnName(), primaryKeys) == null)
             {
                 if (!firstSet)
                 {

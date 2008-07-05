@@ -54,9 +54,3 @@ public interface ITableMetaData
 	 */
 	public int getColumnIndex(String columnName) throws DataSetException;
 }
-
-
-
-
-
-

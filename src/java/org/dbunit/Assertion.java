@@ -23,12 +23,12 @@ package org.dbunit;
 
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Comparator;
 
 import junit.framework.Assert;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
+import org.dbunit.dataset.Columns;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
@@ -51,8 +51,7 @@ public class Assertion
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(Assertion.class);
-
-    private static final ColumnComparator COLUMN_COMPARATOR = new ColumnComparator();
+    
 
     private Assertion()
     {
@@ -236,8 +235,8 @@ public class Assertion
 //                actualMetaData.getTableName());
 
         // Verify columns
-        Column[] expectedColumns = getSortedColumns(expectedMetaData);
-        Column[] actualColumns = getSortedColumns(actualMetaData);
+        Column[] expectedColumns = Columns.getSortedColumns(expectedMetaData);
+        Column[] actualColumns = Columns.getSortedColumns(actualMetaData);
         Assert.assertEquals("column count (table=" + expectedTableName + ")",
                 expectedColumns.length, actualColumns.length);
 
@@ -247,8 +246,8 @@ public class Assertion
             String actualName = actualColumns[i].getColumnName();
             if (!expectedName.equalsIgnoreCase(actualName))
             {
-                Assert.fail("expected columns " + getColumnNamesAsString(expectedColumns) +
-                        " but was " + getColumnNamesAsString(actualColumns) +
+            	Assert.fail("expected columns " + Columns.getColumnNamesAsString(expectedColumns) +
+            			" but was " + Columns.getColumnNamesAsString(actualColumns) +
                         " (table=" + expectedTableName + ")");
             }
         }
@@ -349,30 +348,6 @@ public class Assertion
         return expectedDataType;
     }
 
-    private static Column[] getSortedColumns(ITableMetaData metaData)
-            throws DataSetException
-    {
-        logger.debug("getSortedColumns(metaData={}) - start", metaData);
-
-        Column[] columns = metaData.getColumns();
-        Column[] sortColumns = new Column[columns.length];
-        System.arraycopy(columns, 0, sortColumns, 0, columns.length);
-        Arrays.sort(sortColumns, COLUMN_COMPARATOR);
-        return sortColumns;
-    }
-
-    private static String getColumnNamesAsString(Column[] columns)
-    {
-        logger.debug("getColumnNamesAsString(columns={}) - start", columns);
-
-        String[] names = new String[columns.length];
-        for (int i = 0; i < columns.length; i++)
-        {
-            Column column = columns[i];
-            names[i] = column.getColumnName();
-        }
-        return Arrays.asList(names).toString();
-    }
 
     private static String[] getSortedUpperTableNames(IDataSet dataSet)
             throws DataSetException
@@ -387,33 +362,4 @@ public class Assertion
         Arrays.sort(names);
         return names;
     }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // ColumnComparator class
-
-    private static class ColumnComparator implements Comparator
-    {
-
-        /**
-         * Logger for this class
-         */
-        private static final Logger logger = LoggerFactory.getLogger(ColumnComparator.class);
-
-        public int compare(Object o1, Object o2)
-        {
-            logger.debug("compare(o1={}, o2={}) - start", o1, o2);
-
-            Column column1 = (Column)o1;
-            Column column2 = (Column)o2;
-
-            String columnName1 = column1.getColumnName();
-            String columnName2 = column2.getColumnName();
-            return columnName1.compareToIgnoreCase(columnName2);
-        }
-    }
 }
-
-
-
-
-

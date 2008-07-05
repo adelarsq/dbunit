@@ -23,6 +23,7 @@
       <action dev="gommma" type="add">Added fetchSize as a parameter.</action>
       <action dev="gommma" type="add" issue="1685474" due-to="jacobrobertson">ReplacementTable - allow fail if value not replaced</action>
       <action dev="slecallonnec" type="fix" issue="2009747">Fixing erroneous logger.error in BytesDataType.typeCast().</action>
+      <action dev="slecallonnec" type="add" due-to="gommma" issue="2004349">Refactoring of column-related methods.</action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>

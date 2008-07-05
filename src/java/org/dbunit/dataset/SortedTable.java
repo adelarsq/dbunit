@@ -81,19 +81,23 @@ public class SortedTable extends AbstractTable
         _table = table;
         _columns = new Column[columnNames.length];
 
-        Column[] columns = table.getTableMetaData().getColumns();
+        ITableMetaData tableMetaData = table.getTableMetaData();
+        // Initialize columns and validate if they exist
+        Column[] columns = tableMetaData.getColumns();
         for (int i = 0; i < columnNames.length; i++)
         {
             String columnName = columnNames[i];
-            _columns[i] = DataSetUtils.getColumn(columnName, columns);
+            _columns[i] = Columns.getColumn(columnName, columns);
             // If the column does not exist in the table, throw an exception
+            // TODO Check if common method from Columns class can be reused -> "Columns.getColumnValidated()"
             if (_columns[i] == null)
             {
 				throw new NoSuchColumnException("Unknown column '" + columnName
 						+ "' for table '"
-						+ table.getTableMetaData().getTableName() + "'");
+						+ tableMetaData.getTableName() + "'");
 			}
         }
+        
         initialize();
     }
 

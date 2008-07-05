@@ -22,7 +22,11 @@
 package org.dbunit.database;
 
 import org.dbunit.AbstractDatabaseTest;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.Columns;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoColumnsFoundException;
 import org.dbunit.dataset.datatype.DataType;
 
 /**
@@ -110,14 +114,14 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         // not nullable
         for (int i = 0; i < notNullable.length; i++)
         {
-            Column column = DataSetUtils.getColumn(notNullable[i], columns);
+            Column column = Columns.getColumn(notNullable[i], columns);
             assertEquals(notNullable[i], Column.NO_NULLS, column.getNullable());
         }
 
         // nullable
         for (int i = 0; i < nullable.length; i++)
         {
-            Column column = DataSetUtils.getColumn(nullable[i], columns);
+            Column column = Columns.getColumn(nullable[i], columns);
             assertEquals(nullable[i], Column.NULLABLE, column.getNullable());
         }
     }

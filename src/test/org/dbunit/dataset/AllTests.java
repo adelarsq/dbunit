@@ -42,6 +42,7 @@ public class AllTests extends TestSuite
         suite.addTest(new TestSuite(CaseInsensitiveDataSetTest.class));
         suite.addTest(new TestSuite(CaseInsensitiveTableTest.class));
         suite.addTest(new TestSuite(ColumnTest.class));
+        suite.addTest(new TestSuite(ColumnsTest.class));
         suite.addTest(new TestSuite(CompositeDataSetTest.class));
         suite.addTest(new TestSuite(CompositeTableTest.class));
         suite.addTest(new TestSuite(DataSetProducerAdapterTest.class));

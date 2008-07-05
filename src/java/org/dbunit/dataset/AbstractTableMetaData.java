@@ -59,7 +59,7 @@ public abstract class AbstractTableMetaData implements ITableMetaData
         List keyList = new ArrayList();
         for (int i = 0; i < keyNames.length; i++)
         {
-            Column primaryKey = DataSetUtils.getColumn(keyNames[i], columns);
+            Column primaryKey = Columns.getColumn(keyNames[i], columns);
             if (primaryKey != null)
             {
                 keyList.add(primaryKey);
@@ -123,7 +123,7 @@ public abstract class AbstractTableMetaData implements ITableMetaData
 
 	/**
 	 * @param columns The columns to be put into the hash table
-	 * @return A hashtable having the key value pair [columnName, columnIndexInInputArray]
+	 * @return A map having the key value pair [columnName, columnIndexInInputArray]
 	 */
 	private Map createColumnIndexesMap(Column[] columns) 
 	{

@@ -69,8 +69,7 @@ public class AbstractBatchOperationTest extends AbstractDatabaseTest
             for (int j = 0; j < resultColumns.length; j++)
             {
                 Column resultColumn = resultColumns[j];
-                Column databaseColumn = DataSetUtils.getColumn(
-                        resultColumn.getColumnName(), databaseMetaData.getColumns());
+                Column databaseColumn = Columns.getColumn(resultColumn.getColumnName(), databaseMetaData.getColumns());
                 Column xmlColumn = xmlMetaData.getColumns()[j];
 
                 assertEquals("column name", xmlColumn.getColumnName(),

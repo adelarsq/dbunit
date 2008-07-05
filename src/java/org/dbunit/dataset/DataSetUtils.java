@@ -21,18 +21,15 @@
 
 package org.dbunit.dataset;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import org.dbunit.Assertion;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.StringTokenizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class contains various methods for manipulating datasets.
@@ -223,21 +220,12 @@ public class DataSetUtils
      * @param columnName the name of the column to search.
      * @param columns the array of columns from which the column must be searched.
      * @return the column or <code>null</code> if the column is not found
+     * @deprecated since 2.3.0 - prefer usage of {@link Columns#getColumn(String, Column[])}
      */
     public static Column getColumn(String columnName, Column[] columns)
     {
         logger.debug("getColumn(columnName={}, columns={}) - start", columnName, columns);
-
-        for (int i = 0; i < columns.length; i++)
-        {
-            Column column = columns[i];
-            if (columnName.equalsIgnoreCase(columns[i].getColumnName()))
-            {
-                return column;
-            }
-        }
-
-        return null;
+        return Columns.getColumn(columnName, columns);
     }
 
     /**
@@ -313,37 +301,4 @@ public class DataSetUtils
         return newArray;
 	}
 
-	public static Column[] mergeColumnsByName(Column[] referenceColumns, Column[] columnsToMerge) {
-		
-		List resultList = new ArrayList(Arrays.asList(referenceColumns));
-		List columnsToMergeNotInRefList = new ArrayList(Arrays.asList(columnsToMerge));
-		
-		// All columns that exist in the referenceColumns
-		for (int i = 0; i < referenceColumns.length; i++) {
-			Column refColumn = referenceColumns[i];
-			for (int k = 0; k < columnsToMerge.length; k++) {
-				Column columnToMerge = columnsToMerge[k];
-				// Check if this colToMerge exists in the refColumn
-				if(columnToMerge.getColumnName().equals(refColumn.getColumnName())) {
-					// We found the col in the refColumns - so no candidate for adding to the result list
-					columnsToMergeNotInRefList.remove(columnToMerge);
-					break;
-				}
-			}
-		}
-		
-		// Add all "columnsToMerge" that have not been found in the referenceColumnList
-		resultList.addAll(columnsToMergeNotInRefList);
-		return (Column[]) resultList.toArray(new Column[]{});
-	}
-
-	
-	public static class ColumnComparatorByName implements Comparator {
-		public int compare(Object o1, Object o2) {
-			Column col1 = (Column)o1;
-			Column col2 = (Column)o2;
-			return col1.getColumnName().compareTo(col2.getColumnName());
-		}
-		
-	}
 }

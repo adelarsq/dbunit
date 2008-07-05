@@ -76,7 +76,7 @@ public class DefaultTableTest extends AbstractTableTest
         table.addRow(new Object[]{ITable.NO_VALUE, ITable.NO_VALUE, ITable.NO_VALUE,
                                   ITable.NO_VALUE, ITable.NO_VALUE, ITable.NO_VALUE});
         Column[] columns = table.getTableMetaData().getColumns();
-        assertNotNull(DataSetUtils.getColumn(columnName, columns));
+        assertNotNull(Columns.getColumn(columnName, columns));
         assertEquals("no value", expected, table.getValue(0, columnName));
     }
 

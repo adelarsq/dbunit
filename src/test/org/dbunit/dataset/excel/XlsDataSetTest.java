@@ -20,14 +20,19 @@
  */
 package org.dbunit.dataset.excel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import org.dbunit.Assertion;
 import org.dbunit.dataset.AbstractDataSetTest;
 import org.dbunit.dataset.Column;
+import org.dbunit.dataset.Columns;
 import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
-
-import java.io.*;
 
 /**
  * @author Manuel Laflamme
@@ -162,7 +167,7 @@ public class XlsDataSetTest extends AbstractDataSetTest
     {
     		IDataSet dataSet = new XlsDataSet(new FileInputStream("./src/xml/contactor.xls"));
     		ITable customerTable = dataSet.getTable("customer");
-            Column column = DataSetUtils.getColumn("name",  customerTable.getTableMetaData().getColumns());
+            Column column = Columns.getColumn("name",  customerTable.getTableMetaData().getColumns());
             assertNotNull(column);
     }
 
