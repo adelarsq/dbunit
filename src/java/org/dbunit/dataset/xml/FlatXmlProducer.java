@@ -30,7 +30,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITableMetaData;
@@ -147,16 +146,11 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
      * @return
      * @throws DataSetException
      */
-    private ITableMetaData mergeTableMetaData(String tableName, Attributes attributes) throws DataSetException
+    private ITableMetaData mergeTableMetaData(String tableName, Attributes attributes, Column columnToMerge) throws DataSetException
     {
-    	ITableMetaData tableMetaData = createTableMetaData(tableName, attributes);
-        Column[] columns = new Column[attributes.getLength()];
-    	if (tableMetaData != null)
-    	{
-    		// check include all formerly found attributes
-    		// might be that there is one attribute missing in this row that was present in one of the former rows
-    		columns = DataSetUtils.mergeColumnsByName(_activeMetaData.getColumns(), tableMetaData.getColumns());
-    	}
+        Column[] columns = new Column[_activeMetaData.getColumns().length + 1];
+        System.arraycopy(_activeMetaData.getColumns(), 0, columns, 0, _activeMetaData.getColumns().length);
+        columns[columns.length - 1] = columnToMerge;
     	
     	return new DefaultTableMetaData(tableName, columns);
     }
@@ -297,28 +291,9 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
             // Row notification
             if (attributes.getLength() > 0)
             {
-            	for (int i = 0 ; i < attributes.getLength(); i++)
+            	if (!_dtdPresent)
             	{
-            		if (_columnCache.get(attributes.getQName(i)) == null) 
-            		{
-                    	if (_columnSensing)
-                    	{
-                    		logger.debug("Column sensing enabled. Will create a new metaData with potentially new columns if needed");
-                    		_activeMetaData = mergeTableMetaData(qName, attributes);
-                    		// We also need to recreate the table, copying the data already collected from the old one to the new one
-                    		_consumer.startTable(_activeMetaData);
-                    	} 
-                    	else
-                    	{
-	                		logger.warn("Extra columns on line " + (_lineNumber+1) 
-	                				+ ".  Those columns will be ignored.");
-	                		logger.warn("Please add the extra columns to line 1,"
-	                				+ " or use a DTD to make sure the value of those columns are populated " +
-	                						"or specify 'columnSensing=true' for your FlatXmlProducer.");
-	                		logger.warn("See FAQ for more details.");
-                    	}
-
-            		}
+	            	handleMissingColumns(qName, attributes);
             	}
             	
             	_lineNumber++;
@@ -337,6 +312,50 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
             throw new SAXException(e);
         }
     }
+
+    /**
+     * parses the attributes in the current row, and checks whether a new column 
+     * is found.
+     * 
+     * <p>Depending on the value of the <code>columnSensing</code> flag, the appropriate
+     * action is taken:</p>
+     * 
+     * <ul>
+     *   <li>If it is true, the new column is merged back into the metadata;</li>
+     *   <li>If not, a warning message is displayed.</li>
+     * </ul>
+     * 
+     * @param qName Name of the current table.
+     * @param attributes  Attributed for the current row.
+     * @throws DataSetException
+     */
+	protected void handleMissingColumns(String qName, Attributes attributes)
+			throws DataSetException
+	{
+		for (int i = 0 ; i < attributes.getLength(); i++)
+		{
+			if (_columnCache.get(attributes.getQName(i)) == null) 
+			{
+		    	if (_columnSensing)
+		    	{
+		    		Column columnToMerge = new Column(attributes.getQName(i), DataType.UNKNOWN);
+		    		logger.debug("Column sensing enabled. Will create a new metaData with potentially new columns if needed");
+		    		_activeMetaData = mergeTableMetaData(qName, attributes, columnToMerge);
+		    		// We also need to recreate the table, copying the data already collected from the old one to the new one
+		    		_consumer.startTable(_activeMetaData);
+		    	} 
+		    	else
+		    	{
+		    		logger.warn("Extra columns on line " + (_lineNumber+1) 
+		    				+ ".  Those columns will be ignored.");
+		    		logger.warn("Please add the extra columns to line 1,"
+		    				+ " or use a DTD to make sure the value of those columns are populated " +
+		    						"or specify 'columnSensing=true' for your FlatXmlProducer.");
+		    		logger.warn("See FAQ for more details.");
+		    	}
+			}
+		}
+	}
 
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
