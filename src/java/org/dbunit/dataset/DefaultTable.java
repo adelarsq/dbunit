@@ -173,15 +173,11 @@ public class DefaultTable extends AbstractTable
 
     public ITableMetaData getTableMetaData()
     {
-        logger.debug("getTableMetaData() - start");
-
         return _metaData;
     }
 
     public int getRowCount()
     {
-        logger.debug("getRowCount() - start");
-
         return _rowList.size();
     }
 
