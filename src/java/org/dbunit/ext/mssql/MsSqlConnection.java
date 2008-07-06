@@ -23,6 +23,7 @@ package org.dbunit.ext.mssql;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
@@ -54,8 +55,9 @@ public class MsSqlConnection extends DatabaseConnection
      *
      * @param connection the adapted JDBC connection
      * @param schema the database schema
+     * @throws DatabaseUnitException 
      */
-    public MsSqlConnection(Connection connection, String schema)
+    public MsSqlConnection(Connection connection, String schema) throws DatabaseUnitException
     {
         super(connection, schema);
         getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
@@ -66,8 +68,9 @@ public class MsSqlConnection extends DatabaseConnection
      * Creates a new <code>MsSqlConnection</code>.
      *
      * @param connection the adapted JDBC connection
+     * @throws DatabaseUnitException 
      */
-    public MsSqlConnection(Connection connection)
+    public MsSqlConnection(Connection connection) throws DatabaseUnitException
     {
         super(connection);
         getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,

@@ -68,7 +68,8 @@ public class DepthFirstSearch implements ISearchAlgorithm {
    */
   public Set search(Object[] nodesFrom, ISearchCallback callback)
       throws SearchException {
-        logger.debug("search(nodesFrom=" + nodesFrom + ", callback=" + callback + ") - start");
+      if(logger.isDebugEnabled())
+          logger.debug("search(nodesFrom={}, callback={}) - start", nodesFrom, callback);
 
     return search(CollectionsHelper.objectsToSet(nodesFrom), callback);
   }
@@ -78,7 +79,8 @@ public class DepthFirstSearch implements ISearchAlgorithm {
    */
   public Set search(Set nodesFrom, ISearchCallback callback)
       throws SearchException {
-        logger.debug("search(nodesFrom=" + nodesFrom + ", callback=" + callback + ") - start");
+      if(logger.isDebugEnabled())
+          logger.debug("search(nodesFrom={}, callback={}) - start", nodesFrom, callback);
 
     synchronized (this) {
       if (searching) {

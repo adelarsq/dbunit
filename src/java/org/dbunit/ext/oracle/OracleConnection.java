@@ -20,6 +20,7 @@
  */
 package org.dbunit.ext.oracle;
 
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 
@@ -33,7 +34,14 @@ import java.sql.Connection;
  */
 public class OracleConnection extends DatabaseConnection
 {
-    public OracleConnection(Connection connection, String schema)
+    /**
+     * Creates a oracle connection. Beware that the given schema is passed in to the parent class
+     * as "upper case" string.
+     * @param connection
+     * @param schema The schema name
+     * @throws DatabaseUnitException
+     */
+    public OracleConnection(Connection connection, String schema) throws DatabaseUnitException
     {
         super(connection, schema != null ? schema.toUpperCase() : null);
         getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,

@@ -21,11 +21,13 @@
 
 package org.dbunit.database;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.util.SQLHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class adapts a JDBC <code>Connection</code> to a
@@ -51,20 +53,36 @@ public class DatabaseConnection extends AbstractDatabaseConnection
      * Creates a new <code>DatabaseConnection</code>.
      *
      * @param connection the adapted JDBC connection
-     * @param schema the database schema
+     * @param schema the database schema. Note that the schema name is case sensitive. This
+     * is necessary because schemas with the same name but different case can coexist on one
+     * database. <br>
+     * Here an example that creates two users/schemas for oracle where only the case is different:<br>
+     * <code>
+     * create user dbunittest identified by dbunittest;
+     * create user "dbunittest" identified by "dbunittest";
+     * </code>
+     * The first one creates the "default" user where everything is interpreted by oracle in uppercase.
+     * The second one is completely lowercase because of the quotes.
+     * @throws DatabaseUnitException If the validation of the given parameters was not successful (added with 2.3.0)
      */
-    public DatabaseConnection(Connection connection, String schema)
+    public DatabaseConnection(Connection connection, String schema) throws DatabaseUnitException
     {
+        if(connection == null)
+        {
+            throw new NullPointerException("The parameter 'connection' must not be null");
+        }
         _connection = connection;
         _schema = schema;
+        validateSchema();
     }
 
     /**
      * Creates a new <code>DatabaseConnection</code>.
      *
      * @param connection the adapted JDBC connection
+     * @throws DatabaseUnitException If the validation of the given parameters was not successful (added with 2.3.0)
      */
-    public DatabaseConnection(Connection connection)
+    public DatabaseConnection(Connection connection) throws DatabaseUnitException
     {
       this( connection, null );
     }
@@ -86,6 +104,30 @@ public class DatabaseConnection extends AbstractDatabaseConnection
     {
         logger.debug("close() - start");
         _connection.close();
+    }
+    
+    private void validateSchema() throws DatabaseUnitException
+    {
+        logger.debug("validateSchema() - start");
+        
+        if(this._schema == null)
+        {
+            logger.debug("Schema is null. Nothing to validate.");
+            return;
+        }
+        
+        try
+        {
+            boolean schemaExists = SQLHelper.schemaExists(this._connection, this._schema);
+            if(!schemaExists)
+            {
+                throw new DatabaseUnitException("The given schema '" + this._schema + "' does not exist.");
+            }
+        }
+        catch(SQLException e)
+        {
+            throw new DatabaseUnitException("Exception while checking the schema for validity", e);
+        }
     }
     
     public String toString()

@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import java.util.SortedSet;
 
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.NoSuchTableException;
 
 import org.dbunit.util.search.SearchException;
 
@@ -45,14 +46,14 @@ public class ImportedKeysSearchCallback extends
      */
     private static final Logger logger = LoggerFactory.getLogger(ImportedKeysSearchCallback.class);
 
-  public ImportedKeysSearchCallback(IDatabaseConnection connection) {
-    super(connection);
-  }
+    public ImportedKeysSearchCallback(IDatabaseConnection connection) {
+        super(connection);
+    }
 
-  public SortedSet getEdges(Object node) throws SearchException {
+    public SortedSet getEdges(Object node) throws SearchException {
         logger.debug("getEdges(node={}) - start", node);
 
-    return getNodesFromImportedKeys( node );
-  }
+        return getNodesFromImportedKeys( node );
+    }
 
 }

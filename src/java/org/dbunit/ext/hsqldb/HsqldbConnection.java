@@ -20,6 +20,7 @@
  */
 package org.dbunit.ext.hsqldb;
 
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 
@@ -31,7 +32,7 @@ import java.sql.Connection;
  */
 public class HsqldbConnection extends DatabaseConnection
 {
-    public HsqldbConnection(Connection connection, String schema)
+    public HsqldbConnection(Connection connection, String schema) throws DatabaseUnitException
     {
         super(connection, schema);
         getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,

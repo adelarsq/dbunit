@@ -23,6 +23,8 @@
 
 package org.dbunit.database;
 
+import org.dbunit.DatabaseUnitException;
+
 
 /**
  * @author Manuel Laflamme
@@ -36,6 +38,35 @@ public class DatabaseConnectionTest extends AbstractDatabaseConnectionTest
         super(s);
     }
 
+    public void testCreateNullConnection() throws Exception
+    {
+        try
+        {
+            new DatabaseConnection(null);
+            fail("Should not be able to create a database connection without a JDBC connection");
+        }
+        catch(NullPointerException expected)
+        {
+            // all right
+        }
+    }
+
+    public void testCreateConnectionWithNonExistingSchema() throws Exception
+    {
+        IDatabaseConnection validConnection = super.getConnection();
+        String schema = "XYZ_INVALID_SCHEMA_1642344539";
+        // Try to create a database connection with an invalid schema
+        try
+        {
+            new DatabaseConnection(validConnection.getConnection(), schema);
+            fail("Should not be able to create a database connection object with an unknown schema.");
+        }
+        catch(DatabaseUnitException expected)
+        {
+            String expectedMsg = "The given schema 'XYZ_INVALID_SCHEMA_1642344539' does not exist.";
+            assertEquals(expectedMsg, expected.getMessage());
+        }
+    }
 }
 
 

@@ -444,7 +444,15 @@ public class DbUnitTask extends Task
         }
         conn.setAutoCommit(true);
 
-        IDatabaseConnection connection = new DatabaseConnection(conn, schema);
+        IDatabaseConnection connection = null;
+        try
+        {
+            connection = new DatabaseConnection(conn, schema);
+        }
+        catch(DatabaseUnitException e)
+        {
+            throw new BuildException("Could not create dbunit connection object", e);
+        }
         DatabaseConfig config = connection.getConfig();
         config.setFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, supportBatchStatement);
         config.setFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, useQualifiedTableNames);

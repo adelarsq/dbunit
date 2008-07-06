@@ -20,6 +20,7 @@
  */
 package org.dbunit.ext.mysql;
 
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 
@@ -33,7 +34,7 @@ import java.sql.Connection;
  */
 public class MySqlConnection extends DatabaseConnection
 {
-    public MySqlConnection(Connection connection, String schema)
+    public MySqlConnection(Connection connection, String schema) throws DatabaseUnitException
     {
         super(connection, schema);
         getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,

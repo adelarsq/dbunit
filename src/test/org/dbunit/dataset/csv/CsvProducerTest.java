@@ -147,7 +147,7 @@ public class CsvProducerTest extends TestCase {
         dir.delete();
     }
 
-    private IDatabaseConnection getConnection() throws SQLException {
+    private IDatabaseConnection getConnection() throws SQLException, DatabaseUnitException {
         return new DatabaseConnection(DriverManager.getConnection(url, user, password));
     }
 

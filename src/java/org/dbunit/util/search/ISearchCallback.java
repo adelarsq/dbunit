@@ -23,6 +23,8 @@ package org.dbunit.util.search;
 
 import java.util.SortedSet;
 
+import org.dbunit.dataset.NoSuchTableException;
+
 /**
  * Callback used by the search algorithms.<br>
  * This interface is responsible for providing the edges of the graph and it can
@@ -34,35 +36,35 @@ import java.util.SortedSet;
  */
 public interface ISearchCallback {
 
-  /**
-   * Get the edges originating from a node.
-   * 
-   * @param node
-   *          node from
-   * @return all edges originating from this node.
-   * @throws Exception
-   *           exception wrapper
-   */
-  SortedSet getEdges(Object fromNode) throws SearchException;
+    /**
+     * Get the edges originating from a node.
+     * 
+     * @param node
+     *          node from
+     * @return all edges originating from this node.
+     * @throws Exception
+     *           exception wrapper
+     */
+    SortedSet getEdges(Object fromNode) throws SearchException;
 
-  /**
-   * Notifies the callback that a node has been added to the search result.
-   * 
-   * @param fromNode
-   *          node that has been added.
-   * @throws Exception
-   *           exception wrapper
-   */
-  void nodeAdded(Object fromNode) throws SearchException;
+    /**
+     * Notifies the callback that a node has been added to the search result.
+     * 
+     * @param fromNode
+     *          node that has been added.
+     * @throws Exception
+     *           exception wrapper
+     */
+    void nodeAdded(Object fromNode) throws SearchException;
 
-  /**
-   * Decides if a node should be searched or not
-   * 
-   * @param node
-   *          node to be filtered
-   * @return true if the node should be searched
-   * @throws Exception
-   *           exception wrapper
-   */
-  boolean searchNode(Object node) throws SearchException;
+    /**
+     * Decides if a node should be searched or not
+     * 
+     * @param node
+     *          node to be filtered
+     * @return true if the node should be searched
+     * @throws Exception
+     *           exception wrapper
+     */
+    boolean searchNode(Object node) throws SearchException;
 }

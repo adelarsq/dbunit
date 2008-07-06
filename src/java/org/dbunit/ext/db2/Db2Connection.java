@@ -21,6 +21,7 @@
 
 package org.dbunit.ext.db2;
 
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 
@@ -34,7 +35,7 @@ import java.sql.Connection;
 public class Db2Connection extends DatabaseConnection
 {
 
-    public Db2Connection(Connection connection, String schema)
+    public Db2Connection(Connection connection, String schema) throws DatabaseUnitException
     {
         super(connection, schema);
         getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,

@@ -20,6 +20,7 @@
  */
 package org.dbunit.ext.h2;
 
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 
@@ -31,7 +32,7 @@ import java.sql.Connection;
  */
 public class H2Connection extends DatabaseConnection
 {
-    public H2Connection(Connection connection, String schema)
+    public H2Connection(Connection connection, String schema) throws DatabaseUnitException
     {
         super(connection, schema);
         getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
