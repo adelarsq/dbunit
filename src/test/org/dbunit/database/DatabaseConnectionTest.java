@@ -58,7 +58,8 @@ public class DatabaseConnectionTest extends AbstractDatabaseConnectionTest
         // Try to create a database connection with an invalid schema
         try
         {
-            new DatabaseConnection(validConnection.getConnection(), schema);
+        	boolean validate = true;
+            new DatabaseConnection(validConnection.getConnection(), schema, validate);
             fail("Should not be able to create a database connection object with an unknown schema.");
         }
         catch(DatabaseUnitException expected)

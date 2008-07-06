@@ -53,6 +53,17 @@ public class DatabaseConnection extends AbstractDatabaseConnection
      * Creates a new <code>DatabaseConnection</code>.
      *
      * @param connection the adapted JDBC connection
+     * @throws DatabaseUnitException If the validation of the given parameters was not successful (added with 2.3.0)
+     */
+    public DatabaseConnection(Connection connection) throws DatabaseUnitException
+    {
+      this( connection, null );
+    }
+
+    /**
+     * Creates a new <code>DatabaseConnection</code>.
+     *
+     * @param connection the adapted JDBC connection
      * @param schema the database schema. Note that the schema name is case sensitive. This
      * is necessary because schemas with the same name but different case can coexist on one
      * database. <br>
@@ -67,26 +78,39 @@ public class DatabaseConnection extends AbstractDatabaseConnection
      */
     public DatabaseConnection(Connection connection, String schema) throws DatabaseUnitException
     {
-        if(connection == null)
-        {
-            throw new NullPointerException("The parameter 'connection' must not be null");
-        }
-        _connection = connection;
-        _schema = schema;
-        validateSchema();
+    	this(connection, schema, false);
     }
 
     /**
      * Creates a new <code>DatabaseConnection</code>.
      *
      * @param connection the adapted JDBC connection
+     * @param schema the database schema. Note that the schema name is case sensitive. This
+     * is necessary because schemas with the same name but different case can coexist on one
+     * database. <br>
+     * Here an example that creates two users/schemas for oracle where only the case is different:<br>
+     * <code>
+     * create user dbunittest identified by dbunittest;
+     * create user "dbunittest" identified by "dbunittest";
+     * </code>
+     * The first one creates the "default" user where everything is interpreted by oracle in uppercase.
+     * The second one is completely lowercase because of the quotes.
+     * @param validate Whether or not the given schema should be validate if it exists
+     * @since 2.3.0
      * @throws DatabaseUnitException If the validation of the given parameters was not successful (added with 2.3.0)
      */
-    public DatabaseConnection(Connection connection) throws DatabaseUnitException
+    public DatabaseConnection(Connection connection, String schema, boolean validate) throws DatabaseUnitException
     {
-      this( connection, null );
+        if(connection == null)
+        {
+            throw new NullPointerException("The parameter 'connection' must not be null");
+        }
+        _connection = connection;
+        _schema = schema;
+        if(validate)
+        	validateSchema();
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
     // IDatabaseConnection interface
 
