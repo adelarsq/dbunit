@@ -173,7 +173,7 @@ public class Compare extends AbstractStep
         StringBuffer result = new StringBuffer();
         result.append("Compare: ");
         result.append(" src=");
-        result.append(_src.getAbsolutePath());
+        result.append((_src == null ? "null" : _src.getAbsolutePath()));
         result.append(", format= ");
         result.append(_format);
         result.append(", tables= ");

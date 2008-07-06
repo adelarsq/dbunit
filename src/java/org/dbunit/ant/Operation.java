@@ -222,7 +222,7 @@ public class Operation extends AbstractStep
         result.append("Operation: ");
         result.append(" type=" + _type);
         result.append(", format=" + _format);
-        result.append(", src=" + _src == null ? null : _src.getAbsolutePath());
+        result.append(", src=" + (_src == null ? "null" : _src.getAbsolutePath()));
         result.append(", operation = " + _operation);
 
         return result.toString();
