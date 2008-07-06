@@ -42,6 +42,7 @@ public class AllTests extends TestSuite
         suite.addTest(org.dbunit.util.AllTests.suite());
         suite.addTest(org.dbunit.util.search.AllTests.suite());
         suite.addTest(new TestSuite(AssertionTest.class));
+        suite.addTest(new TestSuite(DatabaseUnitExceptionTest.class));
         return suite;
     }
 

@@ -21,11 +21,6 @@
 
 package org.dbunit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.PrintStream;
-import java.io.PrintWriter;
 
 /**
  * @author Manuel Laflamme
@@ -39,12 +34,6 @@ public class DatabaseUnitException extends Exception
 	 */
 	private static final long	serialVersionUID	= 7597982895850877156L;
 
-	/**
-     * Logger for this class
-     */
-    private static final Logger logger = LoggerFactory.getLogger(DatabaseUnitException.class);
-
-    private final Throwable _e;
 
     /**
      * Constructs an <code>DatabaseUnitException</code> with no detail
@@ -53,7 +42,6 @@ public class DatabaseUnitException extends Exception
     public DatabaseUnitException()
     {
         super();
-        _e = null;
     }
 
     /**
@@ -63,7 +51,6 @@ public class DatabaseUnitException extends Exception
     public DatabaseUnitException(String msg)
     {
         super(msg);
-        _e = null;
     }
 
     /**
@@ -72,8 +59,7 @@ public class DatabaseUnitException extends Exception
      */
     public DatabaseUnitException(String msg, Throwable e)
     {
-        super(msg);
-        _e = e;
+        super(msg, e);
     }
 
     /**
@@ -82,55 +68,16 @@ public class DatabaseUnitException extends Exception
      */
     public DatabaseUnitException(Throwable e)
     {
-        super(e.toString());
-        _e = e;
+        super(e);
     }
 
     /**
      * Returns the encapsuled exception or <code>null</code> if none.
+     * @deprecated Use {@link #getCause()} to retrieve the nested exception
      */
     public Throwable getException()
     {
-        return _e;
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    // Exception class
-
-    /**
-     *
-     */
-    public void printStackTrace()
-    {
-        logger.debug("printStackTrace() - start");
-
-        super.printStackTrace();
-        if (_e != null)
-            _e.printStackTrace();
-    }
-
-    /**
-     *
-     */
-    public void printStackTrace(PrintStream s)
-    {
-        logger.debug("printStackTrace(s=" + s + ") - start");
-
-        super.printStackTrace(s);
-        if (_e != null)
-            _e.printStackTrace(s);
-    }
-
-    /**
-     *
-     */
-    public void printStackTrace(PrintWriter s)
-    {
-        logger.debug("printStackTrace(s=" + s + ") - start");
-
-        super.printStackTrace(s);
-        if (_e != null)
-            _e.printStackTrace(s);
+        return super.getCause();
     }
 
 }
