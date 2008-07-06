@@ -23,9 +23,7 @@ package org.dbunit.dataset.xml;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -35,6 +33,7 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoSuchColumnException;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.BufferedConsumer;
 import org.dbunit.dataset.stream.DefaultConsumer;
@@ -79,8 +78,6 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
 
     private IDataSetConsumer _consumer = EMPTY_CONSUMER;
     private ITableMetaData _activeMetaData;
-    
-    private Map _columnCache = null;
 
     public FlatXmlProducer(InputSource xmlSource)
     {
@@ -157,8 +154,6 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
         {
         	Column column = (Column)columnsToMerge.get(i);
         	columns[columns.length - columnsToMerge.size() + i] = column;
-        	// Update cache.
-        	_columnCache.put(column.getColumnName(), column);
         }
     	
     	return new DefaultTableMetaData(tableName, columns);
@@ -187,9 +182,10 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
 		List columnsToMerge = new ArrayList();
 		for (int i = 0 ; i < attributes.getLength(); i++)
 		{
-			if (_columnCache.get(attributes.getQName(i)) == null) 
-			{
-		    	columnsToMerge.add(new Column(attributes.getQName(i), DataType.UNKNOWN));
+			try {
+				_activeMetaData.getColumnIndex(attributes.getQName(i));
+			} catch (NoSuchColumnException e) {
+				columnsToMerge.add(new Column(attributes.getQName(i), DataType.UNKNOWN));
 			}
 		}
 		
@@ -342,12 +338,6 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
                 // Notify start of new table to consumer
                 _activeMetaData = createTableMetaData(qName, attributes);
                 
-                _columnCache = new HashMap();
-                for (int i = 0; i < _activeMetaData.getColumns().length ; i++) {
-                	Column column = _activeMetaData.getColumns()[i];
-                	_columnCache.put(column.getColumnName(), column);
-                }
-                
                 _consumer.startTable(_activeMetaData);
                 _lineNumber = 0;
             }
@@ -443,5 +433,4 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
             }
         }
     }
-
 }
