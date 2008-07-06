@@ -95,7 +95,9 @@ public class DatabaseConnection extends AbstractDatabaseConnection
      * </code>
      * The first one creates the "default" user where everything is interpreted by oracle in uppercase.
      * The second one is completely lowercase because of the quotes.
-     * @param validate Whether or not the given schema should be validate if it exists
+     * @param validate If <code>true</code> an exception is thrown when the given schema
+     * does not exist according to the DatabaseMetaData. If <code>false</code> the validation
+     * will only print a warning if the schema was not found.
      * @since 2.3.0
      * @throws DatabaseUnitException If the validation of the given parameters was not successful (added with 2.3.0)
      */
@@ -131,8 +133,9 @@ public class DatabaseConnection extends AbstractDatabaseConnection
     
     /**
      * Validates if the database schema exists for this connection.
-     * @param validateStrict If <code>true</code> an exception is thrown when the schema
-     * was not found. Otherwise the method returns normally
+     * @param validateStrict If <code>true</code> an exception is thrown when the given schema
+     * does not exist according to the DatabaseMetaData. If <code>false</code> the validation
+     * will only print a warning if the schema was not found.
      * @throws DatabaseUnitException
      */
     private void validateSchema(boolean validateStrict) throws DatabaseUnitException
@@ -175,6 +178,7 @@ public class DatabaseConnection extends AbstractDatabaseConnection
         sb.append("schema=").append(_schema);
         sb.append(", connection=").append(_connection);
         sb.append("]");
+        sb.append(super.toString());
         return sb.toString();
     }
 }

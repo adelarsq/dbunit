@@ -153,9 +153,16 @@ public class DatabaseConfig
      */
     public Object getProperty(String name)
     {
-    	
        return _propertyMap.get(name);
     }
 
-
+    public String toString()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(getClass().getName()).append("[");
+    	sb.append("_featuresSet=").append(_featuresSet);
+    	sb.append(", _propertyMap=").append(_propertyMap);
+    	sb.append("]");
+    	return sb.toString();
+    }
 }

@@ -58,7 +58,7 @@ public class SQLHelper {
      * @throws SQLException raised while getting the meta data
      */
     public static String getPrimaryKeyColumn( Connection conn, String table ) throws SQLException {
-        logger.debug("getPrimaryKeyColumn(conn=" + conn + ", table=" + table + ") - start");
+        logger.debug("getPrimaryKeyColumn(conn={}, table={}) - start", conn, table);
 
         DatabaseMetaData metadata = conn.getMetaData();
         ResultSet rs = metadata.getPrimaryKeys( null, null, table );
@@ -74,7 +74,7 @@ public class SQLHelper {
      * @throws SQLException exception raised in either close() method
      */
     public static void close(ResultSet rs, Statement stmt) throws SQLException {
-        logger.debug("close(rs=" + rs + ", stmt=" + stmt + ") - start");
+        logger.debug("close(rs={}, stmt={}) - start", rs, stmt);
 
         try {
             if ( rs != null ) {
@@ -86,13 +86,13 @@ public class SQLHelper {
     }
 
     /**
-     * Close a preparement statement, checking for null references.
+     * Close a SQL statement, checking for null references.
      * @param rs result set to be closed
      * @param stmt statement to be closed
      * @throws SQLException exception raised while closing the statement
      */
     public static void close(Statement stmt) throws SQLException {
-        logger.debug("close(stmt=" + stmt + ") - start");
+        logger.debug("close(stmt={}) - start", stmt);
 
         if ( stmt != null ) { 
             stmt.close();
@@ -110,7 +110,7 @@ public class SQLHelper {
     public static boolean schemaExists(Connection connection, String schema) 
     throws SQLException
     {
-        logger.debug("schemaExists() - start");
+        logger.debug("schemaExists(connection={}, schema={}) - start", connection, schema);
 
         if(schema == null)
         {

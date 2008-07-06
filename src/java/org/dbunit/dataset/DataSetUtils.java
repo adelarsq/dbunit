@@ -107,7 +107,9 @@ public class DataSetUtils
     public static String getQualifiedName(String prefix, String name,
             String escapePattern)
     {
-        logger.debug("getQualifiedName(prefix={}, name={}, escapePattern={}) - start", new String[] {prefix, name, escapePattern});
+        if(logger.isDebugEnabled())
+            logger.debug("getQualifiedName(prefix={}, name={}, escapePattern={}) - start", 
+                    new String[] {prefix, name, escapePattern});
 
         if (escapePattern != null)
         {

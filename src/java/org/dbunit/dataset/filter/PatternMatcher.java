@@ -51,7 +51,7 @@ class PatternMatcher
      */
     public void addPattern(String patternName)
     {
-        logger.debug("addPattern(patternName=" + patternName + ") - start");
+        logger.debug("addPattern(patternName={}) - start", patternName);
 
         if (patternName.indexOf("*") != -1 || patternName.indexOf("?") != -1)
         {
@@ -77,7 +77,7 @@ class PatternMatcher
 
     public boolean accept(String name)
     {
-        logger.debug("accept(name=" + name + ") - start");
+        logger.debug("accept(name={}) - start", name);
 
         if (_acceptedNames.contains(name.toUpperCase()))
         {
@@ -114,9 +114,9 @@ class PatternMatcher
      */
     private boolean match(String pattern, String str, boolean isCaseSensitive)
     {
-        logger
-                .debug("match(pattern=" + pattern + ", str=" + str + ", isCaseSensitive=" + isCaseSensitive
-                        + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("match(pattern={}, str={}, isCaseSensitive={}) - start", 
+    				new Object[]{pattern, str, String.valueOf(isCaseSensitive)});
 
         /* Following pattern matching code taken from the Apache Ant project. */
 

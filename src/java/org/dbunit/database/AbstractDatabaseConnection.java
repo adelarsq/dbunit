@@ -135,4 +135,11 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         return (IStatementFactory)_databaseConfig.getProperty(DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
     }
 
+    public String toString()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append("_databaseConfig=").append(_databaseConfig);
+    	sb.append(", _dataSet=").append(_dataSet);
+    	return sb.toString();
+    }
 }
