@@ -107,8 +107,7 @@ public class DatabaseConnection extends AbstractDatabaseConnection
         }
         _connection = connection;
         _schema = schema;
-        if(validate)
-        	validateSchema();
+    	validateSchema(validate);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -130,9 +129,16 @@ public class DatabaseConnection extends AbstractDatabaseConnection
         _connection.close();
     }
     
-    private void validateSchema() throws DatabaseUnitException
+    /**
+     * Validates if the database schema exists for this connection.
+     * @param validateStrict If <code>true</code> an exception is thrown when the schema
+     * was not found. Otherwise the method returns normally
+     * @throws DatabaseUnitException
+     */
+    private void validateSchema(boolean validateStrict) throws DatabaseUnitException
     {
-        logger.debug("validateSchema() - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("validateSchema(validateStrict={}) - start", String.valueOf(validateStrict));
         
         if(this._schema == null)
         {
@@ -145,7 +151,15 @@ public class DatabaseConnection extends AbstractDatabaseConnection
             boolean schemaExists = SQLHelper.schemaExists(this._connection, this._schema);
             if(!schemaExists)
             {
-                throw new DatabaseUnitException("The given schema '" + this._schema + "' does not exist.");
+            	// Under certain circumstances the cause might be that the JDBC driver
+				// implementation of 'DatabaseMetaData.getSchemas()' is not correct 
+            	// (known issue of MySQL driver).
+            	String msg = "The given schema '" + this._schema + "' does not exist.";
+            	// If strict validation is wished throw an exception
+            	if(validateStrict)
+            		throw new DatabaseUnitException(msg);
+            	else
+            		logger.warn(msg);
             }
         }
         catch(SQLException e)

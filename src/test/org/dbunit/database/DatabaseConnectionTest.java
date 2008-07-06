@@ -51,7 +51,7 @@ public class DatabaseConnectionTest extends AbstractDatabaseConnectionTest
         }
     }
 
-    public void testCreateConnectionWithNonExistingSchema() throws Exception
+    public void testCreateConnectionWithNonExistingSchemaAndStrictValidation() throws Exception
     {
         IDatabaseConnection validConnection = super.getConnection();
         String schema = "XYZ_INVALID_SCHEMA_1642344539";
@@ -68,6 +68,17 @@ public class DatabaseConnectionTest extends AbstractDatabaseConnectionTest
             assertEquals(expectedMsg, expected.getMessage());
         }
     }
+    
+    public void testCreateConnectionWithNonExistingSchemaAndLenientValidation() throws Exception
+    {
+        IDatabaseConnection validConnection = super.getConnection();
+        String schema = "XYZ_INVALID_SCHEMA_1642344539";
+        // Try to create a database connection with an invalid schema
+    	boolean validate = false;
+        DatabaseConnection dbConnection = new DatabaseConnection(validConnection.getConnection(), schema, validate);
+        assertNotNull(dbConnection);
+    }
+
 }
 
 
