@@ -24,7 +24,7 @@ package org.dbunit;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-import junit.framework.Assert;
+import junit.framework.ComparisonFailure;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
@@ -164,16 +164,17 @@ public class Assertion
         String[] actualNames = getSortedUpperTableNames(actualDataSet);
 
         // tables count
-        Assert.assertEquals("table count", expectedNames.length, actualNames.length);
-
+        if(expectedNames.length != actualNames.length)
+        {
+            throw new ComparisonFailure("table count", String.valueOf(expectedNames.length), String.valueOf(actualNames.length) );
+        }
 
         // table names in no specific order
         for (int i = 0; i < expectedNames.length; i++)
         {
             if (!actualNames[i].equals(expectedNames[i]))
             {
-                Assert.fail("expected tables " + Arrays.asList(expectedNames) +
-                        " but was " + Arrays.asList(actualNames));
+                throw new ComparisonFailure("tables", Arrays.asList(expectedNames).toString(), Arrays.asList(actualNames).toString());
             }
 
         }
@@ -237,8 +238,11 @@ public class Assertion
         // Verify columns
         Column[] expectedColumns = Columns.getSortedColumns(expectedMetaData);
         Column[] actualColumns = Columns.getSortedColumns(actualMetaData);
-        Assert.assertEquals("column count (table=" + expectedTableName + ")",
-                expectedColumns.length, actualColumns.length);
+        if(expectedColumns.length != actualColumns.length)
+        {
+            throw new ComparisonFailure("column count (table=" + expectedTableName + ")", 
+                    String.valueOf(expectedColumns.length), String.valueOf(actualColumns.length) );
+        }
 
         for (int i = 0; i < expectedColumns.length; i++)
         {
@@ -246,16 +250,18 @@ public class Assertion
             String actualName = actualColumns[i].getColumnName();
             if (!expectedName.equalsIgnoreCase(actualName))
             {
-            	Assert.fail("expected columns " + Columns.getColumnNamesAsString(expectedColumns) +
-            			" but was " + Columns.getColumnNamesAsString(actualColumns) +
-                        " (table=" + expectedTableName + ")");
+                throw new ComparisonFailure("columns (table=" + expectedTableName + ")",
+                        Columns.getColumnNamesAsString(expectedColumns), Columns.getColumnNamesAsString(actualColumns));
             }
         }
 
         // Verify row count
-        Assert.assertEquals("row count (table=" + expectedTableName + ")",
-                expectedTable.getRowCount(), actualTable.getRowCount());
-
+        if(expectedTable.getRowCount() != actualTable.getRowCount())
+        {
+            throw new ComparisonFailure("row count (table=" + expectedTableName + ")",
+                String.valueOf(expectedTable.getRowCount()), String.valueOf(actualTable.getRowCount()) );
+        }
+        
         // values as strings
         for (int i = 0; i < expectedTable.getRowCount(); i++)
         {
@@ -275,11 +281,12 @@ public class Assertion
                 	// add custom column values information for better identification of mismatching rows
                 	String additionalInfo = buildAdditionalColumnInfo(expectedTable, actualTable, i, additionalColumnInfo);
                 	
-                    // example message: "value (table=MYTAB, row=232, column=MYCOL): expected:<123> but was:<1234>. Additional row info: (column=MyIdCol, expected=444, actual=555)"
-                	String msg = "value (table=" + expectedTableName + ", row=" + i +
-                    ", col=" + columnName + "): expected:<" +
-                    expectedValue + "> but was:<" + actualValue + ">" + additionalInfo;
-                    Assert.fail(msg);
+                    // example message: "value (table=MYTAB, row=232, column=MYCOL, Additional row info: (column=MyIdCol, expected=444, actual=555)): expected:<123> but was:<1234>"
+                	String msg = "value (table=" + expectedTableName + ", row=" + i + ", col=" + columnName;
+                	if(additionalInfo!=null && !additionalInfo.trim().equals(""))
+                	    msg += "," + additionalInfo;
+                	msg += ")";
+                	throw new ComparisonFailure(msg, String.valueOf(expectedValue), String.valueOf(actualValue));
                 }
                 
             }
@@ -334,9 +341,9 @@ public class Assertion
             }
 
             // Impossible to determine which data type to use
-            Assert.fail("Incompatible data types: " + expectedDataType + ", " +
-                    actualDataType + " (table=" + tableName + ", col=" +
-                    expectedColumn.getColumnName() + ")");
+            throw new ComparisonFailure("Incompatible data types: (table=" + tableName + ", col=" +
+                    expectedColumn.getColumnName() + ")", 
+                    String.valueOf(expectedDataType), String.valueOf(actualDataType));
         }
 //        // Both columns have unknown data type, use string comparison
 //        else if (expectedDataType instanceof UnknownDataType)

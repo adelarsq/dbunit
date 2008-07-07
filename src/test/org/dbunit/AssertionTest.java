@@ -23,13 +23,11 @@ package org.dbunit;
 
 import java.io.FileReader;
 import java.math.BigDecimal;
-import java.util.Date;
 
-import junit.framework.AssertionFailedError;
+import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
 
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.CompositeTable;
@@ -41,9 +39,7 @@ import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
@@ -100,8 +96,12 @@ public class AssertionTest extends TestCase
                     dataSet.getTable("TEST_TABLE_WITH_3_COLUMNS"));
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
-        catch (AssertionFailedError e)
+        catch (ComparisonFailure expected)
         {
+            assertEquals("4", expected.getExpected());
+            assertEquals("3", expected.getActual());
+            String expectedMsg = "column count (table=TEST_TABLE) expected:<[4]> but was:<[3]>";
+            assertEquals(expectedMsg, expected.getMessage());
         }
     }
 
@@ -123,8 +123,12 @@ public class AssertionTest extends TestCase
                     dataSet.getTable("TEST_TABLE_WITH_DIFFERENT_COLUMN_NAMES"));
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
-        catch (AssertionFailedError e)
+        catch (ComparisonFailure expected)
         {
+            assertEquals("[COLUMN0, COLUMN1, COLUMN2, COLUMN3]", expected.getExpected());
+            assertEquals("[COLUMN4, COLUMN5, COLUMN6, COLUMN7]", expected.getActual());
+            String expectedMsg = "columns (table=TEST_TABLE) expected:<[COLUMN[0, COLUMN1, COLUMN2, COLUMN3]]> but was:<[COLUMN[4, COLUMN5, COLUMN6, COLUMN7]]>";
+            assertEquals(expectedMsg, expected.getMessage());
         }
     }
 
@@ -138,8 +142,12 @@ public class AssertionTest extends TestCase
                     dataSet.getTable("TEST_TABLE_WITH_ONE_ROW"));
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
-        catch (AssertionFailedError e)
+        catch (ComparisonFailure expected)
         {
+            assertEquals("2", expected.getExpected());
+            assertEquals("1", expected.getActual());
+            String expectedMsg = "row count (table=TEST_TABLE) expected:<[2]> but was:<[1]>";
+            assertEquals(expectedMsg, expected.getMessage());
         }
     }
 
@@ -153,8 +161,12 @@ public class AssertionTest extends TestCase
                     dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"));
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
-        catch (AssertionFailedError e)
+        catch (ComparisonFailure expected)
         {
+            assertEquals("row 1 col 2", expected.getExpected());
+            assertEquals("wrong value", expected.getActual());
+            String expectedMsg = "value (table=TEST_TABLE, row=1, col=COLUMN2) expected:<[row 1 col 2]> but was:<[wrong value]>";
+            assertEquals(expectedMsg, expected.getMessage());
         }
     }
 
@@ -182,9 +194,11 @@ public class AssertionTest extends TestCase
 	                filteredColumns );
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
-        catch (AssertionFailedError expected)
+        catch (ComparisonFailure expected)
         {
-        	String expectedMsg = "value (table=TEST_TABLE, row=1, col=COLUMN2): expected:<row 1 col 2> but was:<wrong value>";
+            assertEquals("row 1 col 2", expected.getExpected());
+            assertEquals("wrong value", expected.getActual());
+        	String expectedMsg = "value (table=TEST_TABLE, row=1, col=COLUMN2) expected:<[row 1 col 2]> but was:<[wrong value]>";
         	assertEquals(expectedMsg, expected.getMessage());
         }
     }
@@ -201,14 +215,17 @@ public class AssertionTest extends TestCase
             Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                     dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"),
                     additionalColInfo);
-            throw new IllegalStateException("Should throw an AssertionFailedError");
+            throw   new IllegalStateException("Should throw an AssertionFailedError");
         }
-        catch (AssertionFailedError expected)
+        catch (ComparisonFailure expected)
         {
-        	String expectedMsg = "junit.framework.AssertionFailedError: value (table=TEST_TABLE, row=1, col=COLUMN2): " +
-        			"expected:<row 1 col 2> but was:<wrong value> " +
-        			"Additional row info: (col 'COLUMN0' values: expected=<row 1 col 0>, actual=<row 1 col 0>)";
+        	String expectedMsg = "junit.framework.ComparisonFailure: value (table=TEST_TABLE, row=1, col=COLUMN2, " +
+        			"Additional row info: (col 'COLUMN0' values: expected=<row 1 col 0>, actual=<row 1 col 0>)) " +
+        			"expected:<[row 1 col 2]> but was:<[wrong value]>";
         	String actualMsg = expected.toString();
+        	System.out.println(actualMsg);
+        	assertEquals("row 1 col 2", expected.getExpected());
+        	assertEquals("wrong value", expected.getActual());
         	assertEquals("Exception message did not match the expected one.", expectedMsg, actualMsg);
         }
     }
@@ -245,9 +262,12 @@ public class AssertionTest extends TestCase
         {
             Assertion.assertEquals(expectedTable, actualTable);
         }
-        catch (AssertionFailedError e)
+        catch (ComparisonFailure expected)
         {
-
+            assertEquals("VARCHAR", expected.getExpected());
+            assertEquals("BIT", expected.getActual());
+            String expectedMsg = "Incompatible data types: (table=TABLE_NAME, col=BOOLEAN) expected:<[VARCHAR]> but was:<[BIT]>";
+            assertEquals(expectedMsg, expected.getMessage());
         }
     }
 
@@ -288,9 +308,11 @@ public class AssertionTest extends TestCase
         	Assertion.assertEqualsByQuery(expectedTable, connection, "TEST_TABLE", "select * from TEST_TABLE", ignoreCols);
         	fail("The assertion should not work");
         }
-        catch (AssertionFailedError expected)
+        catch (ComparisonFailure expected)
         {
-        	String expectedMsg = "value (table=TEST_TABLE, row=0, col=COLUMN2): expected:<row 0 col 2> but was:<row 0 col 2 some other value (modification for column COLUMN2)>";
+            assertEquals("row 0 col 2", expected.getExpected());
+            assertEquals("row 0 col 2 some other value (modification for column COLUMN2)", expected.getActual());
+        	String expectedMsg = "value (table=TEST_TABLE, row=0, col=COLUMN2) expected:<row 0 col 2[]> but was:<row 0 col 2[ some other value (modification for column COLUMN2)]>";
         	assertEquals(expectedMsg, expected.getMessage());
         }
     }
@@ -384,10 +406,14 @@ public class AssertionTest extends TestCase
             Assertion.assertEquals(dataSet1, dataSet2);
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
-        catch (AssertionFailedError e)
+        catch (ComparisonFailure expected)
         {
+            assertEquals("9", expected.getExpected());
+            assertEquals("1", expected.getActual());
+            assertEquals("table count expected:<[9]> but was:<[1]>", expected.getMessage());
         }
     }
+
 
     public void testAssertDataSetsAndTableNamesNotEquals() throws Exception
     {
@@ -413,7 +439,7 @@ public class AssertionTest extends TestCase
             Assertion.assertEquals(dataSet1, dataSet2);
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
-        catch (AssertionFailedError e)
+        catch (ComparisonFailure expected)
         {
         }
     }
@@ -434,8 +460,11 @@ public class AssertionTest extends TestCase
             Assertion.assertEquals(dataSet1, dataSet2);
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
-        catch (AssertionFailedError e)
+        catch (ComparisonFailure expected)
         {
+            assertEquals("2", expected.getExpected());
+            assertEquals("4", expected.getActual());
+            assertEquals("row count (table=TEST_TABLE) expected:<[2]> but was:<[4]>", expected.getMessage());
         }
     }
     
