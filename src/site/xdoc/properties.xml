@@ -21,7 +21,10 @@
     System.out.println("Batched statements is disabled."); 
   } 
 ]]></source></p>
-      <h3>Feature Flags</h3>
+
+      <br /><br />
+
+    <h3>Feature Flags</h3>
       <a name="batchstatement"></a>
       <h4>Batched statements</h4>
       <table border="1">
@@ -97,6 +100,8 @@
         </tr>
       </table> 
 
+      <br /><br />
+
       <h3>Properties</h3>
       <h4><a name="escapepattern">Escape pattern</a></h4>
       <table border="1">
@@ -118,7 +123,8 @@
         <tr> 
           <td>Note</td>
           <td>This property is not compatible with the <a href="#qualifiedtablenames">qualified 
-            table names</a> feature.</td>
+            table names</a> feature.
+          </td>
         </tr>
       </table>
       
@@ -160,9 +166,26 @@
           <td>Description</td>
           <td>Used to configure the DataType factory. You can replace the default 
             factory to add support for non-standard database vendor data types. 
-            The Object must implement <a href="api/org/dbunit/dataset/datatype/IDataTypeFactory.html">org.dbunit.dataset.datatype.IDataTypeFactory</a>.</td>
+            The Object must implement <a href="apidocs/org/dbunit/dataset/datatype/IDataTypeFactory.html">org.dbunit.dataset.datatype.IDataTypeFactory</a>.</td>
+        </tr>
+        <tr> 
+          <td>Note</td>
+          <td>The following factories are currently available:
+            <ul>
+              <li><a href="apidocs/org/dbunit/ext/db2/Db2DataTypeFactory.html">org.dbunit.ext.db2.Db2DataTypeFactory</a></li>
+              <li><a href="apidocs/org/dbunit/ext/h2/H2DataTypeFactory.html">org.dbunit.ext.h2.H2DataTypeFactory</a></li>
+              <li><a href="apidocs/org/dbunit/ext/hsqldb/HsqldbDataTypeFactory.html">org.dbunit.ext.db2.HsqldbDataTypeFactory</a></li>
+              <li><a href="apidocs/org/dbunit/ext/mssql/MsSqlDataTypeFactory.html">org.dbunit.ext.mssql.MsSqlDataTypeFactory</a></li>
+              <li><a href="apidocs/org/dbunit/ext/mysql/MySqlDataTypeFactory.html">org.dbunit.ext.mysql.MySqlDataTypeFactory</a></li>
+              <li><a href="apidocs/org/dbunit/ext/oracle/OracleDataTypeFactory.html">org.dbunit.ext.oracle.OracleDataTypeFactory</a></li>
+              <li><a href="apidocs/org/dbunit/ext/oracle/Oracle10DataTypeFactory.html">org.dbunit.ext.oracle.Oracle10DataTypeFactory</a></li>
+            </ul>
+            When you want to create your own data type factory you may also want to look at the generic base implementation at
+            <a href="apidocs/org/dbunit/dataset/datatype/DefaultDataTypeFactory.html">org.dbunit.dataset.datatype.DefaultDataTypeFactory</a>
+          </td>
         </tr>
       </table>
+      
       <a name="statementfactory"></a>
       <h4>Statement factory</h4>
       <table border="1">
@@ -177,7 +200,9 @@
         <tr> 
           <td>Description</td>
           <td>Used to configure the statement factory. The Object must implement 
-            org.dbunit.database.statement.IStatementFactory.</td>
+              <a href="apidocs/org/dbunit/database/statement/IStatementFactory.html">
+              org.dbunit.database.statement.IStatementFactory</a>.
+          </td>
         </tr>
       </table>
       <a name="resultsettablefactory"></a>
@@ -194,7 +219,9 @@
         <tr> 
           <td>Description</td>
           <td>Used to configure the ResultSet table factory. The Object must implement 
-            org.dbunit.database.IResultSetTableFactory.</td>
+              <a href="apidocs/org/dbunit/database/IResultSetTableFactory.html">
+              org.dbunit.database.IResultSetTableFactory</a>.
+          </td>
         </tr>
       </table>
 
@@ -212,7 +239,9 @@
         <tr> 
           <td>Description</td>
           <td>Use to override primary keys detection. The Object must implement 
-            org.dbunit.dataset.filter.IColumnFilter.</td>
+              <a href="apidocs/org/dbunit/dataset/filter/IColumnFilter.html">
+              org.dbunit.dataset.filter.IColumnFilter</a>.
+          </td>
         </tr>
       </table>
 
@@ -230,7 +259,9 @@
         <tr> 
           <td>Description</td>
           <td>Use to override IDENTITY column detection. The Object must implement 
-            org.dbunit.dataset.filter.IColumnFilter.</td>
+              <a href="apidocs/org/dbunit/dataset/filter/IColumnFilter.html">
+              org.dbunit.dataset.filter.IColumnFilter</a>.
+          </td>
         </tr>
       </table>
       

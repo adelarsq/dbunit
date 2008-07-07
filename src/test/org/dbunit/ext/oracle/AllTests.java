@@ -34,6 +34,7 @@ public class AllTests extends TestSuite
     {
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(OracleDataTypeFactoryTest.class));
+        suite.addTest(new TestSuite(Oracle10DataTypeFactoryTest.class));
         return suite;
     }
 }

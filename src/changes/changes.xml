@@ -26,6 +26,7 @@
       <action dev="slecallonnec" type="add" due-to="gommma" issue="2004349">Refactoring of column-related methods.</action>
       <action dev="gommma" type="fix" due-to="phisf" issue="2007635">TablesDependencyHelper with Oracle schema bug - Implies API change - the constructors of DatabaseConnection throw a DatabaseUnitException if the connection/schema are not valid</action>
       <action dev="gommma" type="add" due-to="damian_golda" issue="2010546">Assertion: replace Assert.fail with ComparisonFailure</action>
+      <action dev="gommma" type="add" due-to="damian_golda" issue="2010567">Alternative support for CLOB and BLOB in Oracle 11 JDBC</action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>
