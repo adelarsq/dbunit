@@ -53,7 +53,7 @@ public class DatabaseConnection extends AbstractDatabaseConnection
      * Creates a new <code>DatabaseConnection</code>.
      *
      * @param connection the adapted JDBC connection
-     * @throws DatabaseUnitException If the validation of the given parameters was not successful (added with 2.3.0)
+     * @throws DatabaseUnitException
      */
     public DatabaseConnection(Connection connection) throws DatabaseUnitException
     {
@@ -61,7 +61,7 @@ public class DatabaseConnection extends AbstractDatabaseConnection
     }
 
     /**
-     * Creates a new <code>DatabaseConnection</code>.
+     * Creates a new <code>DatabaseConnection</code> using a specific schema.
      *
      * @param connection the adapted JDBC connection
      * @param schema the database schema. Note that the schema name is case sensitive. This
@@ -74,7 +74,7 @@ public class DatabaseConnection extends AbstractDatabaseConnection
      * </code>
      * The first one creates the "default" user where everything is interpreted by oracle in uppercase.
      * The second one is completely lowercase because of the quotes.
-     * @throws DatabaseUnitException If the validation of the given parameters was not successful (added with 2.3.0)
+     * @throws DatabaseUnitException 
      */
     public DatabaseConnection(Connection connection, String schema) throws DatabaseUnitException
     {
@@ -82,7 +82,7 @@ public class DatabaseConnection extends AbstractDatabaseConnection
     }
 
     /**
-     * Creates a new <code>DatabaseConnection</code>.
+     * Creates a new <code>DatabaseConnection</code> using a specific schema.
      *
      * @param connection the adapted JDBC connection
      * @param schema the database schema. Note that the schema name is case sensitive. This
@@ -99,7 +99,9 @@ public class DatabaseConnection extends AbstractDatabaseConnection
      * does not exist according to the DatabaseMetaData. If <code>false</code> the validation
      * will only print a warning if the schema was not found.
      * @since 2.3.0
-     * @throws DatabaseUnitException If the validation of the given parameters was not successful (added with 2.3.0)
+     * @throws DatabaseUnitException If the <code>validate</code> parameter is <code>true</code> and the 
+     * validation of the given connection/schema was not successful (added with 2.3.0). This can happen if the given
+     * schema does not exist or if the jdbc driver does not implement the metaData.getSchemas() method properly.
      */
     public DatabaseConnection(Connection connection, String schema, boolean validate) throws DatabaseUnitException
     {

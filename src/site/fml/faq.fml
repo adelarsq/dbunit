@@ -71,8 +71,10 @@
       </question>
       <answer>
       <p>
-      The following sample demonstrates how you can export one or many tables
-      from a database to a flat XML dataset file.
+        The following sample demonstrates how you can export one or many tables
+        from a database to a flat XML dataset file.
+        Note that if you want to specify a schema you can do this in the constructor of
+        <a href="apidocs/org/dbunit/database/DatabaseConnection.html">DatabaseConnection</a>.
       <source>
 public class DatabaseExportSample
 {
@@ -102,7 +104,9 @@ public class DatabaseExportSample
         FlatXmlDataSet.write(depDataSet, new FileOutputStream("dependents.xml"));          
         
     }
-}</source></p>
+}
+      </source>
+      </p>
     </answer>
     </faq>
 
