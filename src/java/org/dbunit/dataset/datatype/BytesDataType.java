@@ -248,7 +248,8 @@ public class BytesDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
+    	if(logger.isDebugEnabled())
+    		logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
 
         byte[] value = resultSet.getBytes(column);
         if (value == null || resultSet.wasNull())
