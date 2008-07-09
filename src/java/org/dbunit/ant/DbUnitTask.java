@@ -285,7 +285,7 @@ public class DbUnitTask extends Task
      */
     public void addExport(Export export)
     {
-        logger.debug("addExport(export) - start");
+        logger.debug("addExport(export={}) - start", export);
 
     	export.setParentTask(this);
         steps.add(export);
