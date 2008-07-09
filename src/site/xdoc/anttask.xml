@@ -20,7 +20,7 @@
         </tr>
         <tr> 
           <td>driver</td>
-          <td>Class name of the jdbc driver</td>
+          <td>Class name of the jdbc driver. Must be available on the classpath (either system classpath or nested classpath)</td>
           <td>Yes</td>
         </tr>
         <tr> 
@@ -45,7 +45,7 @@
         </tr>
         <tr> 
           <td>classpath</td>
-          <td>Classpath used to load driver</td>
+          <td>Classpath used to load driver.</td>
           <td>No (use system classpath)</td>
         </tr>
         <tr> 

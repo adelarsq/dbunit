@@ -50,14 +50,21 @@ public class TypeCastException extends DataTypeException
 
     public TypeCastException(Object value, DataType dataType)
     {
-        super("Unable to typecast value <" + value + "> of type <" +
-                value.getClass().getName() + "> to " + dataType);
+        super(buildMessage(value, dataType));
     }
 
+    
     public TypeCastException(Object value, DataType dataType, Throwable e)
     {
-        super("Error typecasting value <" + value + "> to " + dataType, e);
+        super(buildMessage(value, dataType), e);
     }
+
+    private static String buildMessage(Object value, DataType dataType) {
+    	String valueClass = (value==null ? "null" : value.getClass().getName());
+    	String message = "Unable to typecast value <" + value + "> of type <" +
+    						valueClass + "> to " + dataType;
+		return message;
+	}
 
 }
 
