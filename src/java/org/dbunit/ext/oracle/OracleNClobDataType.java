@@ -48,8 +48,9 @@ public class OracleNClobDataType extends OracleClobDataType {
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
-        logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
-        		new Object[]{value, new Integer(column), statement} );
+    	if(logger.isDebugEnabled())
+    		logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
+    				new Object[]{value, new Integer(column), statement} );
 
         try 
         {
