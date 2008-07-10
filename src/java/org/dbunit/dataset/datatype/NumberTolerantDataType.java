@@ -100,7 +100,8 @@ public final class NumberTolerantDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
+    	if(logger.isDebugEnabled())
+    		logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
 
         BigDecimal value = resultSet.getBigDecimal(column);
         if (value == null || resultSet.wasNull())
@@ -113,7 +114,8 @@ public final class NumberTolerantDataType extends AbstractDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
-        logger.debug("setSqlValue(value={}, column={}, , statement={}) - start",
+    	if(logger.isDebugEnabled())
+    		logger.debug("setSqlValue(value={}, column={}, , statement={}) - start",
         		new Object[]{value, new Integer(column), statement});
 
         statement.setBigDecimal(column, (BigDecimal)typeCast(value));

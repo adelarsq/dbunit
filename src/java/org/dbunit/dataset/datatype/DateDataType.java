@@ -120,7 +120,8 @@ public class DateDataType extends AbstractDataType
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-        logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
+    	if(logger.isDebugEnabled())
+    		logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
 
         java.sql.Date value = resultSet.getDate(column);
         if (value == null || resultSet.wasNull())
@@ -133,7 +134,8 @@ public class DateDataType extends AbstractDataType
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
-        logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
+    	if(logger.isDebugEnabled())
+    		logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
         		new Object[]{value, new Integer(column), statement} );
 
         statement.setDate(column, (java.sql.Date)typeCast(value));
