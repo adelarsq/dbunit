@@ -42,7 +42,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 /**
  * Test Case for issue #1721870
  * @author Sebastien Le Callonnec
- * @version $Revision: 398 $
+ * @version $Revision$
  * @since Mar 11, 2008
  */
 public class CompositeDataSetIterationTest extends TestCase {

@@ -39,7 +39,7 @@ import org.dbunit.dataset.datatype.StringDataType;
  * 
  * @author gommma
  * @since 2.3.0
- * @version $Revision: 675 $
+ * @version $Revision$
  */
 public class Oracle10DataTypeFactory extends OracleDataTypeFactory
 {

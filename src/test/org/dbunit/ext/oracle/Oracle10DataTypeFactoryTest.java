@@ -27,7 +27,7 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
 /**
  * @author gommma
  * @since 2.3.0
- * @version $Revision: 577 $
+ * @version $Revision$
  */
 public class Oracle10DataTypeFactoryTest extends OracleDataTypeFactoryTest
 {

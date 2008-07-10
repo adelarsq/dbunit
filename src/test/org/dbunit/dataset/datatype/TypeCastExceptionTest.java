@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 
 /**
  * @author gommma
- * @version $Revision: $
+ * @version $Revision$
  * @since 2.3.0
  */
 public class TypeCastExceptionTest extends TestCase 
