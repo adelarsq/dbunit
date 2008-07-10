@@ -31,6 +31,7 @@ public class NumberTolerantDataTypeTest extends AbstractDataTypeTest
     	catch(IllegalArgumentException expected)
     	{
     		String expectedMsg = "The given delta '-0.1' must be >= 0";
+    		assertEquals(expectedMsg, expected.getMessage());
     	}
     }
 

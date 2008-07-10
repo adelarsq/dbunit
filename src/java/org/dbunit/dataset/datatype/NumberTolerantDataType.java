@@ -1,14 +1,27 @@
+/*
+ *
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
 package org.dbunit.dataset.datatype;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.datatype.AbstractDataType;
-import org.dbunit.dataset.datatype.NumberDataType;
-import org.dbunit.dataset.datatype.TypeCastException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,18 +34,15 @@ import org.slf4j.LoggerFactory;
  * @since 2.3.0
  * @version $Revision $
  */
-public final class NumberTolerantDataType extends AbstractDataType
+public final class NumberTolerantDataType extends NumberDataType
 {
 
     /**
      * Logger for this class
      */
-    private static final Logger logger = LoggerFactory.getLogger(NumberDataType.class);
+    private static final Logger logger = LoggerFactory.getLogger(NumberTolerantDataType.class);
 
     private static final BigDecimal ZERO = new BigDecimal(0.0);
-    
-    private static final Number TRUE = new BigDecimal((double)1);
-    private static final Number FALSE = new BigDecimal((double)0);
     
     /**
      * The allowed/tolerated difference 
@@ -47,7 +57,7 @@ public final class NumberTolerantDataType extends AbstractDataType
      */
     NumberTolerantDataType(String name, int sqlType, double delta)
     {
-        super(name, sqlType, BigDecimal.class, true);
+        super(name, sqlType);
         
         if(delta<0.0) {
         	throw new IllegalArgumentException("The given delta '"+delta+"' must be >= 0");
@@ -59,72 +69,11 @@ public final class NumberTolerantDataType extends AbstractDataType
     {
 		return delta;
 	}
-
     
-//FROM NumberDataType
-    ////////////////////////////////////////////////////////////////////////////
-    // DataType class
-
-
-	public Object typeCast(Object value) throws TypeCastException
-    {
-        logger.debug("typeCast(value={}) - start", value);
-
-        if (value == null || value == ITable.NO_VALUE)
-        {
-            return null;
-        }
-
-        if (value instanceof BigDecimal)
-        {
-            return value;
-        }
-
-        if (value instanceof Boolean)
-        {
-            return ((Boolean)value).booleanValue() ? TRUE : FALSE;
-        }
-
-        String stringValue = value.toString();
-        try
-        {
-            return new BigDecimal(stringValue);
-        }
-        catch (java.lang.NumberFormatException e)
-        {
-//            logger.error("typeCast() error for value " + stringValue, e);
-            throw new TypeCastException(value, this, e);
-        }
-    }
-
-    public Object getSqlValue(int column, ResultSet resultSet)
-            throws SQLException, TypeCastException
-    {
-    	if(logger.isDebugEnabled())
-    		logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
-
-        BigDecimal value = resultSet.getBigDecimal(column);
-        if (value == null || resultSet.wasNull())
-        {
-            return null;
-        }
-        return value;
-    }
-
-    public void setSqlValue(Object value, int column, PreparedStatement statement)
-            throws SQLException, TypeCastException
-    {
-    	if(logger.isDebugEnabled())
-    		logger.debug("setSqlValue(value={}, column={}, , statement={}) - start",
-        		new Object[]{value, new Integer(column), statement});
-
-        statement.setBigDecimal(column, (BigDecimal)typeCast(value));
-    }
-// END FROM NumberDataType
-    
-
-
-    // Only method overwritten from the base implementation
+    /**
+     * The only method overwritten from the base implementation to compare numbers allowing a tolerance
+     * @see org.dbunit.dataset.datatype.AbstractDataType#compare(java.lang.Object, java.lang.Object)
+     */
     public int compare(Object o1, Object o2) throws TypeCastException
     {
         logger.debug("compare(o1={}, o2={}) - start", o1, o2);
@@ -166,7 +115,8 @@ public final class NumberTolerantDataType extends AbstractDataType
                 			new Object[] {bdValue1, bdValue2, new Double(delta) } );
                     return 0;
                 } else {
-                	// TODO it would be beautiful to report a precise description about difference and tolerated delta values in the assertion 
+                	// TODO it would be beautiful to report a precise description about difference and tolerated delta values in the assertion
+                	// Therefore think about introducing a method "DataType.getCompareInfo()"
                     return diff.signum();
                 }
                 
@@ -178,7 +128,6 @@ public final class NumberTolerantDataType extends AbstractDataType
         }
         catch (ClassCastException e)
         {
-//            logger.error("compare()", e);
             throw new TypeCastException(e);
         }
     }
