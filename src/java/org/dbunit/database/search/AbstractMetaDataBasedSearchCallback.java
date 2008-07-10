@@ -55,7 +55,7 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
     private final IDatabaseConnection connection;
 
     /**
-     * Defautl constructor.
+     * Default constructor.
      * @param connection connection where the edges will be calculated from
      */
     public AbstractMetaDataBasedSearchCallback(IDatabaseConnection connection) {
@@ -152,27 +152,29 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
 
     private void getNodes(int type, Object node, Connection conn,
             String schema, DatabaseMetaData metaData, SortedSet edges)
-    throws SearchException, NoSuchTableException {
+    throws SearchException, NoSuchTableException 
+    {
         if (logger.isDebugEnabled())
         {
             logger.debug("getNodes(type={}, node={}, conn={}, schema={}, metaData={}, edges={}) - start", 
                     new Object[] {String.valueOf(type), node, conn, schema, metaData, edges});
             logger.debug("Getting edges for node " + node);
         }
-        try {
-            if (!(node instanceof String)) {
-                throw new IllegalArgumentException("node should be a String, not a "
-                        + node.getClass().getName());
-            }
-            String tableName = (String) node;
+        
+        if (!(node instanceof String)) {
+            throw new IllegalArgumentException("node '" + node + "' should be a String, not a "
+                    + node.getClass().getName());
+        }
+        String tableName = (String) node;
 
+        ResultSet rs = null;
+        try {
             // Validate if the table exists
             if(!SQLHelper.tableExists(metaData, schema, tableName))
             {
                 throw new NoSuchTableException("The table '"+tableName+"' does not exist in schema '" + schema + "'");
             }
 
-            ResultSet rs = null;
             switch (type) {
             case IMPORT:
                 rs = metaData.getImportedKeys(null, schema, tableName);
@@ -192,10 +194,18 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
                 }
                 edges.add(edge);
             }
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) {
             throw new SearchException(e);
         }
-
+        finally
+        {
+        	try {
+        		SQLHelper.close(rs);
+            } catch (SQLException e) {
+                throw new SearchException(e);
+            }        		
+        }
     }
 
 

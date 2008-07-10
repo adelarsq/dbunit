@@ -77,11 +77,9 @@ public class SQLHelper {
         logger.debug("close(rs={}, stmt={}) - start", rs, stmt);
 
         try {
-            if ( rs != null ) {
-                rs.close();
-            }
+        	SQLHelper.close(rs);
         } finally { 
-            close( stmt );
+        	SQLHelper.close( stmt );
         }    
     }
 
@@ -98,6 +96,19 @@ public class SQLHelper {
             stmt.close();
         }
     }
+
+	/**
+	 * Closes the given result set in a null-safe way
+	 * @param resultSet
+	 * @throws SQLException
+	 */
+	public static void close(ResultSet resultSet) throws SQLException {
+        logger.debug("close(resultSet={}) - start", resultSet);
+        
+        if(resultSet != null) {
+            resultSet.close();
+        }
+	}
 
     /**
      * Returns <code>true</code> if the given schema exists for the given connection.
@@ -159,8 +170,7 @@ public class SQLHelper {
         }
         finally
         {
-            if(tableRs != null)
-                tableRs.close();
+        	SQLHelper.close(tableRs);
         }
     }
 
