@@ -223,7 +223,6 @@ public class AssertionTest extends TestCase
         			"Additional row info: (col 'COLUMN0' values: expected=<row 1 col 0>, actual=<row 1 col 0>)) " +
         			"expected:<[row 1 col 2]> but was:<[wrong value]>";
         	String actualMsg = expected.toString();
-        	System.out.println(actualMsg);
         	assertEquals("row 1 col 2", expected.getExpected());
         	assertEquals("wrong value", expected.getActual());
         	assertEquals("Exception message did not match the expected one.", expectedMsg, actualMsg);
