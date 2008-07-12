@@ -133,7 +133,6 @@ public class TablesDependencyHelperTest extends TestCase {
     }
 
     public void testGetAllDatasetFromOneTable() throws Exception {    
-    	try {
         setUp( ImportAndExportKeysSearchCallbackOwnFileTest.SQL_FILE );    
         String[][] allInput = ImportAndExportKeysSearchCallbackOwnFileTest.SINGLE_INPUT;
         String[][] allExpectedOutput = ImportAndExportKeysSearchCallbackOwnFileTest.SINGLE_OUTPUT;
@@ -144,14 +143,9 @@ public class TablesDependencyHelperTest extends TestCase {
             String[] actualOutputTables = actualOutput.getTableNames();
             ArrayAssert.assertEquals( "output didn't match for i=" + i, expectedOutput, actualOutputTables );
         }           
-        }catch(Exception e){
-        	e.printStackTrace();
-        	fail("Exception: "+e);
-        }
     }
 
     public void testGetAllDatasetFromOneTable_SeparateSchema() throws Exception {
-    	try{
         setUp( new String[] {
         		"hypersonic_switch_schema.sql", 
         		ImportAndExportKeysSearchCallbackOwnFileTest.SQL_FILE
@@ -165,11 +159,6 @@ public class TablesDependencyHelperTest extends TestCase {
             IDataSet actualOutput = TablesDependencyHelper.getAllDataset( this.connection, input[0], new HashSet());
             String[] actualOutputTables = actualOutput.getTableNames();
             ArrayAssert.assertEquals( "output didn't match for i=" + i, expectedOutput, actualOutputTables );
-        }
-        
-        }catch(Exception e){
-        	e.printStackTrace();
-        	fail("Exception: "+e);
         }
     }
 
