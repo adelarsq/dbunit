@@ -26,8 +26,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.dbunit.Assertion;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
+import org.dbunit.util.QualifiedTableName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +82,6 @@ public class DataSetUtils
         Assertion.assertEquals(expectedTable, actualTable);
     }
 
-
     /**
      * Returns the specified name qualified with the specified prefix. The name
      * is not modified if the prefix is <code>null</code> or if the name is
@@ -93,36 +94,32 @@ public class DataSetUtils
      * <code>getQualifiedName("PREFIX2", "PREFIX1.NAME")</code>
      * returns <code>"PREFIX1.NAME"</code>.
      *
-     * @param prefix the prefix
-     * @param name the name
+     * @param prefix the prefix that qualifies the name and is prepended if the name is not qualified yet
+     * @param name the name The name to be qualified if it is not qualified already
      * @return the qualified name
+     * @deprecated since 2.3.0. Prefer usage of {@link QualifiedTableName#getQualifiedName(String, String)}
      */
     public static String getQualifiedName(String prefix, String name)
     {
         logger.debug("getQualifiedName(prefix={}, name={}) - start", prefix, name);
 
-        return getQualifiedName(prefix, name, null);
+        return QualifiedTableName.getQualifiedName(prefix, name, (String)null);
     }
 
+    /**
+     * @param prefix the prefix that qualifies the name and is prepended if the name is not qualified yet
+     * @param name the name The name to be qualified if it is not qualified already
+     * @param escapePattern The escape pattern to be applied on the prefix and the name. Can be null.
+     * @return The qualified name
+     * @deprecated since 2.3.0. Prefer usage of {@link QualifiedTableName#getQualifiedName(String, String, String)}
+     */
     public static String getQualifiedName(String prefix, String name,
             String escapePattern)
     {
         if(logger.isDebugEnabled())
             logger.debug("getQualifiedName(prefix={}, name={}, escapePattern={}) - start", 
                     new String[] {prefix, name, escapePattern});
-
-        if (escapePattern != null)
-        {
-            prefix = getEscapedName(prefix, escapePattern);
-            name = getEscapedName(name, escapePattern);
-        }
-
-        if (prefix == null || prefix.equals("") || name.indexOf(".") >= 0)
-        {
-            return name;
-        }
-
-        return prefix + "." + name;
+        return QualifiedTableName.getQualifiedName(prefix, name, escapePattern);
     }
 
     public static String getEscapedName(String name, String escapePattern)

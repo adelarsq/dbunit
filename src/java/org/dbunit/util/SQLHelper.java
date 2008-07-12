@@ -21,14 +21,15 @@
 
 package org.dbunit.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Helper for SQL-related stuff.
@@ -39,7 +40,6 @@ import java.sql.Statement;
  * @since Nov 5, 2005
  * 
  */
-
 public class SQLHelper {
 
     /**
@@ -163,7 +163,7 @@ public class SQLHelper {
             String tableName) 
     throws SQLException 
     {
-        ResultSet tableRs = metaData.getTables(null, schema, tableName, null);
+    	ResultSet tableRs = metaData.getTables(null, schema, tableName, null);
         try 
         {
             return tableRs.next();
@@ -174,4 +174,35 @@ public class SQLHelper {
         }
     }
 
+    /**
+     * Utility method for debugging to print all tables of the given metadata on the given stream
+     * @param metaData
+     * @param outputStream
+     * @throws SQLException
+     */
+    public static void printAllTables(DatabaseMetaData metaData, PrintStream outputStream) throws SQLException
+    {
+        ResultSet rs = metaData.getTables(null, null, null, null);
+        try 
+        {
+        	while (rs.next()) 
+     		{
+        		String catalog = rs.getString("TABLE_CAT");
+        		String schema = rs.getString("TABLE_SCHEM");
+        		String table = rs.getString("TABLE_NAME");
+     			StringBuffer tableInfo = new StringBuffer();
+     			if(catalog!=null) tableInfo.append(catalog).append(".");
+     			if(schema!=null) tableInfo.append(schema).append(".");
+     			tableInfo.append(table);
+     			// Print the info
+     			outputStream.println(tableInfo);
+     		}
+        	outputStream.flush();
+        }
+        finally
+        {
+        	SQLHelper.close(rs);
+        }
+    	
+    }
 }

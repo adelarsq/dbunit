@@ -48,10 +48,16 @@ public class TablesDependencyHelperTest extends TestCase {
     private IDatabaseConnection connection;
   
     protected void setUp( String sqlFile ) throws Exception {
+    	this.setUp(new String[]{sqlFile});
+    }
+
+    protected void setUp( String[] sqlFileList ) throws Exception {
         this.jdbcConnection = HypersonicEnvironment.createJdbcConnection("mem:tempdb");
-        HypersonicEnvironment.executeDdlFile(new File(
-                "src/sql/" + sqlFile), this.jdbcConnection);
-        this.connection = new DatabaseConnection(jdbcConnection);//,"BLASCHEMA");
+        for (int i = 0; i < sqlFileList.length; i++) {
+        	File sql = new File("src/sql/" + sqlFileList[i]);
+            HypersonicEnvironment.executeDdlFile(sql, this.jdbcConnection);
+		}
+        this.connection = new DatabaseConnection(jdbcConnection);
     }
 
     protected void tearDown() throws Exception {
@@ -139,6 +145,29 @@ public class TablesDependencyHelperTest extends TestCase {
         }           
     }
 
+    public void testGetAllDatasetFromOneTable_SeparateSchema() throws Exception {    
+        setUp( new String[] {
+        		"hypersonic_switch_schema.sql", 
+        		ImportAndExportKeysSearchCallbackOwnFileTest.SQL_FILE
+        		} );
+        
+        String[][] allInput = ImportAndExportKeysSearchCallbackOwnFileTest.SINGLE_INPUT;
+        String[][] allExpectedOutput = ImportAndExportKeysSearchCallbackOwnFileTest.SINGLE_OUTPUT;
+        for (int i = 0; i < allInput.length; i++) {
+            String[] input = allInput[i];
+            // Modify the input tables so that they are fully qualified (include the schema name)
+            for (int j = 0; j < input.length; j++) {
+				input[j] = "TEST_SCHEMA." + input[j];
+			}
+            String[] expectedOutput = allExpectedOutput[i];
+            IDataSet actualOutput = TablesDependencyHelper.getAllDataset( this.connection, input[0], new HashSet());
+            String[] actualOutputTables = actualOutput.getTableNames();
+            ArrayAssert.assertEquals( "output didn't match for i=" + i, expectedOutput, actualOutputTables );
+        }           
+    }
+
+    
+    
 // TODO The order gets lost on they way because of the conversion between Map and Array
 //  public void testGetDatasetFromManyTables() throws Exception {    
 //  setUp( ImportNodesFilterSearchCallbackTest.SQL_FILE );    

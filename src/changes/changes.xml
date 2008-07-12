@@ -29,6 +29,7 @@
       <action dev="gommma" type="add" issue="2010567" due-to="damian_golda">Alternative support for CLOB and BLOB in Oracle 11 JDBC</action>
       <action dev="gommma" type="fix" issue="1499591" due-to="loedolff">datatypeFactory documentation note needed</action>
       <action dev="gommma" type="fix" issue="2014884" due-to="pasha_z">getAllDependentTables ORA-01000: maximum open cursors exceed</action>
+      <action dev="gommma" type="fix" issue="1746373" due-to="byte-error">getAllDependentTables didn't work with full qualified names </action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>

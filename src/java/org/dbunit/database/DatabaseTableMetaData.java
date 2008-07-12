@@ -40,6 +40,7 @@ import org.dbunit.dataset.NoColumnsFoundException;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.filter.IColumnFilter;
+import org.dbunit.util.QualifiedTableName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -121,15 +122,10 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         logger.debug("getPrimaryKeyNames() - start");
 
         // qualified names support
-        String schemaName = _connection.getSchema();
-        String tableName = _tableName;
-        int index = tableName.indexOf(".");
-        if (index >= 0)
-        {
-            schemaName = tableName.substring(0, index);
-            tableName = tableName.substring(index + 1);
-        }
-
+        QualifiedTableName qualifiedTableName = new QualifiedTableName(_tableName, _connection.getSchema());
+        String schemaName = qualifiedTableName.getSchema();
+        String tableName = qualifiedTableName.getTable();
+        
         Connection connection = _connection.getConnection();
         DatabaseMetaData databaseMetaData = connection.getMetaData();
         ResultSet resultSet = databaseMetaData.getPrimaryKeys(
@@ -211,15 +207,10 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             try
             {
                 // qualified names support
-                String schemaName = _connection.getSchema();
-                String tableName = _tableName;
-                int index = tableName.indexOf(".");
-                if (index >= 0)
-                {
-                    schemaName = tableName.substring(0, index);
-                    tableName = tableName.substring(index + 1);
-                }
-
+            	QualifiedTableName qualifiedTableName = new QualifiedTableName(_tableName, _connection.getSchema());
+            	String schemaName = qualifiedTableName.getSchema();
+            	String tableName = qualifiedTableName.getTable();
+            	
                 Connection jdbcConnection = _connection.getConnection();
                 DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
                 ResultSet resultSet = databaseMetaData.getColumns(
@@ -255,8 +246,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                         {
                             System.out.println(
                                     "WARNING - " + tableName + "." + columnName +
-                                    " data type (" + sqlType + ", �" + sqlTypeName +
-                                    "�) not recognized and will be ignored. See FAQ for more information.");
+                                    " data type (" + sqlType + ", '" + sqlTypeName +
+                                    "') not recognized and will be ignored. See FAQ for more information.");
                         }
                     }
 

@@ -27,7 +27,6 @@ import junit.framework.TestSuite;
  * @author Felipe Leme <dbunit@felipeal.net>
  * @version $Revision$
  * @since Nov 5, 2005
- * 
  */
 public class AllTests extends TestSuite
 {
@@ -35,6 +34,8 @@ public class AllTests extends TestSuite
     {
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(CollectionsHelperTest.class));
+        suite.addTest(new TestSuite(QualifiedTableNameTest.class));
+        suite.addTest(new TestSuite(SQLHelperTest.class));
         return suite;
     }
 

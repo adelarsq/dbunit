@@ -28,8 +28,10 @@ import java.sql.SQLException;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.NoSuchTableException;
+import org.dbunit.util.QualifiedTableName;
 import org.dbunit.util.SQLHelper;
 import org.dbunit.util.search.AbstractNodesFilterSearchCallback;
 import org.dbunit.util.search.IEdge;
@@ -101,7 +103,7 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
      * 
      * <strong>NOTE:</strong> this method should be used only as an auxiliary
      * method for sub-classes that also use <code>getNodesFromImportedKeys()</code>
-     * or something similiar, otherwise the generated sequence of tables might not
+     * or something similar, otherwise the generated sequence of tables might not
      * work when inserted in the database (as some tables might be missing).
      * <br>
      * @param node table name 
@@ -134,7 +136,8 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
     }
 
     private SortedSet getNodes(int type, Object node) throws SearchException {
-        logger.debug("getNodes(type={}, node={}) - start", Integer.toString(type), node);
+    	if(logger.isDebugEnabled())
+    		logger.debug("getNodes(type={}, node={}) - start", Integer.toString(type), node);
 
         try {
             Connection conn = this.connection.getConnection();
@@ -167,6 +170,10 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
         }
         String tableName = (String) node;
 
+    	QualifiedTableName qualifiedTableName = new QualifiedTableName(tableName, schema);
+    	schema = qualifiedTableName.getSchema();
+    	tableName = qualifiedTableName.getTable();
+        
         ResultSet rs = null;
         try {
             // Validate if the table exists
@@ -183,11 +190,18 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
                 rs = metaData.getExportedKeys(null, schema, tableName);
                 break;
             }
+            
+            DatabaseConfig dbConfig = this.connection.getConfig();
             while (rs.next()) {
                 int index = TABLENAME_INDEXES[type];
                 String dependentTableName = rs.getString(index);
                 String pkColumn = rs.getString( PK_INDEXES[type] );
                 String fkColumn = rs.getString( FK_INDEXES[type] );
+
+                // set the schema in front if there is none ("SCHEMA.TABLE") - depending on the "qualified table names" feature
+            	tableName = QualifiedTableName.getQualifiedName(schema, tableName, dbConfig);
+            	dependentTableName = QualifiedTableName.getQualifiedName(schema, dependentTableName, dbConfig);
+                
                 IEdge edge = newEdge(rs, type, tableName, dependentTableName, fkColumn, pkColumn );
                 if ( logger.isDebugEnabled() ) {
                     logger.debug("Adding edge " + edge);
@@ -258,6 +272,4 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
 
         return createFKEdge( rs, type, from, to, fkColumn, pkColumn );
     }
-
-
 }

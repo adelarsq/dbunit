@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.dbunit.dataset.*;
+import org.dbunit.util.QualifiedTableName;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -78,14 +79,14 @@ public class DatabaseDataSet extends AbstractDataSet
             {
                 sqlBuffer.append(", ");
             }
-            String columnName = DataSetUtils.getQualifiedName(null,
+            String columnName = QualifiedTableName.getQualifiedName(null,
                     columns[i].getColumnName(), escapePattern);
             sqlBuffer.append(columnName);
         }
 
         // from
         sqlBuffer.append(" from ");
-        sqlBuffer.append(DataSetUtils.getQualifiedName(schema,
+        sqlBuffer.append(QualifiedTableName.getQualifiedName(schema,
                 metaData.getTableName(), escapePattern));
 
         // order by
@@ -99,25 +100,12 @@ public class DatabaseDataSet extends AbstractDataSet
             {
                 sqlBuffer.append(", ");
             }
-            sqlBuffer.append(DataSetUtils.getQualifiedName(null, primaryKeys[i]
+            sqlBuffer.append(QualifiedTableName.getQualifiedName(null, primaryKeys[i]
 					.getColumnName(), escapePattern));
 
         }
 
         return sqlBuffer.toString();
-    }
-
-    private String getQualifiedName(String prefix, String name)
-    {
-        logger.debug("getQualifiedName(prefix={}, name={}) - start", prefix, name);
-
-        DatabaseConfig config = _connection.getConfig();
-        boolean feature = config.getFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES);
-        if (feature)
-        {
-            return DataSetUtils.getQualifiedName(prefix, name);
-        }
-        return name;
     }
 
     /**
@@ -157,7 +145,7 @@ public class DatabaseDataSet extends AbstractDataSet
                         // are reported to the application due a bug in the oracle JDBC driver
                         if (tableName.startsWith("BIN$")) continue;	
                     }
-                    tableName = getQualifiedName(schemaName, tableName);
+                    tableName = QualifiedTableName.getQualifiedName(schemaName, tableName, _connection.getConfig());
 
                     // prevent table name conflict
                     if (_tableMap.containsKey(tableName.toUpperCase()))
