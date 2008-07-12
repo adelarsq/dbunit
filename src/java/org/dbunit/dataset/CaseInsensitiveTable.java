@@ -61,7 +61,7 @@ public class CaseInsensitiveTable implements ITable
             }
         }
 
-        throw new NoSuchColumnException(_table.getTableMetaData().getTableName() + "." + columnName);
+        throw new NoSuchColumnException(_table.getTableMetaData().getTableName(), columnName);
     }
 
     ////////////////////////////////////////////////////////////////////////////

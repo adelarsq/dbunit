@@ -92,9 +92,7 @@ public class SortedTable extends AbstractTable
             // TODO Check if common method from Columns class can be reused -> "Columns.getColumnValidated()"
             if (_columns[i] == null)
             {
-				throw new NoSuchColumnException("Unknown column '" + columnName
-						+ "' for table '"
-						+ tableMetaData.getTableName() + "'");
+				throw new NoSuchColumnException(tableMetaData.getTableName(), columnName);
 			}
         }
         
@@ -141,9 +139,7 @@ public class SortedTable extends AbstractTable
         	Column sortColumn = _columns[i];
         	if (!columnsOfTableList.contains(sortColumn))
         	{
-				throw new NoSuchColumnException("Unknown column '"
-						+ sortColumn.getColumnName() + "' for table '"
-						+ _table.getTableMetaData().getTableName() + "'");
+				throw new NoSuchColumnException(_table.getTableMetaData().getTableName(), sortColumn.getColumnName());
 			}
         }
 	}

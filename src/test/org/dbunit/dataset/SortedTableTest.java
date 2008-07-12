@@ -115,7 +115,7 @@ public class SortedTableTest extends AbstractTableTest
     }
     
     /**
-     * Tests the sort by string which is the default behaviour
+     * Tests the sort by string which is the default behavior
      * @throws Exception
      */
     public void testSortByString() throws Exception
@@ -165,7 +165,7 @@ public class SortedTableTest extends AbstractTableTest
 	        new SortedTable(unsortedTable, sortColumnNames);
 	        fail("Should not be able to create a SortedTable with unexisting columns");
         }catch(NoSuchColumnException expected) {
-        	assertEquals("Unknown column 'COLUMNXY_UNDEFINED' for table 'MISSING_VALUES'", expected.getMessage());
+        	assertEquals("MISSING_VALUES.COLUMNXY_UNDEFINED", expected.getMessage());
         }
     }
 
@@ -181,7 +181,7 @@ public class SortedTableTest extends AbstractTableTest
 	        new SortedTable(unsortedTable, sortColumns);
 	        fail("Should not be able to create a SortedTable with unexisting columns");
         }catch(NoSuchColumnException expected) {
-        	assertEquals("Unknown column 'COLUMNXY_UNDEFINED' for table 'MISSING_VALUES'", expected.getMessage());
+        	assertEquals("MISSING_VALUES.COLUMNXY_UNDEFINED", expected.getMessage());
         }
     }
 

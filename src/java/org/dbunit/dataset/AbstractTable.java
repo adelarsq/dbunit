@@ -73,7 +73,7 @@ public abstract class AbstractTable implements ITable
         // TODO Check if common method from Columns class can be reused -> "Columns.getColumnValidated()"
         if (Columns.getColumn(columnName, metaData.getColumns()) == null)
         {
-            throw new NoSuchColumnException(metaData.getTableName() + "." + columnName);
+            throw new NoSuchColumnException(metaData.getTableName(), columnName);
         }
     }
 

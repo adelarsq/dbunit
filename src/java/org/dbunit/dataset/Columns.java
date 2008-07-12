@@ -69,7 +69,7 @@ public class Columns
         Column column = Columns.getColumn(columnName, columns);
         if(column==null)
         {
-            throw new NoSuchColumnException(tableName + "." + columnName);
+            throw new NoSuchColumnException(tableName, columnName);
         }
         
         return column;

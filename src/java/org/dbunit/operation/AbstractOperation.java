@@ -82,7 +82,7 @@ public abstract class AbstractOperation extends DatabaseOperation
             Column column = Columns.getColumn(columnName, databaseColumns);
             if (column == null)
             {
-                throw new NoSuchColumnException(tableName + "." + columnName);
+                throw new NoSuchColumnException(tableName, columnName);
             }
             columnList.add(column);
         }

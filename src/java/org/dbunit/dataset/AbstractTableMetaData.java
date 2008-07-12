@@ -115,7 +115,7 @@ public abstract class AbstractTableMetaData implements ITableMetaData
 		}
 		else 
 		{
-			throw new NoSuchColumnException(this.getTableName() + "." + columnNameUpperCase + 
+			throw new NoSuchColumnException(this.getTableName(), columnNameUpperCase,
 					" (Non-uppercase input column: "+columnName+") in ColumnNameToIndexes cache map. " +
 					"Note that the map's column names are NOT case sensitive.");
 		}
