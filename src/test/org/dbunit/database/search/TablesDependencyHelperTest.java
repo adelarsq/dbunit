@@ -157,14 +157,10 @@ public class TablesDependencyHelperTest extends TestCase {
         		ImportAndExportKeysSearchCallbackOwnFileTest.SQL_FILE
         		} );
         
-        String[][] allInput = ImportAndExportKeysSearchCallbackOwnFileTest.SINGLE_INPUT;
+        String[][] allInputWithSchema = ImportAndExportKeysSearchCallbackOwnFileTest.getSingleInputWithSchema("TEST_SCHEMA");
         String[][] allExpectedOutput = ImportAndExportKeysSearchCallbackOwnFileTest.SINGLE_OUTPUT;
-        for (int i = 0; i < allInput.length; i++) {
-            String[] input = allInput[i];
-            // Modify the input tables so that they are fully qualified (include the schema name)
-            for (int j = 0; j < input.length; j++) {
-				input[j] = "TEST_SCHEMA." + input[j];
-			}
+        for (int i = 0; i < allInputWithSchema.length; i++) {
+            String[] input = allInputWithSchema[i];
             String[] expectedOutput = allExpectedOutput[i];
             IDataSet actualOutput = TablesDependencyHelper.getAllDataset( this.connection, input[0], new HashSet());
             String[] actualOutputTables = actualOutput.getTableNames();

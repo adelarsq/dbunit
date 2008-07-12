@@ -45,6 +45,18 @@ public class ImportAndExportKeysSearchCallbackOwnFileTest extends AbstractMetaDa
     new String[] { "F" }
   };
 
+  	public static String[][] getSingleInputWithSchema(String schema) {
+  		String[][] singleInputWithSchema = new String[SINGLE_INPUT.length][];
+  		for (int i = 0; i < SINGLE_INPUT.length; i++) {
+  			String[] currentInputWithoutSchema = SINGLE_INPUT[i];
+  			singleInputWithSchema[i] = new String[currentInputWithoutSchema.length];
+  			for (int j = 0; j < currentInputWithoutSchema.length; j++) {
+  				singleInputWithSchema[i][j] = "TEST_SCHEMA." + currentInputWithoutSchema[j];
+  			}
+  		}
+  		return singleInputWithSchema;
+  	}
+
   public static final String[][] COMPOUND_INPUT = new String[][] {
     new String[] { "A", "D" }, 
     new String[] { "D", "A" },
