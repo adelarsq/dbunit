@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.dbunit.Assertion;
-import org.dbunit.database.DatabaseConfig;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
 import org.dbunit.util.QualifiedTableName;

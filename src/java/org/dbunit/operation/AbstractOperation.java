@@ -20,17 +20,22 @@
  */
 package org.dbunit.operation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.*;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.Columns;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoSuchColumnException;
+import org.dbunit.util.QualifiedTableName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
@@ -54,7 +59,7 @@ public abstract class AbstractOperation extends DatabaseOperation
     	}
 
         String escapePattern = (String)connection.getConfig().getProperty(DatabaseConfig.PROPERTY_ESCAPE_PATTERN);
-        return DataSetUtils.getQualifiedName(prefix, name, escapePattern);
+        return QualifiedTableName.getQualifiedName(prefix, name, escapePattern);
     }
 
     /**

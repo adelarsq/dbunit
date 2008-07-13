@@ -123,14 +123,14 @@ public class QualifiedTableName
 	
 	
 	/**
-	 * Returns the qualified name according to {@link DataSetUtils#getQualifiedName(String, String)}
+	 * Returns the qualified name according to {@link QualifiedTableName#getQualifiedName(String, String)}
 	 * if the feature {@link DatabaseConfig#FEATURE_QUALIFIED_TABLE_NAMES} is set. Otherwise the given
 	 * name is returned unqualified (i.e. without prepending the prefix). 
      * @param prefix the prefix that qualifies the name and is prepended if the name is not qualified yet
      * @param name the name The name to be qualified if it is not qualified already
 	 * @param config The configuration used to check if the feature {@link DatabaseConfig#FEATURE_QUALIFIED_TABLE_NAMES}
 	 * is set or not.
-	 * @return The qualified name as defined in {@link DataSetUtils#getQualifiedName(String, String)} if needed
+	 * @return The qualified name as defined in {@link QualifiedTableName#getQualifiedName(String, String)} if needed
 	 */
 	public static String getQualifiedName(String prefix, String name,
 			DatabaseConfig config) 

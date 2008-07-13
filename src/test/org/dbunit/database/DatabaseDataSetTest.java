@@ -22,9 +22,15 @@
 package org.dbunit.database;
 
 import org.dbunit.DatabaseEnvironment;
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.filter.DefaultColumnFilter;
+import org.dbunit.dataset.AbstractDataSetTest;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.filter.DefaultColumnFilter;
+import org.dbunit.util.QualifiedTableName;
+
 
 /**
  * @author Manuel Laflamme
@@ -158,7 +164,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         assertEquals("name count", expectedNames.length, actualNames.length);
         for (int i = 0; i < actualNames.length; i++)
         {
-            String expected = DataSetUtils.getQualifiedName(
+            String expected = QualifiedTableName.getQualifiedName(
                     _connection.getSchema(), expectedNames[i]);
             String actual = actualNames[i];
             assertEquals("name", expected, actual);
@@ -167,7 +173,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 
     public void testGetColumnsAndQualifiedNamesEnabled() throws Exception
     {
-        String tableName = DataSetUtils.getQualifiedName(
+        String tableName = QualifiedTableName.getQualifiedName(
                 _connection.getSchema(), "TEST_TABLE");
         String[] expected = {"COLUMN0", "COLUMN1", "COLUMN2", "COLUMN3"};
 
@@ -188,7 +194,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 
     public void testGetPrimaryKeysAndQualifiedNamesEnabled() throws Exception
     {
-        String tableName = DataSetUtils.getQualifiedName(
+        String tableName = QualifiedTableName.getQualifiedName(
                 _connection.getSchema(), "PK_TABLE");
         String[] expected = {"PK0", "PK1", "PK2"};
 
