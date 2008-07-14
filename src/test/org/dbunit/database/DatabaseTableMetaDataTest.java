@@ -26,8 +26,11 @@ import org.dbunit.dataset.Column;
 import org.dbunit.dataset.Columns;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.NoColumnsFoundException;
+import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.DataTypeException;
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 
 /**
  * @author Manuel Laflamme
@@ -73,30 +76,36 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         assertEquals("pk count", 0, columns.length);
     }
 
-    public void testGetNoColumns() throws Exception
+    
+    
+    
+    public void testCreation_UnknownTable() throws Exception
     {
         String tableName = "UNKNOWN_TABLE";
 
-        ITableMetaData metaData = new DatabaseTableMetaData(tableName,
-                getConnection());
         try
         {
-            metaData.getColumns();
-            fail("Should not be here!");
+        	new DatabaseTableMetaData(tableName, getConnection());
+        	fail("Should not be able to create a DatabaseTableMetaData for an unknown table");
         }
-        catch (NoColumnsFoundException e)
+        catch (NoSuchTableException expected)
         {
+        	String msg = "Did not find table 'UNKNOWN_TABLE' in schema 'PUBLIC'";
+        	assertEquals(msg, expected.getMessage());
         }
+    }
 
-        // try a second times to ensure error is consistent
-        try
-        {
-            metaData.getColumns();
-            fail("Should not be here!");
-        }
-        catch (NoColumnsFoundException e)
-        {
-        }
+    public void testGetNoColumns() throws Exception
+    {
+    	// Since the "unknown_table" does not exist it also does not have any columns
+        String tableName = "UNKNOWN_TABLE";
+        boolean validate = false;
+
+        ITableMetaData metaData = new DatabaseTableMetaData(tableName,
+                getConnection(), validate);
+        
+        Column[] columns = metaData.getColumns();
+        assertEquals(0, columns.length);
     }
 
     public void testColumnIsNullable() throws Exception
@@ -126,28 +135,24 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         }
     }
 
-//    public void testUnsupportedColumnDataType() throws Exception
-//    {
-//        fail("Mock this test!");
-//        String tableName = "EMPTY_MULTITYPE_TABLE";
-//        String[] expectedNames = {
-//            "VARCHAR_COL",
-//            "NUMERIC_COL",
-//            "TIMESTAMP_COL",
-//        };
-//
-//        ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
-//        Column[] columns = metaData.getColumns();
-//
-//        assertEquals("column count", expectedNames.length, columns.length);
-//
-//        for (int i = 0; i < columns.length; i++)
-//        {
-//            Column column = columns[i];
-//            assertEquals("name", expectedNames[i], column.getColumnName());
-//        }
-//    }
-
+    public void testUnsupportedColumnDataType() throws Exception
+    {
+        IDataTypeFactory dataTypeFactory = new DefaultDataTypeFactory() {
+			public DataType createDataType(int sqlType, String sqlTypeName,
+					String tableName, String columnName)
+					throws DataTypeException {
+				return DataType.UNKNOWN;
+			}
+        };
+        this._connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, dataTypeFactory);
+    	
+        String tableName = "EMPTY_MULTITYPE_TABLE";
+        ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
+        Column[] columns = metaData.getColumns();
+        // No columns recognized -> should not provide any columns here
+        assertEquals("Should be an empty column array", 0, columns.length);
+    }
+    
     public void testColumnDataType() throws Exception
     {
         String tableName = "EMPTY_MULTITYPE_TABLE";
@@ -177,6 +182,7 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
             assertEquals("datatype", expectedTypes[i], column.getDataType());
         }
     }
+    
 }
 
 

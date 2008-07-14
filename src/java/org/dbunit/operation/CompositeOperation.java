@@ -29,6 +29,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 
 /**
  * This class is a composite that combines multiple database operation in a
@@ -70,13 +71,22 @@ public class CompositeOperation extends DatabaseOperation
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
     {
-        //logger.debug("execute(connection=" + connection + ", dataSet=" + dataSet + ") - start");
+        logger.debug("execute(connection={}, , dataSet={}) - start", connection, dataSet);
 
         for (int i = 0; i < _actions.length; i++)
         {
             DatabaseOperation action = _actions[i];
             action.execute(connection, dataSet);
         }
+    }
+    
+    public String toString()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(getClass().getName()).append("[");
+    	sb.append("_actions=").append(this._actions==null ? "null" : Arrays.asList(this._actions).toString());
+    	sb.append("]");
+    	return sb.toString();
     }
 }
 

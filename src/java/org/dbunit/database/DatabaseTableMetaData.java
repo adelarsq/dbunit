@@ -36,11 +36,12 @@ import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.NoColumnsFoundException;
+import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.util.QualifiedTableName;
+import org.dbunit.util.SQLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,15 +58,64 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
      */
     private static final Logger logger = LoggerFactory.getLogger(DatabaseTableMetaData.class);
 
+    /**
+     * Table name, potentially qualified
+     */
     private final String _tableName;
+    private final QualifiedTableName _qualifiedTableNameSupport;
     private final IDatabaseConnection _connection;
     private Column[] _columns;
     private Column[] _primaryKeys;
 
-    DatabaseTableMetaData(String tableName, IDatabaseConnection connection)
+    
+    DatabaseTableMetaData(String tableName, IDatabaseConnection connection) throws DataSetException
     {
+    	this(tableName, connection, true);
+    }
+    
+    /**
+     * Creates a new database table metadata
+     * @param tableName The name of the table - can be fully qualified
+     * @param connection The database connection
+     * @param validate Whether or not to validate the given input data. It is not recommended to
+     * set the validation to <code>false</code> because it is then possible to create an instance
+     * of this object for a db table that does not exist.
+     * @throws DataSetException
+     */
+    DatabaseTableMetaData(String tableName, IDatabaseConnection connection, boolean validate) throws DataSetException
+    {
+    	if (tableName == null) {
+			throw new NullPointerException("The parameter 'tableName' must not be null");
+		}
+    	if (connection == null) {
+			throw new NullPointerException("The parameter 'connection' must not be null");
+		}
+    	
         _tableName = tableName;
         _connection = connection;
+        // qualified names support
+        this._qualifiedTableNameSupport = new QualifiedTableName(_tableName, _connection.getSchema());
+
+        if(validate) 
+        {
+	        String schemaName = _qualifiedTableNameSupport.getSchema();
+	        String plainTableName = _qualifiedTableNameSupport.getTable();
+	        logger.debug("Validating if table '" + plainTableName + "' exists in schema '" + schemaName + "' ...");
+	        try {
+		        DatabaseMetaData databaseMetaData = connection.getConnection().getMetaData();
+		        if(!SQLHelper.tableExists(databaseMetaData, schemaName, plainTableName)) {
+		        	throw new NoSuchTableException("Did not find table '" + plainTableName + "' in schema '" + schemaName + "'");
+		        }
+	        }
+	        catch (SQLException e)
+	        {
+	            throw new DataSetException("Exception while validation existence of table '" + plainTableName + "'", e);
+	        }
+        }
+        else
+        {
+	        logger.debug("Validation switched off. Will not check if table exists.");
+        }
     }
 
     public static ITableMetaData createMetaData(String tableName,
@@ -121,11 +171,9 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     {
         logger.debug("getPrimaryKeyNames() - start");
 
-        // qualified names support
-        QualifiedTableName qualifiedTableName = new QualifiedTableName(_tableName, _connection.getSchema());
-        String schemaName = qualifiedTableName.getSchema();
-        String tableName = qualifiedTableName.getTable();
-        
+    	String schemaName = _qualifiedTableNameSupport.getSchema();
+    	String tableName = _qualifiedTableNameSupport.getTable();
+
         Connection connection = _connection.getConnection();
         DatabaseMetaData databaseMetaData = connection.getMetaData();
         ResultSet resultSet = databaseMetaData.getPrimaryKeys(
@@ -207,12 +255,12 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             try
             {
                 // qualified names support
-            	QualifiedTableName qualifiedTableName = new QualifiedTableName(_tableName, _connection.getSchema());
-            	String schemaName = qualifiedTableName.getSchema();
-            	String tableName = qualifiedTableName.getTable();
+            	String schemaName = _qualifiedTableNameSupport.getSchema();
+            	String tableName = _qualifiedTableNameSupport.getTable();
             	
                 Connection jdbcConnection = _connection.getConnection();
                 DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
+                
                 ResultSet resultSet = databaseMetaData.getColumns(
                         null, schemaName, tableName, "%");
 
@@ -244,8 +292,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                         }
                         else if (datatypeWarning)
                         {
-                            System.out.println(
-                                    "WARNING - " + tableName + "." + columnName +
+                            logger.warn(
+                                    tableName + "." + columnName +
                                     " data type (" + sqlType + ", '" + sqlTypeName +
                                     "') not recognized and will be ignored. See FAQ for more information.");
                         }
@@ -253,7 +301,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
                     if (columnList.size() == 0)
                     {
-                        throw new NoColumnsFoundException(tableName);
+                    	logger.warn("No columns found for table '"+ tableName +"' that are supported by dbunit. " +
+                    			"Will return an empty column list");
                     }
 
                     _columns = (Column[])columnList.toArray(new Column[0]);

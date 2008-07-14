@@ -215,4 +215,15 @@ public abstract class AbstractBatchOperation extends AbstractOperation
             }
         }
     }
+    
+    public String toString()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(getClass().getName()).append("[");
+    	sb.append("_reverseRowOrder=").append(this._reverseRowOrder);
+    	sb.append(", super=").append(super.toString());
+    	sb.append("]");
+    	return sb.toString();
+    }
+    
 }

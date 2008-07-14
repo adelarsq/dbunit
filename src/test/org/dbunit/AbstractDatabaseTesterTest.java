@@ -39,7 +39,7 @@ public abstract class AbstractDatabaseTesterTest extends TestCase
    protected IDatabaseConnection _connection;
    protected IDatabaseTester _databaseTester;
 
-   protected final Logger logger = LoggerFactory.getLogger( getClass() );
+   protected final Logger logger = LoggerFactory.getLogger(AbstractDatabaseTesterTest.class);
 
    public AbstractDatabaseTesterTest( String s )
    {

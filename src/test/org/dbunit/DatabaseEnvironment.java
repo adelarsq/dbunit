@@ -136,6 +136,19 @@ public class DatabaseEnvironment
 
         return true;
     }
+    
+    public String toString()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(getClass().getName()).append("[");
+    	sb.append("_profile=").append(_profile);
+    	sb.append(", _connection=").append(_connection);
+    	sb.append(", _dataSet=").append(_dataSet);
+    	sb.append(", _databaseTester=").append(_databaseTester);
+    	sb.append("]");
+    	return sb.toString();
+    }
+
 }
 
 

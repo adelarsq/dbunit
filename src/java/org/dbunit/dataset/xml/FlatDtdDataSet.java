@@ -21,16 +21,31 @@
 
 package org.dbunit.dataset.xml;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.AbstractDataSet;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.DefaultTableIterator;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
-
-import java.io.*;
-import java.util.*;
 
 /**
  * @author Manuel Laflamme
@@ -96,7 +111,8 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
+    	if(logger.isDebugEnabled())
+    		logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
 
         // Verify producer notifications completed
         if (!_ready)
@@ -211,4 +227,17 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
     {
         // no op
     }
+    
+    
+    public String toString()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(getClass().getName()).append("[");
+    	sb.append("_ready=").append(this._ready);
+    	sb.append(", _tableNames=").append(this._tableNames);
+    	sb.append(", _tableMap=").append(this._tableMap);
+    	sb.append("]");
+    	return sb.toString();
+    }
+
 }

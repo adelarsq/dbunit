@@ -179,8 +179,8 @@ public class DatabaseConnection extends AbstractDatabaseConnection
         sb.append(getClass().getName()).append("[");
         sb.append("schema=").append(_schema);
         sb.append(", connection=").append(_connection);
+        sb.append(", super=").append(super.toString());
         sb.append("]");
-        sb.append(super.toString());
         return sb.toString();
     }
 }

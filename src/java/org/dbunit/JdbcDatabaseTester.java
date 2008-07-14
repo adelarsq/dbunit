@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Arrays;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -149,4 +150,18 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
 		logger.debug("setDriverClass(driverClass={}) - start", driverClass);
 		this.driverClass = driverClass;
 	}
+	
+    public String toString()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(getClass().getName()).append("[");
+    	sb.append("connectionUrl=").append(this.connectionUrl);
+    	sb.append(", driverClass=").append(this.driverClass);
+    	sb.append(", initialized=").append(this.initialized);
+    	sb.append(", username=").append(this.username);
+    	sb.append(", password=**********");
+    	sb.append("]");
+    	return sb.toString();
+    }
+
 }

@@ -20,15 +20,14 @@
  */
 package org.dbunit.dataset.xml;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.PrintWriter;
+import java.io.Writer;
 
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
-
-import java.io.PrintWriter;
-import java.io.Writer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
@@ -90,6 +89,7 @@ public class FlatDtdWriter //implements IDataSetConsumer
             printOut.print("<!ATTLIST ");
             printOut.print(tableName);
             printOut.print("\n");
+            // Add the columns
             Column[] columns = dataSet.getTableMetaData(tableName).getColumns();
             for (int j = 0; j < columns.length; j++)
             {

@@ -31,6 +31,7 @@
       <action dev="gommma" type="fix" issue="2014884" due-to="pasha_z">getAllDependentTables ORA-01000: maximum open cursors exceed</action>
       <action dev="gommma" type="fix" issue="1746373" due-to="byte-error">getAllDependentTables didn't work with full qualified names </action>
       <action dev="gommma" type="add">Added constructors to NoSuchColumnException taking table name and column name as arguments - set old constructors to deprecated</action>
+      <action dev="gommma" type="fix" issue="1789402" due_to="jondi">Exception in DTD generation - Implies API behaviour change. DatabaseTableMetaData.getColumns() does not throw a NoColumnsFoundExcepion anymore but returns an empty Column[] when a table does not have any dbunit-supported columns</action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>

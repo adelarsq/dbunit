@@ -37,165 +37,177 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractDatabaseTester implements IDatabaseTester
 {
 
-   /**
-    * Logger for this class
-    */
-   private static final Logger logger = LoggerFactory.getLogger(AbstractDatabaseTester.class);
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(AbstractDatabaseTester.class);
 
-   private IDataSet dataSet;
-   private String schema;
-   private DatabaseOperation setUpOperation = DatabaseOperation.CLEAN_INSERT;
-   private DatabaseOperation tearDownOperation = DatabaseOperation.NONE;
+	private IDataSet dataSet;
+	private String schema;
+	private DatabaseOperation setUpOperation = DatabaseOperation.CLEAN_INSERT;
+	private DatabaseOperation tearDownOperation = DatabaseOperation.NONE;
 
-   public AbstractDatabaseTester()
-   {
-      super();
-   }
+	public AbstractDatabaseTester()
+	{
+		super();
+	}
 
-   public void closeConnection( IDatabaseConnection connection ) throws Exception
-   {
-        logger.debug("closeConnection(connection={}) - start",connection);
+	public void closeConnection( IDatabaseConnection connection ) throws Exception
+	{
+		logger.debug("closeConnection(connection={}) - start",connection);
 
-      connection.close();
-   }
+		connection.close();
+	}
 
-   public IDataSet getDataSet()
-   {
-        logger.debug("getDataSet() - start");
+	public IDataSet getDataSet()
+	{
+		logger.debug("getDataSet() - start");
 
-      return dataSet;
-   }
+		return dataSet;
+	}
 
-   public void onSetup() throws Exception
-   {
-        logger.debug("onSetup() - start");
+	public void onSetup() throws Exception
+	{
+		logger.debug("onSetup() - start");
 
-      executeOperation( getSetUpOperation() );
-   }
+		executeOperation( getSetUpOperation() );
+	}
 
-   public void onTearDown() throws Exception
-   {
-        logger.debug("onTearDown() - start");
-      executeOperation( getTearDownOperation() );
-   }
+	public void onTearDown() throws Exception
+	{
+		logger.debug("onTearDown() - start");
+		executeOperation( getTearDownOperation() );
+	}
 
-   public void setDataSet( IDataSet dataSet )
-   {
-        logger.debug("setDataSet(dataSet={}) - start", dataSet);
+	public void setDataSet( IDataSet dataSet )
+	{
+		logger.debug("setDataSet(dataSet={}) - start", dataSet);
 
-      this.dataSet = dataSet;
-   }
+		this.dataSet = dataSet;
+	}
 
-   public void setSchema( String schema )
-   {
-        logger.debug("setSchema(schema={}) - start", schema);
+	public void setSchema( String schema )
+	{
+		logger.debug("setSchema(schema={}) - start", schema);
 
-      this.schema = schema;
-   }
+		this.schema = schema;
+	}
 
-   public void setSetUpOperation( DatabaseOperation setUpOperation )
-   {
-        logger.debug("setSetUpOperation(setUpOperation={}) - start", setUpOperation);
+	public void setSetUpOperation( DatabaseOperation setUpOperation )
+	{
+		logger.debug("setSetUpOperation(setUpOperation={}) - start", setUpOperation);
 
-      this.setUpOperation = setUpOperation;
-   }
+		this.setUpOperation = setUpOperation;
+	}
 
-   public void setTearDownOperation( DatabaseOperation tearDownOperation )
-   {
-        logger.debug("setTearDownOperation(tearDownOperation={}) - start", tearDownOperation);
+	public void setTearDownOperation( DatabaseOperation tearDownOperation )
+	{
+		logger.debug("setTearDownOperation(tearDownOperation={}) - start", tearDownOperation);
 
-      this.tearDownOperation = tearDownOperation;
-   }
+		this.tearDownOperation = tearDownOperation;
+	}
 
-   /**
-    * Asserts that propertyName is not a null String and has a length greater
-    * than zero.
-    */
-   protected void assertNotNullNorEmpty( String propertyName, String property )
-   {
-        logger.debug("assertNotNullNorEmpty(propertyName={}, property={}) - start", propertyName, property);
+	/**
+	 * Asserts that propertyName is not a null String and has a length greater
+	 * than zero.
+	 */
+	protected void assertNotNullNorEmpty( String propertyName, String property )
+	{
+		logger.debug("assertNotNullNorEmpty(propertyName={}, property={}) - start", propertyName, property);
 
-      assertTrue( propertyName + " is null", property != null );
-      assertTrue( "Invalid " + propertyName, property.trim()
-            .length() > 0 );
-   }
+		assertTrue( propertyName + " is null", property != null );
+		assertTrue( "Invalid " + propertyName, property.trim()
+				.length() > 0 );
+	}
 
-   /**
-    * Method used to avoid JUnit dependency
-    * @param message message displayed if assertion is false
-    * @param condition condition to be tested
-    */
-   protected void assertTrue(String message, boolean condition) {
-     if (!condition) {
-       throw new AssertionFailedError( message );
-     }
-    
-  }
+	/**
+	 * Method used to avoid JUnit dependency
+	 * @param message message displayed if assertion is false
+	 * @param condition condition to be tested
+	 */
+	protected void assertTrue(String message, boolean condition) {
+		if (!condition) {
+			throw new AssertionFailedError( message );
+		}
 
-  /**
-    * Returs the schema value.
-    */
-   protected String getSchema()
-   {
-        logger.trace("getSchema() - start");
+	}
 
-      return schema;
-   }
+	/**
+	 * Returns the schema value.
+	 */
+	protected String getSchema()
+	{
+		logger.trace("getSchema() - start");
 
-   /**
-    * Returns the DatabaseOperation to call when starting the test.
-    */
-   protected DatabaseOperation getSetUpOperation()
-   {
-        logger.trace("getSetUpOperation() - start");
+		return schema;
+	}
 
-      return setUpOperation;
-   }
+	/**
+	 * Returns the DatabaseOperation to call when starting the test.
+	 */
+	protected DatabaseOperation getSetUpOperation()
+	{
+		logger.trace("getSetUpOperation() - start");
 
-   /**
-    * Returns the DatabaseOperation to call when ending the test.
-    */
-   protected DatabaseOperation getTearDownOperation()
-   {
-        logger.trace("getTearDownOperation() - start");
+		return setUpOperation;
+	}
 
-      return tearDownOperation;
-   }
+	/**
+	 * Returns the DatabaseOperation to call when ending the test.
+	 */
+	protected DatabaseOperation getTearDownOperation()
+	{
+		logger.trace("getTearDownOperation() - start");
 
-   /**
-    * Executes a DatabaseOperation with a IDatabaseConnection supplied by
-    * {@link getConnection()} and the test dataset.
-    */
-   private void executeOperation( DatabaseOperation operation ) throws Exception
-   {
-        logger.debug("executeOperation(operation={}) - start", operation);
+		return tearDownOperation;
+	}
 
-      if( operation != DatabaseOperation.NONE ){
-         IDatabaseConnection connection = getConnection();
-         try{
-            operation.execute( connection, getDataSet() );
-         }
-         finally{
-            closeConnection( connection );
-         }
-      }
-   }
+	/**
+	 * Executes a DatabaseOperation with a IDatabaseConnection supplied by
+	 * {@link getConnection()} and the test dataset.
+	 */
+	private void executeOperation( DatabaseOperation operation ) throws Exception
+	{
+		logger.debug("executeOperation(operation={}) - start", operation);
 
-   /**
-    * Exception used to avoid JUnit dependency.
-    * @author Felipe Leme
-    *
-    */
-   public static class AssertionFailedError extends Error {
+		if( operation != DatabaseOperation.NONE ){
+			IDatabaseConnection connection = getConnection();
+			try{
+				operation.execute( connection, getDataSet() );
+			}
+			finally{
+				closeConnection( connection );
+			}
+		}
+	}
 
-     private static final long serialVersionUID= 1L;
-     
-     public AssertionFailedError () {
-     }
-     public AssertionFailedError (String message) {
-       super (message);
-     }
-   }
-   
+    public String toString()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(getClass().getName()).append("[");
+    	sb.append("schema=").append(schema);
+    	sb.append(", dataSet=").append(dataSet);
+    	sb.append(", setUpOperation=").append(setUpOperation);
+    	sb.append(", tearDownOperation=").append(tearDownOperation);
+    	sb.append("]");
+    	return sb.toString();
+    }
+
+	/**
+	 * Exception used to avoid JUnit dependency.
+	 * @author Felipe Leme
+	 *
+	 */
+	public static class AssertionFailedError extends Error {
+
+		private static final long serialVersionUID= 1L;
+
+		public AssertionFailedError () {
+		}
+		public AssertionFailedError (String message) {
+			super (message);
+		}
+	}
+
 }
 

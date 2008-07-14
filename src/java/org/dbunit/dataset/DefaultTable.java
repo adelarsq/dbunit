@@ -21,13 +21,15 @@
 
 package org.dbunit.dataset;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
+ * Default table implementation backed by a simple java in-memory list.
+ * 
  * @author Manuel Laflamme
  * @version $Revision$
  * @since Feb 17, 2002
@@ -192,6 +194,15 @@ public class DefaultTable extends AbstractTable
         return rowValues[getColumnIndex(column)];
     }
 
+    public String toString()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(getClass().getName()).append("[");
+    	sb.append("_metaData=").append(this._metaData == null ? "null" : this._metaData.toString());
+    	sb.append(", _rowList.size()=").append(this._rowList == null ? "null" : ""+this._rowList.size());
+    	sb.append("]");
+    	return sb.toString();
+    }
 }
 
 
