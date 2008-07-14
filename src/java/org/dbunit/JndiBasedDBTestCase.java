@@ -50,8 +50,8 @@ public abstract class JndiBasedDBTestCase extends DBTestCase
    /**
     * Creates a new IDatabaseTester.<br>
     * Default implementation returns a {@link JndiDatabaseTester} configured
-    * with the values returned from {@link getJNDIProperties()} and
-    * {@link getLookupName()}.
+    * with the values returned from {@link #getJNDIProperties()} and
+    * {@link #getLookupName()}.
     */
    protected IDatabaseTester newDatabaseTester()
    {

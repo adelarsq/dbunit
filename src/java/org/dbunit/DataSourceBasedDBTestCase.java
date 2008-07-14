@@ -51,7 +51,7 @@ public abstract class DataSourceBasedDBTestCase extends DBTestCase
    /**
     * Creates a new IDatabaseTester.<br>
     * Default implementation returns a {@link DataSourceDatabaseTester}
-    * configured with the value returned from {@link getDataSource()}.
+    * configured with the value returned from {@link #getDataSource()}.
     */
    protected IDatabaseTester newDatabaseTester()
    {

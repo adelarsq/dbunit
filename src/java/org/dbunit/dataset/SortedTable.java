@@ -73,7 +73,7 @@ public class SortedTable extends AbstractTable
 	/**
      * Sort the decorated table by specified columns order.
      * @param table decorated table
-     * @param columns names of columns to be used for sorting
+     * @param columnNames names of columns to be used for sorting
      * @throws DataSetException
      */
     public SortedTable(ITable table, String[] columnNames) throws DataSetException

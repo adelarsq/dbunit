@@ -1,6 +1,8 @@
 
 package org.dbunit.util;
 
+import java.io.FileInputStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,7 +129,7 @@ public class Base64
 
         try
         {
-            java.io.FileInputStream fis = new java.io.FileInputStream("c:\\abcd.txt");
+            FileInputStream fis = new FileInputStream("c:\\abcd.txt");
             InputStream b64is = new InputStream(fis, DECODE);
             int ib = 0;
             while ((ib = b64is.read()) > 0)

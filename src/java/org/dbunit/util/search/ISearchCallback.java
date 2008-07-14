@@ -23,8 +23,6 @@ package org.dbunit.util.search;
 
 import java.util.SortedSet;
 
-import org.dbunit.dataset.NoSuchTableException;
-
 /**
  * Callback used by the search algorithms.<br>
  * This interface is responsible for providing the edges of the graph and it can
@@ -39,8 +37,7 @@ public interface ISearchCallback {
     /**
      * Get the edges originating from a node.
      * 
-     * @param node
-     *          node from
+     * @param fromNode node from
      * @return all edges originating from this node.
      * @throws Exception
      *           exception wrapper

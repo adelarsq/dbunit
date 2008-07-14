@@ -131,7 +131,7 @@ public class XmlWriter
      */
     public void setIndent(String indent)
     {
-        logger.debug("setIndent(indent=" + indent + ") - start");
+        logger.debug("setIndent(indent={}) - start", indent);
 
         this.indent = indent;
     }
@@ -148,7 +148,7 @@ public class XmlWriter
      */
     public void setNewline(String newline)
     {
-        logger.debug("setNewline(newline=" + newline + ") - start");
+        logger.debug("setNewline(newline={}) - start", newline);
 
         this.newline = newline;
     }
@@ -161,7 +161,7 @@ public class XmlWriter
      */
     public XmlWriter writeElementWithText(String name, String text) throws IOException
     {
-        logger.debug("writeElementWithText(name=" + name + ", text=" + text + ") - start");
+        logger.debug("writeElementWithText(name={}, text={}) - start", name, text);
 
         writeElement(name);
         writeText(text);
@@ -175,7 +175,7 @@ public class XmlWriter
      */
     public XmlWriter writeEmptyElement(String name) throws IOException
     {
-        logger.debug("writeEmptyElement(name=" + name + ") - start");
+        logger.debug("writeEmptyElement(name={}) - start", name);
 
         writeElement(name);
         return endElement();
@@ -189,7 +189,7 @@ public class XmlWriter
      */
     public XmlWriter writeElement(String name) throws IOException
     {
-        logger.debug("writeElement(name=" + name + ") - start");
+        logger.debug("writeElement(name={}) - start", name);
 
         return openElement(name);
     }
@@ -201,7 +201,7 @@ public class XmlWriter
      */
     private XmlWriter openElement(String name) throws IOException
     {
-        logger.debug("openElement(name=" + name + ") - start");
+        logger.debug("openElement(name={}) - start", name);
 
         boolean wasClosed = this.closed;
         closeOpeningTag();
@@ -267,7 +267,7 @@ public class XmlWriter
      */
     public XmlWriter writeAttribute(String attr, String value) throws IOException
     {
-        logger.debug("writeAttribute(attr=" + attr + ", value=" + value + ") - start");
+        logger.debug("writeAttribute(attr={}, value={}) - start", attr, value);
 
         // maintain api
         if (false) throw new IOException();
@@ -350,7 +350,7 @@ public class XmlWriter
      */
     public XmlWriter writeText(String text) throws IOException
     {
-        logger.debug("writeText(text=" + text + ") - start");
+        logger.debug("writeText(text={}) - start", text);
 
         closeOpeningTag();
         this.empty = false;
@@ -367,7 +367,7 @@ public class XmlWriter
      */
     public XmlWriter writeCData(String cdata) throws IOException
     {
-        logger.debug("writeCData(cdata=" + cdata + ") - start");
+        logger.debug("writeCData(cdata={}) - start", cdata);
 
         closeOpeningTag();
         this.empty = false;
@@ -386,7 +386,7 @@ public class XmlWriter
      */
     public XmlWriter writeComment(String comment) throws IOException
     {
-        logger.debug("writeComment(comment=" + comment + ") - start");
+        logger.debug("writeComment(comment={}) - start", comment);
 
         writeChunk("<!-- " + comment + " -->");
         return this;
@@ -394,7 +394,7 @@ public class XmlWriter
 
     private void writeChunk(String data) throws IOException
     {
-        logger.debug("writeChunk(data=" + data + ") - start");
+        logger.debug("writeChunk(data={}) - start", data);
 
         closeOpeningTag();
         this.empty = false;
@@ -418,7 +418,7 @@ public class XmlWriter
     // <person name="fred" age="12"><phone>425343</phone><bob/></person>
     static public void main(String[] args) throws IOException
     {
-        logger.debug("main(args=" + args + ") - start");
+        logger.debug("main(args={}) - start", args);
 
         test1();
         test2();
@@ -465,7 +465,7 @@ public class XmlWriter
 
     private String escapeXml(String str)
     {
-        logger.debug("escapeXml(str=" + str + ") - start");
+        logger.debug("escapeXml(str={}) - start", str);
 
         str = replace(str, "&", "&amp;");
         str = replace(str, "<", "&lt;");
@@ -478,8 +478,8 @@ public class XmlWriter
 
     private String replace(String value, String original, String replacement)
     {
-        logger
-                .debug("replace(value=" + value + ", original=" + original + ", replacement=" + replacement
+    	if(logger.isDebugEnabled())
+    		logger.debug("replace(value=" + value + ", original=" + original + ", replacement=" + replacement
                         + ") - start");
 
         StringBuffer buffer = null;
@@ -512,7 +512,7 @@ public class XmlWriter
 
     private void setEncoding(String encoding)
     {
-        logger.debug("setEncoding(encoding=" + encoding + ") - start");
+        logger.debug("setEncoding(encoding={}) - start", encoding);
 
         if (encoding == null && out instanceof OutputStreamWriter)
             encoding = ((OutputStreamWriter)out).getEncoding();
@@ -575,7 +575,7 @@ public class XmlWriter
      */
     final public void setWriter(Writer writer, String encoding)
     {
-        logger.debug("setWriter(writer=" + writer + ", encoding=" + encoding + ") - start");
+        logger.debug("setWriter(writer={}, encoding={}) - start", writer, encoding);
 
         if (this.out != null)
             throw new IllegalStateException(
@@ -604,7 +604,7 @@ public class XmlWriter
 
     public XmlWriter writeDoctype(String systemId, String publicId) throws IOException
     {
-        logger.debug("writeDoctype(systemId=" + systemId + ", publicId=" + publicId + ") - start");
+        logger.debug("writeDoctype(systemId={}, publicId={}) - start", systemId, publicId);
 
         if (systemId != null || publicId != null)
         {

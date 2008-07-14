@@ -51,8 +51,8 @@ public abstract class JdbcBasedDBTestCase extends DBTestCase
    /**
     * Creates a new IDatabaseTester.<br>
     * Default implementation returns a {@link JdbcDatabaseTester} configured
-    * with the values returned from {@link getDriverClass},
-    * {@link getConnectionUrl}, {@link getUsername} and {@link getPassword()}.
+    * with the values returned from {@link #getDriverClass},
+    * {@link #getConnectionUrl}, {@link #getUsername} and {@link #getPassword()}.
     */
    protected IDatabaseTester newDatabaseTester()
    {

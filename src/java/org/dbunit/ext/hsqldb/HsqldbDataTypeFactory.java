@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+import org.dbunit.ext.h2.H2DataTypeFactory;
 
 /**
  * Specialized factory that recognizes Hsqldb data types.
@@ -44,7 +45,8 @@ public class HsqldbDataTypeFactory extends DefaultDataTypeFactory
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
-    	logger.debug("createDataType(sqlType={}, sqlTypeName={}) - start", String.valueOf(sqlType), sqlTypeName);
+    	if(logger.isDebugEnabled())
+    		logger.debug("createDataType(sqlType={}, sqlTypeName={}) - start", String.valueOf(sqlType), sqlTypeName);
 
         if (sqlTypeName.equals("BOOLEAN"))
         {

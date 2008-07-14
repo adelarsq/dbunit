@@ -120,7 +120,7 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
 
    /**
     * Verifies the configured properties and initializes the driver.<br>
-    * This method is called by {@link getConnection} if the tester has not been
+    * This method is called by {@link #getConnection} if the tester has not been
     * initialized yet.
     */
    protected void initialize() throws Exception

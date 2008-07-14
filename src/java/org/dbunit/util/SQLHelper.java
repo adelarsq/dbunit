@@ -85,7 +85,6 @@ public class SQLHelper {
 
     /**
      * Close a SQL statement, checking for null references.
-     * @param rs result set to be closed
      * @param stmt statement to be closed
      * @throws SQLException exception raised while closing the statement
      */

@@ -7,7 +7,7 @@ import org.dbunit.database.IDatabaseConnection;
 
 /**
  * Base testCase for database testing.<br>
- * Subclasses may override {@link newDatabaseTester()} to plug-in a different implementation
+ * Subclasses may override {@link #newDatabaseTester()} to plug-in a different implementation
  * of IDatabaseTester.<br> Default implementation uses a {@link PropertiesBasedJdbcDatabaseTester}.
  *
  * @author Felipe Leme <dbunit@felipeal.net>

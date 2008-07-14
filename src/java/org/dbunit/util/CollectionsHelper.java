@@ -50,12 +50,12 @@ public class CollectionsHelper {
 
   /**
    * Returns a Set from an array of objects.
-   * Note the Iterator returned by this Set mantains the order of the array.
+   * Note the Iterator returned by this Set preserves the order of the array.
    * @param objects array of objects
    * @return Set with the elements of the array or null if entry is null
    */
   public static Set objectsToSet( Object[] objects ) {
-        logger.debug("objectsToSet(objects=" + objects + ") - start");
+        logger.debug("objectsToSet(objects={}) - start", objects);
 
     if ( objects == null ) {
       return null;
@@ -69,11 +69,11 @@ public class CollectionsHelper {
 
   /**
    * Returns an array of Objects from a Set.
-   * @param a Set 
+   * @param set a Set 
    * @return array of Objects with the elements of the Set or null if set is null
    */
   public static Object[] setToObjects( Set set ) {
-        logger.debug("setToObjects(set=" + set + ") - start");
+        logger.debug("setToObjects(set={}) - start", set);
 
     if ( set == null ) {
       return null;
@@ -88,11 +88,11 @@ public class CollectionsHelper {
 
   /**
    * Returns an array of Strings from a Set.
-   * @param a Set of Strings
+   * @param set a Set of Strings
    * @return array of Strings with the elements of the Set or null if set is null
    */
   public static String[] setToStrings( Set set ) {
-        logger.debug("setToStrings(set=" + set + ") - start");
+        logger.debug("setToStrings(set={}) - start", set);
 
     if ( set == null ) {
       return null;
