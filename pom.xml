@@ -412,7 +412,8 @@ AllTests)
 						<toAddress implementation="java.lang.String">dbunit-user@lists.sourceforge.net</toAddress>
 					</toAddresses>
 					<urlDownload>http://sourceforge.net/project/showfiles.php?group_id=47439</urlDownload>
-					<issueLinkTemplate>%URL%?func=detail&amp;aid=%ISSUE%&amp;group_id=47439&amp;atid=449494</issueLinkTemplate>
+					<issueLinkTemplate>http://sourceforge.net/support/tracker.php?aid=%ISSUE%</issueLinkTemplate>
+<!--					<issueLinkTemplate>%URL%?func=detail&amp;aid=%ISSUE%&amp;group_id=47439&amp;atid=449494</issueLinkTemplate> -->
 				</configuration>
 				<reportSets>
 					<reportSet>
