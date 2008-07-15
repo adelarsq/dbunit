@@ -60,7 +60,8 @@ public interface ITableMetaData
 	 * Returns the column's array index of the column with the given name within this table metadata.
 	 * @param columnName The name of the column that is searched
 	 * @return The index of the given column within this metadata, starting with 0 for the first column
-	 * @throws DataSetException 
+	 * @throws NoSuchColumnException if the given column has not been found
+	 * @throws DataSetException if something goes wrong when trying to retrieve the columns
 	 * @since 2.3.0
 	 */
 	public int getColumnIndex(String columnName) throws DataSetException;

@@ -224,6 +224,7 @@ public class Assertion
         // Do not continue if same instance
         if (expectedTable == actualTable)
         {
+        	logger.debug("The given tables reference the same object. Will return immediately. (Table={})", expectedTable);
             return;
         }
 
@@ -231,29 +232,37 @@ public class Assertion
         ITableMetaData actualMetaData = actualTable.getTableMetaData();
         String expectedTableName = expectedMetaData.getTableName();
 
-//        // verify table name
-//        Assert.assertEquals("table name", expectedMetaData.getTableName(),
-//                actualMetaData.getTableName());
-
-        // Verify columns
+        // Put the columns into the same order
         Column[] expectedColumns = Columns.getSortedColumns(expectedMetaData);
         Column[] actualColumns = Columns.getSortedColumns(actualMetaData);
-        if(expectedColumns.length != actualColumns.length)
-        {
-            throw new ComparisonFailure("column count (table=" + expectedTableName + ")", 
-                    String.valueOf(expectedColumns.length), String.valueOf(actualColumns.length) );
-        }
 
-        for (int i = 0; i < expectedColumns.length; i++)
-        {
-            String expectedName = expectedColumns[i].getColumnName();
-            String actualName = actualColumns[i].getColumnName();
-            if (!expectedName.equalsIgnoreCase(actualName))
-            {
-                throw new ComparisonFailure("columns (table=" + expectedTableName + ")",
-                        Columns.getColumnNamesAsString(expectedColumns), Columns.getColumnNamesAsString(actualColumns));
-            }
-        }
+        // Verify columns
+        Columns.ColumnDiff columnDiff = Columns.getColumnDiff(expectedMetaData, actualMetaData);
+    	if(columnDiff.hasDifference())
+    	{
+    		String message = columnDiff.getMessage();
+    		throw new ComparisonFailure(message,
+    				Columns.getColumnNamesAsString(expectedColumns), 
+    				Columns.getColumnNamesAsString(actualColumns) );
+    	}
+
+
+//        if(expectedColumns.length != actualColumns.length)
+//        {
+//            throw new ComparisonFailure("column count (table=" + expectedTableName + ")" + columnDiff, 
+//                    String.valueOf(expectedColumns.length), String.valueOf(actualColumns.length) );
+//        }
+
+//        for (int i = 0; i < expectedColumns.length; i++)
+//        {
+//            String expectedName = expectedColumns[i].getColumnName();
+//            String actualName = actualColumns[i].getColumnName();
+//            if (!expectedName.equalsIgnoreCase(actualName))
+//            {
+//                throw new ComparisonFailure("columns (table=" + expectedTableName + ")",
+//                        Columns.getColumnNamesAsString(expectedColumns), Columns.getColumnNamesAsString(actualColumns));
+//            }
+//        }
 
         // Verify row count
         if(expectedTable.getRowCount() != actualTable.getRowCount())

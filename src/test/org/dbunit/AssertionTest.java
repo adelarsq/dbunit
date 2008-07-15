@@ -98,9 +98,9 @@ public class AssertionTest extends TestCase
         }
         catch (ComparisonFailure expected)
         {
-            assertEquals("4", expected.getExpected());
-            assertEquals("3", expected.getActual());
-            String expectedMsg = "column count (table=TEST_TABLE) expected:<[4]> but was:<[3]>";
+            assertEquals("[COLUMN0, COLUMN1, COLUMN2, COLUMN3]", expected.getExpected());
+            assertEquals("[COLUMN0, COLUMN1, COLUMN2]", expected.getActual());
+            String expectedMsg = "column count (table=TEST_TABLE, expectedColCount=4, actualColCount=3) expected:<...N0, COLUMN1, COLUMN2[, COLUMN3]]> but was:<...N0, COLUMN1, COLUMN2[]]>";
             assertEquals(expectedMsg, expected.getMessage());
         }
     }
@@ -127,7 +127,7 @@ public class AssertionTest extends TestCase
         {
             assertEquals("[COLUMN0, COLUMN1, COLUMN2, COLUMN3]", expected.getExpected());
             assertEquals("[COLUMN4, COLUMN5, COLUMN6, COLUMN7]", expected.getActual());
-            String expectedMsg = "columns (table=TEST_TABLE) expected:<[COLUMN[0, COLUMN1, COLUMN2, COLUMN3]]> but was:<[COLUMN[4, COLUMN5, COLUMN6, COLUMN7]]>";
+            String expectedMsg = "column mismatch (table=TEST_TABLE) expected:<[COLUMN[0, COLUMN1, COLUMN2, COLUMN3]]> but was:<[COLUMN[4, COLUMN5, COLUMN6, COLUMN7]]>";
             assertEquals(expectedMsg, expected.getMessage());
         }
     }
