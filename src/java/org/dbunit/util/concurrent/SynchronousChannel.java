@@ -22,8 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A rendezvous channel, similar to those used in CSP and Ada.  Each
- * put must wait for a take, and vice versa.  Synchronous channels
+ * A rendezvous channel, similar to those used in CSP and Ada. Each
+ * put must wait for a take, and vice versa. Synchronous channels
  * are well suited for handoff designs, in which an object running in
  * one thread must synch up with an object running in another thread
  * in order to hand it some information, event, or task. 
@@ -31,11 +31,12 @@ import org.slf4j.LoggerFactory;
  * exchanging information, consider using a Barrier. If you need
  * bidirectional exchanges, consider using a Rendezvous.  <p>
  *
- * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>]
- * @see CyclicBarrier
- * @see Rendezvous
+ * <p>Read the
+ * <a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html">introduction to this package</a> 
+ * for more details.
+ * @see <a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/Rendezvous.html">Rendezvous</a>
+ * @see <a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/CyclicBarrier.html">CyclicBarrier</a>
 **/
-
 public class SynchronousChannel implements BoundedChannel {
 
     /**
@@ -87,7 +88,7 @@ public class SynchronousChannel implements BoundedChannel {
     protected LinkedNode last;
 
     protected void enq(LinkedNode p) {
-            logger.debug("enq(p=" + p + ") - start");
+            logger.debug("enq(p={}) - start", p);
  
       if (last == null) 
         last = head = p;
@@ -126,7 +127,7 @@ public class SynchronousChannel implements BoundedChannel {
 
 
   public void put(Object x) throws InterruptedException {
-        logger.debug("put(x=" + x + ") - start");
+        logger.debug("put(x={}) - start", x);
 
     if (x == null) throw new IllegalArgumentException();
 
@@ -134,13 +135,13 @@ public class SynchronousChannel implements BoundedChannel {
     // because we need to intertwine handling of put-arrives first
     // vs take-arrives first cases.
 
-    // Outer loop is to handle retry due to cancelled waiting taker
+    // Outer loop is to handle retry due to canceled waiting taker
     for (;;) { 
 
       // Get out now if we are interrupted
       if (Thread.interrupted()) throw new InterruptedException();
 
-      // Exactly one of item or slot will be nonnull at end of
+      // Exactly one of item or slot will be not-null at end of
       // synchronized block, depending on whether a put or a take
       // arrived first. 
       LinkedNode slot;
@@ -164,7 +165,7 @@ public class SynchronousChannel implements BoundedChannel {
             slot.notify();
             return;
           }
-          // else the taker has cancelled, so retry outer loop
+          // else the taker has canceled, so retry outer loop
         }
       }
 
@@ -259,7 +260,8 @@ public class SynchronousChannel implements BoundedChannel {
 
 
   public boolean offer(Object x, long msecs) throws InterruptedException {
-        logger.debug("offer(x=" + x + ", msecs=" + msecs + ") - start");
+	  if(logger.isDebugEnabled())
+        logger.debug("offer(x={}, msecs={}) - start", x, String.valueOf(msecs));
 
     if (x == null) throw new IllegalArgumentException();
     long waitTime = msecs;
@@ -327,7 +329,8 @@ public class SynchronousChannel implements BoundedChannel {
   }
 
   public Object poll(long msecs) throws InterruptedException {
-        logger.debug("poll(msecs=" + msecs + ") - start");
+	  if(logger.isDebugEnabled())
+        logger.debug("poll(msecs={}) - start", String.valueOf(msecs));
 
     long waitTime = msecs;
     long startTime = 0;

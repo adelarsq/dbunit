@@ -212,7 +212,8 @@ public class Base64
             byte[] source, int srcOffset, int numSigBytes,
             byte[] destination, int destOffset)
     {
-        logger.debug("encode3to4(source=" + source + ", srcOffset=" + srcOffset + ", numSigBytes=" + numSigBytes
+    	if(logger.isDebugEnabled())
+    		logger.debug("encode3to4(source=" + source + ", srcOffset=" + srcOffset + ", numSigBytes=" + numSigBytes
                 + ", destination=" + destination + ", destOffset=" + destOffset + ") - start");
 
         //           1         2         3
@@ -271,7 +272,8 @@ public class Base64
      */
     public static String encodeObject(java.io.Serializable serializableObject)
     {
-        logger.debug("encodeObject(serializableObject=" + serializableObject + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("encodeObject(serializableObject=" + serializableObject + ") - start");
 
         java.io.ByteArrayOutputStream baos = null;
         java.io.OutputStream b64os = null;
@@ -334,7 +336,8 @@ public class Base64
      */
     public static String encodeBytes(byte[] source)
     {
-        logger.debug("encodeBytes(source=" + source + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("encodeBytes(source=" + source + ") - start");
 
         return encodeBytes(source, 0, source.length);
     }   // end encodeBytes
@@ -350,7 +353,8 @@ public class Base64
      */
     public static String encodeBytes(byte[] source, int off, int len)
     {
-        logger.debug("encodeBytes(source=" + source + ", off=" + off + ", len=" + len + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("encodeBytes(source=" + source + ", off=" + off + ", len=" + len + ") - start");
 
         int len43 = len * 4 / 3;
         byte[] outBuff = new byte[(len43)                      // Main 4:3
@@ -393,7 +397,7 @@ public class Base64
      */
     public static String encodeString(String s)
     {
-        logger.debug("encodeString(s=" + s + ") - start");
+        logger.debug("encodeString(s={}) - start", s);
 
         return encodeBytes(s.getBytes());
     }   // end encodeString
@@ -415,7 +419,8 @@ public class Base64
      */
     private static byte[] decode4to3(byte[] fourBytes)
     {
-        logger.debug("decode4to3(fourBytes=" + fourBytes + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("decode4to3(fourBytes=" + fourBytes + ") - start");
 
         byte[] outBuff1 = new byte[3];
         int count = decode4to3(fourBytes, 0, outBuff1, 0);
@@ -452,7 +457,8 @@ public class Base64
      */
     private static int decode4to3(byte[] source, int srcOffset, byte[] destination, int destOffset)
     {
-        logger.debug("decode4to3(source=" + source + ", srcOffset=" + srcOffset + ", destination=" + destination
+    	if(logger.isDebugEnabled())
+    		logger.debug("decode4to3(source=" + source + ", srcOffset=" + srcOffset + ", destination=" + destination
                 + ", destOffset=" + destOffset + ") - start");
 
         // Example: Dk==
@@ -502,7 +508,7 @@ public class Base64
      */
     public static byte[] decode(String s)
     {
-        logger.debug("decode(s=" + s + ") - start");
+        logger.debug("decode(s={}) - start", s);
 
         byte[] bytes = s.getBytes();
         return decode(bytes, 0, bytes.length);
@@ -512,16 +518,16 @@ public class Base64
     /**
      * Decodes data from Base64 notation and
      * returns it as a string.
-     * Equivlaent to calling
+     * Equivalent to calling
      * <code>new String( decode( s ) )</code>
      *
-     * @param s the strind to decode
+     * @param s the string to decode
      * @return The data as a string
      * @since 1.4
      */
     public static String decodeToString(String s)
     {
-        logger.debug("decodeToString(s=" + s + ") - start");
+        logger.debug("decodeToString(s={}) - start", s);
 
         return new String(decode(s));
     }   // end decodeToString
@@ -537,7 +543,7 @@ public class Base64
      */
     public static Object decodeToObject(String encodedObject)
     {
-        logger.debug("decodeToObject(encodedObject=" + encodedObject + ") - start");
+        logger.debug("decodeToObject(encodedObject={} - start", encodedObject);
 
         byte[] objBytes = decode(encodedObject);
 
@@ -599,7 +605,8 @@ public class Base64
      */
     public static byte[] decode(byte[] source, int off, int len)
     {
-        logger.debug("decode(source=" + source + ", off=" + off + ", len=" + len + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("decode(source=" + source + ", off=" + off + ", len=" + len + ") - start");
 
         int len34 = len * 3 / 4;
         byte[] outBuff = new byte[len34]; // Upper limit on size of output
@@ -653,7 +660,7 @@ public class Base64
 
 
     /**
-     * A {@link Base64#InputStream} will read data from another
+     * A {@link Base64.InputStream} will read data from another
      * {@link java.io.InputStream}, given in the constructor,
      * and encode/decode to/from Base64 notation on the fly.
      *
@@ -677,7 +684,7 @@ public class Base64
 
 
         /**
-         * Constructs a {@link Base64#InputStream} in DECODE mode.
+         * Constructs a {@link Base64.InputStream} in DECODE mode.
          *
          * @param in the {@link java.io.InputStream} from which to read data.
          * @since 1.3
@@ -689,7 +696,7 @@ public class Base64
 
 
         /**
-         * Constructs a {@link Base64#InputStream} in
+         * Constructs a {@link Base64.InputStream} in
          * either ENCODE or DECODE mode.
          *
          * @param in the {@link java.io.InputStream} from which to read data.
@@ -821,7 +828,8 @@ public class Base64
          */
         public int read(byte[] dest, int off, int len) throws java.io.IOException
         {
-            logger.debug("read(dest=" + dest + ", off=" + off + ", len=" + len + ") - start");
+        	if(logger.isDebugEnabled())
+        		logger.debug("read(dest=" + dest + ", off=" + off + ", len=" + len + ") - start");
 
             int i;
             int b;
@@ -849,7 +857,7 @@ public class Base64
 
 
     /**
-     * A {@link Base64#OutputStream} will write data to another
+     * A {@link Base64.OutputStream} will write data to another
      * {@link java.io.OutputStream}, given in the constructor,
      * and encode/decode to/from Base64 notation on the fly.
      *
@@ -873,7 +881,7 @@ public class Base64
 
 
         /**
-         * Constructs a {@link Base64#OutputStream} in ENCODE mode.
+         * Constructs a {@link Base64.OutputStream} in ENCODE mode.
          *
          * @param out the {@link java.io.OutputStream} to which data will be written.
          * @since 1.3
@@ -885,7 +893,7 @@ public class Base64
 
 
         /**
-         * Constructs a {@link Base64#OutputStream} in
+         * Constructs a {@link Base64.OutputStream} in
          * either ENCODE or DECODE mode.
          *
          * @param out the {@link java.io.OutputStream} to which data will be written.
@@ -919,7 +927,8 @@ public class Base64
          */
         public void write(int theByte) throws java.io.IOException
         {
-            logger.debug("write(theByte=" + theByte + ") - start");
+        	if(logger.isDebugEnabled())
+        		logger.debug("write(theByte=" + theByte + ") - start");
 
             buffer[position++] = (byte)theByte;
             if (position >= bufferLength)
@@ -954,7 +963,8 @@ public class Base64
          */
         public void write(byte[] theBytes, int off, int len) throws java.io.IOException
         {
-            logger.debug("write(theBytes=" + theBytes + ", off=" + off + ", len=" + len + ") - start");
+        	if(logger.isDebugEnabled())
+        		logger.debug("write(theBytes=" + theBytes + ", off=" + off + ", len=" + len + ") - start");
 
             for (int i = 0; i < len; i++)
             {

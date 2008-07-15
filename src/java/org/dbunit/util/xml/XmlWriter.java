@@ -571,7 +571,7 @@ public class XmlWriter
      *	this is the name that will be used for the character encoding.
      *
      * @exception IllegalStateException if the current
-     *	document hasn't yet ended (with {@link #endDocument})
+     *	document hasn't yet ended (i.e. the output stream {@link #out} is not null)
      */
     final public void setWriter(Writer writer, String encoding)
     {
