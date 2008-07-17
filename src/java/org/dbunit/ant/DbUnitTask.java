@@ -237,7 +237,7 @@ public class DbUnitTask extends Task
 
         if (this.classpath == null)
         {
-            this.classpath = new Path(project);
+            this.classpath = new Path(getProject());
         }
         return this.classpath.createPath();
     }
@@ -348,11 +348,11 @@ public class DbUnitTask extends Task
         }
         catch (DatabaseUnitException e)
         {
-            throw new BuildException(e, location);
+            throw new BuildException(e, getLocation());
         }
         catch (SQLException e)
         {
-            throw new BuildException(e, location);
+            throw new BuildException(e, getLocation());
         }
         finally
         {
@@ -376,23 +376,23 @@ public class DbUnitTask extends Task
 
         if (driver == null)
         {
-            throw new BuildException("Driver attribute must be set!", location);
+            throw new BuildException("Driver attribute must be set!", getLocation());
         }
         if (userId == null)
         {
-            throw new BuildException("User Id attribute must be set!", location);
+            throw new BuildException("User Id attribute must be set!", getLocation());
         }
         if (password == null)
         {
-            throw new BuildException("Password attribute must be set!", location);
+            throw new BuildException("Password attribute must be set!", getLocation());
         }
         if (url == null)
         {
-            throw new BuildException("Url attribute must be set!", location);
+            throw new BuildException("Url attribute must be set!", getLocation());
         }
         if (steps.size() == 0)
         {
-            throw new BuildException("Must declare at least one step in a <dbunit> task!");
+            throw new BuildException("Must declare at least one step in a <dbunit> task!", getLocation());
         }
 
         // Instantiate JDBC driver
@@ -405,7 +405,7 @@ public class DbUnitTask extends Task
                 log("Loading " + driver + " using AntClassLoader with classpath " + classpath,
                         Project.MSG_VERBOSE);
 
-                loader = new AntClassLoader(project, classpath);
+                loader = new AntClassLoader(getProject(), classpath);
                 dc = loader.loadClass(driver);
             }
             else
@@ -418,17 +418,17 @@ public class DbUnitTask extends Task
         catch (ClassNotFoundException e)
         {
             throw new BuildException("Class Not Found: JDBC driver "
-                    + driver + " could not be loaded", e, location);
+                    + driver + " could not be loaded", e, getLocation());
         }
         catch (IllegalAccessException e)
         {
             throw new BuildException("Illegal Access: JDBC driver "
-                    + driver + " could not be loaded", e, location);
+                    + driver + " could not be loaded", e, getLocation());
         }
         catch (InstantiationException e)
         {
             throw new BuildException("Instantiation Exception: JDBC driver "
-                    + driver + " could not be loaded", e, location);
+                    + driver + " could not be loaded", e, getLocation());
         }
 
         log("connecting to " + url, Project.MSG_VERBOSE);
@@ -481,17 +481,17 @@ public class DbUnitTask extends Task
         catch (ClassNotFoundException e)
         {
             throw new BuildException("Class Not Found: DataType factory "
-                    + driver + " could not be loaded", e, location);
+                    + driver + " could not be loaded", e, getLocation());
         }
         catch (IllegalAccessException e)
         {
             throw new BuildException("Illegal Access: DataType factory "
-                    + driver + " could not be loaded", e, location);
+                    + driver + " could not be loaded", e, getLocation());
         }
         catch (InstantiationException e)
         {
             throw new BuildException("Instantiation Exception: DataType factory "
-                    + driver + " could not be loaded", e, location);
+                    + driver + " could not be loaded", e, getLocation());
         }
 
         return connection;
