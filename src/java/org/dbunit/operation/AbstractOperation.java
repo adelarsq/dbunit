@@ -28,11 +28,9 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
-import org.dbunit.dataset.Columns;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.NoSuchColumnException;
 import org.dbunit.util.QualifiedTableName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +64,7 @@ public abstract class AbstractOperation extends DatabaseOperation
      * Returns the metadata to use in this operation.
      *
      * @param connection the database connection
-     * @param metaData the xml table metadata
+     * @param metaData the XML table metadata
      */
     static ITableMetaData getOperationMetaData(IDatabaseConnection connection,
             ITableMetaData metaData) throws DatabaseUnitException, SQLException
@@ -77,19 +75,18 @@ public abstract class AbstractOperation extends DatabaseOperation
         String tableName = metaData.getTableName();
 
         ITableMetaData databaseMetaData = databaseDataSet.getTableMetaData(tableName);
-        Column[] databaseColumns = databaseMetaData.getColumns();
         Column[] columns = metaData.getColumns();
 
         List columnList = new ArrayList();
         for (int j = 0; j < columns.length; j++)
         {
             String columnName = columns[j].getColumnName();
-            Column column = Columns.getColumn(columnName, databaseColumns);
-            if (column == null)
-            {
-                throw new NoSuchColumnException(tableName, columnName);
-            }
-            columnList.add(column);
+        	// Check if column exists in database
+            // method "getColumnIndex()" throws NoSuchColumnsException when columns have not been found
+        	int dbColIndex = databaseMetaData.getColumnIndex(columnName);
+        	// If we get here the column exists in the database
+        	Column dbColumn = databaseMetaData.getColumns()[dbColIndex];
+            columnList.add(dbColumn);
         }
 
         return new DefaultTableMetaData(databaseMetaData.getTableName(),
