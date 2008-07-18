@@ -467,10 +467,60 @@ public class AssertionTest extends TestCase
         }
     }
     
+    public void testGetComparisonDataType_ExpectedTypeUnknown()
+    {
+    	Column expectedColumn = new Column("COL1", DataType.UNKNOWN);
+    	Column actualColumn = new Column("COL1", DataType.VARCHAR);
+    	DataType dataType = Assertion.getComparisonDataType("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn);
+    	assertEquals(DataType.VARCHAR, dataType);
+    }
+    
+    public void testGetComparisonDataType_ActualTypeUnknown()
+    {
+    	Column expectedColumn = new Column("COL1", DataType.VARCHAR);
+    	Column actualColumn = new Column("COL1", DataType.UNKNOWN);
+    	DataType dataType = Assertion.getComparisonDataType("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn);
+    	assertEquals(DataType.VARCHAR, dataType);
+    }
+
+    public void testGetComparisonDataType_BothTypesSetIncompatible()
+    {
+    	Column expectedColumn = new Column("COL1", DataType.VARCHAR);
+    	Column actualColumn = new Column("COL1", DataType.NUMERIC);
+    	try {
+    		Assertion.getComparisonDataType("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn);
+    		fail("Incompatible datatypes should not work");
+    	}
+    	catch(ComparisonFailure expected){
+    		assertEquals("VARCHAR", expected.getExpected());
+    		assertEquals("NUMERIC", expected.getActual());
+    		String expectedMsg = "Incompatible data types: (table=BLABLA_TABLE_NOT_NEEDED_HERE, col=COL1) expected:<[VARCHAR]> but was:<[NUMERIC]>";
+    		assertEquals(expectedMsg, expected.getMessage());
+    	}
+    }
+
+    public void testGetComparisonDataType_BothTypesSetToSame()
+    {
+    	Column expectedColumn = new Column("COL1", DataType.VARCHAR);
+    	Column actualColumn = new Column("COL1", DataType.VARCHAR);
+    	DataType dataType = Assertion.getComparisonDataType("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn);
+    	assertEquals(DataType.VARCHAR, dataType);
+    }
+
+    public void testGetComparisonDataType_BothTypesUnknown()
+    {
+    	Column expectedColumn = new Column("COL1", DataType.UNKNOWN);
+    	Column actualColumn = new Column("COL1", DataType.UNKNOWN);
+    	DataType dataType = Assertion.getComparisonDataType("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn);
+    	assertEquals(DataType.UNKNOWN, dataType);
+    }
+
     
     
     
-    
+    /**
+     * Test utility that modifies all values for a specific column arbitrarily
+     */
     protected static class ModifyingTable implements ITable
     {
     	private ITable _wrappedTable;

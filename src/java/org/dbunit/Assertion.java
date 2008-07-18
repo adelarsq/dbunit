@@ -246,24 +246,6 @@ public class Assertion
     				Columns.getColumnNamesAsString(actualColumns) );
     	}
 
-
-//        if(expectedColumns.length != actualColumns.length)
-//        {
-//            throw new ComparisonFailure("column count (table=" + expectedTableName + ")" + columnDiff, 
-//                    String.valueOf(expectedColumns.length), String.valueOf(actualColumns.length) );
-//        }
-
-//        for (int i = 0; i < expectedColumns.length; i++)
-//        {
-//            String expectedName = expectedColumns[i].getColumnName();
-//            String actualName = actualColumns[i].getColumnName();
-//            if (!expectedName.equalsIgnoreCase(actualName))
-//            {
-//                throw new ComparisonFailure("columns (table=" + expectedTableName + ")",
-//                        Columns.getColumnNamesAsString(expectedColumns), Columns.getColumnNamesAsString(actualColumns));
-//            }
-//        }
-
         // Verify row count
         if(expectedTable.getRowCount() != actualTable.getRowCount())
         {
@@ -324,6 +306,12 @@ public class Assertion
 	}
 
 	
+	/**
+	 * @param tableName The table name which is only needed for debugging output
+	 * @param expectedColumn
+	 * @param actualColumn
+	 * @return
+	 */
 	static DataType getComparisonDataType(String tableName, Column expectedColumn,
             Column actualColumn)
     {
@@ -354,11 +342,6 @@ public class Assertion
                     expectedColumn.getColumnName() + ")", 
                     String.valueOf(expectedDataType), String.valueOf(actualDataType));
         }
-//        // Both columns have unknown data type, use string comparison
-//        else if (expectedDataType instanceof UnknownDataType)
-//        {
-//            return DataType.LONGVARCHAR;
-//        }
 
         // Both columns have same data type, return any one of them
         return expectedDataType;
