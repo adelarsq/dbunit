@@ -92,7 +92,7 @@ public class FlatXmlDataSet extends CachedDataSet
     private static final Logger logger = LoggerFactory.getLogger(FlatXmlDataSet.class);
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed InputSource.
+     * Creates an FlatXmlDataSet object with the specified InputSource.
      */
     public FlatXmlDataSet(InputSource source) throws IOException, DataSetException
     {
@@ -100,7 +100,7 @@ public class FlatXmlDataSet extends CachedDataSet
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml file.
+     * Creates an FlatXmlDataSet object with the specified xml file.
      * Relative DOCTYPE uri are resolved from the xml file path.
      *
      * @param xmlFile the xml file
@@ -111,7 +111,7 @@ public class FlatXmlDataSet extends CachedDataSet
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml file.
+     * Creates an FlatXmlDataSet object with the specified xml file.
      * Relative DOCTYPE uri are resolved from the xml file path.
      *
      * @param xmlFile the xml file
@@ -124,7 +124,7 @@ public class FlatXmlDataSet extends CachedDataSet
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml file.
+     * Creates an FlatXmlDataSet object with the specified xml file.
      * Relative DOCTYPE uri are resolved from the xml file path.
      *
      * @param xmlFile the xml file
@@ -139,7 +139,7 @@ public class FlatXmlDataSet extends CachedDataSet
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml URL.
+     * Creates an FlatXmlDataSet object with the specified xml URL.
      * Relative DOCTYPE uri are resolved from the xml file path.
      *
      * @param xmlUrl the xml URL
@@ -150,7 +150,7 @@ public class FlatXmlDataSet extends CachedDataSet
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml URL.
+     * Creates an FlatXmlDataSet object with the specified xml URL.
      * Relative DOCTYPE uri are resolved from the xml file path.
      *
      * @param xmlUrl the xml URL
@@ -164,7 +164,7 @@ public class FlatXmlDataSet extends CachedDataSet
     
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml URL.
+     * Creates an FlatXmlDataSet object with the specified xml URL.
      * Relative DOCTYPE uri are resolved from the xml file path.
      *
      * @param xmlUrl the xml URL
@@ -182,7 +182,7 @@ public class FlatXmlDataSet extends CachedDataSet
 
     /**
      * Creates an FlatXmlDataSet object with the specifed xml reader.
-     * Relative DOCTYPE uri are resolved from the current working dicrectory.
+     * Relative DOCTYPE uri are resolved from the current working directory.
      *
      * @param xmlReader the xml reader
      */
@@ -193,7 +193,7 @@ public class FlatXmlDataSet extends CachedDataSet
 
     /**
      * Creates an FlatXmlDataSet object with the specifed xml reader.
-     * Relative DOCTYPE uri are resolved from the current working dicrectory.
+     * Relative DOCTYPE uri are resolved from the current working directory.
      *
      * @param xmlReader the xml reader
      * @param dtdMetadata if <code>false</code> do not use DTD as metadata
@@ -266,7 +266,7 @@ public class FlatXmlDataSet extends CachedDataSet
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml input stream.
+     * Creates an FlatXmlDataSet object with the specified xml input stream.
      *
      * @param xmlStream the xml input stream
      * @param metaDataSet the dataset used as metadata source.

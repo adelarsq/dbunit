@@ -33,7 +33,7 @@ import java.io.*;
 
 /**
  *     Reads and writes original XML dataset document. This format
- *        is very verbiose and must conform to the following DTD:
+ *        is very verbose and must conform to the following DTD:
  *      <pre>
  *
  * &lt;?xml version="1.0" encoding="UTF-8"?&gt;

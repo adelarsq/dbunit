@@ -97,11 +97,13 @@ public class BytesDataType extends AbstractDataType
             // Assume not an uri if length greater than max uri length
             if (stringValue.length() == 0 || stringValue.length() > MAX_URI_LENGTH)
             {
+            	logger.debug("Assuming given string to be Base64 and not a URI");
                 return Base64.decode((String)value);
             }
 
             try
             {
+            	logger.debug("Assuming given string to be a URI");
                 try
                 {
                     // Try value as URL
@@ -110,6 +112,7 @@ public class BytesDataType extends AbstractDataType
                 }
                 catch (MalformedURLException e1)
                 {
+                	logger.debug("Given string is not a valid URI - trying to resolve it as file...");
                     try
                     {
                         // Not an URL, try as file name

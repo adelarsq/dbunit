@@ -110,7 +110,7 @@ public abstract class DataType
     public abstract int compare(Object o1, Object o2) throws TypeCastException;
 
     /**
-     * Returns the coresponding {@link java.sql.Types}.
+     * Returns the corresponding {@link java.sql.Types}.
      */
     public abstract int getSqlType();
 
@@ -160,7 +160,8 @@ public abstract class DataType
      */
     public static DataType forSqlType(int sqlType) throws DataTypeException
     {
-        logger.debug("forSqlType(sqlType={}) - start", new Integer(sqlType));
+    	if(logger.isDebugEnabled())
+    		logger.debug("forSqlType(sqlType={}) - start", new Integer(sqlType));
 
         for (int i = 0; i < TYPES.length; i++)
         {
@@ -181,7 +182,8 @@ public abstract class DataType
      */
     public static DataType forSqlTypeName(String sqlTypeName) throws DataTypeException
     {
-        logger.debug("forSqlTypeName(sqlTypeName=" + sqlTypeName + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("forSqlTypeName(sqlTypeName=" + sqlTypeName + ") - start");
 
         for (int i = 0; i < TYPES.length; i++)
         {

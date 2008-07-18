@@ -109,7 +109,8 @@ public class InsertOperation extends AbstractBatchOperation
 
     protected BitSet getIgnoreMapping(ITable table, int row) throws DataSetException
     {
-        logger.debug("getIgnoreMapping(table={}, row={}) - start", table, String.valueOf(row));
+    	if(logger.isDebugEnabled())
+    		logger.debug("getIgnoreMapping(table={}, row={}) - start", table, String.valueOf(row));
 
         Column[] columns = table.getTableMetaData().getColumns();
 

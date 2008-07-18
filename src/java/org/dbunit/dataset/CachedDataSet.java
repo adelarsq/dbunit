@@ -72,7 +72,7 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
     }
 
     /**
-     * Creates a CachedDataSet that syncronously consume the specified producer.
+     * Creates a CachedDataSet that synchronously consume the specified producer.
      */
     public CachedDataSet(IDataSetProducer producer) throws DataSetException
     {
