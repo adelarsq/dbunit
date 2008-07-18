@@ -26,6 +26,8 @@ import org.dbunit.dataset.datatype.BinaryStreamDataType;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.StringDataType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Specialized factory that recognizes Oracle data types for Oracle 10 and higher.
@@ -43,11 +45,20 @@ import org.dbunit.dataset.datatype.StringDataType;
  */
 public class Oracle10DataTypeFactory extends OracleDataTypeFactory
 {
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Oracle10DataTypeFactory.class);
+
+	
     protected static final DataType CLOB_AS_STRING = new StringDataType("CLOB", Types.CLOB);
     protected static final DataType BLOB_AS_STREAM = new BinaryStreamDataType("BLOB", Types.BLOB);
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
+    	if(logger.isDebugEnabled())
+    		logger.debug("createDataType(sqlType={}, sqlTypeName={}) - start", String.valueOf(sqlType), sqlTypeName);
+    	
         // BLOB
         if ("BLOB".equals(sqlTypeName))
         {

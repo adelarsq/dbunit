@@ -48,7 +48,8 @@ public class DefaultDataTypeFactory implements IDataTypeFactory
      */
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
-        logger.debug("createDataType(sqlType={}, sqlTypeName={}) - start", new Integer(sqlType), sqlTypeName);
+    	if(logger.isDebugEnabled())
+    		logger.debug("createDataType(sqlType={}, sqlTypeName={}) - start", new Integer(sqlType), sqlTypeName);
 
         DataType dataType = DataType.UNKNOWN;
         if (sqlType != Types.OTHER)
@@ -78,7 +79,8 @@ public class DefaultDataTypeFactory implements IDataTypeFactory
      */
     public DataType createDataType(int sqlType, String sqlTypeName, String tableName, String columnName) throws DataTypeException
     {
-        logger.debug("createDataType(sqlType={} , sqlTypeName={}, tableName={}, columnName={}) - start", 
+    	if(logger.isDebugEnabled())
+    		logger.debug("createDataType(sqlType={} , sqlTypeName={}, tableName={}, columnName={}) - start", 
         		new Object[] {new Integer(sqlType), sqlTypeName, tableName, columnName} );
 
         if (sqlType == Types.NUMERIC || sqlType == Types.DECIMAL)

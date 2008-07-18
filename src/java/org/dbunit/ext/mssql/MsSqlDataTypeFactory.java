@@ -48,7 +48,8 @@ public class MsSqlDataTypeFactory extends DefaultDataTypeFactory
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
-    	logger.debug("createDataType(sqlType={}, sqlTypeName={}) - start", String.valueOf(sqlType), sqlTypeName);
+    	if(logger.isDebugEnabled())
+    		logger.debug("createDataType(sqlType={}, sqlTypeName={}) - start", String.valueOf(sqlType), sqlTypeName);
 
         // TODO : Process MS SQL Server custom datatype here
         switch(sqlType) {
