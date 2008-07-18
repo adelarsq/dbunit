@@ -21,14 +21,17 @@
 
 package org.dbunit.dataset.xml;
 
-import org.dbunit.Assertion;
-import org.dbunit.dataset.*;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Writer;
-import java.util.Arrays;
+
+import org.dbunit.Assertion;
+import org.dbunit.dataset.AbstractDataSetTest;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
 
 /**
  * @author Manuel Laflamme
@@ -41,6 +44,8 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
             new File("src/xml/flatXmlDataSetTest.xml");
     protected static final File DUPLICATE_DATASET_FILE =
             new File("src/xml/flatXmlDataSetDuplicateTest.xml");
+    private static final File FLAT_XML_TABLE = 
+    		new File("src/xml/flatXmlTableTest.xml");
 
     public FlatXmlDataSetTest(String s)
     {
@@ -60,8 +65,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
     public void testMissingColumnAndEnableDtdMetadata() throws Exception
     {
-        IDataSet dataSet = new FlatXmlDataSet(
-                new File("src/xml/flatXmlTableTest.xml"), true);
+        IDataSet dataSet = new FlatXmlDataSet(FLAT_XML_TABLE, true);
 
         ITable table = dataSet.getTable("MISSING_VALUES");
 
@@ -71,8 +75,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
     public void testMissingColumnAndDisableDtdMetadata() throws Exception
     {
-        IDataSet dataSet = new FlatXmlDataSet(
-                new File("src/xml/flatXmlTableTest.xml"), false);
+        IDataSet dataSet = new FlatXmlDataSet(FLAT_XML_TABLE, false);
 
         ITable table = dataSet.getTable("MISSING_VALUES");
 
@@ -82,8 +85,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
     public void testMissingColumnAndDisableDtdMetadataAndSensing() throws Exception
     {
-        IDataSet dataSet = new FlatXmlDataSet(
-                new File("src/xml/flatXmlTableTest.xml"), false, true);
+        IDataSet dataSet = new FlatXmlDataSet(FLAT_XML_TABLE, false, true);
 
         ITable table = dataSet.getTable("MISSING_VALUES_SENSING");
 
