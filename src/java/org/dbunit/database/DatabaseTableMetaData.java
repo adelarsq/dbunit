@@ -24,7 +24,6 @@ package org.dbunit.database;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +33,6 @@ import java.util.List;
 import org.dbunit.dataset.AbstractTableMetaData;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.dataset.datatype.DataType;
@@ -118,6 +116,15 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         }
     }
 
+    /**
+     * @param tableName
+     * @param resultSet
+     * @param dataTypeFactory
+     * @return
+     * @throws DataSetException
+     * @throws SQLException
+     * @deprecated since 2.3.0. use {@link ResultSetTableMetaData#ResultSetTableMetaData(String, ResultSet, IDataTypeFactory)}
+     */
     public static ITableMetaData createMetaData(String tableName,
             ResultSet resultSet, IDataTypeFactory dataTypeFactory)
             throws DataSetException, SQLException
@@ -128,29 +135,20 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     				new Object[]{ tableName, resultSet, dataTypeFactory });
     	}
 
-        ResultSetMetaData metaData = resultSet.getMetaData();
-        Column[] columns = new Column[metaData.getColumnCount()];
-        for (int i = 0; i < columns.length; i++)
-        {
-            int columnType = metaData.getColumnType(i + 1);
-            String columnTypeName = metaData.getColumnTypeName(i + 1);
-            String columnName = metaData.getColumnName(i + 1);
-            
-            DataType dataType = dataTypeFactory.createDataType(
-	                    columnType, columnTypeName, tableName, columnName);
-            
-            columns[i] = new Column(
-                    columnName,
-                    dataType,
-                    columnTypeName,
-                    Column.nullableValue(metaData.isNullable(i + 1)));
-        }
-
-        return new DefaultTableMetaData(tableName, columns);
+    	return new ResultSetTableMetaData(tableName, resultSet, dataTypeFactory);
     }
 
 
     
+    /**
+     * @param tableName
+     * @param resultSet
+     * @param connection
+     * @return
+     * @throws SQLException
+     * @throws DataSetException
+     * @deprecated since 2.3.0. use {@link ResultSetTableMetaData#ResultSetTableMetaData(String, ResultSet, IDatabaseConnection)}
+     */
     public static ITableMetaData createMetaData(String tableName,
             ResultSet resultSet, IDatabaseConnection connection)
             throws SQLException, DataSetException
@@ -160,11 +158,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     		logger.debug("createMetaData(tableName={}, resultSet={}, connection={}) - start",
     				new Object[] { tableName, resultSet, connection });
     	}
-
-        DatabaseConfig config = connection.getConfig();
-        IDataTypeFactory typeFactory = (IDataTypeFactory)config.getProperty(
-                DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
-        return createMetaData(tableName, resultSet, typeFactory);
+    	return new ResultSetTableMetaData(tableName,resultSet,connection);
     }
 
     private String[] getPrimaryKeyNames() throws SQLException
@@ -266,9 +260,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
                 try
                 {
-                    DatabaseConfig config = _connection.getConfig();
-                    IDataTypeFactory dataTypeFactory = (IDataTypeFactory)config.getProperty(
-                            DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
+                	DatabaseConfig config = _connection.getConfig();
+                    IDataTypeFactory dataTypeFactory = super.getDataTypeFactory(_connection);
                     boolean datatypeWarning = config.getFeature(
                             DatabaseConfig.FEATURE_DATATYPE_WARNING);
 

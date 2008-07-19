@@ -20,18 +20,16 @@
  */
 package org.dbunit.database;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.dataset.AbstractTable;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.ITableMetaData;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import org.dbunit.dataset.AbstractTable;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITableMetaData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
@@ -64,15 +62,10 @@ public abstract class AbstractResultSetTable extends AbstractTable
     {
     	_statement = createStatement(connection);
 
-        DatabaseConfig config = connection.getConfig();
-        IDataTypeFactory dataTypeFactory = (IDataTypeFactory)config.getProperty(
-                DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
-
         try
         {
             _resultSet = _statement.executeQuery(selectStatement);
-            _metaData = DatabaseTableMetaData.createMetaData(tableName,
-                    _resultSet, dataTypeFactory);
+            _metaData = new ResultSetTableMetaData(tableName, _resultSet, connection);
         }
         catch (SQLException e)
         {

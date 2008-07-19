@@ -78,7 +78,7 @@ public class ForwardOnlyResultSetTableTest extends ForwardOnlyTableTest
         ForwardOnlyResultSetTable table =
                 new ForwardOnlyResultSetTable(metaData, resultSet);
 
-        // Excercise getValue()
+        // Exercise getValue()
         try
         {
             Column[] columns = table.getTableMetaData().getColumns();
