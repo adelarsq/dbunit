@@ -476,6 +476,9 @@ AllTests)
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-jxr-plugin</artifactId>
+						<configuration>
+							<!--<stylesheet>"${basedir}/myStyles.css"</stylesheet>-->
+						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
