@@ -120,7 +120,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
      * @param tableName
      * @param resultSet
      * @param dataTypeFactory
-     * @return
+     * @return The table metadata created for the given parameters
      * @throws DataSetException
      * @throws SQLException
      * @deprecated since 2.3.0. use {@link ResultSetTableMetaData#ResultSetTableMetaData(String, ResultSet, IDataTypeFactory)}
@@ -144,7 +144,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
      * @param tableName
      * @param resultSet
      * @param connection
-     * @return
+     * @return The table metadata created for the given parameters
      * @throws SQLException
      * @throws DataSetException
      * @deprecated since 2.3.0. use {@link ResultSetTableMetaData#ResultSetTableMetaData(String, ResultSet, IDatabaseConnection)}
