@@ -53,10 +53,11 @@ public class DefaultColumnFilter implements IColumnFilter
      * The following wildcard characters are supported:
      * '*' matches zero or more characters,
      * '?' matches one character.
+     * @param columnPattern The column pattern to be supported
      */
     public void includeColumn(String columnPattern)
     {
-        logger.debug("includeColumn(columnPattern=" + columnPattern + ") - start");
+        logger.debug("includeColumn(columnPattern={}) - start", columnPattern);
 
         _includeMatcher.addPattern(columnPattern);
     }
@@ -66,7 +67,7 @@ public class DefaultColumnFilter implements IColumnFilter
      */
     public void includeColumns(Column[] columns)
     {
-        logger.debug("includeColumns(columns=" + columns + ") - start");
+        logger.debug("includeColumns(columns={}) - start", columns);
 
         for (int i = 0; i < columns.length; i++)
         {
@@ -82,7 +83,7 @@ public class DefaultColumnFilter implements IColumnFilter
      */
     public void excludeColumn(String columnPattern)
     {
-        logger.debug("excludeColumn(columnPattern=" + columnPattern + ") - start");
+        logger.debug("excludeColumn(columnPattern={}) - start", columnPattern);
 
         _excludeMatcher.addPattern(columnPattern);
     }
@@ -92,7 +93,7 @@ public class DefaultColumnFilter implements IColumnFilter
      */
     public void excludeColumns(Column[] columns)
     {
-        logger.debug("excludeColumns(columns=" + columns + ") - start");
+        logger.debug("excludeColumns(columns={} - start", columns);
 
         for (int i = 0; i < columns.length; i++)
         {
@@ -107,7 +108,7 @@ public class DefaultColumnFilter implements IColumnFilter
     public static ITable includedColumnsTable(ITable table, String[] columnNames)
             throws DataSetException
     {
-        logger.debug("includedColumnsTable(table=" + table + ", columnNames=" + columnNames + ") - start");
+        logger.debug("includedColumnsTable(table={}, columnNames={}) - start", table, columnNames);
 
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
         for (int i = 0; i < columnNames.length; i++)
@@ -128,7 +129,7 @@ public class DefaultColumnFilter implements IColumnFilter
     public static ITable includedColumnsTable(ITable table, Column[] columns)
             throws DataSetException
     {
-        logger.debug("includedColumnsTable(table=" + table + ", columns=" + columns + ") - start");
+        logger.debug("includedColumnsTable(table={}, columns={}) - start", table, columns);
 
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
         columnFilter.includeColumns(columns);
@@ -145,7 +146,7 @@ public class DefaultColumnFilter implements IColumnFilter
     public static ITable excludedColumnsTable(ITable table, String[] columnNames)
             throws DataSetException
     {
-        logger.debug("excludedColumnsTable(table=" + table + ", columnNames=" + columnNames + ") - start");
+        logger.debug("excludedColumnsTable(table={}, columnNames={}) - start", table, columnNames);
 
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
         for (int i = 0; i < columnNames.length; i++)
@@ -166,7 +167,7 @@ public class DefaultColumnFilter implements IColumnFilter
     public static ITable excludedColumnsTable(ITable table, Column[] columns)
             throws DataSetException
     {
-        logger.debug("excludedColumnsTable(table=" + table + ", columns=" + columns + ") - start");
+        logger.debug("excludedColumnsTable(table={}, columns={}) - start", table, columns);
 
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
         columnFilter.excludeColumns(columns);
@@ -181,7 +182,7 @@ public class DefaultColumnFilter implements IColumnFilter
 
     public boolean accept(String tableName, Column column)
     {
-        logger.debug("accept(tableName=" + tableName + ", column=" + column + ") - start");
+        logger.debug("accept(tableName={}, column={}) - start", tableName, column);
 
         if (_includeMatcher.isEmpty() ||
                 _includeMatcher.accept(column.getColumnName()))
