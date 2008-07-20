@@ -62,7 +62,7 @@ public class Column
     private final Nullable _nullable;
 
     /**
-     * Creates a Column object. This contructor set nullable to true.
+     * Creates a Column object. This constructor set nullable to true.
      *
      * @param columnName the column name
      * @param dataType the data type
