@@ -111,10 +111,12 @@ public class DatabaseConnection extends AbstractDatabaseConnection
         }
         _connection = connection;
         _schema = schema;
-    	validateSchema(validate);
+
+        printConnectionInfo();
+        validateSchema(validate);
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
     // IDatabaseConnection interface
 
     public Connection getConnection() throws SQLException
@@ -133,6 +135,23 @@ public class DatabaseConnection extends AbstractDatabaseConnection
         _connection.close();
     }
     
+    
+    /**
+     * Prints debugging information about the current JDBC connection
+     */
+    private void printConnectionInfo() 
+    {
+    	if(logger.isDebugEnabled()) 
+    	{
+        	try {
+    			logger.debug("Database connection info: " + SQLHelper.getDatabaseInfo(_connection.getMetaData()));
+    		} 
+        	catch (SQLException e) {
+    			logger.warn("Exception while trying to retrieve database info from connection", e);
+    		}
+    	}
+	}
+
     /**
      * Validates if the database schema exists for this connection.
      * @param validateStrict If <code>true</code> an exception is thrown when the given schema

@@ -204,4 +204,43 @@ public class SQLHelper {
         }
     	
     }
+    
+    /**
+     * Returns the database and JDBC driver information as pretty formatted string
+     * @param metaData The JDBC database metadata needed to retrieve database information
+     * @return The database information as formatted string
+     * @throws SQLException
+     */
+    public static String getDatabaseInfo(DatabaseMetaData metaData) throws SQLException
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append("\n");
+    	sb.append("\tdatabase name=").append(metaData.getDatabaseProductName()).append("\n");
+    	sb.append("\tdatabase version=").append(metaData.getDatabaseProductVersion()).append("\n");
+    	sb.append("\tdatabase major version=").append(metaData.getDatabaseMajorVersion()).append("\n");
+    	sb.append("\tdatabase minor version=").append(metaData.getDatabaseMinorVersion()).append("\n");
+    	sb.append("\tjdbc driver name=").append(metaData.getDriverName()).append("\n");
+    	sb.append("\tjdbc driver version=").append(metaData.getDriverVersion()).append("\n");
+    	sb.append("\tjdbc driver major version=").append(metaData.getDriverMajorVersion()).append("\n");
+    	sb.append("\tjdbc driver minor version=").append(metaData.getDriverMinorVersion()).append("\n");
+    	return sb.toString();
+    }
+
+    /**
+     * Prints the database and JDBC driver information to the given output stream
+     * @param metaData The JDBC database metadata needed to retrieve database information
+     * @param outputStream The stream to which the information is printed
+     * @throws SQLException
+     */
+    public static void printDatabaseInfo(DatabaseMetaData metaData, PrintStream outputStream) throws SQLException
+    {
+    	String dbInfo = getDatabaseInfo(metaData);
+    	try {
+    		outputStream.append(dbInfo);
+    	}
+    	finally {
+    		outputStream.flush();
+    	}
+    }
+
 }
