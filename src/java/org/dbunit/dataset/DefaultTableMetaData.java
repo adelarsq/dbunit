@@ -50,7 +50,7 @@ public class DefaultTableMetaData extends AbstractTableMetaData
     {
         _tableName = tableName;
         _columns = columns;
-        _primaryKeys = getPrimaryKeys(columns, primaryKeys);
+        _primaryKeys = Columns.getColumns(primaryKeys, columns);
     }
 
     public DefaultTableMetaData(String tableName, Column[] columns,

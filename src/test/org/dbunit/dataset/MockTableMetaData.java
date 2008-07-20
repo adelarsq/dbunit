@@ -84,6 +84,6 @@ public class MockTableMetaData extends AbstractTableMetaData
 
     public Column[] getPrimaryKeys() throws DataSetException
     {
-        return getPrimaryKeys(_columns, _keyNames);
+        return Columns.getColumns(_keyNames, _columns);
     }
 }

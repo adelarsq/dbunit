@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.dbunit.dataset.filter.IColumnFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,12 +25,48 @@ public class Columns
 
     private static final ColumnComparator COLUMN_COMPARATOR = new ColumnComparator();
 
+    private static final Column[] EMPTY_COLUMNS = new Column[0];
+
+    
     private Columns()
     {
     }
     
+    
+	/**
+     * Search and return the {@link Column}s from the specified column array that
+     * match one of the given <code>columnNames</code>.
+     *
+	 * @param columnNames the names of the columns to search.
+	 * @param columns the array of columns from which the column must be searched.
+	 * @return the column array which is empty if no column has been found or no 
+	 * column names have been given
+	 */
+	public static Column[] getColumns(String[] columnNames, Column[] columns) {
+    	if (logger.isDebugEnabled())
+    		logger.debug("getColumns(columnNames={}, columns={}) - start",
+    				new Object[]{ columnNames, columns });
+
+    	if (columnNames == null || columnNames.length == 0)
+        {
+            return EMPTY_COLUMNS;
+        }
+
+        List resultList = new ArrayList();
+        for (int i = 0; i < columnNames.length; i++)
+        {
+            Column column = Columns.getColumn(columnNames[i], columns);
+            if (column != null)
+            {
+                resultList.add(column);
+            }
+        }
+
+        return (Column[])resultList.toArray(new Column[0]);
+	}
+
     /**
-     * Search and returns the specified column from the specified column array.
+     * Search and return the specified column from the specified column array.
      *
      * @param columnName the name of the column to search.
      * @param columns the array of columns from which the column must be searched.
@@ -52,7 +89,7 @@ public class Columns
     }
 
     /**
-     * Search and returns the specified column from the specified column array.
+     * Search and return the specified column from the specified column array.
      *
      * @param columnName the name of the column to search.
      * @param columns the array of columns from which the column must be searched.
@@ -74,6 +111,34 @@ public class Columns
         }
         
         return column;
+    }
+
+    /**
+     * Search and return the columns from the specified column array which are
+     * accepted by the given {@link IColumnFilter}.
+     * @param tableName
+     * @param columns
+     * @param columnFilter
+     * @return The columns that are accepted by the given filter
+     */
+    public static Column[] getColumns(String tableName, Column[] columns,
+            IColumnFilter columnFilter)
+    {
+    	if (logger.isDebugEnabled())
+    		logger.debug("getColumns(tableName={}, columns={}, columnFilter={}) - start",
+    				new Object[]{ tableName, columns, columnFilter });
+
+        List resultList = new ArrayList();
+        for (int i = 0; i < columns.length; i++)
+        {
+            Column column = columns[i];
+            if (columnFilter.accept(tableName, column))
+            {
+                resultList.add(column);
+            }
+        }
+
+        return (Column[])resultList.toArray(new Column[0]);
     }
 
     /**
@@ -134,7 +199,7 @@ public class Columns
                 Column columnToMerge = columnsToMerge[k];
                 // Check if this colToMerge exists in the refColumn
                 if(columnToMerge.getColumnName().equals(refColumn.getColumnName())) {
-                    // We found the col in the refColumns - so no candidate for adding to the result list
+                    // We found the column in the refColumns - so no candidate for adding to the result list
                     columnsToMergeNotInRefList.remove(columnToMerge);
                     break;
                 }
@@ -376,6 +441,5 @@ public class Columns
     	}
 
     }
-
 
 }

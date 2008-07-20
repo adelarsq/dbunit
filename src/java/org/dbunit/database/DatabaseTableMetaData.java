@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.dbunit.dataset.AbstractTableMetaData;
 import org.dbunit.dataset.Column;
+import org.dbunit.dataset.Columns;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoSuchTableException;
@@ -326,13 +327,13 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                         DatabaseConfig.PROPERTY_PRIMARY_KEY_FILTER);
                 if (primaryKeysFilter != null)
                 {
-                    _primaryKeys = getPrimaryKeys(getTableName(), getColumns(),
+                	_primaryKeys = Columns.getColumns(getTableName(), getColumns(),
                             primaryKeysFilter);
                 }
                 else
                 {
-                    _primaryKeys = getPrimaryKeys(getColumns(),
-                            getPrimaryKeyNames());
+                	String[] pkNames = getPrimaryKeyNames();
+                    _primaryKeys = Columns.getColumns(pkNames, getColumns());
                 }
             }
             catch (SQLException e)

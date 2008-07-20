@@ -55,7 +55,7 @@ public class LowerCaseTableMetaData extends AbstractTableMetaData
     public LowerCaseTableMetaData(String tableName, Column[] columns,
             String[] primaryKeys) //throws DataSetException
     {
-        this(tableName, columns, getPrimaryKeys(columns, primaryKeys));
+        this(tableName, columns, Columns.getColumns(primaryKeys, columns) );
     }
 
     public LowerCaseTableMetaData(ITableMetaData metaData) throws DataSetException

@@ -24,12 +24,10 @@ package org.dbunit.dataset;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,8 +60,6 @@ public abstract class AbstractTableMetaData implements ITableMetaData
      */
     private static final Logger logger = LoggerFactory.getLogger(AbstractTableMetaData.class);
 
-    private static final Column[] EMPTY_COLUMNS = new Column[0];
-    
     private DataTypeFactoryValidator dataTypeFactoryValidator = new DataTypeFactoryValidator();
 
     /**
@@ -77,29 +73,21 @@ public abstract class AbstractTableMetaData implements ITableMetaData
      * @param columns
      * @param keyNames
      * @return The primary key columns
+     * @deprecated since 2.3.0 - use {@link Columns#getColumns(String[], Column[])}
      */
     protected static Column[] getPrimaryKeys(Column[] columns, String[] keyNames)
     {
         logger.debug("getPrimaryKeys(columns={}, keyNames={}) - start", columns, keyNames);
-
-        if (keyNames == null || keyNames.length == 0)
-        {
-            return EMPTY_COLUMNS;
-        }
-
-        List keyList = new ArrayList();
-        for (int i = 0; i < keyNames.length; i++)
-        {
-            Column primaryKey = Columns.getColumn(keyNames[i], columns);
-            if (primaryKey != null)
-            {
-                keyList.add(primaryKey);
-            }
-        }
-
-        return (Column[])keyList.toArray(new Column[0]);
+        return Columns.getColumns(keyNames, columns);
     }
 
+    /**
+     * @param tableName
+     * @param columns
+     * @param columnFilter
+     * @return
+     * @deprecated since 2.3.0 - use {@link Columns#getColumns(String[], Column[])}
+     */
     protected static Column[] getPrimaryKeys(String tableName, Column[] columns,
             IColumnFilter columnFilter)
     {
@@ -108,18 +96,7 @@ public abstract class AbstractTableMetaData implements ITableMetaData
     		logger.debug("getPrimaryKeys(tableName={}, columns={}, columnFilter={}) - start",
     				new Object[]{ tableName, columns, columnFilter });
     	}
-
-        List keyList = new ArrayList();
-        for (int i = 0; i < columns.length; i++)
-        {
-            Column column = columns[i];
-            if (columnFilter.accept(tableName, column))
-            {
-                keyList.add(column);
-            }
-        }
-
-        return (Column[])keyList.toArray(new Column[0]);
+    	return Columns.getColumns(tableName, columns, columnFilter);
     }
 
 	/**
