@@ -80,7 +80,7 @@ public class CsvDataSetWriter implements IDataSetConsumer {
     }
 
     public void write(IDataSet dataSet) throws DataSetException {
-        logger.debug("write(dataSet=" + dataSet + ") - start");
+        logger.debug("write(dataSet={}) - start", dataSet);
 
         DataSetProducerAdapter provider = new DataSetProducerAdapter(dataSet);
         provider.setConsumer(this);
@@ -117,7 +117,7 @@ public class CsvDataSetWriter implements IDataSetConsumer {
     }
 
     public void startTable(ITableMetaData metaData) throws DataSetException {
-        logger.debug("startTable(metaData=" + metaData + ") - start");
+        logger.debug("startTable(metaData={}) - start", metaData);
 
         try {
             _activeMetaData = metaData;
@@ -155,7 +155,7 @@ public class CsvDataSetWriter implements IDataSetConsumer {
     }
 
     public void row(Object[] values) throws DataSetException {
-        logger.debug("row(values=" + values + ") - start");
+        logger.debug("row(values={}) - start", values);
 
         try {
 
@@ -194,13 +194,13 @@ public class CsvDataSetWriter implements IDataSetConsumer {
     }
 
     private String quote(String stringValue) {
-        logger.debug("quote(stringValue=" + stringValue + ") - start");
+        logger.debug("quote(stringValue={}) - start", stringValue);
 
         return new StringBuffer(QUOTE).append(escape(stringValue)).append(QUOTE).toString();
     }
 
     protected static String escape(String stringValue) {
-        logger.debug("escape(stringValue=" + stringValue + ") - start");
+        logger.debug("escape(stringValue={}) - start", stringValue);
 
         char [] array = stringValue.toCharArray();
         testExport = QUOTE.toCharArray()[0];
@@ -223,7 +223,7 @@ public class CsvDataSetWriter implements IDataSetConsumer {
     }
 
     public void setWriter(Writer writer) {
-        logger.debug("setWriter(writer=" + writer + ") - start");
+        logger.debug("setWriter(writer={}) - start", writer);
 
         this.writer = writer;
     }
@@ -235,13 +235,13 @@ public class CsvDataSetWriter implements IDataSetConsumer {
     }
 
     public void setTheDirectory(String theDirectory) {
-        logger.debug("setTheDirectory(theDirectory=" + theDirectory + ") - start");
+        logger.debug("setTheDirectory(theDirectory={}) - start", theDirectory);
 
         this.theDirectory = theDirectory;
     }
 
     public static void write(IDataSet dataset, File dest) throws DataSetException {
-        logger.debug("write(dataset=" + dataset + ", dest=" + dest + ") - start");
+        logger.debug("write(dataset={}, dest={}) - start", dataset, dest);
 
         CsvDataSetWriter writer = new CsvDataSetWriter(dest);
         writer.write(dataset);

@@ -43,7 +43,7 @@ import org.dbunit.dataset.xml.XmlDataSet;
 
 /**
  * The <code>Export</code> class is the step that facilitates exporting
- * the contents of the database and/or it's corresponding dtd to a file.
+ * the contents of the database and/or it's corresponding DTD to a file.
  * The export can be performed on a full dataset or a partial one if
  * specific table names are identified.
  *
@@ -188,6 +188,8 @@ public class Export extends AbstractStep
                     out.close();
                 }
             }
+            
+            log("Successfully wrote file '" + _dest + "'", Project.MSG_INFO);
             
         }
         catch (IOException e)
