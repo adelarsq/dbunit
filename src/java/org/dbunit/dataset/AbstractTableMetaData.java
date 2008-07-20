@@ -85,7 +85,7 @@ public abstract class AbstractTableMetaData implements ITableMetaData
      * @param tableName
      * @param columns
      * @param columnFilter
-     * @return
+     * @return The filtered primary key columns
      * @deprecated since 2.3.0 - use {@link Columns#getColumns(String[], Column[])}
      */
     protected static Column[] getPrimaryKeys(String tableName, Column[] columns,

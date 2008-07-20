@@ -38,7 +38,7 @@ public class Columns
      * match one of the given <code>columnNames</code>.
      *
 	 * @param columnNames the names of the columns to search.
-	 * @param columns the array of columns from which the column must be searched.
+	 * @param columns the array of columns in which the <code>columnNames</code> will be searched.
 	 * @return the column array which is empty if no column has been found or no 
 	 * column names have been given
 	 */
@@ -69,7 +69,7 @@ public class Columns
      * Search and return the specified column from the specified column array.
      *
      * @param columnName the name of the column to search.
-     * @param columns the array of columns from which the column must be searched.
+	 * @param columns the array of columns in which the <code>columnName</code> will be searched.
      * @return the column or <code>null</code> if the column is not found
      */
     public static Column getColumn(String columnName, Column[] columns)
@@ -92,7 +92,7 @@ public class Columns
      * Search and return the specified column from the specified column array.
      *
      * @param columnName the name of the column to search.
-     * @param columns the array of columns from which the column must be searched.
+	 * @param columns the array of columns in which the <code>columnName</code> will be searched.
      * @param tableName The name of the table to which the column array belongs - 
      * only needed for the exception message in case of a validation failure
      * @return the valid column
@@ -116,9 +116,9 @@ public class Columns
     /**
      * Search and return the columns from the specified column array which are
      * accepted by the given {@link IColumnFilter}.
-     * @param tableName
-     * @param columns
-     * @param columnFilter
+     * @param tableName The name of the table which is needed for the filter invocation
+     * @param columns All available columns to which the filter will be applied
+     * @param columnFilter The column filter that is applied to the given <code>columns</code>
      * @return The columns that are accepted by the given filter
      */
     public static Column[] getColumns(String tableName, Column[] columns,
