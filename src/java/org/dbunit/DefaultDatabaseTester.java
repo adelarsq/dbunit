@@ -1,8 +1,5 @@
 package org.dbunit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.dbunit.database.IDatabaseConnection;
 
 /**
@@ -10,7 +7,8 @@ import org.dbunit.database.IDatabaseConnection;
  * to get a connection by itself.
  *
  * @author Felipe Leme <dbunit@felipeal.net>
- *
+ * @version $Revision$
+ * @since 2.2
  */
 
 public class DefaultDatabaseTester extends AbstractDatabaseTester {
@@ -18,7 +16,7 @@ public class DefaultDatabaseTester extends AbstractDatabaseTester {
   final IDatabaseConnection connection;
 
   /**
-   * Creates a new DefaultDatabaseTester with the suplied connection.
+   * Creates a new DefaultDatabaseTester with the supplied connection.
    */
   public DefaultDatabaseTester( final IDatabaseConnection connection ) {
     this.connection = connection;

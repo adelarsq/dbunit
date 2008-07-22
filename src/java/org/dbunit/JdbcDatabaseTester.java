@@ -20,21 +20,21 @@
  */
 package org.dbunit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Arrays;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * DatabaseTester that uses JDBC's Driver Manager to create connections.<br>
  *
  * @author Andres Almiray <aalmiray@users.sourceforge.net>
  * @author Felipe Leme <dbunit@felipeal.net>
+ * @version $Revision$
+ * @since 2.2
  */
 public class JdbcDatabaseTester extends AbstractDatabaseTester
 {
@@ -94,10 +94,7 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
       }else{
          conn = DriverManager.getConnection( connectionUrl, username, password );
       }
-      if( getSchema() != null ){
-         return new DatabaseConnection( conn, getSchema() );
-      }
-      return new DatabaseConnection( conn );
+      return new DatabaseConnection( conn, getSchema() );
    }
 
    /**
