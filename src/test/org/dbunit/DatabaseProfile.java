@@ -33,6 +33,8 @@ import java.util.StringTokenizer;
  */
 public class DatabaseProfile
 {
+	private static final String[] EMPTY_ARRAY = new String[0];
+	
     private static final String PROFILE_PREFIX = "dbunit.profile";
 
     private static final String DRIVER_CLASS = "driverClass";
@@ -88,7 +90,12 @@ public class DatabaseProfile
     {
         String property = _properties.getProperty(
                 getPropertyKey(UNSUPPORTED_FEATURES));
-
+        
+        // If property is not set return an empty array
+        if(property == null){
+        	return EMPTY_ARRAY;
+        }
+        
         List stringList = new ArrayList();
         StringTokenizer tokenizer = new StringTokenizer(property, ",");
         while(tokenizer.hasMoreTokens())
