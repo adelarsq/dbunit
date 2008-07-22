@@ -19,15 +19,12 @@
  *
  */package org.dbunit.database.search;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.SortedSet;
 
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.NoSuchTableException;
-
 import org.dbunit.util.search.SearchException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ISearchCallback implementation that get the nodes using direct foreign key 

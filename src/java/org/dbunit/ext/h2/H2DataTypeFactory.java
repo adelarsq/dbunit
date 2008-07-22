@@ -20,21 +20,19 @@
  */
 package org.dbunit.ext.h2;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
-import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Specialized factory that recognizes H2 data types.
- * TODO: this class is pretty much the same as {@link HsqldbDataTypeFactory}, so they should derive from a common
- * superclass - see issue 1897620
-
+ * TODO: this class is pretty much the same as {@link org.dbunit.ext.hsqldb.HsqldbDataTypeFactory}, 
+ * so they should derive from a common superclass - see issue 1897620
  *
  * @author Felipe Leme
+ * @version $Revision$
  */
 public class H2DataTypeFactory extends DefaultDataTypeFactory
 {

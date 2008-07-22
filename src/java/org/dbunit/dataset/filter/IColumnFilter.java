@@ -21,14 +21,13 @@
 package org.dbunit.dataset.filter;
 
 import org.dbunit.dataset.Column;
-import org.dbunit.dataset.FilteredTableMetaData;
 
 /**
  * A filter for database columns.
  * 
- * <p> Instances of this interface may be passed to the <code>{@link
- * FilteredTableMetaData#FilteredTableMetaData(org.dbunit.dataset.ITableMetaData, IColumnFilter)}</code> 
- * method of the <code>{@link FilteredTableMetaData}</code> class.
+ * <p> Instances of this interface may be passed to the 
+ * <code>{@link org.dbunit.dataset.FilteredTableMetaData#FilteredTableMetaData(org.dbunit.dataset.ITableMetaData, IColumnFilter)}</code> 
+ * method of the <code>{@link org.dbunit.dataset.FilteredTableMetaData}</code> class.
  * 
  * @author Manuel Laflamme
  * @since Apr 17, 2004

@@ -21,7 +21,6 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.datatype.IDataTypeFactory;
 
 /**
  * Represents table metadata.
@@ -41,7 +40,8 @@ public interface ITableMetaData
     /**
      * Returns this table columns as recognized by dbunit. In cases where columns are resolved 
      * using database metadata it can happen that an empty array is returned when a table does
-     * not have a single column that is recognized by the configured {@link IDataTypeFactory}.
+     * not have a single column that is recognized by the configured 
+     * {@link org.dbunit.dataset.datatype.IDataTypeFactory}.
      * Note that it is <b>not</b> an exceptional case within dbunit when a {@link ITableMetaData}
      * does not have a column. 
      * @return The columns for this table
