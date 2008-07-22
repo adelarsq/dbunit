@@ -78,7 +78,7 @@ public class ReplacementDataSet extends AbstractDataSet
 
     /**
      * Setting this property to true indicates that when no replacement
-     * is found for a delemited substring the replacement will fail fast.
+     * is found for a delimited substring the replacement will fail fast.
      * 
      * @param strictReplacement true if replacement should be strict
      */
@@ -123,8 +123,7 @@ public class ReplacementDataSet extends AbstractDataSet
      */
     public void setSubstringDelimiters(String startDelimiter, String endDelimiter)
     {
-        logger.debug("setSubstringDelimiters(startDelimiter=" + startDelimiter + ", endDelimiter=" + endDelimiter
-                + ") - start");
+        logger.debug("setSubstringDelimiters(startDelimiter={}, endDelimiter={}) - start", startDelimiter, endDelimiter);
 
         if (startDelimiter == null || endDelimiter == null)
         {
@@ -151,7 +150,8 @@ public class ReplacementDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("createIterator(reversed={}) - start", new Boolean(reversed));
 
         return new ReplacementIterator(reversed ?
                 _dataSet.reverseIterator() : _dataSet.iterator());
@@ -170,14 +170,14 @@ public class ReplacementDataSet extends AbstractDataSet
     public ITableMetaData getTableMetaData(String tableName)
             throws DataSetException
     {
-        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+        logger.debug("getTableMetaData(tableName={}) - start", tableName);
 
         return _dataSet.getTableMetaData(tableName);
     }
 
     public ITable getTable(String tableName) throws DataSetException
     {
-        logger.debug("getTable(tableName=" + tableName + ") - start");
+        logger.debug("getTable(tableName={}) - start", tableName);
 
         return createReplacementTable(_dataSet.getTable(tableName));
     }

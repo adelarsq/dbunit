@@ -72,7 +72,7 @@ public class ReplacementTable implements ITable
 
     /**
      * Setting this property to true indicates that when no replacement
-     * is found for a delemited substring the replacement will fail fast.
+     * is found for a delimited substring the replacement will fail fast.
      * 
      * @param strictReplacement true if replacement should be strict
      */
