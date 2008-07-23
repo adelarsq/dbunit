@@ -35,6 +35,7 @@
       <action dev="gommma" type="add">Assertion.equals provides more information than just the column count when a column mismatch between expected and result tables was found. All columns are reported so that the user can see immediately which columns are missing</action>
       <action dev="gommma" type="add">Write validation message when the configured IDataTypeFactory probably does not match to the current database system. The validation implicitly takes place when AbstractTableMetaData.getDataTypeFactory() is invoked.</action>
       <action dev="gommma" type="add">Maven pom.xml updates: Added ciManagement section, added some plugins for reporting</action>
+      <action dev="gommma" type="fix" issue="1497369" due_to="bascan">Test error: testExportWithQuerySet</action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>

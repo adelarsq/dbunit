@@ -265,7 +265,7 @@
       	 <table name="EMPTY_TABLE"/>
       </export>
     </dbunit>
-    <delete dir="${exportCsv}"/>
+    <delete dir="${exportCsv}" failonerror="false" />
   </target>
 
   <target name="invalid-queryset">
