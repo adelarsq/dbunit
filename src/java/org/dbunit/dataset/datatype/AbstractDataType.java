@@ -29,6 +29,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * Abstract data type implementation that provides generic methods that are
+ * appropriate for most data type implementations. Among those is the 
+ * generic implementation of the {@link #compare(Object, Object)} method. 
+ * 
  * @author Manuel Laflamme
  * @version $Revision$
  * @since Mar 19, 2002
