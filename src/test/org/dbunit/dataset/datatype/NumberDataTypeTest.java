@@ -86,6 +86,12 @@ public class NumberDataTypeTest extends AbstractDataTypeTest
             "12.34",
             Boolean.TRUE,
             Boolean.FALSE,
+            new Double(2.1),
+            new Float(3.1F),
+            new Integer(4),
+            new Long(5),
+            new Short((short)6),
+            new BigInteger("12345")
         };
         BigDecimal[] expected = {
             null,
@@ -94,6 +100,12 @@ public class NumberDataTypeTest extends AbstractDataTypeTest
             new BigDecimal("12.34"),
             new BigDecimal("1"),
             new BigDecimal("0"),
+            new BigDecimal("2.1"),
+            new BigDecimal("3.1"),
+            new BigDecimal("4"),
+            new BigDecimal("5"),
+            new BigDecimal("6"),
+            new BigDecimal("12345")
         };
 
         assertEquals("actual vs expected count", values.length, expected.length);
