@@ -20,18 +20,16 @@
  */
 package org.dbunit.database;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.dataset.AbstractDataSet;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.ITableIterator;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import org.dbunit.dataset.AbstractDataSet;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITableIterator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Holds collection of tables resulting from database query.
@@ -56,16 +54,17 @@ public class QueryDataSet extends AbstractDataSet
      * Create a QueryDataSet by passing in the connection to the database to use.
      *
      * @param  connection        The connection object to the database.
-     * @exception  java.sql.SQLException  Description of the Exception
      */
     public QueryDataSet(IDatabaseConnection connection)
-            throws SQLException
     {
+    	if (connection == null) {
+			throw new NullPointerException("The parameter 'connection' must not be null");
+		}
         _connection = connection;
     }
 
     /**
-     *  Adds a table and it's associted query to this dataset.
+     *  Adds a table and it's associated query to this dataset.
      *
      * @param  tableName  The name of the table
      * @param  query  The query to retrieve data with for this table
@@ -119,6 +118,10 @@ public class QueryDataSet extends AbstractDataSet
         return (String[])names.toArray(new String[0]);
     }
 
+    /**
+     * Represents a table and a SQL query that should be used to retrieve the
+     * data for this table.
+     */
     static class TableEntry
     {
         private final String _tableName;

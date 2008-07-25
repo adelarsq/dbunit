@@ -177,6 +177,8 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
     {
         logger.debug("getDependentTableNames(connection={}, tableName={}) - start", connection, tableName);
 
+        // TODO Think about it: can TablesDependencyHelper be reused for this functionality?
+        
         if (_dependentMap.containsKey(tableName))
         {
             return (Set)_dependentMap.get(tableName);

@@ -20,15 +20,22 @@
  */
 package org.dbunit.database;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.dataset.*;
-
 import java.sql.SQLException;
 import java.util.List;
 
+import org.dbunit.database.QueryDataSet.TableEntry;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
+ * Iterator used to iterate over a list of tables using a specific query for retrieving
+ * data for every table.
+ * 
  * @author Manuel Laflamme
  * @since Sep 15, 2003
  * @version $Revision$
@@ -46,8 +53,21 @@ public class QueryTableIterator implements ITableIterator
     private IResultSetTable _currentTable;
     private int _index = -1;
 
+    /**
+     * @param tableEntries list of {@link TableEntry} objects
+     * @param connection The database connection needed to load data
+     */
     public QueryTableIterator(List tableEntries, IDatabaseConnection connection)
     {
+    	if (tableEntries == null) {
+			throw new NullPointerException(
+					"The parameter 'tableEntries' must not be null");
+		}
+    	if (connection == null) {
+			throw new NullPointerException(
+					"The parameter 'connection' must not be null");
+		}
+    	
         _tableEntries = tableEntries;
         _connection = connection;
         _currentTable = null;
@@ -56,6 +76,9 @@ public class QueryTableIterator implements ITableIterator
     ////////////////////////////////////////////////////////////////////////////
     // ITableIterator interface
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean next() throws DataSetException
     {
         logger.debug("next() - start");
@@ -72,6 +95,9 @@ public class QueryTableIterator implements ITableIterator
         return _index < _tableEntries.size();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public ITableMetaData getTableMetaData() throws DataSetException
     {
         logger.debug("getTableMetaData() - start");
@@ -97,6 +123,9 @@ public class QueryTableIterator implements ITableIterator
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public ITable getTable() throws DataSetException
     {
         logger.debug("getTable() - start");

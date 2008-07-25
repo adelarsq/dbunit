@@ -31,6 +31,11 @@ import java.sql.Types;
 
 
 /**
+ * Data type that maps {@link java.sql.Types} objects to their
+ * java counterparts. It also provides immutable constants for the most common data types.
+ * 
+ * @see http://java.sun.com/j2se/1.3/docs/guide/jdbc/getstart/mapping.html#table1
+ * 
  * @author Manuel Laflamme
  * @version $Revision$
  */

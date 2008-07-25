@@ -37,6 +37,7 @@ import org.dbunit.database.IResultSetTableFactory;
 import org.dbunit.database.QueryDataSet;
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.CompositeDataSet;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.csv.CsvProducer;
 import org.dbunit.dataset.excel.XlsDataSet;
@@ -93,46 +94,18 @@ public abstract class AbstractStep implements DbUnitTaskStep
                 factory = new CachedResultSetTableFactory();
             }
             DatabaseConfig config = connection.getConfig();
-            config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY,
-                    factory);
+            config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY, factory);
 
             // Retrieve the complete database if no tables or queries specified.
             if (tables.size() == 0)
             {
+            	logger.debug("Retrieving the whole database because now tables/queries have been specified");
                 return connection.createDataSet();
             }
 
-			List queryDataSets = new ArrayList();
-			
-            QueryDataSet queryDataSet = new QueryDataSet(connection);
-            
-            for (Iterator it = tables.iterator(); it.hasNext();)
-            {
-                Object item = it.next();
-                if(item instanceof QuerySet) {
-					if(queryDataSet.getTableNames().length > 0) 
-                		queryDataSets.add(queryDataSet);
-					queryDataSets.add
-						(getQueryDataSetForQuerySet(connection, (QuerySet)item));
-					queryDataSet = new QueryDataSet(connection);
-                }
-                else if (item instanceof Query)
-                {
-                    Query queryItem = (Query)item;
-                    queryDataSet.addTable(queryItem.getName(), queryItem.getSql());
-                }
-                else
-                {
-                    Table tableItem = (Table)item;
-                    queryDataSet.addTable(tableItem.getName());
-                }
-            }
-            
-            if(queryDataSet.getTableNames().length > 0) 
-            	queryDataSets.add(queryDataSet);
-
-			IDataSet[] dataSetsArray = new IDataSet[queryDataSets.size()];
-            return new CompositeDataSet((IDataSet[])queryDataSets.toArray(dataSetsArray));
+            List queryDataSets = createQueryDataSet(tables, connection);
+			IDataSet[] dataSetsArray = (IDataSet[])queryDataSets.toArray( new IDataSet[queryDataSets.size()] );
+            return new CompositeDataSet(dataSetsArray);
         }
         catch (SQLException e)
         {
@@ -141,6 +114,49 @@ public abstract class AbstractStep implements DbUnitTaskStep
     }
 
    
+	private List createQueryDataSet(List tables, IDatabaseConnection connection) 
+	throws DataSetException, SQLException 
+	{
+		logger.debug("createQueryDataSet(tables={}, connection={})", tables, connection);
+		
+		List queryDataSets = new ArrayList();
+		
+        QueryDataSet queryDataSet = new QueryDataSet(connection);
+        
+        for (Iterator it = tables.iterator(); it.hasNext();)
+        {
+            Object item = it.next();
+            
+            if(item instanceof QuerySet) {
+				if(queryDataSet.getTableNames().length > 0) 
+            		queryDataSets.add(queryDataSet);
+				QueryDataSet newQueryDataSet = getQueryDataSetForQuerySet(connection, (QuerySet)item);
+				queryDataSets.add(newQueryDataSet);
+				queryDataSet = new QueryDataSet(connection);
+            }
+            else if (item instanceof Query)
+            {
+                Query queryItem = (Query)item;
+                queryDataSet.addTable(queryItem.getName(), queryItem.getSql());
+            }
+            else if (item instanceof Table)
+            {
+                Table tableItem = (Table)item;
+                queryDataSet.addTable(tableItem.getName());
+            }
+            else
+            {
+            	throw new IllegalArgumentException("Unsupported element type " + item.getClass().getName() + ".");
+            }
+        }
+        
+        if(queryDataSet.getTableNames().length > 0) 
+        	queryDataSets.add(queryDataSet);
+        
+        return queryDataSets;
+	}
+
+
 	protected IDataSet getSrcDataSet(File src, String format,
             boolean forwardonly) throws DatabaseUnitException
     {
@@ -225,7 +241,8 @@ public abstract class AbstractStep implements DbUnitTaskStep
 	}
 	
 	public void log(String msg, int level) {
-        logger.debug("log(msg={}, level={}) - start", msg, new Integer(level));
+		if(logger.isDebugEnabled())
+			logger.debug("log(msg={}, level={}) - start", msg, new Integer(level));
 
 		if(parentTask != null)
 			parentTask.log(msg, level);
