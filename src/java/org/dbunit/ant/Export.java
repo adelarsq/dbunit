@@ -21,25 +21,28 @@
 
 package org.dbunit.ant;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.tools.ant.Project;
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.csv.CsvDataSetWriter;
+import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlWriter;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The <code>Export</code> class is the step that facilitates exporting
@@ -64,6 +67,7 @@ public class Export extends AbstractStep
     private File _dest;
     private String _format = FORMAT_FLAT;
     private String _doctype = null;
+    private boolean _ordered = false;
     private List _tables = new ArrayList();
 
     public Export()
@@ -113,6 +117,16 @@ public class Export extends AbstractStep
         }
     }
 
+    public boolean isOrdered() 
+    {
+    	return _ordered;
+    }
+
+    public void setOrdered(boolean ordered) 
+    {
+    	this._ordered = ordered;
+    }
+    
     public void addTable(Table table)
     {
         logger.debug("addTable(table={}) - start", table);
@@ -127,7 +141,7 @@ public class Export extends AbstractStep
 
 	public void addQuerySet(QuerySet querySet) {
         logger.debug("addQuerySet(querySet={}) - start", querySet);
-		_tables.add(querySet);
+        _tables.add(querySet);
 	}
 	
     
@@ -153,9 +167,9 @@ public class Export extends AbstractStep
                 throw new DatabaseUnitException("'_dest' is a required attribute of the <export> step.");
             }
 
-            IDataSet dataset = getDatabaseDataSet(connection, _tables, false);
-
+            IDataSet dataset = getExportDataSet(connection);
 			log("dataset tables: " + Arrays.asList(dataset.getTableNames()), Project.MSG_VERBOSE);
+
 			
             // Write the dataset
             if (_format.equals(FORMAT_CSV))
@@ -192,13 +206,37 @@ public class Export extends AbstractStep
             log("Successfully wrote file '" + _dest + "'", Project.MSG_INFO);
             
         }
+        catch (SQLException e)
+        {
+        	throw new DatabaseUnitException(e);
+        }
         catch (IOException e)
         {
             throw new DatabaseUnitException(e);
         }
     }
 
-    public String getLogMessage()
+    /**
+     * Creates the dataset that is finally used for the export
+     * @param connection
+     * @return The final dataset used for the export
+     * @throws DatabaseUnitException
+     * @throws SQLException
+     */
+    protected IDataSet getExportDataSet(IDatabaseConnection connection) 
+    throws DatabaseUnitException, SQLException 
+    {
+        IDataSet dataset = getDatabaseDataSet(connection, this._tables, false);
+        if (isOrdered()) 
+        {
+        	// Use topologically sorted database
+        	ITableFilter filter = new DatabaseSequenceFilter(connection);  
+        	dataset = new FilteredDataSet(filter, dataset);
+        }
+        return dataset;
+	}
+
+	public String getLogMessage()
     {
         return "Executing export: "
                 + "\n      in format: " + _format

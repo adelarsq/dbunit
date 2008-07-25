@@ -180,6 +180,11 @@
                 <td>If set and format is "flat", add DOCTYPE declaration referencing specified DTD to exported dataset. The DTD path can be absolute or relative. </td>
                 <td>No</td>
               </tr>
+              <tr> 
+                <td>ordered</td>
+                <td>If set to "true" the tables of the exported dataset are ordered using the FilteredDataSet combined with the DatabaseSequenceFilter. Defaults to "false"</td>
+                <td>No</td>
+              </tr>
             </table>
             <h4>Parameters specified as nested elements </h4>
             <table border="1">

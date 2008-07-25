@@ -21,24 +21,26 @@
 
 package org.dbunit.ant;
 
-import org.dbunit.DatabaseEnvironment;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.datatype.IDataTypeFactory;
-import org.dbunit.ext.mssql.InsertIdentityOperation;
-import org.dbunit.ext.oracle.OracleDataTypeFactory;
-import org.dbunit.operation.DatabaseOperation;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Target;
-import org.apache.tools.ant.taskdefs.TaskdefsTest;
-
 import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Target;
+import org.apache.tools.ant.taskdefs.TaskdefsTest;
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.ext.mssql.InsertIdentityOperation;
+import org.dbunit.ext.oracle.OracleDataTypeFactory;
+import org.dbunit.operation.DatabaseOperation;
 
 /**
  * Ant-based test class for the Dbunit ant task definition.
@@ -241,6 +243,23 @@ public class DbUnitTaskTest extends TaskdefsTest
     {
         expectBuildException("invalid-export-format",
                 "Should have objected to invalid format attribute.");
+    }
+
+    public void testExportXmlOrdered() throws Exception
+    {
+        String targetName = "test-export-format-xml-ordered";
+        Export export = (Export)getFirstStepFromTarget(targetName);
+        assertEquals("Should be ordered", true, export.isOrdered());
+        assertTrue("Should have been an xml format, "
+                + "but was: " + export.getFormat(),
+                export.getFormat().equalsIgnoreCase("xml"));
+        
+        // Test if the correct dataset is created for ordered export
+        DbUnitTask task = getFirstTargetTask(targetName);
+        IDatabaseConnection connection = task.createConnection();
+        IDataSet dataSetToBeExported = export.getExportDataSet(connection);
+        // Ordered export should use the filtered dataset
+        assertEquals(dataSetToBeExported.getClass(), FilteredDataSet.class);
     }
 
     public void testExportQuery()

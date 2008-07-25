@@ -223,6 +223,17 @@
     <delete file="${exportDataSet}"/>
   </target>
 
+    <target name="test-export-format-xml-ordered" depends="test-type-clean-insert">
+      <dbunit driver="${dbunit.profile.driverClass}"
+              url="${dbunit.profile.connectionUrl}"
+          userid="${dbunit.profile.user}"
+              password="${dbunit.profile.password}">
+        <export dest="${exportDataSet}" format="xml" ordered="true" />
+        <compare src="${exportDataSet}" format="xml"/>
+      </dbunit>
+      <delete file="${exportDataSet}"/>
+    </target>
+
   <target name="test-export-format-dtd">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.connectionUrl}"
