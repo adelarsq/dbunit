@@ -36,6 +36,7 @@
       <action dev="gommma" type="add">Write validation message when the configured IDataTypeFactory probably does not match to the current database system. The validation implicitly takes place when AbstractTableMetaData.getDataTypeFactory() is invoked.</action>
       <action dev="gommma" type="add">Maven pom.xml updates: Added ciManagement section, added some plugins for reporting</action>
       <action dev="gommma" type="fix" issue="1497369" due_to="bascan">Test error: testExportWithQuerySet</action>
+      <action dev="gommma" type="add" issue="2012491" due_to="rpuchkovskiy">Topological sorting of tables when exporting</action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>
