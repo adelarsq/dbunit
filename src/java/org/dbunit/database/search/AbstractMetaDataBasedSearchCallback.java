@@ -199,8 +199,8 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
                 String fkColumn = rs.getString( FK_INDEXES[type] );
 
                 // set the schema in front if there is none ("SCHEMA.TABLE") - depending on the "qualified table names" feature
-            	tableName = QualifiedTableName.getQualifiedName(schema, tableName, dbConfig);
-            	dependentTableName = QualifiedTableName.getQualifiedName(schema, dependentTableName, dbConfig);
+            	tableName = new QualifiedTableName(tableName, schema).getQualifiedNameIfEnabled(dbConfig);
+            	dependentTableName = new QualifiedTableName(dependentTableName, schema).getQualifiedNameIfEnabled(dbConfig);
                 
                 IEdge edge = newEdge(rs, type, tableName, dependentTableName, fkColumn, pkColumn );
                 if ( logger.isDebugEnabled() ) {

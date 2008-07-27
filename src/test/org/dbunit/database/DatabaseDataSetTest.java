@@ -164,8 +164,8 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         assertEquals("name count", expectedNames.length, actualNames.length);
         for (int i = 0; i < actualNames.length; i++)
         {
-            String expected = QualifiedTableName.getQualifiedName(
-                    _connection.getSchema(), expectedNames[i]);
+            String expected = new QualifiedTableName(
+            		expectedNames[i], _connection.getSchema()).getQualifiedName();
             String actual = actualNames[i];
             assertEquals("name", expected, actual);
         }
@@ -173,8 +173,8 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 
     public void testGetColumnsAndQualifiedNamesEnabled() throws Exception
     {
-        String tableName = QualifiedTableName.getQualifiedName(
-                _connection.getSchema(), "TEST_TABLE");
+        String tableName = new QualifiedTableName(
+                "TEST_TABLE", _connection.getSchema()).getQualifiedName();
         String[] expected = {"COLUMN0", "COLUMN1", "COLUMN2", "COLUMN3"};
 
         IDatabaseConnection connection = new DatabaseConnection(
@@ -194,8 +194,8 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 
     public void testGetPrimaryKeysAndQualifiedNamesEnabled() throws Exception
     {
-        String tableName = QualifiedTableName.getQualifiedName(
-                _connection.getSchema(), "PK_TABLE");
+        String tableName = new QualifiedTableName(
+                "PK_TABLE", _connection.getSchema()).getQualifiedName();
         String[] expected = {"PK0", "PK1", "PK2"};
 
         IDatabaseConnection connection = new DatabaseConnection(

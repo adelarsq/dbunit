@@ -96,13 +96,13 @@ public class DataSetUtils
      * @param prefix the prefix that qualifies the name and is prepended if the name is not qualified yet
      * @param name the name The name to be qualified if it is not qualified already
      * @return the qualified name
-     * @deprecated since 2.3.0. Prefer usage of {@link QualifiedTableName#getQualifiedName(String, String)}
+     * @deprecated since 2.3.0. Prefer usage of {@link QualifiedTableName#getQualifiedName()} creating a new {@link QualifiedTableName} object
      */
     public static String getQualifiedName(String prefix, String name)
     {
         logger.debug("getQualifiedName(prefix={}, name={}) - start", prefix, name);
 
-        return QualifiedTableName.getQualifiedName(prefix, name, (String)null);
+        return new QualifiedTableName(name, prefix, (String)null).getQualifiedName();
     }
 
     /**
@@ -110,7 +110,7 @@ public class DataSetUtils
      * @param name the name The name to be qualified if it is not qualified already
      * @param escapePattern The escape pattern to be applied on the prefix and the name. Can be null.
      * @return The qualified name
-     * @deprecated since 2.3.0. Prefer usage of {@link QualifiedTableName#getQualifiedName(String, String, String)}
+     * @deprecated since 2.3.0. Prefer usage of {@link QualifiedTableName#getQualifiedName()} creating a new {@link QualifiedTableName} object
      */
     public static String getQualifiedName(String prefix, String name,
             String escapePattern)
@@ -118,33 +118,20 @@ public class DataSetUtils
         if(logger.isDebugEnabled())
             logger.debug("getQualifiedName(prefix={}, name={}, escapePattern={}) - start", 
                     new String[] {prefix, name, escapePattern});
-        return QualifiedTableName.getQualifiedName(prefix, name, escapePattern);
+        
+        return new QualifiedTableName(name, prefix, escapePattern).getQualifiedName();
     }
 
+    /**
+     * @param name
+     * @param escapePattern
+     * @return
+     * @deprecated since 2.3.0. Prefer usage of {@link QualifiedTableName#getQualifiedName()} creating a new {@link QualifiedTableName} object
+     */
     public static String getEscapedName(String name, String escapePattern)
     {
         logger.debug("getEscapedName(name={}, escapePattern={}) - start", name, escapePattern);
-
-        if (name == null || escapePattern == null)
-        {
-            return name;
-        }
-    
-        int split = name.indexOf(".");
-        if (split > 1)
-        {
-        	return getEscapedName(name.substring(0, split), escapePattern) + "." + getEscapedName(name.substring(split + 1), escapePattern);
-        }
-
-        int index = escapePattern.indexOf("?");
-        if (index >=0 )
-        {
-            String prefix = escapePattern.substring(0, index);
-            String suffix = escapePattern.substring(index + 1);
-
-            return prefix + name + suffix;
-        }
-        return name;
+        return new QualifiedTableName(name, null, escapePattern).getQualifiedName();
     }
 
     /**

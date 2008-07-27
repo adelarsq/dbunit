@@ -21,7 +21,6 @@
 package org.dbunit.util;
 
 import org.dbunit.database.DatabaseConfig;
-import org.dbunit.dataset.DataSetUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +39,7 @@ public class QualifiedTableName
 
 	private String schema;
 	private String table;
+	private String escapePattern;
 	
 	/**
 	 * Creates an object parsing the given tableName.
@@ -50,12 +50,25 @@ public class QualifiedTableName
 	 */
 	public QualifiedTableName(String tableName, String defaultSchema)
 	{
+		this(tableName, defaultSchema, null);
+	}
+	
+	/**
+	 * Creates an object parsing the given tableName.
+	 * @param tableName The table name, either qualified or unqualified. If it is qualified (like "MYSCHEMA.MYTABLE")
+	 * this schema name has precedence before the given <code>defaultSchema</code> parameter.
+	 * @param defaultSchema The schema that is used when the given tableName is not fully qualified
+	 * (i.e. it is not like "MYSCHEMA.MYTABLE"). Can be null
+     * @param escapePattern The escape pattern to be applied on the prefix and the name. Can be null.
+	 */
+	public QualifiedTableName(String tableName, String defaultSchema, String escapePattern)
+	{
 		if(tableName==null){
 			throw new NullPointerException("The parameter 'tableName' must not be null");
 		}
     	parseFullTableName(tableName, defaultSchema);
+    	this.escapePattern = escapePattern;
 	}
-	
 
 	/**
 	 * Parses the given full table name into a schema name and a table name if available. If
@@ -106,8 +119,38 @@ public class QualifiedTableName
 	/**
 	 * @return The qualified table name with the prepended schema if a schema is available
 	 */
-	public String getQualifiedName() {
-		return getQualifiedName(this.schema, this.table);
+	public String getQualifiedName() 
+	{
+		logger.debug("getQualifiedName() - start");
+		
+		return getQualifiedName(this.schema, this.table, this.escapePattern);
+	}
+
+	/**
+	 * Returns the qualified name using the values given in the constructor.
+	 * The qualified table name is <b>only</b> returned if the feature
+	 * {@link DatabaseConfig#FEATURE_QUALIFIED_TABLE_NAMES} is set. Otherwise the given
+	 * name is returned unqualified (i.e. without prepending the prefix/schema).
+	 * @return The qualified table name with the prepended schema if a schema is available.
+	 * The qualified table name is <b>only</b> returned if the feature 
+	 * {@link DatabaseConfig#FEATURE_QUALIFIED_TABLE_NAMES} is set in the given <code>config</code>.
+	 */
+	public String getQualifiedNameIfEnabled(DatabaseConfig config) 
+	{
+		logger.debug("getQualifiedNameIfEnabled(config={}) - start", config);
+
+        boolean feature = config.getFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES);
+        if (feature)
+        {
+        	logger.debug("Qualified table names feature is enabled. Returning qualified table name");
+            return getQualifiedName(this.schema, this.table, this.escapePattern);
+        }
+        else 
+        {
+        	logger.debug("Qualified table names feature is disabled. Returning plain table name");
+//        	return this.table;
+        	return getQualifiedName(null, this.table, this.escapePattern);
+        }
 	}
 
 	public String toString() {
@@ -121,37 +164,6 @@ public class QualifiedTableName
 	
 	
 	
-	
-	/**
-	 * Returns the qualified name according to {@link QualifiedTableName#getQualifiedName(String, String)}
-	 * if the feature {@link DatabaseConfig#FEATURE_QUALIFIED_TABLE_NAMES} is set. Otherwise the given
-	 * name is returned unqualified (i.e. without prepending the prefix). 
-     * @param prefix the prefix that qualifies the name and is prepended if the name is not qualified yet
-     * @param name the name The name to be qualified if it is not qualified already
-	 * @param config The configuration used to check if the feature {@link DatabaseConfig#FEATURE_QUALIFIED_TABLE_NAMES}
-	 * is set or not.
-	 * @return The qualified name as defined in {@link QualifiedTableName#getQualifiedName(String, String)} if needed
-	 */
-	public static String getQualifiedName(String prefix, String name,
-			DatabaseConfig config) 
-	{
-		if(logger.isDebugEnabled())
-			logger.debug("getQualifiedName(prefix={}, name={}, config={}) - start", 
-					new Object[] {prefix, name, config} );
-
-        boolean feature = config.getFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES);
-        if (feature)
-        {
-        	logger.debug("Qualified table names feature is enabled. Returning qualified table name");
-            return getQualifiedName(prefix, name);
-        }
-        else 
-        {
-        	logger.debug("Qualified table names feature is disabled. Returning plain table name");
-        	return name;
-        }
-	}
-
     /**
      * Returns the specified name qualified with the specified prefix. The name
      * is not modified if the prefix is <code>null</code> or if the name is
@@ -163,25 +175,13 @@ public class QualifiedTableName
      * returns <code>"PREFIX.NAME"</code> and
      * <code>getQualifiedName("PREFIX2", "PREFIX1.NAME")</code>
      * returns <code>"PREFIX1.NAME"</code>.
-     *
-     * @param prefix the prefix that qualifies the name and is prepended if the name is not qualified yet
-     * @param name the name The name to be qualified if it is not qualified already
-     * @return the qualified name
-     */
-    public static String getQualifiedName(String prefix, String name)
-    {
-        logger.debug("getQualifiedName(prefix={}, name={}) - start", prefix, name);
-
-        return getQualifiedName(prefix, name, (String)null);
-    }
-
-    /**
+     * 
      * @param prefix the prefix that qualifies the name and is prepended if the name is not qualified yet
      * @param name the name The name to be qualified if it is not qualified already
      * @param escapePattern The escape pattern to be applied on the prefix and the name. Can be null.
      * @return The qualified name
      */
-    public static String getQualifiedName(String prefix, String name,
+    private static String getQualifiedName(String prefix, String name,
             String escapePattern)
     {
         if(logger.isDebugEnabled())
@@ -190,8 +190,8 @@ public class QualifiedTableName
 
         if (escapePattern != null)
         {
-            prefix = DataSetUtils.getEscapedName(prefix, escapePattern);
-            name = DataSetUtils.getEscapedName(name, escapePattern);
+            prefix = QualifiedTableName.getEscapedName(prefix, escapePattern);
+            name = QualifiedTableName.getEscapedName(name, escapePattern);
         }
 
         if (prefix == null || prefix.equals("") || name.indexOf(".") >= 0)
@@ -202,4 +202,36 @@ public class QualifiedTableName
         return prefix + "." + name;
     }
 	
+    
+    /**
+     * @param name
+     * @param escapePattern
+     * @return
+     */
+    private static String getEscapedName(String name, String escapePattern)
+    {
+        logger.debug("getEscapedName(name={}, escapePattern={}) - start", name, escapePattern);
+
+        if (name == null || escapePattern == null)
+        {
+            return name;
+        }
+    
+        int split = name.indexOf(".");
+        if (split > 1)
+        {
+        	return getEscapedName(name.substring(0, split), escapePattern) + "." + getEscapedName(name.substring(split + 1), escapePattern);
+        }
+
+        int index = escapePattern.indexOf("?");
+        if (index >=0 )
+        {
+            String prefix = escapePattern.substring(0, index);
+            String suffix = escapePattern.substring(index + 1);
+
+            return prefix + name + suffix;
+        }
+        return name;
+    }
+
 }

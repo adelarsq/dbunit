@@ -57,7 +57,8 @@ public abstract class AbstractOperation extends DatabaseOperation
     	}
 
         String escapePattern = (String)connection.getConfig().getProperty(DatabaseConfig.PROPERTY_ESCAPE_PATTERN);
-        return QualifiedTableName.getQualifiedName(prefix, name, escapePattern);
+        QualifiedTableName qualifiedTbleName = new QualifiedTableName(name, prefix, escapePattern);
+        return qualifiedTbleName.getQualifiedName();
     }
 
     /**

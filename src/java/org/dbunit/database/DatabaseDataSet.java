@@ -79,15 +79,15 @@ public class DatabaseDataSet extends AbstractDataSet
             {
                 sqlBuffer.append(", ");
             }
-            String columnName = QualifiedTableName.getQualifiedName(null,
-                    columns[i].getColumnName(), escapePattern);
+            String columnName = new QualifiedTableName(
+                    columns[i].getColumnName(), null, escapePattern).getQualifiedName();
             sqlBuffer.append(columnName);
         }
 
         // from
         sqlBuffer.append(" from ");
-        sqlBuffer.append(QualifiedTableName.getQualifiedName(schema,
-                metaData.getTableName(), escapePattern));
+        sqlBuffer.append(new QualifiedTableName(
+                metaData.getTableName(), schema, escapePattern).getQualifiedName());
 
         // order by
         for (int i = 0; i < primaryKeys.length; i++)
@@ -100,8 +100,7 @@ public class DatabaseDataSet extends AbstractDataSet
             {
                 sqlBuffer.append(", ");
             }
-            sqlBuffer.append(QualifiedTableName.getQualifiedName(null, primaryKeys[i]
-					.getColumnName(), escapePattern));
+            sqlBuffer.append(new QualifiedTableName(primaryKeys[i].getColumnName(), null, escapePattern).getQualifiedName());
 
         }
 
@@ -138,14 +137,17 @@ public class DatabaseDataSet extends AbstractDataSet
                     String schemaName = resultSet.getString(2);
                     String tableName = resultSet.getString(3);
 
+                    DatabaseConfig config = _connection.getConfig();
                     // skip oracle 10g recycle bin system tables if enabled
-                    if(_connection.getConfig().getFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES)) {
+                    if(config.getFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES)) {
                         // Oracle 10g workaround
                         // don't process system tables (oracle recycle bin tables) which
                         // are reported to the application due a bug in the oracle JDBC driver
                         if (tableName.startsWith("BIN$")) continue;	
                     }
-                    tableName = QualifiedTableName.getQualifiedName(schemaName, tableName, _connection.getConfig());
+                    
+                    QualifiedTableName qualifiedTableName = new QualifiedTableName(tableName, schemaName);
+                    tableName = qualifiedTableName.getQualifiedNameIfEnabled(config);
 
                     // prevent table name conflict
                     if (_tableMap.containsKey(tableName.toUpperCase()))
