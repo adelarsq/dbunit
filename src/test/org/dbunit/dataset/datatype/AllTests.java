@@ -35,6 +35,7 @@ public class AllTests extends TestSuite
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(BooleanDataTypeTest.class));
         suite.addTest(new TestSuite(BytesDataTypeTest.class));
+        suite.addTest(new TestSuite(BlobDataTypeTest.class));
         suite.addTest(new TestSuite(DateDataTypeTest.class));
         suite.addTest(new TestSuite(DefaultDataTypeFactoryTest.class));
         suite.addTest(new TestSuite(DoubleDataTypeTest.class));

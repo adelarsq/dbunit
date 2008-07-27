@@ -69,7 +69,6 @@ public class BlobDataType extends BytesDataType
     				new Object[]{ value, String.valueOf(column), statement});
     	}
 
-        statement.setObject(column, typeCast(value),
-                DataType.LONGVARBINARY.getSqlType());
+    	statement.setObject(column, typeCast(value), super.getSqlType());
     }
 }

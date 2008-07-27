@@ -310,8 +310,8 @@ public class AssertionTest extends TestCase
         catch (ComparisonFailure expected)
         {
             assertEquals("row 0 col 2", expected.getExpected());
-            assertEquals("row 0 col 2 some other value (modification for column COLUMN2)", expected.getActual());
-        	String expectedMsg = "value (table=TEST_TABLE, row=0, col=COLUMN2) expected:<row 0 col 2[]> but was:<row 0 col 2[ some other value (modification for column COLUMN2)]>";
+            assertEquals("row 0 col 2 (modified COLUMN2)", expected.getActual());
+        	String expectedMsg = "value (table=TEST_TABLE, row=0, col=COLUMN2) expected:<row 0 col 2[]> but was:<row 0 col 2[ (modified COLUMN2)]>";
         	assertEquals(expectedMsg, expected.getMessage());
         }
     }
@@ -545,7 +545,7 @@ public class AssertionTest extends TestCase
 
 			// Modify the value if column name matches
 			if(column.equalsIgnoreCase(this._columnToModify)) {
-				return String.valueOf(originalValue) + " some other value (modification for column "+_columnToModify +")";
+				return String.valueOf(originalValue) + " (modified "+_columnToModify +")";
 			}
 			return originalValue;
 		}

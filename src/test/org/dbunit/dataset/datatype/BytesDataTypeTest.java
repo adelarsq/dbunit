@@ -21,20 +21,21 @@
 
 package org.dbunit.dataset.datatype;
 
-import org.dbunit.database.ExtendedMockSingleRowResultSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.util.FileAsserts;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.sql.Types;
 import java.util.Arrays;
 
+import org.dbunit.database.ExtendedMockSingleRowResultSet;
+import org.dbunit.database.statement.MockPreparedStatement;
+import org.dbunit.dataset.ITable;
+import org.dbunit.util.FileAsserts;
+
+
 /**
  * @author Manuel Laflamme
  * @version $Revision$
  */
-
 public class BytesDataTypeTest extends AbstractDataTypeTest
 {
     private final static DataType[] TYPES = {
@@ -329,6 +330,41 @@ public class BytesDataTypeTest extends AbstractDataTypeTest
                 DataType dataType = TYPES[j];
                 Object actualValue = dataType.getSqlValue(i + 1, resultSet);
                 assertEquals("value " + j, expectedValue, actualValue);
+            }
+        }
+    }
+    
+    public void testSetSqlValue() throws Exception
+    {
+    	MockPreparedStatement preparedStatement = new MockPreparedStatement();
+    	
+        Object[] expected = {
+                null,
+                new byte[0],
+                new byte[]{'a', 'b', 'c', 'd'},
+        };
+
+        int[] expectedSqlTypesForDataType = {
+        		Types.BINARY,
+                Types.VARBINARY,
+                Types.LONGVARBINARY
+        };
+
+        for (int i = 0; i < expected.length; i++)
+        {
+            Object expectedValue = expected[i];
+
+            for (int j = 0; j < TYPES.length; j++)
+            {
+                DataType dataType = TYPES[j];
+                int expectedSqlType = expectedSqlTypesForDataType[j];
+
+                dataType.setSqlValue(expectedValue, 1, preparedStatement);
+                // Check the results immediately
+                assertEquals("Loop " + i + " Type " + dataType, 1, preparedStatement.getLastSetObjectParamIndex());
+                assertEquals("Loop " + i + " Type " + dataType, expectedSqlType, preparedStatement.getLastSetObjectTargetSqlType());
+                Object actualValue = preparedStatement.getLastSetObjectParamValue();
+                assertEquals("Loop " + i + " Type " + dataType, expectedValue, actualValue);
             }
         }
     }

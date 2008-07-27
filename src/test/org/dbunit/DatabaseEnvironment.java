@@ -21,17 +21,17 @@
 
 package org.dbunit;
 
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.XmlDataSet;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
+
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.XmlDataSet;
 
 /**
  * @author Manuel Laflamme
@@ -63,6 +63,10 @@ public class DatabaseEnvironment
             else if (profileName.equals("oracle"))
             {
                 INSTANCE = new OracleEnvironment(profile);
+            }
+            else if (profileName.equals("derbyembedded"))
+            {
+                INSTANCE = new DerbyEnvironment(profile);
             }
             else
             {

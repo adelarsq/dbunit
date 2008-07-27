@@ -275,6 +275,13 @@
 			<version>1.8.0.1</version>      
 			<scope>test</scope>   
 		</dependency>       
+		<dependency>
+			<!-- Only needed when "profile.properties" is set to "derby" environment -->
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>10.4.1.3</version>      
+			<scope>test</scope>   
+		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
