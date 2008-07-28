@@ -226,10 +226,10 @@
 			<version>1.4</version>
 		</dependency>
 		<dependency>
-			<groupId>poi</groupId>
+			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>2.5.1-final-20040804</version>      
-		</dependency>       
+			<version>3.1-FINAL</version>
+		</dependency>
 		<dependency>
 			<groupId>ant</groupId>
 			<artifactId>ant</artifactId>
@@ -361,6 +361,7 @@ AllTests)
 					<source>${compileSource}</source>
 					<target>${compileSource}</target>
 					<compilerVersion>${compileSource}</compilerVersion>
+					<!-- TODO somehow we must ensure that the used rt.jar is really a 1.4 and not higher, also for continuous integration -->
 					<!--<executable>${JAVA_1_4_HOME}/bin/javac</executable>-->
 					<debug>true</debug>
 					<fork>true</fork>

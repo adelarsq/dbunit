@@ -18,17 +18,27 @@
  */
 package org.dbunit.dataset.excel;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.AbstractDataSet;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultTableIterator;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
-
-import java.io.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This dataset implementation can read and write MS Excel documents. Each
@@ -77,7 +87,7 @@ public class XlsDataSet extends AbstractDataSet
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
     {
-        logger.debug("write(dataSet=" + dataSet + ", out=" + out + ") - start");
+        logger.debug("write(dataSet={}, out={}) - start", dataSet, out);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
 
@@ -91,7 +101,7 @@ public class XlsDataSet extends AbstractDataSet
             HSSFSheet sheet = workbook.createSheet(metaData.getTableName());
 
             // write table metadata i.e. first row in sheet
-            workbook.setSheetName(index, metaData.getTableName(), HSSFWorkbook.ENCODING_UTF_16);
+            workbook.setSheetName(index, metaData.getTableName());
 
             HSSFRow headerRow = sheet.createRow(0);
             Column[] columns = metaData.getColumns();
@@ -134,7 +144,7 @@ public class XlsDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
+        logger.debug("createIterator(reversed={}) - start", new Boolean(reversed));
 
         return new DefaultTableIterator(_tables, reversed);
     }

@@ -113,6 +113,7 @@ public class XlsDataSetTest extends AbstractDataSetTest
     public void testDuplicateWrite() throws Exception
     {
         IDataSet expectedDataSet = createDuplicateDataSet();
+
         File tempFile = File.createTempFile("xlsDataSetDuplicateTest", ".xls");
         try
         {
@@ -121,41 +122,21 @@ public class XlsDataSetTest extends AbstractDataSetTest
             // write dataset in temp file
             try
             {
+                // Since apache POI > 2.5 reading the broken xls file (contains 2 sheets with the same name)
+                // should lead to a 
                 XlsDataSet.write(expectedDataSet, out);
+                fail("Should not be able to write a xls having 2 sheets with identical names");
+            }
+            catch(IllegalArgumentException expected)
+            {
+            	String expectedMsg = "The workbook already contains a sheet of this name";
+            	assertEquals(expectedMsg, expected.getMessage());
             }
             finally
             {
                 out.close();
             }
 
-            // load new dataset from temp file
-            InputStream in = new FileInputStream(tempFile);
-            try
-            {
-                IDataSet actualDataSet = new XlsDataSet(in);
-
-                // verify table count
-                assertEquals("table count", expectedDataSet.getTableNames().length,
-                        actualDataSet.getTableNames().length);
-
-                // verify each table
-                ITable[] expected = DataSetUtils.getTables(expectedDataSet);
-                ITable[] actual = DataSetUtils.getTables(actualDataSet);
-                assertEquals("table count", expected.length, actual.length);
-                for (int i = 0; i < expected.length; i++)
-                {
-                    String expectedName = expected[i].getTableMetaData().getTableName();
-                    String actualName = actual[i].getTableMetaData().getTableName();
-                    assertEquals("table name", expectedName, actualName);
-
-                    assertTrue("not same instance", expected[i] != actual[i]);
-                    Assertion.assertEquals(expected[i], actual[i]);
-                }
-            }
-            finally
-            {
-                in.close();
-            }
         }
         finally
         {

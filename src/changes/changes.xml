@@ -39,7 +39,8 @@
       <action dev="gommma" type="add" issue="2012491" due_to="rpuchkovskiy">Topological sorting of tables when exporting</action>
       <action dev="gommma" type="fix" issue="2012495" due_to="rpuchkovskiy">Use DataType.BLOB instead of DataType.LONGVARBINARY</action>
       <action dev="gommma" type="fix" due_to="rpuchkovskiy">DbUnit is only JDK 1.4 compatible and not 1.3 (as claimed until now). Several methods are in use that did not exist in JDK 1.3. To build with JDK 1.4 and maven it is now required to set the environment variable JAVA_1_4_HOME to your JDK 1.4 home directory</action>
-    </release>
+      <action dev="gommma" type="add" issue="2029693">Update apache POI to latest release (2.5.1 -> 3.1)</action>
+</release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>
       <action dev="slecallonnec" type="fix" issue="1925603">Removed redundant and erroneous ERROR logging.</action>
