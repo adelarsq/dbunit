@@ -125,7 +125,7 @@ public class DataSetUtils
     /**
      * @param name
      * @param escapePattern
-     * @return
+     * @return The escaped name if the escape pattern is not null
      * @deprecated since 2.3.0. Prefer usage of {@link QualifiedTableName#getQualifiedName()} creating a new {@link QualifiedTableName} object
      */
     public static String getEscapedName(String name, String escapePattern)
