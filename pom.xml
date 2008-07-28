@@ -361,7 +361,7 @@ AllTests)
 					<source>${compileSource}</source>
 					<target>${compileSource}</target>
 					<compilerVersion>${compileSource}</compilerVersion>
-					<executable>${JAVA_1_4_HOME}/bin/javac</executable>
+					<!--<executable>${JAVA_1_4_HOME}/bin/javac</executable>-->
 					<debug>true</debug>
 					<fork>true</fork>
 				</configuration>
