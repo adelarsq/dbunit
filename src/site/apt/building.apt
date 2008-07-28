@@ -11,7 +11,7 @@ Overview
 
 Generating the JAR
 
- [[1]] Install {{{http://java.sun.com/javase/}Java SE SDK}} version 1.4 or newer (although DbUnit is Java 1.3 compatible, Maven 2 requires 1.4)
+ [[1]] Install {{{http://java.sun.com/javase/}Java SE SDK}} version 1.4 or newer (Java 1.4 is required by Maven 2 as well as DbUnit)
 
  [[2]] Install {{{http://maven.apache.org}Maven 2}}
 
@@ -26,20 +26,23 @@ Creating the site
 
 Using an IDE
 
-  As DbUnit uses Maven, it is not necessary to store IDE-specific information in the source repository. Instead, these meta-data can be dynamically generate by Maven. For instance, to create an Eclipse project, it is just a matter of typing <<<mvn eclipse:eclipe>>>. See more details on {{{http://maven.apache.org/plugins/maven-eclipse-plugin/}Maven Eclipse Plugin}}, {{http://mevenide.codehaus.org/m2-site/index.html}Mevenide for NetBeans}}, and {{{http://maven.apache.org/plugins/maven-idea-plugin/}Maven IDEA plugin}} respectively.
+  As DbUnit uses Maven, it is not necessary to store IDE-specific information in the source repository. Instead, these meta-data can be dynamically generate by Maven. 
+  For instance, to create an Eclipse project, it is just a matter of typing <<<mvn eclipse:eclipse>>>. 
+  See more details on {{{http://maven.apache.org/plugins/maven-eclipse-plugin/}Maven Eclipse Plugin}}, {{{http://mevenide.codehaus.org/m2-site/index.html}Mevenide for NetBeans}}, and {{{http://maven.apache.org/plugins/maven-idea-plugin/}Maven IDEA plugin}} respectively.
+  Further the {{{http://m2eclipse.codehaus.org}m2eclipse Plugin}} might be of interest to you
 
 
 Contributing patches
 
-  If you are building DbUnit in order to contribute a patch, it is necessary to compile it using Java SE 1.3, which takes 3 adittional steps:
+  If you are building DbUnit in order to contribute a patch, it is necessary to compile it using Java SE 1.4, which takes 3 adittional steps:
 
-  [[1]] Create an environment variable called JAVA_1_3_HOME pointing to the root of the Java 1.3 installation
+  [[1]] Create an environment variable called JAVA_1_4_HOME pointing to the root of the Java 1.4 installation
 
   [[2]] Download JDBC {{{http://java.sun.com/products/jdbc/download.html}JDBC 2.0 Optional Package Binary}}
 
   [[3]] Run the command  <<<mvn install:install-file -DgroupId=javax.sql -DartifactId=jdbc-stdext -Dversion=2.0 -Dpackaging=jar -Dfile=_path_to_the_jdbc_2_0_stdext_jar_>>>
 
-  [[4]] Run Maven using the <<official>> profile, i.e., <<<mvn -Pofficial clean install>>>. You should also generate the IDE meta-data using this profiling (for instance, <<<mvn -Pofficial eclipse:eclipse>>>), and configure your IDE to use Java 1.3 for that project
+  [[4]] Run Maven using the <<official>> profile, i.e., <<<mvn -Pofficial clean install>>>. You should also generate the IDE meta-data using this profiling (for instance, <<<mvn -Pofficial eclipse:eclipse>>>), and configure your IDE to use Java 1.4 for that project
 
   [[5]] Once you finish your modifications, run <<<svn diff > name_of_the_patch_file>>> (or use your IDE) to generate a patch file and submit it on {{{http://sourceforge.net/tracker/?group_id=47439&atid=449493} DbUnit SourceForge site}}. Do not forget to include test cases!
 
@@ -95,4 +98,4 @@ mvn changes:announcement-mail
 
 Fixing a bug/request
 
- Everytinme a bug is fixed (or request is implemented), it is necessary to update the <<<src/changes/changes.xml>>> file.
+ Everytime a bug is fixed (or request is implemented), it is necessary to update the <<<src/changes/changes.xml>>> file.

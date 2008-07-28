@@ -29,6 +29,7 @@ public class TestFeature
 {
     public static final TestFeature BLOB = new TestFeature("BLOB");
     public static final TestFeature CLOB = new TestFeature("CLOB");
+    public static final TestFeature VARBINARY = new TestFeature("VARBINARY");
     public static final TestFeature TRANSACTION = new TestFeature("TRANSACTION");
     public static final TestFeature SCOLLABLE_RESULTSET = new TestFeature("SCOLLABLE_RESULTSET");
     public static final TestFeature INSERT_IDENTITY = new TestFeature("INSERT_IDENTITY");

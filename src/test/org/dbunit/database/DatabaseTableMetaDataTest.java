@@ -21,7 +21,12 @@
 
 package org.dbunit.database;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.DatabaseEnvironment;
+import org.dbunit.TestFeature;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.Columns;
 import org.dbunit.dataset.IDataSet;
@@ -82,7 +87,8 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
     public void testCreation_UnknownTable() throws Exception
     {
         String tableName = "UNKNOWN_TABLE";
-
+        IDatabaseConnection connection = getConnection();
+        String schema = connection.getSchema();
         try
         {
         	new DatabaseTableMetaData(tableName, getConnection());
@@ -90,7 +96,7 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         }
         catch (NoSuchTableException expected)
         {
-        	String msg = "Did not find table 'UNKNOWN_TABLE' in schema 'PUBLIC'";
+        	String msg = "Did not find table 'UNKNOWN_TABLE' in schema '" + schema + "'";
         	assertEquals(msg, expected.getMessage());
         }
     }
@@ -155,31 +161,37 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
     
     public void testColumnDataType() throws Exception
     {
-        String tableName = "EMPTY_MULTITYPE_TABLE";
-        String[] expectedNames = {
-            "VARCHAR_COL",
-            "NUMERIC_COL",
-            "TIMESTAMP_COL",
-            "VARBINARY_COL",
-        };
-        DataType[] expectedTypes = {
-            DataType.VARCHAR,
-            DataType.NUMERIC,
-            DataType.TIMESTAMP,
-            DataType.VARBINARY,
-        };
+    	String tableName = "EMPTY_MULTITYPE_TABLE";
+
+        List expectedNames = new ArrayList();
+        expectedNames.add("VARCHAR_COL");
+        expectedNames.add("NUMERIC_COL");
+        expectedNames.add("TIMESTAMP_COL");
+
+        List expectedTypes = new ArrayList();
+        expectedTypes.add(DataType.VARCHAR);
+        expectedTypes.add(DataType.NUMERIC);
+        expectedTypes.add(DataType.TIMESTAMP);
+
+    	DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        if (environment.support(TestFeature.VARBINARY)) {
+            expectedNames.add("VARBINARY_COL");
+            expectedTypes.add(DataType.VARBINARY);
+        }
+
+        // Check correct setup
+        assertEquals("expected columns", expectedNames.size(), expectedTypes.size());
 
         ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
         Column[] columns = metaData.getColumns();
 
-        assertEquals("expected columns", expectedNames.length, expectedTypes.length);
-        assertEquals("column count", expectedNames.length, columns.length);
+        assertEquals("column count", 4, columns.length);
 
-        for (int i = 0; i < columns.length; i++)
+        for (int i = 0; i < expectedNames.size(); i++)
         {
             Column column = columns[i];
-            assertEquals("name", expectedNames[i], column.getColumnName());
-            assertEquals("datatype", expectedTypes[i], column.getDataType());
+            assertEquals("name", (String)expectedNames.get(i), column.getColumnName());
+            assertEquals("datatype", (DataType)expectedTypes.get(i), column.getDataType());
         }
     }
     

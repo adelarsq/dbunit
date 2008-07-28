@@ -236,7 +236,7 @@ public class SQLHelper {
     {
     	String dbInfo = getDatabaseInfo(metaData);
     	try {
-    		outputStream.append(dbInfo);
+    		outputStream.println(dbInfo);
     	}
     	finally {
     		outputStream.flush();
