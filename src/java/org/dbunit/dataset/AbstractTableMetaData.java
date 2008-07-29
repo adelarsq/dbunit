@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.ext.db2.Db2DataTypeFactory;
@@ -193,8 +194,9 @@ public abstract class AbstractTableMetaData implements ITableMetaData
 		
 		public DataTypeFactoryValidator()
 		{
-//			addValidCombinationInternal(DefaultDataTypeFactory.class, "hsql");
 			addValidCombinationInternal(Db2DataTypeFactory.class, "db2");
+//			addValidCombinationInternal(DefaultDataTypeFactory.class, "hsql");
+			addValidCombinationInternal(DefaultDataTypeFactory.class, "derby");
 			addValidCombinationInternal(H2DataTypeFactory.class, "h2");
 			addValidCombinationInternal(HsqldbDataTypeFactory.class, "hsql");
 			addValidCombinationInternal(MsSqlDataTypeFactory.class, "mssql");
