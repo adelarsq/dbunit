@@ -71,15 +71,11 @@ public class JndiDatabaseTester extends AbstractDatabaseTester
    {
         logger.debug("getConnection() - start");
 
-      if( !initialized ){
-         initialize();
-      }
+        if( !initialized ){
+        	initialize();
+        }
 
-      if( getSchema() != null ){
-         return new DatabaseConnection( dataSource.getConnection(), getSchema() );
-      }else{
-         return new DatabaseConnection( dataSource.getConnection() );
-      }
+        return new DatabaseConnection( dataSource.getConnection(), getSchema() );
    }
 
    /**

@@ -37,33 +37,29 @@ import org.dbunit.database.IDatabaseConnection;
 public class DataSourceDatabaseTester extends AbstractDatabaseTester
 {
 
-    /**
-     * Logger for this class
-     */
-    private static final Logger logger = LoggerFactory.getLogger(DataSourceDatabaseTester.class);
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(DataSourceDatabaseTester.class);
 
-   private DataSource dataSource;
+	private DataSource dataSource;
 
-   /**
-    * Creates a new DataSourceDatabaseTester with the specified DataSource.
-    *
-    * @param dataSource the DataSource to pull connections from
-    */
-   public DataSourceDatabaseTester( DataSource dataSource )
-   {
-      super();
-      this.dataSource = dataSource;
-   }
+	/**
+	 * Creates a new DataSourceDatabaseTester with the specified DataSource.
+	 *
+	 * @param dataSource the DataSource to pull connections from
+	 */
+	public DataSourceDatabaseTester( DataSource dataSource )
+	{
+		super();
+		this.dataSource = dataSource;
+	}
 
-   public IDatabaseConnection getConnection() throws Exception
-   {
-        logger.debug("getConnection() - start");
+	public IDatabaseConnection getConnection() throws Exception
+	{
+		logger.debug("getConnection() - start");
 
-      assertTrue( "DataSource is not set", dataSource!=null );
-      if( getSchema() != null ){
-         return new DatabaseConnection( dataSource.getConnection(), getSchema() );
-      }else{
-         return new DatabaseConnection( dataSource.getConnection() );
-      }
-   }
+		assertTrue( "DataSource is not set", dataSource!=null );
+		return new DatabaseConnection( dataSource.getConnection(), getSchema() );
+	}
 }
