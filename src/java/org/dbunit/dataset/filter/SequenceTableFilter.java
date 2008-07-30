@@ -20,15 +20,19 @@
  */
 package org.dbunit.dataset.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.database.AmbiguousTableNameException;
-import org.dbunit.dataset.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.dbunit.database.AmbiguousTableNameException;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoSuchTableException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This filter expose a specified table sequence and can be used to reorder
@@ -62,8 +66,9 @@ public class SequenceTableFilter implements ITableFilter
     private boolean accept(String tableName, String[] tableNames,
             boolean verifyDuplicate) throws AmbiguousTableNameException
     {
-        logger.debug("accept(tableName=" + tableName + ", tableNames=" + tableNames + ", verifyDuplicate="
-                + verifyDuplicate + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("accept(tableName={}, tableNames={}, verifyDuplicate={}) - start",
+    				new Object[]{tableName, tableNames, new Boolean(verifyDuplicate) } );
 
         boolean found = false;
         for (int i = 0; i < tableNames.length; i++)
@@ -91,14 +96,14 @@ public class SequenceTableFilter implements ITableFilter
 
     public boolean accept(String tableName) throws DataSetException
     {
-        logger.debug("accept(tableName=" + tableName + ") - start");
+        logger.debug("accept(tableName={}) - start", tableName);
 
         return accept(tableName, _tableNames, true);
     }
 
     public String[] getTableNames(IDataSet dataSet) throws DataSetException
     {
-        logger.debug("getTableNames(dataSet=" + dataSet + ") - start");
+        logger.debug("getTableNames(dataSet={}) - start", dataSet);
 
         List nameList = new ArrayList();
         for (int i = 0; i < _tableNames.length; i++)
@@ -124,7 +129,8 @@ public class SequenceTableFilter implements ITableFilter
     public ITableIterator iterator(IDataSet dataSet, boolean reversed)
             throws DataSetException
     {
-        logger.debug("iterator(dataSet=" + dataSet + ", reversed=" + reversed + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("iterator(dataSet={}, reversed={}) - start", dataSet, new Boolean(reversed));
 
         String[] tableNames = getTableNames(dataSet);
         return new SequenceTableIterator(reversed ?
