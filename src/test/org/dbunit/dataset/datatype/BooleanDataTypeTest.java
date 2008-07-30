@@ -24,6 +24,7 @@ package org.dbunit.dataset.datatype;
 import org.dbunit.database.ExtendedMockSingleRowResultSet;
 import org.dbunit.dataset.ITable;
 
+import java.math.BigDecimal;
 import java.sql.Types;
 
 /**
@@ -73,26 +74,30 @@ public class BooleanDataTypeTest extends AbstractDataTypeTest
     {
         Object[] values = {
             null,
-            "1",
+            "1", // Strings
             "0",
             "true",
             "false",
-            Boolean.TRUE,
+            "4894358", //TODO should it be possible to cast this into a Boolean?
+            Boolean.TRUE, // Booleans
             Boolean.FALSE,
-            new Integer(1),
+            new Integer(1), // Numbers
             new Integer(0),
-            new Integer(123),
+            new Integer(123), //TODO should it be possible to cast this into a Boolean?
+            new BigDecimal("20.53"), //TODO should it be possible to cast this into a Boolean?
         };
         Boolean[] expected = {
             null,
-            Boolean.TRUE,
+            Boolean.TRUE, // Strings
             Boolean.FALSE,
             Boolean.TRUE,
             Boolean.FALSE,
             Boolean.TRUE,
+            Boolean.TRUE, // Booleans
+            Boolean.FALSE,
+            Boolean.TRUE, // Numbers
             Boolean.FALSE,
             Boolean.TRUE,
-            Boolean.FALSE,
             Boolean.TRUE,
         };
 
