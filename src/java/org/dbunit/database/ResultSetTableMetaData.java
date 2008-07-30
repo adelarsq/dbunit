@@ -134,4 +134,12 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
 		return this.wrappedTableMetaData.getTableName();
 	}
 
+	public String toString()
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append(getClass().getName()).append("[");
+		sb.append("wrappedTableMetaData=").append(this.wrappedTableMetaData);
+		sb.append("]");
+		return sb.toString();
+	}
 }
