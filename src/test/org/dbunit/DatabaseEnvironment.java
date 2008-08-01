@@ -24,11 +24,8 @@ package org.dbunit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Properties;
 
-import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
@@ -91,13 +88,7 @@ public class DatabaseEnvironment
     {
         if (_connection == null)
         {
-            String name = _profile.getDriverClass();
-            Class.forName(name);
-            Connection connection = DriverManager.getConnection(
-                    _profile.getConnectionUrl(), _profile.getUser(),
-                    _profile.getPassword());
-            _connection = new DatabaseConnection(connection,
-                    _profile.getSchema());
+        	_connection = this._databaseTester.getConnection();
         }
         return _connection;
     }

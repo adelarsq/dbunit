@@ -70,18 +70,11 @@ public class PropertiesBasedJdbcDatabaseTester extends JdbcDatabaseTester
 
    public PropertiesBasedJdbcDatabaseTester()
    {
-      super( null, null, null, null );
+      super( System.getProperty( DBUNIT_DRIVER_CLASS ), 
+    		 System.getProperty( DBUNIT_CONNECTION_URL ), 
+    		 System.getProperty( DBUNIT_USERNAME ), 
+    		 System.getProperty( DBUNIT_PASSWORD ) );
+      super.setSchema( System.getProperty( DBUNIT_SCHEMA ) );
    }
 
-   protected void initialize() throws Exception
-   {
-        logger.debug("initialize() - start");
-
-      setDriverClass( System.getProperty( DBUNIT_DRIVER_CLASS ) );
-      setConnectionUrl( System.getProperty( DBUNIT_CONNECTION_URL ) );
-      setUsername( System.getProperty( DBUNIT_USERNAME ) );
-      setPassword( System.getProperty( DBUNIT_PASSWORD ) );
-      setSchema( System.getProperty( DBUNIT_SCHEMA ) );
-      super.initialize();
-   }
 }

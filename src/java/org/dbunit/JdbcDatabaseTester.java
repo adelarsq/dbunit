@@ -98,29 +98,11 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
    }
 
    /**
-    * Sets the value of the user's password.
-    */
-   public void setPassword( String password )
-   {
-      this.password = password;
-   }
-
-   /**
-    * Sets the value of the username from the connection.
-    */
-   public void setUsername( String username )
-   {
-        logger.debug("setUsername(username={}) - start", username);
-
-      this.username = username;
-   }
-
-   /**
     * Verifies the configured properties and initializes the driver.<br>
     * This method is called by {@link #getConnection} if the tester has not been
     * initialized yet.
     */
-   protected void initialize() throws Exception
+   private void initialize() throws Exception
    {
         logger.debug("initialize() - start");
 
@@ -129,25 +111,6 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
       initialized = true;
    }
 
-   /**
-    * Sets the value of the connection url.
-    */
-   protected void setConnectionUrl( String connectionUrl )
-   {
-        logger.debug("setConnectionUrl(connectionUrl={}) - start", connectionUrl);
-
-      this.connectionUrl = connectionUrl;
-   }
-
-   /**
-	 * Sets the value of the JDBC driver classname.
-	 */
-	protected void setDriverClass(String driverClass)
-	{
-		logger.debug("setDriverClass(driverClass={}) - start", driverClass);
-		this.driverClass = driverClass;
-	}
-	
     public String toString()
     {
     	StringBuffer sb = new StringBuffer();
