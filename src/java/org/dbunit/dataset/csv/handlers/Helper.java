@@ -24,6 +24,13 @@ package org.dbunit.dataset.csv.handlers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+/**
+ * @author fede
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since Sep 12, 2004 (pre 2.3)
+ */
 public abstract class Helper {
 
     /**

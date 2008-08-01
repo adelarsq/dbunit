@@ -28,6 +28,9 @@ import java.sql.Types;
 
 /**
  * @author Felipe Leme
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.1
  */
 public class H2DataTypeFactoryTest extends AbstractDataTypeFactoryTest
 {

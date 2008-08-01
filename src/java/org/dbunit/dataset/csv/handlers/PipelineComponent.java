@@ -21,6 +21,12 @@
 
 package org.dbunit.dataset.csv.handlers;
 
+/**
+ * @author fede
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since Sep 12, 2004 (pre 2.3)
+ */
 public interface PipelineComponent extends Handler {
     void setSuccessor(PipelineComponent successor);
     void accept(char c);

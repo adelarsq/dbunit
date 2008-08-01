@@ -15,7 +15,14 @@
 
 package org.dbunit.util.concurrent;
 
-/** A standard linked list node used in various queue classes **/
+/** 
+ * A standard linked list node used in various queue classes
+ * 
+ * @author Doug Lea
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since ? (pre 2.1)
+ */
 public class LinkedNode { 
   public Object value;
   public LinkedNode next;

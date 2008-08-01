@@ -26,7 +26,8 @@ import junit.framework.TestCase;
 
 /**
  * @author gommma
- * @version $Revision: $
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since 2.3.0
  */
 public class QualifiedTableNameTest extends TestCase 

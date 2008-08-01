@@ -1,8 +1,3 @@
-package org.dbunit.util.xml;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -56,6 +51,10 @@ import org.slf4j.LoggerFactory;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org />.
  */
+package org.dbunit.util.xml;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -69,7 +68,9 @@ import java.util.Stack;
  *
  * @author <a href="mailto:bayard@apache.org">Henri Yandell</a>
  * @author <a href="mailto:pete@fingertipsoft.com">Peter Cassetta</a>
- * @version 1.0
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0
  */
 public class XmlWriter
 {

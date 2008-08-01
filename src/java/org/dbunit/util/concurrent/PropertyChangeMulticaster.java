@@ -70,8 +70,12 @@ import java.util.HashMap;
  * }
  * </pre>   
  * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>]
- **/
-
+ * 
+ * @author Doug Lea
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since ? (pre 2.1)
+ */
 public class PropertyChangeMulticaster implements Serializable {
 
     /**

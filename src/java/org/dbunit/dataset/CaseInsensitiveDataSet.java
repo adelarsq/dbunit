@@ -32,8 +32,10 @@ import org.dbunit.database.AmbiguousTableNameException;
  * allows using them in situation where case sensitiveness is not desirable.
  *
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @deprecated All IDataSet implementations are case insensitive since DbUnit 1.5
+ * @since 1.0
  */
 public class CaseInsensitiveDataSet extends AbstractDataSet
 {

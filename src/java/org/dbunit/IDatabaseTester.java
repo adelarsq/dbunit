@@ -29,7 +29,10 @@ import org.dbunit.operation.DatabaseOperation;
  * for adding DBUnit features as composition on existing test cases (instead of
  * extending DBTestCase directly).
  *
- * @author Andres Almiray <aalmiray@users.sourceforge.net>
+ * @author Andres Almiray (aalmiray@users.sourceforge.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0
  */
 public interface IDatabaseTester
 {

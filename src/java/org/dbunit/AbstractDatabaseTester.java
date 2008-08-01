@@ -32,7 +32,10 @@ import org.slf4j.LoggerFactory;
  * Basic implementation of IDatabaseTester.<br>
  * Implementations of IDatabaseTester may use this class as a starting point.
  *
- * @author Andres Almiray <aalmiray@users.sourceforge.net>
+ * @author Andres Almiray (aalmiray@users.sourceforge.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0
  */
 public abstract class AbstractDatabaseTester implements IDatabaseTester
 {

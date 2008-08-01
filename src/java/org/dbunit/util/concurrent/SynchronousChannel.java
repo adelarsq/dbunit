@@ -34,9 +34,14 @@ import org.slf4j.LoggerFactory;
  * <p>Read the
  * <a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html">introduction to this package</a> 
  * for more details.
+ * 
+ * @author Doug Lea
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since ? (pre 2.1)
  * @see <a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/Rendezvous.html">Rendezvous</a>
  * @see <a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/CyclicBarrier.html">CyclicBarrier</a>
-**/
+ */
 public class SynchronousChannel implements BoundedChannel {
 
     /**

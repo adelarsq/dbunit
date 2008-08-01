@@ -45,9 +45,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Container for the metadata for one database table. The metadata is initialized
+ * using a {@link IDatabaseConnection}.
+ * 
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Mar 8, 2002
+ * @see ITableMetaData
  */
 public class DatabaseTableMetaData extends AbstractTableMetaData
 {

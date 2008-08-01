@@ -29,11 +29,14 @@ import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.ext.h2.H2DataTypeFactory;
 
 /**
- * Specialized factory that recognizes Hsqldb data types.
+ * Specialized factory that recognizes HSQLDB data types.
  * TODO: this class is pretty much the same as {@link H2DataTypeFactory}, so they should derive from a common
  * superclass - see issue 1897620
  *
  * @author Klas Axell
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0
  */
 public class HsqldbDataTypeFactory extends DefaultDataTypeFactory
 {

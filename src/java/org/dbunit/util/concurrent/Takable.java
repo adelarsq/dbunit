@@ -21,11 +21,15 @@ package org.dbunit.util.concurrent;
  * will disallow put operations.
  * <p>
  * Full method descriptions appear in the Channel interface.
- * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>]
+ * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>]</p>
+ * 
+ * @author Doug Lea
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since ? (pre 2.1)
  * @see Channel
  * @see Puttable
-**/
-
+ */
 public interface Takable {
 
   /** 

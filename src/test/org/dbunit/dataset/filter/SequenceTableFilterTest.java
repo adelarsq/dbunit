@@ -29,8 +29,9 @@ import java.util.List;
 
 /**
  * @author Manuel Laflamme
- * @since Mar 8, 2003
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0
  */
 public class SequenceTableFilterTest extends AbstractTableFilterTest
 {

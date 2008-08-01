@@ -27,9 +27,10 @@ import org.slf4j.LoggerFactory;
 import org.dbunit.dataset.csv.IllegalInputCharacterException;
 
 /**
- * author: fede
- * 4-set-2003 10.20.45
- * $Revision$
+ * @author fede
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since Sep 12, 2004 (pre 2.3)
  */
 public class EnforceHandler extends AbstractPipelineComponent {
 

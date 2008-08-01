@@ -251,12 +251,14 @@ package org.dbunit.util.concurrent;
  * For example, you can use an ObservableSync
  * (perhaps as part of a LayeredSync) in order to obtain callbacks
  * before and after each method invocation for a given class.
- * <p>
-
- * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>]
-**/
-
-
+ * 
+ * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>]</p>
+ * 
+ * @author Doug Lea
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since ? (pre 2.1)
+ */
 public interface Sync {
 
   /** 

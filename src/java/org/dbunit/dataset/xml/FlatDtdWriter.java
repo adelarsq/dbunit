@@ -31,8 +31,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Jun 13, 2003
- * @version $Revision$
  */
 public class FlatDtdWriter //implements IDataSetConsumer
 {
@@ -112,6 +113,12 @@ public class FlatDtdWriter //implements IDataSetConsumer
         printOut.flush();
     }
 
+    /**
+     * @author Manuel Laflamme
+     * @author Last changed by: $Author$
+     * @version $Revision$ $Date$
+     * @since Jun 13, 2003
+     */
     public static abstract class ContentModel
     {
         private final String _name;
@@ -130,6 +137,13 @@ public class FlatDtdWriter //implements IDataSetConsumer
                 int tableIndex, int tableCount);
     }
 
+    
+    /**
+     * @author Manuel Laflamme
+     * @author Last changed by: $Author$
+     * @version $Revision$ $Date$
+     * @since Jun 13, 2003
+     */
     public static class SequenceModel extends ContentModel
     {
 
@@ -163,6 +177,12 @@ public class FlatDtdWriter //implements IDataSetConsumer
         }
     }
 
+    /**
+     * @author Manuel Laflamme
+     * @author Last changed by: $Author$
+     * @version $Revision$ $Date$
+     * @since Jun 13, 2003
+     */
     public static class ChoiceModel extends ContentModel
     {
 

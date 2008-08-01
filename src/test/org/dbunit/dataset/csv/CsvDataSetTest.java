@@ -36,7 +36,7 @@ import org.dbunit.dataset.ITable;
 /**
  * @author Lenny Marks (lenny@aps.org)
  * @version $Revision$
- * @since Sep 12, 2004
+ * @since Sep 12, 2004 (pre 2.3)
  */
 public class CsvDataSetTest extends TestCase {
 	protected static final File DATASET_DIR = new File("src/csv/orders");

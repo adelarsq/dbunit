@@ -32,7 +32,8 @@ import java.sql.DatabaseMetaData;
  * Represents a table column.
  *
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Feb 17, 2002
  */
 public class Column
@@ -206,6 +207,15 @@ public class Column
         return result;
     }
 
+    /**
+     * Specifies nullable usage.
+     * 
+	 * @author Manuel Laflamme
+	 * @author Last changed by: $Author$
+	 * @version $Revision$ $Date$
+	 * @since Feb 17, 2002
+	 * @see Column
+     */
     public static class Nullable
     {
 

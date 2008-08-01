@@ -30,12 +30,13 @@ import java.util.List;
 
 /**
  * This class provides a skeletal implementation of the {@link ITableFilter}
- * interface to minimize the effort required to implement a filter. Subsclasses
+ * interface to minimize the effort required to implement a filter. Subclasses
  * are only required to implement the {@link #isValidName} method.
  *
  * @author Manuel Laflamme
- * @since Mar 8, 2003
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0
  */
 public abstract class AbstractTableFilter implements ITableFilter
 {

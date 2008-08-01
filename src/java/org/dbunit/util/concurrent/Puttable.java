@@ -22,9 +22,15 @@ package org.dbunit.util.concurrent;
  * <p>
  * Full method descriptions appear in the Channel interface.
  * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>]
+ * 
+ * @author Doug Lea
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since ? (pre 2.1)
+ * 
  * @see Channel
  * @see Takable
-**/
+ */
 
 public interface Puttable {
 

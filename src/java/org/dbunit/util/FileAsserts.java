@@ -30,6 +30,12 @@ import junit.framework.Assert;
 
 import java.io.*;
 
+/**
+ * @author Dale E Martin
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since ? (pre 2.2)
+ */
 public class FileAsserts
 {
 

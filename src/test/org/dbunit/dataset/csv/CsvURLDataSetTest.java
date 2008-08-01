@@ -35,7 +35,7 @@ import org.dbunit.dataset.ITable;
  * @author Lenny Marks (lenny@aps.org)
  * @author dIon gillard (diongillard@users.sourceforge.net)
  * @version $Revision$
- * @since Sep 12, 2004
+ * @since 2.1.0
  */
 public class CsvURLDataSetTest extends TestCase {
     

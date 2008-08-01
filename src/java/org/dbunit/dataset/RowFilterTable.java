@@ -1,3 +1,23 @@
+/*
+ *
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
 package org.dbunit.dataset;
 
 import java.util.ArrayList;
@@ -13,7 +33,10 @@ import org.slf4j.LoggerFactory;
  * Implemented as a decorator for {@link ITable}.
  * 
  * See dbunit feature request at <a href="https://sourceforge.net/tracker/index.php?func=detail&aid=1959771&group_id=47439&atid=449494">#1959771</a>
+ * 
  * @author gommma
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since 2.3.0
  */
 public class RowFilterTable implements ITable, IRowValueProvider {
@@ -61,7 +84,7 @@ public class RowFilterTable implements ITable, IRowValueProvider {
 		// all values of the original table and that might take time and memory leaks.
 		// So, this mapping mechanism is a candidate for improvement: another alternative
 		// would be to calculate the mapping on the fly, as getValue() is called (and in
-		// this case, getRowCount() would be simply the sise of allowedPKs)
+		// this case, getRowCount() would be simply the size of allowedPKs)
 		this.filteredRowIndexes = setRows(rowFilter);
 	}
 

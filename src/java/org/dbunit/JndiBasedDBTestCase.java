@@ -28,7 +28,10 @@ import java.util.Properties;
 /**
  * TestCase that uses a JndiDatabaseTester.
  *
- * @author Andres Almiray <aalmiray@users.sourceforge.net>
+ * @author Andres Almiray (aalmiray@users.sourceforge.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0
  */
 public abstract class JndiBasedDBTestCase extends DBTestCase
 {

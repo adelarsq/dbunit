@@ -22,9 +22,10 @@
 package org.dbunit.dataset.csv.handlers;
 
 /**
- * author: fede
- * 1-ago-2003 14.14.15
- * $Revision$
+ * @author fede
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since Sep 12, 2004 (pre 2.3)
  */
 public class LineEndHandler {
     private LineEndHandler() {

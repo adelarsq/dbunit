@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
 /**
  * DatabaseTester that uses JDBC's Driver Manager to create connections.<br>
  *
- * @author Andres Almiray <aalmiray@users.sourceforge.net>
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Andres Almiray (aalmiray@users.sourceforge.net)
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since 2.2
  */

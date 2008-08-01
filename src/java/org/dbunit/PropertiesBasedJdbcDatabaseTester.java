@@ -41,8 +41,11 @@ import org.slf4j.LoggerFactory;
  *             "myschema" );
  * </xmp>
  *
- * @author Andres Almiray <aalmiray@users.sourceforge.net>
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Andres Almiray(aalmiray@users.sourceforge.net)
+ * @author Felipe Leme (dbunit@felipeal.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0
  */
 public class PropertiesBasedJdbcDatabaseTester extends JdbcDatabaseTester
 {

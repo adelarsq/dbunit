@@ -23,8 +23,12 @@ import org.slf4j.LoggerFactory;
  * Efficient array-based bounded buffer class.
  * Adapted from CPJ, chapter 8, which describes design.
  * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>] <p>
- **/
-
+ * 
+ * @author Doug Lea
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since ? (pre 2.1)
+ */
 public class BoundedBuffer implements BoundedChannel {
 
     /**

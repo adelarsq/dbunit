@@ -36,8 +36,9 @@ import org.dbunit.dataset.DataSetException;
  * 3) Enable the qualified table name support (see How-to documentation).
 
  * @author Manuel Laflamme
- * @version 1.0
- * @since May 1, 2002
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0  May 1, 2002
  */
 public class AmbiguousTableNameException extends DataSetException
 {

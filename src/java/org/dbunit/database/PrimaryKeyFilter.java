@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2005, DbUnit.org
+ * Copyright (C)2002-2005, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package org.dbunit.database;
 
 import java.sql.PreparedStatement;
@@ -51,8 +50,9 @@ import org.dbunit.util.SQLHelper;
  * (and hence allowed) because of dependencies with the allowed rows.<br>
  * <strong>NOTE:</strong> multi-column primary keys are not supported at the moment.
  * TODO: test cases
- * @author Felipe Leme <dbunit@felipeal.net>
- * @version $Revision$
+ * @author Felipe Leme (dbunit@felipeal.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Sep 9, 2005
  */
 public class PrimaryKeyFilter extends AbstractTableFilter {

@@ -27,8 +27,10 @@ import org.dbunit.database.DatabaseConnection;
 import java.sql.Connection;
 
 /**
- *
  * @author Klas Axell
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0
  */
 public class HsqldbConnection extends DatabaseConnection
 {

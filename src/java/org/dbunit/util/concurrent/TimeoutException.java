@@ -20,8 +20,12 @@ package org.dbunit.util.concurrent;
  * as a form (subclass) of InterruptedException. This both
  * simplifies handling, and conceptually reflects the fact that
  * timed-out operations are artificially interrupted by timers.
- **/
-
+ * 
+ * @author Doug Lea
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since ? (pre 2.1)
+ */
 public class TimeoutException extends InterruptedException {
 
   /** 

@@ -45,6 +45,9 @@ import org.dbunit.dataset.stream.IDataSetProducer;
  *  
  * @author Dion Gillard
  * @author Federico Spinazzi
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since Sep 12, 2004 (pre 2.3)
  */
 public class CsvURLProducer implements IDataSetProducer {
 
@@ -69,7 +72,7 @@ public class CsvURLProducer implements IDataSetProducer {
     private String tableList;
     
     /**
-     * Create a Csv Data Set Producer which uses the base URL to retrieve 
+     * Create a CSV Data Set Producer which uses the base URL to retrieve 
      * a list of tables and the data.
      * @param base the URL where the tableList and data can be found. 
      * @param tableList the relative location of the list of tables.

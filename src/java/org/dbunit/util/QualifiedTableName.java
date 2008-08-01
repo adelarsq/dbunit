@@ -27,7 +27,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Utility to parse a fully qualified table name into its components <i>schema</i> and <i>table</i>.
  * @author gommma
- * @version $Revision: $
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since 2.3.0
  */
 public class QualifiedTableName

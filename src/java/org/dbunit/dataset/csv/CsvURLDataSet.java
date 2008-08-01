@@ -32,6 +32,9 @@ import org.dbunit.dataset.DataSetException;
  *
  * @author Lenny Marks (lenny@aps.org)
  * @author Dion Gillard (diongillard@users.sourceforge.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.1.0
  */
 public class CsvURLDataSet extends CachedDataSet {
 

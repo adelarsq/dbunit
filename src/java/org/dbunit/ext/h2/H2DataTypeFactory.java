@@ -32,7 +32,9 @@ import org.slf4j.LoggerFactory;
  * so they should derive from a common superclass - see issue 1897620
  *
  * @author Felipe Leme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.1
  */
 public class H2DataTypeFactory extends DefaultDataTypeFactory
 {

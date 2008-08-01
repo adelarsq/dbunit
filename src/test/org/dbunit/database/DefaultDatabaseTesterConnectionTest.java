@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
  *
  */
 
@@ -28,7 +27,10 @@ import org.dbunit.PropertiesBasedJdbcDatabaseTester;
 import org.dbunit.IDatabaseTester;
 
 /**
- * @author Andres Almiray <aalmiray@users.sourceforge.net>
+ * @author Andres Almiray (aalmiray@users.sourceforge.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0
  */
 public class DefaultDatabaseTesterConnectionTest extends AbstractDatabaseTesterConnectionTest
 {

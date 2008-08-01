@@ -22,8 +22,13 @@ package org.dbunit.util.concurrent;
  * construction, or dynamically adjustable capacities.
  * @see DefaultChannelCapacity
  * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>] <p>
- **/
-
+ * 
+ * @author Doug Lea
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since ? (pre 2.1)
+ * 
+ */
 public interface BoundedChannel extends Channel {
   /** 
    * Return the maximum number of elements that can be held.

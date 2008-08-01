@@ -33,6 +33,12 @@ import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author fede
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since Sep 12, 2004 (pre 2.3)
+ */
 public class CsvParserImpl implements CsvParser {
 
     /**

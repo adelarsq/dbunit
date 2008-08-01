@@ -25,6 +25,12 @@ import org.slf4j.LoggerFactory;
 
 import org.dbunit.dataset.csv.IllegalInputCharacterException;
 
+/**
+ * @author fede
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since Sep 12, 2004 (pre 2.3)
+ */
 public abstract class AbstractPipelineComponent implements PipelineComponent {
 
     /**

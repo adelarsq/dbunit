@@ -29,6 +29,9 @@ import java.sql.Connection;
 /**
  *
  * @author Felipe Leme
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.1
  */
 public class H2Connection extends DatabaseConnection
 {

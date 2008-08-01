@@ -28,8 +28,11 @@ import javax.sql.DataSource;
 /**
  * TestCase that uses a DataSourceDatabaseTester.
  *
- * @author Andres Almiray <aalmiray@users.sourceforge.net>
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Andres Almiray (aalmiray@users.sourceforge.net)
+ * @author Felipe Leme (dbunit@felipeal.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0
  */
 public abstract class DataSourceBasedDBTestCase extends DBTestCase
 {
