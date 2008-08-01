@@ -21,15 +21,19 @@
 
 package org.dbunit.dataset.xml;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
-
-import java.io.*;
 
 /**
  *     Reads and writes original XML dataset document. This format
@@ -47,8 +51,10 @@ import java.io.*;
  * &lt;!ELEMENT value (#PCDATA)&gt;
  * &lt;!ELEMENT null EMPTY&gt;
  *</pre>
+ *
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Feb 17, 2002
  */
 public class XmlDataSet extends CachedDataSet

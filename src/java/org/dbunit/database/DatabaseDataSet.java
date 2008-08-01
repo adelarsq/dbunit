@@ -21,25 +21,36 @@
 
 package org.dbunit.database;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.dataset.*;
-import org.dbunit.util.QualifiedTableName;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.dbunit.dataset.AbstractDataSet;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoSuchTableException;
+import org.dbunit.util.QualifiedTableName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * provides access
-      to a database instance as a dataset.
-
+ * Provides access to a database instance as a {@link IDataSet}.
+ * 
  * @author Manuel Laflamme
- * @version $Revision$
- * @since Feb 17, 2002
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0 (Feb 17, 2002)
  */
 public class DatabaseDataSet extends AbstractDataSet
 {

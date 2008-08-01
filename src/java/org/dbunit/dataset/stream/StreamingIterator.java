@@ -20,20 +20,25 @@
  */
 package org.dbunit.dataset.stream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.dbunit.DatabaseUnitRuntimeException;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.AbstractTable;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.RowOutOfBoundsException;
 import org.dbunit.util.concurrent.BoundedBuffer;
 import org.dbunit.util.concurrent.Channel;
 import org.dbunit.util.concurrent.Puttable;
 import org.dbunit.util.concurrent.Takable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Apr 17, 2003
- * @version $Revision$
  */
 public class StreamingIterator implements ITableIterator
 {

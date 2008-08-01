@@ -20,17 +20,21 @@
  */
 package org.dbunit.dataset.stream;
 
+import org.dbunit.dataset.AbstractDataSet;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.dbunit.dataset.*;
-
 /**
- * Dataset that consumes producer asyncronously.
+ * Dataset that consumes producer asynchronously.
  *
  * @author Manuel Laflamme
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Apr 18, 2003
- * @version $Revision$
  */
 public class StreamingDataSet extends AbstractDataSet
 {

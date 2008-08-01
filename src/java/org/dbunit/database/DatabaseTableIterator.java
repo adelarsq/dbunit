@@ -20,15 +20,19 @@
  */
 package org.dbunit.database;
 
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.dbunit.dataset.*;
-
 /**
  * @author Manuel Laflamme
- * @since Apr 12, 2003
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since ? (Apr 12, 2003)
  */
 public class DatabaseTableIterator implements ITableIterator
 {

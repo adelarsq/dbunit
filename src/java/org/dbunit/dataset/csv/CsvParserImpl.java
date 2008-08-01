@@ -21,17 +21,29 @@
 
 package org.dbunit.dataset.csv;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.dataset.csv.handlers.*;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.Reader;
 import java.net.URL;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.dbunit.dataset.csv.handlers.EscapeHandler;
+import org.dbunit.dataset.csv.handlers.IsAlnumHandler;
+import org.dbunit.dataset.csv.handlers.Pipeline;
+import org.dbunit.dataset.csv.handlers.PipelineException;
+import org.dbunit.dataset.csv.handlers.QuoteHandler;
+import org.dbunit.dataset.csv.handlers.SeparatorHandler;
+import org.dbunit.dataset.csv.handlers.TransparentHandler;
+import org.dbunit.dataset.csv.handlers.WhitespacesHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author fede

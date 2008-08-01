@@ -20,6 +20,7 @@
 	</licenses>
 	<properties>
 		<compileSource>1.4</compileSource>
+		<checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
 	</properties>
 	<scm> 
 		<connection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</connection>

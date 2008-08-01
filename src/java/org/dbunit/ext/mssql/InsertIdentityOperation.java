@@ -20,22 +20,27 @@
  */
 package org.dbunit.ext.mssql;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.DatabaseConfig;
-import org.dbunit.dataset.*;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.operation.AbstractOperation;
 import org.dbunit.operation.CompositeOperation;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.ExclusiveTransactionException;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class disable the MS SQL Server automatic identifier generation for
@@ -52,7 +57,8 @@ import java.sql.Statement;
  *
  * @author Manuel Laflamme
  * @author Eric Pugh
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Apr 9, 2002
  */
 public class InsertIdentityOperation extends AbstractOperation

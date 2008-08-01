@@ -1,9 +1,41 @@
+/*
+ *
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2004, DbUnit.org
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
 package org.dbunit.util;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import junit.framework.Assert;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
+/**
+ * Simple utility to compare file or stream data with each other based on JUnit.
+ * 
+ * <p>
  * From  "Dale E Martin" <dmartin@c..>
  * Date  Thursday, March 14, 2002 2:42 pm
  * To  junit@yahoogroups.com
@@ -23,14 +55,9 @@ import org.slf4j.LoggerFactory;
  *
  * Later,
  *       Dale
- *
- */
-
-import junit.framework.Assert;
-
-import java.io.*;
-
-/**
+ * </p>
+ * 
+ * 
  * @author Dale E Martin
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
@@ -49,8 +76,9 @@ public class FileAsserts
             BufferedReader actualData)
             throws IOException
     {
-        logger.debug("processOneLine(lineNumber=" + lineNumber + ", expectedData=" + expectedData + ", actualData="
-                + actualData + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("processOneLine(lineNumber={}, expectedData={}, actualData={}) - start", 
+    				new Object[] {new Integer(lineNumber), expectedData, actualData} );
 
         String problem = null;
         String expectedLine = expectedData.readLine();
@@ -92,7 +120,7 @@ public class FileAsserts
     public static void assertEquals(BufferedReader expected,
             BufferedReader actual) throws Exception
     {
-        logger.debug("assertEquals(expected=" + expected + ", actual=" + actual + ") - start");
+        logger.debug("assertEquals(expected={}, actual={}) - start", expected, actual);
 
         Assert.assertNotNull(expected);
         Assert.assertNotNull(actual);
@@ -122,7 +150,7 @@ public class FileAsserts
     public static void assertEquals(InputStream expected, File actual)
             throws Exception
     {
-        logger.debug("assertEquals(expected=" + expected + ", actual=" + actual + ") - start");
+        logger.debug("assertEquals(expected={}, actual={}) - start", expected, actual);
 
         Assert.assertNotNull(expected);
         Assert.assertNotNull(actual);
@@ -139,7 +167,7 @@ public class FileAsserts
 
     public static void assertEquals(File expected, File actual) throws Exception
     {
-        logger.debug("assertEquals(expected=" + expected + ", actual=" + actual + ") - start");
+        logger.debug("assertEquals(expected={}, actual={}) - start", expected, actual);
 
         Assert.assertNotNull(expected);
         Assert.assertNotNull(actual);

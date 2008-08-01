@@ -20,15 +20,19 @@
  */
 package org.dbunit.dataset.filter;
 
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.ITableMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.dbunit.dataset.*;
-
 /**
  * @author Manuel Laflamme
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Apr 6, 2003
- * @version $Revision$
  */
 public class SequenceTableIterator implements ITableIterator
 {

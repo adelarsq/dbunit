@@ -21,13 +21,13 @@
 
 package org.dbunit.dataset.datatype;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.dataset.ITable;
-import org.dbunit.util.Base64;
-
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Blob;
@@ -35,10 +35,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.dbunit.dataset.ITable;
+import org.dbunit.util.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Manuel Laflamme
- * @version $Revision$
- * @since Mar 20, 2002
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0 (Mar 20, 2002)
  */
 public class BytesDataType extends AbstractDataType
 {

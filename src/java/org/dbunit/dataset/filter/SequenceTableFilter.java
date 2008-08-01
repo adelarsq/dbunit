@@ -42,8 +42,9 @@ import org.slf4j.LoggerFactory;
  * the default filter used by the {@link org.dbunit.dataset.FilteredDataSet}.
  *
  * @author Manuel Laflamme
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Mar 7, 2003
- * @version $Revision$
  */
 public class SequenceTableFilter implements ITableFilter
 {

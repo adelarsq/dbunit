@@ -9,6 +9,10 @@ Run "ant style" to check for source code style deviations.
      "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 <module name="Checker">
     <module name="TreeWalker">
+        <module name="AvoidStarImport"/>
+        <module name="IllegalImport"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports"/>
         <module name="JavadocType">
             <property name="scope" value="public"/>
             <property name="authorFormat" value=".*"/>
@@ -20,6 +24,5 @@ Run "ant style" to check for source code style deviations.
                 name="header"
                 value="^/\*\n.*\n.*\n.*Copyright.*\(C\)\d\d\d\d.*DbUnit.org.*"/>
             </module>
-        <!--<module name="AvoidStarImport"/>-->
     </module>
 </module>

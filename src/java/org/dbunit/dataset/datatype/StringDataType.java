@@ -21,17 +21,22 @@
 
 package org.dbunit.dataset.datatype;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.dbunit.dataset.ITable;
 import org.dbunit.util.Base64;
-
-import java.sql.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0
  */
 public class StringDataType extends AbstractDataType
 {

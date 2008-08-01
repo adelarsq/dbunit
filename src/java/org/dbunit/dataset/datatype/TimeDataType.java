@@ -21,17 +21,23 @@
 
 package org.dbunit.dataset.datatype;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Types;
+
+import org.dbunit.dataset.ITable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.dbunit.dataset.ITable;
-
-import java.sql.*;
-
 /**
+ * Data type that maps a SQL {@link Types#TIME} object to a java object.
+ * 
  * @author Manuel Laflamme
- * @version $Revision$
- * @since Feb 19, 2002
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0 (Feb 19, 2002)
  */
 public class TimeDataType extends AbstractDataType
 {
