@@ -37,7 +37,7 @@ import org.dbunit.util.search.SearchException;
  * Extension of the ImportedAndExportedKeysSearchCallback, where each new edge is 
  * added to a PrimaryKeyFilter.
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Sep 9, 2005
  */

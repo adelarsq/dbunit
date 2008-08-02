@@ -26,7 +26,7 @@ import org.dbunit.DatabaseUnitException;
 /**
  * Base class for exceptions during the search.
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 25, 2005
  */

@@ -32,7 +32,7 @@ import org.apache.commons.collections.set.ListOrderedSet;
 /**
  * Helper for collections-related methods.
  * <br>
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Nov 5, 2005
  * 

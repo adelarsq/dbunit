@@ -24,7 +24,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Nov 5, 2005
  */

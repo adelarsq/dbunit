@@ -23,7 +23,7 @@ package org.dbunit.database.search;
 import org.dbunit.database.IDatabaseConnection;
 
 /**  
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 28, 2005
  */

@@ -27,7 +27,7 @@ import java.sql.SQLException;
 import org.dbunit.AbstractHSQLTestCase;
 
 /**
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Nov 5, 2005
  */

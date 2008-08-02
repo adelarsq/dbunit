@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * dependency, i.e, if table A has a FK for a table B, then getNodes(A) will 
  * return B.
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 25, 2005
  */

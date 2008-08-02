@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * Simple utility to compare file or stream data with each other based on JUnit.
  * 
  * <p>
- * From  "Dale E Martin" <dmartin@c..>
+ * From  "Dale E Martin" dmartin@c..
  * Date  Thursday, March 14, 2002 2:42 pm
  * To  junit@yahoogroups.com
  * Subject  [junit] file assert, a starting point

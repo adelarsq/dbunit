@@ -38,7 +38,7 @@ import org.dbunit.util.CollectionsHelper;
  * internal state of the search.<br>
  * <br>
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 25, 2005
  * 

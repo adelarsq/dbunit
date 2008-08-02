@@ -30,7 +30,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * Basic implementation of the IEdge interface.
  * TODO: add test cases (specially for the equals/compare methods)
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 25, 2005
  */

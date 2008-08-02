@@ -36,7 +36,7 @@ import org.dbunit.util.search.DepthFirstSearch;
 import org.dbunit.util.search.ISearchCallback;
 
 /**  
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 28, 2005
  */

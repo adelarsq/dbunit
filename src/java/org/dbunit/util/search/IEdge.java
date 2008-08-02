@@ -27,7 +27,7 @@ package org.dbunit.util.search;
  * (so, typically, the implementations will compare the <code>getTo()</code>
  * node).
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 25, 2005
  */

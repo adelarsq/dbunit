@@ -361,7 +361,7 @@ public class Columns
 		}
 
     	/**
-    	 * @return <true> if there is a difference in the columns given in the constructor
+    	 * @return <code>true</code> if there is a difference in the columns given in the constructor
     	 */
     	public boolean hasDifference()
     	{

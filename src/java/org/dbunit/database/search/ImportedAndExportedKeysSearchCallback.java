@@ -34,7 +34,7 @@ import org.dbunit.util.search.SearchException;
  * foreign key dependency, i.e, if table C has a FK for a table A and table A has 
  * a FK for a table B, then getNodes(A) will return B and C.
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 25, 2005
  */

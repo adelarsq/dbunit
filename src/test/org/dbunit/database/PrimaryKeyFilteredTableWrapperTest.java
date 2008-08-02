@@ -34,7 +34,7 @@ import org.dbunit.dataset.RowOutOfBoundsException;
 import org.dbunit.util.CollectionsHelper;
 
 /**
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Sep 9, 2005
  */

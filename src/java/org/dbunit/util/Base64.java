@@ -555,7 +555,7 @@ public class Base64
 
     /**
      * Attempts to decode Base64 data and deserialize a Java
-     * Object within. Returns <tt>null if there was an error.
+     * Object within. Returns <tt>null</tt> if there was an error.
      *
      * @param encodedObject The Base64 data to decode
      * @return The decoded and deserialized object

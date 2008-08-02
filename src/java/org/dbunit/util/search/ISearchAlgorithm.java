@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * Interface representing an algorithm that searchs a graph.
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 25, 2005
  * 

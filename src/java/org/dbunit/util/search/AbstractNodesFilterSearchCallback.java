@@ -41,8 +41,9 @@ import org.slf4j.LoggerFactory;
  * <li><code>DENY_MODE</code> is set when <code>setDeniedNodes()</code> is called
  * and it means <code>searchNode()</code> will return true only if the node is
  * not contained on the Set (or array) passed to <code>setDeniedNodes()</code>
+ * </ul>
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 25, 2005
  * 

@@ -24,7 +24,7 @@ package org.dbunit.util.search;
 import java.util.SortedSet;
 
 /**
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 25, 2005
  */

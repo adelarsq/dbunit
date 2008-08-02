@@ -37,7 +37,7 @@ import org.dbunit.dataset.RowOutOfBoundsException;
  * of the original table will be available - the subset is defined by the set of 
  * primary keys that are allowed in the new table.
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Sep 9, 2005
  */

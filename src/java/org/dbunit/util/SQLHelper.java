@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * Helper for SQL-related stuff.
  * <br>
  * TODO: testcases
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Nov 5, 2005
  * 

@@ -42,7 +42,7 @@ import org.dbunit.util.search.SearchException;
  * Helper for the graph-search based classes used to calculate dependency
  * among tables.  
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 26, 2005
  */

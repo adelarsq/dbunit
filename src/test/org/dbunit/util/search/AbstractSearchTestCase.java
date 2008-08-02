@@ -34,7 +34,7 @@ import org.apache.commons.collections.set.ListOrderedSet;
 import junit.framework.TestCase;
 
 /**
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 25, 2005
  */

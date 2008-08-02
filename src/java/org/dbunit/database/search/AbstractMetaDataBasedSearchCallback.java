@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * Super-class for the ISearchCallback that implements the
  * <code>getEdges()</code> method using the database meta-data.
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 25, 2005
  */

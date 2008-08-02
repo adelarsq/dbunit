@@ -32,7 +32,7 @@ import org.dbunit.util.search.Edge;
  * 
  * <strong>NOTE:</strong> only single-column PKs are supported at this moment
  *  
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Sep 9, 2005
  */

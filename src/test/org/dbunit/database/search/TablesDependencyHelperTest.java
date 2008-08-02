@@ -35,7 +35,7 @@ import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.util.search.SearchException;
 
 /**  
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Aug 28, 2005
  */
