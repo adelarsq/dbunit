@@ -124,18 +124,21 @@ public class DefaultTable extends AbstractTable
         try
         {
             Column[] columns = _metaData.getColumns();
-            if (columns.length > 0)
+            if (columns.length <= 0)
             {
-                for (int i = 0; ; i++)
+            	logger.warn("The table '" + table + "' does not have any columns. Cannot add table rows. This should never happen...");
+            	return;
+            }
+            
+            for (int i = 0; ; i++)
+            {
+                Object[] rowValues = new Object[columns.length];
+                for (int j = 0; j < columns.length; j++)
                 {
-                    Object[] rowValues = new Object[columns.length];
-                    for (int j = 0; j < columns.length; j++)
-                    {
-                        Column column = columns[j];
-                        rowValues[j] = table.getValue(i, column.getColumnName());
-                    }
-                    _rowList.add(rowValues);
+                    Column column = columns[j];
+                    rowValues[j] = table.getValue(i, column.getColumnName());
                 }
+                _rowList.add(rowValues);
             }
         }
         catch(RowOutOfBoundsException e)
