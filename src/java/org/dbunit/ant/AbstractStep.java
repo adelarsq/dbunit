@@ -22,6 +22,8 @@ package org.dbunit.ant;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -171,7 +173,7 @@ public abstract class AbstractStep implements DbUnitTaskStep
             IDataSetProducer producer = null;
             if (format.equalsIgnoreCase(FORMAT_XML))
             {
-                producer = new XmlProducer(new InputSource(src.toURL().toString()));
+                producer = new XmlProducer(getInputSource(src));
             }
             else if (format.equalsIgnoreCase(FORMAT_CSV))
             {
@@ -179,11 +181,11 @@ public abstract class AbstractStep implements DbUnitTaskStep
             }
             else if (format.equalsIgnoreCase(FORMAT_FLAT))
             {
-                producer = new FlatXmlProducer(new InputSource(src.toURL().toString()));
+                producer = new FlatXmlProducer(getInputSource(src));
             }
             else if (format.equalsIgnoreCase(FORMAT_DTD))
             {
-                producer = new FlatDtdProducer(new InputSource(src.toURL().toString()));
+                producer = new FlatDtdProducer(getInputSource(src));
             }
             else if (format.equalsIgnoreCase(FORMAT_XLS))
             {
@@ -206,6 +208,19 @@ public abstract class AbstractStep implements DbUnitTaskStep
         }
     }
     
+	/**
+	 * Creates and returns an {@link InputSource}
+	 * @param file The file for which an {@link InputSource} should be created
+	 * @return The input source for the given file
+	 * @throws MalformedURLException
+	 */
+	public static InputSource getInputSource(File file) throws MalformedURLException
+	{
+		URI uri = file.toURI();
+		InputSource inputSource = new InputSource(uri.toURL().toString());
+		return inputSource;
+	}
+	
 	private QueryDataSet getQueryDataSetForQuerySet
 		(IDatabaseConnection connection, QuerySet querySet) throws SQLException {
         logger.debug("getQueryDataSetForQuerySet(connection={}, querySet={}) - start", connection, querySet);

@@ -84,7 +84,7 @@ public class IsAlnumHandler extends AbstractPipelineComponent {
          */
         private static final Logger logger = LoggerFactory.getLogger(QUOTE.class);
 
-        private boolean add = true;
+//        private boolean add = true;
 
         public void helpWith(char c) {
             logger.debug("helpWith(c=" + c + ") - start");

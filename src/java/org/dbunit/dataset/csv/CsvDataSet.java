@@ -37,11 +37,11 @@ import org.dbunit.dataset.DataSetException;
 public class CsvDataSet extends CachedDataSet {
 	public static final String TABLE_ORDERING_FILE = "table-ordering.txt";
 	
-	private File dir;
+//	private File dir;
 	
     public CsvDataSet(File dir) throws DataSetException {
         super(new CsvProducer(dir));
-        this.dir = dir;
+//        this.dir = dir;
     }
     
 }

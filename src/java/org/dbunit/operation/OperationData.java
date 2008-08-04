@@ -21,8 +21,7 @@
 
 package org.dbunit.operation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Arrays;
 
 import org.dbunit.dataset.Column;
 
@@ -34,14 +33,13 @@ import org.dbunit.dataset.Column;
 public class OperationData
 {
 
-    /**
-     * Logger for this class
-     */
-    private static final Logger logger = LoggerFactory.getLogger(OperationData.class);
-
     private final String _sql;
     private final Column[] _columns;
 
+    /**
+     * @param sql
+     * @param columns
+     */
     public OperationData(String sql, Column[] columns)
     {
         _sql = sql;
@@ -57,6 +55,17 @@ public class OperationData
     {
         return _columns;
     }
+    
+    public String toString()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(getClass().getName()).append("[");
+    	sb.append("_sql=").append(_sql);
+    	sb.append(", _columns=").append(_columns==null ? "null" : Arrays.asList(_columns).toString());
+    	sb.append("]");
+    	return sb.toString();
+    }
+    
 }
 
 
