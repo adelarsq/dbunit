@@ -37,7 +37,8 @@ import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Feb 2, 2004
  */
 public class OracleBlobDataType extends BlobDataType
@@ -80,7 +81,7 @@ public class OracleBlobDataType extends BlobDataType
         Object tempBlob = null;
         try
         {
-            Class aBlobClass = Class.forName("oracle.sql.BLOB");
+            Class aBlobClass = super.loadClass("oracle.sql.BLOB", connection);
 
             // Create new temporary Blob
             Method createTemporaryMethod = aBlobClass.getMethod("createTemporary",

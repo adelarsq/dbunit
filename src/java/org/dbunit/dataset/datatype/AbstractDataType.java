@@ -21,12 +21,13 @@
 
 package org.dbunit.dataset.datatype;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract data type implementation that provides generic methods that are
@@ -34,7 +35,8 @@ import java.sql.SQLException;
  * generic implementation of the {@link #compare(Object, Object)} method. 
  * 
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Mar 19, 2002
  */
 public abstract class AbstractDataType extends DataType
@@ -162,13 +164,25 @@ public abstract class AbstractDataType extends DataType
         statement.setObject(column, typeCast(value), getSqlType());
     }
 
+    /**
+     * @param clazz The fully qualified name of the class to be loaded
+     * @param connection The JDBC connection needed to load the given class
+     * @return The loaded class
+     * @throws ClassNotFoundException
+     */
+    protected final Class loadClass(String clazz, Connection connection) throws ClassNotFoundException
+    {
+        ClassLoader connectionClassLoader = connection.getClass().getClassLoader();
+        Class loadedClass = connectionClassLoader.loadClass(clazz);
+        return loadedClass;
+    }
+    
+    
     ////////////////////////////////////////////////////////////////////////////
     // Object class
 
     public String toString()
     {
-        logger.debug("toString() - start");
-
         return _name;
     }
 }

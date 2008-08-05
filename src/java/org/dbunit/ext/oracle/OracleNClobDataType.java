@@ -33,8 +33,9 @@ import org.dbunit.dataset.datatype.TypeCastException;
 /**
  * NCLOB handler
  * @author cris.daniluk
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since May 3, 2005
- * @version $Revision$
  */
 public class OracleNClobDataType extends OracleClobDataType {
 
@@ -54,7 +55,7 @@ public class OracleNClobDataType extends OracleClobDataType {
 
         try 
         {
-            Class statementClass = Class.forName("oracle.jdbc.OraclePreparedStatement");
+            Class statementClass = super.loadClass("oracle.jdbc.OraclePreparedStatement", statement.getConnection());
             Method formOfUse = statementClass.getMethod("setFormOfUse", new Class[] { Integer.TYPE, Short.TYPE });
             formOfUse.invoke(statement, new Object[] { new Integer(column), FORM_NCHAR });
         }

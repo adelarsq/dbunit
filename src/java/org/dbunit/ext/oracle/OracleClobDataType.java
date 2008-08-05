@@ -37,7 +37,8 @@ import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Jan 12, 2004
  */
 public class OracleClobDataType extends ClobDataType
@@ -80,8 +81,8 @@ public class OracleClobDataType extends ClobDataType
         Object tempClob = null;
         try
         {
-            Class aClobClass = Class.forName("oracle.sql.CLOB");
-
+            Class aClobClass = super.loadClass("oracle.sql.CLOB", connection);
+            
             // Create new temporary CLOB
             Method createTemporaryMethod = aClobClass.getMethod("createTemporary",
                     new Class[]{Connection.class, Boolean.TYPE, Integer.TYPE});

@@ -32,7 +32,8 @@ import java.sql.Clob;
 
 /**
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Jan 12, 2004
  */
 public class ClobDataType extends StringDataType
