@@ -28,7 +28,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Decorator that replace configured values from the decorated table
+ * Decorator that replaces configured values from the decorated table
  * with replacement values.
  *
  * @author Manuel Laflamme
@@ -76,7 +76,11 @@ public class ReplacementTable implements ITable
      * 
      * @param strictReplacement true if replacement should be strict
      */
-    public void setStrictReplacement(boolean strictReplacement) {
+    public void setStrictReplacement(boolean strictReplacement) 
+    {
+    	if(logger.isDebugEnabled())
+    		logger.debug("setStrictReplacement(strictReplacement={}) - start", new Boolean(strictReplacement));
+    	
         this._strictReplacement = strictReplacement;
     }
     
@@ -260,5 +264,20 @@ public class ReplacementTable implements ITable
             return replaceDelimitedSubstrings((String)value);
         }
         return replaceSubstrings((String)value);
+    }
+    
+    
+    public String toString()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(getClass().getName()).append("[");
+    	sb.append("_strictReplacement=").append(_strictReplacement);
+    	sb.append(", _table=").append(_table);
+    	sb.append(", _objectMap=").append(_objectMap);
+    	sb.append(", _substringMap=").append(_substringMap);
+    	sb.append(", _startDelim=").append(_startDelim);
+    	sb.append(", _endDelim=").append(_endDelim);
+    	sb.append("]");
+    	return sb.toString();
     }
 }
