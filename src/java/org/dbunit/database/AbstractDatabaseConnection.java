@@ -30,6 +30,7 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.util.QualifiedTableName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,7 +99,11 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
         StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("select count(*) from ");
-        sqlBuffer.append(tableName);
+
+        //add table name and schema (schema only if available)
+        QualifiedTableName qualifiedTableName = new QualifiedTableName(tableName, this.getSchema());
+        String qualifiedName = qualifiedTableName.getQualifiedName();
+        sqlBuffer.append(qualifiedName);
         if (whereClause != null)
         {
             sqlBuffer.append(" ");

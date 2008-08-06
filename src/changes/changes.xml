@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-    <release version="2.3.0-SNAPSHOT" date="Jun 23, 2008" description="Features added">
+    <release version="2.3.0-SNAPSHOT" date="Jun 23, 2008" description="Features added, Bugfixes, Performance improvements in assertions">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>
       <action dev="rlogiacco" type="fix" issue="1981449" due-to="gommma">Patch for Bug #1421590 "Problem in data import if all the columns are not populated"</action>
       <action dev="slecallonnec" type="fix" issue="1975499" due-to="gommma">NoSuchColumnException now thrown when column name does not exist.</action>
@@ -31,17 +31,18 @@
       <action dev="gommma" type="fix" issue="2014884" due-to="pasha_z">getAllDependentTables ORA-01000: maximum open cursors exceed</action>
       <action dev="gommma" type="fix" issue="1746373" due-to="byte-error">getAllDependentTables didn't work with full qualified names </action>
       <action dev="gommma" type="add">Added constructors to NoSuchColumnException taking table name and column name as arguments - set old constructors to deprecated</action>
-      <action dev="gommma" type="fix" issue="1789402" due_to="jondi">Exception in DTD generation - Implies API behaviour change. DatabaseTableMetaData.getColumns() does not throw a NoColumnsFoundExcepion anymore but returns an empty Column[] when a table does not have any dbunit-supported columns</action>
+      <action dev="gommma" type="fix" issue="1789402" due-to="jondi">Exception in DTD generation - Implies API behaviour change. DatabaseTableMetaData.getColumns() does not throw a NoColumnsFoundExcepion anymore but returns an empty Column[] when a table does not have any dbunit-supported columns</action>
       <action dev="gommma" type="add">Assertion.equals provides more information than just the column count when a column mismatch between expected and result tables was found. All columns are reported so that the user can see immediately which columns are missing</action>
       <action dev="gommma" type="add">Write validation message when the configured IDataTypeFactory probably does not match to the current database system. The validation implicitly takes place when AbstractTableMetaData.getDataTypeFactory() is invoked.</action>
       <action dev="gommma" type="add">Maven pom.xml updates: Added ciManagement section, added some plugins for reporting</action>
-      <action dev="gommma" type="fix" issue="1497369" due_to="bascan">Test error: testExportWithQuerySet</action>
-      <action dev="gommma" type="add" issue="2012491" due_to="rpuchkovskiy">Topological sorting of tables when exporting</action>
-      <action dev="gommma" type="fix" issue="2012495" due_to="rpuchkovskiy">Use DataType.BLOB instead of DataType.LONGVARBINARY</action>
-      <action dev="gommma" type="fix" due_to="rpuchkovskiy">DbUnit is only JDK 1.4 compatible and not 1.3 (as claimed until now). Several methods are in use that did not exist in JDK 1.3. To build with JDK 1.4 and maven it is now required to set the environment variable JAVA_1_4_HOME to your JDK 1.4 home directory</action>
+      <action dev="gommma" type="fix" issue="1497369" due-to="bascan">Test error: testExportWithQuerySet</action>
+      <action dev="gommma" type="add" issue="2012491" due-to="rpuchkovskiy">Topological sorting of tables when exporting</action>
+      <action dev="gommma" type="fix" issue="2012495" due-to="rpuchkovskiy">Use DataType.BLOB instead of DataType.LONGVARBINARY</action>
+      <action dev="gommma" type="fix" due-to="rpuchkovskiy">DbUnit is only JDK 1.4 compatible and not 1.3 (as claimed until now). Several methods are in use that did not exist in JDK 1.3. To build with JDK 1.4 and maven it is now required to set the environment variable JAVA_1_4_HOME to your JDK 1.4 home directory</action>
       <action dev="gommma" type="add" issue="2029693">Update apache POI to latest release (2.5.1 -> 3.1)</action>
-      <action dev="gommma" type="fix" issue="2023994" due_to="marney">Simplify use of custom datatype factory for DBTestCase</action>
-      <action dev="gommma" type="fix" issue="1984596" due_to="bustuila">Inserting of clobs fails</action>
+      <action dev="gommma" type="fix" issue="2023994" due-to="marney">Simplify use of custom datatype factory for DBTestCase</action>
+      <action dev="gommma" type="fix" issue="1984596" due-to="bustuila">Inserting of clobs fails</action>
+      <action dev="gommma" type="fix" issue="1214234" due-to="bilaco">method getRowCount don't use schema</action>
 </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>
