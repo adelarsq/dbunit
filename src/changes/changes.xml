@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-    <release version="2.3.0-SNAPSHOT" date="Jun 23, 2008" description="Features added, Bugfixes, Performance improvements in assertions">
+    <release version="2.3.0-SNAPSHOT" date="Jun 23, 2008" description="some API changes, Features added, Bugfixes, Performance improvements in assertions">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>
       <action dev="rlogiacco" type="fix" issue="1981449" due-to="gommma">Patch for Bug #1421590 "Problem in data import if all the columns are not populated"</action>
       <action dev="slecallonnec" type="fix" issue="1975499" due-to="gommma">NoSuchColumnException now thrown when column name does not exist.</action>
@@ -40,7 +40,7 @@
       <action dev="gommma" type="fix" issue="2012495" due-to="rpuchkovskiy">Use DataType.BLOB instead of DataType.LONGVARBINARY</action>
       <action dev="gommma" type="fix" due-to="rpuchkovskiy">DbUnit is only JDK 1.4 compatible and not 1.3 (as claimed until now). Several methods are in use that did not exist in JDK 1.3. To build with JDK 1.4 and maven it is now required to set the environment variable JAVA_1_4_HOME to your JDK 1.4 home directory</action>
       <action dev="gommma" type="add" issue="2029693">Update apache POI to latest release (2.5.1 -> 3.1)</action>
-      <action dev="gommma" type="fix" issue="2023994" due-to="marney">Simplify use of custom datatype factory for DBTestCase</action>
+      <action dev="gommma" type="fix" issue="2023994" due-to="marney">Simplify use of custom datatype factory for DBTestCase - Implies API change - the method DatabaseTestCase.getConnection() is final since the DatabaseTester (configurable by the user) is considered to be the master object providing the connection</action>
       <action dev="gommma" type="fix" issue="1984596" due-to="bustuila">Inserting of clobs fails</action>
       <action dev="gommma" type="fix" issue="1214234" due-to="bilaco">method getRowCount don't use schema.</action>
       <action dev="gommma" type="fix" issue="1224643" due-to="bugmenot">Column count for empty XlsDataSet returns 0.</action>
