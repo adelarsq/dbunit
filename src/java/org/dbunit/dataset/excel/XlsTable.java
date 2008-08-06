@@ -58,7 +58,7 @@ class XlsTable extends AbstractTable
     public XlsTable(String sheetName, HSSFSheet sheet) throws DataSetException
     {
         int rowCount = sheet.getLastRowNum();
-        if (rowCount > 0 && sheet.getRow(0) != null)
+        if (rowCount >= 0 && sheet.getRow(0) != null)
         {
             _metaData = createMetaData(sheetName, sheet.getRow(0));
         }

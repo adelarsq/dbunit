@@ -24,13 +24,15 @@ import org.dbunit.dataset.AbstractTableTest;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.datatype.DataType;
 
 import java.io.File;
 
 /**
  * @author Manuel Laflamme
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Feb 21, 2003
- * @version $Revision$
  */
 public class XlsTableTest extends AbstractTableTest
 {
@@ -65,4 +67,30 @@ public class XlsTableTest extends AbstractTableTest
                     table.getValue(row, columns[i].getColumnName()));
         }
     }
+    
+    public void testEmptyTableColumns() throws Exception
+    {
+    	Column[] expectedColumns = new Column[] {
+    			new Column("COLUMN0", DataType.UNKNOWN),
+    			new Column("COLUMN1", DataType.UNKNOWN),
+    			new Column("COLUMN2", DataType.UNKNOWN),
+    			new Column("COLUMN3", DataType.UNKNOWN)
+    	};
+        ITable table = createDataSet().getTable("EMPTY_TABLE");
+
+        Column[] columns = table.getTableMetaData().getColumns();
+    	assertEquals("Column count", expectedColumns.length, columns.length);
+    	for (int i = 0; i < columns.length; i++) {
+			assertEquals("Column " + i, expectedColumns[i], columns[i]);
+		}
+    }
+    
+    public void testEmptySheet() throws Exception
+    {
+        ITable table = createDataSet().getTable("EMPTY_SHEET");
+
+        Column[] columns = table.getTableMetaData().getColumns();
+    	assertEquals("Column count", 0, columns.length);
+    }
+
 }
