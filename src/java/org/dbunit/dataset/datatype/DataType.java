@@ -63,6 +63,7 @@ public abstract class DataType
             "DECIMAL", Types.DECIMAL);
 
     public static final DataType BOOLEAN = new BooleanDataType();
+    public static final DataType BIT = new BitDataType();
 
     public static final DataType TINYINT = new IntegerDataType(
             "TINYINT", Types.TINYINT);
@@ -93,7 +94,7 @@ public abstract class DataType
     public static final DataType BLOB = new BlobDataType();
 
     private static final DataType[] TYPES = {
-        VARCHAR, CHAR, LONGVARCHAR, CLOB, NUMERIC, DECIMAL, BOOLEAN, INTEGER,
+        VARCHAR, CHAR, LONGVARCHAR, CLOB, NUMERIC, DECIMAL, BOOLEAN, BIT, INTEGER,
         TINYINT, SMALLINT, BIGINT, REAL, DOUBLE, FLOAT, DATE, TIME, TIMESTAMP,
         VARBINARY, BINARY, LONGVARBINARY, BLOB,
     };

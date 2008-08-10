@@ -264,8 +264,8 @@ public class AssertionTest extends TestCase
         catch (ComparisonFailure expected)
         {
             assertEquals("VARCHAR", expected.getExpected());
-            assertEquals("BIT", expected.getActual());
-            String expectedMsg = "Incompatible data types: (table=TABLE_NAME, col=BOOLEAN) expected:<[VARCHAR]> but was:<[BIT]>";
+            assertEquals("BOOLEAN", expected.getActual());
+            String expectedMsg = "Incompatible data types: (table=TABLE_NAME, col=BOOLEAN) expected:<[VARCHAR]> but was:<[BOOLEAN]>";
             assertEquals(expectedMsg, expected.getMessage());
         }
     }

@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package org.dbunit.dataset.datatype;
 
 import org.slf4j.Logger;
@@ -33,7 +32,8 @@ import java.sql.Types;
 
 /**
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  */
 public class BooleanDataType extends AbstractDataType
 {
@@ -45,7 +45,17 @@ public class BooleanDataType extends AbstractDataType
 
     BooleanDataType()
     {
-        super("BIT", Types.BIT, Boolean.class, false);
+        this("BOOLEAN", Types.BOOLEAN);
+    }
+
+    /**
+     * @param name
+     * @param sqlType
+     * @since 2.3
+     */
+    BooleanDataType(String name, int sqlType)
+    {
+        super(name, sqlType, Boolean.class, false);
     }
 
     ////////////////////////////////////////////////////////////////////////////

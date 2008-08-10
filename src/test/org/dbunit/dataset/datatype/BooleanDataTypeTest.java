@@ -29,9 +29,9 @@ import java.sql.Types;
 
 /**
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  */
-
 public class BooleanDataTypeTest extends AbstractDataTypeTest
 {
     private final static DataType THIS_TYPE = DataType.BOOLEAN;
@@ -46,7 +46,7 @@ public class BooleanDataTypeTest extends AbstractDataTypeTest
      */
     public void testToString() throws Exception
     {
-        assertEquals("name", "BIT", THIS_TYPE.toString());
+        assertEquals("name", "BOOLEAN", THIS_TYPE.toString());
     }
 
     /**
@@ -221,9 +221,9 @@ public class BooleanDataTypeTest extends AbstractDataTypeTest
 
     public void testSqlType() throws Exception
     {
-        assertEquals("forSqlType", THIS_TYPE, DataType.forSqlType(Types.BIT));
+        assertEquals("forSqlType", THIS_TYPE, DataType.forSqlType(Types.BOOLEAN));
         assertEquals("forSqlTypeName", THIS_TYPE, DataType.forSqlTypeName(THIS_TYPE.toString()));
-        assertEquals("getSqlType", Types.BIT, THIS_TYPE.getSqlType());
+        assertEquals("getSqlType", Types.BOOLEAN, THIS_TYPE.getSqlType());
     }
 
     public void testForObject() throws Exception
