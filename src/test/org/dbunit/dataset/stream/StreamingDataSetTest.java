@@ -20,12 +20,13 @@
  */
 package org.dbunit.dataset.stream;
 
+import java.io.FileReader;
+
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ForwardOnlyDataSetTest;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.xml.sax.InputSource;
-
-import java.io.FileReader;
 
 /**
  * @author Manuel Laflamme
@@ -52,5 +53,40 @@ public class StreamingDataSetTest extends ForwardOnlyDataSetTest
     {
         return new StreamingDataSet(
                 new DataSetProducerAdapter(super.createDuplicateDataSet()));
+    }
+    
+    public void testReturnsOnException() throws Exception
+    {
+    	RuntimeException exceptionToThrow = new IllegalArgumentException("For this test case we throw something that we normally would never do");
+    	ExceptionThrowingProducer source = new ExceptionThrowingProducer(exceptionToThrow);
+    	StreamingDataSet streamingDataSet = new StreamingDataSet(source);
+    	try {
+    		streamingDataSet.createIterator(false);
+    	}
+    	catch(DataSetException expected) {
+    		Throwable cause = expected.getCause();
+    		assertEquals(IllegalArgumentException.class, cause.getClass());
+    		assertEquals(exceptionToThrow, cause);
+    	}
+    }
+    
+    private static class ExceptionThrowingProducer implements IDataSetProducer
+    {
+    	private RuntimeException exceptionToThrow;
+    	
+		public ExceptionThrowingProducer(RuntimeException exceptionToThrow) {
+			super();
+			this.exceptionToThrow = exceptionToThrow;
+		}
+
+		public void produce() throws DataSetException {
+			throw exceptionToThrow;
+		}
+
+		public void setConsumer(IDataSetConsumer consumer)
+				throws DataSetException {
+			// Ignore for this test
+		}
+    	
     }
 }
