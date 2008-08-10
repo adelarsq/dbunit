@@ -88,9 +88,18 @@ public class XmlWriter
     private boolean closed = true;     // is the current node closed...
 
     private boolean pretty = true;    // is pretty printing enabled?
-    private boolean wroteText = false; // was text the last thing output?
-    private String indent = "  ";     // output this to indent one level when pretty printing
-    private String newline = "\n";    // output this to end a line when pretty printing
+    /**
+     * was text the last thing output?
+     */
+    private boolean wroteText = false;
+    /**
+     * output this to indent one level when pretty printing
+     */
+    private String indent = "  ";
+    /**
+     * output this to end a line when pretty printing
+     */
+    private String newline = "\n";
 
     /**
      * Create an XmlWriter on top of an existing java.io.Writer.
@@ -117,12 +126,13 @@ public class XmlWriter
      */
     public void enablePrettyPrint(boolean enable)
     {
-        logger.debug("enablePrettyPrint(enable=" + enable + ") - start");
+    	if(logger.isDebugEnabled())
+    		logger.debug("enablePrettyPrint(enable={}) - start", new Boolean(enable));
 
         this.pretty = enable;
     }
 
-    /**
+	/**
      * Specify the string to prepend to a line for each level of indent.
      * It is 2 spaces ("  ") by default. Some may prefer a single tab ("\t")
      * or a different number of spaces. Specifying an empty string will turn
@@ -259,18 +269,42 @@ public class XmlWriter
 
     /**
      * Write an attribute out for the current element.
-     * Any xml characters in the value are escaped.
+     * Any XML characters in the value are escaped.
      * Currently it does not actually throw the exception, but
-     * the api is set that way for future changes.
+     * the API is set that way for future changes.
      *
      * @param attr name of attribute.
      * @param value value of attribute.
+     * @see #writeAttribute(String, String, boolean)
      */
     public XmlWriter writeAttribute(String attr, String value) throws IOException
     {
         logger.debug("writeAttribute(attr={}, value={}) - start", attr, value);
+        return this.writeAttribute(attr, value, false);
+    }
 
-        // maintain api
+    /**
+     * Write an attribute out for the current element.
+     * Any XML characters in the value are escaped.
+     * Currently it does not actually throw the exception, but
+     * the API is set that way for future changes.
+     *
+     * @param attr name of attribute.
+     * @param value value of attribute.
+     * @param literally If the writer should be literally on the given value
+     * which means that meta characters will also be preserved by escaping them. 
+     * Mainly preserves newlines and tabs.
+     */
+    public XmlWriter writeAttribute(String attr, String value, boolean literally) throws IOException
+    {
+    	if(logger.isDebugEnabled())
+    		logger.debug("writeAttribute(attr={}, value={}, literally={}) - start", 
+    				new Object[] {attr, value, new Boolean(literally)} );
+
+    	if(this.wroteText==true) {
+    		throw new IllegalStateException("The text for the current element has already been written. Cannot add attributes afterwards.");
+    	}
+        // maintain API
         if (false) throw new IOException();
 
         if (this.attrs == null)
@@ -280,7 +314,11 @@ public class XmlWriter
         this.attrs.append(" ");
         this.attrs.append(attr);
         this.attrs.append("=\"");
-        this.attrs.append(escapeXml(value));
+        String val = escapeXml(value);
+        if(literally){
+        	val = escapeMetaCharacters(val);
+        }
+        this.attrs.append(val);
         this.attrs.append("\"");
         return this;
     }
@@ -347,16 +385,41 @@ public class XmlWriter
     }
 
     /**
-     * Output body text. Any xml characters are escaped.
+     * Output body text. Any XML characters are escaped.
+     * @param text The text to be written
+     * @return This writer
+     * @throws IOException
+     * @see {@link #writeText(String, boolean)}
      */
     public XmlWriter writeText(String text) throws IOException
     {
         logger.debug("writeText(text={}) - start", text);
+        return this.writeText(text, false);
+    }
+
+    /**
+     * Output body text. Any XML characters are escaped.
+     * @param text The text to be written
+     * @param literally If the writer should be literally on the given value
+     * which means that meta characters will also be preserved by escaping them. 
+     * Mainly preserves newlines and tabs.
+     * @return This writer
+     * @throws IOException
+     */
+    public XmlWriter writeText(String text, boolean literally) throws IOException
+    {
+    	if(logger.isDebugEnabled())
+    		logger.debug("writeText(text={}, literally={}) - start", text, new Boolean(literally));
 
         closeOpeningTag();
         this.empty = false;
         this.wroteText = true;
-        this.out.write(escapeXml(text));
+
+        String val = escapeXml(text);
+        if(literally){
+        	val = escapeMetaCharacters(val);
+        }
+        this.out.write(val);
         return this;
     }
 
@@ -381,7 +444,7 @@ public class XmlWriter
 
     /**
      * Write out a chunk of comment. This helper method surrounds the
-     * passed in data with the xml comment tag.
+     * passed in data with the XML comment tag.
      *
      * @param comment of text to comment.
      */
@@ -464,6 +527,23 @@ public class XmlWriter
     ////////////////////////////////////////////////////////////////////////////
     // Added for DbUnit
 
+    /**
+     * Escapes some meta characters like \n, \r that should be preserved in the XML
+     * so that a reader will not filter out those symbols.
+     * @param str The string to be escaped
+     * @return The escaped string
+     * @since 2.3.0
+     */
+    private String escapeMetaCharacters(String str)
+    {
+        logger.debug("escapeXml(str={}) - start", str);
+
+        // 2. Do additional escapes. See http://www.w3.org/TR/2004/REC-xml-20040204/#AVNormalize
+        str = replace(str, "\n", "&#xA;"); // linefeed (LF)
+        str = replace(str, "\r", "&#xD;"); // carriage return (CR)
+        return str;
+    }
+    
     private String escapeXml(String str)
     {
         logger.debug("escapeXml(str={}) - start", str);
@@ -473,7 +553,7 @@ public class XmlWriter
         str = replace(str, ">", "&gt;");
         str = replace(str, "\"", "&quot;");
         str = replace(str, "'", "&apos;");
-        str = replace(str, "	", "&#09;");
+        str = replace(str, "\t", "&#09;"); // tab
         return str;
     }
 

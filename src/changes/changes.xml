@@ -44,6 +44,7 @@
       <action dev="gommma" type="fix" issue="1984596" due-to="bustuila">Inserting of clobs fails</action>
       <action dev="gommma" type="fix" issue="1214234" due-to="bilaco">method getRowCount don't use schema.</action>
       <action dev="gommma" type="fix" issue="1224643" due-to="bugmenot">Column count for empty XlsDataSet returns 0.</action>
+      <action dev="gommma" type="fix" issue="948472" due-to="gmathijssen">Values with newlines cannot be compared with assertEquals.</action>
 </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>

@@ -67,6 +67,24 @@ public class FlatXmlTableTest extends AbstractTableTest
         }
     }
 
+    public void testLoadCRLF() throws Exception
+    {
+        int row = 0;
+        Object[] expected = {"row 0 \n col 0 \r"}; // in the expected result the &#xA; and &#xD; should be replaced by \n and \r
+
+        ITable table = createDataSet(false).getTable("TABLE_VALUE_METACHARS");
+
+        Column[] columns = table.getTableMetaData().getColumns();
+        assertEquals("column count", expected.length, columns.length);
+        assertEquals("row count", 1, table.getRowCount());
+        for (int i = 0; i < columns.length; i++)
+        {
+            assertEquals("value " + i, expected[i],
+                    table.getValue(row, columns[i].getColumnName()));
+        }
+    }
+    
+    
 //    public void testGetValueAndNoSuchColumn() throws Exception
 //    {
 //        ITable table = createTable();

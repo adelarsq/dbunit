@@ -183,7 +183,7 @@ public class FlatXmlWriter implements IDataSetConsumer
                 try
                 {
                     String stringValue = DataType.asString(value);
-                    _xmlWriter.writeAttribute(columnName, stringValue);
+                    _xmlWriter.writeAttribute(columnName, stringValue, true);
                 }
                 catch (TypeCastException e)
                 {
