@@ -228,7 +228,7 @@ public class RefreshOperation extends AbstractOperation
         {
             logger.debug("execute(table={}, row={}) - start", table, String.valueOf(row));
 
-            // If current row have a diffrent ignore value mapping than
+            // If current row has a different ignore value mapping than
             // previous one, we generate a new statement
             if (_ignoreMapping == null ||
                     !_insertOperation.equalsIgnoreMapping(_ignoreMapping, table, row))

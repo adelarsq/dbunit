@@ -62,7 +62,9 @@ public abstract class AbstractOperation extends DatabaseOperation
     }
 
     /**
-     * Returns the metadata to use in this operation.
+     * Returns the metadata to use in this operation. It is retrieved
+     * from the database connection using the information from the physical
+     * database table.
      *
      * @param connection the database connection
      * @param metaData the XML table metadata
