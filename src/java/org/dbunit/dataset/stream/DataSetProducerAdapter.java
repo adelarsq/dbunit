@@ -32,6 +32,9 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ * Implementation of {@link IDataSetProducer} based on a given {@link IDataSet} or a
+ * {@link ITableIterator}.
+ * 
  * @author Manuel Laflamme
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
