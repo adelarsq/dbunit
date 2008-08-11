@@ -275,7 +275,7 @@ public class XmlWriter
      *
      * @param attr name of attribute.
      * @param value value of attribute.
-     * @see writeAttribute(String, String, boolean)
+     * @see #writeAttribute(String, String, boolean)
      */
     public XmlWriter writeAttribute(String attr, String value) throws IOException
     {
@@ -389,7 +389,7 @@ public class XmlWriter
      * @param text The text to be written
      * @return This writer
      * @throws IOException
-     * @see writeText(String, boolean)
+     * @see #writeText(String, boolean)
      */
     public XmlWriter writeText(String text) throws IOException
     {
