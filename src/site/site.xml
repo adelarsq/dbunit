@@ -62,16 +62,17 @@
     </menu>
 
     <menu name="Overview">
-      <item name="About DbUnit"     href="/index.html"/>  
-      <item name="Database Testing" href="/intro.html"/>   
-      <item name="Getting Started"  href="/howto.html"/>             
+      <item name="About DbUnit"     href="/index.html"/>
+      <item name="Database Testing" href="/intro.html"/>
+      <item name="Getting Started"  href="/howto.html"/>
       <item name="Best Practices"   href="/bestpractices.html"/>
       <item name="Core Components"  href="/components.html"/>
-      <item name="Properties"       href="/properties.html"/>    
+      <item name="Properties"       href="/properties.html"/>
       <item name="Ant Task"         href="/anttask.html"/>
+      <item name="Migration Guide"  href="/migration.html"/> 
       <item name="Building DbUnit"  href="/building.html"/>
-      <item name="Resources"        href="/resources.html"/> 
-      <item name="Credits"          href="/credits.html"/> 
+      <item name="Resources"        href="/resources.html"/>
+      <item name="Credits"          href="/credits.html"/>
     </menu>
 
     <menu ref="parent"/>

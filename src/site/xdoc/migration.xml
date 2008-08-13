@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<properties><title>Migration guide</title></properties>
+<body>
+<section>
+
+    <h2>Migration guide</h2>
+        <p>To migrate from an older DbUnit release to a newer one you can find some useful information here.</p>
+        <p>Currently there is are no migration tips available here</p>
+<!--
+    <subsection name="2.2.x to 2.3.x">
+      <p>There have been some smaller changes to the API from 2.2.x to 2.3.x with the effect that those versions are not source compatible.</p>
+      <table border="1">
+        <tr>
+          <th>Tracker #</th>
+          <th>Affects</th>
+          <th>Migration</th>
+          <th>Background information</th>
+        </tr>
+        <tr> 
+          <td>2023994</td>
+          <td><code>org.dbunit.DatabaseTestCase</code></td>
+          <td>For a simple migration the old implementation is still available via org.dbunit.classic.DatabaseTestCase.</td>
+          <td>The method getConnection() is now final and the master object for retrieving a connection is the IDatabaseTester.
+          It is created (also in the pre 2.3 releases) via the newDatabaseTester() method and provides the database connection
+          via getConnection. The reason for this change is firstly to provide a consistent access to the database connection
+          and secondly to allow the user to easily configure dbunit properties by overriding the method setUpConnectionConfig(DatabaseConfig databaseConfig).
+          </td>
+        </tr>
+      
+        <tr>
+          <td>1993243</td>
+          <td><code>org.dbunit.dataset.ITableMetaData.getColumnIndex()</code></td>
+          <td>Inherit from org.dbunit.dataset.AbstractTableMetaData or implement the new method.</td>
+          <td>This method has been introduced for performance improvements in the comparison of table data. Another
+          goal is to improve the design by reusing this method at serveral locations where it has been re-implemented
+          (or copy-pasted) multiple times before.
+          </td>
+        </tr>
+        
+        <tr>
+          <td>1961269</td>
+          <td><code>org.dbunit.dataset.datatype.IDataTypeFactory.createDataType(int sqlType, String sqlTypeName, String tableName, String columnName)</code></td>
+          <td>Inherit from org.dbunit.dataset.datatype.DefaultDataTypeFactory or implement the new method.</td>
+          <td>This method has been introduced for the new feature that lets users define a tolerated delta
+          when comparing floating point numbers (database types NUMERIC and DECIMAL). Since the tolerated delta
+          can (or needs to) be specified for a TABLE + COLUMN combination the new createDataType method provides
+          those two additional parameters.
+          </td>
+        </tr>
+      </table>
+    </subsection>
+-->
+</section>
+</body>
+</document>
