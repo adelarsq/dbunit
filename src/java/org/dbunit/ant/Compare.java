@@ -28,6 +28,7 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
@@ -142,12 +143,24 @@ public class Compare extends AbstractStep
         for (int i = 0; i < tableNames.length; i++)
         {
             String tableName = tableNames[i];
-            ITable expectedTable = expectedDataset.getTable(tableName);
+            ITable expectedTable;
+			try {
+				expectedTable = expectedDataset.getTable(tableName);
+			} catch (NoSuchTableException e) {
+				throw new DatabaseUnitException("Did not find table in source file '" + 
+						_src + "' using format '" + getFormat() + "'", e);
+			}
             ITableMetaData expectedMetaData = expectedTable.getTableMetaData();
 
+            ITable actualTable;
+			try {
+				actualTable = actualDataset.getTable(tableName);
+			} catch (NoSuchTableException e) {
+				throw new DatabaseUnitException("Did not find table in actual dataset '" + 
+						actualDataset + "' via db connection '" + connection + "'", e);
+			}
             // Only compare columns present in expected table. Extra columns
             // are filtered out from actual database table.
-            ITable actualTable = actualDataset.getTable(tableName);
             actualTable = DefaultColumnFilter.includedColumnsTable(
                     actualTable, expectedMetaData.getColumns());
 

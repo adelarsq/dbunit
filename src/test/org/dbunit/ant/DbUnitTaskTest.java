@@ -21,6 +21,7 @@
 
 package org.dbunit.ant;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -33,10 +34,12 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Target;
 import org.apache.tools.ant.taskdefs.TaskdefsTest;
 import org.dbunit.DatabaseEnvironment;
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
@@ -47,13 +50,16 @@ import org.dbunit.operation.DatabaseOperation;
  *
  * @author Timothy Ruppert
  * @author Ben Cox
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Jun 10, 2002
  * @see org.dbunit.ant.AntTest
  */
 public class DbUnitTaskTest extends TaskdefsTest
 {
     static protected Class classUnderTest = DbUnitTaskTest.class;
+    
+    private static final String BUILD_FILE_DIR = "src/xml";
 
     public DbUnitTaskTest(String name)
     {
@@ -65,7 +71,7 @@ public class DbUnitTaskTest extends TaskdefsTest
         // This line ensure test database is initialized
         DatabaseEnvironment.getInstance();
 
-        configureProject("src/xml/antTestBuildFile.xml");
+        configureProject(BUILD_FILE_DIR + "/antTestBuildFile.xml");
     }
 
     public void testNoDriver()
@@ -360,7 +366,30 @@ public class DbUnitTaskTest extends TaskdefsTest
         Query pkTable = (Query)tables.get(1);
         assertEquals("name", "PK_TABLE", pkTable.getName());
     }
-
+    
+    /**
+     * Tests the exception that is thrown when the compare fails because
+     * the source format was different from the previous "export" task's write format.
+     */
+    public void testExportAndCompareFormatMismatch() {
+        String targetName = "test-export-and-compare-format-mismatch";
+        
+        try {
+        	getFirstTargetTask(targetName);
+        	fail("Should not be able to invoke ant task where the expected table was not found because it was tried to read in the wrong format.");
+        }
+        catch(BuildException expected){
+        	Throwable cause = expected.getCause();
+        	assertTrue(cause instanceof DatabaseUnitException);
+        	DatabaseUnitException dbUnitException = (DatabaseUnitException)cause;
+        	String expectedMsg = "Did not find table in source file '" + new File(getProjectDir(),BUILD_FILE_DIR + "/antExportDataSet.xml").toString() + "' using format 'xml'";
+        	assertEquals(expectedMsg, dbUnitException.getMessage());
+        	assertTrue(dbUnitException.getCause() instanceof NoSuchTableException);
+        	NoSuchTableException nstException = (NoSuchTableException)dbUnitException.getCause();
+        	assertEquals("TEST_TABLE", nstException.getMessage());
+        }
+    }
+    
     public void testDataTypeFactory() throws Exception
     {
         String targetName = "test-datatypefactory";
@@ -468,18 +497,18 @@ public class DbUnitTaskTest extends TaskdefsTest
 	
     protected DbUnitTaskStep getFirstStepFromTarget(String targetName)
     {
-        DbUnitTaskStep result = null;
+    	return getStepFromTarget(targetName, 0);
+    }
+
+    protected DbUnitTaskStep getStepFromTarget(String targetName, int index)
+    {
         DbUnitTask task = getFirstTargetTask(targetName);
         List steps = task.getSteps();
-        if (steps != null && steps.size() > 0)
+        if(steps == null || steps.size() == 0)
         {
-            result = (DbUnitTaskStep)steps.get(0);
+        	fail("Can't get a dbunit <step> from the target: " + targetName + ". No steps available.");
         }
-        else
-        {
-            fail("Can't get a dbunit <step> from the target: " + targetName);
-        }
-        return result;
+        return (DbUnitTaskStep)steps.get(index);
     }
 
     private DbUnitTask getFirstTargetTask(String targetName)

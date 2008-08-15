@@ -356,6 +356,22 @@
     <delete file="${exportDataSet}"/>
   </target>
 
+  <target name="test-export-and-compare-format-mismatch" depends="test-type-clean-insert">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.connectionUrl}"
+            userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      
+      <export dest="${exportDataSet}" format="flat">
+        <table name="TEST_TABLE" />
+      </export> 
+      <compare src="${exportDataSet}" format="xml">
+        <table name="TEST_TABLE" />
+      </compare>
+    </dbunit>
+    <delete file="${exportDataSet}"/>
+  </target>
+
   <target name="test-classpath">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="jdbc:mysql://localhost:3306/dbunit"
