@@ -31,8 +31,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
- * @author Last changed by: $Author$
- * @version $Revision$ $Date$
+ * @version $Revision$
  * @since Feb 18, 2002
  */
 public abstract class AbstractDatabaseTest extends DatabaseTestCase
@@ -94,20 +93,29 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
     ////////////////////////////////////////////////////////////////////////////
     // DatabaseTestCase class
 
+    protected IDatabaseConnection getConnection() throws Exception
+    {
+        IDatabaseConnection connection = getEnvironment().getConnection();
+        return connection;
+
+//        return new DatabaseEnvironment(getEnvironment().getProfile()).getConnection();
+//        return new DatabaseConnection(connection.getConnection(), connection.getSchema());
+    }
+
     protected IDataSet getDataSet() throws Exception
     {
         return getEnvironment().getInitDataSet();
     }
 
-    protected IDatabaseTester newDatabaseTester() throws Exception 
-    {
-		return getEnvironment().getDatabaseTester();
-	}
-
-	protected void closeConnection(IDatabaseConnection connection) throws Exception
+    protected void closeConnection(IDatabaseConnection connection) throws Exception
     {
 //        getEnvironment().closeConnection();
     }
+//
+//    protected DatabaseOperation getTearDownOperation() throws Exception
+//    {
+//        return DatabaseOperation.DELETE_ALL;
+//    }
 
     /**
      * This method is used so sub-classes can disable the tests according to 

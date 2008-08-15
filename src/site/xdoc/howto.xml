@@ -16,17 +16,13 @@
       <a name="createtest">
       <h3>Database setup with DBTestCase subclass</h3>
       </a> 
-      
-      <a name="createdataset">
-      <h4>Step 1: Create your dataset file</h4>
-      </a>
+      <a name="createdataset"><h4>Step 1: Create your dataset file</h4></a>
       <p>Your test need some data to work with. This means you must
       create a dataset. In most situations you will work with xml datasets. You
       can manually create a <a href="components.html#FlatXmlDataSet">flat XML dataset</a> 
       from scratch or create one by <a href="faq.html#extract">exporting</a>
       some data from your database.
       </p>
-      
       <h4>Step 2: Extend the DBTestCase class</h4>
       <p>Now you need to create a test class. The easiest way to use Dbunit is to
       make your test class extend the DBTestCase class. DBTestCase
@@ -60,7 +56,7 @@ public class SampleTest extends DBTestCase
         System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:hsqldb:sample" );
         System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "sa" );
         System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "" );
-        // System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA, "" );
+	// System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA, "" );
     }
 
     protected IDataSet getDataSet() throws Exception
@@ -68,8 +64,8 @@ public class SampleTest extends DBTestCase
         return new FlatXmlDataSet(new FileInputStream("dataset.xml"));
     }
 }</source>
-</p>
-      <h4>Step 3 <i>(Optional)</i>: Implement getSetUpOperation() and getTearDownOperation()
+</p>      
+      <h4>Step 3: (Optional) Implement getSetUpOperation() and getTearDownOperation()
         methods</h4>
       <p>By default, Dbunit performs a <a href="components.html#cleanInsert">CLEAN_INSERT</a>
         operation before executing each test and performs no cleanup operation
@@ -93,29 +89,13 @@ public class SampleTest extends DBTestCase
     ...
 }</source>
       </p>
-      <h4>Step 4 <i>(Optional)</i>:  Implement setUpConnectionConfig(DatabaseConfig databaseConfig)
-        method to configure <a href="properties.html">Dbunit properties</a></h4>
-      <p>There is a variety of <a href="properties.html">properties</a> that can be configured here, for
-         example the IDataTypeFactory. The method is invoked every time a new IDatabaseConnection 
-         is created so that you can be sure that each connection uses your configuration.</p>
-      <p>The following example demonstrates how you can easily override this method to set a datatype factory
-      <source>
-public class SampleTest extends DBTestCase
-{
-    ...
-    protected void setUpConnectionConfig(DatabaseConfig databaseConfig) 
-    {
-        databaseConfig.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new OracleDataTypeFactory());
-    }
-    ...
-}</source>
-      </p>
-      <h4>Step 5: Implement your testXXX() methods</h4>
+      <h4>Step 4: Implement your testXXX() methods</h4>
       <p>Implement your test methods as you normally would with JUnit. Your database
       is now initialized before and cleaned-up after each test methods according
       to what you did in previous steps.</p>
-      
       <a name="noextend">
+      
+      
       <h3>Database setup with your own TestCase subclass</h3>
       </a>
       <p>In order to use Dbunit you are not required to extend the DBTestCase
@@ -204,7 +184,6 @@ public class SampleTest extends TestCase
     }
     ...
 }</source></p>
-
       <a name="assertdata">
       <h3>Database data verification</h3>
       </a> 
@@ -212,17 +191,15 @@ public class SampleTest extends TestCase
       contain identical data. The following two methods can be used to verify if 
       your database contains the expected data during 
       test cases execution.
-      <source>
-public class Assertion
+      <source>public class Assertion
 {
     public static void assertEquals(ITable expected, ITable actual)
     public static void assertEquals(IDataSet expected, IDataSet actual)
 }</source></p>
       <h4>Sample</h4>
-      <p>The following sample demonstrates how to compare a database table snapshot
+      <p>The following sample, show how to compare a database table snapshot
         against a flat XML table.
-      <source>
-public class SampleTest extends DBTestCase
+      <source>public class SampleTest extends DBTestCase
 {
     public SampleTest(String name)
     {
@@ -249,8 +226,7 @@ public class SampleTest extends DBTestCase
         // Assert actual database table match expected table
         Assertion.assertEquals(expectedTable, actualTable);
     }
-}</source>
-</p>
+}</source>      </p>
       <p>The actual dataset is a database snapshot you 
       want to verify against an expected dataset. As its name imply, the expected 
       dataset contains the expectation values. 
@@ -311,8 +287,6 @@ A major limitation of this technique is that you cannot use a DTD with your expe
         it the best way in the future.
       </i>
       </p>
-
-
       <a name="canoo">
       <h3>DbUnit Ant task and Canoo WebTest</h3>
       </a>
@@ -401,6 +375,4 @@ A major limitation of this technique is that you cannot use a DTD with your expe
         <a href="sample_webtest/subscribeEmailAddressWithOptedOutEmail.xml">subscribeEmailAddressWithOptedOutEmail.xml</a>
       \root\includes\
         <a href="sample_webtest/sharedConfiguration.xml">sharedConfiguration.xml</a></source></p>
-</section>
-</body>
-</document>
+</section></body></document>

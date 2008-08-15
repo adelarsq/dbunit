@@ -21,21 +21,19 @@
 
 package org.dbunit;
 
-import junit.framework.TestCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.dbunit.database.DatabaseConfig;
+import junit.framework.TestCase;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
  * @since Feb 17, 2002
- * 
- * @see DBTestCase
+ * TODO: mark it as deprecated use #{DBTestCase} instead.
  */
 public abstract class DatabaseTestCase extends TestCase
 {
@@ -45,7 +43,7 @@ public abstract class DatabaseTestCase extends TestCase
      */
     private static final Logger logger = LoggerFactory.getLogger(DatabaseTestCase.class);
 
-    private IDatabaseTester tester;
+  private IDatabaseTester tester;
 
     public DatabaseTestCase()
     {
@@ -57,59 +55,28 @@ public abstract class DatabaseTestCase extends TestCase
     }
 
     /**
-     * Returns the test database connection. It is retrieved from the 
-     * configured database tester via {@link IDatabaseTester#getConnection()}.
-     * <p>
-     * Note that this method was <i>abstract</i> until dbunit 2.2. Since dbunit 2.3 it
-     * is declared <i>final</i> and implemented as described above. 
-     * </p>
-     * @return The test database connection
-     * @throws Exception
+     * Returns the test database connection.
      */
-    protected final IDatabaseConnection getConnection() throws Exception
-    {
-        logger.debug("getConnection() - start");
-
-        final IDatabaseTester databaseTester = getDatabaseTester();
-        assertNotNull("DatabaseTester is not set", databaseTester);
-        IDatabaseConnection databaseConnection = databaseTester.getConnection();
-        assertNotNull("IDatabaseTester.getConnection() must not return null: " + databaseTester, databaseConnection);
-        setUpConnectionConfig(databaseConnection.getConfig());
-        return databaseConnection;
-    }
+    protected abstract IDatabaseConnection getConnection() throws Exception;
 
     /**
-     * Method to initialize the configuration of a {@link IDatabaseConnection}'s configuration.
-     * <p>
-     * This method is designed to be overridden and is implemented empty here.
-     * For example you can set a data type factory on the configuration as follows:
-     * <code>
-     * databaseConfig.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new OracleDataTypeFactory());
-     * </code>
-     * </p>
-     * @param databaseConfig The configuration of the current database connection 
-     * that has been created for the current test execution
-     * @since 2.3
-     */
-    protected void setUpConnectionConfig(DatabaseConfig databaseConfig) {
-    	// empty implementation.
-	}
-
-	/**
      * Returns the test dataset.
      */
     protected abstract IDataSet getDataSet() throws Exception;
 
     /**
      * Creates a IDatabaseTester for this testCase.<br>
-     * <p>
-     * Note that this method was implemented here until dbunit 2.2 using the
-     * {@link DefaultDatabaseTester}. Since dbunit 2.3 it
-     * is declared <i>abstract</i> and must be implemented by subclasses. 
-     * </p>
+     *
+     * A {@link DefaultDatabaseTester} is used by default.
      * @throws Exception
      */
-    protected abstract IDatabaseTester newDatabaseTester() throws Exception;
+    protected IDatabaseTester newDatabaseTester() throws Exception{
+        logger.debug("newDatabaseTester() - start");
+
+      final IDatabaseConnection connection = getConnection();
+      final IDatabaseTester tester = new DefaultDatabaseTester(connection);
+      return tester;
+    }
 
     /**
      * Gets the IDatabaseTester for this testCase.<br>
@@ -118,10 +85,10 @@ public abstract class DatabaseTestCase extends TestCase
      * @throws Exception
      */
     protected IDatabaseTester getDatabaseTester() throws Exception {
-    	if ( this.tester == null ) {
-    		this.tester = newDatabaseTester();
-    	}
-    	return this.tester;
+      if ( this.tester == null ) {
+        this.tester = newDatabaseTester();
+      }
+      return this.tester;
     }
 
     /**
@@ -157,29 +124,29 @@ public abstract class DatabaseTestCase extends TestCase
 
     protected void setUp() throws Exception
     {
-    	logger.debug("setUp() - start");
+        logger.debug("setUp() - start");
 
-    	super.setUp();
-    	final IDatabaseTester databaseTester = getDatabaseTester();
-    	assertNotNull( "DatabaseTester is not set", databaseTester );
-    	databaseTester.setSetUpOperation( getSetUpOperation() );
-    	databaseTester.setDataSet( getDataSet() );
-    	databaseTester.onSetup();
+        super.setUp();
+        final IDatabaseTester databaseTester = getDatabaseTester();
+        assertNotNull( "DatabaseTester is not set", databaseTester );
+        databaseTester.setSetUpOperation( getSetUpOperation() );
+        databaseTester.setDataSet( getDataSet() );
+        databaseTester.onSetup();
     }
 
     protected void tearDown() throws Exception
     {
-    	logger.debug("tearDown() - start");
+        logger.debug("tearDown() - start");
 
-    	try {
-    		final IDatabaseTester databaseTester = getDatabaseTester();
-    		assertNotNull( "DatabaseTester is not set", databaseTester );
-    		databaseTester.setTearDownOperation( getTearDownOperation() );
-    		databaseTester.setDataSet( getDataSet() );
-    		databaseTester.onTearDown();
-    	} finally {
-    		tester = null;
-    		super.tearDown();
-    	}
+      try {
+        final IDatabaseTester databaseTester = getDatabaseTester();
+        assertNotNull( "DatabaseTester is not set", databaseTester );
+        databaseTester.setTearDownOperation( getTearDownOperation() );
+        databaseTester.setDataSet( getDataSet() );
+        databaseTester.onTearDown();
+      } finally {
+        tester = null;
+        super.tearDown();
+      }
     }
 }

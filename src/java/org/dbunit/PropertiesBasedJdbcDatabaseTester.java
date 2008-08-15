@@ -21,6 +21,8 @@
 
 package org.dbunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * DatabaseTester that configures a DriverManager from environment properties.<br>
@@ -48,39 +50,38 @@ package org.dbunit;
 public class PropertiesBasedJdbcDatabaseTester extends JdbcDatabaseTester
 {
 
+    /**
+     * Logger for this class
+     */
+    private static final Logger logger = LoggerFactory.getLogger(PropertiesBasedJdbcDatabaseTester.class);
 
-    /** A key for property that defines the connection url */
-    public static final String DBUNIT_CONNECTION_URL = "dbunit.connectionUrl";
-    /** A key for property that defines the driver classname */
-    public static final String DBUNIT_DRIVER_CLASS = "dbunit.driverClass";
-    /** A key for property that defines the user's password */
-    public static final String DBUNIT_PASSWORD = "dbunit.password";
-    /** A key for property that defines the username */
-    public static final String DBUNIT_USERNAME = "dbunit.username";
-    /** A key for property that defines the database schema */
-    public static final String DBUNIT_SCHEMA = "dbunit.schema";
+   /** A key for property that defines the connection url */
+   public static final String DBUNIT_CONNECTION_URL = "dbunit.connectionUrl";
+   /** A key for property that defines the driver classname */
+   public static final String DBUNIT_DRIVER_CLASS = "dbunit.driverClass";
+   /** A key for property that defines the user's password */
+   public static final String DBUNIT_PASSWORD = "dbunit.password";
+   /** A key for property that defines the username */
+   public static final String DBUNIT_USERNAME = "dbunit.username";
+   /** A key for property that defines the database schema */
+   public static final String DBUNIT_SCHEMA = "dbunit.schema";
 
-    /** A key for property that defines the connection url */
+   /** A key for property that defines the connection url */
 
-    public PropertiesBasedJdbcDatabaseTester()
-    {
-    	super( System.getProperty( DBUNIT_DRIVER_CLASS ), 
-    			System.getProperty( DBUNIT_CONNECTION_URL ), 
-    			System.getProperty( DBUNIT_USERNAME ), 
-    			System.getProperty( DBUNIT_PASSWORD ) );
-    	super.setSchema( System.getProperty( DBUNIT_SCHEMA ) );
-    }
+   public PropertiesBasedJdbcDatabaseTester()
+   {
+      super( null, null, null, null );
+   }
 
-    public String toString()
-    {
-    	StringBuffer sb = new StringBuffer();
-    	sb.append(getClass().getName()).append("[");
-    	sb.append(DBUNIT_DRIVER_CLASS).append("=").append(System.getProperty( DBUNIT_DRIVER_CLASS ));
-    	sb.append(", ").append(DBUNIT_CONNECTION_URL).append("=").append(System.getProperty( DBUNIT_CONNECTION_URL ));
-    	sb.append(", ").append(DBUNIT_USERNAME).append("=").append(System.getProperty( DBUNIT_USERNAME ));
-    	sb.append(", ").append(DBUNIT_PASSWORD).append("=").append("*******");
-    	sb.append(", ").append(DBUNIT_SCHEMA).append("=").append(System.getProperty( DBUNIT_SCHEMA ));
-    	sb.append("]");
-    	return sb.toString();
-    }
+   protected void initialize() throws Exception
+   {
+        logger.debug("initialize() - start");
+
+      setDriverClass( System.getProperty( DBUNIT_DRIVER_CLASS ) );
+      setConnectionUrl( System.getProperty( DBUNIT_CONNECTION_URL ) );
+      setUsername( System.getProperty( DBUNIT_USERNAME ) );
+      setPassword( System.getProperty( DBUNIT_PASSWORD ) );
+      setSchema( System.getProperty( DBUNIT_SCHEMA ) );
+      super.initialize();
+   }
 }
