@@ -54,8 +54,9 @@ import org.xml.sax.InputSource;
 
 /**
  * @author Manuel Laflamme
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Apr 3, 2004
- * @version $Revision$
  */
 public abstract class AbstractStep implements DbUnitTaskStep
 {
@@ -101,7 +102,7 @@ public abstract class AbstractStep implements DbUnitTaskStep
             // Retrieve the complete database if no tables or queries specified.
             if (tables.size() == 0)
             {
-            	logger.debug("Retrieving the whole database because now tables/queries have been specified");
+            	logger.debug("Retrieving the whole database because tables/queries have not been specified");
                 return connection.createDataSet();
             }
 

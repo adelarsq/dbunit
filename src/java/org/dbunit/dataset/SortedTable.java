@@ -36,7 +36,8 @@ import org.slf4j.LoggerFactory;
  * This implementation does not keep a separate copy of the decorated table data.
  *
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Feb 19, 2003
  */
 public class SortedTable extends AbstractTable
@@ -113,8 +114,8 @@ public class SortedTable extends AbstractTable
     }
 
     /**
-     * Sort the decorated table by its own columns order. All
-     * table columns will be used.
+     * Sort the decorated table by its own columns order which is defined by {@link ITable#getTableMetaData()}. 
+     * All table columns will be used.
      * @param table The decorated table
      * @throws DataSetException
      */
@@ -154,7 +155,8 @@ public class SortedTable extends AbstractTable
 
     private int getOriginalRowIndex(int row) throws DataSetException
     {
-        logger.debug("getOriginalRowIndex(row={}) - start", Integer.toString(row));
+    	if(logger.isDebugEnabled())
+    		logger.debug("getOriginalRowIndex(row={}) - start", Integer.toString(row));
 
         if (_indexes == null)
         {
@@ -193,7 +195,8 @@ public class SortedTable extends AbstractTable
      */
     public void setUseComparable(boolean useComparable)
     {
-        logger.debug("setUseComparable(useComparable={}) - start", Boolean.valueOf(useComparable));
+    	if(logger.isDebugEnabled())
+    		logger.debug("setUseComparable(useComparable={}) - start", Boolean.valueOf(useComparable));
         
         if(_indexes != null)
         {
@@ -377,7 +380,7 @@ public class SortedTable extends AbstractTable
 		        logger.debug("compare(column={}, value1={}, value2={}) - start", 
 		                new Object[]{column, value1, value2} );
 
-            // Default behaviour since ever
+            // Default behavior since ever
 			String stringValue1 = DataType.asString(value1);
 			String stringValue2 = DataType.asString(value2);
 			int result = stringValue1.compareTo(stringValue2);

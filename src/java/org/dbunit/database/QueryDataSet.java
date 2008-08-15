@@ -91,7 +91,9 @@ public class QueryDataSet extends AbstractDataSet
 
     protected ITableIterator createIterator(boolean reversed) throws DataSetException
     {
-        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
+    	if(logger.isDebugEnabled())
+    		logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
+    	
         List tableEntries = new ArrayList(_tableEntries);
         if (reversed)
         {
