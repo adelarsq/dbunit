@@ -44,6 +44,7 @@ public class AllTests extends TestSuite
         suite.addTest(new TestSuite(AssertionTest.class));
         suite.addTest(new TestSuite(DatabaseUnitExceptionTest.class));
         suite.addTest(new TestSuite(DatabaseProfileTest.class));
+        suite.addTest(new TestSuite(DatabaseTestCaseTest.class));
         return suite;
     }
 

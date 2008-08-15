@@ -21,6 +21,8 @@
 
 package org.dbunit.database;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.dbunit.AbstractDatabaseTest;
@@ -34,16 +36,24 @@ import org.dbunit.IDatabaseTester;
  */
 public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTest
 {
+	private String schema;
+	private DatabaseProfile profile;
 	
-    public AbstractDatabaseConnectionTest(String s)
+	public AbstractDatabaseConnectionTest(String s)
     {
         super(s);
     }
 
     
+	protected void setUp() throws Exception {
+		super.setUp();
+    	this.profile = super.getEnvironment().getProfile();
+		this.schema = this.profile.getSchema();
+	}
+
+
 	public final void testGetRowCount() throws Exception
     {
-    	System.out.println("1: " + _connection);
         assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("empty_table", null));
         assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("empty_table"));
 
@@ -57,8 +67,9 @@ public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTes
     {
     	DatabaseProfile profile = super.getEnvironment().getProfile();
     	String nonexistingSchema = profile.getSchema() + "_444_XYZ_TEST";
+    	this.schema = nonexistingSchema;
 
-    	IDatabaseTester dbTester = this.newDatabaseTester(nonexistingSchema);;
+    	IDatabaseTester dbTester = this.newDatabaseTester(nonexistingSchema);
     	try {
 			IDatabaseConnection dbConnection = dbTester.getConnection();
 			
@@ -81,7 +92,8 @@ public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTes
     public final void testGetRowCount_NoSchemaSpecified() throws Exception
     {
     	DatabaseProfile profile = super.getEnvironment().getProfile();
-    	IDatabaseTester dbTester = this.newDatabaseTester(null);
+    	this.schema = null;
+    	IDatabaseTester dbTester = this.newDatabaseTester(this.schema);
     	try {
 			IDatabaseConnection dbConnection = dbTester.getConnection();
 			
@@ -100,6 +112,23 @@ public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTes
     	tester.setSchema(schema);
     	return tester;
 	}
+
+
+	protected IDatabaseConnection getConnection() throws Exception {
+        String name = profile.getDriverClass();
+        Class.forName(name);
+        Connection connection = DriverManager.getConnection(
+                profile.getConnectionUrl(), profile.getUser(),
+                profile.getPassword());
+        _connection = new DatabaseConnection(connection,
+                profile.getSchema());
+		
+        IDatabaseConnection dbunitConnection = new DatabaseConnection(connection,
+                this.schema);
+        return dbunitConnection;
+	}
+    
+    
 
 }
 
