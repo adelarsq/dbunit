@@ -569,8 +569,30 @@ IDataSet dataSet = new FlatXmlDataSet(new File("src/xml/flatXmlTableTest.xml"), 
         </p>
       </answer>
     </faq>
+    
+    <faq id="systemTimeInTest">
+      <question>
+      Is there any way I can specify the current system time for my testcase?
+      </question>
+      <answer>
+        <p>
+          The simplest way is to use the ReplacementTable/ReplacementDataSet.
+          <source>
+            ITable actualTable = ... // Load actual table from database or somewhere else
+            ITable table = new XmlDataSet(new FileInputStream("myFile.xml")).getTable("TABLE");
+            ReplacementTable replacementTable = new ReplacementTable(table);
+            replacementTable.addReplacementObject("special-now", new java.util.Date(System.currentTimeMillis()));
+            Assertion.assertEquals(replacementTable, actualTable);
+          </source>
+          Every "special-now" column value from your XML-dataset will be replaced by the current systime represented by a java.util.Date object.
+        </p>
+      </answer>
+    </faq>
 
-  </part>  
+  </part>
+
+
+
   <part id="use">
     <title>Errors</title>
 
