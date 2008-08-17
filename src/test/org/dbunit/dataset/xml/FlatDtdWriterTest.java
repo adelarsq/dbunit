@@ -95,4 +95,35 @@ public class FlatDtdWriterTest extends TestCase
         assertEquals("output", expectedOutput, actualOutput);
     }
 
+    
+    public void testWriteChoiceModel_NoInputColumns() throws Exception
+    {
+        String expectedOutput =
+                "<!ELEMENT dataset (\n" +
+                "   (TABLE1|\n" +
+                "    TABLE2)*)>\n" +
+                "\n" +
+                "<!ELEMENT TABLE1 EMPTY>\n" +
+                "<!ATTLIST TABLE1\n" +
+                ">\n" +
+                "\n" +
+                "<!ELEMENT TABLE2 EMPTY>\n" +
+                "<!ATTLIST TABLE2\n" +
+                ">\n" +
+                "\n";
+
+        Column[] columns = new Column[0];
+
+        DefaultTable table1 = new DefaultTable("TABLE1", columns);
+        DefaultTable table2 = new DefaultTable("TABLE2", columns);
+
+        StringWriter stringWriter = new StringWriter();
+        FlatDtdWriter dtdWriter = new FlatDtdWriter(stringWriter);
+        dtdWriter.setContentModel(FlatDtdWriter.CHOICE);
+        dtdWriter.write(new DefaultDataSet(table1, table2));
+
+        String actualOutput = stringWriter.toString();
+        assertEquals("output", expectedOutput, actualOutput);
+    }
+
 }
