@@ -21,6 +21,7 @@
 package org.dbunit.dataset.xml;
 
 import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.stream.AbstractProducerTest;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.stream.MockDataSetConsumer;
@@ -29,6 +30,8 @@ import org.xml.sax.InputSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.StringReader;
+
+import junitx.framework.StringAssert;
 
 /**
  * @author Manuel Laflamme
@@ -103,6 +106,36 @@ public class FlatDtdProducerTest extends AbstractProducerTest
         consumer.verify();
     }
 
+    public void testChoicesModel_ElementDeclarationForTableMissing() throws Exception
+    {
+        // Setup consumer
+        MockDataSetConsumer consumer = new MockDataSetConsumer();
+//        consumer.addExpectedStartDataSet();
+//        consumer.addExpectedEmptyTableIgnoreColumns("TEST_TABLE");
+//        consumer.addExpectedEmptyTableIgnoreColumns("SECOND_TABLE");
+//        consumer.addExpectedEndDataSet();
+
+        // Setup producer
+        String dtdChoice = "<!ELEMENT dataset ( (TEST_TABLE|SECOND_TABLE)* )><!ELEMENT TEST_TABLE EMPTY>";
+        InputSource source = new InputSource(new StringReader(dtdChoice));
+        FlatDtdProducer producer = new FlatDtdProducer(source);
+        producer.setConsumer(consumer);
+
+        // Produce and verify consumer
+        try
+        {
+            producer.produce();
+            fail("Should not be able to produce the dataset from an incomplete DTD");
+        }
+        catch(DataSetException expected)
+        {
+            String expectedStartsWith = "ELEMENT/ATTRIBUTE declaration for '" + "SECOND_TABLE" + "' is missing. ";
+            StringAssert.assertStartsWith(expectedStartsWith, expected.getMessage());
+        }
+//        consumer.verify();
+    }
+
+    
     public void testAttrListBeforeParentElement() throws Exception
     {
         // Setup consumer

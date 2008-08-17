@@ -142,7 +142,14 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
         catch (SAXException e)
         {
             Exception exception = e.getException() == null ? e : e.getException();
-            throw new DataSetException(exception);
+            if(exception instanceof DataSetException)
+            {
+                throw (DataSetException)exception;
+            }
+            else
+            {
+                throw new DataSetException(exception);
+            }
         }
         catch (IOException e)
         {
@@ -254,8 +261,7 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
 
                     tableName = cleanupTableName(tableName);
 
-                    List columnList = (List)_columnListMap.get(tableName);
-                    Column[] columns = (Column[])columnList.toArray(new Column[0]);
+                    Column[] columns = getColumns(tableName);
 
                     _consumer.startTable(new DefaultTableMetaData(tableName, columns));
                     _consumer.endTable();
@@ -270,12 +276,25 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
         }
     }
     
+    private Column[] getColumns(String tableName) throws DataSetException 
+    {
+        List columnList = (List)_columnListMap.get(tableName);
+        if(columnList==null){
+            throw new DataSetException("ELEMENT/ATTRIBUTE declaration for '" + tableName + "' is missing. " +
+                    "Every table must have an element describing the table.");
+        }
+        Column[] columns = (Column[])columnList.toArray(new Column[0]);
+        return columns;
+    }
+
     protected String cleanupTableName(String tableName)
     {
         String cleaned = tableName;
+        // Remove beginning parenthesis.
         while (cleaned.startsWith("(")) {
             cleaned = cleaned.substring(1);
         }
+        // Remove ending parenthesis and occurrence operators
         while (cleaned.endsWith(")")
                 || cleaned.endsWith("*")
                 || cleaned.endsWith("?")

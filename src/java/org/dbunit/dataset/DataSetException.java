@@ -24,8 +24,11 @@ package org.dbunit.dataset;
 import org.dbunit.DatabaseUnitException;
 
 /**
+ * Thrown to indicate that a problem occurred with a dataset.
+ * 
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Feb 17, 2002
  */
 public class DataSetException extends DatabaseUnitException
