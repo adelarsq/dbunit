@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
@@ -154,8 +155,14 @@ public abstract class AbstractTableMetaData implements ITableMetaData
 	throws SQLException 
 	{
 		DatabaseConfig config = connection.getConfig();
-        IDataTypeFactory dataTypeFactory = (IDataTypeFactory)config.getProperty(
-                DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
+		Object factoryObj = config.getProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
+		if(!IDataTypeFactory.class.isAssignableFrom(factoryObj.getClass())) {
+		    String msg = "Invalid datatype factory configured. Class '" + 
+                        factoryObj.getClass() + "' does not implement '" + IDataTypeFactory.class + "'.";
+		    // TODO Would a "DatabaseUnitConfigurationException make more sense?
+		    throw new DatabaseUnitRuntimeException(msg);
+		}
+        IDataTypeFactory dataTypeFactory = (IDataTypeFactory)factoryObj;
         
     	// Validate, e.g. oracle metaData + oracleDataTypeFactory ==> OK
     	Connection jdbcConnection = connection.getConnection();

@@ -172,7 +172,7 @@ public class SortedTable extends AbstractTable
             }
             catch (DatabaseUnitRuntimeException e)
             {
-                throw (DataSetException)e.getException();
+                throw (DataSetException)e.getCause();
             }
 
             _indexes = indexes;
