@@ -214,6 +214,28 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
             assertEquals(expectedMsg, expected.getMessage());
         }
     }
+
+    public void testGetDataTypeFactory_InvalidDataTypeFactoryAsString() throws Exception
+    {
+        String tableName = "TEST_TABLE";
+        this._connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, "org.dbunit.ext.oracle.OracleDataTypeFactory");
+        DatabaseTableMetaData metadata = new DatabaseTableMetaData(tableName, this._connection);
+        try
+        {
+            metadata.getDataTypeFactory(_connection);
+            fail("Should not obtain datatype factory from object that does not implement corresponding interface");
+        }
+        catch(DatabaseUnitRuntimeException expected)
+        {
+            String expectedMsg = "Invalid datatype factory configured. Class 'class java.lang.String' " +
+                    "does not implement 'interface org.dbunit.dataset.datatype.IDataTypeFactory'." +
+                    " Ensure not to specify the fully qualified class name as String but the concrete " +
+                    "instance of the datatype factory (for example 'new OracleDataTypeFactory()').";
+            assertEquals(expectedMsg, expected.getMessage());
+        }
+    }
+
+
 }
 
 

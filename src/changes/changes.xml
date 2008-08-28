@@ -48,6 +48,7 @@
       <action dev="gommma" type="fix" issue="1144269" due-to="berni123">Types.BOOLEAN not recognized.</action>
       <action dev="gommma" type="add" issue="1448932" due-to="palsnagaraj">"compare" + "table" tag throw NoSuchTableException - added more information about the cause to the thrown exception.</action>
       <action dev="gommma" type="fix" issue="1339675" due-to="vanhill21">DTD Creation and Parsing - throw meaningful exception if DTD ELEMENT declaration is missing.</action>
+      <action dev="gommma" type="add" issue="2059253" due-to="kornstaedt">Added more information in case of a wrong configured DataTypeFactory.</action>
     </release>
     <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
       <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>

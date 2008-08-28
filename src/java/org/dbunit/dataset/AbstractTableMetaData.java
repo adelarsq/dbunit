@@ -159,6 +159,10 @@ public abstract class AbstractTableMetaData implements ITableMetaData
 		if(!IDataTypeFactory.class.isAssignableFrom(factoryObj.getClass())) {
 		    String msg = "Invalid datatype factory configured. Class '" + 
                         factoryObj.getClass() + "' does not implement '" + IDataTypeFactory.class + "'.";
+		    if(factoryObj instanceof String){
+		        msg += " Ensure not to specify the fully qualified class name as String but the concrete " +
+		        		"instance of the datatype factory (for example 'new OracleDataTypeFactory()').";
+		    }
 		    // TODO Would a "DatabaseUnitConfigurationException make more sense?
 		    throw new DatabaseUnitRuntimeException(msg);
 		}
