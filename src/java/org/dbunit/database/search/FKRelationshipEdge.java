@@ -24,10 +24,13 @@ import org.dbunit.util.search.Edge;
 
 
 /**
+ * 
+ * FIXME remove - duplicates {@link ForeignKeyRelationshipEdge}
  * @author Felipe Leme
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
  * @since 2.2.0
+ * @deprecated this class duplicates {@link ForeignKeyRelationshipEdge} and should be removed
  */
 public class FKRelationshipEdge extends Edge {
 
