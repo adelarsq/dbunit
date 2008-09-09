@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-    <release version="2.3.0-SNAPSHOT" date="Jun 23, 2008" description="some API changes, Features added, Bugfixes, Performance improvements in assertions. See migration guide (navi bar) for additional help">
+    <release version="2.3.0" date="Sep 09, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>
       <action dev="rlogiacco" type="fix" issue="1981449" due-to="gommma">Patch for Bug #1421590 "Problem in data import if all the columns are not populated"</action>
       <action dev="slecallonnec" type="fix" issue="1975499" due-to="gommma">NoSuchColumnException now thrown when column name does not exist.</action>
