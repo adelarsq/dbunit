@@ -26,6 +26,10 @@
   <section name="News">
       <table border="1">
         <tr>
+          <td>2008-09-11</td>
+          <td>We all are so proud to announce the 2.3.0 release is finally out! Have a look at the <a href="changes-report.html#a2.3.0">changes</a>.</td>
+        </tr>
+        <tr>
           <td>2008-06-08</td>
           <td>Matthias Gommeringer joined the project team. Welcome Matthias!</td>
         </tr>
