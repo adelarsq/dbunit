@@ -82,5 +82,37 @@ public class XmlWriterTest extends TestCase
 			// all right
 		}
 	}
+	
+	public void testWriteNestedCDATAWithoutSurrounder() throws Exception
+	{
+	    String text = "<![CDATA[Text that itself is in a CDATA section]]>";
+        Writer writer = new StringWriter();
+        XmlWriter xmlWriter = new XmlWriter(writer);
+        xmlWriter.writeElement("COLUMN1");
+        xmlWriter.writeCData(text);
+        xmlWriter.endElement();
+        xmlWriter.close();
+        String actualXml = writer.toString();
+        
+        // Input should be equal to output because the text already starts with a CDATA section
+        assertEquals("<COLUMN1>" + text + "</COLUMN1>\n", actualXml);
+	}
+
+	public void testWriteNestedCDATAWithSurrounder() throws Exception
+	{
+	    String text = "<myXmlText>"+XmlWriter.CDATA_START+"Text that itself is in a CDATA section"+XmlWriter.CDATA_END+"</myXmlText>";
+        String expectedResultText = "<myXmlText>"+XmlWriter.CDATA_START+"Text that itself is in a CDATA section]]"+XmlWriter.CDATA_END+XmlWriter.CDATA_START+"></myXmlText>";
+	    Writer writer = new StringWriter();
+	    XmlWriter xmlWriter = new XmlWriter(writer);
+	    xmlWriter.writeElement("COLUMN1");
+	    xmlWriter.writeCData(text);
+	    xmlWriter.endElement();
+	    xmlWriter.close();
+	    String actualXml = writer.toString();
+
+	    String expectedXml = "<COLUMN1>" + XmlWriter.CDATA_START + expectedResultText + XmlWriter.CDATA_END + "</COLUMN1>\n";
+	    assertEquals(expectedXml, actualXml);
+
+	}
 
 }

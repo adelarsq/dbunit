@@ -74,6 +74,8 @@ import org.slf4j.LoggerFactory;
  */
 public class XmlWriter
 {
+    public static final String CDATA_START = "<![CDATA[";
+    public static final String CDATA_END = "]]>";
 
     /**
      * Logger for this class
@@ -434,11 +436,26 @@ public class XmlWriter
         logger.debug("writeCData(cdata={}) - start", cdata);
 
         closeOpeningTag();
+        
+        boolean hasAlreadyEnclosingCdata = cdata.startsWith(CDATA_START) && cdata.endsWith(CDATA_END);
+        
+        // There may already be CDATA sections inside the data.
+        // But CDATA sections can't be nested - can't have ]]> inside a CDATA section. 
+        // (See http://www.w3.org/TR/REC-xml/#NT-CDStart in the W3C specs)
+        // The solutions is to replace any occurrence of "]]>" by "]]]]><![CDATA[>",
+        // so that the top CDATA section is split into many valid CDATA sections (you
+        // can look at the "]]]]>" as if it was an escape sequence for "]]>").
+        if(!hasAlreadyEnclosingCdata) {
+            cdata = cdata.replaceAll(CDATA_END, "]]]]><![CDATA[>");
+        }
+        
         this.empty = false;
         this.wroteText = true;
-        this.out.write("<![CDATA[");
+        if(!hasAlreadyEnclosingCdata)
+            this.out.write(CDATA_START);
         this.out.write(cdata);
-        this.out.write("]]>");
+        if(!hasAlreadyEnclosingCdata)
+            this.out.write(CDATA_END);
         return this;
     }
 

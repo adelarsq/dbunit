@@ -132,4 +132,31 @@ public class XmlDataSetWriterTest extends TestCase
         assertEquals("output", expectedOutput, actualOutput);
     }
     
+    public void testWriteWithCData() throws Exception
+    {
+        // Setup
+        Column[] columns = new Column[]{
+                new Column("COL1", DataType.UNKNOWN)
+        };
+        DefaultTable table = new DefaultTable("TABLE1", columns);
+        table.addRow(new Object[]{"<myXmlData><![CDATA[Data that itself is in a CDATA section]]></myXmlData>"});
+        DefaultDataSet dataSet = new DefaultDataSet(table);
+        
+        // Write the XML
+        StringWriter stringWriter = new StringWriter();
+        XmlDataSetWriter xmlWriter = new XmlDataSetWriter(stringWriter);
+        xmlWriter.write(dataSet);
+        
+        String actualOutput = stringWriter.toString();
+        String expectedOutput = "<dataset>\n"+
+                                    "  <table name=\"TABLE1\">\n" +
+                                    "    <column>COL1</column>\n"+
+                                    "    <row>\n"+
+                                    "      <value><![CDATA[<myXmlData><![CDATA[Data that itself is in a CDATA section]]]]><![CDATA[></myXmlData>]]></value>\n"+
+                                    "    </row>\n"+
+                                    "  </table>\n"+
+                                "</dataset>\n";
+        assertEquals("output", expectedOutput, actualOutput);
+        
+    }
 }
