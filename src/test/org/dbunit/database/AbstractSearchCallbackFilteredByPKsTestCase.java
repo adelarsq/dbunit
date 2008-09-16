@@ -1,24 +1,18 @@
 package org.dbunit.database;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import junitx.framework.ListAssert;
-
-import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.AbstractHSQLTestCase;
+import org.dbunit.database.PrimaryKeyFilter.PkTableMap;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
-
-import org.dbunit.AbstractHSQLTestCase;
 import org.dbunit.util.CollectionsHelper;
 import org.dbunit.util.search.SearchException;
 
@@ -26,8 +20,8 @@ public abstract class AbstractSearchCallbackFilteredByPKsTestCase extends Abstra
 
   private static final char FIRST_TABLE = 'A';
 
-  private Map fInput = new HashMap();
-  private Map fOutput = new HashMap();  
+  private PkTableMap fInput = new PkTableMap();
+  private PkTableMap fOutput = new PkTableMap();  
   
   public AbstractSearchCallbackFilteredByPKsTestCase(String testName, String sqlFile) {
     super(testName, sqlFile);
@@ -41,13 +35,16 @@ public abstract class AbstractSearchCallbackFilteredByPKsTestCase extends Abstra
     return allDataSet;
   }
     
-  protected  void addInput(String tableName, String[] ids) {
-    Set idsSet = CollectionsHelper.objectsToSet( ids );
+  protected void addInput(String tableName, String[] ids) {
+//    Set idsSet = CollectionsHelper.objectsToSet( ids );
+    SortedSet idsSet = new TreeSet(Arrays.asList(ids));
     this.fInput.put( tableName, idsSet );
   }
-  protected  void addOutput(String tableName, String[] ids) {
-    List idsList = Arrays.asList( ids );
-    this.fOutput.put( tableName, idsList );
+  protected void addOutput(String tableName, String[] ids) {
+//    List idsList = Arrays.asList( ids );
+//      Set idsSet = CollectionsHelper.objectsToSet( ids );
+      SortedSet idsSet = new TreeSet(Arrays.asList(ids));
+    this.fOutput.put( tableName, idsSet );
   }
   
   protected abstract IDataSet getDataset() throws SQLException, SearchException; 
@@ -56,7 +53,7 @@ public abstract class AbstractSearchCallbackFilteredByPKsTestCase extends Abstra
     IDataSet dataset = getDataset();
     assertNotNull( dataset );
     
-    // primeiro, checa se somente as tabelas corretas foram geradas
+    // first, check if only the correct tables had been generated
     String[] outputTables = dataset.getTableNames();
     assertTablesSize( outputTables );
     assertTablesName( outputTables );
@@ -67,16 +64,16 @@ public abstract class AbstractSearchCallbackFilteredByPKsTestCase extends Abstra
     int expectedSize = this.fOutput.size();
     int actualSize = actualTables.length;
     if ( expectedSize != actualSize ) {
-      super.logger.error( "Tabelas esperadas: " + dump(this.fOutput.keySet()) );
-      super.logger.error( "Tabelas retornadas: " + dump(actualTables) );
-      fail( "numero de tabelas retornadas nao bateu: " + actualSize + " em vez de " + expectedSize );
+      super.logger.error( "Expected tables: " + dump(this.fOutput.getTableNames()) );
+      super.logger.error( "Actual tables: " + dump(actualTables) );
+      fail( "I number of returned tables did not match: " + actualSize + " instead of " + expectedSize );
     }    
   }
   protected void assertTablesName(String[] outputTables) {
-    Set expectedTables = new HashSet(this.fOutput.keySet());
+    Set expectedTables = CollectionsHelper.objectsToSet(this.fOutput.getTableNames());
     Set notExpectedTables = new HashSet();
     boolean ok = true;
-    // primeiro ve quais estao faltando
+    // first check if expected tables are lacking or nonExpected tables were found
     for (int i = 0; i < outputTables.length; i++) {
       String table = outputTables[i];
       if ( expectedTables.contains(table) ) {
@@ -87,14 +84,14 @@ public abstract class AbstractSearchCallbackFilteredByPKsTestCase extends Abstra
     }
     if ( ! notExpectedTables.isEmpty() ) {
       ok = false;
-      super.logger.error( "Tabelas retornadas nao esperadas: " + dump(notExpectedTables) );
+      super.logger.error( "Returned tables not waited: " + dump(notExpectedTables) );
     }
     if ( ! expectedTables.isEmpty() ) {
       ok = false;
-      super.logger.error( "Tabelas esperadas nao retornadas: " + dump(expectedTables) );
+      super.logger.error( "Waited tables not returned: " + dump(expectedTables) );
     }
     if ( ! ok ) {
-      fail( "Tabelas retornadas nao batem com a expectativa; check o error output" );
+      fail( "Returned tables do not match the expectation; check error output" );
     }
   }
   
@@ -104,8 +101,8 @@ public abstract class AbstractSearchCallbackFilteredByPKsTestCase extends Abstra
       ITable table = iterator.getTable();
       String tableName = table.getTableMetaData().getTableName();
       String idField = "PK" + tableName;
-      List expectedIds = (List) this.fOutput.get( tableName );
-      List actualIds = new ArrayList();
+      Set expectedIds = this.fOutput.get( tableName );
+      Set actualIds = new HashSet();
       int rowCount = table.getRowCount();
       for( int row=0; row<rowCount; row++ ) {
         String id = (String) table.getValue( row, idField );
@@ -114,9 +111,9 @@ public abstract class AbstractSearchCallbackFilteredByPKsTestCase extends Abstra
           super.logger.debug( "T:" + tableName + " row: " + row + " id: " + id );      
         }
       }
-      Collections.sort( expectedIds );
-      Collections.sort( actualIds );
-      ListAssert.assertEquals( "ids para tabela " + tableName + " nao batem", expectedIds, actualIds );
+//      Collections.sort( expectedIds );
+//      Collections.sort( actualIds );
+      assertEquals( "ids of table " + tableName + " do not match", expectedIds, actualIds );
     }
   }
   
@@ -127,19 +124,19 @@ public abstract class AbstractSearchCallbackFilteredByPKsTestCase extends Abstra
     for (short i = 0; i < sizes.length; i++) {
       char table = (char) (FIRST_TABLE + i);
       if ( super.logger.isDebugEnabled() ) {
-        super.logger.debug( "Obtendo tabela " + table );
+        super.logger.debug( "Getting table " + table );
       }
       ITable itable = allDataSet.getTable( ""+table );
-      assertNotNull( "nao encontrou tabela " + table, itable );
-      assertEquals( "tamanho nao bateu para tabela " + table, sizes[i], itable.getRowCount());
+      assertNotNull( "did not find table " + table, itable );
+      assertEquals( "size did not match for table " + table, sizes[i], itable.getRowCount());
     }
   }
   
-  protected Map getInput() {
+  protected PkTableMap getInput() {
     return this.fInput;
   }
 
-  protected Map getOutput() {
+  protected PkTableMap getOutput() {
     return this.fOutput;
   }
   

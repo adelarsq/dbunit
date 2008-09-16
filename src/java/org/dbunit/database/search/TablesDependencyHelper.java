@@ -20,22 +20,20 @@
  */
 package org.dbunit.database.search;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.set.ListOrderedSet;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.PrimaryKeyFilter.PkTableMap;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
-
 import org.dbunit.util.CollectionsHelper;
 import org.dbunit.util.search.DepthFirstSearch;
 import org.dbunit.util.search.SearchException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -43,7 +41,8 @@ import org.dbunit.util.search.SearchException;
  * among tables.  
  * 
  * @author Felipe Leme (dbunit@felipeal.net)
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Aug 26, 2005
  */
 public class TablesDependencyHelper {
@@ -86,7 +85,7 @@ public class TablesDependencyHelper {
         ImportedKeysSearchCallback callback = new ImportedKeysSearchCallback(connection);
         DepthFirstSearch search = new DepthFirstSearch();
         Set tables = search.search( rootTables, callback );
-        return (String[]) CollectionsHelper.setToStrings( tables );
+        return CollectionsHelper.setToStrings( tables );
   }
   
   /**
@@ -121,7 +120,7 @@ public class TablesDependencyHelper {
 		ImportedAndExportedKeysSearchCallback callback = new ImportedAndExportedKeysSearchCallback(connection);
 		DepthFirstSearch search = new DepthFirstSearch();
 		Set tables = search.search(rootTables, callback);
-		return (String[]) CollectionsHelper.setToStrings(tables);
+		return CollectionsHelper.setToStrings(tables);
 	}
 
   // TODO: javadoc (and unit tests) from down here...
@@ -134,19 +133,19 @@ public class TablesDependencyHelper {
 					new Object[] { connection, rootTable, allowedIds });
 		}
 
-		HashMap map = new HashMap(1);
-		map.put(rootTable, allowedIds);
+		PkTableMap map = new PkTableMap();
+		map.addAll(rootTable, allowedIds);
 		return getDataset(connection, map);
 	}
   
-  public static IDataSet getDataset( IDatabaseConnection connection, Map rootTables ) throws SearchException, SQLException {
+  public static IDataSet getDataset( IDatabaseConnection connection, PkTableMap rootTables ) throws SearchException, SQLException {
         logger.debug("getDataset(connection={}, rootTables={}) - start", connection, rootTables);
 
     ImportedKeysSearchCallbackFilteredByPKs callback = new ImportedKeysSearchCallbackFilteredByPKs(connection, rootTables);
     ITableFilter filter = callback.getFilter();
     DepthFirstSearch search = new DepthFirstSearch();
-    String[] tableNames = CollectionsHelper.setToStrings( rootTables.keySet() ); 
-    Set tmpTables = search.search( tableNames, callback );
+    String[] tableNames = rootTables.getTableNames(); 
+    ListOrderedSet tmpTables = search.search( tableNames, callback );
     String[] dependentTables  = CollectionsHelper.setToStrings( tmpTables );
     IDataSet tmpDataset = connection.createDataSet( dependentTables );
     FilteredDataSet dataset = new FilteredDataSet(filter, tmpDataset);
@@ -160,12 +159,12 @@ public class TablesDependencyHelper {
 				  new Object[]{ connection, rootTable, allowedPKs });
 	  }
 
-    HashMap map = new HashMap(1);
-    map.put( rootTable, allowedPKs );
+	  PkTableMap map = new PkTableMap();
+    map.addAll( rootTable, allowedPKs );
     return getAllDataset( connection, map );
   }
   
-  public static IDataSet getAllDataset( IDatabaseConnection connection, Map rootTables ) throws SearchException, SQLException {
+  public static IDataSet getAllDataset( IDatabaseConnection connection, PkTableMap rootTables ) throws SearchException, SQLException {
 	  if (logger.isDebugEnabled())
 	  {
 		  logger.debug("getAllDataset(connection={}, rootTables={}) - start", connection, rootTables);
@@ -174,7 +173,7 @@ public class TablesDependencyHelper {
     ImportedAndExportedKeysSearchCallbackFilteredByPKs callback = new ImportedAndExportedKeysSearchCallbackFilteredByPKs(connection, rootTables);    
     ITableFilter filter = callback.getFilter();
     DepthFirstSearch search = new DepthFirstSearch();
-    String[] tableNames = CollectionsHelper.setToStrings( rootTables.keySet() ); 
+    String[] tableNames = rootTables.getTableNames(); 
     Set tmpTables = search.search( tableNames, callback );
     String[] dependentTables  = CollectionsHelper.setToStrings( tmpTables );
     IDataSet tmpDataset = connection.createDataSet( dependentTables );

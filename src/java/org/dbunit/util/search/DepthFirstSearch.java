@@ -52,7 +52,7 @@ public class DepthFirstSearch implements ISearchAlgorithm {
   protected final Logger logger = LoggerFactory.getLogger(getClass());
   
   // result of the search
-  private Set result;
+  private ListOrderedSet result;
   
   // input of the search
   private Set nodesFrom;
@@ -65,8 +65,9 @@ public class DepthFirstSearch implements ISearchAlgorithm {
 
   /**
    * Alternative option to search() that takes an array of nodes as input (instead of a Set)
+   * @see ISearchAlgorithm
    */
-  public Set search(Object[] nodesFrom, ISearchCallback callback)
+  public ListOrderedSet search(Object[] nodesFrom, ISearchCallback callback)
       throws SearchException {
       if(logger.isDebugEnabled())
           logger.debug("search(nodesFrom={}, callback={}) - start", nodesFrom, callback);
@@ -77,7 +78,7 @@ public class DepthFirstSearch implements ISearchAlgorithm {
   /**
    * @see ISearchAlgorithm
    */
-  public Set search(Set nodesFrom, ISearchCallback callback)
+  public ListOrderedSet search(Set nodesFrom, ISearchCallback callback)
       throws SearchException {
       if(logger.isDebugEnabled())
           logger.debug("search(nodesFrom={}, callback={}) - start", nodesFrom, callback);
@@ -90,7 +91,7 @@ public class DepthFirstSearch implements ISearchAlgorithm {
     }
 
     // set of tables that will be returned (i.e, the declared tables and its
-    // depedencies)
+    // dependencies)
     this.result = new ListOrderedSet();
 
     // callback used to help the search

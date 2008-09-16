@@ -21,17 +21,16 @@
 
 package org.dbunit.database.search;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.ResultSet;
-import java.util.Map;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.PrimaryKeyFilter;
+import org.dbunit.database.PrimaryKeyFilter.PkTableMap;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.util.search.IEdge;
 import org.dbunit.util.search.SearchException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Extension of the ImportedAndExportedKeysSearchCallback, where each new edge is 
@@ -47,7 +46,7 @@ public class ImportedAndExportedKeysSearchCallbackFilteredByPKs extends Imported
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger	logger	= LoggerFactory.getLogger(ImportedAndExportedKeysSearchCallbackFilteredByPKs.class);
+	private static final Logger	logger = LoggerFactory.getLogger(ImportedAndExportedKeysSearchCallbackFilteredByPKs.class);
 
 	// primary key filter associated with the call back
 	private final PrimaryKeyFilter pksFilter;
@@ -62,7 +61,7 @@ public class ImportedAndExportedKeysSearchCallbackFilteredByPKs extends Imported
 	 *            name of a table; value is a Set with allowed primary keys for
 	 *            that table)
 	 */
-	public ImportedAndExportedKeysSearchCallbackFilteredByPKs(IDatabaseConnection connection, Map allowedPKs)
+	public ImportedAndExportedKeysSearchCallbackFilteredByPKs(IDatabaseConnection connection, PkTableMap allowedPKs)
 	{
 		super(connection);
 		this.pksFilter = new PrimaryKeyFilter(connection, allowedPKs, true);

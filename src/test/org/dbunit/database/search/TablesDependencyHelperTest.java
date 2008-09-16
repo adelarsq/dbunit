@@ -23,6 +23,7 @@ package org.dbunit.database.search;
 import java.io.File;
 import java.sql.Connection;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 import junit.framework.TestCase;
 import junitx.framework.ArrayAssert;
@@ -30,16 +31,17 @@ import junitx.framework.ArrayAssert;
 import org.dbunit.HypersonicEnvironment;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.PrimaryKeyFilter.PkTableMap;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.util.search.SearchException;
 
-/**  
+/**
  * @author Felipe Leme (dbunit@felipeal.net)
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Aug 28, 2005
  */
-
 public class TablesDependencyHelperTest extends TestCase {
 
   
@@ -162,31 +164,30 @@ public class TablesDependencyHelperTest extends TestCase {
         }
     }
 
-    
-    
-// TODO The order gets lost on they way because of the conversion between Map and Array
-//  public void testGetDatasetFromManyTables() throws Exception {    
-//  setUp( ImportNodesFilterSearchCallbackTest.SQL_FILE );    
-//  String[][] allInput = ImportNodesFilterSearchCallbackTest.COMPOUND_INPUT;
-//  String[][] allExpectedOutput = ImportNodesFilterSearchCallbackTest.COMPOUND_OUTPUT;
-//  for (int i = 0; i < allInput.length; i++) {
-//      String[] input = allInput[i];
-//      HashMap inputMap = new HashMap();
-//      for (int j = 0; j < input.length; j++) {
-//          inputMap.put(input[j], new HashSet());
-//      }
-//      
-//      String[] expectedOutput = allExpectedOutput[i];
-//      IDataSet actualOutput = TablesDependencyHelper.getDataset( this.connection, inputMap);
-//      String[] actualOutputArray = actualOutput.getTableNames();
-//      ArrayAssert.assertEquals( "output didn't match for i=" + i, expectedOutput, actualOutputArray );
-//  }           
-//}
+    /**
+     * Ensure the order is not lost on the way because of the conversion between Map and Array
+     * @throws Exception
+     */
+    public void testGetDatasetFromManyTables() throws Exception 
+    {    
+        setUp( ImportNodesFilterSearchCallbackTest.SQL_FILE );    
+        String[][] allInput = ImportNodesFilterSearchCallbackTest.COMPOUND_INPUT;
+        String[][] allExpectedOutput = ImportNodesFilterSearchCallbackTest.COMPOUND_OUTPUT;
+        for (int i = 0; i < allInput.length; i++) {
+            String[] input = allInput[i];
+            PkTableMap inputMap = new PkTableMap();
+            for (int j = 0; j < input.length; j++) {
+                inputMap.put(input[j], new TreeSet());
+            }
+
+            String[] expectedOutput = allExpectedOutput[i];
+            IDataSet actualOutput = TablesDependencyHelper.getDataset( this.connection, inputMap);
+            String[] actualOutputArray = actualOutput.getTableNames();
+            ArrayAssert.assertEquals( "output didn't match for i=" + i, expectedOutput, actualOutputArray );
+        }           
+    }
 
 
-  // ImportAndExportKeysSearchCallbackOwnFileTest
-  
-  
-  
+    // TODO ImportAndExportKeysSearchCallbackOwnFileTest
 
 }

@@ -23,8 +23,10 @@ package org.dbunit.util.search;
 
 import java.util.Set;
 
+import org.apache.commons.collections.set.ListOrderedSet;
+
 /**
- * Interface representing an algorithm that searchs a graph.
+ * Interface representing an algorithm that searches a graph.
  * 
  * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
@@ -41,6 +43,6 @@ public interface ISearchAlgorithm {
    * @return all nodes, in the right dependent order (like a LinkedHashSet)
    * @throws Exception exception wrapper
    */
-  Set search(Set nodesFrom, ISearchCallback callback) throws SearchException;
+    ListOrderedSet search(Set nodesFrom, ISearchCallback callback) throws SearchException;
 
 }

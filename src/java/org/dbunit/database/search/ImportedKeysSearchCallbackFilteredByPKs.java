@@ -21,17 +21,16 @@
 
 package org.dbunit.database.search;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.ResultSet;
-import java.util.Map;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.PrimaryKeyFilter;
+import org.dbunit.database.PrimaryKeyFilter.PkTableMap;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.util.search.IEdge;
 import org.dbunit.util.search.SearchException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Extension of the ImportedKeysSearchCallback, where each new edge is added to a 
@@ -56,7 +55,7 @@ public class ImportedKeysSearchCallbackFilteredByPKs extends ImportedKeysSearchC
    * @param allowedPKs map of allowed rows, based on the primary keys (key is the name
    * of a table; value is a Set with allowed primary keys for that table)
    */
-  public ImportedKeysSearchCallbackFilteredByPKs(IDatabaseConnection connection, Map allowedPKs) {
+  public ImportedKeysSearchCallbackFilteredByPKs(IDatabaseConnection connection, PkTableMap allowedPKs) {
     super(connection);
     this.pksFilter = new PrimaryKeyFilter(connection, allowedPKs, false);
   }
