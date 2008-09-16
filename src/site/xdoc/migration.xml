@@ -6,7 +6,30 @@
 
     <h2>Migration guide</h2>
         <p>To migrate from an older DbUnit release to a newer one you can find some useful information here.</p>
-        <p>Currently there is are no migration tips available here</p>
+        
+<!--    <subsection name="2.3.x to 2.4.x">
+      <p>There have been major changes to the API from 2.3.x to 3.0.x. These versions are not source compatible.</p>
+      <table border="1">
+        <tr>
+          <th>Tracker #</th>
+          <th>Affects</th>
+          <th>Migration</th>
+          <th>Background information</th>
+        </tr>
+
+        <tr> 
+          <td>2023994</td>
+          <td><code>org.dbunit.DatabaseTestCase</code></td>
+          <td>For a simple migration the old implementation is still available via org.dbunit.classic.DatabaseTestCase.</td>
+          <td>The method getConnection() is now final and the master object for retrieving a connection is the IDatabaseTester.
+          It is created (also in the pre 2.3 releases) via the newDatabaseTester() method and provides the database connection
+          via getConnection. The reason for this change is firstly to provide a consistent access to the database connection
+          and secondly to allow the user to easily configure dbunit properties by overriding the method setUpConnectionConfig(DatabaseConfig databaseConfig).
+          </td>
+        </tr>
+    </subsection>
+-->
+
 
     <subsection name="2.2.x to 2.3.x">
       <p>There have been some smaller changes to the API from 2.2.x to 2.3.x with the effect that those versions are not source compatible.</p>
@@ -17,17 +40,7 @@
           <th>Migration</th>
           <th>Background information</th>
         </tr>
-<!--        <tr> 
-          <td>2023994</td>
-          <td><code>org.dbunit.DatabaseTestCase</code></td>
-          <td>For a simple migration the old implementation is still available via org.dbunit.classic.DatabaseTestCase.</td>
-          <td>The method getConnection() is now final and the master object for retrieving a connection is the IDatabaseTester.
-          It is created (also in the pre 2.3 releases) via the newDatabaseTester() method and provides the database connection
-          via getConnection. The reason for this change is firstly to provide a consistent access to the database connection
-          and secondly to allow the user to easily configure dbunit properties by overriding the method setUpConnectionConfig(DatabaseConfig databaseConfig).
-          </td>
-        </tr>
--->
+
         <tr>
           <td>1993243</td>
           <td><code>org.dbunit.dataset.ITableMetaData.getColumnIndex()</code></td>
@@ -50,6 +63,7 @@
         </tr>
       </table>
     </subsection>
+
 
 </section>
 </body>
