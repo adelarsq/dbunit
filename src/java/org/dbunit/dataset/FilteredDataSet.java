@@ -53,7 +53,7 @@ public class FilteredDataSet extends AbstractDataSet
     /**
      * Creates a FilteredDataSet that decorates the specified dataset and
      * exposes only the specified tables using {@link SequenceTableFilter} as
-     * filtering startegy.
+     * filtering strategy.
      */
     public FilteredDataSet(String[] tableNames, IDataSet dataSet)
     {
