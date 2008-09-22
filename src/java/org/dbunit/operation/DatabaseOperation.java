@@ -44,7 +44,13 @@ public abstract class DatabaseOperation
     public static final DatabaseOperation DELETE_ALL = new DeleteAllOperation();
     public static final DatabaseOperation TRUNCATE_TABLE = new TruncateTableOperation();
     public static final DatabaseOperation CLEAN_INSERT = new CompositeOperation(
-            DELETE_ALL, INSERT);
+            DELETE_ALL, INSERT);    
+    public static final DatabaseOperation TRANSACTION(DatabaseOperation operation) {
+      return new TransactionOperation(operation);
+    }
+    public static final DatabaseOperation CLOSE_CONNECTION(DatabaseOperation operation) {
+      return new CloseConnectionOperation(operation);
+    }
 
     /**
      * Executes this operation on the specified database using the specified
