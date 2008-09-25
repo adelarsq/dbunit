@@ -107,7 +107,7 @@ public abstract class AbstractResultSetTable extends AbstractTable
         DatabaseConfig config = connection.getConfig();
         Integer fetchSize = (Integer)config.getProperty(DatabaseConfig.PROPERTY_FETCH_SIZE);
         stmt.setFetchSize(fetchSize.intValue());
-        logger.info("Statement fetch size set to {}",fetchSize);
+        logger.debug("Statement fetch size set to {}",fetchSize);
         return stmt;
 	}
 
