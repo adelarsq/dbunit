@@ -57,7 +57,8 @@ public class OracleXMLTypeDataType extends BlobDataType
             Method mGetBytes = cOPAQUE.getMethod("getBytes", null);
 
             // cast resultSet to an OracleResultSet
-            Object ors = cOracleResultSet.cast(resultSet);
+//            Object ors = cOracleResultSet.cast(resultSet); // TODO activate this with java 1.5
+            Object ors = resultSet;
 
             // call ors.getOPAQUE(column)
             Object opaque = mGetOPAQUE.invoke(ors, new Object[]{ new Integer(column) });
@@ -113,7 +114,8 @@ public class OracleXMLTypeDataType extends BlobDataType
             Method mSetOPAQUE = cOraclePreparedStatement.getMethod("setOPAQUE", new Class[]{ Integer.TYPE, cOPAQUE });
 
             // Cast statement to OraclePreparedStatement
-            Object oraclePreparedStatement = cOraclePreparedStatement.cast(statement);
+//            Object oraclePreparedStatement = cOraclePreparedStatement.cast(statement); // TODO activate this with java 1.5
+            Object oraclePreparedStatement = statement;
 
             // Create the OpaqueDescriptor for type SYS.XMLTYPE
             Object opaqueDescriptor = mCreateDescriptor.invoke(null, new Object[]{ "SYS.XMLTYPE", statement.getConnection() });
