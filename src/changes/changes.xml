@@ -11,6 +11,7 @@
       <action dev="felipeal" type="add" issue="2122413">Added "constants" for DatabaseOperation wrappers</action>
       <action dev="gommma" type="update">ISearchAlgorithm.search returns strongly typed ListOrderedSet instead of a normal Set so that TableDependencyHelper can return tables in correct order. API change.</action>
       <action dev="gommma" type="fix" issue="1628105" due-to="ozonobon">XmlWriter can't write nested CDATA sections</action>
+      <action dev="gommma" type="fix" issue="1464982" due-to="woollybarr">XMLType Support for Oracle - Again</action>
     </release>
     <release version="2.3.0" date="Sep 11, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>

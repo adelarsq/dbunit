@@ -47,6 +47,8 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
     public static final DataType ORACLE_BLOB = new OracleBlobDataType();
     public static final DataType ORACLE_CLOB = new OracleClobDataType();
     public static final DataType ORACLE_NCLOB = new OracleNClobDataType();
+    public static final DataType ORACLE_XMLTYPE = new OracleXMLTypeDataType();
+    
     public static final DataType LONG_RAW = new BinaryStreamDataType(
             "LONG RAW", Types.LONGVARBINARY);
 
@@ -65,6 +67,12 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
         if (sqlTypeName.startsWith("TIMESTAMP"))
         {
             return DataType.TIMESTAMP;
+        }
+
+        // XMLTYPE
+        if ("XMLTYPE".equals(sqlTypeName))
+        {
+            return ORACLE_XMLTYPE;
         }
 
         // BLOB

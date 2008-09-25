@@ -173,11 +173,21 @@ public abstract class AbstractDataType extends DataType
     protected final Class loadClass(String clazz, Connection connection) throws ClassNotFoundException
     {
         ClassLoader connectionClassLoader = connection.getClass().getClassLoader();
-        Class loadedClass = connectionClassLoader.loadClass(clazz);
-        return loadedClass;
+        return this.loadClass(clazz, connectionClassLoader);
     }
     
-    
+    /**
+     * @param clazz The fully qualified name of the class to be loaded
+     * @param connection The classLoader to be used to load the given class
+     * @return The loaded class
+     * @throws ClassNotFoundException
+     */
+    protected final Class loadClass(String clazz, ClassLoader classLoader) throws ClassNotFoundException
+    {
+        Class loadedClass = classLoader.loadClass(clazz);
+        return loadedClass;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // Object class
 
