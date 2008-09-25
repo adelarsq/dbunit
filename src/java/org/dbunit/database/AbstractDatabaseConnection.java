@@ -85,6 +85,19 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         ForwardOnlyResultSetTable rsTable = new ForwardOnlyResultSetTable(resultName, sql, this);
         return new CachedResultSetTable(rsTable);
     }
+    
+    public ITable createTable(String tableName) throws DataSetException,
+            SQLException 
+    {
+        logger.debug("createTable(tableName={}) - start", tableName);
+
+        if (tableName == null) {
+            throw new NullPointerException("The parameter 'tableName' must not be null");
+        }
+        
+        String sql = "select * from " + tableName; // TODO Think about QualifiedTableNames here - needed or not?
+        return this.createQueryTable(tableName, sql);
+    }
 
     public int getRowCount(String tableName) throws SQLException
     {

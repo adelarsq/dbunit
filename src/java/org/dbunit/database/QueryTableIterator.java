@@ -139,8 +139,7 @@ public class QueryTableIterator implements ITableIterator
                 // No query specified, use table from dataset
                 if (entry.getQuery() == null)
                 {
-                    IDataSet dataSet = _connection.createDataSet();
-                    _currentTable = (IResultSetTable)dataSet.getTable(entry.getTableName());
+                    _currentTable = (IResultSetTable)_connection.createTable(entry.getTableName());
                 }
                 else
                 {

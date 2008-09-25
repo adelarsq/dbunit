@@ -127,6 +127,12 @@ public class MockDatabaseConnection implements IDatabaseConnection, Verifiable
         throw new UnsupportedOperationException();
     }
 
+    public ITable createTable(String tableName) throws DataSetException,
+            SQLException 
+    {
+        throw new UnsupportedOperationException();
+    }
+
     public int getRowCount(String tableName) throws SQLException
     {
         throw new UnsupportedOperationException();

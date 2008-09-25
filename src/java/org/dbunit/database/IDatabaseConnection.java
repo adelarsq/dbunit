@@ -75,6 +75,15 @@ public interface IDatabaseConnection
             throws DataSetException, SQLException;
 
     /**
+     * Creates a table with the result of a <code>select * from <i>tableName</i></code> SQL statement. 
+     *
+     * @param tableName The name of the database table to be queried which is also returned by 
+     * {@link org.dbunit.dataset.ITableMetaData#getTableName}.
+     */
+    public ITable createTable(String tableName)
+            throws DataSetException, SQLException;
+    
+    /**
      * Returns the specified table row count.
      *
      * @param tableName the table name
