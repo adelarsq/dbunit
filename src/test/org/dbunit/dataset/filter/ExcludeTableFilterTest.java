@@ -20,9 +20,14 @@
  */
 package org.dbunit.dataset.filter;
 
-import org.dbunit.dataset.*;
-
 import java.util.Arrays;
+
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
 
 /**
  * @author Manuel Laflamme
@@ -116,22 +121,6 @@ public class ExcludeTableFilterTest extends AbstractTableFilterTest
                 Arrays.asList(expectedNames), Arrays.asList(actualNames));
     }
 
-    public void testGetDuplicateTableNames() throws Exception
-    {
-        String[] expectedNames = getExpectedDuplicateNames();
-        ExcludeTableFilter filter = new ExcludeTableFilter();
-        filter.excludeTable(getExtraTableName());
-
-        IDataSet dataSet = createDuplicateDataSet();
-        assertTrue("dataset names count",
-                dataSet.getTableNames().length > expectedNames.length);
-
-        String[] actualNames = filter.getTableNames(dataSet);
-        assertEquals("name count", expectedNames.length, actualNames.length);
-        assertEquals("names",
-                Arrays.asList(expectedNames), Arrays.asList(actualNames));
-    }
-
     public void testGetCaseInsensitiveTableNames() throws Exception
     {
         ExcludeTableFilter filter = new ExcludeTableFilter();
@@ -160,24 +149,6 @@ public class ExcludeTableFilterTest extends AbstractTableFilterTest
         filter.excludeTable(getExtraTableName());
 
         IDataSet dataSet = createDataSet();
-        assertTrue("dataset names count",
-                dataSet.getTableNames().length > expectedNames.length);
-
-        ITable[] actualTables = DataSetUtils.getTables(
-                filter.iterator(dataSet, false));
-        String[] actualNames = new DefaultDataSet(actualTables).getTableNames();
-        assertEquals("table count", expectedNames.length, actualTables.length);
-        assertEquals("table names",
-                Arrays.asList(expectedNames), Arrays.asList(actualNames));
-    }
-
-    public void testIteratorWithDuplicateTables() throws Exception
-    {
-        String[] expectedNames = getExpectedDuplicateNames();
-        ExcludeTableFilter filter = new ExcludeTableFilter();
-        filter.excludeTable(getExtraTableName());
-
-        IDataSet dataSet = createDuplicateDataSet();
         assertTrue("dataset names count",
                 dataSet.getTableNames().length > expectedNames.length);
 

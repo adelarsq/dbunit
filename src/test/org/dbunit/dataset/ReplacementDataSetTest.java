@@ -21,6 +21,7 @@
 package org.dbunit.dataset;
 
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetTest;
 
 import java.io.FileReader;
 
@@ -29,7 +30,7 @@ import java.io.FileReader;
  * @since Mar 17, 2003
  * @version $Revision$
  */
-public class ReplacementDataSetTest extends AbstractDataSetTest
+public class ReplacementDataSetTest extends AbstractDataSetDecoratorTest
 {
     public ReplacementDataSetTest(String s)
     {
@@ -42,12 +43,7 @@ public class ReplacementDataSetTest extends AbstractDataSetTest
     protected IDataSet createDataSet() throws Exception
     {
         return new ReplacementDataSet(new FlatXmlDataSet(new FileReader(
-                "src/xml/flatXmlDataSetTest.xml")));
+                FlatXmlDataSetTest.DATASET_FILE)));
     }
 
-    protected IDataSet createDuplicateDataSet() throws Exception
-    {
-        return new ReplacementDataSet(new FlatXmlDataSet(new FileReader(
-                "src/xml/flatXmlDataSetDuplicateTest.xml")));
-    }
 }

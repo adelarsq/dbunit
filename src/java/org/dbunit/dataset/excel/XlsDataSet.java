@@ -38,6 +38,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.OrderedTableNameMap;
 import org.dbunit.dataset.datatype.DataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +60,8 @@ public class XlsDataSet extends AbstractDataSet
      */
     private static final Logger logger = LoggerFactory.getLogger(XlsDataSet.class);
 
-    private final ITable[] _tables;
+    private final OrderedTableNameMap _tables = new OrderedTableNameMap();
+
 
     /**
      * Creates a new XlsDataSet object that loads the specified Excel document.
@@ -75,11 +77,12 @@ public class XlsDataSet extends AbstractDataSet
     public XlsDataSet(InputStream in) throws IOException, DataSetException
     {
         HSSFWorkbook workbook = new HSSFWorkbook(in);
-        _tables = new ITable[workbook.getNumberOfSheets()];
-        for (int i = 0; i < _tables.length; i++)
+        int sheetCount = workbook.getNumberOfSheets();
+        for (int i = 0; i < sheetCount; i++)
         {
-            _tables[i] = new XlsTable(workbook.getSheetName(i),
+            ITable table = new XlsTable(workbook.getSheetName(i),
                     workbook.getSheetAt(i));
+            _tables.add(table.getTableMetaData().getTableName(), table);            
         }
     }
 
@@ -146,8 +149,10 @@ public class XlsDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed={}) - start", new Boolean(reversed));
+    	if(logger.isDebugEnabled())
+    		logger.debug("createIterator(reversed={}) - start", new Boolean(reversed));
 
-        return new DefaultTableIterator(_tables, reversed);
+    	ITable[] tables = (ITable[]) _tables.orderedValues().toArray(new ITable[0]);
+        return new DefaultTableIterator(tables, reversed);
     }
 }

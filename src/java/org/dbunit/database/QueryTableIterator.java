@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.dbunit.database.QueryDataSet.TableEntry;
 import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
@@ -109,8 +108,8 @@ public class QueryTableIterator implements ITableIterator
         {
             try
             {
-                IDataSet dataSet = _connection.createDataSet();
-                return dataSet.getTableMetaData(entry.getTableName());
+                ITable table = _connection.createTable(entry.getTableName());
+                return table.getTableMetaData();
             }
             catch (SQLException e)
             {

@@ -21,10 +21,9 @@
 
 package org.dbunit.dataset;
 
+import org.dbunit.database.AmbiguousTableNameException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.dbunit.database.AmbiguousTableNameException;
 
 /**
  * Allows access to a decorated dataset in a case insensitive way. Dataset
@@ -34,7 +33,7 @@ import org.dbunit.database.AmbiguousTableNameException;
  * @author Manuel Laflamme
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @deprecated All IDataSet implementations are case insensitive since DbUnit 1.5
+ * @deprecated All IDataSet implementations are case insensitive since DbUnit 1.5 - may change again since tablenames on RDBMSes can be case sensitive
  * @since 1.0
  */
 public class CaseInsensitiveDataSet extends AbstractDataSet
@@ -46,36 +45,33 @@ public class CaseInsensitiveDataSet extends AbstractDataSet
     private static final Logger logger = LoggerFactory.getLogger(CaseInsensitiveDataSet.class);
 
     private final IDataSet _dataSet;
+    private OrderedTableNameMap orderedTableMap;
 
-    public CaseInsensitiveDataSet(IDataSet dataSet)
+    public CaseInsensitiveDataSet(IDataSet dataSet) throws AmbiguousTableNameException, DataSetException
     {
         _dataSet = dataSet;
+        
+        // Check for duplicates using the OrderedTableNameMap as helper
+        orderedTableMap = new OrderedTableNameMap();
+        ITableIterator tableIterator = _dataSet.iterator();
+        while(tableIterator.next()) {
+            ITable table = (ITable) tableIterator.getTable();
+            String tableName = table.getTableMetaData().getTableName();
+            orderedTableMap.add(tableName.toUpperCase(), tableName);
+        }
     }
 
     private String getInternalTableName(String tableName) throws DataSetException
     {
         logger.debug("getInternalTableName(tableName={}) - start", tableName);
 
-        String found = null;
-        String[] names = _dataSet.getTableNames();
-        for (int i = 0; i < names.length; i++)
-        {
-            if (tableName.equalsIgnoreCase(names[i]))
-            {
-                if (found != null)
-                {
-                    throw new AmbiguousTableNameException(tableName);
-                }
-                found = names[i];
-            }
+        String originalTableName = (String)orderedTableMap.get(tableName.toUpperCase());
+        if(originalTableName==null){
+            throw new NoSuchTableException(tableName);
         }
-
-        if (found != null)
-        {
-            return found;
+        else {
+            return originalTableName;
         }
-
-        throw new NoSuchTableException(tableName);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -84,7 +80,9 @@ public class CaseInsensitiveDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
+        if(logger.isDebugEnabled())
+            logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
+        
         return new CaseInsensitiveIterator(reversed ?
                 _dataSet.reverseIterator() : _dataSet.iterator());
     }

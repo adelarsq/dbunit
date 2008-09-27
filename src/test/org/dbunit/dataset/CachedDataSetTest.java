@@ -20,18 +20,19 @@
  */
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import java.io.FileReader;
+
+import org.dbunit.dataset.xml.FlatXmlDataSetTest;
 import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.xml.sax.InputSource;
 
-import java.io.FileReader;
-
 /**
  * @author Manuel Laflamme
- * @since Apr 18, 2003
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.x (Apr 18, 2003)
  */
-public class CachedDataSetTest extends AbstractDataSetTest
+public class CachedDataSetTest extends AbstractDataSetDecoratorTest
 {
     public CachedDataSetTest(String s)
     {
@@ -40,21 +41,13 @@ public class CachedDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        FileReader reader = new FileReader("src/xml/flatXmlDataSetTest.xml");
+        FileReader reader = new FileReader(FlatXmlDataSetTest.DATASET_FILE);
         return new CachedDataSet(new FlatXmlProducer(new InputSource(reader)));
-//        return new CachedDataSet(
-//                new StreamingDataSet(new FlatXmlProducer(new InputSource(reader))));
-//        return new CachedDataSet(new ForwardOnlyDataSet(new FlatXmlDataSet(reader)));
-    }
-
-    protected IDataSet createDuplicateDataSet() throws Exception
-    {
-        FileReader reader = new FileReader("src/xml/flatXmlDataSetDuplicateTest.xml");
-        return new CachedDataSet(new ForwardOnlyDataSet(new FlatXmlDataSet(reader)));
     }
 
     public void testGetTable() throws Exception
     {
         super.testGetTable();
     }
+
 }

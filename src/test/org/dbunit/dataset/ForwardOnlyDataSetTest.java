@@ -22,8 +22,9 @@ package org.dbunit.dataset;
 
 /**
  * @author Manuel Laflamme
- * @since Apr 11, 2003
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.x (Apr 11, 2003)
  */
 public class ForwardOnlyDataSetTest extends DefaultDataSetTest
 {
@@ -39,7 +40,12 @@ public class ForwardOnlyDataSetTest extends DefaultDataSetTest
 
     protected IDataSet createDuplicateDataSet() throws Exception
     {
-        return new ForwardOnlyDataSet(super.createDuplicateDataSet());
+        throw new UnsupportedOperationException();
+    }
+
+    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception 
+    {
+        throw new UnsupportedOperationException();
     }
 
     public void testGetTableNames() throws Exception
@@ -116,26 +122,6 @@ public class ForwardOnlyDataSetTest extends DefaultDataSetTest
         // Cannot test! Unsupported feature.
     }
 
-    public void testGetDuplicateTables() throws Exception
-    {
-        // Cannot test! Unsupported feature.
-    }
-
-    public void testGetDuplicateTableNames() throws Exception
-    {
-        // Cannot test! Unsupported feature.
-    }
-
-    public void testGetDuplicateTable() throws Exception
-    {
-        // Cannot test! Unsupported feature.
-    }
-
-    public void testGetDuplicateTableMetaData() throws Exception
-    {
-        // Cannot test! Unsupported feature.
-    }
-
     public void testGetCaseInsensitiveTable() throws Exception
     {
         // Cannot test! Unsupported feature.
@@ -146,18 +132,15 @@ public class ForwardOnlyDataSetTest extends DefaultDataSetTest
         // Cannot test! Unsupported feature.
     }
 
-    public void testGetCaseInsensitiveDuplicateTable() throws Exception
+    public void testCreateDuplicateDataSet() throws Exception 
     {
-        // Cannot test! Unsupported feature.
+        // No op. This dataSet is only a wrapper for another dataSet which is why duplicates cannot occur.
     }
 
-    public void testGetCaseInsensitiveDuplicateTableMetaData() throws Exception
+    public void testCreateMultipleCaseDuplicateDataSet() throws Exception 
     {
-        // Cannot test! Unsupported feature.
+        // No op. This dataSet is only a wrapper for another dataSet which is why duplicates cannot occur.
     }
 
-    public void testReverseIteratorAndDuplicateTable() throws Exception
-    {
-        // Cannot test! Unsupported feature.
-    }
+    
 }

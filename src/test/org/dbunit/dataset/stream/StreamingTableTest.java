@@ -23,6 +23,7 @@ package org.dbunit.dataset.stream;
 import org.dbunit.dataset.ForwardOnlyTableTest;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.xml.FlatXmlDataSetTest;
 import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.xml.sax.InputSource;
 
@@ -44,7 +45,7 @@ public class StreamingTableTest extends ForwardOnlyTableTest
 
     protected ITable createTable() throws Exception
     {
-        FileReader reader = new FileReader("src/xml/flatXmlDataSetTest.xml");
+        FileReader reader = new FileReader(FlatXmlDataSetTest.DATASET_FILE);
 
 //        IDataSetProducer source = new DataSetProducerAdapter(new FlatXmlDataSet(reader));
         IDataSetProducer source = new FlatXmlProducer(new InputSource(reader));

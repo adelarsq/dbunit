@@ -22,21 +22,23 @@ package org.dbunit.database;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.dbunit.dataset.AbstractDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableIterator;
+import org.dbunit.dataset.OrderedTableNameMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Holds collection of tables resulting from database query.
  *
- * @author     Eric Pugh
- * @since      Dec 4, 2002
- * @version    $Revision$
+ * @author Eric Pugh
+ * @author gommma
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since Dec 4, 2002
  */
 public class QueryDataSet extends AbstractDataSet
 {
@@ -47,13 +49,13 @@ public class QueryDataSet extends AbstractDataSet
     private static final Logger logger = LoggerFactory.getLogger(QueryDataSet.class);
 
     private final IDatabaseConnection _connection;
-    private final List _tableEntries = new ArrayList();
+    private final OrderedTableNameMap _tables = new OrderedTableNameMap();
 
 
     /**
      * Create a QueryDataSet by passing in the connection to the database to use.
      *
-     * @param  connection        The connection object to the database.
+     * @param connection The connection object to the database.
      */
     public QueryDataSet(IDatabaseConnection connection)
     {
@@ -66,24 +68,27 @@ public class QueryDataSet extends AbstractDataSet
     /**
      *  Adds a table and it's associated query to this dataset.
      *
-     * @param  tableName  The name of the table
-     * @param  query  The query to retrieve data with for this table
+     * @param tableName The name of the table
+     * @param query The query to retrieve data with for this table. Can be null which will select
+     * all data (see {@link #addTable(String)} for details)
+     * @throws AmbiguousTableNameException 
      */
-    public void addTable(String tableName, String query)
+    public void addTable(String tableName, String query) throws AmbiguousTableNameException
     {
         logger.debug("addTable(tableName={}, query={}) - start", tableName, query);
-        _tableEntries.add(new TableEntry(tableName, query));
+        _tables.add(tableName, new TableEntry(tableName, query));
     }
 
     /**
      *  Adds a table with using 'SELECT * FROM <code>tableName</code>' as query.
      *
-     * @param  tableName  The name of the table
+     * @param tableName The name of the table
+     * @throws AmbiguousTableNameException 
      */
-    public void addTable(String tableName)
+    public void addTable(String tableName) throws AmbiguousTableNameException
     {
         logger.debug("addTable(tableName={}) - start", tableName);
-        _tableEntries.add(new TableEntry(tableName, null));
+        this.addTable(tableName, null);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -94,7 +99,7 @@ public class QueryDataSet extends AbstractDataSet
     	if(logger.isDebugEnabled())
     		logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
     	
-        List tableEntries = new ArrayList(_tableEntries);
+        List tableEntries = new ArrayList(_tables.orderedValues());
         if (reversed)
         {
             Collections.reverse(tableEntries);
@@ -109,15 +114,7 @@ public class QueryDataSet extends AbstractDataSet
     public String[] getTableNames() throws DataSetException
     {
         logger.debug("getTableNames() - start");
-
-        List names = new ArrayList();
-        for (Iterator it = _tableEntries.iterator(); it.hasNext();)
-        {
-            TableEntry entry = (TableEntry)it.next();
-            names.add(entry.getTableName());
-        }
-
-        return (String[])names.toArray(new String[0]);
+        return this._tables.getTableNames();
     }
 
     /**

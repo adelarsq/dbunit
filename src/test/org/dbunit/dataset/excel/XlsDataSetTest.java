@@ -57,6 +57,16 @@ public class XlsDataSetTest extends AbstractDataSetTest
                 new File("src/xml/dataSetDuplicateTest.xls"));
     }
 
+    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception 
+    {
+        throw new UnsupportedOperationException("Excel does not support the same sheet name with different cases in one file");
+    }
+
+    public void testCreateMultipleCaseDuplicateDataSet() throws Exception 
+    {
+        // Not supported
+    }
+
     public void testWrite() throws Exception
     {
         IDataSet expectedDataSet = createDataSet();
@@ -110,40 +120,6 @@ public class XlsDataSetTest extends AbstractDataSetTest
         }
     }
 
-    public void testDuplicateWrite() throws Exception
-    {
-        IDataSet expectedDataSet = createDuplicateDataSet();
-
-        File tempFile = File.createTempFile("xlsDataSetDuplicateTest", ".xls");
-        try
-        {
-            OutputStream out = new FileOutputStream(tempFile);
-
-            // write dataset in temp file
-            try
-            {
-                // Since apache POI > 2.5 reading the broken xls file (contains 2 sheets with the same name)
-                // should lead to a 
-                XlsDataSet.write(expectedDataSet, out);
-                fail("Should not be able to write a xls having 2 sheets with identical names");
-            }
-            catch(IllegalArgumentException expected)
-            {
-            	String expectedMsg = "The workbook already contains a sheet of this name";
-            	assertEquals(expectedMsg, expected.getMessage());
-            }
-            finally
-            {
-                out.close();
-            }
-
-        }
-        finally
-        {
-            tempFile.delete();
-        }
-    }
-    
     public void testColumnNameWithSpace() throws Exception
     {
     		IDataSet dataSet = new XlsDataSet(new FileInputStream("./src/xml/contactor.xls"));

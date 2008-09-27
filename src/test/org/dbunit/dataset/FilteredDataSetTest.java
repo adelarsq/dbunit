@@ -21,10 +21,9 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.database.AmbiguousTableNameException;
-import org.dbunit.dataset.xml.XmlDataSet;
-
 import java.io.FileReader;
+
+import org.dbunit.dataset.xml.XmlDataSet;
 
 /**
  * @author Manuel Laflamme
@@ -142,57 +141,6 @@ public class FilteredDataSetTest extends AbstractDataSetTest
         }
     }
 
-    public void testGetDuplicateTableNames() throws Exception
-    {
-        IDataSet dataSet = createDuplicateDataSet();
-        try
-        {
-            dataSet.getTableNames();
-            fail("Should throw AmbiguousTableNameException");
-        }
-        catch (AmbiguousTableNameException e)
-        {
-        }
-    }
-
-    public void testGetDuplicateTables() throws Exception
-    {
-        IDataSet dataSet = createDuplicateDataSet();
-        try
-        {
-            dataSet.getTables();
-            fail("Should throw AmbiguousTableNameException");
-        }
-        catch (AmbiguousTableNameException e)
-        {
-        }
-    }
-
-    public void testReverseIteratorAndDuplicateTable() throws Exception
-    {
-        IDataSet dataSet = createDuplicateDataSet();
-        try
-        {
-            dataSet.iterator();
-            fail("Should throw AmbiguousTableNameException");
-        }
-        catch (AmbiguousTableNameException e)
-        {
-        }
-    }
-
-    public void testIteratorAndDuplicateTable() throws Exception
-    {
-        IDataSet dataSet = createDuplicateDataSet();
-        try
-        {
-            dataSet.reverseIterator();
-            fail("Should throw AmbiguousTableNameException");
-        }
-        catch (AmbiguousTableNameException e)
-        {
-        }
-    }
 }
 
 

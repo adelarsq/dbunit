@@ -27,10 +27,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.dbunit.dataset.AbstractDataSet;
 import org.dbunit.dataset.DataSetException;
@@ -41,6 +37,7 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoSuchTableException;
+import org.dbunit.dataset.OrderedTableNameMap;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.slf4j.Logger;
@@ -49,8 +46,9 @@ import org.xml.sax.InputSource;
 
 /**
  * @author Manuel Laflamme
- * @version $Revision$
- * @since Apr 4, 2002
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0 (Apr 4, 2002)
  */
 public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 {
@@ -60,8 +58,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
      */
     private static final Logger logger = LoggerFactory.getLogger(FlatDtdDataSet.class);
 
-    private final List _tableNames = new ArrayList();
-    private final Map _tableMap = new HashMap();
+    private final OrderedTableNameMap _tableMap = new OrderedTableNameMap();
     private boolean _ready = false;
 
     public FlatDtdDataSet()
@@ -120,7 +117,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
             throw new IllegalStateException("Not ready!");
         }
 
-        String[] names = (String[])_tableNames.toArray(new String[0]);
+        String[] names = _tableMap.getTableNames();
         ITable[] tables = new ITable[names.length];
         for (int i = 0; i < names.length; i++)
         {
@@ -150,7 +147,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
             throw new IllegalStateException("Not ready!");
         }
 
-        return (String[])_tableNames.toArray(new String[0]);
+        return _tableMap.getTableNames();
     }
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
@@ -164,13 +161,13 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
         }
 
         String upperTableName = tableName.toUpperCase();
-        if (_tableMap.containsKey(upperTableName))
+        if (_tableMap.containsTable(upperTableName))
         {
             ITable table = (ITable)_tableMap.get(upperTableName);
             return table.getTableMetaData();
         }
 
-        throw new NoSuchTableException(tableName);
+        throw new NoSuchTableException(tableName + " (upperName=" + upperTableName + ")");
     }
 
     public ITable getTable(String tableName) throws DataSetException
@@ -184,12 +181,12 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
         }
 
         String upperTableName = tableName.toUpperCase();
-        if (_tableMap.containsKey(upperTableName))
+        if (_tableMap.containsTable(upperTableName))
         {
             return (ITable)_tableMap.get(upperTableName);
         }
 
-        throw new NoSuchTableException(tableName);
+        throw new NoSuchTableException(tableName + " (upperName=" + upperTableName + ")");
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -214,8 +211,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
         logger.debug("startTable(metaData={}) - start", metaData);
 
         String tableName = metaData.getTableName();
-        _tableNames.add(tableName);
-        _tableMap.put(tableName.toUpperCase(), new DefaultTable(metaData));
+        _tableMap.add(tableName.toUpperCase(), new DefaultTable(metaData));
     }
 
     public void endTable() throws DataSetException
@@ -234,7 +230,6 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
     	StringBuffer sb = new StringBuffer();
     	sb.append(getClass().getName()).append("[");
     	sb.append("_ready=").append(this._ready);
-    	sb.append(", _tableNames=").append(this._tableNames);
     	sb.append(", _tableMap=").append(this._tableMap);
     	sb.append("]");
     	return sb.toString();

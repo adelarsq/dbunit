@@ -21,17 +21,16 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.XmlDataSet;
-
 import java.io.FileReader;
+
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 /**
  * @author Manuel Laflamme
  * @version $Revision$
  * @since Feb 19, 2003
  */
-public class SortedDataSetTest extends AbstractDataSetTest
+public class SortedDataSetTest extends AbstractDataSetDecoratorTest
 {
     public SortedDataSetTest(String s)
     {
@@ -46,13 +45,6 @@ public class SortedDataSetTest extends AbstractDataSetTest
         return new SortedDataSet(dataSet);
     }
 
-    protected IDataSet createDuplicateDataSet() throws Exception
-    {
-        IDataSet dataSet = new XmlDataSet(
-                new FileReader("src/xml/xmlDataSetDuplicateTest.xml"));
-
-        return new SortedDataSet(dataSet);
-    }
 }
 
 

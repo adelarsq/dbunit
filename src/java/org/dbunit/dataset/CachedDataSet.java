@@ -21,21 +21,18 @@
  
 package org.dbunit.dataset;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Hold copy of another dataset or a consumed provider content.
  *
  * @author Manuel Laflamme
- * @since Apr 18, 2003
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.x (Apr 18, 2003)
  */
 public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
 {
@@ -45,10 +42,10 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
      */
     private static final Logger logger = LoggerFactory.getLogger(CachedDataSet.class);
 
-    private ITable[] _tables;
+    private OrderedTableNameMap _tables = new OrderedTableNameMap();
 
-    private List _tableList;
     private DefaultTable _activeTable;
+    
 
     /**
      * Default constructor.
@@ -62,13 +59,12 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
      */
     public CachedDataSet(IDataSet dataSet) throws DataSetException
     {
-        List tableList = new ArrayList();
         ITableIterator iterator = dataSet.iterator();
         while (iterator.next())
         {
-            tableList.add(new CachedTable(iterator.getTable()));
+            ITable table = iterator.getTable();
+            _tables.add(table.getTableMetaData().getTableName(), new CachedTable(table));
         }
-        _tables = (ITable[])tableList.toArray(new ITable[0]);
     }
 
     /**
@@ -86,8 +82,11 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
-        return new DefaultTableIterator(_tables, reversed);
+        if(logger.isDebugEnabled())
+            logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
+        
+        ITable[] tables = (ITable[])_tables.orderedValues().toArray(new ITable[0]);
+        return new DefaultTableIterator(tables, reversed);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -96,15 +95,12 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
     public void startDataSet() throws DataSetException
     {
         logger.debug("startDataSet() - start");
-        _tableList = new ArrayList();
-        _tables = null;
+        _tables = new OrderedTableNameMap();
     }
 
     public void endDataSet() throws DataSetException
     {
         logger.debug("endDataSet() - start");
-        _tables = (ITable[])_tableList.toArray(new ITable[0]);
-        _tableList = null;
     }
 
     public void startTable(ITableMetaData metaData) throws DataSetException
@@ -116,7 +112,7 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
     public void endTable() throws DataSetException
     {
         logger.debug("endTable() - start");
-        _tableList.add(_activeTable);
+        _tables.add(_activeTable.getTableMetaData().getTableName(), _activeTable);
         _activeTable = null;
     }
 

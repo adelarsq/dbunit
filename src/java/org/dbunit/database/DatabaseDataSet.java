@@ -25,11 +25,6 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import org.dbunit.dataset.AbstractDataSet;
 import org.dbunit.dataset.Column;
@@ -40,6 +35,7 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoSuchTableException;
+import org.dbunit.dataset.OrderedTableNameMap;
 import org.dbunit.util.QualifiedTableName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,11 +57,21 @@ public class DatabaseDataSet extends AbstractDataSet
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataSet.class);
 
     private final IDatabaseConnection _connection;
-    private final Map _tableMap = new HashMap();
-    private List _nameList = null;
+    private OrderedTableNameMap _tableMap = null;
 
+
+    /**
+     * Creates a new database data set
+     * @param connection
+     * @throws SQLException
+     */
     DatabaseDataSet(IDatabaseConnection connection) throws SQLException
     {
+    	super();
+    	if (connection == null) {
+    		throw new NullPointerException(
+					"The parameter 'connection' must not be null");
+		}
         _connection = connection;
     }
 
@@ -125,14 +131,16 @@ public class DatabaseDataSet extends AbstractDataSet
     {
         logger.debug("initialize() - start");
 
-        if (_nameList != null)
+        if (_tableMap != null)
         {
             return;
         }
 
         try
         {
-            Connection jdbcConnection = _connection.getConnection();
+        	logger.debug("Initializing the data set from the database...");
+
+        	Connection jdbcConnection = _connection.getConnection();
             String schema = _connection.getSchema();
             String[] tableType = (String[])_connection.getConfig().getProperty(DatabaseConfig.PROPERTY_TABLE_TYPE);
 
@@ -142,7 +150,7 @@ public class DatabaseDataSet extends AbstractDataSet
 
             try
             {
-                List nameList = new ArrayList();
+            	OrderedTableNameMap tableMap = new OrderedTableNameMap();
                 while (resultSet.next())
                 {
                     String schemaName = resultSet.getString(2);
@@ -160,16 +168,11 @@ public class DatabaseDataSet extends AbstractDataSet
                     QualifiedTableName qualifiedTableName = new QualifiedTableName(tableName, schemaName);
                     tableName = qualifiedTableName.getQualifiedNameIfEnabled(config);
 
-                    // prevent table name conflict
-                    if (_tableMap.containsKey(tableName.toUpperCase()))
-                    {
-                        throw new AmbiguousTableNameException(tableName);
-                    }
-                    nameList.add(tableName);
-                    _tableMap.put(tableName.toUpperCase(), null);
+                    // Put the table into the table map
+                    tableMap.add(tableName.toUpperCase(), null);
                 }
 
-                _nameList = nameList;
+                _tableMap = tableMap;
             }
             finally
             {
@@ -188,7 +191,8 @@ public class DatabaseDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed={}) - start", new Boolean(reversed));
+    	if(logger.isDebugEnabled())
+    		logger.debug("createIterator(reversed={}) - start", new Boolean(reversed));
 
         String[] names = getTableNames();
         if (reversed)
@@ -206,7 +210,7 @@ public class DatabaseDataSet extends AbstractDataSet
     {
         initialize();
 
-        return (String[])_nameList.toArray(new String[0]);
+        return _tableMap.getTableNames();
     }
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
@@ -216,32 +220,23 @@ public class DatabaseDataSet extends AbstractDataSet
         initialize();
 
         // Verify if table exist in the database
-        String upperTableName = tableName.toUpperCase();
-        if (!_tableMap.containsKey(upperTableName))
+        tableName = tableName.toUpperCase();
+        if (!_tableMap.containsTable(tableName))
         {
             throw new NoSuchTableException(tableName);
         }
 
         // Try to find cached metadata
-        ITableMetaData metaData = (ITableMetaData)_tableMap.get(upperTableName);
+        ITableMetaData metaData = (ITableMetaData)_tableMap.get(tableName);
         if (metaData != null)
         {
             return metaData;
         }
 
-        // Search for original database table name
-        for (Iterator it = _nameList.iterator(); it.hasNext();)
-        {
-            String databaseTableName = (String)it.next();
-            if (databaseTableName.equalsIgnoreCase(tableName))
-            {
-                // Create metadata and cache it
-                metaData = new DatabaseTableMetaData(
-                        databaseTableName, _connection);
-                _tableMap.put(upperTableName, metaData);
-                break;
-            }
-        }
+        // Create metadata and cache it
+        metaData = new DatabaseTableMetaData(tableName, _connection);
+        // Put the metadata object into the cache map
+        _tableMap.update(tableName, metaData);
 
         return metaData;
     }

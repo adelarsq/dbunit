@@ -263,19 +263,8 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
         }
         catch (SAXException e)
         {
-            int lineNumber = -1;
-            if (e instanceof SAXParseException)
-            {
-                lineNumber = ((SAXParseException)e).getLineNumber();
-            }
-            Exception exception = e.getException() == null ? e : e.getException();
-
-            if (lineNumber >= 0)
-            {
-                String message = "Line " + lineNumber + ": " + exception.getMessage();
-                throw new DataSetException(message, e);
-            }
-            throw new DataSetException(exception);
+            DataSetException exceptionToRethrow = XmlProducer.buildException(e);
+            throw exceptionToRethrow;
         }
         catch (IOException e)
         {

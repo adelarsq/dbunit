@@ -21,9 +21,11 @@
 package org.dbunit.util;
 
 import java.io.File;
+import java.net.MalformedURLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.InputSource;
 
 /**
  * Utility that provides some general methods for working with {@link File} objects.
@@ -74,4 +76,10 @@ public class FileHelper
 		}
 	}
 
+	public static InputSource createInputSource(File file) throws MalformedURLException
+	{
+        String uri = file/*.getAbsoluteFile()*/.toURI().toURL().toString();
+        InputSource source = new InputSource(uri);
+        return source;
+	}
 }

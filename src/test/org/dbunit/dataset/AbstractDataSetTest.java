@@ -47,8 +47,8 @@ public abstract class AbstractDataSetTest extends AbstractTest
     /**
      * This method exclude BLOB_TABLE and CLOB_TABLE from the specified dataset
      * because BLOB and CLOB are not supported by all database vendor.  It also excludes
-     * tables with Identity columns (MSSQL) becasuse they are specific to MSSQL.
-     * TODO : should be refactored into thee various DatabaseEnvironments!
+     * tables with Identity columns (MSSQL) because they are specific to MSSQL.
+     * TODO : should be refactored into the various DatabaseEnvironments!
      */
     public static IDataSet removeExtraTestTables(IDataSet dataSet) throws Exception
     {
@@ -81,26 +81,15 @@ public abstract class AbstractDataSetTest extends AbstractTest
         return new FilteredDataSet(names, dataSet);
     }
 
+    protected abstract IDataSet createDataSet() throws Exception;
+
+    protected abstract IDataSet createDuplicateDataSet() throws Exception;
+
     /**
      * Create a dataset with duplicate tables having different char case in name
      * @return
      */
-    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception
-    {
-        IDataSet dataSet = createDuplicateDataSet();
-        ITable[] tables = DataSetUtils.getTables(dataSet.iterator());
-        ITable lowerTable = tables[0];
-        dataSet = new DefaultDataSet(new ITable[]{
-            new CompositeTable(getDuplicateTableName().toLowerCase(), lowerTable),
-            tables[1],
-            tables[2],
-        });
-        return dataSet;
-    }
-
-    protected abstract IDataSet createDataSet() throws Exception;
-
-    protected abstract IDataSet createDuplicateDataSet() throws Exception;
+    protected abstract IDataSet createMultipleCaseDuplicateDataSet() throws Exception;
 
     protected void assertEqualsTableName(String mesage, String expected,
             String actual)
@@ -205,64 +194,32 @@ public abstract class AbstractDataSetTest extends AbstractTest
                 dataSet.getTables() != dataSet.getTables());
     }
 
-    public void testGetDuplicateTables() throws Exception
+    public void testCreateDuplicateDataSet() throws Exception
     {
-        String[] expectedNames = getExpectedDuplicateNames();
-        int[] expectedRows = getExpectedDuplicateRows();
-        assertEquals(expectedNames.length, expectedRows.length);
-
-        IDataSet dataSet = createDuplicateDataSet();
-        ITable[] tables = dataSet.getTables();
-
-        assertEquals("table count", expectedNames.length, tables.length);
-        for (int i = 0; i < expectedNames.length; i++)
-        {
-            ITable table = tables[i];
-            String name = table.getTableMetaData().getTableName();
-            assertEqualsTableName("name " + i, expectedNames[i], name);
-            assertEquals("row count", expectedRows[i], table.getRowCount());
-        }
-    }
-
-    public void testGetDuplicateTableNames() throws Exception
-    {
-        String[] expected = getExpectedDuplicateNames();
-
-        IDataSet dataSet = createDuplicateDataSet();
-        String[] names = dataSet.getTableNames();
-
-        assertEquals("table count", expected.length, names.length);
-        for (int i = 0; i < expected.length; i++)
-        {
-            assertEqualsTableName("name " + i, expected[i], names[i]);
-        }
-    }
-
-    public void testGetDuplicateTable() throws Exception
-    {
-        IDataSet dataSet = createDuplicateDataSet();
         try
         {
-            dataSet.getTable(getDuplicateTableName());
-            fail("Should throw AmbiguousTableNameException");
+            /*IDataSet dataSet = */createDuplicateDataSet();
+            fail("Should throw AmbiguousTableNameException in creation phase");
         }
-        catch (AmbiguousTableNameException e)
+        catch (AmbiguousTableNameException expected)
         {
+            assertEquals("DUPLICATE_TABLE", expected.getMessage());
         }
     }
 
-    public void testGetDuplicateTableMetaData() throws Exception
+    public void testCreateMultipleCaseDuplicateDataSet() throws Exception
     {
-        IDataSet dataSet = createDuplicateDataSet();
         try
         {
-            dataSet.getTableMetaData(getDuplicateTableName());
-            fail("Should throw AmbiguousTableNameException");
+            /*IDataSet dataSet = */createMultipleCaseDuplicateDataSet();
+            fail("Should throw AmbiguousTableNameException in creation phase");
         }
-        catch (AmbiguousTableNameException e)
+        catch (AmbiguousTableNameException expected)
         {
+            assertEquals("DUPLICATE_TABLE", expected.getMessage());
         }
     }
+
 
     public void testGetCaseInsensitiveTable() throws Exception
     {
@@ -300,33 +257,6 @@ public abstract class AbstractDataSetTest extends AbstractTest
         }
     }
 
-    public void testGetCaseInsensitiveDuplicateTable() throws Exception
-    {
-        IDataSet dataSet = createMultipleCaseDuplicateDataSet();
-
-        try
-        {
-            dataSet.getTable(getDuplicateTableName().toLowerCase());
-            fail("Should throw AmbiguousTableNameException");
-        }
-        catch (AmbiguousTableNameException e)
-        {
-        }
-    }
-
-    public void testGetCaseInsensitiveDuplicateTableMetaData() throws Exception
-    {
-        IDataSet dataSet = createMultipleCaseDuplicateDataSet();
-        try
-        {
-            dataSet.getTableMetaData(getDuplicateTableName().toLowerCase());
-            fail("Should throw AmbiguousTableNameException");
-        }
-        catch (AmbiguousTableNameException e)
-        {
-        }
-    }
-
     public void testIterator() throws Exception
     {
         String[] expected = getExpectedNames();
@@ -343,25 +273,6 @@ public abstract class AbstractDataSetTest extends AbstractTest
         }
 
         assertEquals("table count", expected.length, i);
-    }
-
-    public void testIteratorAndDuplicateTable() throws Exception
-    {
-        String[] expectedNames = getExpectedDuplicateNames();
-//        int[] expectedRows = getExpectedDuplicateRows();
-
-        int i = 0;
-        ITableIterator iterator = createDuplicateDataSet().iterator();
-        while(iterator.next())
-        {
-            ITable table = iterator.getTable();
-            String name = table.getTableMetaData().getTableName();
-            assertEqualsTableName("name " + i, expectedNames[i], name);
-//            assertEquals("row count", expectedRows[i], table.getRowCount());
-            i++;
-        }
-
-        assertEquals("table count", expectedNames.length, i);
     }
 
     public void testReverseIterator() throws Exception
@@ -382,25 +293,19 @@ public abstract class AbstractDataSetTest extends AbstractTest
         assertEquals("table count", expected.length, i);
     }
 
-    public void testReverseIteratorAndDuplicateTable() throws Exception
+    protected ITable[] createDuplicateTables(boolean multipleCase) throws AmbiguousTableNameException 
     {
-        String[] expectedNames = getExpectedDuplicateNames();
-        int[] expectedRows = getExpectedDuplicateRows();
-
-        int i = expectedRows.length - 1;
-        int count = 0;
-        ITableIterator iterator = createDuplicateDataSet().reverseIterator();
-        while(iterator.next())
-        {
-            ITable table = iterator.getTable();
-            String name = table.getTableMetaData().getTableName();
-            assertEqualsTableName("name " + i, expectedNames[i], name);
-            assertEquals("row count", expectedRows[i], table.getRowCount());
-            i--;
-            count++;
+        ITable table1 = new DefaultTable("DUPLICATE_TABLE");
+        ITable table2 = new DefaultTable("EMPTY_TABLE");
+        ITable table3;
+        if(!multipleCase){
+            table3 = new DefaultTable("DUPLICATE_TABLE");
         }
-
-        assertEquals("table count", expectedNames.length, count);
+        else {
+            table3 = new DefaultTable("duplicate_TABLE");
+        }
+        ITable[] tables = new ITable[]{table1, table2, table3};
+        return tables;
     }
 }
 

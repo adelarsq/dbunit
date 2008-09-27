@@ -143,12 +143,43 @@ public class XmlProducer extends DefaultHandler
         }
         catch (SAXException e)
         {
-            Exception exception = e.getException() == null ? e : e.getException();
-            throw new DataSetException(exception);
+            DataSetException exceptionToRethrow = XmlProducer.buildException(e);
+            throw exceptionToRethrow;
         }
         catch (IOException e)
         {
             throw new DataSetException(e);
+        }
+    }
+
+    /**
+     * Wraps a {@link SAXException} into a {@link DataSetException}
+     * @param cause The cause to be wrapped into a {@link DataSetException}
+     * @return A {@link DataSetException} that wraps the given {@link SAXException}
+     */
+    protected final static DataSetException buildException(SAXException cause) 
+    {
+        int lineNumber = -1;
+        if (cause instanceof SAXParseException)
+        {
+            lineNumber = ((SAXParseException)cause).getLineNumber();
+        }
+        Exception exception = cause.getException() == null ? cause : cause.getException();
+        String message;
+        
+        if (lineNumber >= 0)
+        {
+            message = "Line " + lineNumber + ": " + exception.getMessage();
+        }
+        else {
+            message = exception.getMessage();
+        }
+
+        if(exception instanceof DataSetException) {
+            return (DataSetException) exception;
+        }
+        else {
+            return new DataSetException(message, exception);
         }
     }
 

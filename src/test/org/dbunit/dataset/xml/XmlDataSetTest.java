@@ -21,19 +21,24 @@
 
 package org.dbunit.dataset.xml;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+
 import org.dbunit.Assertion;
 import org.dbunit.dataset.AbstractDataSetTest;
 import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Manuel Laflamme
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since Feb 17, 2002
  */
 public class XmlDataSetTest extends AbstractDataSetTest
@@ -57,59 +62,17 @@ public class XmlDataSetTest extends AbstractDataSetTest
         return new XmlDataSet(in);
     }
 
-    public void testWrite() throws Exception
+    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception 
     {
-        List tableList = new ArrayList();
-
-        IDataSet expectedDataSet = (XmlDataSet)createDataSet();
-        File tempFile = File.createTempFile("dataSetTest", ".xml");
-        try
-        {
-            OutputStream out = new FileOutputStream(tempFile);
-
-            try
-            {
-                // write dataset in temp file
-                XmlDataSet.write(expectedDataSet, out);
-
-                // load new dataset from temp file
-                IDataSet actualDataSet = new XmlDataSet(new FileReader(tempFile));
-
-                // verify table count
-                assertEquals("table count", expectedDataSet.getTableNames().length,
-                        actualDataSet.getTableNames().length);
-
-                // verify each table
-                ITable[] expected = DataSetUtils.getTables(expectedDataSet);
-                ITable[] actual = DataSetUtils.getTables(actualDataSet);
-                assertEquals("table count", expected.length, actual.length);
-                for (int i = 0; i < expected.length; i++)
-                {
-                    String expectedName = expected[i].getTableMetaData().getTableName();
-                    String actualName = actual[i].getTableMetaData().getTableName();
-                    assertEquals("table name", expectedName, actualName);
-
-                    assertTrue("not same instance", expected[i] != actual[i]);
-                    Assertion.assertEquals(expected[i], actual[i]);
-                }
-            }
-            finally
-            {
-                out.close();
-            }
-        }
-        finally
-        {
-            tempFile.delete();
-        }
+        InputStream in = new FileInputStream(
+                new File("src/xml/xmlDataSetDuplicateMultipleCaseTest.xml"));
+        return new XmlDataSet(in);
     }
 
-    public void testDuplicateWrite() throws Exception
+    public void testWrite() throws Exception
     {
-        List tableList = new ArrayList();
-
-        IDataSet expectedDataSet = (XmlDataSet)createDuplicateDataSet();
-        File tempFile = File.createTempFile("xmlDataSetDuplicateTest", ".xml");
+        IDataSet expectedDataSet = (XmlDataSet)createDataSet();
+        File tempFile = File.createTempFile("dataSetTest", ".xml");
         try
         {
             OutputStream out = new FileOutputStream(tempFile);

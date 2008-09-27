@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package org.dbunit.dataset;
 
 import org.slf4j.Logger;
@@ -26,6 +25,9 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ * Decorator that returns the {@link ITable}s of the decorated dataset 
+ * as {@link SortedTable}s.
+ * 
  * @author Manuel Laflamme
  * @version $Revision$
  * @since Feb 19, 2003
@@ -51,7 +53,8 @@ public class SortedDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
+        if(logger.isDebugEnabled())
+            logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
 
         return new SortedIterator(reversed ?
                 _dataSet.reverseIterator() : _dataSet.iterator());

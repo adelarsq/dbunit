@@ -25,13 +25,15 @@ import java.io.FileReader;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ForwardOnlyDataSetTest;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetTest;
 import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.xml.sax.InputSource;
 
 /**
  * @author Manuel Laflamme
- * @since Apr 18, 2003
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.x (Apr 18, 2003)
  */
 public class StreamingDataSetTest extends ForwardOnlyDataSetTest
 {
@@ -43,10 +45,8 @@ public class StreamingDataSetTest extends ForwardOnlyDataSetTest
     protected IDataSet createDataSet() throws Exception
     {
         IDataSetProducer source = new FlatXmlProducer(
-                new InputSource(new FileReader("src/xml/flatXmlDataSetTest.xml")));
+                new InputSource(new FileReader(FlatXmlDataSetTest.DATASET_FILE)));
         return new StreamingDataSet(source);
-//        return new StreamingDataSet(
-//                new DataSetProducerAdapter(super.createDataSet()));
     }
 
     protected IDataSet createDuplicateDataSet() throws Exception

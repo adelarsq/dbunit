@@ -80,6 +80,12 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
     {
         throw new UnsupportedOperationException();
     }
+    
+    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception 
+    {
+        throw new UnsupportedOperationException();
+    }
+    
 
     ////////////////////////////////////////////////////////////////////////////
     // Test methods
@@ -250,45 +256,16 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 //        metaData.
 //    }
 
-    public void testGetDuplicateTable() throws Exception
+    public void testCreateDuplicateDataSet() throws Exception 
     {
         // Cannot test! Unsupported feature.
     }
 
-    public void testGetDuplicateTableMetaData() throws Exception
+    public void testCreateMultipleCaseDuplicateDataSet() throws Exception 
     {
         // Cannot test! Unsupported feature.
     }
 
-    public void testGetDuplicateTableNames() throws Exception
-    {
-        // Cannot test! Unsupported feature.
-    }
-
-    public void testGetDuplicateTables() throws Exception
-    {
-        // Cannot test! Unsupported feature.
-    }
-
-    public void testGetCaseInsensitiveDuplicateTable() throws Exception
-    {
-        // Cannot test! Unsupported feature.
-    }
-
-    public void testGetCaseInsensitiveDuplicateTableMetaData() throws Exception
-    {
-        // Cannot test! Unsupported feature.
-    }
-
-    public void testReverseIteratorAndDuplicateTable() throws Exception
-    {
-        // Cannot test! Unsupported feature.
-    }
-
-    public void testIteratorAndDuplicateTable() throws Exception
-    {
-        // Cannot test! Unsupported feature.
-    }
 }
 
 

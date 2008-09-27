@@ -21,15 +21,15 @@
 
 package org.dbunit.dataset;
 
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.XmlDataSet;
-
 import java.io.FileReader;
+
+import org.dbunit.dataset.xml.XmlDataSet;
 
 /**
  * @author Manuel Laflamme
- * @version $Revision$
- * @since Mar 27, 2002
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0 (Mar 27, 2002)
  */
 public class CaseInsensitiveDataSetTest extends AbstractDataSetTest
 {
@@ -46,8 +46,12 @@ public class CaseInsensitiveDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDuplicateDataSet() throws Exception
     {
-        return new CaseInsensitiveDataSet(new FlatXmlDataSet(new FileReader(
-                "src/xml/caseInsensitiveDataSetDuplicateTest.xml")));
+        throw new UnsupportedOperationException();
+    }
+
+    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception 
+    {
+        throw new UnsupportedOperationException();
     }
 
     protected void assertEqualsTableName(String message, String expected,
@@ -55,6 +59,17 @@ public class CaseInsensitiveDataSetTest extends AbstractDataSetTest
     {
         assertEqualsIgnoreCase(message, expected, actual);
     }
+    
+    public void testCreateDuplicateDataSet() throws Exception 
+    {
+        // No op. This dataSet is only a wrapper for another dataSet which is why duplicates cannot occur.
+    }
+
+    public void testCreateMultipleCaseDuplicateDataSet() throws Exception 
+    {
+        // No op. This dataSet is only a wrapper for another dataSet which is why duplicates cannot occur.
+    }
+
 }
 
 

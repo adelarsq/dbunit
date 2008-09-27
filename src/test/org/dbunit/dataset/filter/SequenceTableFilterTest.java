@@ -20,12 +20,15 @@
  */
 package org.dbunit.dataset.filter;
 
-import org.dbunit.database.AmbiguousTableNameException;
-import org.dbunit.dataset.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
 
 /**
  * @author Manuel Laflamme
@@ -115,26 +118,6 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
                 Arrays.asList(expectedNames), Arrays.asList(actualNames));
     }
 
-    public void testGetDuplicateTableNames() throws Exception
-    {
-        String[] expectedNames = getExpectedDuplicateNames();
-        ITableFilter filter = new SequenceTableFilter(expectedNames);
-
-        IDataSet dataSet = createDuplicateDataSet();
-        assertTrue("dataset names count",
-                dataSet.getTableNames().length > expectedNames.length);
-
-        try
-        {
-            filter.getTableNames(dataSet);
-            fail("Should not be here!");
-        }
-        catch (AmbiguousTableNameException e)
-        {
-
-        }
-    }
-
     public void testGetCaseInsensitiveTableNames() throws Exception
     {
         String[] filterNames = getExpectedNames();
@@ -181,25 +164,6 @@ public class SequenceTableFilterTest extends AbstractTableFilterTest
         assertEquals("table count", expectedNames.length, actualTables.length);
         assertEquals("table names",
                 Arrays.asList(expectedNames), Arrays.asList(actualNames));
-    }
-
-    public void testIteratorWithDuplicateTables() throws Exception
-    {
-        String[] expectedNames = getExpectedDuplicateNames();
-        ITableFilter filter = new SequenceTableFilter(expectedNames);
-
-        IDataSet dataSet = createDuplicateDataSet();
-        assertTrue("dataset names count",
-                dataSet.getTableNames().length > expectedNames.length);
-
-        try
-        {
-            DataSetUtils.getTables(filter.iterator(dataSet, false));
-            fail("Should not be here!");
-        }
-        catch (AmbiguousTableNameException e)
-        {
-        }
     }
 
     public void testCaseInsensitiveIterator() throws Exception

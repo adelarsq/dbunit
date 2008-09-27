@@ -21,14 +21,12 @@
 
 package org.dbunit.dataset;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.database.AmbiguousTableNameException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This abstract class provides the basic implementation of the IDataSet
@@ -89,28 +87,24 @@ public abstract class AbstractDataSet implements IDataSet
     {
         logger.debug("getTable(tableName={}) - start", tableName);
 
-        ITable found = null;
+        // Gather all tables in the OrderedTableNameMap which also makes the duplicate check
+        OrderedTableNameMap orderedTableNameMap = new OrderedTableNameMap();
         ITableIterator iterator = createIterator(false);
         while (iterator.next())
         {
             ITable table = iterator.getTable();
-            if (tableName.equalsIgnoreCase(table.getTableMetaData().getTableName()))
-            {
-                if (found != null)
-                {
-                    throw new AmbiguousTableNameException(tableName);
-                }
-
-                found = table;
-            }
+            orderedTableNameMap.add(table.getTableMetaData().getTableName(), table);
         }
 
+        ITable found = (ITable) orderedTableNameMap.get(tableName);
         if (found != null)
         {
             return found;
         }
-
-        throw new NoSuchTableException(tableName);
+        else 
+        {
+            throw new NoSuchTableException(tableName);
+        }
     }
 
     public ITable[] getTables() throws DataSetException

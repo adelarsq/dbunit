@@ -115,6 +115,26 @@ public class QueryDataSetTest extends AbstractDataSetTest
         return dataSet;
     }
 
+    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception {
+        QueryDataSet dataSet = new QueryDataSet(_connection);
+        String[] names = getExpectedDuplicateNames();
+
+        // first table expect 1 row
+        String queryOneRow = "select * from only_pk_table";
+        dataSet.addTable(names[0], queryOneRow);
+
+        // second table expect 0 row
+        String queryNoRow = "select * from empty_table";
+        dataSet.addTable(names[1], queryNoRow);
+
+        // third table expect 2 row
+        String queryTwoRow = "select * from pk_table where PK0=0 or PK0=1";
+        dataSet.addTable(names[2].toLowerCase(), queryTwoRow); // lowercase table name which should fail as well
+
+        return dataSet;
+    }
+
+    
     ////////////////////////////////////////////////////////////////////////////
     // Test methods
 

@@ -31,6 +31,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoSuchTableException;
+import org.dbunit.dataset.OrderedTableNameMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,32 +65,21 @@ public class SequenceTableFilter implements ITableFilter
         _tableNames = tableNames;
     }
 
-    private boolean accept(String tableName, String[] tableNames,
-            boolean verifyDuplicate) throws AmbiguousTableNameException
+    private boolean accept(String tableName, String[] tableNames) 
+    throws AmbiguousTableNameException
     {
     	if(logger.isDebugEnabled())
-    		logger.debug("accept(tableName={}, tableNames={}, verifyDuplicate={}) - start",
-    				new Object[]{tableName, tableNames, new Boolean(verifyDuplicate) } );
+    		logger.debug("accept(tableName={}, tableNames={}) - start",
+    				new Object[]{tableName, tableNames } );
 
-        boolean found = false;
+        // Gather all tables in the OrderedTableNameMap which also makes the duplicate check
+        OrderedTableNameMap orderedTableNameMap = new OrderedTableNameMap();
         for (int i = 0; i < tableNames.length; i++)
         {
-            if (tableName.equalsIgnoreCase(tableNames[i]))
-            {
-                if (!verifyDuplicate)
-                {
-                    return true;
-                }
-
-                if (found)
-                {
-                    throw new AmbiguousTableNameException(tableName);
-                }
-                found = true;
-            }
+            orderedTableNameMap.add(tableNames[i], null);
         }
-
-        return found;
+        
+        return orderedTableNameMap.containsTable(tableName);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -99,7 +89,7 @@ public class SequenceTableFilter implements ITableFilter
     {
         logger.debug("accept(tableName={}) - start", tableName);
 
-        return accept(tableName, _tableNames, true);
+        return accept(tableName, _tableNames);
     }
 
     public String[] getTableNames(IDataSet dataSet) throws DataSetException

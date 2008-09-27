@@ -21,15 +21,18 @@
 
 package org.dbunit.dataset;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 
-import java.io.FileReader;
-
 /**
  * @author Manuel Laflamme
- * @version $Revision$
- * @since Feb 22, 2002
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0 (Feb 22, 2002)
  */
 public class CompositeDataSetTest extends AbstractDataSetTest
 {
@@ -55,6 +58,28 @@ public class CompositeDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDuplicateDataSet() throws Exception
     {
+        return createCompositeDataSet(false, false);
+    }
+
+    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception 
+    {
+        return createCompositeDataSet(false, true);
+    }
+
+    
+    public void testCombineTables() throws Exception
+    {
+        CompositeDataSet combinedDataSet = createCompositeDataSet(true, false);
+        String[] tableNames = combinedDataSet.getTableNames();
+        assertEquals("table count combined", 2, tableNames.length);
+        assertEquals("DUPLICATE_TABLE", tableNames[0]);
+        assertEquals("EMPTY_TABLE", tableNames[1]);
+    }
+
+    
+    private CompositeDataSet createCompositeDataSet(boolean combined, boolean multipleCase) 
+    throws DataSetException, FileNotFoundException, IOException 
+    {
         IDataSet dataSet1 = new FlatXmlDataSet(
                 new FileReader("src/xml/compositeDataSetDuplicateTest1.xml"));
         assertTrue("count before combine (1)",
@@ -65,16 +90,12 @@ public class CompositeDataSetTest extends AbstractDataSetTest
         assertTrue("count before combine (2)",
                 dataSet2.getTableNames().length < getExpectedDuplicateNames().length);
 
-        return new CompositeDataSet(dataSet1, dataSet2, false);
-    }
-
-    public void testCombineTables() throws Exception
-    {
-        IDataSet originaldataSet = createMultipleCaseDuplicateDataSet();
-        assertEquals("table count before", 3, originaldataSet.getTableNames().length);
-
-        IDataSet combinedDataSet = new CompositeDataSet(originaldataSet);
-        assertEquals("table count combined", 2, combinedDataSet.getTableNames().length);
+        if(multipleCase){
+            dataSet2 = new LowerCaseDataSet(dataSet2);
+        }
+        
+        CompositeDataSet dataSet = new CompositeDataSet(dataSet1, dataSet2, combined);
+        return dataSet;
     }
 
 }

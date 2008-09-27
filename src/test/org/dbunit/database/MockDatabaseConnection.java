@@ -60,12 +60,12 @@ public class MockDatabaseConnection implements IDatabaseConnection, Verifiable
         _dataSet = dataSet;
     }
 
-    public void setupDataSet(ITable table)
+    public void setupDataSet(ITable table) throws AmbiguousTableNameException
     {
         _dataSet = new DefaultDataSet(table);
     }
 
-    public void setupDataSet(ITable[] tables)
+    public void setupDataSet(ITable[] tables) throws AmbiguousTableNameException
     {
         _dataSet = new DefaultDataSet(tables);
     }

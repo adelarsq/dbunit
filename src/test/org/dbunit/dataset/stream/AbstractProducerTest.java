@@ -35,7 +35,6 @@ public abstract class AbstractProducerTest extends TestCase
         "DUPLICATE_TABLE",
         "SECOND_TABLE",
         "TEST_TABLE",
-        "DUPLICATE_TABLE",
         "NOT_NULL_TABLE",
         "EMPTY_TABLE",
     };
@@ -52,7 +51,7 @@ public abstract class AbstractProducerTest extends TestCase
 
     protected int[] getExpectedRowCount() throws Exception
     {
-        return new int[] {1, 2, 3, 2, 1, 0};
+        return new int[] {1, 2, 3, 1, 0};
     }
 
     protected String getNotNullTableName() throws Exception

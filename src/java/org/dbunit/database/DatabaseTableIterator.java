@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * @author Manuel Laflamme
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since ? (Apr 12, 2003)
+ * @since 1.x (Apr 12, 2003)
  */
 public class DatabaseTableIterator implements ITableIterator
 {

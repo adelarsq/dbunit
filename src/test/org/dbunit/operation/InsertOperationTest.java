@@ -299,53 +299,6 @@ public class InsertOperationTest extends AbstractDatabaseTest
         connection.verify();
     }
 
-    public void testExecuteWithDuplicateTables() throws Exception
-    {
-        String schemaName = "schema";
-        String tableName = "table";
-        String[] expected = {
-            "insert into schema.table (c1, c2, c3) values ('toto', 1234, 'false')",
-            "insert into schema.table (c1, c2, c3) values ('qwerty', 123.45, 'true')",
-            "insert into schema.table (c1, c2, c3) values ('toto', 1234, 'false')",
-            "insert into schema.table (c1, c2, c3) values ('qwerty', 123.45, 'true')",
-        };
-
-        // setup table
-        Column[] columns = new Column[]{
-            new Column("c1", DataType.VARCHAR),
-            new Column("c2", DataType.NUMERIC),
-            new Column("c3", DataType.BOOLEAN),
-        };
-        DefaultTable table = new DefaultTable(tableName, columns);
-        table.addRow(new Object[]{"toto", "1234", Boolean.FALSE});
-        table.addRow(new Object[]{"qwerty", new Double("123.45"), "true"});
-        IDataSet dataSet = new DefaultDataSet(new ITable[]{table, table});
-
-        // setup mock objects
-        MockBatchStatement statement = new MockBatchStatement();
-        statement.addExpectedBatchStrings(expected);
-        statement.setExpectedExecuteBatchCalls(2);
-        statement.setExpectedClearBatchCalls(2);
-        statement.setExpectedCloseCalls(2);
-
-        MockStatementFactory factory = new MockStatementFactory();
-        factory.setExpectedCreatePreparedStatementCalls(2);
-        factory.setupStatement(statement);
-
-        MockDatabaseConnection connection = new MockDatabaseConnection();
-        connection.setupDataSet(new DefaultDataSet(table));
-        connection.setupSchema(schemaName);
-        connection.setupStatementFactory(factory);
-        connection.setExpectedCloseCalls(0);
-
-        // execute operation
-        new InsertOperation().execute(connection, dataSet);
-
-        statement.verify();
-        factory.verify();
-        connection.verify();
-    }
-
     public void testExecuteWithEmptyTable() throws Exception
     {
         Column[] columns = {new Column("c1", DataType.VARCHAR)};

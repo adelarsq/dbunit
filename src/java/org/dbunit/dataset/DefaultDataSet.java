@@ -21,17 +21,19 @@
 
 package org.dbunit.dataset;
 
+import org.dbunit.database.AmbiguousTableNameException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
+ * Simple implementation of a dataset backed by {@link ITable} objects which can
+ * be added dynamically.
+ * 
  * @author Manuel Laflamme
- * @version $Revision$
- * @since Feb 18, 2002
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0 (Feb 18, 2002)
  */
 public class DefaultDataSet extends AbstractDataSet
 {
@@ -41,18 +43,18 @@ public class DefaultDataSet extends AbstractDataSet
      */
     private static final Logger logger = LoggerFactory.getLogger(DefaultDataSet.class);
 
-    private final List _tableList = new ArrayList();
+    private final OrderedTableNameMap _tableMap = new OrderedTableNameMap();
 
     public DefaultDataSet()
     {
     }
 
-    public DefaultDataSet(ITable table)
+    public DefaultDataSet(ITable table) throws AmbiguousTableNameException
     {
         addTable(table);
     }
 
-    public DefaultDataSet(ITable[] tables)
+    public DefaultDataSet(ITable[] tables) throws AmbiguousTableNameException
     {
         for (int i = 0; i < tables.length; i++)
         {
@@ -60,7 +62,7 @@ public class DefaultDataSet extends AbstractDataSet
         }
     }
 
-    public DefaultDataSet(ITable table1, ITable table2)
+    public DefaultDataSet(ITable table1, ITable table2) throws AmbiguousTableNameException
     {
         addTable(table1);
         addTable(table2);
@@ -68,12 +70,12 @@ public class DefaultDataSet extends AbstractDataSet
 
     /**
      * Add a new table in this dataset.
+     * @throws AmbiguousTableNameException 
      */
-    public void addTable(ITable table)
+    public void addTable(ITable table) throws AmbiguousTableNameException
     {
         logger.debug("addTable(table={}) - start", table);
-
-        _tableList.add(table);
+        _tableMap.add(table.getTableMetaData().getTableName(), table);
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -84,7 +86,7 @@ public class DefaultDataSet extends AbstractDataSet
     {
         logger.debug("createIterator(reversed={}) - start", Boolean.toString(reversed));
 
-        ITable[] tables = (ITable[])_tableList.toArray(new ITable[0]);
+        ITable[] tables = (ITable[])_tableMap.orderedValues().toArray(new ITable[0]);
         return new DefaultTableIterator(tables, reversed);
     }
 }

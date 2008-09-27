@@ -24,7 +24,7 @@ package org.dbunit.database;
 import org.dbunit.dataset.DataSetException;
 
 /**
- * This exception is thrown by {@link DatabaseDataSet} when a multiple tables
+ * This exception is thrown by {@link IDataSet} when multiple tables
  * having the same name are accessible. This usually occurs when the database
  * connection have access to multiple schemas containing identical table names.
  * <p>
@@ -34,7 +34,14 @@ import org.dbunit.dataset.DataSetException;
  * 2) Specify a schema name to the {@link DatabaseConnection} or
  * {@link DatabaseDataSourceConnection} constructor.
  * 3) Enable the qualified table name support (see How-to documentation).
-
+ * </p>
+ * 
+ * <p>
+ * Another common reason for this exception to be thrown is when an XML file
+ * contains the same table multiple times whereas a different table is between
+ * the definition of the duplicate table.
+ * </p>
+ * 
  * @author Manuel Laflamme
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$

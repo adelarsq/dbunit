@@ -40,10 +40,13 @@ import org.dbunit.dataset.ITable;
  */
 public class FlatXmlDataSetTest extends AbstractDataSetTest
 {
-    protected static final File DATASET_FILE =
+    public static final File DATASET_FILE =
             new File("src/xml/flatXmlDataSetTest.xml");
-    protected static final File DUPLICATE_DATASET_FILE =
+    public static final File DUPLICATE_DATASET_FILE =
             new File("src/xml/flatXmlDataSetDuplicateTest.xml");
+    public static final File DUPLICATE_DATASET_MULTIPLE_CASE_FILE = 
+            new File("src/xml/flatXmlDataSetDuplicateMultipleCaseTest.xml");
+
     private static final File FLAT_XML_TABLE = 
     		new File("src/xml/flatXmlTableTest.xml");
 
@@ -61,6 +64,11 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
     {
         return new FlatXmlDataSet(
                 DUPLICATE_DATASET_FILE);
+    }
+
+    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception 
+    {
+        return new FlatXmlDataSet(DUPLICATE_DATASET_MULTIPLE_CASE_FILE);
     }
 
     public void testMissingColumnAndEnableDtdMetadata() throws Exception
@@ -101,59 +109,6 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
     {
         IDataSet expectedDataSet = createDataSet();
         File tempFile = File.createTempFile("flatXmlDataSetTest", ".xml");
-        try
-        {
-            Writer out = new FileWriter(tempFile);
-
-            // write dataset in temp file
-            try
-            {
-                FlatXmlDataSet.write(expectedDataSet, out);
-            }
-            finally
-            {
-                out.close();
-            }
-
-            // load new dataset from temp file
-            FileReader in = new FileReader(tempFile);
-            try
-            {
-                IDataSet actualDataSet = new FlatXmlDataSet(in);
-
-                // verify table count
-                assertEquals("table count", expectedDataSet.getTableNames().length,
-                        actualDataSet.getTableNames().length);
-
-                // verify each table
-                ITable[] expected = DataSetUtils.getTables(expectedDataSet);
-                ITable[] actual = DataSetUtils.getTables(actualDataSet);
-                assertEquals("table count", expected.length, actual.length);
-                for (int i = 0; i < expected.length; i++)
-                {
-                    String expectedName = expected[i].getTableMetaData().getTableName();
-                    String actualName = actual[i].getTableMetaData().getTableName();
-                    assertEquals("table name", expectedName, actualName);
-
-                    assertTrue("not same instance", expected[i] != actual[i]);
-                    Assertion.assertEquals(expected[i], actual[i]);
-                }
-            }
-            finally
-            {
-                in.close();
-            }
-        }
-        finally
-        {
-            tempFile.delete();
-        }
-    }
-
-    public void testDuplicateWrite() throws Exception
-    {
-        IDataSet expectedDataSet = createDuplicateDataSet();
-        File tempFile = File.createTempFile("flatXmlDataSetDuplicateTest", ".xml");
         try
         {
             Writer out = new FileWriter(tempFile);

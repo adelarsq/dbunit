@@ -23,7 +23,6 @@ package org.dbunit.ant;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,6 +30,7 @@ import java.util.List;
 
 import org.apache.tools.ant.Task;
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.AmbiguousTableNameException;
 import org.dbunit.database.CachedResultSetTableFactory;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.ForwardOnlyResultSetTableFactory;
@@ -48,6 +48,7 @@ import org.dbunit.dataset.stream.StreamingDataSet;
 import org.dbunit.dataset.xml.FlatDtdProducer;
 import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.dbunit.dataset.xml.XmlProducer;
+import org.dbunit.util.FileHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
@@ -217,16 +218,16 @@ public abstract class AbstractStep implements DbUnitTaskStep
 	 */
 	public static InputSource getInputSource(File file) throws MalformedURLException
 	{
-		URI uri = file.toURI();
-		InputSource inputSource = new InputSource(uri.toURL().toString());
-		return inputSource;
+        InputSource source = FileHelper.createInputSource(file);
+        return source;
 	}
 	
-	private QueryDataSet getQueryDataSetForQuerySet
-		(IDatabaseConnection connection, QuerySet querySet) throws SQLException {
+	private QueryDataSet getQueryDataSetForQuerySet(IDatabaseConnection connection, QuerySet querySet) 
+	throws SQLException, AmbiguousTableNameException 
+	{
         logger.debug("getQueryDataSetForQuerySet(connection={}, querySet={}) - start", connection, querySet);
 		
-		//incorporate queries from referenced queryset
+		//incorporate queries from referenced query-set
 		String refid = querySet.getRefid();
 		if(refid != null) {
 			QuerySet referenced = (QuerySet)

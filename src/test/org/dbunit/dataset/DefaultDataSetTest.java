@@ -21,6 +21,7 @@
 
 package org.dbunit.dataset;
 
+import org.dbunit.database.AmbiguousTableNameException;
 import org.dbunit.dataset.xml.XmlDataSet;
 
 import java.io.FileReader;
@@ -48,12 +49,20 @@ public class DefaultDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDuplicateDataSet() throws Exception
     {
-        IDataSet dataSet = new XmlDataSet(
-                new FileReader("src/xml/xmlDataSetDuplicateTest.xml"));
-        ITable[] tables = DataSetUtils.getTables(dataSet);
+        return createDuplicateDataSet(false);
+    }
+    
+    protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception 
+    {
+        return createDuplicateDataSet(true);
+    }
 
+    private IDataSet createDuplicateDataSet(boolean multipleCase) throws AmbiguousTableNameException 
+    {
+        ITable[] tables = super.createDuplicateTables(multipleCase);
         return new DefaultDataSet(tables);
     }
+
 }
 
 

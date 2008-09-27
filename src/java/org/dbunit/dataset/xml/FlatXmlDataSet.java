@@ -181,7 +181,7 @@ public class FlatXmlDataSet extends CachedDataSet
 
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml reader.
+     * Creates an FlatXmlDataSet object with the specified xml reader.
      * Relative DOCTYPE uri are resolved from the current working directory.
      *
      * @param xmlReader the xml reader
@@ -192,7 +192,7 @@ public class FlatXmlDataSet extends CachedDataSet
     }
 
     /**
-     * Creates an FlatXmlDataSet object with the specifed xml reader.
+     * Creates an FlatXmlDataSet object with the specified xml reader.
      * Relative DOCTYPE uri are resolved from the current working directory.
      *
      * @param xmlReader the xml reader
