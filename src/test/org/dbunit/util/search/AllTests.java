@@ -35,6 +35,7 @@ public class AllTests extends TestSuite
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(BiDirectionalEdgesDepthFirstSearchTest.class));
         suite.addTest(new TestSuite(DepthFirstSearchTest.class));
+        suite.addTest(new TestSuite(EdgeTest.class));
         suite.addTest(new TestSuite(ExcludeNodesSearchCallbackTest.class));
         suite.addTest(new TestSuite(IncludeNodesSearchCallbackTest.class));
         return suite;

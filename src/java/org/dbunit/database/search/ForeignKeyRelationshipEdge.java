@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package org.dbunit.database.search;
 
 import org.dbunit.util.search.Edge;
@@ -36,44 +35,43 @@ import org.dbunit.util.search.Edge;
  * @version $Revision$
  * @since Sep 9, 2005
  */
-
 public class ForeignKeyRelationshipEdge extends Edge {
 
-  private String fkColumn;
-  private String pkColumn;
-  
-  /**
-   * Creates an edge representing a FK.
-   * @param tableFrom table that has the FK
-   * @param tableTo table that has the PK
-   * @param fkColumn name of the FK column on tableFrom
-   * @param pkColumn name of the PK column on tableTo
-   */
-  
-  public ForeignKeyRelationshipEdge(String tableFrom, String tableTo, String fkColumn, String pkColumn) {
-    super(tableFrom, tableTo);
-    this.fkColumn = fkColumn;
-    this.pkColumn = pkColumn;
-  }
+    private String fkColumn;
+    private String pkColumn;
 
-  /**
-   * Gets the name of the foreign key column in the relationship.
-   * @return name of the foreign key column in the relationship.
-   */
-  public String getFKColumn() {
-    return fkColumn;
-  }
-  
-  /**
-   * Gets the name of the primary key column in the relationship.
-   * @return name of the primary key column in the relationship.
-   */
-  public String getPKColumn() {
-    return pkColumn;
-  }
-  
-  public String toString() {
-    return getFrom() + "(" + getFKColumn() + ")->" + getTo() + "(" + getPKColumn() + ")";
-  }
-  
+    /**
+     * Creates an edge representing a FK.
+     * @param tableFrom table that has the FK
+     * @param tableTo table that has the PK
+     * @param fkColumn name of the FK column on tableFrom
+     * @param pkColumn name of the PK column on tableTo
+     */
+
+    public ForeignKeyRelationshipEdge(String tableFrom, String tableTo, String fkColumn, String pkColumn) {
+        super(tableFrom, tableTo);
+        this.fkColumn = fkColumn;
+        this.pkColumn = pkColumn;
+    }
+
+    /**
+     * Gets the name of the foreign key column in the relationship.
+     * @return name of the foreign key column in the relationship.
+     */
+    public String getFKColumn() {
+        return fkColumn;
+    }
+
+    /**
+     * Gets the name of the primary key column in the relationship.
+     * @return name of the primary key column in the relationship.
+     */
+    public String getPKColumn() {
+        return pkColumn;
+    }
+
+    public String toString() {
+        return getFrom() + "(" + getFKColumn() + ")->" + getTo() + "(" + getPKColumn() + ")";
+    }
+
 }

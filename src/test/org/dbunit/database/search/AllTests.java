@@ -34,6 +34,7 @@ public class AllTests extends TestSuite
     public static Test suite() throws Exception
     {
         TestSuite suite = new TestSuite();
+        suite.addTest(new TestSuite(ForeignKeyRelationshipEdgeTest.class));        
         suite.addTest(new TestSuite(ImportAndExportNodesFilterSearchCallbackTest.class));        
         suite.addTest(new TestSuite(ImportNodesFilterSearchCallbackTest.class));        
         suite.addTest(new TestSuite(ImportAndExportKeysSearchCallbackOwnFileTest.class));                

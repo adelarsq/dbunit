@@ -28,11 +28,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Basic implementation of the IEdge interface.
- * TODO: add test cases (specially for the equals/compare methods)
  * 
  * @author Felipe Leme (dbunit@felipeal.net)
- * @version $Revision$
- * @since Aug 25, 2005
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0 (Aug 25, 2005)
  */
 public class Edge implements IEdge {
 
@@ -41,50 +41,61 @@ public class Edge implements IEdge {
      */
     private static final Logger logger = LoggerFactory.getLogger(Edge.class);
 
-  private final Comparable nodeFrom;
-  private final Comparable nodeTo;
+    private final Comparable nodeFrom;
+    private final Comparable nodeTo;
 
-  public Edge(Comparable nodeFrom, Comparable nodeTo) {
-    if (nodeFrom == null) {
-      throw new IllegalArgumentException("node from cannot be null");
+    /**
+     * @param nodeFrom
+     * @param nodeTo
+     */
+    public Edge(Comparable nodeFrom, Comparable nodeTo) {
+        if (nodeFrom == null) {
+            throw new IllegalArgumentException("node from cannot be null");
+        }
+        if (nodeTo == null) {
+            throw new IllegalArgumentException("node to cannot be null");
+        }
+        this.nodeFrom = nodeFrom;
+        this.nodeTo = nodeTo;
     }
-    if (nodeTo == null) {
-      throw new IllegalArgumentException("node to cannot be null");
+
+    public Object getFrom() {
+        return this.nodeFrom;
     }
-    this.nodeFrom = nodeFrom;
-    this.nodeTo = nodeTo;
-  }
 
-  public Object getFrom() {
-    return this.nodeFrom;
-  }
+    public Object getTo() {
+        return this.nodeTo;
+    }
 
-  public Object getTo() {
-    return this.nodeTo;
-  }
+    public String toString() {
+        return this.nodeFrom + "->" + this.nodeTo;
+    }
 
-  public String toString() {
-    return this.nodeFrom + "->" + this.nodeTo;
-  }
-
-  public int compareTo(Object o) {
+    /**
+     * Compares this edge to the given one using 
+     * the <code>{@link #getFrom()}</code> nodes first. 
+     * If those are equal the <code>{@link #getTo()}}</code>
+     * is used for comparison.
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object o) {
         logger.debug("compareTo(o={}) - start", o);
 
-    Edge otherEdge = (Edge) o;
-    int result = this.nodeFrom.compareTo(otherEdge.getFrom());
-    if ( result == 0 ) {
-      result = this.nodeTo.compareTo(otherEdge.getTo());
+        Edge otherEdge = (Edge) o;
+        int result = this.nodeFrom.compareTo(otherEdge.getFrom());
+        if ( result == 0 ) {
+            result = this.nodeTo.compareTo(otherEdge.getTo());
+        }
+        return result;
     }
-    return result;
-  }
-  
-  public boolean equals(Object obj) {
+
+    public boolean equals(Object obj) {
         logger.debug("equals(obj={}) - start", obj);
-    return EqualsBuilder.reflectionEquals( this, obj );
-  }
-  
-  public int hashCode() {
-    return HashCodeBuilder.reflectionHashCode( this );
-  }
+        return EqualsBuilder.reflectionEquals( this, obj );
+    }
+
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode( this );
+    }
 
 }
