@@ -34,14 +34,15 @@ import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dbunit.dataset.csv.handlers.EscapeHandler;
-import org.dbunit.dataset.csv.handlers.IsAlnumHandler;
-import org.dbunit.dataset.csv.handlers.Pipeline;
-import org.dbunit.dataset.csv.handlers.PipelineException;
-import org.dbunit.dataset.csv.handlers.QuoteHandler;
-import org.dbunit.dataset.csv.handlers.SeparatorHandler;
-import org.dbunit.dataset.csv.handlers.TransparentHandler;
-import org.dbunit.dataset.csv.handlers.WhitespacesHandler;
+import org.dbunit.dataset.common.handlers.EscapeHandler;
+import org.dbunit.dataset.common.handlers.IllegalInputCharacterException;
+import org.dbunit.dataset.common.handlers.IsAlnumHandler;
+import org.dbunit.dataset.common.handlers.Pipeline;
+import org.dbunit.dataset.common.handlers.PipelineException;
+import org.dbunit.dataset.common.handlers.QuoteHandler;
+import org.dbunit.dataset.common.handlers.SeparatorHandler;
+import org.dbunit.dataset.common.handlers.TransparentHandler;
+import org.dbunit.dataset.common.handlers.WhitespacesHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

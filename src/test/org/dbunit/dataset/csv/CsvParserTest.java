@@ -21,11 +21,18 @@
 
 package org.dbunit.dataset.csv;
 
-import junit.framework.TestCase;
-import org.dbunit.dataset.csv.handlers.PipelineException;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.dbunit.dataset.common.handlers.IllegalInputCharacterException;
+import org.dbunit.dataset.common.handlers.PipelineException;
 
 
 public class CsvParserTest extends TestCase {
@@ -57,6 +64,7 @@ public class CsvParserTest extends TestCase {
     }
 */
 
+    
     public void testCanParseNonQuotedStrings() throws PipelineException, IllegalInputCharacterException {
         String csv = "Hello, world";
         List parsed = parser.parse(csv);

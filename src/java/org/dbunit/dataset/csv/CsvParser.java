@@ -25,7 +25,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import org.dbunit.dataset.csv.handlers.PipelineException;
+import org.dbunit.dataset.common.handlers.IllegalInputCharacterException;
+import org.dbunit.dataset.common.handlers.PipelineException;
 
 /**
  * @author fede
