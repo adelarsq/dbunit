@@ -179,8 +179,8 @@ public class SqlLoaderControlParserImpl implements SqlLoaderControlParser {
 
         if (parseForRegexp(lines, "(LOAD\\sDATA).*") != null) {
 
-            File dataFile = new File(controlFile.getParent(),
-                                        parseForRegexp(lines, ".*INFILE\\s'(.*?)'.*"));
+        	String fileName = parseForRegexp(lines, ".*INFILE\\s'(.*?)'.*");
+        	File dataFile = resolveFile(controlFile.getParentFile(), fileName);
 
             this.tableName = parseForRegexp(lines, ".*INTO\\sTABLE\\s(.*?)\\s.*");
 
@@ -215,7 +215,27 @@ public class SqlLoaderControlParserImpl implements SqlLoaderControlParser {
         }
     }
 
-    protected String parseForRegexp(String controlFileContent, String regexp) 
+    private File resolveFile(File parentDir, String fileName) {
+    	// Initially assume that we have an absolute fileName
+    	File dataFile = new File(fileName);
+    	
+    	// If fileName was not absolute build it using the given parent
+    	if(!dataFile.isAbsolute()) {
+    		fileName = fileName.replaceAll("\\\\", "/");
+    		// remove "./" characters from name at the beginning if needed
+    		if(fileName.startsWith("./")){
+    			fileName = fileName.substring(2);
+    		}
+    		// remove "." character from name at the beginning if needed
+    		if(fileName.startsWith(".")){
+    			fileName = fileName.substring(1);
+    		}
+    		dataFile = new File(parentDir, fileName);
+    	}
+    	return dataFile;
+	}
+
+	protected String parseForRegexp(String controlFileContent, String regexp) 
     throws IOException 
     {
         logger.debug("parseForRegexp(controlFileContent={}, regexp={}) - start", controlFileContent, regexp);

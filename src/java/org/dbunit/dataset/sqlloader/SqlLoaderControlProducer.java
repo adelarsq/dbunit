@@ -103,7 +103,7 @@ public class SqlLoaderControlProducer implements IDataSetProducer {
         this.controlFilesDir = controlFilesDir;
         
         try {
-            this.orderedTableNames = SqlLoaderControlProducer.getTables(controlFilesDir.toURL(), tableOrderFile);
+            this.orderedTableNames = SqlLoaderControlProducer.getTables(controlFilesDir, tableOrderFile);
         }
         catch (IOException e) {
             throw new DataSetException("error getting list of tables from file '" + tableOrderFile + "'", e);
@@ -210,19 +210,19 @@ public class SqlLoaderControlProducer implements IDataSetProducer {
     /**
      * Get a list of tables that this producer will create.
      * 
-     * @param base the base
+     * @param controlFilesDir the base directory
      * @param tableList the table list
      * 
      * @return a list of Strings, where each item is a CSV file relative to the base URL
      * 
      * @throws IOException when IO on the base URL has issues.
      */
-    public static List getTables(URL base, File tableList) throws IOException 
+    public static List getTables(File controlFilesDir, File tableList) throws IOException 
     {
-        logger.debug("getTables(base={}, tableList={}) - start", base, tableList);
+        logger.debug("getTables(controlFilesDir={}, tableList={}) - start", controlFilesDir, tableList);
 
-        // Copy file into the control dir
-        File tmpTableList = new File(base.getFile(), TMP_TABLE_LIST_FILENAME);
+        // Copy file into the control directory
+        File tmpTableList = new File(controlFilesDir, TMP_TABLE_LIST_FILENAME);
         FileHelper.copyFile(tableList, tmpTableList);
 
         List orderedNames;
