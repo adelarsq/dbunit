@@ -178,7 +178,7 @@ public abstract class AbstractDataType extends DataType
     
     /**
      * @param clazz The fully qualified name of the class to be loaded
-     * @param connection The classLoader to be used to load the given class
+     * @param classLoader The classLoader to be used to load the given class
      * @return The loaded class
      * @throws ClassNotFoundException
      */

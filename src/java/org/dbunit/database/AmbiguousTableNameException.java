@@ -24,7 +24,7 @@ package org.dbunit.database;
 import org.dbunit.dataset.DataSetException;
 
 /**
- * This exception is thrown by {@link IDataSet} when multiple tables
+ * This exception is thrown by {@link org.dbunit.dataset.IDataSet} when multiple tables
  * having the same name are accessible. This usually occurs when the database
  * connection have access to multiple schemas containing identical table names.
  * <p>
