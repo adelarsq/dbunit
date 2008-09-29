@@ -15,6 +15,7 @@
       <action dev="gommma" type="fix" issue="2122773" due-to="mkejzar">QueryDataSet does not cache query results - Implies API change - new method IDatabaseConnection.createTable(String tableName)</action>
       <action dev="gommma" type="update" issue="2132121">Fail-Fast if AmbiguousTableNames found</action>
       <action dev="gommma" type="add" issue="1735092" due-to="stritti">[PATCH] Support Oracle SQLLoader files for datasets - refactored the CSV Pipeline infrastructure so that it can be reused for sqlldr files</action>
+      <action dev="gommma" type="update">Updated apache commons-collections from 3.1 to 3.2.1</action>
     </release>
     <release version="2.3.0" date="Sep 11, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>
