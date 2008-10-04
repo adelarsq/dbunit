@@ -21,6 +21,8 @@
 package org.dbunit.dataset.excel;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +56,9 @@ class XlsTable extends AbstractTable
 
     private final ITableMetaData _metaData;
     private final HSSFSheet _sheet;
+    
+    private final DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+    
 
     public XlsTable(String sheetName, HSSFSheet sheet) throws DataSetException
     {
@@ -68,6 +73,9 @@ class XlsTable extends AbstractTable
         }
 
         _sheet = sheet;
+        
+        // Needed for later "BigDecimal"/"Number" conversion
+        symbols.setDecimalSeparator('.');
     }
 
     static ITableMetaData createMetaData(String tableName, HSSFRow sampleRow)
@@ -83,7 +91,7 @@ class XlsTable extends AbstractTable
                 break;
             }
 
-            String columnName = cell.getStringCellValue();
+            String columnName = cell.getRichStringCellValue().getString();
             if (columnName != null)
             {
             	columnName = columnName.trim();
@@ -134,10 +142,13 @@ class XlsTable extends AbstractTable
                 {
                     return cell.getDateCellValue();
                 }
-                return new BigDecimal(cell.getNumericCellValue());
+                else 
+                {
+                    return getNumericValue(cell);
+                }
 
             case HSSFCell.CELL_TYPE_STRING:
-                return cell.getStringCellValue();
+                return cell.getRichStringCellValue().getString();
 
             case HSSFCell.CELL_TYPE_FORMULA:
                 throw new DataTypeException("Formula not supported at row=" +
@@ -158,5 +169,42 @@ class XlsTable extends AbstractTable
                         ", column=" + column);
         }
     }
+    
+    private BigDecimal getNumericValue(HSSFCell cell)
+    {
+        logger.debug("getNumericValue(cell={}) - start", cell);
+
+        String formatString = cell.getCellStyle().getDataFormatString();
+        String resultString = null;
+        double cellValue = cell.getNumericCellValue();
+
+        if((formatString != null))
+        {
+            if(!formatString.equals("General") && !formatString.equals("@")) {
+                logger.debug("formatString={}", formatString);
+                DecimalFormat nf = new DecimalFormat(formatString, symbols);
+                resultString = nf.format(cellValue);
+            }
+        }
+        
+        BigDecimal result;
+        if(resultString != null) {
+            try {
+                result = new BigDecimal(resultString);
+            }
+            catch(NumberFormatException e) {
+                logger.debug("Exception occurred while trying create a BigDecimal. value={}", resultString);
+                // Probably was not a BigDecimal format retrieved from the excel. Some
+                // date formats are not yet recognized by HSSF as DateFormats so that
+                // we could get here.
+                result = new BigDecimal(String.valueOf(cellValue));
+            }
+        }
+        else {
+            result = new BigDecimal(String.valueOf(cellValue));
+        }
+        return result;
+    }
+    
 }
 

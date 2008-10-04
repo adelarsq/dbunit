@@ -25,8 +25,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -55,6 +60,8 @@ import org.slf4j.LoggerFactory;
 public class XlsDataSet extends AbstractDataSet
 {
 
+    public static final String ZEROS = "0000000000000000000000000000000000000000000000000000";
+    
     /**
      * Logger for this class
      */
@@ -96,6 +103,9 @@ public class XlsDataSet extends AbstractDataSet
 
         HSSFWorkbook workbook = new HSSFWorkbook();
 
+        HSSFCellStyle cellStyleDate = workbook.createCellStyle();
+        cellStyleDate.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy h:mm"));
+        
         int index = 0;
         ITableIterator iterator = dataSet.iterator();
         while(iterator.next())
@@ -114,10 +124,10 @@ public class XlsDataSet extends AbstractDataSet
             {
                 Column column = columns[j];
                 HSSFCell cell = headerRow.createCell((short)j);
-                cell.setEncoding(HSSFCell.ENCODING_UTF_16);
-                cell.setCellValue(column.getColumnName());
+//                cell.setEncoding(HSSFCell.ENCODING_UTF_16); //Deprecated! As - of 3-Jan-06 POI now automatically handles Unicode without forcing the encoding.
+                cell.setCellValue(new HSSFRichTextString(column.getColumnName()));
             }
-
+            
             // write table data
             for (int j = 0; j < table.getRowCount(); j++)
             {
@@ -129,8 +139,34 @@ public class XlsDataSet extends AbstractDataSet
                     if (value != null)
                     {
                         HSSFCell cell = row.createCell((short)k);
-                        cell.setEncoding(HSSFCell.ENCODING_UTF_16);
-                        cell.setCellValue(DataType.asString(value));
+//                        cell.setEncoding(HSSFCell.ENCODING_UTF_16); //Deprecated! As - of 3-Jan-06 POI now automatically handles Unicode without forcing the encoding.
+                        if(value instanceof Date){
+                            cell.setCellValue((Date)value);
+                            cell.setCellStyle(cellStyleDate);
+                        }
+                        else if(value instanceof BigDecimal){
+                            cell.setCellValue( ((BigDecimal)value).doubleValue() );
+
+                            HSSFCellStyle cellStyleNumber = workbook.createCellStyle();
+                            HSSFDataFormat df = workbook.createDataFormat();
+                            int scale = ((BigDecimal)value).scale();
+                            short format;
+                            if(scale <= 0){
+                                format = df.getFormat("####");
+                            }
+                            else {
+                                String zeros = createZeros(((BigDecimal)value).scale());
+                                format = df.getFormat("####." + zeros);
+                            }
+                            if(logger.isDebugEnabled())
+                                logger.debug("Using format '{}' for value '{}'.", String.valueOf(format), value);
+                            
+                            cellStyleNumber.setDataFormat(format);
+                            cell.setCellStyle(cellStyleNumber);
+                        }
+                        else {
+                            cell.setCellValue(new HSSFRichTextString(DataType.asString(value)));
+                        }
                     }
                 }
             }
@@ -141,6 +177,10 @@ public class XlsDataSet extends AbstractDataSet
         // write xls document
         workbook.write(out);
         out.flush();
+    }
+
+    private static String createZeros(int count) {
+        return ZEROS.substring(0, count);
     }
 
     ////////////////////////////////////////////////////////////////////////////

@@ -20,13 +20,16 @@
  */
 package org.dbunit.dataset.excel;
 
+import java.io.File;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.TimeZone;
+
 import org.dbunit.dataset.AbstractTableTest;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.datatype.DataType;
-
-import java.io.File;
 
 /**
  * @author Manuel Laflamme
@@ -36,6 +39,9 @@ import java.io.File;
  */
 public class XlsTableTest extends AbstractTableTest
 {
+    private static final long ONE_MINUTE_IN_MILLIS = 60 * 1000;
+    private static final long ONE_HOUR_IN_MILLIS = 60 * ONE_MINUTE_IN_MILLIS;
+    
     public XlsTableTest(String s)
     {
         super(s);
@@ -91,6 +97,31 @@ public class XlsTableTest extends AbstractTableTest
 
         Column[] columns = table.getTableMetaData().getColumns();
     	assertEquals("Column count", 0, columns.length);
+    }
+
+    
+    public void testDifferentDatatypes() throws Exception
+    {
+        int row = 0;
+        ITable table = createDataSet().getTable("TABLE_DIFFERENT_DATATYPES");
+        
+        long tzOffset = TimeZone.getDefault().getOffset(0);
+        Object[] expected = {
+                new Date(0-tzOffset), 
+                new Date(0-tzOffset + (10*ONE_HOUR_IN_MILLIS + 45*ONE_MINUTE_IN_MILLIS)), 
+                new BigDecimal("0.563136574074074"), 
+                new BigDecimal("10000.00"), 
+                new BigDecimal("-200"), 
+                new BigDecimal("12345.123456789000") 
+                };
+
+        Column[] columns = table.getTableMetaData().getColumns();
+        assertEquals("column count", expected.length, columns.length);
+        for (int i = 0; i < columns.length; i++)
+        {
+            Object actual = table.getValue(row, columns[i].getColumnName());
+            assertEquals("value " + i, expected[i], actual);
+        }
     }
 
 }
