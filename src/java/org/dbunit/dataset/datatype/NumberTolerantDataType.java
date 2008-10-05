@@ -22,6 +22,7 @@ package org.dbunit.dataset.datatype;
 
 import java.math.BigDecimal;
 
+import org.dbunit.dataset.datatype.ToleratedDeltaMap.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,12 +43,12 @@ public final class NumberTolerantDataType extends NumberDataType
      */
     private static final Logger logger = LoggerFactory.getLogger(NumberTolerantDataType.class);
 
-    private static final BigDecimal ZERO = new BigDecimal(0.0);
+    private static final BigDecimal C_100 = new BigDecimal("100");
     
     /**
      * The allowed/tolerated difference 
      */
-    private double delta;
+    private Precision toleratedDelta;
 
     /**
      * Creates a new number tolerant datatype
@@ -55,21 +56,22 @@ public final class NumberTolerantDataType extends NumberDataType
      * @param sqlType
      * @param delta The tolerated delta to be used for the comparison
      */
-    NumberTolerantDataType(String name, int sqlType, double delta)
+    NumberTolerantDataType(String name, int sqlType, Precision delta)
     {
         super(name, sqlType);
         
-        if(delta<0.0) {
-        	throw new IllegalArgumentException("The given delta '"+delta+"' must be >= 0");
+        if (delta == null) {
+            throw new NullPointerException(
+                    "The parameter 'delta' must not be null");
         }
-        this.delta=delta;
+        this.toleratedDelta = delta;
     }
 
-    public double getDelta() 
+    public Precision getToleratedDelta() 
     {
-		return delta;
+		return toleratedDelta;
 	}
-    
+
     /**
      * The only method overwritten from the base implementation to compare numbers allowing a tolerance
      * @see org.dbunit.dataset.datatype.AbstractDataType#compare(java.lang.Object, java.lang.Object)
@@ -80,6 +82,20 @@ public final class NumberTolerantDataType extends NumberDataType
 
         try
         {
+            // New in 2.4: Object level check for equality - should give massive performance improvements
+            // in the most cases because the typecast can be avoided (null values and equal objects)
+            if(o1 == null && o2 == null)
+            {
+                return 0;
+            }
+            if(o1 != null && o1.equals(o2))
+            {
+                return 0;
+            }
+            // Note that no more check is needed for o2 because it definitely does is not equal to o1
+            // Instead immediately proceed with the typeCast method
+            
+            
             Comparable value1 = (Comparable)typeCast(o1);
             Comparable value2 = (Comparable)typeCast(o2);
 
@@ -104,20 +120,45 @@ public final class NumberTolerantDataType extends NumberDataType
                 BigDecimal bdValue2 = (BigDecimal)value2;
                 BigDecimal diff = bdValue1.subtract(bdValue2);
                 // Exact match
-                if(diff.compareTo(ZERO)==0) 
+                if(isZero(diff)) 
                 {
                 	return 0;
                 }
-                else if(Math.abs(diff.doubleValue()) <= delta) 
+                
+                BigDecimal toleratedDeltaValue = this.toleratedDelta.getDelta();
+                if(!this.toleratedDelta.isPercentage()) 
                 {
-                    // within tolerance delta, so accept
-                	logger.debug("Values val1={}, val2={} differ but are within tolerated delta {}",
-                			new Object[] {bdValue1, bdValue2, new Double(delta) } );
-                    return 0;
-                } else {
-                	// TODO it would be beautiful to report a precise description about difference and tolerated delta values in the assertion
-                	// Therefore think about introducing a method "DataType.getCompareInfo()"
-                    return diff.signum();
+                    if(diff.abs().compareTo(toleratedDeltaValue) <= 0) 
+                    {
+                        // within tolerance delta, so accept
+                        if(logger.isDebugEnabled())
+                            logger.debug("Values val1={}, val2={} differ but are within tolerated delta {}",
+                                    new Object[] {bdValue1, bdValue2, toleratedDeltaValue } );
+                        return 0;
+                    } 
+                    else {
+                    	// TODO it would be beautiful to report a precise description about difference and tolerated delta values in the assertion
+                    	// Therefore think about introducing a method "DataType.getCompareInfo()"
+                        return diff.signum();
+                    }
+                }
+                else {
+                    // percentage comparison
+                    int scale = toleratedDeltaValue.scale() + 2;
+                    BigDecimal toleratedValue = bdValue1.multiply( toleratedDeltaValue.divide(C_100, scale, BigDecimal.ROUND_HALF_UP) );
+                    if(diff.abs().compareTo(toleratedValue) <= 0) 
+                    {
+                        // within tolerance delta, so accept
+                        if(logger.isDebugEnabled())
+                            logger.debug("Values val1={}, val2={} differ but are within tolerated delta {}",
+                                    new Object[] {bdValue1, bdValue2, toleratedValue } );
+                        return 0;
+                    }
+                    else {
+                        // TODO it would be beautiful to report a precise description about difference and tolerated delta values in the assertion
+                        // Therefore think about introducing a method "DataType.getCompareInfo()"
+                        return diff.signum();
+                    }
                 }
                 
             }
@@ -132,7 +173,14 @@ public final class NumberTolerantDataType extends NumberDataType
         }
     }
 
-    
-    
+    /**
+     * Checks if the given value is zero.
+     * @param value
+     * @return <code>true</code> if and only if the given value is zero.
+     */
+    public static final boolean isZero(BigDecimal value)
+    {
+        return value.signum()==0;
+    }
     
 }

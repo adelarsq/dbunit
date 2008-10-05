@@ -20,6 +20,7 @@
  */
 package org.dbunit.dataset.datatype;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -132,15 +133,49 @@ public class ToleratedDeltaMap
     {
     	private String tableName;
     	private String columnName;
-    	private double toleratedDelta;
+    	private Precision toleratedDelta;
     	
+        /**
+         * @param tableName The name of the table
+         * @param columnName The name of the column for which the tolerated delta should be applied
+         * @param toleratedDelta The tolerated delta. For example 1E-5 means that the comparison must
+         * match the first 5 decimal digits. All subsequent decimals are ignored.
+         */
+        public ToleratedDelta(String tableName, String columnName, double toleratedDelta) 
+        {
+            this(tableName, columnName, new Precision(new BigDecimal(String.valueOf(toleratedDelta)) ));
+        }
+
+        /**
+         * @param tableName The name of the table
+         * @param columnName The name of the column for which the tolerated delta should be applied
+         * @param toleratedDelta The tolerated delta. For example 1E-5 means that the comparison must
+         * match the first 5 decimal digits. All subsequent decimals are ignored.
+         */
+        public ToleratedDelta(String tableName, String columnName, BigDecimal toleratedDelta) 
+        {
+            this(tableName, columnName, new Precision(toleratedDelta));
+        }
+
+        /**
+         * @param tableName The name of the table
+         * @param columnName The name of the column for which the tolerated delta should be applied
+         * @param toleratedDelta The tolerated delta. For example 1E-5 means that the comparison must
+         * match the first 5 decimal digits. All subsequent decimals are ignored.
+         * @param isPercentage Whether or not the given toleratedDelta value is a percentage. See {@link Precision} for more.
+         */
+        public ToleratedDelta(String tableName, String columnName, BigDecimal toleratedDelta, boolean isPercentage) 
+        {
+            this(tableName, columnName, new Precision(toleratedDelta, isPercentage));
+        }
+
 		/**
 		 * @param tableName The name of the table
 		 * @param columnName The name of the column for which the tolerated delta should be applied
 		 * @param toleratedDelta The tolerated delta. For example 1E-5 means that the comparison must
 		 * match the first 5 decimal digits. All subsequent decimals are ignored.
 		 */
-		public ToleratedDelta(String tableName, String columnName, double toleratedDelta) 
+		public ToleratedDelta(String tableName, String columnName, Precision toleratedDelta) 
 		{
 			super();
 			this.tableName = tableName;
@@ -156,10 +191,17 @@ public class ToleratedDeltaMap
 			return columnName;
 		}
 
-		public double getToleratedDelta() {
+		public Precision getToleratedDelta() {
 			return toleratedDelta;
 		}
     	
+    	/**
+    	 * Checks whether or not the <code>tableName</code> and the <code>columnName</code>
+    	 * match the ones of this object.
+    	 * @param tableName
+    	 * @param columnName
+    	 * @return <code>true</code> if both given values match those of this object.
+    	 */
     	public boolean matches(String tableName, String columnName) {
     		if(this.tableName.equals(tableName) && this.columnName.equals(columnName)) {
     			return true;
@@ -177,5 +219,52 @@ public class ToleratedDeltaMap
     	}
     }
 
+
+    /**
+     * Container for the tolerated delta of two values that are compared to each other.
+     * 
+     * @author gommma (gommma AT users.sourceforge.net)
+     * @author Last changed by: $Author$
+     * @version $Revision$ $Date$
+     * @since 2.4.0
+     */
+    public static class Precision
+    {
+        private static final BigDecimal ZERO = new BigDecimal("0.0");
+        
+        private boolean percentage;
+        private BigDecimal delta;
+        
+        /**
+         * @param delta The allowed/tolerated difference
+         */
+        public Precision(BigDecimal delta) {
+            this(delta, false);
+        }
+        
+        /**
+         * @param delta The allowed/tolerated difference
+         * @param percentage Whether or not the given <code>delta</code> should be
+         * interpreted as percentage or not during the comparison 
+         */
+        public Precision(BigDecimal delta, boolean percentage) {
+            super();
+
+            if(delta.compareTo(ZERO) < 0) {
+                throw new IllegalArgumentException("The given delta '"+delta+"' must be >= 0");
+            }
+
+            this.delta = delta;
+            this.percentage = percentage;
+        }
+        
+        public boolean isPercentage() {
+            return percentage;
+        }
+        public BigDecimal getDelta() {
+            return delta;
+        }
+        
+    }
 
 }

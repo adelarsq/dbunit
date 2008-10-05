@@ -89,9 +89,11 @@ public class DefaultDataTypeFactory implements IDataTypeFactory
         	ToleratedDelta delta = _toleratedDeltaMap.findToleratedDelta(tableName, columnName);
             // Found a toleratedDelta object
             if(delta!=null) {
+                if(logger.isDebugEnabled())
+                    logger.debug("Creating NumberTolerantDataType for table={}, column={}, toleratedDelta={}", 
+            			new Object[]{tableName, columnName, delta.getToleratedDelta() });
+                
                 // Use a special data type to implement the tolerance for numbers (floating point things)
-            	logger.debug("Creating NumberTolerantDataType for table={}, column={}, toleratedDelta={}", 
-            			new Object[]{tableName, columnName, new Double(delta.getToleratedDelta()) });
                 NumberTolerantDataType type = new NumberTolerantDataType("NUMERIC_WITH_TOLERATED_DELTA", 
                 		sqlType, delta.getToleratedDelta());
                 return type;

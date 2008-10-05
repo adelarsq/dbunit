@@ -20,6 +20,7 @@
  */
 package org.dbunit.dataset.datatype;
 
+import java.math.BigDecimal;
 import java.sql.Types;
 
 import org.dbunit.dataset.datatype.ToleratedDeltaMap.ToleratedDelta;
@@ -52,7 +53,7 @@ public class DefaultDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         factory.addToleratedDelta(new ToleratedDelta("TEST_TABLE", "COLUMN0", 1E-5));
         DataType actual = factory.createDataType(sqlType, sqlTypeName, "TEST_TABLE", "COLUMN0");
         assertEquals("type", NumberTolerantDataType.class, actual.getClass());
-        assertEquals(1E-5, ((NumberTolerantDataType)actual).getDelta(), 0D);
+        assertEquals(new BigDecimal("1.0E-5"), ((NumberTolerantDataType)actual).getToleratedDelta().getDelta());
     }
 
     
@@ -65,7 +66,7 @@ public class DefaultDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         factory.addToleratedDelta(new ToleratedDelta("TEST_TABLE", "COLUMN0", 1E-5));
         DataType actual = factory.createDataType(sqlType, sqlTypeName, "TEST_TABLE", "COLUMN0");
         assertEquals("type", NumberTolerantDataType.class, actual.getClass());
-        assertEquals(1E-5, ((NumberTolerantDataType)actual).getDelta(), 0D);
+        assertEquals(new BigDecimal("1.0E-5"), ((NumberTolerantDataType)actual).getToleratedDelta().getDelta());
     }
 
     

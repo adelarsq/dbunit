@@ -14,8 +14,12 @@ import org.dbunit.dataset.ITable;
 public class NumberTolerantDataTypeTest extends AbstractDataTypeTest
 {
 
-	private NumberTolerantDataType THIS_TYPE = new NumberTolerantDataType("NUMERIC", Types.NUMERIC, 1E-5);
+	private NumberTolerantDataType THIS_TYPE = new NumberTolerantDataType("NUMERIC", Types.NUMERIC,
+	        new ToleratedDeltaMap.Precision(new BigDecimal("1E-5")) );
+    private NumberTolerantDataType THIS_TYPE_PERCENTAGE = new NumberTolerantDataType("NUMERIC", Types.NUMERIC,
+            new ToleratedDeltaMap.Precision(new BigDecimal("1.0"), true) );
 
+	
     public NumberTolerantDataTypeTest(String name)
     {
         super(name);
@@ -25,7 +29,7 @@ public class NumberTolerantDataTypeTest extends AbstractDataTypeTest
     {
     	try 
     	{
-    		new NumberTolerantDataType("NUMERIC", Types.NUMERIC, -0.1);
+    		new NumberTolerantDataType("NUMERIC", Types.NUMERIC, new ToleratedDeltaMap.Precision(new BigDecimal("-0.1")) );
     		fail("Should not be able to created datatype with negative delta");
     	}
     	catch(IllegalArgumentException expected)
@@ -45,6 +49,18 @@ public class NumberTolerantDataTypeTest extends AbstractDataTypeTest
     {
     	int result = THIS_TYPE.compare(new BigDecimal(0.1234), new BigDecimal(0.1235D));
     	assertEquals(-1, result);
+    }
+
+    public void testCompareToWithDeltaPercentage_DiffWithinToleratedDelta() throws Exception
+    {
+        int result = THIS_TYPE_PERCENTAGE.compare(new BigDecimal("1000.0"), new BigDecimal("1010.0"));
+        assertEquals(0, result);
+    }
+
+    public void testCompareToWithDeltaPercentage_DiffOutsideOfToleratedDelta() throws Exception
+    {
+        int result = THIS_TYPE_PERCENTAGE.compare(new BigDecimal("1000.0"), new BigDecimal("1010.1"));
+        assertEquals(-1, result);
     }
 
     /**
