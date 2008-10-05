@@ -46,10 +46,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Federico Spinazzi
- * @since Sep 17, 2003
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.5 (Sep 17, 2003)
  */
-
 public class CsvProducer implements IDataSetProducer {
 
     /**

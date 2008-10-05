@@ -50,16 +50,27 @@ public class FileHelper
 	private FileHelper(){
 	}
 	
-	
+	/**
+     * Recursively deletes the given directory
+     * @param directory The directory to delete
+	 * @param failOnError If an exception should be thrown in case the deletion did not work.
+	 */
+	public static void deleteDirectory(File directory, boolean failOnError) {
+	    boolean success = deleteDirectory(directory);
+	    if(!success){
+	        throw new RuntimeException("Failed to delete directory " + directory);
+	    }
+	}
+
 	/**
 	 * Recursively deletes the given directory
 	 * @param directory The directory to delete
 	 */
-	public static void deleteDirectory(File directory)
+	public static boolean deleteDirectory(File directory)
 	{
 		if(!directory.isDirectory()) {
 			logger.warn("The directory '" + directory + "' does not exist. Will return without delete.");
-			return;
+			return false;
 		}
 		
 		// First we must delete all files in the directory
@@ -83,6 +94,7 @@ public class FileHelper
 		if(!success){
 			logger.warn("Failed to delete file '" + directory + "'");
 		}
+		return success;
 	}
 
 	public static InputSource createInputSource(File file) throws MalformedURLException

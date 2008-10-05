@@ -32,6 +32,7 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.util.FileHelper;
 
 /**
  * @author Lenny Marks (lenny@aps.org)
@@ -88,7 +89,8 @@ public class CsvDataSetTest extends TestCase {
 			}
 			
 		} finally {
-			deleteDir(tempDir);
+			FileHelper.deleteDirectory(tempDir, true);
+			
 		}
 		
 		//assertFalse("temporary directory was not deleted", tempDir.exists());
@@ -106,23 +108,6 @@ public class CsvDataSetTest extends TestCase {
 		
 		return tmpDir;
 	}
-	
-	private boolean deleteDir(File dir) {
-		
-		if(!dir.exists()) { return false; }
-		
-		File[] files = dir.listFiles();
-		for(int i = 0; i < files.length; i++) {
-			if(files[i].isDirectory()) {
-				deleteDir(files[i]);
-			} else {
-				files[i].delete();
-			}
-		}
-		
-		return dir.delete();
-	}
-	
 	
 }
 
