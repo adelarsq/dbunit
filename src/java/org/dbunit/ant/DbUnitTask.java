@@ -369,7 +369,7 @@ public class DbUnitTask extends Task
         }
     }
 
-    IDatabaseConnection createConnection() throws SQLException
+    protected IDatabaseConnection createConnection() throws SQLException
     {
         logger.debug("createConnection() - start");
 
@@ -443,10 +443,25 @@ public class DbUnitTask extends Task
         }
         conn.setAutoCommit(true);
 
+        IDatabaseConnection connection = createDatabaseConnection(conn, schema);
+        return connection;
+    }
+
+    /**
+     * Creates the dbunit connection using the two given arguments. The configuration
+     * properties of the dbunit connection are initialized using the fields of this class.
+     * 
+     * @param jdbcConnection
+     * @param dbSchema
+     * @return The dbunit connection
+     */
+    protected IDatabaseConnection createDatabaseConnection(Connection jdbcConnection,
+            String dbSchema) 
+    {
         IDatabaseConnection connection = null;
         try
         {
-            connection = new DatabaseConnection(conn, schema);
+            connection = new DatabaseConnection(jdbcConnection, dbSchema);
         }
         catch(DatabaseUnitException e)
         {
@@ -462,12 +477,12 @@ public class DbUnitTask extends Task
         config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY, new ForwardOnlyResultSetTableFactory());
         if (batchSize != null)
         {
-        	Integer batchSizeInteger = new Integer(batchSize);
-        	config.setProperty(DatabaseConfig.PROPERTY_BATCH_SIZE, batchSizeInteger);
+            Integer batchSizeInteger = new Integer(batchSize);
+            config.setProperty(DatabaseConfig.PROPERTY_BATCH_SIZE, batchSizeInteger);
         }
         if (fetchSize != null)
         {
-        	config.setProperty(DatabaseConfig.PROPERTY_FETCH_SIZE, new Integer(fetchSize));
+            config.setProperty(DatabaseConfig.PROPERTY_FETCH_SIZE, new Integer(fetchSize));
         }
 
         // Setup data type factory
@@ -492,7 +507,6 @@ public class DbUnitTask extends Task
             throw new BuildException("Instantiation Exception: DataType factory "
                     + driver + " could not be loaded", e, getLocation());
         }
-
         return connection;
     }
 }

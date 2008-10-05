@@ -19,6 +19,7 @@
       <action dev="gommma" type="fix" issue="1159489" due-to="srinirang">BigDecimal values read by XlsDataSet have wrong precision</action>
       <action dev="gommma" type="add" issue="2148079">give tolerated delta as percentage in floating-point compare</action>
       <action dev="gommma" type="remove" issue="2148099">Remove commons-lang dependency</action>
+      <action dev="gommma" type="update" issue="1180734" due-to="che---">DbUnitTask#createConnection</action>
     </release>
     <release version="2.3.0" date="Sep 11, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>
