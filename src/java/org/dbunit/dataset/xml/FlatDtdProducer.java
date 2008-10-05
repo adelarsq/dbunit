@@ -23,6 +23,7 @@ package org.dbunit.dataset.xml;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,18 @@ import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
 
 /**
+ * Produces a DataSet from a flat DTD.
+ *
+ * Only external DTDs are supported and for the root element only the following
+ * declarations are supported.
+ * <ul>
+ *   <li>ANY: like &lt;!Element dataset ANY&gt;</li>
+ *   <li>sequences: like &lt;!Element dataset (first*,second,third?)gt;</li>
+ *   <li>choices: like &lt;!Element dataset (first|second+|third)&gt;</li>
+ * </ul>
+ * Combinations of sequences and choices are not support nor are #PCDATA or
+ * EMPTY declarations.
+ * 
  * @author Manuel Laflamme
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
@@ -247,24 +260,33 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
 
         try
         {
-            if (_rootModel != null)
+            if(_rootModel == null)
             {
-                // Remove enclosing model parenthesis
-                String rootModel = _rootModel.substring(1, _rootModel.length() - 1);
-
-                // Parse the root element model to determine the table sequence.
-                // Support all sequence or choices model but not the mix of both.
-                String delim = (rootModel.indexOf(",") != -1) ? "," : "|";
-                StringTokenizer tokenizer = new StringTokenizer(rootModel, delim);
-                while (tokenizer.hasMoreTokens()) {
-                    String tableName = tokenizer.nextToken();
-
-                    tableName = cleanupTableName(tableName);
-
-                    Column[] columns = getColumns(tableName);
-
-                    _consumer.startTable(new DefaultTableMetaData(tableName, columns));
-                    _consumer.endTable();
+                logger.info("The rootModel is null. Cannot add tables.");
+            }
+            else
+            {
+                if ("ANY".equalsIgnoreCase(_rootModel))
+                {
+                    Iterator i = _columnListMap.keySet().iterator();
+                    while (i.hasNext()) {
+                        String tableName = (String) i.next();
+                        addTable(tableName);
+                    }
+                }
+                else {
+                    // Remove enclosing model parenthesis
+                    String rootModel = _rootModel.substring(1, _rootModel.length() - 1);
+    
+                    // Parse the root element model to determine the table sequence.
+                    // Support all sequence or choices model but not the mix of both.
+                    String delim = (rootModel.indexOf(",") != -1) ? "," : "|";
+                    StringTokenizer tokenizer = new StringTokenizer(rootModel, delim);
+                    while (tokenizer.hasMoreTokens()) {
+                        String tableName = tokenizer.nextToken();
+                        tableName = cleanupTableName(tableName);
+                        addTable(tableName);
+                    }
                 }
             }
 
@@ -276,6 +298,13 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
         }
     }
     
+    private void addTable(String tableName) throws DataSetException
+    {
+        Column[] columns = getColumns(tableName);
+        _consumer.startTable(new DefaultTableMetaData(tableName, columns));
+        _consumer.endTable();
+    }
+
     private Column[] getColumns(String tableName) throws DataSetException 
     {
         List columnList = (List)_columnListMap.get(tableName);

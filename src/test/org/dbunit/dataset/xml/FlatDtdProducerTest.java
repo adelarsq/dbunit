@@ -188,4 +188,26 @@ public class FlatDtdProducerTest extends AbstractProducerTest
         producer.produce();
         consumer.verify();
     }
+    
+    public void testANYModel() throws Exception
+    {
+        // Setup consumer
+        FlatDtdDataSet consumer = new FlatDtdDataSet();
+
+        // Setup producer
+        String content =
+            "<!ELEMENT dataset ANY>" +
+            "<!ELEMENT TEST_TABLE EMPTY>" +
+            "<!ELEMENT SECOND_TABLE EMPTY>";
+        InputSource source = new InputSource(new StringReader(content));
+        FlatDtdProducer producer = new FlatDtdProducer(source);
+        producer.setConsumer(consumer);
+
+        // Produce and verify consumer
+        producer.produce();
+        assertEquals(2, consumer.getTables().length);
+        assertNotNull(consumer.getTable("TEST_TABLE"));
+        assertNotNull(consumer.getTable("SECOND_TABLE"));
+    } 
+    
 }

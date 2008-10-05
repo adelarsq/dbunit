@@ -95,7 +95,7 @@
         is very verbose and must conform to the following DTD:
       <source><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<!ELEMENT dataset (table+)>
+<!ELEMENT dataset (table+) | ANY>
 <!ELEMENT table (column*, row*)>
 <!ATTLIST table
     name CDATA #REQUIRED
