@@ -20,6 +20,8 @@
  */
 package org.dbunit.database.search;
 
+import com.gargoylesoftware.base.testing.EqualsTester;
+
 import junit.framework.TestCase;
 
 /**
@@ -37,16 +39,12 @@ public class ForeignKeyRelationshipEdgeTest extends TestCase
         ForeignKeyRelationshipEdge equal = new ForeignKeyRelationshipEdge("table1", "table2", "fk_col", "pk_col");
         ForeignKeyRelationshipEdge notEqual1 = new ForeignKeyRelationshipEdge("table1", "tableOther", "fk_col", "pk_col");
         ForeignKeyRelationshipEdge notEqual2 = new ForeignKeyRelationshipEdge("table1", "table2", "fk_col_other", "pk_col");
+
+        ForeignKeyRelationshipEdge equalSubclass = new ForeignKeyRelationshipEdge("table1", "table2", "fk_col", "pk_col") {};
         
-        // Could use gargoyle "EqualsTester" library for this - easier and less code
-        assertEquals(e1, equal);
-        assertEquals(e1.hashCode(), equal.hashCode());
-        assertFalse(e1.equals(notEqual1));
-        assertFalse(e1.hashCode() == notEqual1.hashCode());
-
-        assertFalse(e1.equals(notEqual2));
-        assertFalse(e1.hashCode() == notEqual2.hashCode());
-
+        //Use gsbase "EqualsTester" library for this - easier and less code for equals/hashCode test
+        new EqualsTester(e1, equal, notEqual1, equalSubclass);
+        new EqualsTester(e1, equal, notEqual2, equalSubclass);
     }
     
 }

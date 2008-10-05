@@ -20,6 +20,8 @@
  */
 package org.dbunit.util.search;
 
+import com.gargoylesoftware.base.testing.EqualsTester;
+
 import junit.framework.TestCase;
 
 /**
@@ -36,12 +38,10 @@ public class EdgeTest extends TestCase
         Edge e1 = new Edge("table1", "table2");
         Edge e2 = new Edge("table1", "table2");
         Edge eNotEqual = new Edge("table1", "tableOther");
+        Edge eEqualSubclass = new Edge("table1", "table2") {};
         
-        // Could use gargoyle "EqualsTester" library for this - easier and less code
-        assertEquals(e1, e2);
-        assertEquals(e1.hashCode(), e2.hashCode());
-        assertFalse(e1.equals(eNotEqual));
-        assertFalse(e1.hashCode() == eNotEqual.hashCode());
+        // Use gsbase "EqualsTester" library for this - easier and less code for equals/hashCode test
+        new EqualsTester(e1, e2, eNotEqual, eEqualSubclass);
     }
    
     public void testCompare()

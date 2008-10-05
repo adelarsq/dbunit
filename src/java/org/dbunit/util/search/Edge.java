@@ -23,11 +23,8 @@ package org.dbunit.util.search;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 /**
- * Basic implementation of the IEdge interface.
+ * Basic implementation of the {@link IEdge} interface.
  * 
  * @author Felipe Leme (dbunit@felipeal.net)
  * @author Last changed by: $Author$
@@ -89,13 +86,34 @@ public class Edge implements IEdge {
         return result;
     }
 
-    public boolean equals(Object obj) {
-        logger.debug("equals(obj={}) - start", obj);
-        return EqualsBuilder.reflectionEquals( this, obj );
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((nodeFrom == null) ? 0 : nodeFrom.hashCode());
+        result = prime * result + ((nodeTo == null) ? 0 : nodeTo.hashCode());
+        return result;
     }
 
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode( this );
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Edge other = (Edge) obj;
+        if (nodeFrom == null) {
+            if (other.nodeFrom != null)
+                return false;
+        } else if (!nodeFrom.equals(other.nodeFrom))
+            return false;
+        if (nodeTo == null) {
+            if (other.nodeTo != null)
+                return false;
+        } else if (!nodeTo.equals(other.nodeTo))
+            return false;
+        return true;
     }
 
 }

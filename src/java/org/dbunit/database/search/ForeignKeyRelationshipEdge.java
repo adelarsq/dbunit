@@ -32,8 +32,9 @@ import org.dbunit.util.search.Edge;
  * <strong>NOTE:</strong> only single-column PKs are supported at this moment
  *  
  * @author Felipe Leme (dbunit@felipeal.net)
- * @version $Revision$
- * @since Sep 9, 2005
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2 (Sep 9, 2005)
  */
 public class ForeignKeyRelationshipEdge extends Edge {
 
@@ -69,9 +70,40 @@ public class ForeignKeyRelationshipEdge extends Edge {
     public String getPKColumn() {
         return pkColumn;
     }
-
+    
     public String toString() {
         return getFrom() + "(" + getFKColumn() + ")->" + getTo() + "(" + getPKColumn() + ")";
+    }
+
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result
+                + ((fkColumn == null) ? 0 : fkColumn.hashCode());
+        result = prime * result
+                + ((pkColumn == null) ? 0 : pkColumn.hashCode());
+        return result;
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ForeignKeyRelationshipEdge other = (ForeignKeyRelationshipEdge) obj;
+        if (fkColumn == null) {
+            if (other.fkColumn != null)
+                return false;
+        } else if (!fkColumn.equals(other.fkColumn))
+            return false;
+        if (pkColumn == null) {
+            if (other.pkColumn != null)
+                return false;
+        } else if (!pkColumn.equals(other.pkColumn))
+            return false;
+        return true;
     }
 
 }
