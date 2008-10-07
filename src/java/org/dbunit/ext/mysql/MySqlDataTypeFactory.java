@@ -31,13 +31,15 @@ import java.sql.Types;
 
 /**
  * Specialized factory that recognizes MySql data types.
-
+ * 
  * @author manuel.laflamme
- * @since Sep 3, 2003
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.5 (Sep 3, 2003)
  */
 public class MySqlDataTypeFactory extends DefaultDataTypeFactory
 {
+    public static final String SQL_TYPE_NAME_TINYINT_UNSIGNED = "TINYINT UNSIGNED";
 
     /**
      * Logger for this class
@@ -66,6 +68,12 @@ public class MySqlDataTypeFactory extends DefaultDataTypeFactory
                 return DataType.BINARY; 
             }
         }
+
+        // Special handling for "TINYINT UNSIGNED"
+        if(SQL_TYPE_NAME_TINYINT_UNSIGNED.equals(sqlTypeName)){
+            return DataType.TINYINT; // It is a bit of a waste here - we could better use a "Short" instead of an "Integer" type
+        }
+        
 
         return super.createDataType(sqlType, sqlTypeName);
     }

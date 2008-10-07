@@ -72,5 +72,15 @@ public class MySqlDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
         assertSame("type", expected, actual);
     }
-    
+
+    public void testCreateTinyintUnsignedDatatype() throws Exception
+    {
+        int sqlType = Types.BIT; // MySqlConnector/J reports "TINYINT UNSIGNED" columns as SQL type "BIT".
+        String sqlTypeName = MySqlDataTypeFactory.SQL_TYPE_NAME_TINYINT_UNSIGNED;
+
+        DataType expected = DataType.TINYINT;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
 }
