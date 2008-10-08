@@ -169,7 +169,7 @@ public class DatabaseDataSet extends AbstractDataSet
                     tableName = qualifiedTableName.getQualifiedNameIfEnabled(config);
 
                     // Put the table into the table map
-                    tableMap.add(tableName.toUpperCase(), null);
+                    tableMap.add(tableName, null);
                 }
 
                 _tableMap = tableMap;
@@ -220,7 +220,6 @@ public class DatabaseDataSet extends AbstractDataSet
         initialize();
 
         // Verify if table exist in the database
-        tableName = tableName.toUpperCase();
         if (!_tableMap.containsTable(tableName))
         {
             throw new NoSuchTableException(tableName);
@@ -234,7 +233,7 @@ public class DatabaseDataSet extends AbstractDataSet
         }
 
         // Create metadata and cache it
-        metaData = new DatabaseTableMetaData(tableName, _connection);
+        metaData = new DatabaseTableMetaData(tableName.toUpperCase(), _connection);//TODO How can the "toUpperCase" be avoided here? (target: move to OrderedTableNameMap)
         // Put the metadata object into the cache map
         _tableMap.update(tableName, metaData);
 

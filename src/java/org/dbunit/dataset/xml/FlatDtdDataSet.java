@@ -160,14 +160,13 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
             throw new IllegalStateException("Not ready!");
         }
 
-        String upperTableName = tableName.toUpperCase();
-        if (_tableMap.containsTable(upperTableName))
+        if (_tableMap.containsTable(tableName))
         {
-            ITable table = (ITable)_tableMap.get(upperTableName);
+            ITable table = (ITable)_tableMap.get(tableName);
             return table.getTableMetaData();
         }
 
-        throw new NoSuchTableException(tableName + " (upperName=" + upperTableName + ")");
+        throw new NoSuchTableException(tableName);
     }
 
     public ITable getTable(String tableName) throws DataSetException
@@ -180,13 +179,12 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
             throw new IllegalStateException("Not ready!");
         }
 
-        String upperTableName = tableName.toUpperCase();
-        if (_tableMap.containsTable(upperTableName))
+        if (_tableMap.containsTable(tableName))
         {
-            return (ITable)_tableMap.get(upperTableName);
+            return (ITable)_tableMap.get(tableName);
         }
 
-        throw new NoSuchTableException(tableName + " (upperName=" + upperTableName + ")");
+        throw new NoSuchTableException(tableName);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -211,7 +209,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
         logger.debug("startTable(metaData={}) - start", metaData);
 
         String tableName = metaData.getTableName();
-        _tableMap.add(tableName.toUpperCase(), new DefaultTable(metaData));
+        _tableMap.add(tableName, new DefaultTable(metaData));
     }
 
     public void endTable() throws DataSetException

@@ -150,39 +150,38 @@ public class CompositeDataSet extends AbstractDataSet
 
     /**
      * @param newTable
-     * @param tableList
+     * @param tableMap
      * @param combine
      * @throws AmbiguousTableNameException Can only occur when the combine flag is set to <code>false</code>.
      */
-    private void addTable(ITable newTable, OrderedTableNameMap tableList, boolean combine) 
+    private void addTable(ITable newTable, OrderedTableNameMap tableMap, boolean combine) 
     throws AmbiguousTableNameException
     {
     	if (logger.isDebugEnabled())
     	{
     		logger.debug("addTable(newTable={}, tableList={}, combine={}) - start",
-    				new Object[] { newTable, tableList, String.valueOf(combine) });
+    				new Object[] { newTable, tableMap, String.valueOf(combine) });
     	}
 
         String tableName = newTable.getTableMetaData().getTableName();
-        String tableNameUpper = tableName.toUpperCase();
         
         // No merge required, simply add new table at then end of the list
         if (!combine)
         {
-            tableList.add(tableNameUpper, newTable);
+            tableMap.add(tableName, newTable);
             return;
         }
 
         // Merge required, search for existing table with the same name
-        ITable existingTable = (ITable) tableList.get(tableNameUpper);
+        ITable existingTable = (ITable) tableMap.get(tableName);
         if(existingTable != null) {
             // Found existing table, merge existing and new tables together
-            tableList.update(tableNameUpper, new CompositeTable(existingTable, newTable));
+            tableMap.update(tableName, new CompositeTable(existingTable, newTable));
             return;
         }
         else {
             // No existing table found, add new table at the end of the list
-            tableList.add(tableNameUpper, newTable);
+            tableMap.add(tableName, newTable);
         }
     }
 
