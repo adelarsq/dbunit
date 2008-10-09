@@ -83,4 +83,14 @@ public class MySqlDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         assertSame("type", expected, actual);
     }
 
+    public void testCreateIntegerUnsignedDatatype() throws Exception
+    {
+        int sqlType = Types.INTEGER;
+        String sqlTypeName = "INTEGER" + MySqlDataTypeFactory.UNSIGNED_SUFFIX;
+
+        DataType expected = DataType.BIGINT;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
 }

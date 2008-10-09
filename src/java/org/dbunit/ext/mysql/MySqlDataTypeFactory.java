@@ -39,7 +39,8 @@ import java.sql.Types;
  */
 public class MySqlDataTypeFactory extends DefaultDataTypeFactory
 {
-    public static final String SQL_TYPE_NAME_TINYINT_UNSIGNED = "TINYINT UNSIGNED";
+    public static final String UNSIGNED_SUFFIX = " UNSIGNED";
+    public static final String SQL_TYPE_NAME_TINYINT_UNSIGNED = "TINYINT" + UNSIGNED_SUFFIX;
 
     /**
      * Logger for this class
@@ -74,6 +75,13 @@ public class MySqlDataTypeFactory extends DefaultDataTypeFactory
             return DataType.TINYINT; // It is a bit of a waste here - we could better use a "Short" instead of an "Integer" type
         }
         
+        // If we have an unsigned datatype check for some specialties
+        // See http://dev.mysql.com/doc/refman/5.0/en/connector-j-reference-type-conversions.html
+        if(sqlTypeName.endsWith(UNSIGNED_SUFFIX)) {
+            if(sqlType == Types.INTEGER) {
+                return DataType.BIGINT;
+            }
+        }
 
         return super.createDataType(sqlType, sqlTypeName);
     }
