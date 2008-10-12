@@ -34,6 +34,7 @@ import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoSuchColumnException;
+import org.dbunit.dataset.OrderedTableNameMap;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.BufferedConsumer;
 import org.dbunit.dataset.stream.DefaultConsumer;
@@ -52,8 +53,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * @author Manuel Laflamme
- * @since Apr 18, 2003
- * @version $Revision$
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.5 (Apr 18, 2003)
  */
 public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer, ContentHandler
 {
@@ -68,29 +70,46 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
 
     private final InputSource _inputSource;
     private final EntityResolver _resolver;
-    private final boolean _dtdMetadata;
     private boolean _validating = false;
+    /**
+     * The dataset used to retrieve the metadata for the tables via {@link IDataSet#getTableMetaData(String)}. 
+     * Can be null
+     */
     private IDataSet _metaDataSet;
+    /**
+     * The DTD handler which is used to parse a DTD if available. The result of the parsing is stored in
+     * {@link #_metaDataSet}.
+     */
+    private FlatDtdHandler _dtdHandler;
     
+    /**
+     * The current line number
+     */
     private int _lineNumber = 0;
-    private boolean _dtdPresent = false;
+    /**
+     * Whether the column sensing feature should be used to dynamically recognize new columns
+     * during the parse process.
+     */
     private boolean _columnSensing = false;
 
+    /**
+     * The consumer which is responsible for creating the datasets and tables
+     */
     private IDataSetConsumer _consumer = EMPTY_CONSUMER;
-    private ITableMetaData _activeMetaData;
+    /**
+     * The ordered table name map which also holds the currently active {@link ITableMetaData}
+     */
+    private OrderedTableNameMap _orderedTableNameMap;
 
+    
     public FlatXmlProducer(InputSource xmlSource)
     {
-        _inputSource = xmlSource;
-        _resolver = this;
-        _dtdMetadata = true;
+        this(xmlSource, true);
     }
 
     public FlatXmlProducer(InputSource xmlSource, boolean dtdMetadata)
     {
-        _inputSource = xmlSource;
-        _resolver = this;
-        _dtdMetadata = dtdMetadata;
+        this(xmlSource, dtdMetadata, false);
     }
 
     public FlatXmlProducer(InputSource xmlSource, IDataSet metaDataSet)
@@ -98,30 +117,43 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
         _inputSource = xmlSource;
         _metaDataSet = metaDataSet;
         _resolver = this;
-        _dtdMetadata = false;
+        initialize(false);
     }
 
     public FlatXmlProducer(InputSource xmlSource, EntityResolver resolver)
     {
         _inputSource = xmlSource;
         _resolver = resolver;
-        _dtdMetadata = true;
+        initialize(true);
     }
     
+    /**
+     * @param xmlSource The input datasource
+     * @param dtdMetadata Whether or not DTD metadata is available to parse via a DTD handler
+     * @param columnSensing Whether or not the column sensing feature should be used (see FAQ)
+     */
     public FlatXmlProducer(InputSource xmlSource, boolean dtdMetadata, boolean columnSensing)
     {
         _inputSource = xmlSource;
         _resolver = this;
-        _dtdMetadata = dtdMetadata;
         _columnSensing = columnSensing;
+        initialize(dtdMetadata);
     }
     
-
+    private void initialize(boolean dtdMetadata)
+    {
+        if (dtdMetadata)
+        {
+            this._dtdHandler = new FlatDtdHandler(this);
+        }
+    }
+    
     private ITableMetaData createTableMetaData(String tableName, Attributes attributes) throws DataSetException
     {
     	if (logger.isDebugEnabled())
     		logger.debug("createTableMetaData(tableName={}, attributes={}) - start", tableName, attributes);
 
+    	// First try to find it in the DTD's dataset
         if (_metaDataSet != null)
         {
             return _metaDataSet.getTableMetaData(tableName);
@@ -140,15 +172,14 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
     
     /**
      * merges the existing columns with the potentially new ones.
-     * @param tableName Name of the current table.
      * @param columnsToMerge List of extra columns found, which need to be merge back into the metadata.
-     * @return ITableMetaData -
+     * @return ITableMetaData The merged metadata object containing the new columns
      * @throws DataSetException
      */
-    private ITableMetaData mergeTableMetaData(String tableName, List columnsToMerge) throws DataSetException
+    private ITableMetaData mergeTableMetaData(List columnsToMerge, ITableMetaData originalMetaData) throws DataSetException
     {
-        Column[] columns = new Column[_activeMetaData.getColumns().length + columnsToMerge.size()];
-        System.arraycopy(_activeMetaData.getColumns(), 0, columns, 0, _activeMetaData.getColumns().length);
+        Column[] columns = new Column[originalMetaData.getColumns().length + columnsToMerge.size()];
+        System.arraycopy(originalMetaData.getColumns(), 0, columns, 0, originalMetaData.getColumns().length);
         
         for (int i = 0; i < columnsToMerge.size(); i++)
         {
@@ -156,10 +187,45 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
         	columns[columns.length - columnsToMerge.size() + i] = column;
         }
     	
-    	return new DefaultTableMetaData(tableName, columns);
+    	return new DefaultTableMetaData(originalMetaData.getTableName(), columns);
     }
     
+    /**
+     * @return The currently active table metadata or <code>null</code> if no active
+     * metadata exists.
+     */
+    private ITableMetaData getActiveMetaData()
+    {
+        if(_orderedTableNameMap != null)
+        {
+            String lastTableName = _orderedTableNameMap.getLastTableName();
+            if(lastTableName != null)
+            {
+                return (ITableMetaData) _orderedTableNameMap.get(lastTableName);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
+        
+    }
     
+    /**
+     * @param tableName
+     * @return <code>true</code> if the given tableName is a new one
+     * which means that it differs from the last active table name.
+     */
+    private boolean isNewTable(String tableName) 
+    {
+        return !_orderedTableNameMap.isLastTable(tableName);
+    }
+
+
     /**
      * parses the attributes in the current row, and checks whether a new column 
      * is found.
@@ -172,19 +238,23 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
      *   <li>If not, a warning message is displayed.</li>
      * </ul>
      * 
-     * @param qName Name of the current table.
      * @param attributes  Attributed for the current row.
      * @throws DataSetException
      */
-	protected void handleMissingColumns(String qName, Attributes attributes)
+	protected void handleMissingColumns(Attributes attributes)
 			throws DataSetException
 	{
 		List columnsToMerge = new ArrayList();
-		for (int i = 0 ; i < attributes.getLength(); i++)
+		
+		ITableMetaData activeMetaData = getActiveMetaData();
+		// Search all columns that do not yet exist and collect them
+		int attributeLength = attributes.getLength();
+		for (int i = 0 ; i < attributeLength; i++)
 		{
 			try {
-				_activeMetaData.getColumnIndex(attributes.getQName(i));
-			} catch (NoSuchColumnException e) {
+			    activeMetaData.getColumnIndex(attributes.getQName(i));
+			} 
+			catch (NoSuchColumnException e) {
 				columnsToMerge.add(new Column(attributes.getQName(i), DataType.UNKNOWN));
 			}
 		}
@@ -194,18 +264,20 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
 			if (_columnSensing)
 	    	{
 	    		logger.debug("Column sensing enabled. Will create a new metaData with potentially new columns if needed");
-	    		_activeMetaData = mergeTableMetaData(qName, columnsToMerge);
+	    		activeMetaData = mergeTableMetaData(columnsToMerge, activeMetaData);
+	    		_orderedTableNameMap.update(activeMetaData.getTableName(), activeMetaData);
 	    		// We also need to recreate the table, copying the data already collected from the old one to the new one
-	    		_consumer.startTable(_activeMetaData);
+	    		_consumer.startTable(activeMetaData);
 	    	} 
 	    	else
 	    	{
-	    		logger.warn("Extra columns on line " + (_lineNumber+1) 
-	    				+ ".  Those columns will be ignored.");
-	    		logger.warn("Please add the extra columns to line 1,"
-	    				+ " or use a DTD to make sure the value of those columns are populated" 
-	    				+ " or specify 'columnSensing=true' for your FlatXmlProducer.");
-	    		logger.warn("See FAQ for more details.");
+	    	    String msg = "Extra columns on line " + (_lineNumber+1) 
+	    	                + ". Those columns will be ignored.";
+	    	    msg += "\n\tPlease add the extra columns to line 1,"
+                    + " or use a DTD to make sure the value of those columns are populated" 
+                    + " or specify 'columnSensing=true' for your FlatXmlProducer.";
+	    	    msg += "\n\tSee FAQ for more details.";
+	    		logger.warn(msg);
 	    	}
 		}
 	}
@@ -245,11 +317,10 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
             saxParserFactory.setValidating(_validating);
             XMLReader xmlReader = saxParserFactory.newSAXParser().getXMLReader();
 
-            if (_dtdMetadata)
+            if(_dtdHandler != null)
             {
-                FlatDtdHandler dtdHandler = new FlatDtdHandler();
-                FlatDtdHandler.setLexicalHandler(xmlReader, dtdHandler);
-                FlatDtdHandler.setDeclHandler(xmlReader, dtdHandler);
+                FlatDtdHandler.setLexicalHandler(xmlReader, _dtdHandler);
+                FlatDtdHandler.setDeclHandler(xmlReader, _dtdHandler);
             }
 
             xmlReader.setContentHandler(this);
@@ -280,7 +351,8 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
     {
         logger.debug("resolveEntity(publicId={}, systemId={}) - start", publicId, systemId);
 
-        if (!_dtdMetadata)
+        // No DTD metadata wanted/available
+        if (_dtdHandler == null || !_dtdHandler.isDtdPresent())
         {
             return new InputSource(new StringReader(""));
         }
@@ -308,39 +380,43 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
 
         try
         {
+            ITableMetaData activeMetaData = getActiveMetaData();
             // Start of dataset
-            if (_activeMetaData == null && qName.equals(DATASET))
+            if (activeMetaData == null && qName.equals(DATASET))
             {
                 _consumer.startDataSet();
+                _orderedTableNameMap = new OrderedTableNameMap();
                 return;
             }
 
             // New table
-            if (_activeMetaData == null || !_activeMetaData.getTableName().equals(qName))
+            if (isNewTable(qName))
             {
                 // If not first table, notify end of previous table to consumer
-                if (_activeMetaData != null)
+                if (activeMetaData != null)
                 {
                     _consumer.endTable();
                 }
 
                 // Notify start of new table to consumer
-                _activeMetaData = createTableMetaData(qName, attributes);
+                activeMetaData = createTableMetaData(qName, attributes);
+                _orderedTableNameMap.add(activeMetaData.getTableName(), activeMetaData);
                 
-                _consumer.startTable(_activeMetaData);
+                _consumer.startTable(activeMetaData);
                 _lineNumber = 0;
             }
 
             // Row notification
             if (attributes.getLength() > 0)
             {
-            	if (!_dtdPresent)
+                // If we do not have a DTD
+            	if (_dtdHandler == null || !_dtdHandler.isDtdPresent())
             	{
-	            	handleMissingColumns(qName, attributes);
+	            	handleMissingColumns(attributes);
             	}
             	
             	_lineNumber++;
-                Column[] columns = _activeMetaData.getColumns();
+                Column[] columns = activeMetaData.getColumns();
                 Object[] rowValues = new Object[columns.length];
                 for (int i = 0; i < columns.length; i++)
                 {
@@ -356,7 +432,6 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
         }
     }
 
-
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
     	if (logger.isDebugEnabled())
@@ -369,7 +444,7 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
             try
             {
                 // Notify end of active table to consumer
-                if (_activeMetaData != null)
+                if (getActiveMetaData() != null)
                 {
                     _consumer.endTable();
                 }
@@ -384,18 +459,26 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
         }
     }
 
-    private class FlatDtdHandler extends FlatDtdProducer
+    private static class FlatDtdHandler extends FlatDtdProducer
     {
-
         /**
          * Logger for this class
          */
         private final Logger logger = LoggerFactory.getLogger(FlatDtdHandler.class);
 
-        public FlatDtdHandler()
+        private boolean _dtdPresent = false;
+        private FlatXmlProducer xmlProducer;
+
+        public FlatDtdHandler(FlatXmlProducer xmlProducer)
         {
+            this.xmlProducer = xmlProducer;
         }
 
+        public boolean isDtdPresent() 
+        {
+            return _dtdPresent;
+        }
+        
         ////////////////////////////////////////////////////////////////////////////
         // LexicalHandler interface
 
@@ -412,7 +495,8 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
                 // Cache the DTD content to use it as metadata
                 FlatDtdDataSet metaDataSet = new FlatDtdDataSet();
                 this.setConsumer(metaDataSet);
-                _metaDataSet = metaDataSet;
+                // Set the metaData on the xmlProducer
+                xmlProducer._metaDataSet = metaDataSet;
 
                 super.startDTD(name, publicId, systemId);
             }

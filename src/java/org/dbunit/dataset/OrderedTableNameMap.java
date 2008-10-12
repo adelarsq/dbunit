@@ -67,6 +67,7 @@ public class OrderedTableNameMap
 	}
 
 	/**
+	 * Returns the object associated with the given table name
 	 * @param tableName The table name for which the associated object is retrieved
 	 * @return The object that has been associated with the given table name
 	 */
@@ -94,9 +95,45 @@ public class OrderedTableNameMap
 	 */
 	public boolean containsTable(String tableName) 
 	{
-		return _tableMap.containsKey(tableName.toUpperCase());//TODO remove ToUpperCase when table names are case sensitive
+		return _tableMap.containsKey(tableName.toUpperCase());//TODO remove equalsIgnoreCase when table names are case sensitive
 	}
 
+    /**
+     * @param tableName The table name to check
+     * @return <code>true</code> if the given tableName matches the last table that has been added to this map.
+     */
+    public boolean isLastTable(String tableName) 
+    {
+        if(this._tableNames.size() == 0)
+        {
+            return false;
+        }
+        else 
+        {
+            String lastTable = getLastTableName();
+            return lastTable.equalsIgnoreCase(tableName);//TODO remove ToUpperCase when table names are case sensitive
+        }
+        
+//        TODO How to remove case sensitivity?#1063128
+    }
+
+    /**
+     * @return The name of the last table that has been added to this map. Returns <code>null</code> if no 
+     * table has been added yet.
+     */
+    public String getLastTableName()
+    {
+        if(_tableNames.size()>0)
+        {
+            String lastTable = (String) _tableNames.get(this._tableNames.size()-1);
+            return lastTable;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
 	/**
 	 * Adds the given table name to the map of table names, associating 
 	 * it with the given object.
@@ -120,7 +157,8 @@ public class OrderedTableNameMap
     /**
      * @return The values of this map ordered in the sequence they have been added
      */
-    public Collection orderedValues() {
+    public Collection orderedValues() 
+    {
         List orderedValues = new ArrayList(this._tableNames.size());
         for (Iterator iterator = _tableNames.iterator(); iterator.hasNext();) {
             String tableName = (String) iterator.next();

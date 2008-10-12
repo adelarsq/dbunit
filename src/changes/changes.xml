@@ -23,6 +23,7 @@
       <action dev="gommma" type="add" issue="1432308" due-to="hack">FlatDtdProducer does not support Element dataset ANY</action>
       <action dev="gommma" type="fix" issue="1344618" due-to="ianjoyce">tinyint being ignored</action>
       <action dev="gommma" type="fix" issue="1194928" due-to="rahulr">DBUnit does not recognise "Unsigned" INTEGER columns</action>
+      <action dev="gommma" type="fix" issue="1063128" due-to="djocal">FlatXMLdataSet counts 14 tables instead of 1 table of 14 row</action>
     </release>
     <release version="2.3.0" date="Sep 11, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>

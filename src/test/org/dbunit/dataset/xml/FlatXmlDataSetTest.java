@@ -50,6 +50,9 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
     private static final File FLAT_XML_TABLE = 
     		new File("src/xml/flatXmlTableTest.xml");
 
+    private static final File FLAT_XML_DTD_DIFFERENT_CASE_FILE = 
+            new File("src/xml/flatXmlDataSetDtdDifferentCaseTest.xml");
+    
     public FlatXmlDataSetTest(String s)
     {
         super(s);
@@ -156,6 +159,15 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
         {
             tempFile.delete();
         }
+    }
+
+    
+    public void testReadFlatXmlWithDifferentCaseInDtd()throws Exception
+    {
+        // The creation of such a dataset should work
+        IDataSet ds = new FlatXmlDataSet(FLAT_XML_DTD_DIFFERENT_CASE_FILE);
+        assertEquals(1, ds.getTableNames().length);
+        assertEquals("emp", ds.getTableNames()[0]);
     }
 
 }
