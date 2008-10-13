@@ -23,6 +23,7 @@ package org.dbunit.dataset.xml;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -83,9 +84,13 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
     private FlatDtdHandler _dtdHandler;
     
     /**
-     * The current line number
+     * The current line number in the current table
      */
     private int _lineNumber = 0;
+    /**
+     * The current line number
+     */
+    private int _lineNumberGlobal = 0;
     /**
      * Whether the column sensing feature should be used to dynamically recognize new columns
      * during the parse process.
@@ -271,8 +276,14 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
 	    	} 
 	    	else
 	    	{
-	    	    String msg = "Extra columns on line " + (_lineNumber+1) 
-	    	                + ". Those columns will be ignored.";
+	    		StringBuffer extraColumnNames = new StringBuffer();
+	    		for (Iterator i = columnsToMerge.iterator(); i.hasNext();) {
+					Column col = (Column) i.next();
+					extraColumnNames.append(extraColumnNames.length() > 0 ? "," : "").append(col.getColumnName());
+				}
+	    	    String msg = "Extra columns (" + extraColumnNames.toString() + ") on line " + (_lineNumber + 1)
+						+ " for table " + activeMetaData.getTableName() + " (global line number is "
+						+ _lineNumberGlobal + "). Those columns will be ignored.";
 	    	    msg += "\n\tPlease add the extra columns to line 1,"
                     + " or use a DTD to make sure the value of those columns are populated" 
                     + " or specify 'columnSensing=true' for your FlatXmlProducer.";
@@ -416,6 +427,7 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
             	}
             	
             	_lineNumber++;
+            	_lineNumberGlobal++;
                 Column[] columns = activeMetaData.getColumns();
                 Object[] rowValues = new Object[columns.length];
                 for (int i = 0; i < columns.length; i++)
