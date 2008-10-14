@@ -56,11 +56,15 @@ public class Columns
 	/**
      * Search and return the {@link Column}s from the specified column array that
      * match one of the given <code>columnNames</code>.
-     *
+     * <br>
+     * Note that this method has a bad performance compared to {@link #findColumnsByName(String[], ITableMetaData)}
+     * because it iterates over all columns.
+     * 
 	 * @param columnNames the names of the columns to search.
 	 * @param columns the array of columns in which the <code>columnNames</code> will be searched.
 	 * @return the column array which is empty if no column has been found or no 
 	 * column names have been given
+	 * @see #findColumnsByName(String[], ITableMetaData)
 	 */
 	public static Column[] getColumns(String[] columnNames, Column[] columns) {
     	if (logger.isDebugEnabled())
@@ -86,7 +90,60 @@ public class Columns
 	}
 
     /**
+     * Searches for the given <code>columns</code> using only the {@link Column#getColumnName()} 
+     * in the given <code>tableMetaData</code>
+     * @param columns The columns whose names are searched in the given table metadata
+     * @param tableMetaData The table metadata in which the columns are searched by name
+     * @return The column objects from the given <code>tableMetaData</code>
+     * @throws NoSuchColumnException if the given column has not been found
+     * @throws DataSetException if something goes wrong when trying to retrieve the columns
+     */
+    public static Column[] findColumnsByName(String[] columnNames,
+            ITableMetaData tableMetaData) 
+    throws NoSuchColumnException, DataSetException 
+    {
+        logger.debug("findColumnsByName(columnNames={}, tableMetaData={}) - start", columnNames, tableMetaData);
+
+        Column[] resultColumns = new Column[columnNames.length];
+        for (int i = 0; i < columnNames.length; i++) 
+        {
+            String sortColumn = columnNames[i];
+            int colIndex = tableMetaData.getColumnIndex(sortColumn);
+            resultColumns[i] = tableMetaData.getColumns()[colIndex];            
+        }
+        return resultColumns;
+    }
+
+    /**
+     * Searches for the given <code>columns</code> using only the {@link Column#getColumnName()} 
+     * in the given <code>tableMetaData</code>
+     * @param columns The columns whose names are searched in the given table metadata
+     * @param tableMetaData The table metadata in which the columns are searched by name
+     * @return The column objects from the given <code>tableMetaData</code>
+     * @throws NoSuchColumnException if the given column has not been found
+     * @throws DataSetException if something goes wrong when trying to retrieve the columns
+     */
+    public static Column[] findColumnsByName(Column[] columns,
+            ITableMetaData tableMetaData) 
+    throws NoSuchColumnException, DataSetException 
+    {
+        logger.debug("findColumnsByName(columns={}, tableMetaData={}) - start", columns, tableMetaData);
+
+        Column[] resultColumns = new Column[columns.length];
+        for (int i = 0; i < columns.length; i++) 
+        {
+            Column sortColumn = columns[i];
+            int colIndex = tableMetaData.getColumnIndex(sortColumn.getColumnName());
+            resultColumns[i] = tableMetaData.getColumns()[colIndex];            
+        }
+        return resultColumns;
+    }
+
+    /**
      * Search and return the specified column from the specified column array.
+     * <br>
+     * Note that this method has a bad performance compared to {@link ITableMetaData#getColumnIndex(String)}
+     * because it iterates over all columns.
      *
      * @param columnName the name of the column to search.
 	 * @param columns the array of columns in which the <code>columnName</code> will be searched.

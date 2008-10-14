@@ -26,6 +26,7 @@
       <action dev="gommma" type="fix" issue="1063128" due-to="djocal">FlatXMLdataSet counts 14 tables instead of 1 table of 14 row</action>
       <action dev="gommma" type="fix" issue="2163902" due-to="olegc">Better reporting of extra columns in FlatXmlProducer</action>
       <action dev="gommma" type="fix" issue="2163897" due-to="olegc">BufferedConsumer never cleans _allRows</action>
+      <action dev="gommma" type="fix" issue="2119648" due-to="powerlord">new SortedTable throws NoSuchColumnException</action>
     </release>
     <release version="2.3.0" date="Sep 11, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>

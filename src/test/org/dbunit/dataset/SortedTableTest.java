@@ -165,7 +165,7 @@ public class SortedTableTest extends AbstractTableTest
 	        new SortedTable(unsortedTable, sortColumnNames);
 	        fail("Should not be able to create a SortedTable with unexisting columns");
         }catch(NoSuchColumnException expected) {
-        	assertEquals("MISSING_VALUES.COLUMNXY_UNDEFINED", expected.getMessage());
+            assertTrue(expected.getMessage().startsWith("MISSING_VALUES.COLUMNXY_UNDEFINED"));
         }
     }
 
@@ -181,8 +181,24 @@ public class SortedTableTest extends AbstractTableTest
 	        new SortedTable(unsortedTable, sortColumns);
 	        fail("Should not be able to create a SortedTable with unexisting columns");
         }catch(NoSuchColumnException expected) {
-        	assertEquals("MISSING_VALUES.COLUMNXY_UNDEFINED", expected.getMessage());
+        	assertTrue(expected.getMessage().startsWith("MISSING_VALUES.COLUMNXY_UNDEFINED"));
         }
+    }
+
+    public void testCustomColumnsWithDifferentColumnTypesButSameName() throws Exception
+    {
+        Column sortColumn = new Column("COLUMN2", DataType.CHAR, Column.NO_NULLS);
+        Column[] sortColumns = new Column[] { sortColumn };
+        // Use different columns (different datatype) in ITableMetaData that have valid column names
+        ITable unsortedTable = createUnsortedDataSet().getTable("MISSING_VALUES");
+        SortedTable sortedTable = new SortedTable(unsortedTable, sortColumns);
+        // Check the results
+        Column actualSortColumn = sortedTable.getSortColumns()[0];
+        // The column actually used for sorting must has some different attributes than the one passed in (dataType, nullable) 
+        assertNotSame(sortColumn, actualSortColumn);
+        assertEquals(DataType.UNKNOWN, actualSortColumn.getDataType());
+        assertEquals("COLUMN2", actualSortColumn.getColumnName());
+        assertEquals(Column.NULLABLE, actualSortColumn.getNullable());
     }
 
 }

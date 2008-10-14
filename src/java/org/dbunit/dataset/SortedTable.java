@@ -23,7 +23,6 @@ package org.dbunit.dataset;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 
 import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.dataset.datatype.DataType;
@@ -66,8 +65,7 @@ public class SortedTable extends AbstractTable
     public SortedTable(ITable table, Column[] columns) throws DataSetException
     {
         _table = table;
-        _columns = columns;
-        validateColumns();
+        _columns = validateAndResolveColumns(columns);
         initialize();
     }
 
@@ -80,23 +78,7 @@ public class SortedTable extends AbstractTable
     public SortedTable(ITable table, String[] columnNames) throws DataSetException
     {
         _table = table;
-        _columns = new Column[columnNames.length];
-
-        ITableMetaData tableMetaData = table.getTableMetaData();
-        // Initialize columns and validate if they exist
-        Column[] columns = tableMetaData.getColumns();
-        for (int i = 0; i < columnNames.length; i++)
-        {
-            String columnName = columnNames[i];
-            _columns[i] = Columns.getColumn(columnName, columns);
-            // If the column does not exist in the table, throw an exception
-            // TODO Check if common method from Columns class can be reused -> "Columns.getColumnValidated()"
-            if (_columns[i] == null)
-            {
-				throw new NoSuchColumnException(tableMetaData.getTableName(), columnName);
-			}
-        }
-        
+        _columns = validateAndResolveColumns(columnNames);
         initialize();
     }
 
@@ -125,27 +107,34 @@ public class SortedTable extends AbstractTable
     }
 
     /**
-	 * Verifies that all columns that are currently set really exist in the
-	 * given table
-	 * 
-	 * @throws DataSetException
-	 */
-    private void validateColumns() throws DataSetException 
+     * Verifies that all given columns really exist in the
+     * current table and returns the physical {@link Column} objects from the table.
+     * @param columns
+     * @return
+     * @throws DataSetException
+     */
+    private Column[] validateAndResolveColumns(Column[] columns) throws DataSetException 
     {
-        Column[] columnsOfTable = _table.getTableMetaData().getColumns();
-        // Create a list for easy containment check
-        List columnsOfTableList = Arrays.asList(columnsOfTable);
-        for (int i = 0; i < _columns.length; i++) 
-        {
-        	Column sortColumn = _columns[i];
-        	if (!columnsOfTableList.contains(sortColumn))
-        	{
-				throw new NoSuchColumnException(_table.getTableMetaData().getTableName(), sortColumn.getColumnName());
-			}
-        }
+        ITableMetaData tableMetaData = _table.getTableMetaData();
+        Column[] resultColumns = Columns.findColumnsByName(columns, tableMetaData);
+        return resultColumns;
 	}
 
-	private void initialize() 
+    /**
+     * Verifies that all given columns really exist in the
+     * current table and returns the physical {@link Column} objects from the table.
+     * @param columnNames
+     * @return
+     * @throws DataSetException
+     */
+    private Column[] validateAndResolveColumns(String[] columnNames) throws DataSetException 
+    {
+        ITableMetaData tableMetaData = _table.getTableMetaData();
+        Column[] resultColumns = Columns.findColumnsByName(columnNames, tableMetaData);
+        return resultColumns;
+    }
+
+    private void initialize() 
 	{
         logger.debug("initialize() - start");
         
@@ -153,6 +142,14 @@ public class SortedTable extends AbstractTable
 		this.rowComparator = new RowComparatorByString(this._table, this._columns);		
 	}
 
+	/**
+	 * @return The columns that are used for sorting the table
+	 */
+	public Column[] getSortColumns()
+	{
+	    return this._columns;
+	}
+	
     private int getOriginalRowIndex(int row) throws DataSetException
     {
     	if(logger.isDebugEnabled())
