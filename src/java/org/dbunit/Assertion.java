@@ -208,11 +208,19 @@ public class Assertion
      * Asserts that the two specified tables are equals. This method ignores the
      * table names, the columns order, the columns data type and which columns
      * are composing the primary keys.
-     * 
+     * <br />
+     * Example:
+     * <code><pre>
+     * ITable actualTable = ...;
+     * ITable expectedTable = ...;
+     * ITableMetaData metaData = actualTable.getTableMetaData();
+     * Column[] additionalInfoCols = Columns.getColumns(new String[] {"MY_PK_COLUMN"}, metaData.getColumns());
+     * Assertion.assertEquals(expectedTable, actualTable, additionalInfoCols);
+     * </pre></code>
 	 * @param expectedTable Table containing all expected results.
 	 * @param actualTable Table containing all actual results.
-     * @param additionalColumnInfo The columns to be printed out if the assert fails because of a data any mismatch.
-     * Provides some additional column values that can be needed to quickly identify the columns for which the mismatch
+     * @param additionalColumnInfo The columns to be printed out if the assert fails because of a data mismatch.
+     * Provides some additional column values that may be useful to quickly identify the columns for which the mismatch
      * occurred (for example a primary key column). 
      * @throws DatabaseUnitException
      */

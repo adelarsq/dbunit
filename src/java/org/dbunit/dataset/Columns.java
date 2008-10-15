@@ -92,7 +92,7 @@ public class Columns
     /**
      * Searches for the given <code>columns</code> using only the {@link Column#getColumnName()} 
      * in the given <code>tableMetaData</code>
-     * @param columns The columns whose names are searched in the given table metadata
+     * @param columnNames The column names that are searched in the given table metadata
      * @param tableMetaData The table metadata in which the columns are searched by name
      * @return The column objects from the given <code>tableMetaData</code>
      * @throws NoSuchColumnException if the given column has not been found
