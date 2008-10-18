@@ -65,7 +65,6 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     /**
      * Table name, potentially qualified
      */
-    private final String _tableName;
     private final QualifiedTableName _qualifiedTableNameSupport;
     private final IDatabaseConnection _connection;
     private Column[] _columns;
@@ -95,10 +94,9 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 			throw new NullPointerException("The parameter 'connection' must not be null");
 		}
     	
-        _tableName = tableName;
         _connection = connection;
-        // qualified names support
-        this._qualifiedTableNameSupport = new QualifiedTableName(_tableName, _connection.getSchema());
+        // qualified names support - table name and schema is stored here
+        _qualifiedTableNameSupport = new QualifiedTableName(tableName, _connection.getSchema());
 
         if(validate) 
         {
@@ -243,7 +241,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
     public String getTableName()
     {
-        return _tableName;
+        return this._qualifiedTableNameSupport.getTable();
     }
 
     public Column[] getColumns() throws DataSetException
