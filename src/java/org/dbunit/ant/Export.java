@@ -194,7 +194,11 @@ public class Export extends AbstractStep
                     else if (_format.equalsIgnoreCase(FORMAT_DTD))
                     {
                         FlatDtdDataSet.write(dataset, out);
-                    } 
+                    }
+                    else
+                    {
+                        throw new IllegalArgumentException("The given format '"+_format+"' is not supported.");
+                    }
                     
                 }
                 finally
