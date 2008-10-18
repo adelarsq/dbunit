@@ -163,18 +163,10 @@ public class Operation extends AbstractStep
     {
         logger.debug("setFormat(format={}) - start", format);
 
-        if (format.equalsIgnoreCase(FORMAT_FLAT)
-                || format.equalsIgnoreCase(FORMAT_XML)
-                || format.equalsIgnoreCase(FORMAT_CSV)
-                || format.equalsIgnoreCase(FORMAT_XLS)
-        )
-        {
-            _format = format;
-        }
-        else
-        {
-            throw new IllegalArgumentException("Type must be either 'flat'(default), 'xml' or 'csv' but was: " + format);
-        }
+        // Check if the given format is accepted
+        checkDataFormat(format);
+        // If we get here the given format is a valid data format
+        _format = format;
     }
 
     public void setTransaction(boolean transaction)

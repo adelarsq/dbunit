@@ -195,7 +195,7 @@ public abstract class AbstractStep implements DbUnitTaskStep
             }
             else
             {
-            	throw new IllegalArgumentException("Type must be either 'flat'(default), 'xml', 'csv', 'xls' or 'dtd' but was: " + format);
+                throw new IllegalArgumentException("Type must be either 'flat'(default), 'xml', 'csv', 'xls' or 'dtd' but was: " + format);
             }
 
             if (forwardonly)
@@ -210,6 +210,54 @@ public abstract class AbstractStep implements DbUnitTaskStep
         }
     }
     
+
+    /**
+	 * Checks if the given format is a format which contains tabular data.
+	 * @param format The format to check
+	 * @return <code>true</code> if the given format is a data format. A data
+	 * format is a format which holds tabular data that can be loaded via dbunit.
+	 * An example for a data format is "xml" or "flat". A non-data format is "dtd" which
+	 * holds only metadata information.
+	 * @since 2.4
+	 */
+	public boolean isDataFormat(String format)
+	{
+        logger.debug("isDataFormat(format={}) - start", format);
+
+        if (format.equalsIgnoreCase(FORMAT_FLAT)
+                || format.equalsIgnoreCase(FORMAT_XML)
+                || format.equalsIgnoreCase(FORMAT_CSV)
+                || format.equalsIgnoreCase(FORMAT_XLS)
+        )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+	}
+	
+    /**
+     * Checks if the given data format is a valid one according to
+     * the method {@link #isDataFormat(String)}. If it is not an
+     * {@link IllegalArgumentException} is thrown.
+     * @param format The format to check
+     * @throws IllegalArgumentException If the given format is not
+     * a valid data format
+     * @since 2.4
+     */
+    protected void checkDataFormat(String format) 
+    {
+        logger.debug("checkDataFormat(format={}) - start", format);
+
+        if (!isDataFormat(format))
+        {
+            throw new IllegalArgumentException("format must be either 'flat'(default), 'xml', 'csv' or 'xls' but was: " + format);
+        }
+    }
+
+	
 	/**
 	 * Creates and returns an {@link InputSource}
 	 * @param file The file for which an {@link InputSource} should be created
