@@ -21,9 +21,7 @@
 
 package org.dbunit.dataset;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,29 +32,71 @@ import org.slf4j.LoggerFactory;
  * method.
  *
  * @author Manuel Laflamme
- * @version $Revision$
- * @since Feb 22, 2002
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0 (Feb 22, 2002)
  */
 public abstract class AbstractDataSet implements IDataSet
 {
+    private OrderedTableNameMap _orderedTableNameMap;
 
     /**
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(AbstractDataSet.class);
 
-    protected ITable[] cloneTables(ITable[] tables)
+    /**
+     * Default constructor
+     */
+    public AbstractDataSet()
     {
-        logger.debug("cloneTables(tables={}) - start", tables);
-
-        ITable[] clones = new ITable[tables.length];
-        for (int i = 0; i < tables.length; i++)
+        
+    }
+    
+    /**
+     * Initializes the tables of this dataset
+     * @throws DataSetException
+     */
+    private void initialize() throws DataSetException
+    {
+        logger.debug("initialize() - start");
+        
+        if(_orderedTableNameMap != null)
         {
-            clones[i] = tables[i];
+            logger.debug("The table name map has already been initialized.");
+            // already initialized
+            return;
         }
-        return clones;
+        
+        // Gather all tables in the OrderedTableNameMap which also makes the duplicate check
+        _orderedTableNameMap = new OrderedTableNameMap();
+        ITableIterator iterator = createIterator(false);
+        while (iterator.next())
+        {
+            ITable table = iterator.getTable();
+            _orderedTableNameMap.add(table.getTableMetaData().getTableName(), table);
+        }
     }
 
+    
+//    protected ITable[] cloneTables(ITable[] tables)
+//    {
+//        logger.debug("cloneTables(tables={}) - start", tables);
+//
+//        ITable[] clones = new ITable[tables.length];
+//        for (int i = 0; i < tables.length; i++)
+//        {
+//            clones[i] = tables[i];
+//        }
+//        return clones;
+//    }
+
+    /**
+     * Creates an iterator which provides access to all tables of this dataset
+     * @param reversed Whether the created iterator should be a reversed one or not
+     * @return The created {@link ITableIterator}
+     * @throws DataSetException
+     */
     protected abstract ITableIterator createIterator(boolean reversed)
             throws DataSetException;
 
@@ -67,13 +107,9 @@ public abstract class AbstractDataSet implements IDataSet
     {
         logger.debug("getTableNames() - start");
 
-        List tableNameList = new ArrayList();
-        ITableIterator iterator = createIterator(false);
-        while (iterator.next())
-        {
-            tableNameList.add(iterator.getTableMetaData().getTableName());
-        }
-        return (String[])tableNameList.toArray(new String[0]);
+        initialize();
+
+        return this._orderedTableNameMap.getTableNames();
     }
 
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
@@ -87,16 +123,9 @@ public abstract class AbstractDataSet implements IDataSet
     {
         logger.debug("getTable(tableName={}) - start", tableName);
 
-        // Gather all tables in the OrderedTableNameMap which also makes the duplicate check
-        OrderedTableNameMap orderedTableNameMap = new OrderedTableNameMap();
-        ITableIterator iterator = createIterator(false);
-        while (iterator.next())
-        {
-            ITable table = iterator.getTable();
-            orderedTableNameMap.add(table.getTableMetaData().getTableName(), table);
-        }
+        initialize();
 
-        ITable found = (ITable) orderedTableNameMap.get(tableName);
+        ITable found = (ITable) _orderedTableNameMap.get(tableName);
         if (found != null)
         {
             return found;
@@ -111,13 +140,9 @@ public abstract class AbstractDataSet implements IDataSet
     {
         logger.debug("getTables() - start");
 
-        List tableList = new ArrayList();
-        ITableIterator iterator = createIterator(false);
-        while (iterator.next())
-        {
-            tableList.add(iterator.getTable());
-        }
-        return (ITable[])tableList.toArray(new ITable[0]);
+        initialize();
+        
+        return (ITable[]) this._orderedTableNameMap.orderedValues().toArray(new ITable[0]);
     }
 
     public ITableIterator iterator() throws DataSetException
