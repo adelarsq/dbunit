@@ -67,7 +67,7 @@ public class XlsDataSet extends AbstractDataSet
      */
     private static final Logger logger = LoggerFactory.getLogger(XlsDataSet.class);
 
-    private final OrderedTableNameMap _tables = new OrderedTableNameMap();
+    private final OrderedTableNameMap _tables;
 
 
     /**
@@ -83,6 +83,8 @@ public class XlsDataSet extends AbstractDataSet
      */
     public XlsDataSet(InputStream in) throws IOException, DataSetException
     {
+        _tables = super.createTableNameMap();
+        
         HSSFWorkbook workbook = new HSSFWorkbook(in);
         int sheetCount = workbook.getNumberOfSheets();
         for (int i = 0; i < sheetCount; i++)

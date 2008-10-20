@@ -61,8 +61,13 @@ public interface IDatabaseConnection
     /**
      * Creates a dataset containing only the specified tables from
      * the database.
+     * @param tableNames The tables for which a dataset shall be created
+     * @return The new dataset
+     * @throws SQLException
+     * @throws DataSetException
      */
-    public IDataSet createDataSet(String[] tableNames) throws SQLException;
+    public IDataSet createDataSet(String[] tableNames) 
+            throws SQLException, DataSetException;
 
     /**
      * Creates a table with the result of the specified SQL statement. The
@@ -70,6 +75,9 @@ public interface IDatabaseConnection
      *
      * @param tableName The name to be returned by {@link org.dbunit.dataset.ITableMetaData#getTableName}.
      * @param sql The SQL <code>SELECT</code> statement
+     * @return The new table
+     * @throws DataSetException
+     * @throws SQLException
      */
     public ITable createQueryTable(String tableName, String sql)
             throws DataSetException, SQLException;

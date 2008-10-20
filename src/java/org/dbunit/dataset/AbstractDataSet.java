@@ -39,6 +39,12 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractDataSet implements IDataSet
 {
     private OrderedTableNameMap _orderedTableNameMap;
+    
+    /**
+     * Whether or not table names of this dataset are case sensitive.
+     * By default case-sensitivity is set to false for datasets
+     */
+    private boolean _caseSensitiveTableNames = false;
 
     /**
      * Logger for this class
@@ -50,12 +56,43 @@ public abstract class AbstractDataSet implements IDataSet
      */
     public AbstractDataSet()
     {
-        
+    }
+    
+    /**
+     * Constructor
+     * @param caseSensitiveTableNames Whether or not table names should be case sensitive
+     * @since 2.4
+     */
+    public AbstractDataSet(boolean caseSensitiveTableNames)
+    {
+        _caseSensitiveTableNames = caseSensitiveTableNames;
+    }
+
+    /**
+     * @return <code>true</code> if the case sensitivity of table names is used in this dataset.
+     * @since 2.4
+     */
+    public boolean isCaseSensitiveTableNames()
+    {
+        return this._caseSensitiveTableNames;
+    }
+    
+    /**
+     * Creates and returns a new instance of the table names container.
+     * Implementors should use this method to retrieve a map which stores
+     * table names which can be linked with arbitrary objects.
+     * @return a new empty instance of the table names container
+     * @since 2.4
+     */
+    protected OrderedTableNameMap createTableNameMap()
+    {
+        return new OrderedTableNameMap(this._caseSensitiveTableNames);
     }
     
     /**
      * Initializes the tables of this dataset
      * @throws DataSetException
+     * @since 2.4
      */
     private void initialize() throws DataSetException
     {
@@ -69,7 +106,7 @@ public abstract class AbstractDataSet implements IDataSet
         }
         
         // Gather all tables in the OrderedTableNameMap which also makes the duplicate check
-        _orderedTableNameMap = new OrderedTableNameMap();
+        _orderedTableNameMap = this.createTableNameMap();
         ITableIterator iterator = createIterator(false);
         while (iterator.next())
         {

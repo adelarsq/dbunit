@@ -38,7 +38,6 @@ import org.dbunit.database.AmbiguousTableNameException;
  * </p>
  * 
  * TODO In the future it might be discussed if a ListOrderedMap (apache-commons-collections) can/should be used.
- * TODO If case-sensitive tables will be re-introduced (as it was before 1.5) remove all the "toUpperCase()"s.
  * 
  * @author gommma
  * @author Last changed by: $Author$
@@ -55,16 +54,35 @@ public class OrderedTableNameMap
 	private Map _tableMap = new HashMap();
 	/**
 	 * Chronologically ordered list of table names - keeps the order
-	 * in which the table names have been added
+	 * in which the table names have been added as well as the case in
+	 * which the table has been added
 	 */
 	private List _tableNames = new ArrayList();
 	
 	/**
+	 * Whether or not case sensitive table names should be used. Defaults to false.
+	 */
+	private boolean _caseSensitiveTableNames = false;
+	
+	
+	/**
 	 * Creates a new map which does strictly force that one table can only occur once.
+	 * By default case sensitivity is <b>not</b> enabled
+	 * TODO Try to remove this constructor and all invocations of it. Invoker should be forced to specify caseSensitiveTableNames param
 	 */
 	public OrderedTableNameMap()
 	{
+	    this(false);
 	}
+
+	/**
+     * Creates a new map which does strictly force that one table can only occur once.
+     * @param caseSensitiveTableNames Whether or not table names should be case sensitive
+     */
+    public OrderedTableNameMap(boolean caseSensitiveTableNames)
+    {
+        _caseSensitiveTableNames = caseSensitiveTableNames;
+    }
 
 	/**
 	 * Returns the object associated with the given table name
@@ -73,7 +91,8 @@ public class OrderedTableNameMap
 	 */
 	public Object get(String tableName) 
 	{
-		return this._tableMap.get(tableName.toUpperCase());//TODO remove ToUpperCase when table names are case sensitive
+	    String correctedCaseTableName = this.getTableName(tableName);
+		return this._tableMap.get(correctedCaseTableName);
 	}
 
 
@@ -95,7 +114,8 @@ public class OrderedTableNameMap
 	 */
 	public boolean containsTable(String tableName) 
 	{
-		return _tableMap.containsKey(tableName.toUpperCase());//TODO remove equalsIgnoreCase when table names are case sensitive
+	    String correctedCaseTableName = this.getTableName(tableName);
+		return _tableMap.containsKey(correctedCaseTableName);
 	}
 
     /**
@@ -111,10 +131,10 @@ public class OrderedTableNameMap
         else 
         {
             String lastTable = getLastTableName();
-            return lastTable.equalsIgnoreCase(tableName);//TODO remove ToUpperCase when table names are case sensitive
+            String lastTableCorrectCase = this.getTableName(lastTable);
+            String inputTableCorrectCase = this.getTableName(tableName);
+            return lastTableCorrectCase.equals(inputTableCorrectCase);
         }
-        
-//        TODO How to remove case sensitivity?#1063128
     }
 
     /**
@@ -143,13 +163,15 @@ public class OrderedTableNameMap
 	 */
 	public void add(String tableName, Object object) throws AmbiguousTableNameException 
 	{
+	    // Get the table name in the correct case
+        String tableNameCorrectedCase = this.getTableName(tableName);
         // prevent table name conflict
-        if (this.containsTable(tableName))
+        if (this.containsTable(tableNameCorrectedCase))
         {
-            throw new AmbiguousTableNameException(tableName.toUpperCase());//TODO remove ToUpperCase when table names are case sensitive
+            throw new AmbiguousTableNameException(tableNameCorrectedCase);
         }
         else {
-            this._tableMap.put(tableName.toUpperCase(), object);//TODO remove ToUpperCase when table names are case sensitive
+            this._tableMap.put(tableNameCorrectedCase, object);
             this._tableNames.add(tableName);
         }
 	}
@@ -181,8 +203,26 @@ public class OrderedTableNameMap
         {
         	throw new IllegalArgumentException("The table name '" + tableName + "' does not exist in the map");
         }
-        this._tableMap.put(tableName.toUpperCase(), object);//TODO remove ToUpperCase when table names are case sensitive
+        tableName = this.getTableName(tableName);
+        this._tableMap.put(tableName, object);
 	}
+
+    /**
+     * Returns the table name in the correct case (for example as upper case string)
+     * @param tableName The input table name to be resolved
+     * @return The table name for the given string in the correct case.
+     */
+    public String getTableName(String tableName) 
+    {
+        if(_caseSensitiveTableNames)
+        {
+            return tableName;
+        }
+        else
+        {
+            return tableName.toUpperCase();
+        }
+    }
 
 	public String toString()
 	{
@@ -190,8 +230,9 @@ public class OrderedTableNameMap
 		sb.append(getClass().getName()).append("[");
 		sb.append("_tableNames=").append(_tableNames);
 		sb.append(", _tableMap=").append(_tableMap);
+		sb.append(", _caseSensitiveTableNames=").append(_caseSensitiveTableNames);
 		sb.append("]");
 		return sb.toString();
 	}
-
+	
 }

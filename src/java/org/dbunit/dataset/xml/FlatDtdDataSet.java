@@ -58,11 +58,12 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
      */
     private static final Logger logger = LoggerFactory.getLogger(FlatDtdDataSet.class);
 
-    private final OrderedTableNameMap _tableMap = new OrderedTableNameMap();
+    private OrderedTableNameMap _tableMap;
     private boolean _ready = false;
 
     public FlatDtdDataSet()
     {
+        initialize();
     }
 
     public FlatDtdDataSet(InputStream in) throws DataSetException, IOException
@@ -77,8 +78,14 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 
     public FlatDtdDataSet(IDataSetProducer producer) throws DataSetException
     {
+        initialize();
         producer.setConsumer(this);
         producer.produce();
+    }
+
+    private void initialize()
+    {
+        _tableMap = super.createTableNameMap();
     }
 
     /**

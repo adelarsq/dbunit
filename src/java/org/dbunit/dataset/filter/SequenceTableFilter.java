@@ -21,7 +21,6 @@
 package org.dbunit.dataset.filter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.dbunit.database.AmbiguousTableNameException;
@@ -37,7 +36,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This filter expose a specified table sequence and can be used to reorder
- * tables in a dataset. This implementation do not support duplicate table names.
+ * tables in a dataset. This implementation does not support duplicate table names.
  * Thus you cannot specify the same table name more than once in this filter
  * and the filtered dataset must not contains duplicate table names. This is
  * the default filter used by the {@link org.dbunit.dataset.FilteredDataSet}.
@@ -55,32 +54,24 @@ public class SequenceTableFilter implements ITableFilter
      */
     private static final Logger logger = LoggerFactory.getLogger(SequenceTableFilter.class);
 
-    private final String[] _tableNames;
+    private final OrderedTableNameMap _tableNameMap;
 
     /**
      * Creates a new SequenceTableFilter with specified table names sequence.
+     * @throws AmbiguousTableNameException If the given array contains ambiguous names
      */
-    public SequenceTableFilter(String[] tableNames)
-    {
-        _tableNames = tableNames;
-    }
-
-    private boolean accept(String tableName, String[] tableNames) 
+    public SequenceTableFilter(String[] tableNames) 
     throws AmbiguousTableNameException
     {
-    	if(logger.isDebugEnabled())
-    		logger.debug("accept(tableName={}, tableNames={}) - start",
-    				new Object[]{tableName, tableNames } );
-
         // Gather all tables in the OrderedTableNameMap which also makes the duplicate check
-        OrderedTableNameMap orderedTableNameMap = new OrderedTableNameMap();
+        _tableNameMap = new OrderedTableNameMap();
         for (int i = 0; i < tableNames.length; i++)
         {
-            orderedTableNameMap.add(tableNames[i], null);
+            _tableNameMap.add(tableNames[i], null);
         }
         
-        return orderedTableNameMap.containsTable(tableName);
     }
+
 
     ////////////////////////////////////////////////////////////////////////////
     // ITableFilter interface
@@ -89,7 +80,7 @@ public class SequenceTableFilter implements ITableFilter
     {
         logger.debug("accept(tableName={}) - start", tableName);
 
-        return accept(tableName, _tableNames);
+        return _tableNameMap.containsTable(tableName);
     }
 
     public String[] getTableNames(IDataSet dataSet) throws DataSetException
@@ -97,14 +88,15 @@ public class SequenceTableFilter implements ITableFilter
         logger.debug("getTableNames(dataSet={}) - start", dataSet);
 
         List nameList = new ArrayList();
-        for (int i = 0; i < _tableNames.length; i++)
+        String[] tableNames = _tableNameMap.getTableNames();
+        for (int i = 0; i < tableNames.length; i++)
         {
             try
             {
                 // Use the table name from the filtered dataset. This ensure
                 // that table names are having the same case (lower/upper) from
                 // getTableNames() and getTables() methods.
-                ITableMetaData metaData = dataSet.getTableMetaData(_tableNames[i]);
+                ITableMetaData metaData = dataSet.getTableMetaData(tableNames[i]);
                 nameList.add(metaData.getTableName());
             }
             catch (NoSuchTableException e)
@@ -132,7 +124,7 @@ public class SequenceTableFilter implements ITableFilter
     {
         StringBuffer sb = new StringBuffer();
         sb.append(getClass().getName()).append("[");
-        sb.append("tableNames=").append(_tableNames==null ? "null" : Arrays.asList(_tableNames).toString());
+        sb.append("_tableNameMap=").append(_tableNameMap);
         sb.append("]");
         return sb.toString();
     }

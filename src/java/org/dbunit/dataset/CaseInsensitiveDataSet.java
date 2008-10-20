@@ -52,7 +52,7 @@ public class CaseInsensitiveDataSet extends AbstractDataSet
         _dataSet = dataSet;
         
         // Check for duplicates using the OrderedTableNameMap as helper
-        orderedTableMap = new OrderedTableNameMap();
+        orderedTableMap = new OrderedTableNameMap(false);
         ITableIterator tableIterator = _dataSet.iterator();
         while(tableIterator.next()) {
             ITable table = (ITable) tableIterator.getTable();

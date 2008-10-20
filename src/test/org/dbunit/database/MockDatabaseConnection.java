@@ -116,7 +116,7 @@ public class MockDatabaseConnection implements IDatabaseConnection, Verifiable
         return _dataSet;
     }
 
-    public IDataSet createDataSet(String[] tableNames) throws SQLException
+    public IDataSet createDataSet(String[] tableNames) throws SQLException, AmbiguousTableNameException
     {
         return new FilteredDataSet(tableNames, createDataSet());
     }

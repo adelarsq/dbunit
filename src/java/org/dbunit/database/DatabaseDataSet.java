@@ -75,6 +75,28 @@ public class DatabaseDataSet extends AbstractDataSet
         _connection = connection;
     }
 
+    
+    
+    
+    /**
+     * Creates a new database data set
+     * @param connection The database connection
+     * @param caseSensitiveTableNames Whether or not this dataset should use case sensitive table names
+     * @throws SQLException
+     */
+    public DatabaseDataSet(IDatabaseConnection connection, boolean caseSensitiveTableNames) throws SQLException
+    {
+        super(caseSensitiveTableNames);
+        if (connection == null) {
+            throw new NullPointerException(
+                    "The parameter 'connection' must not be null");
+        }
+        _connection = connection;
+    }
+
+
+
+
     static String getSelectStatement(String schema, ITableMetaData metaData, String escapePattern)
             throws DataSetException
     {
@@ -142,7 +164,10 @@ public class DatabaseDataSet extends AbstractDataSet
 
         	Connection jdbcConnection = _connection.getConnection();
             String schema = _connection.getSchema();
-            String[] tableType = (String[])_connection.getConfig().getProperty(DatabaseConfig.PROPERTY_TABLE_TYPE);
+            
+            DatabaseConfig config = _connection.getConfig();
+            
+            String[] tableType = (String[])config.getProperty(DatabaseConfig.PROPERTY_TABLE_TYPE);
 
             DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
             ResultSet resultSet = databaseMetaData.getTables(
@@ -150,13 +175,12 @@ public class DatabaseDataSet extends AbstractDataSet
 
             try
             {
-            	OrderedTableNameMap tableMap = new OrderedTableNameMap();
+            	OrderedTableNameMap tableMap = super.createTableNameMap();
                 while (resultSet.next())
                 {
                     String schemaName = resultSet.getString(2);
                     String tableName = resultSet.getString(3);
 
-                    DatabaseConfig config = _connection.getConfig();
                     // skip oracle 10g recycle bin system tables if enabled
                     if(config.getFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES)) {
                         // Oracle 10g workaround
@@ -231,9 +255,9 @@ public class DatabaseDataSet extends AbstractDataSet
         {
             return metaData;
         }
-
+        
         // Create metadata and cache it
-        metaData = new DatabaseTableMetaData(tableName.toUpperCase(), _connection);//TODO How can the "toUpperCase" be avoided here? (target: move to OrderedTableNameMap)
+        metaData = new DatabaseTableMetaData(_tableMap.getTableName(tableName), _connection);
         // Put the metadata object into the cache map
         _tableMap.update(tableName, metaData);
 

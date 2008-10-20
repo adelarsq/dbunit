@@ -43,29 +43,31 @@ public class DefaultDataSet extends AbstractDataSet
      */
     private static final Logger logger = LoggerFactory.getLogger(DefaultDataSet.class);
 
-    private final OrderedTableNameMap _tableMap = new OrderedTableNameMap();
+    private final OrderedTableNameMap _tableMap;
 
     public DefaultDataSet()
     {
+        _tableMap = super.createTableNameMap();
     }
 
     public DefaultDataSet(ITable table) throws AmbiguousTableNameException
     {
-        addTable(table);
-    }
-
-    public DefaultDataSet(ITable[] tables) throws AmbiguousTableNameException
-    {
-        for (int i = 0; i < tables.length; i++)
-        {
-            addTable(tables[i]);
-        }
+        this(new ITable[]{table});
     }
 
     public DefaultDataSet(ITable table1, ITable table2) throws AmbiguousTableNameException
     {
-        addTable(table1);
-        addTable(table2);
+        this(new ITable[] {table1, table2});
+    }
+
+    public DefaultDataSet(ITable[] tables) throws AmbiguousTableNameException
+    {
+        _tableMap = super.createTableNameMap();
+        
+        for (int i = 0; i < tables.length; i++)
+        {
+            addTable(tables[i]);
+        }
     }
 
     /**

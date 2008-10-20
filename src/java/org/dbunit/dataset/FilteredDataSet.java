@@ -24,6 +24,7 @@ package org.dbunit.dataset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.dbunit.database.AmbiguousTableNameException;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.filter.SequenceTableFilter;
 
@@ -54,8 +55,10 @@ public class FilteredDataSet extends AbstractDataSet
      * Creates a FilteredDataSet that decorates the specified dataset and
      * exposes only the specified tables using {@link SequenceTableFilter} as
      * filtering strategy.
+     * @throws AmbiguousTableNameException If the given tableNames array contains ambiguous names
      */
-    public FilteredDataSet(String[] tableNames, IDataSet dataSet)
+    public FilteredDataSet(String[] tableNames, IDataSet dataSet) 
+    throws AmbiguousTableNameException
     {
         _filter = new SequenceTableFilter(tableNames);
         _dataSet = dataSet;

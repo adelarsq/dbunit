@@ -42,7 +42,7 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
      */
     private static final Logger logger = LoggerFactory.getLogger(CachedDataSet.class);
 
-    private OrderedTableNameMap _tables = new OrderedTableNameMap();
+    private OrderedTableNameMap _tables;
 
     private DefaultTable _activeTable;
     
@@ -52,6 +52,7 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
      */
     public CachedDataSet()
     {
+        initialize();
     }
 
     /**
@@ -59,6 +60,8 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
      */
     public CachedDataSet(IDataSet dataSet) throws DataSetException
     {
+        initialize();
+
         ITableIterator iterator = dataSet.iterator();
         while (iterator.next())
         {
@@ -72,10 +75,17 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
      */
     public CachedDataSet(IDataSetProducer producer) throws DataSetException
     {
+        initialize();
+
         producer.setConsumer(this);
         producer.produce();
     }
 
+    private void initialize()
+    {
+        _tables = super.createTableNameMap();
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
     // AbstractDataSet class
 
@@ -95,7 +105,7 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
     public void startDataSet() throws DataSetException
     {
         logger.debug("startDataSet() - start");
-        _tables = new OrderedTableNameMap();
+        _tables = super.createTableNameMap();
     }
 
     public void endDataSet() throws DataSetException

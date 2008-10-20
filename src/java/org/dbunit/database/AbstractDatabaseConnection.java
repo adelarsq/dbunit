@@ -70,7 +70,8 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         return _dataSet;
     }
 
-    public IDataSet createDataSet(String[] tableNames) throws SQLException
+    public IDataSet createDataSet(String[] tableNames) 
+            throws DataSetException, SQLException
     {
         logger.debug("createDataSet(tableNames={}) - start", tableNames);
 

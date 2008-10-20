@@ -40,7 +40,7 @@ public class CompositeDataSet extends AbstractDataSet
      */
     private static final Logger logger = LoggerFactory.getLogger(CompositeDataSet.class);
 
-    private ITable[] _tables;
+    private final ITable[] _tables;
 
     /**
      * Creates a composite dataset that combines specified datasets.
@@ -64,7 +64,7 @@ public class CompositeDataSet extends AbstractDataSet
             throws DataSetException
     {
         // Check for duplicates using the OrderedTableNameMap as helper
-        OrderedTableNameMap orderedTableMap = new OrderedTableNameMap();
+        OrderedTableNameMap orderedTableMap = super.createTableNameMap();
         for (int i = 0; i < dataSets.length; i++)
         {
             IDataSet dataSet = dataSets[i];
@@ -139,7 +139,7 @@ public class CompositeDataSet extends AbstractDataSet
      */
     public CompositeDataSet(ITable[] tables) throws DataSetException
     {
-        OrderedTableNameMap orderedTableMap = new OrderedTableNameMap();
+        OrderedTableNameMap orderedTableMap = super.createTableNameMap();
         for (int i = 0; i < tables.length; i++)
         {
             addTable(tables[i], orderedTableMap, true);
@@ -148,6 +148,7 @@ public class CompositeDataSet extends AbstractDataSet
         _tables = (ITable[]) orderedTableMap.orderedValues().toArray(new ITable[0]);
     }
 
+    
     /**
      * @param newTable
      * @param tableMap

@@ -47,7 +47,7 @@ public abstract class AbstractSearchCallbackFilteredByPKsTestCase extends Abstra
     this.fOutput.put( tableName, idsSet );
   }
   
-  protected abstract IDataSet getDataset() throws SQLException, SearchException; 
+  protected abstract IDataSet getDataset() throws SQLException, SearchException, DataSetException; 
 
   protected void doIt() throws SQLException, DataSetException, SearchException  {
     IDataSet dataset = getDataset();

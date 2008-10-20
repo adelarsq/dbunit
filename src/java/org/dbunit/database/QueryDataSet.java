@@ -49,7 +49,7 @@ public class QueryDataSet extends AbstractDataSet
     private static final Logger logger = LoggerFactory.getLogger(QueryDataSet.class);
 
     private final IDatabaseConnection _connection;
-    private final OrderedTableNameMap _tables = new OrderedTableNameMap();
+    private final OrderedTableNameMap _tables;
 
 
     /**
@@ -63,6 +63,7 @@ public class QueryDataSet extends AbstractDataSet
 			throw new NullPointerException("The parameter 'connection' must not be null");
 		}
         _connection = connection;
+        _tables = super.createTableNameMap();
     }
 
     /**

@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.filter.ExcludeTableFilter;
@@ -88,7 +89,7 @@ public class MsSqlConnection extends DatabaseConnection
         return new FilteredDataSet(_filter, dataSet);
     }
 
-    public IDataSet createDataSet(String[] tableNames) throws SQLException
+    public IDataSet createDataSet(String[] tableNames) throws SQLException, DataSetException
     {
         logger.debug("createDataSet(tableNames={}) - start", tableNames);
 
