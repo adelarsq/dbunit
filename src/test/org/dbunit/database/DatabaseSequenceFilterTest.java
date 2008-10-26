@@ -20,17 +20,19 @@
  */
 package org.dbunit.database;
 
-import org.dbunit.HypersonicEnvironment;
-import org.dbunit.dataset.FilteredDataSet;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.filter.ITableFilter;
-
-import junit.framework.TestCase;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.sql.Connection;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import junit.framework.TestCase;
+
+import org.dbunit.HypersonicEnvironment;
+import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.filter.ITableFilter;
 
 /**
  * @author Manuel Laflamme
@@ -57,7 +59,7 @@ public class DatabaseSequenceFilterTest extends TestCase
     {
         super.tearDown();
 
-//        HypersonicEnvironment.execute(_jdbcConnection, "SHUTDOWN");
+        HypersonicEnvironment.shutdown(_jdbcConnection);
         _jdbcConnection.close();
 
         File[] files = new File(".").listFiles(new FilenameFilter()
@@ -97,7 +99,7 @@ public class DatabaseSequenceFilterTest extends TestCase
         String[] actualFiltered = filteredDataSet.getTableNames();
         assertEquals("filtered", Arrays.asList(expectedFiltered), Arrays.asList(actualFiltered));
     }
-/*
+
 
     public void testGetTableNamesCyclic() throws Exception
     {
@@ -118,10 +120,12 @@ public class DatabaseSequenceFilterTest extends TestCase
             filteredDataSet.getTableNames();
             fail("Should not be here!");
         }
-        catch (CyclicTablesDependencyException e)
+        catch (CyclicTablesDependencyException expected)
         {
+            Set expectedCycle = new HashSet(Arrays.asList(new String[]{"A", "C", "E"}));
+            assertEquals(expectedCycle.toString(), expected.getMessage());
         }
     }
-*/
+
 
 }

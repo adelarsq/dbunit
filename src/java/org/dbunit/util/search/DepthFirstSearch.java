@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2005, DbUnit.org
+ * Copyright (C)2005-2008, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,10 +38,10 @@ import org.dbunit.util.CollectionsHelper;
  * internal state of the search.<br>
  * <br>
  * 
- * @author Felipe Leme (dbunit@felipeal.net)
- * @version $Revision$
- * @since Aug 25, 2005
- * 
+ * @author gommma (gommma AT users.sourceforge.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.4.0
  */
 public class DepthFirstSearch implements ISearchAlgorithm {
 
@@ -62,13 +62,42 @@ public class DepthFirstSearch implements ISearchAlgorithm {
 
   // flag, as one instance cannot be used more than once
   private boolean searching = false;
+  
+    /**
+     * The search depth to be used when recursing through the child nodes
+     */
+    private int searchDepth = Integer.MAX_VALUE;
+
+  
+    /**
+     * Creates a new depth-first algorithm using the maximum search depth for recursing over the nodes.
+     */
+    public DepthFirstSearch()
+    {
+        super();
+    }
+
+    /**
+     * Creates a new depth-first algorithm
+     * @param searchDepth The search depth to be used when traversing the nodes recursively. Must be > 0.
+     * @since 2.4
+     */
+    public DepthFirstSearch(int searchDepth)
+    {
+        super();
+        if(searchDepth<=0){
+            throw new IllegalArgumentException("The searchDepth must be > 0. Given: " + searchDepth);
+        }
+        this.searchDepth = searchDepth;
+    }
 
   /**
    * Alternative option to search() that takes an array of nodes as input (instead of a Set)
    * @see ISearchAlgorithm
    */
   public ListOrderedSet search(Object[] nodesFrom, ISearchCallback callback)
-      throws SearchException {
+      throws SearchException 
+  {
       if(logger.isDebugEnabled())
           logger.debug("search(nodesFrom={}, callback={}) - start", nodesFrom, callback);
 
@@ -116,15 +145,16 @@ public class DepthFirstSearch implements ISearchAlgorithm {
       Iterator iterator = nodesFrom.iterator();      
       while (iterator.hasNext()) {
         Object node = iterator.next();
-        reverseSearch(node);
+        reverseSearch(node, 0);
       }
-          
-      // now that the input is adjusted, do the search
+//        this.nodesFrom = nodesFrom;
+
+        // now that the input is adjusted, do the search
       iterator = this.nodesFrom.iterator();
       
       while (iterator.hasNext()) {
         Object node = iterator.next();
-        search(node);
+        search(node, 0);
       }
       
       nodesFrom = new HashSet(this.result);
@@ -147,10 +177,11 @@ public class DepthFirstSearch implements ISearchAlgorithm {
    * This is the real depth first search algorithm, which is called recursively.
    * 
    * @param node node where the search starts
+   * @param currentSearchDepth the search depth in the recursion
    * @return true if the node has been already searched before
    * @throws Exception if an exception occurs while getting the edges
    */
-  private boolean search(Object node) throws SearchException {
+  private boolean search(Object node, int currentSearchDepth) throws SearchException {
     if ( this.logger.isDebugEnabled() ) {
       this.logger.debug( "search:" + node );
     }
@@ -172,16 +203,18 @@ public class DepthFirstSearch implements ISearchAlgorithm {
     }
     this.scannedNodes.add(node);
 
-    // first, search the nodes the node depends on
-    SortedSet edges = this.callback.getEdges(node);    
-    if (edges != null) {
-      Iterator iterator = edges.iterator();
-      while (iterator.hasNext()) {
-        // and recursively search these nodes
-        IEdge edge = (IEdge) iterator.next();
-        Object toNode = edge.getTo();
-        search(toNode);
-      }
+    if(currentSearchDepth < this.searchDepth) {
+        // first, search the nodes the node depends on
+        SortedSet edges = this.callback.getEdges(node);
+        if (edges != null) {
+            Iterator iterator = edges.iterator();
+            while (iterator.hasNext()) {
+              // and recursively search these nodes
+              IEdge edge = (IEdge) iterator.next();
+              Object toNode = edge.getTo();
+              search(toNode, currentSearchDepth++);
+            }
+          }
     }
 
     // finally, add the node to the result
@@ -199,10 +232,11 @@ public class DepthFirstSearch implements ISearchAlgorithm {
    * Do a reverse search (i.e, searching the other way of the edges) in order
    * to adjust the input before the real search.
    * @param node node where the search starts
+   * @param currentSearchDepth the search depth in the recursion
    * @return true if the node has been already reverse-searched before
    * @throws Exception if an exception occurs while getting the edges
    */
-  private boolean reverseSearch(Object node) throws SearchException {
+  private boolean reverseSearch(Object node, int currentSearchDepth) throws SearchException {
     if ( this.logger.isDebugEnabled() ) {
       this.logger.debug( "reverseSearch:" + node );
     }
@@ -225,21 +259,23 @@ public class DepthFirstSearch implements ISearchAlgorithm {
     }
     this.reverseScannedNodes.add(node);
 
-    // first, search the nodes the node depends on
-    SortedSet edges = this.callback.getEdges(node);    
-    if (edges != null) {
-      Iterator iterator = edges.iterator();
-      while (iterator.hasNext()) {
-        // and recursively search these nodes if we find a match
-        IEdge edge = (IEdge) iterator.next();
-        Object toNode = edge.getTo();
-        if ( toNode.equals(node) ) {
-          Object fromNode = edge.getFrom();
-          reverseSearch(fromNode);
+    if(currentSearchDepth < this.searchDepth) {
+        // first, search the nodes the node depends on
+        SortedSet edges = this.callback.getEdges(node);    
+        if (edges != null) {
+          Iterator iterator = edges.iterator();
+          while (iterator.hasNext()) {
+            // and recursively search these nodes if we find a match
+            IEdge edge = (IEdge) iterator.next();
+            Object toNode = edge.getTo();
+            if ( toNode.equals(node) ) {
+              Object fromNode = edge.getFrom();
+              reverseSearch(fromNode, currentSearchDepth++);
+            }
+          }
         }
-      }
     }
-
+    
     // finally, add the node to the input
     this.nodesFrom.add(node);
 

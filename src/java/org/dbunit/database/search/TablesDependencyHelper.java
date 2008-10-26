@@ -58,8 +58,8 @@ public class TablesDependencyHelper {
     }
 
     /**
-     * Get the name of all tables that depend on a root table (i.e, all tables whose PK
-     * is a FK for the root table).
+     * Get the name of all tables that depend on the root tables (i.e, all tables that have FKs
+     * pointing to the PK of the root table).
      * @param connection database connection
      * @param rootTable root table described above
      * @return name of all tables that depend on the root table (including the root table), 
@@ -74,8 +74,8 @@ public class TablesDependencyHelper {
     }
 
     /**
-     * Get the name of all tables that depend on the root tables (i.e, all tables whose PK
-     * is a FK for one of root tables).
+     * Get the name of all tables that depend on the root tables (i.e, all tables that have FKs
+     * pointing to the PK of one of the root tables).
      * @param connection database connection
      * @param rootTables array of root tables described above
      * @return name of all tables that depend on the root tables (including the root tables), 
@@ -90,6 +90,26 @@ public class TablesDependencyHelper {
         ImportedKeysSearchCallback callback = new ImportedKeysSearchCallback(connection);
         DepthFirstSearch search = new DepthFirstSearch();
         Set tables = search.search( rootTables, callback );
+        return CollectionsHelper.setToStrings( tables );
+    }
+
+    /**
+     * Get the name of all tables that the given rootTable depends on (i.e, all tables whose PK is a FK for the root table). 
+     * @param connection database connection
+     * @param rootTable root table described above
+     * @return name of all tables that the rootTable depends on (including the rootTable itself), 
+     * in the right order for insertions
+     * @throws SearchException if an exception occurred while calculating the order
+     * @since 2.4
+     */
+    public static String[] getDependsOnTables( IDatabaseConnection connection, String rootTable ) 
+    throws SearchException 
+    {
+        logger.debug("getDependsOnTables(connection={}, rootTable={}) - start", connection, rootTable);
+
+        ExportedKeysSearchCallback callback = new ExportedKeysSearchCallback(connection);
+        DepthFirstSearch search = new DepthFirstSearch();
+        Set tables = search.search( new String[]{rootTable}, callback );
         return CollectionsHelper.setToStrings( tables );
     }
 
@@ -180,10 +200,7 @@ public class TablesDependencyHelper {
     public static IDataSet getAllDataset( IDatabaseConnection connection, PkTableMap rootTables ) 
     throws SearchException, SQLException, DataSetException 
     {
-        if (logger.isDebugEnabled())
-        {
-            logger.debug("getAllDataset(connection={}, rootTables={}) - start", connection, rootTables);
-        }
+        logger.debug("getAllDataset(connection={}, rootTables={}) - start", connection, rootTables);
 
         ImportedAndExportedKeysSearchCallbackFilteredByPKs callback = new ImportedAndExportedKeysSearchCallbackFilteredByPKs(connection, rootTables);    
         ITableFilter filter = callback.getFilter();
@@ -196,5 +213,46 @@ public class TablesDependencyHelper {
         return dataset;
     }
 
+    /**
+     * Returns a set of tables on which the given table directly depends on.
+     * @param connection The connection to be used for the database lookup.
+     * @param tableName
+     * @return a set of tables on which the given table directly depends on.
+     * @throws SearchException
+     * @since 2.4
+     */
+    public static Set getDirectDependsOnTables(IDatabaseConnection connection,
+            String tableName) throws SearchException 
+    {
+        logger.debug("getDirectDependsOnTables(connection={}, tableName={}) - start", 
+                    connection, tableName);
+        
+        ExportedKeysSearchCallback callback = new ExportedKeysSearchCallback(connection);
+        // Do a depthFirstSearch with a recursion depth of 1
+        DepthFirstSearch search = new DepthFirstSearch(1);
+        Set tables = search.search( new String[]{tableName}, callback );
+        return tables;
+    }
+
+    /**
+     * Returns a set of tables which directly depend on the given table.
+     * @param connection The connection to be used for the database lookup.
+     * @param tableName
+     * @return a set of tables on which the given table directly depends on.
+     * @throws SearchException
+     * @since 2.4
+     */
+    public static Set getDirectDependentTables(IDatabaseConnection connection,
+            String tableName) throws SearchException 
+    {
+        logger.debug("getDirectDependentTables(connection={}, tableName={}) - start", 
+                    connection, tableName);
+
+        ImportedKeysSearchCallback callback = new ImportedKeysSearchCallback(connection);
+        // Do a depthFirstSearch with a recursion depth of 1
+        DepthFirstSearch search = new DepthFirstSearch(1);
+        Set tables = search.search( new String[]{tableName}, callback );
+        return tables;
+    }
 
 }
