@@ -64,6 +64,12 @@ public class UnknownDataType extends AbstractDataType
     {
         logger.debug("compare(o1={}, o2={}) - start", o1, o2);
 
+        // New since dbunit 2.4 for performance optimization (avoid the "asString")
+        if(areObjectsEqual(o1, o2))
+        {
+            return 0;
+        }
+        
         return super.compare(asString(o1), asString(o2));
     }
 }

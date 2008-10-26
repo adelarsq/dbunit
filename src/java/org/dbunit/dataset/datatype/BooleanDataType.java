@@ -105,6 +105,13 @@ public class BooleanDataType extends AbstractDataType
     {
         logger.debug("compare(o1={}, o2={}) - start", o1, o2);
 
+        // New since dbunit 2.4 for performance improvement. Most of the times
+        // the "typeCase" can be avoided like this.
+        if(areObjectsEqual(o1, o2))
+        {
+            return 0;
+        }
+        
         Boolean value1 = (Boolean)typeCast(o1);
         Boolean value2 = (Boolean)typeCast(o2);
 

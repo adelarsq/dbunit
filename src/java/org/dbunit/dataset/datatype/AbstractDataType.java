@@ -72,16 +72,10 @@ public abstract class AbstractDataType extends DataType
         {
         	// New in 2.3: Object level check for equality - should give massive performance improvements
         	// in the most cases because the typecast can be avoided (null values and equal objects)
-        	if(o1 == null && o2 == null)
-        	{
-        		return 0;
-        	}
-        	if(o1 != null && o1.equals(o2))
-        	{
-        		return 0;
-        	}
-        	// Note that no more check is needed for o2 because it definitely does is not equal to o1
-        	// Instead immediately proceed with the typeCast method
+            if(areObjectsEqual(o1, o2))
+            {
+                return 0;
+            }
         	
         	
         	// Comparable check based on the results of method "typeCast"
@@ -110,6 +104,28 @@ public abstract class AbstractDataType extends DataType
         {
             throw new TypeCastException(e);
         }
+    }
+
+    /**
+     * Checks whether the given objects are equal or not.
+     * @param o1 first object
+     * @param o2 second object
+     * @return <code>true</code> if both objects are <code>null</code> (and hence equal)
+     * or if the <code>o1.equals(o2)</code> is <code>true</code>.
+     */
+    protected final boolean areObjectsEqual(Object o1, Object o2) 
+    {
+        if(o1 == null && o2 == null)
+        {
+            return true;
+        }
+        if(o1 != null && o1.equals(o2))
+        {
+            return true;
+        }
+        // Note that no more check is needed for o2 because it definitely does is not equal to o1
+        // Instead immediately proceed with the typeCast method
+        return false;
     }
 
     public int getSqlType()

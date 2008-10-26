@@ -84,16 +84,10 @@ public final class NumberTolerantDataType extends NumberDataType
         {
             // New in 2.4: Object level check for equality - should give massive performance improvements
             // in the most cases because the typecast can be avoided (null values and equal objects)
-            if(o1 == null && o2 == null)
+            if(areObjectsEqual(o1, o2))
             {
                 return 0;
             }
-            if(o1 != null && o1.equals(o2))
-            {
-                return 0;
-            }
-            // Note that no more check is needed for o2 because it definitely does is not equal to o1
-            // Instead immediately proceed with the typeCast method
             
             
             Comparable value1 = (Comparable)typeCast(o1);

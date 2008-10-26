@@ -30,6 +30,7 @@
       <action dev="gommma" type="fix" issue="2122773" due-to="mkejzar">QueryDataSet does not cache query results</action>
       <action dev="gommma" type="fix" issue="1214252" due-to="bilaco">problem because tableName is case insensitive</action>
       <action dev="gommma" type="fix" issue="1531883" due-to="fordfrog">DatabaseSequenceFilter infinite loop on cyclic dependency</action>
+      <action dev="gommma" type="update">Performance improvement in Assertions.assertEquals(ITable expected, ITable actual) - Lookup the DataTypes for every column only once and not for every single row</action>
     </release>
     <release version="2.3.0" date="Sep 11, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>

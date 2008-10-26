@@ -185,6 +185,13 @@ public class BytesDataType extends AbstractDataType
 
         try
         {
+            // New since dbunit 2.4 for performance improvement. Most of the times
+            // the "typeCase" can be avoided like this.
+            if(areObjectsEqual(o1, o2))
+            {
+                return 0;
+            }
+            
             byte[] value1 = (byte[])typeCast(o1);
             byte[] value2 = (byte[])typeCast(o2);
 

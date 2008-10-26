@@ -69,7 +69,8 @@ public class Assertion
 	public static void assertEqualsIgnoreCols(final IDataSet expectedDataset, final IDataSet actualDataset, 
 			final String tableName,	final String[] ignoreCols) throws DatabaseUnitException 
 	{
-        logger.debug("assertEqualsIgnoreCols(expectedDataset={}, actualDataset={}, tableName={}, ignoreCols={}) - start", 
+	    if(logger.isDebugEnabled())
+	        logger.debug("assertEqualsIgnoreCols(expectedDataset={}, actualDataset={}, tableName={}, ignoreCols={}) - start", 
         		new Object[] {expectedDataset, actualDataset, tableName, Arrays.asList(ignoreCols)} );
 
         Assertion.assertEqualsIgnoreCols(
@@ -89,7 +90,8 @@ public class Assertion
 	public static void assertEqualsIgnoreCols(final ITable expectedTable, final ITable actualTable, 
 			final String[] ignoreCols) throws DatabaseUnitException 
 	{
-        logger.debug("assertEqualsIgnoreCols(expectedTable={}, actualTable={}, ignoreCols={}) - start", 
+	    if(logger.isDebugEnabled())
+	        logger.debug("assertEqualsIgnoreCols(expectedTable={}, actualTable={}, ignoreCols={}) - start", 
         		new Object[] {expectedTable, actualTable, Arrays.asList(ignoreCols)} );
 
         final ITable expectedTableFiltered = DefaultColumnFilter.excludedColumnsTable(expectedTable, ignoreCols);
@@ -113,7 +115,8 @@ public class Assertion
 			final String tableName, final String[] ignoreCols)
     	throws DatabaseUnitException, SQLException
     {
-        logger.debug("assertEqualsByQuery(expectedDataset={}, connection={}, tableName={}, sqlQuery={}, ignoreCols={}) - start", 
+        if(logger.isDebugEnabled())
+            logger.debug("assertEqualsByQuery(expectedDataset={}, connection={}, tableName={}, sqlQuery={}, ignoreCols={}) - start", 
                 new Object[] {expectedDataset, connection, tableName, sqlQuery, ignoreCols} );
 	    
 		ITable expectedTable = expectedDataset.getTable(tableName);
@@ -136,7 +139,8 @@ public class Assertion
 			final String[] ignoreCols)
     	throws DatabaseUnitException, SQLException
     {
-        logger.debug("assertEqualsByQuery(expectedTable={}, connection={}, tableName={}, sqlQuery={}, ignoreCols={}) - start", 
+        if(logger.isDebugEnabled())
+            logger.debug("assertEqualsByQuery(expectedTable={}, connection={}, tableName={}, sqlQuery={}, ignoreCols={}) - start", 
                 new Object[] {expectedTable, connection, tableName, sqlQuery, ignoreCols} );
 
 	    ITable expected = DefaultColumnFilter.excludedColumnsTable(expectedTable, ignoreCols);
@@ -227,7 +231,8 @@ public class Assertion
     public static void assertEquals(ITable expectedTable, ITable actualTable, Column[] additionalColumnInfo)
             throws DatabaseUnitException
     {
-        logger.debug("assertEquals(expectedTable={}, actualTable={}, rowValueProvider) - start", expectedTable, actualTable);
+        logger.debug("assertEquals(expectedTable={}, actualTable={}, additionalColumnInfo={}) - start", 
+                new Object[] {expectedTable, actualTable, additionalColumnInfo} );
 
         // Do not continue if same instance
         if (expectedTable == actualTable)
@@ -238,7 +243,6 @@ public class Assertion
 
         ITableMetaData expectedMetaData = expectedTable.getTableMetaData();
         ITableMetaData actualMetaData = actualTable.getTableMetaData();
-        String expectedTableName = expectedMetaData.getTableName();
 
         // Put the columns into the same order
         Column[] expectedColumns = Columns.getSortedColumns(expectedMetaData);
@@ -254,6 +258,7 @@ public class Assertion
     				Columns.getColumnNamesAsString(actualColumns) );
     	}
 
+        String expectedTableName = expectedMetaData.getTableName();
         // Verify row count
         if(expectedTable.getRowCount() != actualTable.getRowCount())
         {
@@ -261,40 +266,70 @@ public class Assertion
                 String.valueOf(expectedTable.getRowCount()), String.valueOf(actualTable.getRowCount()) );
         }
         
+        // Get the datatypes to be used for comparing the sorted columns
+        ComparisonColumn[] comparisonCols = getComparisonColumns(expectedTableName, expectedColumns, actualColumns);
+        
+        // Finally compare the data
+        compareData(expectedTable, actualTable, comparisonCols, additionalColumnInfo);
+    }
+
+
+    /**
+     * @param expectedTable Table containing all expected results.
+     * @param actualTable Table containing all actual results.
+     * @param comparisonCols The columns to be compared, also including the correct {@link DataType}s for comparison
+     * @param additionalColumnInfo The columns to be printed out if the assert fails because of a data mismatch.
+     * Provides some additional column values that may be useful to quickly identify the columns for which the mismatch
+     * occurred (for example a primary key column). 
+     * @throws DataSetException
+     */
+    private static void compareData(ITable expectedTable, ITable actualTable,
+            ComparisonColumn[] comparisonCols, Column[] additionalColumnInfo) 
+    throws DataSetException 
+    {
+        logger.debug("assertEquals(expectedTable={}, actualTable={}, " +
+        		"comparisonCols={}, additionalColumnInfo={}) - start", 
+                new Object[] {expectedTable, actualTable, comparisonCols, additionalColumnInfo} );
+        
         // values as strings
         for (int i = 0; i < expectedTable.getRowCount(); i++)
         {
-            for (int j = 0; j < expectedColumns.length; j++)
+            for (int j = 0; j < comparisonCols.length; j++)
             {
-                Column expectedColumn = expectedColumns[j];
-                Column actualColumn = actualColumns[j];
+                ComparisonColumn compareColumn = comparisonCols[j];
+                
+                String columnName = compareColumn.getColumnName();
+                DataType dataType = compareColumn.getDataType();
 
-                String columnName = expectedColumn.getColumnName();
                 Object expectedValue = expectedTable.getValue(i, columnName);
                 Object actualValue = actualTable.getValue(i, columnName);
 
-                DataType dataType = getComparisonDataType(
-                        expectedTableName, expectedColumn, actualColumn);
                 if (dataType.compare(expectedValue, actualValue) != 0)
                 {
-                	// add custom column values information for better identification of mismatching rows
-                	String additionalInfo = buildAdditionalColumnInfo(expectedTable, actualTable, i, additionalColumnInfo);
-                	
+                    // add custom column values information for better identification of mismatching rows
+                    String additionalInfo = buildAdditionalColumnInfo(expectedTable, actualTable, i, additionalColumnInfo);
+                    
+                    String expectedTableName = expectedTable.getTableMetaData().getTableName();
                     // example message: "value (table=MYTAB, row=232, column=MYCOL, Additional row info: (column=MyIdCol, expected=444, actual=555)): expected:<123> but was:<1234>"
-                	String msg = "value (table=" + expectedTableName + ", row=" + i + ", col=" + columnName;
-                	if(additionalInfo!=null && !additionalInfo.trim().equals(""))
-                	    msg += "," + additionalInfo;
-                	msg += ")";
-                	throw new ComparisonFailure(msg, String.valueOf(expectedValue), String.valueOf(actualValue));
+                    String msg = "value (table=" + expectedTableName + ", row=" + i + ", col=" + columnName;
+                    if(additionalInfo!=null && !additionalInfo.trim().equals(""))
+                        msg += "," + additionalInfo;
+                    msg += ")";
+                    throw new ComparisonFailure(msg, String.valueOf(expectedValue), String.valueOf(actualValue));
                 }
                 
             }
         }
+        
     }
 
-
-	private static String buildAdditionalColumnInfo(ITable expectedTable,
-			ITable actualTable, int rowIndex, Column[] additionalColumnInfo) {
+    private static String buildAdditionalColumnInfo(ITable expectedTable,
+			ITable actualTable, int rowIndex, Column[] additionalColumnInfo) 
+	{
+        if(logger.isDebugEnabled())
+            logger.debug("buildAdditionalColumnInfo(expectedTable={}, actualTable={}, rowIndex={}, " +
+            		"additionalColumnInfo={}) - start", 
+                    new Object[] {expectedTable, actualTable, new Integer(rowIndex), additionalColumnInfo} );
 		
 		String additionalInfo = "";
     	if(additionalColumnInfo != null && additionalColumnInfo.length>0) {
@@ -313,48 +348,21 @@ public class Assertion
     	return additionalInfo;
 	}
 
-	
-	/**
-	 * @param tableName The table name which is only needed for debugging output
-	 * @param expectedColumn
-	 * @param actualColumn
-	 * @return
-	 */
-	static DataType getComparisonDataType(String tableName, Column expectedColumn,
-            Column actualColumn)
+    
+    private static ComparisonColumn[] getComparisonColumns(String expectedTableName,
+            Column[] expectedColumns, Column[] actualColumns) 
     {
-		if(logger.isDebugEnabled())
-			logger.debug("getComparisonDataType(tableName={}, expectedColumn={}, actualColumn={}) - start", 
-					new Object[] {tableName, expectedColumn, actualColumn});
-
-        DataType expectedDataType = expectedColumn.getDataType();
-        DataType actualDataType = actualColumn.getDataType();
-
-        // The two columns have different data type
-        if (!expectedDataType.getClass().isInstance(actualDataType))
+        ComparisonColumn[] result = new ComparisonColumn[expectedColumns.length];
+        
+        for (int j = 0; j < expectedColumns.length; j++)
         {
-            // Expected column data type is unknown, use actual column data type
-            if (expectedDataType instanceof UnknownDataType)
-            {
-                return actualDataType;
-            }
-
-            // Actual column data type is unknown, use expected column data type
-            if (actualDataType instanceof UnknownDataType)
-            {
-                return expectedDataType;
-            }
-
-            // Impossible to determine which data type to use
-            throw new ComparisonFailure("Incompatible data types: (table=" + tableName + ", col=" +
-                    expectedColumn.getColumnName() + ")", 
-                    String.valueOf(expectedDataType), String.valueOf(actualDataType));
+            Column expectedColumn = expectedColumns[j];
+            Column actualColumn = actualColumns[j];
+            result[j] = new ComparisonColumn(expectedTableName, expectedColumn, actualColumn);
         }
-
-        // Both columns have same data type, return any one of them
-        return expectedDataType;
+        return result;
     }
-
+	
 
     private static String[] getSortedUpperTableNames(IDataSet dataSet)
             throws DataSetException
@@ -369,4 +377,102 @@ public class Assertion
         Arrays.sort(names);
         return names;
     }
+    
+    /**
+     * Represents a single column to be used for the comparison of table data. It contains
+     * the {@link DataType} to be used for comparing the given column. This {@link DataType}
+     * matches the expected and actual column's datatype.
+     * 
+     * @author gommma (gommma AT users.sourceforge.net)
+     * @author Last changed by: $Author$
+     * @version $Revision$ $Date$
+     * @since 2.4.0
+     */
+    static class ComparisonColumn
+    {
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(ComparisonColumn.class);
+
+        private String columnName;
+        private DataType dataType;
+        
+        
+        
+        /**
+         * @param tableName The table name which is only needed for debugging output
+         * @param expectedColumn The expected column needed to resolve the {@link DataType} 
+         * to use for the actual comparison
+         * @param actualColumn The actual column needed to resolve the {@link DataType} 
+         * to use for the actual comparison
+         */
+        public ComparisonColumn(String tableName,
+                Column expectedColumn, Column actualColumn) 
+        {
+            super();
+            this.columnName = expectedColumn.getColumnName();
+            this.dataType = getComparisonDataType(tableName, expectedColumn, actualColumn);
+        }
+
+        /**
+         * @return The column actually being compared
+         */
+        public String getColumnName()
+        {
+            return this.columnName;
+        }
+        
+        /**
+         * @return The {@link DataType} to use for the actual comparison
+         */
+        public DataType getDataType()
+        {
+            return this.dataType;
+        }
+        
+        
+        /**
+         * @param tableName The table name which is only needed for debugging output
+         * @param expectedColumn
+         * @param actualColumn
+         * @return The dbunit {@link DataType} to use for comparing the given column.
+         */
+        private DataType getComparisonDataType(String tableName, Column expectedColumn,
+                Column actualColumn)
+        {
+            if(logger.isDebugEnabled())
+                logger.debug("getComparisonDataType(tableName={}, expectedColumn={}, actualColumn={}) - start", 
+                        new Object[] {tableName, expectedColumn, actualColumn});
+
+            DataType expectedDataType = expectedColumn.getDataType();
+            DataType actualDataType = actualColumn.getDataType();
+
+            // The two columns have different data type
+            if (!expectedDataType.getClass().isInstance(actualDataType))
+            {
+                // Expected column data type is unknown, use actual column data type
+                if (expectedDataType instanceof UnknownDataType)
+                {
+                    return actualDataType;
+                }
+
+                // Actual column data type is unknown, use expected column data type
+                if (actualDataType instanceof UnknownDataType)
+                {
+                    return expectedDataType;
+                }
+
+                // Impossible to determine which data type to use
+                throw new ComparisonFailure("Incompatible data types: (table=" + tableName + ", col=" +
+                        expectedColumn.getColumnName() + ")", 
+                        String.valueOf(expectedDataType), String.valueOf(actualDataType));
+            }
+
+            // Both columns have same data type, return any one of them
+            return expectedDataType;
+        }
+
+    }
+    
 }
