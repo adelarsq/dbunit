@@ -243,7 +243,24 @@ public class Assertion
 
         ITableMetaData expectedMetaData = expectedTable.getTableMetaData();
         ITableMetaData actualMetaData = actualTable.getTableMetaData();
+        String expectedTableName = expectedMetaData.getTableName();
 
+        // Verify row count
+        int expectedRowsCount = expectedTable.getRowCount();
+        int actualRowsCount = actualTable.getRowCount();
+        if(expectedRowsCount != actualRowsCount)
+        {
+            throw new ComparisonFailure("row count (table=" + expectedTableName + ")",
+                String.valueOf(expectedRowsCount), String.valueOf(actualRowsCount) );
+        }
+        // if both tables are empty, it is not necessary to compare columns, as such comparison
+        // can fail if column metadata is different (which could occurs when comparing empty tables)
+        if (expectedRowsCount==0 && actualRowsCount==0)
+        {
+          logger.debug("Tables are empty, hence equals.");
+          return;        
+        }
+        
         // Put the columns into the same order
         Column[] expectedColumns = Columns.getSortedColumns(expectedMetaData);
         Column[] actualColumns = Columns.getSortedColumns(actualMetaData);
@@ -257,14 +274,6 @@ public class Assertion
     				Columns.getColumnNamesAsString(expectedColumns), 
     				Columns.getColumnNamesAsString(actualColumns) );
     	}
-
-        String expectedTableName = expectedMetaData.getTableName();
-        // Verify row count
-        if(expectedTable.getRowCount() != actualTable.getRowCount())
-        {
-            throw new ComparisonFailure("row count (table=" + expectedTableName + ")",
-                String.valueOf(expectedTable.getRowCount()), String.valueOf(actualTable.getRowCount()) );
-        }
         
         // Get the datatypes to be used for comparing the sorted columns
         ComparisonColumn[] comparisonCols = getComparisonColumns(expectedTableName, expectedColumns, actualColumns);

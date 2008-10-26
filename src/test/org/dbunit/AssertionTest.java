@@ -41,6 +41,7 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
 /**
@@ -71,6 +72,14 @@ public class AssertionTest extends TestCase
                 dataSet.getTable("TEST_TABLE_WITH_SAME_VALUE"), 
                 new Column[] {new Column("COLUMN0", DataType.VARCHAR)} );
     }
+    
+    public void testAssertTablesEmtpyEquals() throws Exception
+    {
+      IDataSet empty1 = new XmlDataSet(new FileReader("src/xml/assertionTest-empty1.xml"));
+      IDataSet empty2 = new FlatXmlDataSet(new FileReader("src/xml/assertionTest-empty2.xml"));
+      Assertion.assertEquals(empty1, empty2);
+    }
+    
 
 	public void testAssertTablesEqualsColumnNamesCaseInsensitive() throws Exception
     {
