@@ -183,7 +183,7 @@ public abstract class AbstractStep implements DbUnitTaskStep
             }
             else if (format.equalsIgnoreCase(FORMAT_FLAT))
             {
-                producer = new FlatXmlProducer(getInputSource(src));
+                producer = new FlatXmlProducer(getInputSource(src), true, true);
             }
             else if (format.equalsIgnoreCase(FORMAT_DTD))
             {
