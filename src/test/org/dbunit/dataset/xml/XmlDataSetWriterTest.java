@@ -44,8 +44,7 @@ public class XmlDataSetWriterTest extends TestCase
         super(name);
     }
     
-    //TODO Could be unified with the FlatXmlWriterTest which creates the same DataSet
-    protected IDataSet getDefaultDataSet() throws Exception {
+    public static DefaultDataSet getDefaultDataSet() throws Exception {
 
         String col0 = "COL0";
         String col1 = "COL1";
@@ -64,11 +63,11 @@ public class XmlDataSetWriterTest extends TestCase
         table2.setValue(0, col0, "t2v1");
         table2.setValue(0, col1, "t2v2");
 
-        IDataSet dataSet = new DefaultDataSet(table1, table2);
+        DefaultDataSet dataSet = new DefaultDataSet(table1, table2);
         return dataSet;
      }
 
-    protected IDataSet getMinimalDataSet() throws Exception {
+    public static DefaultDataSet getMinimalDataSet() throws Exception {
 
         String col0 = "COL0";
         String col1 = "COL1";
@@ -82,7 +81,7 @@ public class XmlDataSetWriterTest extends TestCase
         table1.setValue(0, col0, "t1v1");
         table1.setValue(0, col1, "t1v2");
 
-        IDataSet dataSet = new DefaultDataSet(table1);
+        DefaultDataSet dataSet = new DefaultDataSet(table1);
         return dataSet;
      }
 

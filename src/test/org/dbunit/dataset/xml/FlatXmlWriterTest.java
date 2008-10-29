@@ -26,8 +26,10 @@ import java.io.StringWriter;
 import junit.framework.TestCase;
 
 import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.datatype.DataType;
 
 /**
@@ -51,26 +53,11 @@ public class FlatXmlWriterTest extends TestCase
                 "  <TABLE2 COL0=\"t2v1\" COL1=\"t2v2\"/>\n" +
                 "</dataset>\n";
 
-        String col0 = "COL0";
-        String col1 = "COL1";
-        Column[] columns = new Column[]{
-            new Column(col0, DataType.UNKNOWN),
-            new Column(col1, DataType.UNKNOWN)
-        };
-
-        DefaultTable table1 = new DefaultTable("TABLE1", columns);
-        table1.addRow();
-        table1.setValue(0, col0, "t1v1");
-        table1.setValue(0, col1, "t1v2");
-
-        DefaultTable table2 = new DefaultTable("TABLE2", columns);
-        table2.addRow();
-        table2.setValue(0, col0, "t2v1");
-        table2.setValue(0, col1, "t2v2");
-
+        IDataSet dataSet = XmlDataSetWriterTest.getDefaultDataSet();
+        
         StringWriter stringWriter = new StringWriter();
         FlatXmlWriter xmlWriter = new FlatXmlWriter(stringWriter);
-        xmlWriter.write(new DefaultDataSet(table1, table2));
+        xmlWriter.write(dataSet);
 
         String actualOutput = stringWriter.toString();
         assertEquals("output", expectedOutput, actualOutput);
@@ -81,25 +68,15 @@ public class FlatXmlWriterTest extends TestCase
         String expectedOutput =
                 "<!DOCTYPE dataset SYSTEM \"dataset.dtd\">\n" +
                 "<dataset>\n" +
-                "  <TABLE1 COL0=\"v1\" COL1=\"v2\"/>\n" +
+                "  <TABLE1 COL0=\"t1v1\" COL1=\"t1v2\"/>\n" +
                 "</dataset>\n";
 
-        String col0 = "COL0";
-        String col1 = "COL1";
-        Column[] columns = new Column[]{
-            new Column(col0, DataType.UNKNOWN),
-            new Column(col1, DataType.UNKNOWN)
-        };
-
-        DefaultTable table1 = new DefaultTable("TABLE1", columns);
-        table1.addRow();
-        table1.setValue(0, col0, "v1");
-        table1.setValue(0, col1, "v2");
+        IDataSet dataSet = XmlDataSetWriterTest.getMinimalDataSet();
 
         StringWriter stringWriter = new StringWriter();
         FlatXmlWriter xmlWriter = new FlatXmlWriter(stringWriter);
         xmlWriter.setDocType("dataset.dtd");
-        xmlWriter.write(new DefaultDataSet(table1));
+        xmlWriter.write(dataSet);
 
         String actualOutput = stringWriter.toString();
         assertEquals("output", expectedOutput, actualOutput);
@@ -112,20 +89,12 @@ public class FlatXmlWriterTest extends TestCase
                 "  <TEST_TABLE COL0=\"value\"/>\n" +
                 "</dataset>\n";
 
-        String col0 = "COL0";
-        Column[] columns = new Column[]{
-            new Column(col0, DataType.UNKNOWN),
-        };
-
-        DefaultTable table1 = new DefaultTable("TEST_TABLE", columns);
-        table1.addRow();
-        table1.setValue(0, col0, "value");
-        DefaultTable table2 = new DefaultTable("EMPTY_TABLE", columns);
-
+        IDataSet dataSet = getEmptyTableDataSet();
+        
         StringWriter stringWriter = new StringWriter();
         FlatXmlWriter datasetWriter = new FlatXmlWriter(stringWriter);
         datasetWriter.setIncludeEmptyTable(false);
-        datasetWriter.write(new DefaultDataSet(table1, table2));
+        datasetWriter.write(dataSet);
 
         String actualOutput = stringWriter.toString();
         assertEquals("output", expectedOutput, actualOutput);
@@ -139,20 +108,12 @@ public class FlatXmlWriterTest extends TestCase
                 "  <EMPTY_TABLE/>\n" +
                 "</dataset>\n";
 
-        String col0 = "COL0";
-        Column[] columns = new Column[]{
-            new Column(col0, DataType.UNKNOWN),
-        };
-
-        DefaultTable table1 = new DefaultTable("TEST_TABLE", columns);
-        table1.addRow();
-        table1.setValue(0, col0, "value");
-        DefaultTable table2 = new DefaultTable("EMPTY_TABLE", columns);
+        IDataSet dataSet = getEmptyTableDataSet();
 
         StringWriter stringWriter = new StringWriter();
         FlatXmlWriter datasetWriter = new FlatXmlWriter(stringWriter);
         datasetWriter.setIncludeEmptyTable(true);
-        datasetWriter.write(new DefaultDataSet(table1, table2));
+        datasetWriter.write(dataSet);
 
         String actualOutput = stringWriter.toString();
         assertEquals("output", expectedOutput, actualOutput);
@@ -196,25 +157,31 @@ public class FlatXmlWriterTest extends TestCase
                 "<TABLE1 COL0=\"t1v1\" COL1=\"t1v2\"/>" +
                 "</dataset>";
 
-        String col0 = "COL0";
-        String col1 = "COL1";
-        Column[] columns = new Column[]{
-            new Column(col0, DataType.UNKNOWN),
-            new Column(col1, DataType.UNKNOWN)
-        };
-
-        DefaultTable table1 = new DefaultTable("TABLE1", columns);
-        table1.addRow();
-        table1.setValue(0, col0, "t1v1");
-        table1.setValue(0, col1, "t1v2");
+        IDataSet dataSet = XmlDataSetWriterTest.getMinimalDataSet();
 
         StringWriter stringWriter = new StringWriter();
         FlatXmlWriter xmlWriter = new FlatXmlWriter(stringWriter);
         xmlWriter.setPrettyPrint(false);
-        xmlWriter.write(new DefaultDataSet(table1));
+        xmlWriter.write(dataSet);
 
         String actualOutput = stringWriter.toString();
         assertEquals("output", expectedOutput, actualOutput);
+    }
+
+    
+    public static IDataSet getEmptyTableDataSet() throws DataSetException 
+    {
+        String col0 = "COL0";
+        Column[] columns = new Column[]{
+            new Column(col0, DataType.UNKNOWN),
+        };
+
+        DefaultTable table1 = new DefaultTable("TEST_TABLE", columns);
+        table1.addRow();
+        table1.setValue(0, col0, "value");
+        DefaultTable table2 = new DefaultTable("EMPTY_TABLE", columns);
+        IDataSet dataSet = new DefaultDataSet(table1, table2);
+        return dataSet;
     }
 
 }
