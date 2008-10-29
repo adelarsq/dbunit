@@ -39,9 +39,14 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 /**
- * @author Manuel Laflamme
  * @since Apr 19, 2003
  * @version $Revision$
+ */
+/**
+ * @author Manuel Laflamme
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.4.0
  */
 public class FlatXmlWriter implements IDataSetConsumer
 {
@@ -88,6 +93,22 @@ public class FlatXmlWriter implements IDataSetConsumer
         _systemId = systemId;
     }
 
+    /**
+     * Enable or disable pretty print of the XML.
+     * @param enabled <code>true</code> to enable pretty print (which is the default). 
+     * <code>false</code> otherwise.
+     * @since 2.4
+     */
+    public void setPrettyPrint(boolean enabled)
+    {
+        _xmlWriter.enablePrettyPrint(enabled);
+    }
+    
+    /**
+     * Writes the given {@link IDataSet} using this writer.
+     * @param dataSet The {@link IDataSet} to be written
+     * @throws DataSetException
+     */
     public void write(IDataSet dataSet) throws DataSetException
     {
         logger.debug("write(dataSet={}) - start", dataSet);

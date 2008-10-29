@@ -42,7 +42,9 @@ public class XmlDataSetWriterTest extends TestCase
     public XmlDataSetWriterTest(String name)
     {
         super(name);
-    }    
+    }
+    
+    //TODO Could be unified with the FlatXmlWriterTest which creates the same DataSet
     protected IDataSet getDefaultDataSet() throws Exception {
 
         String col0 = "COL0";
@@ -65,6 +67,25 @@ public class XmlDataSetWriterTest extends TestCase
         IDataSet dataSet = new DefaultDataSet(table1, table2);
         return dataSet;
      }
+
+    protected IDataSet getMinimalDataSet() throws Exception {
+
+        String col0 = "COL0";
+        String col1 = "COL1";
+        Column[] columns = new Column[]{
+            new Column(col0, DataType.UNKNOWN),
+            new Column(col1, DataType.UNKNOWN)
+        };
+
+        DefaultTable table1 = new DefaultTable("TABLE1", columns);
+        table1.addRow();
+        table1.setValue(0, col0, "t1v1");
+        table1.setValue(0, col1, "t1v2");
+
+        IDataSet dataSet = new DefaultDataSet(table1);
+        return dataSet;
+     }
+
     
     public void testWrite() throws Exception
     {
@@ -159,4 +180,29 @@ public class XmlDataSetWriterTest extends TestCase
         assertEquals("output", expectedOutput, actualOutput);
         
     }
+    
+    public void testWritePrettyPrintDisabled() throws Exception
+    {
+        String expectedOutput =
+                "<dataset>" +
+                "<table name=\"TABLE1\">" +
+                "<column>COL0</column>" +
+                "<column>COL1</column>" +
+                "<row>" +
+                "<value>t1v1</value>" +
+                "<value>t1v2</value>" +
+                "</row>" +
+                "</table>" +
+                "</dataset>";
+        
+        StringWriter stringWriter = new StringWriter();
+        XmlDataSetWriter xmlWriter = new XmlDataSetWriter(stringWriter);
+        xmlWriter.setPrettyPrint(false);
+        IDataSet dataSet = getMinimalDataSet();
+        xmlWriter.write( dataSet );
+
+        String actualOutput = stringWriter.toString();
+        assertEquals("output", expectedOutput, actualOutput);
+    }
+
 }
