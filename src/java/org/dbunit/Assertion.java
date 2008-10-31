@@ -26,6 +26,8 @@ import java.util.Arrays;
 
 import junit.framework.ComparisonFailure;
 
+import org.dbunit.assertion.DefaultFailureHandler;
+import org.dbunit.assertion.FailureHandler;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.Columns;
@@ -221,11 +223,11 @@ public class Assertion
      * Column[] additionalInfoCols = Columns.getColumns(new String[] {"MY_PK_COLUMN"}, metaData.getColumns());
      * Assertion.assertEquals(expectedTable, actualTable, additionalInfoCols);
      * </pre></code>
-	 * @param expectedTable Table containing all expected results.
-	 * @param actualTable Table containing all actual results.
+     * @param expectedTable Table containing all expected results.
+     * @param actualTable Table containing all actual results.
      * @param additionalColumnInfo The columns to be printed out if the assert fails because of a data mismatch.
      * Provides some additional column values that may be useful to quickly identify the columns for which the mismatch
-     * occurred (for example a primary key column). 
+     * occurred (for example a primary key column). Can be <code>null</code>
      * @throws DatabaseUnitException
      */
     public static void assertEquals(ITable expectedTable, ITable actualTable, Column[] additionalColumnInfo)
@@ -233,6 +235,39 @@ public class Assertion
     {
         logger.debug("assertEquals(expectedTable={}, actualTable={}, additionalColumnInfo={}) - start", 
                 new Object[] {expectedTable, actualTable, additionalColumnInfo} );
+        
+        FailureHandler failureHandler = null;
+        if(additionalColumnInfo!=null)
+            failureHandler = new DefaultFailureHandler(additionalColumnInfo);
+        
+        Assertion.assertEquals(expectedTable, actualTable, failureHandler);
+    }
+    
+    /**
+     * Asserts that the two specified tables are equals. This method ignores the
+     * table names, the columns order, the columns data type and which columns
+     * are composing the primary keys.
+     * <br />
+     * Example:
+     * <code><pre>
+     * ITable actualTable = ...;
+     * ITable expectedTable = ...;
+     * ITableMetaData metaData = actualTable.getTableMetaData();
+     * Column[] additionalInfoCols = Columns.getColumns(new String[] {"MY_PK_COLUMN"}, metaData.getColumns());
+     * Assertion.assertEquals(expectedTable, actualTable, additionalInfoCols);
+     * </pre></code>
+	 * @param expectedTable Table containing all expected results.
+	 * @param actualTable Table containing all actual results.
+     * @param failureHandler The failure handler used if the assert fails because of a data mismatch.
+     * Provides some additional information that may be useful to quickly identify the rows for which the mismatch
+     * occurred (for example by printing an additional primary key column). Can be <code>null</code>
+     * @throws DatabaseUnitException
+     */
+    public static void assertEquals(ITable expectedTable, ITable actualTable, FailureHandler failureHandler)
+            throws DatabaseUnitException
+    {
+        logger.debug("assertEquals(expectedTable={}, actualTable={}, failureHandler={}) - start", 
+                new Object[] {expectedTable, actualTable, failureHandler} );
 
         // Do not continue if same instance
         if (expectedTable == actualTable)
@@ -257,8 +292,8 @@ public class Assertion
         // can fail if column metadata is different (which could occurs when comparing empty tables)
         if (expectedRowsCount==0 && actualRowsCount==0)
         {
-          logger.debug("Tables are empty, hence equals.");
-          return;        
+            logger.debug("Tables are empty, hence equals.");
+            return;        
         }
         
         // Put the columns into the same order
@@ -279,7 +314,7 @@ public class Assertion
         ComparisonColumn[] comparisonCols = getComparisonColumns(expectedTableName, expectedColumns, actualColumns);
         
         // Finally compare the data
-        compareData(expectedTable, actualTable, comparisonCols, additionalColumnInfo);
+        compareData(expectedTable, actualTable, comparisonCols, failureHandler);
     }
 
 
@@ -287,18 +322,19 @@ public class Assertion
      * @param expectedTable Table containing all expected results.
      * @param actualTable Table containing all actual results.
      * @param comparisonCols The columns to be compared, also including the correct {@link DataType}s for comparison
-     * @param additionalColumnInfo The columns to be printed out if the assert fails because of a data mismatch.
-     * Provides some additional column values that may be useful to quickly identify the columns for which the mismatch
-     * occurred (for example a primary key column). 
+     * @param failureHandler The failure handler used if the assert fails because of a data mismatch.
+     * Provides some additional information that may be useful to quickly identify the rows for which the mismatch
+     * occurred (for example by printing an additional primary key column). Can be null
      * @throws DataSetException
+     * @since 2.4
      */
     private static void compareData(ITable expectedTable, ITable actualTable,
-            ComparisonColumn[] comparisonCols, Column[] additionalColumnInfo) 
+            ComparisonColumn[] comparisonCols, FailureHandler failureHandler) 
     throws DataSetException 
     {
         logger.debug("assertEquals(expectedTable={}, actualTable={}, " +
-        		"comparisonCols={}, additionalColumnInfo={}) - start", 
-                new Object[] {expectedTable, actualTable, comparisonCols, additionalColumnInfo} );
+        		"comparisonCols={}, failureHandler={}) - start", 
+                new Object[] {expectedTable, actualTable, comparisonCols, failureHandler} );
         
         // values as strings
         for (int i = 0; i < expectedTable.getRowCount(); i++)
@@ -315,14 +351,17 @@ public class Assertion
 
                 if (dataType.compare(expectedValue, actualValue) != 0)
                 {
-                    // add custom column values information for better identification of mismatching rows
-                    String additionalInfo = buildAdditionalColumnInfo(expectedTable, actualTable, i, additionalColumnInfo);
+                    String additionalInfo = null;
+                    if(failureHandler != null)
+                    {
+                        additionalInfo = failureHandler.getAdditionalInfo(expectedTable, actualTable, i, columnName);
+                    }
                     
                     String expectedTableName = expectedTable.getTableMetaData().getTableName();
                     // example message: "value (table=MYTAB, row=232, column=MYCOL, Additional row info: (column=MyIdCol, expected=444, actual=555)): expected:<123> but was:<1234>"
                     String msg = "value (table=" + expectedTableName + ", row=" + i + ", col=" + columnName;
                     if(additionalInfo!=null && !additionalInfo.trim().equals(""))
-                        msg += "," + additionalInfo;
+                        msg += ", " + additionalInfo;
                     msg += ")";
                     throw new ComparisonFailure(msg, String.valueOf(expectedValue), String.valueOf(actualValue));
                 }
@@ -332,32 +371,14 @@ public class Assertion
         
     }
 
-    private static String buildAdditionalColumnInfo(ITable expectedTable,
-			ITable actualTable, int rowIndex, Column[] additionalColumnInfo) 
-	{
-        if(logger.isDebugEnabled())
-            logger.debug("buildAdditionalColumnInfo(expectedTable={}, actualTable={}, rowIndex={}, " +
-            		"additionalColumnInfo={}) - start", 
-                    new Object[] {expectedTable, actualTable, new Integer(rowIndex), additionalColumnInfo} );
-		
-		String additionalInfo = "";
-    	if(additionalColumnInfo != null && additionalColumnInfo.length>0) {
-    		additionalInfo = " Additional row info:";
-    		for (int j = 0; j < additionalColumnInfo.length; j++) {
-    			String columnName = additionalColumnInfo[j].getColumnName();
-    			try {
-					Object expectedKeyValue = expectedTable.getValue(rowIndex, columnName);
-					Object actualKeyValue = actualTable.getValue(rowIndex, columnName);
-					additionalInfo += " (col '" + columnName + "' values: expected=<"+expectedKeyValue+">, actual=<"+actualKeyValue+">)";
-				} catch (DataSetException e) {
-					logger.debug("Exception while building additional info for column "+columnName, e);
-				}
-			}
-    	}
-    	return additionalInfo;
-	}
-
     
+    /**
+     * @param expectedTableName
+     * @param expectedColumns
+     * @param actualColumns
+     * @return The columns to be used for the assertion, including the correct datatype
+     * @since 2.4
+     */
     private static ComparisonColumn[] getComparisonColumns(String expectedTableName,
             Column[] expectedColumns, Column[] actualColumns) 
     {

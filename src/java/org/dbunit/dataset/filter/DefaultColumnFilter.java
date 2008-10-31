@@ -20,14 +20,12 @@
  */
 package org.dbunit.dataset.filter;
 
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.ColumnFilterTable;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.ITable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.CompositeTable;
-import org.dbunit.dataset.FilteredTableMetaData;
-import org.dbunit.dataset.DataSetException;
 
 /**
  * Implementation of the IColumnFilter interface that exposes columns matching
@@ -117,9 +115,7 @@ public class DefaultColumnFilter implements IColumnFilter
             columnFilter.includeColumn(columnName);
         }
 
-        FilteredTableMetaData metaData = new FilteredTableMetaData(
-                table.getTableMetaData(), columnFilter);
-        return new CompositeTable(metaData, table);
+        return new ColumnFilterTable(table, columnFilter);
     }
 
     /**
@@ -134,9 +130,7 @@ public class DefaultColumnFilter implements IColumnFilter
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
         columnFilter.includeColumns(columns);
 
-        FilteredTableMetaData metaData = new FilteredTableMetaData(
-                table.getTableMetaData(), columnFilter);
-        return new CompositeTable(metaData, table);
+        return new ColumnFilterTable(table, columnFilter);
     }
 
     /**
@@ -155,9 +149,7 @@ public class DefaultColumnFilter implements IColumnFilter
             columnFilter.excludeColumn(columnName);
         }
 
-        FilteredTableMetaData metaData = new FilteredTableMetaData(
-                table.getTableMetaData(), columnFilter);
-        return new CompositeTable(metaData, table);
+        return new ColumnFilterTable(table, columnFilter);
     }
 
     /**
@@ -172,9 +164,7 @@ public class DefaultColumnFilter implements IColumnFilter
         DefaultColumnFilter columnFilter = new DefaultColumnFilter();
         columnFilter.excludeColumns(columns);
 
-        FilteredTableMetaData metaData = new FilteredTableMetaData(
-                table.getTableMetaData(), columnFilter);
-        return new CompositeTable(metaData, table);
+        return new ColumnFilterTable(table, columnFilter);
     }
 
     ////////////////////////////////////////////////////////////////////////////

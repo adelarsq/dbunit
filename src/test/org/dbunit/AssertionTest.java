@@ -229,7 +229,7 @@ public class AssertionTest extends TestCase
         catch (ComparisonFailure expected)
         {
         	String expectedMsg = "junit.framework.ComparisonFailure: value (table=TEST_TABLE, row=1, col=COLUMN2, " +
-        			"Additional row info: (col 'COLUMN0' values: expected=<row 1 col 0>, actual=<row 1 col 0>)) " +
+        			"Additional row info: ('COLUMN0': expected=<row 1 col 0>, actual=<row 1 col 0>)) " +
         			"expected:<[row 1 col 2]> but was:<[wrong value]>";
         	String actualMsg = expected.toString();
         	assertEquals("row 1 col 2", expected.getExpected());

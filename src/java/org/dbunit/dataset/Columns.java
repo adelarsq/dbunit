@@ -238,6 +238,21 @@ public class Columns
     }
 
     /**
+     * Returns the names of the given column objects as string array
+     * @param columns The column objects
+     * @return The names of the given column objects
+     * @since 2.4
+     */
+    public static String[] getColumnNames(Column[] columns) 
+    {
+        String[] result = new String[columns.length];
+        for (int i = 0; i < columns.length; i++) {
+            result[i] = columns[i].getColumnName();
+        }
+        return result;
+    }
+
+    /**
      * Creates a pretty string representation of the given column names
      * @param columns The columns to be formatted
      * @return The string representation of the given column names
@@ -518,5 +533,6 @@ public class Columns
     	}
 
     }
+
 
 }

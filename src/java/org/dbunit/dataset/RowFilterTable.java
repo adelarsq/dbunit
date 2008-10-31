@@ -61,8 +61,10 @@ public class RowFilterTable implements ITable, IRowValueProvider {
             Consequently, the mapping will be {1, 3}
 	 */
 	private final List filteredRowIndexes;
-	/** logger */
-	private final Logger logger = LoggerFactory.getLogger(getClass());
+	/** 
+	 * logger 
+	 */
+	private final Logger logger = LoggerFactory.getLogger(RowFilterTable.class);
 	/** 
 	 * The row that is currently checked for filtering. Used in the implementation of {@link IRowValueProvider}
 	 */

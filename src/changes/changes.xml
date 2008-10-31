@@ -34,6 +34,7 @@
       <action dev="gommma" type="update">Performance improvement in Assertions.assertEquals(ITable expected, ITable actual) - Lookup the DataTypes for every column only once and not for every single row</action>
       <action dev="gommma" type="fix" issue="2166291" due-to="lyrzine">Field forgot under insert step - enabled columnSensing feature for ant task when format "flat" is used</action>
       <action dev="gommma" type="add" issue="1196357" due-to="ips_khanwale">Need a way to NOT pretty format xml</action>
+      <action dev="gommma" type="add" issue="2212329">Additional column info also for filtered columns</action>
     </release>
     <release version="2.3.0" date="Sep 11, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>
