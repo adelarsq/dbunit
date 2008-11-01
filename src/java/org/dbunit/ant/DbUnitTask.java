@@ -102,31 +102,33 @@ public class DbUnitTask extends Task
     private Path classpath;
 
     private AntClassLoader loader;
+    
+    private DbConfig dbConfig;
 
     /**
      * Flag for using the qualified table names.
      */
-    private boolean useQualifiedTableNames = false;
+    private Boolean useQualifiedTableNames = null;
 
     /**
      * Flag for using batched statements.
      */
-    private boolean supportBatchStatement = false;
+    private Boolean supportBatchStatement = null;
 
     /**
      * Flag for datatype warning.
      */
-    private boolean datatypeWarning = true;
+    private Boolean datatypeWarning = null;
 
     private String escapePattern = null;
 
-    private String dataTypeFactory = "org.dbunit.dataset.datatype.DefaultDataTypeFactory";
+    private String dataTypeFactory = null;
 
     private String batchSize = null;
     
     private String fetchSize = null;
 
-    private boolean skipOracleRecycleBinTables = false;
+    private Boolean skipOracleRecycleBinTables = null;
 
     /**
      * Set the JDBC driver to be used.
@@ -176,7 +178,7 @@ public class DbUnitTask extends Task
     /**
      * Set the flag for using the qualified table names.
      */
-    public void setUseQualifiedTableNames(boolean useQualifiedTableNames)
+    public void setUseQualifiedTableNames(Boolean useQualifiedTableNames)
     {
         logger.debug("setUseQualifiedTableNames(useQualifiedTableNames={}) - start", String.valueOf(useQualifiedTableNames));
         this.useQualifiedTableNames = useQualifiedTableNames;
@@ -187,13 +189,13 @@ public class DbUnitTask extends Task
      * NOTE: This property cannot be used to force the usage of batch
      *       statement if your database does not support it.
      */
-    public void setSupportBatchStatement(boolean supportBatchStatement)
+    public void setSupportBatchStatement(Boolean supportBatchStatement)
     {
         logger.debug("setSupportBatchStatement(supportBatchStatement={}) - start", String.valueOf(supportBatchStatement));
         this.supportBatchStatement = supportBatchStatement;
     }
 
-    public void setDatatypeWarning(boolean datatypeWarning)
+    public void setDatatypeWarning(Boolean datatypeWarning)
     {
         logger.debug("setDatatypeWarning(datatypeWarning={}) - start", String.valueOf(datatypeWarning));
         this.datatypeWarning = datatypeWarning;
@@ -211,6 +213,23 @@ public class DbUnitTask extends Task
         this.escapePattern = escapePattern;
     }
 
+    public DbConfig getDbConfig() 
+    {
+        return dbConfig;
+    }
+
+//    public void setDbConfig(DbConfig dbConfig) 
+//    {
+//        logger.debug("setDbConfig(dbConfig={}) - start", dbConfig);
+//        this.dbConfig = dbConfig;
+//    }
+
+    public void addDbConfig(DbConfig dbConfig)
+    {
+        logger.debug("addDbConfig(dbConfig={}) - start", dbConfig);
+        this.dbConfig = dbConfig;
+    }
+    
     /**
      * Set the classpath for loading the driver.
      */
@@ -315,12 +334,7 @@ public class DbUnitTask extends Task
 		this.fetchSize = fetchSize;
 	}
 
-	public boolean isSkipOracleRecycleBinTables()
-	{
-		return skipOracleRecycleBinTables;
-	}
-
-	public void setSkipOracleRecycleBinTables(boolean skipOracleRecycleBinTables)
+	public void setSkipOracleRecycleBinTables(Boolean skipOracleRecycleBinTables)
 	{
 		this.skipOracleRecycleBinTables = skipOracleRecycleBinTables;
 	}
@@ -467,13 +481,44 @@ public class DbUnitTask extends Task
             throw new BuildException("Could not create dbunit connection object", e);
         }
         DatabaseConfig config = connection.getConfig();
-        config.setFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, supportBatchStatement);
-        config.setFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, useQualifiedTableNames);
-        config.setFeature(DatabaseConfig.FEATURE_DATATYPE_WARNING, datatypeWarning);
-        config.setFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES, skipOracleRecycleBinTables);
         
-        config.setProperty(DatabaseConfig.PROPERTY_ESCAPE_PATTERN, escapePattern);
+        // Override the default resultset table factory
         config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY, new ForwardOnlyResultSetTableFactory());
+
+        if(this.dbConfig != null){
+            try {
+                this.dbConfig.copyTo(config);
+            }
+            catch(DatabaseUnitException e)
+            {
+                throw new BuildException("Could not populate dbunit config object", e, getLocation());
+            }
+        }
+
+        // For backwards compatibility (old mode overrides the new one) copy the other attributes to the config
+        copyAttributes(config);
+        return connection;
+    }
+
+    /**
+     * @param config
+     * @deprecated since 2.4. Only here because of backwards compatibility should be removed in the next major release.
+     */
+    private void copyAttributes(DatabaseConfig config) 
+    {
+        if(supportBatchStatement!=null)
+            config.setFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, supportBatchStatement.booleanValue());
+        if(useQualifiedTableNames!=null)
+            config.setFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, useQualifiedTableNames.booleanValue());
+        if(datatypeWarning!=null)
+            config.setFeature(DatabaseConfig.FEATURE_DATATYPE_WARNING, datatypeWarning.booleanValue());
+        if(skipOracleRecycleBinTables!=null)
+            config.setFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES, skipOracleRecycleBinTables.booleanValue());
+
+        if(escapePattern!=null)
+        {
+            config.setProperty(DatabaseConfig.PROPERTY_ESCAPE_PATTERN, escapePattern);
+        }
         if (batchSize != null)
         {
             Integer batchSizeInteger = new Integer(batchSize);
@@ -485,28 +530,30 @@ public class DbUnitTask extends Task
         }
 
         // Setup data type factory
-        try
-        {
-            IDataTypeFactory dataTypeFactory = (IDataTypeFactory)Class.forName(
-                    this.dataTypeFactory).newInstance();
-            config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, dataTypeFactory);
+        if(this.dataTypeFactory!=null) {
+            try
+            {
+                IDataTypeFactory dataTypeFactory = (IDataTypeFactory)Class.forName(
+                        this.dataTypeFactory).newInstance();
+                config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, dataTypeFactory);
+            }
+            catch (ClassNotFoundException e)
+            {
+                throw new BuildException("Class Not Found: DataType factory "
+                        + driver + " could not be loaded", e, getLocation());
+            }
+            catch (IllegalAccessException e)
+            {
+                throw new BuildException("Illegal Access: DataType factory "
+                        + driver + " could not be loaded", e, getLocation());
+            }
+            catch (InstantiationException e)
+            {
+                throw new BuildException("Instantiation Exception: DataType factory "
+                        + driver + " could not be loaded", e, getLocation());
+            }
         }
-        catch (ClassNotFoundException e)
-        {
-            throw new BuildException("Class Not Found: DataType factory "
-                    + driver + " could not be loaded", e, getLocation());
-        }
-        catch (IllegalAccessException e)
-        {
-            throw new BuildException("Illegal Access: DataType factory "
-                    + driver + " could not be loaded", e, getLocation());
-        }
-        catch (InstantiationException e)
-        {
-            throw new BuildException("Instantiation Exception: DataType factory "
-                    + driver + " could not be loaded", e, getLocation());
-        }
-        return connection;
+        
     }
 }
 

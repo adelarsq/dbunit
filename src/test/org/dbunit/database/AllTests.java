@@ -35,6 +35,7 @@ public class AllTests extends TestSuite
         TestSuite suite = new TestSuite();
         suite.addTest(org.dbunit.database.statement.AllTests.suite());
         suite.addTest(new TestSuite(CachedResultSetTableTest.class));
+        suite.addTest(new TestSuite(DatabaseConfigTest.class));
         suite.addTest(new TestSuite(DatabaseConnectionTest.class));
         suite.addTest(new TestSuite(DatabaseDataSetTest.class));
         suite.addTest(new TestSuite(DatabaseSequenceFilterTest.class));

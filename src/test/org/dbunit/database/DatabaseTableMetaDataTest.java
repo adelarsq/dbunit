@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.DatabaseEnvironment;
-import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.TestFeature;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.Columns;
@@ -196,46 +195,6 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         }
     }
  
-    public void testGetDataTypeFactory_InvalidDataTypeFactory() throws Exception
-    {
-        String tableName = "TEST_TABLE";
-        Object nonDataTypeFactoryObject = new Object();
-        this._connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, nonDataTypeFactoryObject);
-        DatabaseTableMetaData metadata = new DatabaseTableMetaData(tableName, this._connection);
-        try
-        {
-            metadata.getDataTypeFactory(_connection);
-            fail("Should not obtain datatype factory from object that does not implement corresponding interface");
-        }
-        catch(DatabaseUnitRuntimeException expected)
-        {
-            String expectedMsg = "Invalid datatype factory configured. Class 'class java.lang.Object' " +
-            		"does not implement 'interface org.dbunit.dataset.datatype.IDataTypeFactory'.";
-            assertEquals(expectedMsg, expected.getMessage());
-        }
-    }
-
-    public void testGetDataTypeFactory_InvalidDataTypeFactoryAsString() throws Exception
-    {
-        String tableName = "TEST_TABLE";
-        this._connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, "org.dbunit.ext.oracle.OracleDataTypeFactory");
-        DatabaseTableMetaData metadata = new DatabaseTableMetaData(tableName, this._connection);
-        try
-        {
-            metadata.getDataTypeFactory(_connection);
-            fail("Should not obtain datatype factory from object that does not implement corresponding interface");
-        }
-        catch(DatabaseUnitRuntimeException expected)
-        {
-            String expectedMsg = "Invalid datatype factory configured. Class 'class java.lang.String' " +
-                    "does not implement 'interface org.dbunit.dataset.datatype.IDataTypeFactory'." +
-                    " Ensure not to specify the fully qualified class name as String but the concrete " +
-                    "instance of the datatype factory (for example 'new OracleDataTypeFactory()').";
-            assertEquals(expectedMsg, expected.getMessage());
-        }
-    }
-
-
 }
 
 

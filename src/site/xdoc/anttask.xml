@@ -63,56 +63,72 @@
         <td>useQualifiedTableNames</td>
         <td>Set the 
         <a href="properties.html#qualifiedtablenames">qualified
-        table names</a>feature. Defaults to false</td>
+        table names</a>feature. Defaults to false. 
+        <b>@deprecated since 2.4. Use nested <a href="#dbconfig">dbconfig</a> element instead.</b>
+        </td>
         <td>No</td>
       </tr>
       <tr>
         <td>supportBatchStatement</td>
         <td>Set the 
         <a href="properties.html#batchstatement">batched
-        statement</a>feature. Defaults to false</td>
+        statement</a>feature. Defaults to false.
+        <b>@deprecated since 2.4. Use nested <a href="#dbconfig">dbconfig</a> element instead.</b>
+        </td>
         <td>No</td>
       </tr>
       <tr>
         <td>datatypeWarning</td>
         <td>Set the 
         <a href="properties.html#typewarning">data type
-        warning</a>feature. Defaults to true</td>
+        warning</a>feature. Defaults to true.
+        <b>@deprecated since 2.4. Use nested <a href="#dbconfig">dbconfig</a> element instead.</b>
+        </td>
         <td>No</td>
       </tr>
       <tr>
         <td>escapePattern</td>
         <td>Set the 
         <a href="properties.html#escapepattern">escape
-        pattern</a>property.</td>
+        pattern</a>property.
+        <b>@deprecated since 2.4. Use nested <a href="#dbconfig">dbconfig</a> element instead.</b>
+        </td>
         <td>No</td>
       </tr>
       <tr>
         <td>datatypeFactory</td>
         <td>Set the 
         <a href="properties.html#typefactory">datatype
-        factory</a>property.</td>
+        factory</a>property.
+        <b>@deprecated since 2.4. Use nested <a href="#dbconfig">dbconfig</a> element instead.</b>
+        </td>
         <td>No</td>
       </tr>
       <tr>
         <td>skipOracleRecycleBinTables</td>
         <td>Set the 
         <a href="properties.html#skiporaclereyclebintables">
-        skipOracleRecycleBinTables</a>feature.</td>
+        skipOracleRecycleBinTables</a>feature.
+        <b>@deprecated since 2.4. Use nested <a href="#dbconfig">dbconfig</a> element instead.</b>
+        </td>
         <td>No</td>
       </tr>
       <tr>
         <td>batchSize</td>
         <td>Set the 
         <a href="properties.html#batchsize">
-        batchSize</a>property.</td>
+        batchSize</a>property.
+        <b>@deprecated since 2.4. Use nested <a href="#dbconfig">dbconfig</a> element instead.</b>
+        </td>
         <td>No</td>
       </tr>
       <tr>
         <td>fetchSize</td>
         <td>Set the 
         <a href="properties.html#fetchsize">
-        fetchSize</a>property.</td>
+        fetchSize</a>property.
+        <b>@deprecated since 2.4. Use nested <a href="#dbconfig">dbconfig</a> element instead.</b>
+        </td>
         <td>No</td>
       </tr>
     </table>
@@ -124,6 +140,43 @@
           <p>DbUnit's classpath attribute is a PATH like structure
           and can also be set via a nested classpath element. It is
           used to load the JDBC classes.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><a name="dbconfig">dbconfig</a></td>
+        <td>
+          <p>DbUnit's configuration parameters to set any of the
+            <a href="properties.html">properties</a> for the database connection.
+          It supports all properties and features from the 
+          <a href="apidocs/org/dbunit/database/DatabaseConfig.html">
+          DatabaseConfig</a> java class, having the last path component of
+          the property/feature URL as name. A more detailed example is
+          shown at <a href="#dbconfigexample">dbconfig-example</a>.
+          </p>
+          <p>The nested &lt;property&gt; element <b>and</b> the nested 
+             &lt;feature&gt; element looks as follows:
+          </p>
+          <table border="1">
+            <tr>
+              <th>Attribute</th>
+              <th>Description</th>
+              <th>Required</th>
+            </tr>
+            <tr>
+              <td>name</td>
+              <td>The name of the property/feature which must be the last path component of
+              the property/feature URL (see <a href="properties.html">properties</a> for more).
+              Example: for the property &quot;http://www.dbunit.org/properties/tableType&quot;
+              the name is &quot;tableType&quot;.</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>value</td>
+              <td>The value of the property/feature as string. Since feature are boolean values
+              the string can take one of the values &quot;true&quot; or &quot;false&quot;.</td>
+              <td>Yes</td>
+            </tr>
+          </table>
         </td>
       </tr>
       <tr>
@@ -552,7 +605,25 @@
   </export>
 </dbunit>]]>
     </source>
-    
+
+    <h4>
+      <a name="dbconfigexample">DatabaseConfig example with nested configuration</a>
+    </h4>
+    <source>
+      <![CDATA[
+<dbunit driver="com.vendor.jdbc.Driver"
+        url="jdbc:vendor:mydatabase"
+        userid="user"
+        password="password">
+    <dbconfig>
+        <property name="datatypeFactory" value="org.dbunit.ext.oracle.OracleDataTypeFactory" />
+        <feature name="batchedStatements" value="true" />
+    </dbconfig>
+
+    ...
+</dbunit>]]>
+    </source>
+
 </section>
 </body>
 </document>

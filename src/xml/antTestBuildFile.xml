@@ -416,5 +416,18 @@
       </dbunit>
     </target>
 
+    <target name="test-datatypefactory-via-generic-config">
+      <dbunit driver="${dbunit.profile.driverClass}"
+              url="${dbunit.profile.connectionUrl}"
+              userid="${dbunit.profile.user}"
+              password="${dbunit.profile.password}">
+          <dbconfig>
+              <property name="datatypeFactory" value="org.dbunit.ext.oracle.OracleDataTypeFactory" />
+              <feature name="batchedStatements" value="true" />
+          </dbconfig>
+          <operation type="NONE"/>
+      </dbunit>
+    </target>
+
 </project>
 

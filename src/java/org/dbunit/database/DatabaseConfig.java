@@ -20,22 +20,27 @@
  */
 package org.dbunit.database;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.database.statement.PreparedStatementFactory;
-import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.dbunit.database.statement.IStatementFactory;
+import org.dbunit.database.statement.PreparedStatementFactory;
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.dataset.filter.IColumnFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- *
+ * Configuration used by the {@link DatabaseConnection}.
+ * 
  * @author manuel.laflamme
- * @since Jul 17, 2003
- * @version $Revision$
+ * @author gommma (gommma AT users.sourceforge.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.0
  */
 public class DatabaseConfig
 {
@@ -62,6 +67,21 @@ public class DatabaseConfig
 	public static final String PROPERTY_FETCH_SIZE = 
 			"http://www.dbunit.org/properties/fetchSize";
 
+    /**
+     * A list of all properties as {@link ConfigProperty} objects. 
+     * The objects contain the allowed java type and whether or not a property is nullable.
+     */
+    public static final ConfigProperty[] ALL_PROPERTIES = new ConfigProperty[] {
+        new ConfigProperty(PROPERTY_STATEMENT_FACTORY, IStatementFactory.class, false),
+        new ConfigProperty(PROPERTY_RESULTSET_TABLE_FACTORY, IResultSetTableFactory.class, false),
+        new ConfigProperty(PROPERTY_DATATYPE_FACTORY, IDataTypeFactory.class, false),
+        new ConfigProperty(PROPERTY_ESCAPE_PATTERN, String.class, true),
+        new ConfigProperty(PROPERTY_TABLE_TYPE, String[].class, false),
+        new ConfigProperty(PROPERTY_PRIMARY_KEY_FILTER, IColumnFilter.class, true),
+        new ConfigProperty(PROPERTY_BATCH_SIZE, Integer.class, false),
+        new ConfigProperty(PROPERTY_FETCH_SIZE, Integer.class, false),
+    };
+
     public static final String FEATURE_QUALIFIED_TABLE_NAMES =
             "http://www.dbunit.org/features/qualifiedTableNames";
     public static final String FEATURE_BATCHED_STATEMENTS =
@@ -71,6 +91,16 @@ public class DatabaseConfig
     public static final String FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES =
             "http://www.dbunit.org/features/skipOracleRecycleBinTables";
 
+    /**
+     * A list of all features as strings
+     */
+    public static final String[] ALL_FEATURES = new String[] {
+        FEATURE_QUALIFIED_TABLE_NAMES,
+        FEATURE_BATCHED_STATEMENTS,
+        FEATURE_DATATYPE_WARNING,
+        FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES
+    };
+    
     private static final DefaultDataTypeFactory DEFAULT_DATA_TYPE_FACTORY =
             new DefaultDataTypeFactory();
     private static final PreparedStatementFactory PREPARED_STATEMENT_FACTORY =
@@ -85,6 +115,7 @@ public class DatabaseConfig
 
     private Set _featuresSet = new HashSet();
     private Map _propertyMap = new HashMap();
+    
 
     public DatabaseConfig()
     {
@@ -142,6 +173,11 @@ public class DatabaseConfig
     public void setProperty(String name, Object value)
     {
         logger.debug("setProperty(name={}, value={}) - start", name, value);
+        
+        // Validate if the type of the given object is correct
+        checkObjectAllowed(name, value);
+        
+        // If we get here the type is allowed (no exception was thrown)
         _propertyMap.put(name, value);
     }
 
@@ -156,6 +192,65 @@ public class DatabaseConfig
        return _propertyMap.get(name);
     }
 
+    /**
+     * Checks whether the given value has the correct java type for the given property.
+     * If the value is not allowed for the given property an {@link IllegalArgumentException} is thrown.
+     * @param property The property to be set
+     * @param value The value to which the property should be set
+     */
+    protected void checkObjectAllowed(String property, Object value)
+    {
+        ConfigProperty prop = findByName(property);
+        
+        if(prop != null)
+        {
+            // First check for null
+            if(value == null)
+            {
+                if(prop.isNullable())
+                {
+                    // All right. No class check is needed
+                    return;
+                }
+                else
+                {
+                    throw new IllegalArgumentException("The property '" + property + "' is not nullable.");
+                }
+            }
+            else
+            {
+                Class allowedPropType = prop.getPropertyType();
+                if(!allowedPropType.isAssignableFrom(value.getClass()))
+                {
+                    throw new IllegalArgumentException("Cannot cast object of type '" + value.getClass() + 
+                            "' to allowed type '" + allowedPropType + "'.");
+                }
+            }
+        }
+        else
+        {
+            logger.info("Unknown property '" + property + "'. Cannot validate the type of the object to be set." +
+                    " Please notify a developer to update the list of properties.");
+        }
+    }
+    
+    /**
+     * Searches the {@link ConfigProperty} object for the property with the given name
+     * @param property The property for which the enumerated object should be resolved
+     * @return The property object or <code>null</code> if it was not found.
+     */
+    public static final ConfigProperty findByName(String property) 
+    {
+        for (int i = 0; i < ALL_PROPERTIES.length; i++) {
+            if(ALL_PROPERTIES[i].getProperty().equals(property))
+            {
+                return ALL_PROPERTIES[i];
+            }
+        }
+        // property not found.
+        return null;
+    }
+    
     public String toString()
     {
     	StringBuffer sb = new StringBuffer();
@@ -164,5 +259,85 @@ public class DatabaseConfig
     	sb.append(", _propertyMap=").append(_propertyMap);
     	sb.append("]");
     	return sb.toString();
+    }
+    
+
+    
+    
+    /**
+     * @author gommma (gommma AT users.sourceforge.net)
+     * @author Last changed by: $Author$
+     * @version $Revision$ $Date$
+     * @since 2.4.0
+     */
+    public static class ConfigProperty
+    {
+        private String property;
+        private Class propertyType;
+        private boolean nullable;
+        
+        public ConfigProperty(String property, Class propertyType, boolean nullable) {
+            super();
+            
+            if (property == null) {
+                throw new NullPointerException(
+                        "The parameter 'property' must not be null");
+            }
+            if (propertyType == null) {
+                throw new NullPointerException(
+                        "The parameter 'propertyType' must not be null");
+            }
+            
+            this.property = property;
+            this.propertyType = propertyType;
+            this.nullable = nullable;
+        }
+        
+        public String getProperty() {
+            return property;
+        }
+
+        public Class getPropertyType() {
+            return propertyType;
+        }
+
+        public boolean isNullable() {
+            return nullable;
+        }
+
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result
+                    + ((property == null) ? 0 : property.hashCode());
+            return result;
+        }
+
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            ConfigProperty other = (ConfigProperty) obj;
+            if (property == null) {
+                if (other.property != null)
+                    return false;
+            } else if (!property.equals(other.property))
+                return false;
+            return true;
+        }
+
+        public String toString()
+        {
+            StringBuffer sb = new StringBuffer();
+            sb.append(getClass().getName()).append("[");
+            sb.append("property=").append(property);
+            sb.append(", propertyType=").append(propertyType);
+            sb.append(", nullable=").append(nullable);
+            sb.append("]");
+            return sb.toString();
+        }
     }
 }

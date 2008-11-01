@@ -415,7 +415,23 @@ public class DbUnitTaskTest extends TaskdefsTest
         String expectedPattern = "[?]";
         assertEquals("factory", expectedPattern, actualPattern);
     }
+    
+    public void testDataTypeFactoryViaGenericConfig() throws Exception
+    {
+        String targetName = "test-datatypefactory-via-generic-config";
+        DbUnitTask task = getFirstTargetTask(targetName);
 
+        IDatabaseConnection connection = task.createConnection();
+        IDataTypeFactory factory = (IDataTypeFactory)connection.getConfig().getProperty(
+                        DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
+
+        Class expectedClass = OracleDataTypeFactory.class;
+        assertEquals("factory", expectedClass, factory.getClass());
+        assertTrue("batched statements feature should be true", 
+                connection.getConfig().getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
+    }
+    
+    
     public void testClasspath() throws Exception
     {
         String targetName = "test-classpath";
