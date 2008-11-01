@@ -27,15 +27,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Copy from org/dbunit/dataset/datatype/NumberDataType.java with
- * extended version of the compare method in order to respect precision tolerance.
- * This is comparable to the junit method <code>assert(double val1, double val2, double toleratedDelta)</code>.
+ * Extended version of the {@link NumberDataType}. Extends the 
+ * {@link #compare(Object, Object)} method in order to respect precision tolerance.
+ * This is comparable to the JUnit method 
+ * <code>assert(double val1, double val2, double toleratedDelta)</code>.
  * 
  * @author gommma
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since 2.3.0
- * @version $Revision $
  */
-public final class NumberTolerantDataType extends NumberDataType
+public class NumberTolerantDataType extends NumberDataType
 {
 
     /**

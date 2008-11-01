@@ -79,7 +79,7 @@ public abstract class AbstractStep extends ProjectComponent implements DbUnitTas
     	if (logger.isDebugEnabled())
     	{
             logger.debug("getDatabaseDataSet(connection={}, tables={}, forwardonly={}) - start",
-            		new Object[] { connection, tables, new Boolean(forwardonly) });
+            		new Object[] { connection, tables, String.valueOf(forwardonly) });
     	}
 
         try
@@ -165,7 +165,7 @@ public abstract class AbstractStep extends ProjectComponent implements DbUnitTas
 		if (logger.isDebugEnabled())
 		{
 			logger.debug("getSrcDataSet(src={}, format={}, forwardonly={}) - start",
-					new Object[]{ src, format, new Boolean(forwardonly) });
+					new Object[]{ src, format, String.valueOf(forwardonly) });
 		}
 
         try

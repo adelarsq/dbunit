@@ -171,7 +171,7 @@ public class Operation extends AbstractStep
 
     public void setTransaction(boolean transaction)
     {
-        logger.debug("setTransaction(transaction={}) - start", new Boolean(transaction));
+        logger.debug("setTransaction(transaction={}) - start", String.valueOf(transaction));
         _transaction = transaction;
     }
 

@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author fede
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since Sep 12, 2004 (pre 2.3)
+ * @since 2.2 (Sep 12, 2004)
  */
 public class EscapeHandler extends AbstractPipelineComponent {
 

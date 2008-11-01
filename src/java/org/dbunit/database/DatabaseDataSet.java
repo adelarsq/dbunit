@@ -216,7 +216,7 @@ public class DatabaseDataSet extends AbstractDataSet
             throws DataSetException
     {
     	if(logger.isDebugEnabled())
-    		logger.debug("createIterator(reversed={}) - start", new Boolean(reversed));
+    		logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
 
         String[] names = getTableNames();
         if (reversed)

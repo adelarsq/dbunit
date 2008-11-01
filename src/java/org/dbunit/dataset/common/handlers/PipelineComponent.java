@@ -25,7 +25,7 @@ package org.dbunit.dataset.common.handlers;
  * @author fede
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since Sep 12, 2004 (pre 2.3)
+ * @since 2.2 (Sep 12, 2004)
  */
 public interface PipelineComponent extends Handler {
     void setSuccessor(PipelineComponent successor);

@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * @author fede
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since Sep 12, 2004 (pre 2.3)
+ * @since 2.2 (Sep 12, 2004)
  */
 public class UnquotedFieldAssembler extends AbstractPipelineComponent {
 
@@ -49,20 +49,21 @@ public class UnquotedFieldAssembler extends AbstractPipelineComponent {
         getPipeline().putFront(WhitespacesHandler.IGNORE());
     }
 
-    private LinkedList getAddedComponents() {
-        logger.debug("getAddedComponents() - start");
-
-        return addedComponents;
-    }
+//    private LinkedList getAddedComponents() {
+//        logger.debug("getAddedComponents() - start");
+//
+//        return addedComponents;
+//    }
 
     private void setAddedComponents(LinkedList addedComponents) {
-        logger.debug("setAddedComponents(addedComponents=" + addedComponents + ") - start");
+        logger.debug("setAddedComponents(addedComponents={}) - start", addedComponents);
 
         this.addedComponents = addedComponents;
     }
 
     public boolean canHandle(char c) throws IllegalInputCharacterException {
-        logger.debug("canHandle(c=" + c + ") - start");
+        if(logger.isDebugEnabled())
+            logger.debug("canHandle(c={}) - start", String.valueOf(c));
 
         return true;
     }
@@ -75,7 +76,8 @@ public class UnquotedFieldAssembler extends AbstractPipelineComponent {
         private static final Logger logger = LoggerFactory.getLogger(ASSEMBLE.class);
 
         void helpWith(char c) {
-            logger.debug("helpWith(c=" + c + ") - start");
+            if(logger.isDebugEnabled())
+                logger.debug("helpWith(c={}) - start", String.valueOf(c));
 
             getHandler().getPipeline().thePieceIsDone();
         }

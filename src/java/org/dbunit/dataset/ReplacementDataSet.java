@@ -151,7 +151,7 @@ public class ReplacementDataSet extends AbstractDataSet
             throws DataSetException
     {
     	if(logger.isDebugEnabled())
-    		logger.debug("createIterator(reversed={}) - start", new Boolean(reversed));
+    		logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
 
         return new ReplacementIterator(reversed ?
                 _dataSet.reverseIterator() : _dataSet.iterator());

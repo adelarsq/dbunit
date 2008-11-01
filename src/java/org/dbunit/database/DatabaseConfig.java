@@ -109,7 +109,7 @@ public class DatabaseConfig
      */
     public void setFeature(String name, boolean value)
     {
-        logger.debug("setFeature(name={}, value={}) - start", name, new Boolean(value));
+        logger.debug("setFeature(name={}, value={}) - start", name, String.valueOf(value));
 
         if (value)
         {

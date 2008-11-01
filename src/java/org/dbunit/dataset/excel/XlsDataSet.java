@@ -192,7 +192,7 @@ public class XlsDataSet extends AbstractDataSet
             throws DataSetException
     {
     	if(logger.isDebugEnabled())
-    		logger.debug("createIterator(reversed={}) - start", new Boolean(reversed));
+    		logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
 
     	ITable[] tables = (ITable[]) _tables.orderedValues().toArray(new ITable[0]);
         return new DefaultTableIterator(tables, reversed);

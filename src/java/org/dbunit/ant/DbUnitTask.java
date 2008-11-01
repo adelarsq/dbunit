@@ -178,7 +178,7 @@ public class DbUnitTask extends Task
      */
     public void setUseQualifiedTableNames(boolean useQualifiedTableNames)
     {
-        logger.debug("setUseQualifiedTableNames(useQualifiedTableNames={}) - start", new Boolean(useQualifiedTableNames));
+        logger.debug("setUseQualifiedTableNames(useQualifiedTableNames={}) - start", String.valueOf(useQualifiedTableNames));
         this.useQualifiedTableNames = useQualifiedTableNames;
     }
 
@@ -189,13 +189,13 @@ public class DbUnitTask extends Task
      */
     public void setSupportBatchStatement(boolean supportBatchStatement)
     {
-        logger.debug("setSupportBatchStatement(supportBatchStatement={}) - start", new Boolean(supportBatchStatement));
+        logger.debug("setSupportBatchStatement(supportBatchStatement={}) - start", String.valueOf(supportBatchStatement));
         this.supportBatchStatement = supportBatchStatement;
     }
 
     public void setDatatypeWarning(boolean datatypeWarning)
     {
-        logger.debug("setDatatypeWarning(datatypeWarning={}) - start", new Boolean(datatypeWarning));
+        logger.debug("setDatatypeWarning(datatypeWarning={}) - start", String.valueOf(datatypeWarning));
         this.datatypeWarning = datatypeWarning;
     }
 

@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author fede
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since Sep 12, 2004 (pre 2.3)
+ * @since 2.2 (Sep 12, 2004)
  */
 public class QuoteHandler extends AbstractPipelineComponent {
 
@@ -37,6 +37,10 @@ public class QuoteHandler extends AbstractPipelineComponent {
      */
     private static final Logger logger = LoggerFactory.getLogger(QuoteHandler.class);
 
+    public static final char QUOTE_CHAR = '"';
+
+
+    
     private QuoteHandler() {
     }
 
@@ -64,10 +68,9 @@ public class QuoteHandler extends AbstractPipelineComponent {
         return createPipelineComponent(new QuoteHandler(), new UNQUOTE());
     }
 
-    public static final char QUOTE_CHAR = '"';
-
     public boolean canHandle(char c) throws IllegalInputCharacterException {
-        logger.debug("canHandle(c=" + c + ") - start");
+        if(logger.isDebugEnabled())
+            logger.debug("canHandle(c={}) - start", String.valueOf(c));
 
         if (c == QUOTE_CHAR) {
             return true;
@@ -84,7 +87,8 @@ public class QuoteHandler extends AbstractPipelineComponent {
         private static final Logger logger = LoggerFactory.getLogger(QUOTE.class);
 
         public void helpWith(char c) {
-            logger.debug("helpWith(c=" + c + ") - start");
+            if(logger.isDebugEnabled())
+                logger.debug("helpWith(c={}) - start", String.valueOf(c));
 
             getHandler().getPipeline().putFront(SeparatorHandler.ACCEPT());
             getHandler().getPipeline().putFront(WhitespacesHandler.ACCEPT());
@@ -104,7 +108,8 @@ public class QuoteHandler extends AbstractPipelineComponent {
         private static final Logger logger = LoggerFactory.getLogger(UNQUOTE.class);
 
         public void helpWith(char c) {
-            logger.debug("helpWith(c=" + c + ") - start");
+            if(logger.isDebugEnabled())
+                logger.debug("helpWith(c={}) - start", String.valueOf(c));
 
             try {
                 getHandler().getPipeline().removeFront();

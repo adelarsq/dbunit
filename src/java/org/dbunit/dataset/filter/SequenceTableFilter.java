@@ -113,7 +113,7 @@ public class SequenceTableFilter implements ITableFilter
             throws DataSetException
     {
     	if(logger.isDebugEnabled())
-    		logger.debug("iterator(dataSet={}, reversed={}) - start", dataSet, new Boolean(reversed));
+    		logger.debug("iterator(dataSet={}, reversed={}) - start", dataSet, String.valueOf(reversed));
 
         String[] tableNames = getTableNames(dataSet);
         return new SequenceTableIterator(reversed ?

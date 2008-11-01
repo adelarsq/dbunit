@@ -129,7 +129,7 @@ public class XmlWriter
     public void enablePrettyPrint(boolean enable)
     {
     	if(logger.isDebugEnabled())
-    		logger.debug("enablePrettyPrint(enable={}) - start", new Boolean(enable));
+    		logger.debug("enablePrettyPrint(enable={}) - start", String.valueOf(enable));
 
         this.pretty = enable;
     }
@@ -301,7 +301,7 @@ public class XmlWriter
     {
     	if(logger.isDebugEnabled())
     		logger.debug("writeAttribute(attr={}, value={}, literally={}) - start", 
-    				new Object[] {attr, value, new Boolean(literally)} );
+    				new Object[] {attr, value, String.valueOf(literally)} );
 
     	if(this.wroteText==true) {
     		throw new IllegalStateException("The text for the current element has already been written. Cannot add attributes afterwards.");
@@ -411,7 +411,7 @@ public class XmlWriter
     public XmlWriter writeText(String text, boolean literally) throws IOException
     {
     	if(logger.isDebugEnabled())
-    		logger.debug("writeText(text={}, literally={}) - start", text, new Boolean(literally));
+    		logger.debug("writeText(text={}, literally={}) - start", text, String.valueOf(literally));
 
         closeOpeningTag();
         this.empty = false;

@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author fede
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since Sep 12, 2004 (pre 2.3)
+ * @since 2.2 (Sep 12, 2004)
  */
 public class WhitespacesHandler extends AbstractPipelineComponent {
 
@@ -53,7 +53,8 @@ public class WhitespacesHandler extends AbstractPipelineComponent {
 
 
     public boolean canHandle(char c) throws IllegalInputCharacterException {
-        logger.debug("canHandle(c=" + c + ") - start");
+        if(logger.isDebugEnabled())
+            logger.debug("canHandle(c={}) - start", String.valueOf(c));
 
         return Character.isWhitespace(c) ? true : false;
     }

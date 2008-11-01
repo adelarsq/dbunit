@@ -79,7 +79,7 @@ public class ReplacementTable implements ITable
     public void setStrictReplacement(boolean strictReplacement) 
     {
     	if(logger.isDebugEnabled())
-    		logger.debug("setStrictReplacement(strictReplacement={}) - start", new Boolean(strictReplacement));
+    		logger.debug("setStrictReplacement(strictReplacement={}) - start", String.valueOf(strictReplacement));
     	
         this._strictReplacement = strictReplacement;
     }

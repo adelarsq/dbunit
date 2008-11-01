@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author fede
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since Sep 12, 2004 (pre 2.3)
+ * @since 2.2 (Sep 12, 2004)
  */
 public class EnforceHandler extends AbstractPipelineComponent {
 
@@ -46,19 +46,20 @@ public class EnforceHandler extends AbstractPipelineComponent {
 
 
     public static final PipelineComponent ENFORCE(PipelineComponent component) {
-        logger.debug("ENFORCE(component=" + component + ") - start");
+        logger.debug("ENFORCE(component={}) - start", component);
 
         return EnforceHandler.ENFORCE(new PipelineComponent [] {component});
     }
 
     public static final PipelineComponent ENFORCE(PipelineComponent [] components) {
-        logger.debug("ENFORCE(components=" + components + ") - start");
+        logger.debug("ENFORCE(components={}) - start", components);
 
         return createPipelineComponent(new EnforceHandler(components), new ENFORCE());
     }
 
     public boolean canHandle(char c) throws IllegalInputCharacterException {
-        logger.debug("canHandle(c=" + c + ") - start");
+        if(logger.isDebugEnabled())
+            logger.debug("canHandle(c={}) - start", String.valueOf(c));
 
         for (int i = 0; i < getEnforcedComponents().length; i++) {
             if (getEnforcedComponents()[i].canHandle(c)) {
@@ -71,7 +72,7 @@ public class EnforceHandler extends AbstractPipelineComponent {
     }
 
     public void setPipeline(Pipeline pipeline) {
-        logger.debug("setPipeline(pipeline=" + pipeline + ") - start");
+        logger.debug("setPipeline(pipeline={}) - start", pipeline);
 
         for (int i = 0; i < getEnforcedComponents().length; i++) {
             getEnforcedComponents()[i].setPipeline(pipeline);
@@ -86,7 +87,7 @@ public class EnforceHandler extends AbstractPipelineComponent {
     }
 
     protected void setEnforcedComponents(PipelineComponent[] enforcedComponents) {
-        logger.debug("setEnforcedComponents(enforcedComponents=" + enforcedComponents + ") - start");
+        logger.debug("setEnforcedComponents(enforcedComponents={}) - start", enforcedComponents);
 
         this.enforcedComponents = enforcedComponents;
     }
@@ -98,7 +99,8 @@ public class EnforceHandler extends AbstractPipelineComponent {
     }
 
     void setTheHandlerComponent(PipelineComponent theHandlerComponent) {
-        logger.debug("setTheHandlerComponent(theHandlerComponent=" + theHandlerComponent + ") - start");
+        logger.debug("setTheHandlerComponent(theHandlerComponent={}) - start",
+                theHandlerComponent);
 
         this.theHandlerComponent = theHandlerComponent;
     }
@@ -111,7 +113,8 @@ public class EnforceHandler extends AbstractPipelineComponent {
         private static final Logger logger = LoggerFactory.getLogger(ENFORCE.class);
 
         public void helpWith(char c) {
-            logger.debug("helpWith(c=" + c + ") - start");
+            if(logger.isDebugEnabled())
+                logger.debug("helpWith(c={}) - start", String.valueOf(c));
 
             try {
                 EnforceHandler handler = (EnforceHandler) getHandler();
