@@ -21,12 +21,17 @@
 
  package org.dbunit.ant;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.ProjectComponent;
 import org.apache.tools.ant.types.FilterSet;
+import org.dbunit.database.AmbiguousTableNameException;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.QueryDataSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,11 +48,17 @@ import org.slf4j.LoggerFactory;
  * expected, and if he did, its an error prone and repetitive task
  * to create the correct SQL for entities in each dataset.
  * Missing a related table, not only creates invalid data for your tests,
- * but also is likely to cause DBUnit setUp() failures due to foreign key
- * constraint errors.
- * (ex. If a previous test had inserted INDIVIDUALS
+ * but also is likely to cause DBUnit setUp() failures from foreign key
+ * constraint violation errors.
+ * (example: If a previous test had inserted INDIVIDUALS
  * and NAME_INFO and my test tries to delete only the INDIVIDUALS, the
- * NAME_INFO.IND_ID constraint would prevent it)
+ * NAME_INFO.IND_ID constraint would be violated)
+ * <p>
+ * <p>
+ * Each queryset is internally converted to a <code>QueryDataSet</code> and then
+ * combined using a <code>CompositeDataSet</code>. This means that you can use 
+ * more than one <code>query</code> element for any given table provided they 
+ * are nested within separate <code>queryset</code>s. 
  * <p>
  * Usage:
  *
@@ -56,46 +67,43 @@ import org.slf4j.LoggerFactory;
  *
  * &lt;queryset id="individuals"&gt;
  *    &lt;query name="INDIVIDUALS" sql="
- *      SELECT * FROM APS_DATA.INDIVIDUALS WHERE IND_ID IN (@subQuery@)"/&gt;
+ *      SELECT * FROM INDIVIDUALS WHERE IND_ID IN (@subQuery@)"/&gt;
  *
  *    &lt;query name="NAME_INFO" sql="
- *      SELECT B.* FROM APS_DATA.INDIVIDUALS A, APS_DATA.NAME_INFO B
+ *      SELECT B.* FROM INDIVIDUALS A, NAME_INFO B
  *      WHERE A.IND_ID IN (@subQuery@)
  *      AND B.IND_ID = A.IND_ID"/&gt;
  *
  *    &lt;query name="IND_ADDRESSES" sql="
- *      SELECT B.* FROM APS_DATA.INDIVIDUALS A, APS_DATA.IND_ADDRESSES B
+ *      SELECT B.* FROM INDIVIDUALS A, IND_ADDRESSES B
  *      WHERE A.IND_ID IN (@subQuery@)
  *      AND B.IND_ID = A.IND_ID"/&gt;
  * &lt;/queryset&gt;
  *
  * &lt;!-- ========= Use the reference ====================== --&gt;
  *
- * &lt;dbunit dest="@{destDir}" driver="${jdbcDriver}"
+ * &lt;dbunit driver="${jdbcDriver}"
  *     url="${jdbcURL}" userid="${jdbcUser}" password="${jdbcPassword}"&gt;
- *   &lt;export dest="someDir"&gt;
+ *   &lt;export dest="${dest}"&gt;
  *   &lt;queryset refid="individuals"&gt;
  *      &lt;filterset&gt;
  *        &lt;filter token="subQuery" value="
- *          SELECT IND_ID FROM APS_DATA.INDIVIDUALS WHERE USER_NAME = 'UNKNOWN'"/&gt;
+ *          SELECT IND_ID FROM INDIVIDUALS WHERE USER_NAME = 'UNKNOWN'"/&gt;
  *      &lt;/filterset&gt;
  *   &lt;/queryset&gt;
  *
- *   &lt;queryset&gt;
- *      &lt;query name="MAN_EVENT_TYPE"
- *        sql="SELECT * FROM MANUSCRIPTS.MAN_EVENT_TYPE"/&gt;
- *      &lt;query name="JOURNAL" sql="SELECT * FROM MANUSCRIPTS.JOURNAL"/&gt;
- *   &lt;/queryset&gt;
  *   &lt;/export&gt;
  * &lt;/dbunit&gt;
  *
  * </pre>
  *
  * @author Lenny Marks lenny@aps.org
- * @version $Revision$
- * @since Sep. 13 2004
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.2.0 (Sep. 13 2004)
  */
-public class QuerySet {
+public class QuerySet extends ProjectComponent
+{
 
     /**
      * Logger for this class
@@ -148,7 +156,7 @@ public class QuerySet {
 		refid = string;
 	}
 
-	protected List getQueries() {
+	public List getQueries() {
         logger.debug("getQueries() - start");
 
 		Iterator i = queries.iterator();
@@ -180,4 +188,29 @@ public class QuerySet {
 			addQuery((Query)i.next());
 		}
 	}
+	
+    public QueryDataSet getQueryDataSet(IDatabaseConnection connection) 
+    throws SQLException, AmbiguousTableNameException 
+    {
+        logger.debug("getQueryDataSet(connection={}) - start", connection);
+        
+        //incorporate queries from referenced query-set
+        String refid = getRefid();
+        if(refid != null) {
+            QuerySet referenced = (QuerySet)getProject().getReference(refid);
+            copyQueriesFrom(referenced);
+        }
+        
+        QueryDataSet partialDataSet = new QueryDataSet(connection);
+        
+        Iterator queriesIter = getQueries().iterator();
+        while(queriesIter.hasNext()) {
+            Query query = (Query)queriesIter.next();
+            partialDataSet.addTable(query.getName(), query.getSql());
+        }
+        
+        return partialDataSet;
+        
+    }
+
 }

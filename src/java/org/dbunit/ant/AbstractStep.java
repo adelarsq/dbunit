@@ -28,9 +28,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.tools.ant.Task;
+import org.apache.tools.ant.ProjectComponent;
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.AmbiguousTableNameException;
 import org.dbunit.database.CachedResultSetTableFactory;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.ForwardOnlyResultSetTableFactory;
@@ -57,9 +56,9 @@ import org.xml.sax.InputSource;
  * @author Manuel Laflamme
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since Apr 3, 2004
+ * @since 2.1 (Apr 3, 2004)
  */
-public abstract class AbstractStep implements DbUnitTaskStep
+public abstract class AbstractStep extends ProjectComponent implements DbUnitTaskStep
 {
 
     /**
@@ -73,8 +72,6 @@ public abstract class AbstractStep implements DbUnitTaskStep
     public static final String FORMAT_CSV = "csv";
     public static final String FORMAT_XLS = "xls";
 
-	// Needed a path to Project for logging and references.
-	private Task parentTask;
 	
     protected IDataSet getDatabaseDataSet(IDatabaseConnection connection,
             List tables, boolean forwardonly) throws DatabaseUnitException
@@ -134,7 +131,8 @@ public abstract class AbstractStep implements DbUnitTaskStep
             if(item instanceof QuerySet) {
 				if(queryDataSet.getTableNames().length > 0) 
             		queryDataSets.add(queryDataSet);
-				QueryDataSet newQueryDataSet = getQueryDataSetForQuerySet(connection, (QuerySet)item);
+				
+				QueryDataSet newQueryDataSet = (((QuerySet)item).getQueryDataSet(connection));
 				queryDataSets.add(newQueryDataSet);
 				queryDataSet = new QueryDataSet(connection);
             }
@@ -270,47 +268,5 @@ public abstract class AbstractStep implements DbUnitTaskStep
         return source;
 	}
 	
-	private QueryDataSet getQueryDataSetForQuerySet(IDatabaseConnection connection, QuerySet querySet) 
-	throws SQLException, AmbiguousTableNameException 
-	{
-        logger.debug("getQueryDataSetForQuerySet(connection={}, querySet={}) - start", connection, querySet);
-		
-		//incorporate queries from referenced query-set
-		String refid = querySet.getRefid();
-		if(refid != null) {
-			QuerySet referenced = (QuerySet)
-				getParentTask().getProject().getReference(refid);
-			querySet.copyQueriesFrom(referenced);
-		}
-		
-		QueryDataSet partialDataSet = new QueryDataSet(connection);
-		
-		Iterator queriesIter = querySet.getQueries().iterator();
-		while(queriesIter.hasNext()) {
-			Query query = (Query)queriesIter.next();
-			partialDataSet.addTable(query.getName(), query.getSql());
-		}
-		
-		return partialDataSet;
-		
-	}
-
-	
-	public Task getParentTask() {
-		return parentTask;
-	}
-
-	public void setParentTask(Task task) {
-        logger.debug("setParentTask(task={}) - start", task);
-		parentTask = task;
-	}
-	
-	public void log(String msg, int level) {
-		if(logger.isDebugEnabled())
-			logger.debug("log(msg={}, level={}) - start", msg, new Integer(level));
-
-		if(parentTask != null)
-			parentTask.log(msg, level);
-	}
 
 }
