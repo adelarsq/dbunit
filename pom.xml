@@ -436,6 +436,7 @@ AllTests)
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
 						<configLocation>checkstyle.xml</configLocation>
+			            <argLine>-Xmx512m -Xms128m</argLine>
 				</configuration>
 			</plugin>
 			<!-- Generate "PMD" and "CPD" reports -->
