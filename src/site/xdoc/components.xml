@@ -176,12 +176,11 @@ Following sample shows how to load a flat XML dataset with the StreamingDataSet:
         </tr>
         <tr> 
           <td><a name="defaultdataset" href="apidocs/org/dbunit/dataset/DefaultDataSet.html">DefaultDataSet</a></td>
-          <td>Uses to create datasets       programmatically.</td>
+          <td>Uses to create datasets programmatically.</td>
         </tr>
         <tr> 
           <td><a name="compositedataset" href="apidocs/org/dbunit/dataset/CompositeDataSet.html">CompositeDataSet</a></td>
-          <td>Combines multiple datasets 
-      into a single logical dataset.</td>
+          <td>Combines multiple datasets into a single logical dataset.</td>
         </tr>
         <tr> 
           <td><a name="filtereddataset" href="apidocs/org/dbunit/dataset/FilteredDataSet.html">FilteredDataSet</a></td>
