@@ -38,7 +38,6 @@ import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.operation.AbstractOperation;
 import org.dbunit.operation.CompositeOperation;
 import org.dbunit.operation.DatabaseOperation;
-import org.dbunit.operation.ExclusiveTransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +58,7 @@ import org.slf4j.LoggerFactory;
  * @author Eric Pugh
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since Apr 9, 2002
+ * @since 1.4 (Apr 9, 2002)
  */
 public class InsertIdentityOperation extends AbstractOperation
 {
@@ -139,18 +138,24 @@ public class InsertIdentityOperation extends AbstractOperation
         Connection jdbcConnection = connection.getConnection();
         Statement statement = jdbcConnection.createStatement();
 
+        boolean wasAutoCommit = false;
         try
         {
             IDataSet databaseDataSet = connection.createDataSet();
             
-
+            // Note that MSSQL has a different transaction strategy from oracle.
+            // By default the transaction is always in "autocommit=true" so
+            // that every statement is immediately committed. If a dbunit
+            // user does not want this behavior dbunit takes it into account
+            // here.
+            
             // INSERT_IDENTITY need to be enabled/disabled inside the
             // same transaction
-            if (jdbcConnection.getAutoCommit() == false)
+            if (jdbcConnection.getAutoCommit() == true)
             {
-                throw new ExclusiveTransactionException();
+                wasAutoCommit = true;
+                jdbcConnection.setAutoCommit(false);
             }
-            jdbcConnection.setAutoCommit(false);
 
             // Execute decorated operation one table at a time
             ITableIterator iterator = dataSet.iterator();
@@ -197,7 +202,11 @@ public class InsertIdentityOperation extends AbstractOperation
         }
         finally
         {
-            jdbcConnection.setAutoCommit(true);
+            if(wasAutoCommit)
+            {
+                // Reset the autocommit property
+                jdbcConnection.setAutoCommit(true);
+            }
             statement.close();
         }
     }
