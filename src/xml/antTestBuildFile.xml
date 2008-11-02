@@ -423,6 +423,7 @@
               password="${dbunit.profile.password}">
           <dbconfig>
               <property name="datatypeFactory" value="org.dbunit.ext.oracle.OracleDataTypeFactory" />
+              <property name="tableType" value="TABLE,SYNONYM" />
               <feature name="batchedStatements" value="true" />
           </dbconfig>
           <operation type="NONE"/>

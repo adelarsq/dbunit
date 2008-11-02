@@ -617,6 +617,8 @@
         password="password">
     <dbconfig>
         <property name="datatypeFactory" value="org.dbunit.ext.oracle.OracleDataTypeFactory" />
+        <!-- Is internally split to a string array using the comma as separator -->
+        <property name="tableType" value="TABLE,SYNONYM" />
         <feature name="batchedStatements" value="true" />
     </dbconfig>
 

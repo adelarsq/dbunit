@@ -29,6 +29,7 @@ import java.util.List;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import junitx.framework.ArrayAssert;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Target;
@@ -422,11 +423,16 @@ public class DbUnitTaskTest extends TaskdefsTest
         DbUnitTask task = getFirstTargetTask(targetName);
 
         IDatabaseConnection connection = task.createConnection();
-        IDataTypeFactory factory = (IDataTypeFactory)connection.getConfig().getProperty(
+        
+        DatabaseConfig config =connection.getConfig();
+        
+        IDataTypeFactory factory = (IDataTypeFactory)config.getProperty(
                         DatabaseConfig.PROPERTY_DATATYPE_FACTORY);
-
         Class expectedClass = OracleDataTypeFactory.class;
         assertEquals("factory", expectedClass, factory.getClass());
+
+        String[] actualTableType = (String[])config.getProperty(DatabaseConfig.PROPERTY_TABLE_TYPE);
+        ArrayAssert.assertEquals("tableType", new String[]{"TABLE", "SYNONYM"}, actualTableType);
         assertTrue("batched statements feature should be true", 
                 connection.getConfig().getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
     }
