@@ -37,6 +37,7 @@
       <action dev="gommma" type="add" issue="2212329">Additional column info also for filtered columns</action>
       <action dev="gommma" type="update" issue="1277038" due-to="lennymarks">QuerySet docs (includes little refactoring)</action>
       <action dev="gommma" type="add" issue="2041400" due-to="moschen">add primaryKeyFilter-Property in ant</action>
+      <action dev="gommma" type="add" issue="1371813" due-to="dsyer">Make configuration elements settable in ant (see 2041400)</action>
     </release>
     <release version="2.3.0" date="Sep 11, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>
