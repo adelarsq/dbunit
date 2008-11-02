@@ -220,6 +220,14 @@ public class DbUnitTaskTest extends TaskdefsTest
         assertEquals("doctype", "dataset.dtd", export.getDoctype());
     }
 
+    public void testExportFlatWithEncoding()
+    {
+        String targetName = "test-export-format-flat-with-encoding";
+        Export export = (Export)getFirstStepFromTarget(targetName);
+        assertEquals("format", "flat", export.getFormat());
+        assertEquals("encoding", "ISO-8859-1", export.getEncoding());
+    }
+    
     public void testExportXml()
     {
         String targetName = "test-export-format-xml";

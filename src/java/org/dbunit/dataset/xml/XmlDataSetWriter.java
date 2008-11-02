@@ -21,6 +21,8 @@
 package org.dbunit.dataset.xml;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import org.dbunit.dataset.Column;
@@ -40,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * @author Manuel Laflamme
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since Jun 13, 2003
+ * @since 1.5.5 (Jun 13, 2003)
  */
 public class XmlDataSetWriter implements IDataSetConsumer
 {
@@ -66,6 +68,19 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     private XmlWriter _xmlWriter;
     private ITableMetaData _activeMetaData;
+
+    /**
+     * @param outputStream The stream to which the XML will be written.
+     * @param encoding The encoding to be used for the {@link XmlWriter}.
+     * Can be null. See {@link XmlWriter#XmlWriter(OutputStream, String)}.
+     * @throws UnsupportedEncodingException
+     */
+    public XmlDataSetWriter(OutputStream outputStream, String encoding) 
+    throws UnsupportedEncodingException
+    {
+        _xmlWriter = new XmlWriter(outputStream, encoding);
+        _xmlWriter.enablePrettyPrint(true);
+    }
 
     public XmlDataSetWriter(Writer writer)
     {

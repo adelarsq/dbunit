@@ -24,7 +24,6 @@ package org.dbunit.dataset.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 
@@ -55,7 +54,7 @@ import org.xml.sax.InputSource;
  * @author Manuel Laflamme
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since Feb 17, 2002
+ * @since 1.0 (Feb 17, 2002)
  */
 public class XmlDataSet extends CachedDataSet
 {
@@ -65,7 +64,6 @@ public class XmlDataSet extends CachedDataSet
      */
     private static final Logger logger = LoggerFactory.getLogger(XmlDataSet.class);
 
-    private static final String DEFAULT_ENCODING = "UTF8";
 
     /**
      * Creates an XmlDataSet with the specified xml reader.
@@ -90,8 +88,20 @@ public class XmlDataSet extends CachedDataSet
             throws IOException, DataSetException
     {
         logger.debug("write(dataSet={}, out={}) - start", dataSet, out);
-        OutputStreamWriter writer = new OutputStreamWriter(out, DEFAULT_ENCODING);
-        write(dataSet, writer);
+        XmlDataSet.write(dataSet, out, null);
+    }
+
+    /**
+     * Write the specified dataset to the specified output stream as xml (using specified encoding).
+     */
+    public static void write(IDataSet dataSet, OutputStream out, String encoding)
+            throws IOException, DataSetException
+    {
+        logger.debug("write(dataSet={}, out={}, encoding={}) - start", 
+                new Object[]{dataSet, out, encoding} );
+        
+        XmlDataSetWriter datasetWriter = new XmlDataSetWriter(out, encoding);
+        datasetWriter.write(dataSet);
     }
 
     /**
@@ -111,10 +121,8 @@ public class XmlDataSet extends CachedDataSet
             throws IOException, DataSetException
     {
     	if (logger.isDebugEnabled())
-    	{
     		logger.debug("write(dataSet={}, writer={}, encoding={}) - start",
     				new Object[]{ dataSet, writer, encoding });
-    	}
 
         XmlDataSetWriter datasetWriter = new XmlDataSetWriter(writer, encoding);
         datasetWriter.write(dataSet);

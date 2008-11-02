@@ -20,6 +20,7 @@
  */
 package org.dbunit.util.xml;
 
+import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 
@@ -112,7 +113,34 @@ public class XmlWriterTest extends TestCase
 
 	    String expectedXml = "<COLUMN1>" + XmlWriter.CDATA_START + expectedResultText + XmlWriter.CDATA_END + "</COLUMN1>\n";
 	    assertEquals(expectedXml, actualXml);
-
 	}
 
+	   public void testOutputStreamWithNullEncoding() throws Exception
+	    {
+	        ByteArrayOutputStream out = new ByteArrayOutputStream();
+	        // Use a different encoding than the default
+	        XmlWriter xmlWriter = new XmlWriter(out, null);
+	        xmlWriter.writeDeclaration();
+	        xmlWriter.writeEmptyElement("COLUMN1");
+	        xmlWriter.close();
+	        
+	           String expected = "<?xml version='1.0' encoding='UTF-8'?>\n" +
+	           		"<COLUMN1/>\n";
+	        assertEquals(expected, out.toString("UTF-8"));
+	    }
+
+       public void testOutputStreamWithNonDefaultEncoding() throws Exception
+       {
+           ByteArrayOutputStream out = new ByteArrayOutputStream();
+           // Use a different encoding than the default
+           XmlWriter xmlWriter = new XmlWriter(out, "ISO-8859-1");
+           xmlWriter.writeDeclaration();
+           xmlWriter.writeEmptyElement("COLUMN1");
+           xmlWriter.close();
+           
+           String expected = "<?xml version='1.0' encoding='ISO-8859-1'?>\n" +
+           		"<COLUMN1/>\n";
+           assertEquals(expected, out.toString("ISO-8859-1"));
+       }
+	   
 }

@@ -276,6 +276,13 @@
               "false"</td>
               <td>No</td>
             </tr>
+            <tr>
+              <td>encoding</td>
+              <td>Desired encoding for XML-Output. Possible values are valid XML-Endings 
+              like "UTF-8" or "ISO-8859-1". Defaults to <b>"UTF-8"</b>
+              </td>
+              <td>No</td>
+            </tr>
           </table>
           <h4>Parameters specified as nested elements</h4>
           <table border="1">

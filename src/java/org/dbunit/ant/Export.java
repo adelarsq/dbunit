@@ -68,6 +68,7 @@ public class Export extends AbstractStep
     private String _format = FORMAT_FLAT;
     private String _doctype = null;
     private boolean _ordered = false;
+    private String _encoding = null; // if no encoding set by script than the default encoding (UTF-8) of the wrietr is used
     private List _tables = new ArrayList();
 
     public Export()
@@ -127,6 +128,20 @@ public class Export extends AbstractStep
     	this._ordered = ordered;
     }
     
+    /**
+     * Encoding for XML-Output
+     * @return Returns the encoding.
+     */
+    public String getEncoding() 
+    {
+        return this._encoding;
+    }
+
+    public void setEncoding(String encoding) 
+    { 
+        this._encoding = encoding;
+    }
+
     public void addTable(Table table)
     {
         logger.debug("addTable(table={}) - start", table);
@@ -183,17 +198,18 @@ public class Export extends AbstractStep
                 {
                     if (_format.equalsIgnoreCase(FORMAT_FLAT))
                     {
-                        FlatXmlWriter writer = new FlatXmlWriter(out);
+                        FlatXmlWriter writer = new FlatXmlWriter(out, getEncoding());
                         writer.setDocType(_doctype);
                         writer.write(dataset);
                     }
                     else if (_format.equalsIgnoreCase(FORMAT_XML))
                     {
-                        XmlDataSet.write(dataset, out);
+                        XmlDataSet.write(dataset, out, getEncoding());
                     }
                     else if (_format.equalsIgnoreCase(FORMAT_DTD))
                     {
-                        FlatDtdDataSet.write(dataset, out);
+                        //TODO Should DTD also support encoding? It is basically an XML file...
+                        FlatDtdDataSet.write(dataset, out);//, getEncoding());
                     }
                     else
                     {

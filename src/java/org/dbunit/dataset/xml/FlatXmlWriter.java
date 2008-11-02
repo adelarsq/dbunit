@@ -20,8 +20,10 @@
  */
 package org.dbunit.dataset.xml;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
@@ -32,21 +34,14 @@ import org.dbunit.dataset.datatype.TypeCastException;
 import org.dbunit.dataset.stream.DataSetProducerAdapter;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.util.xml.XmlWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-
-/**
- * @since Apr 19, 2003
- * @version $Revision$
- */
 /**
  * @author Manuel Laflamme
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since 2.4.0
+ * @since 1.5.5 (Apr 19, 2003)
  */
 public class FlatXmlWriter implements IDataSetConsumer
 {
@@ -56,7 +51,6 @@ public class FlatXmlWriter implements IDataSetConsumer
      */
     private static final Logger logger = LoggerFactory.getLogger(FlatXmlWriter.class);
 
-    private static final String DEFAULT_ENCODING = "UTF8";
     private static final String DATASET = "dataset";
 
     private XmlWriter _xmlWriter;
@@ -65,15 +59,27 @@ public class FlatXmlWriter implements IDataSetConsumer
     private boolean _includeEmptyTable = false;
     private String _systemId = null;
 
-    public FlatXmlWriter(Writer writer)
+    public FlatXmlWriter(OutputStream out) throws IOException
     {
-        _xmlWriter = new XmlWriter(writer);
+        this(out, null);
+    }
+
+    /**
+     * @param outputStream The stream to which the XML will be written.
+     * @param encoding The encoding to be used for the {@link XmlWriter}.
+     * Can be null. See {@link XmlWriter#XmlWriter(OutputStream, String)}.
+     * @throws UnsupportedEncodingException
+     */
+    public FlatXmlWriter(OutputStream outputStream, String encoding) 
+    throws UnsupportedEncodingException
+    {
+        _xmlWriter = new XmlWriter(outputStream, encoding);
         _xmlWriter.enablePrettyPrint(true);
     }
 
-    public FlatXmlWriter(OutputStream out) throws IOException
+    public FlatXmlWriter(Writer writer)
     {
-        _xmlWriter = new XmlWriter(new OutputStreamWriter(out, DEFAULT_ENCODING));
+        _xmlWriter = new XmlWriter(writer);
         _xmlWriter.enablePrettyPrint(true);
     }
 

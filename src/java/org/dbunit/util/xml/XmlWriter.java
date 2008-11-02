@@ -54,7 +54,9 @@
 package org.dbunit.util.xml;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Stack;
 
@@ -74,16 +76,27 @@ import org.slf4j.LoggerFactory;
  */
 public class XmlWriter
 {
+    /**
+     * CDATA start tag: {@value}
+     */
     public static final String CDATA_START = "<![CDATA[";
+    /**
+     * CDATA end tag: {@value}
+     */
     public static final String CDATA_END = "]]>";
 
+    /**
+     * Default encoding value which is {@value}
+     */
+    public static final String DEFAULT_ENCODING = "UTF-8";
+    
     /**
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(XmlWriter.class);
 
     private Writer out;      // underlying writer
-    private String encoding;
+    private String encoding; // the encoding to be written into the XML header/metatag
     private Stack stack = new Stack();        // of xml element names
     private StringBuffer attrs; // current attribute string
     private boolean empty;      // is the current node empty
@@ -103,6 +116,7 @@ public class XmlWriter
      */
     private String newline = "\n";
 
+    
     /**
      * Create an XmlWriter on top of an existing java.io.Writer.
      */
@@ -118,6 +132,27 @@ public class XmlWriter
     {
         setWriter(writer, encoding);
     }
+
+    /**
+     * Create an XmlWriter on top of an existing {@link java.io.OutputStream}.
+     * @param outputStream
+     * @param encoding The encoding to be used for writing to the given output
+     * stream. Can be <code>null</code>. If it is <code>null</code> the 
+     * {@link #DEFAULT_ENCODING} is used.
+     * @throws UnsupportedEncodingException 
+     * @since 2.4
+     */
+    public XmlWriter(OutputStream outputStream, String encoding) 
+    throws UnsupportedEncodingException
+    {
+        if(encoding==null)
+        {
+            encoding = DEFAULT_ENCODING;            
+        }
+        OutputStreamWriter writer = new OutputStreamWriter(outputStream, encoding);
+        setWriter(writer, encoding);
+    }
+
 
     /**
      * Turn pretty printing on or off.
