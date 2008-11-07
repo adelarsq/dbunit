@@ -43,7 +43,7 @@ public class DefaultFailureHandler implements FailureHandler
     /**
      * Logger for this class
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultFailureHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultFailureHandler.class);
 
     
     private String[] _additionalColumnInfo;
@@ -104,8 +104,8 @@ public class DefaultFailureHandler implements FailureHandler
     
     private String buildAdditionalColumnInfo(ITable expectedTable, ITable actualTable, int rowIndex) 
     {
-        if(LOGGER.isDebugEnabled())
-            LOGGER.debug("buildAdditionalColumnInfo(expectedTable={}, actualTable={}, rowIndex={}, " +
+        if(logger.isDebugEnabled())
+            logger.debug("buildAdditionalColumnInfo(expectedTable={}, actualTable={}, rowIndex={}, " +
                     "additionalColumnInfo={}) - start", 
                     new Object[] {expectedTable, actualTable, new Integer(rowIndex), _additionalColumnInfo} );
         
@@ -133,7 +133,7 @@ public class DefaultFailureHandler implements FailureHandler
             {
                 String msg = "Exception creating more info for column '"+columnName + "'";
                 msg += ": " + e.getClass().getName() + ": " + e.getMessage();
-                LOGGER.info(msg, e);
+                logger.info(msg, e);
                 additionalInfo += " (!!!!! " + msg + ")";
             }
         }
