@@ -19,13 +19,11 @@
  *
  */
 
-package org.dbunit;
+package org.dbunit.assertion;
 
 import java.sql.SQLException;
 
-import org.dbunit.assertion.DbUnitAssert;
-import org.dbunit.assertion.DefaultDbUnitAssert;
-import org.dbunit.assertion.FailureHandler;
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.IDataSet;
@@ -34,41 +32,16 @@ import org.dbunit.dataset.ITable;
 /**
  * Provides static methods for the most common DbUnit assertion needs.
  * 
- * Although the methods are static, they rely on a DbUnitAssert instance to do
- * the work. So, if you need to customize this class behavior, you can create
- * your own DbUnitAssert (typically extending DefaultDbUnitAssert), override the
- * desired methods, then call setInstance() with the new object.
+ * Although the methods are static, they rely on a Assertion instance to do the
+ * work. So, if you need to customize the behavior, you can create your own
+ * sub-class, override the desired methods, then call setInstance() with the new
+ * object.
  * 
- * @author Manuel Laflamme
  * @author Felipe Leme <dbunit@felipeal.net>
- * @version $Revision$
- * @since Mar 22, 2002
+ * @version $Revision: 864 $
+ * @since Nov 07, 2008
  */
-public class Assertion {
-
-  /**
-   * Object that will effectively do the assertions.
-   */
-  private static DbUnitAssert instance = new DefaultDbUnitAssert();
-
-  private Assertion() {
-    throw new UnsupportedOperationException(
-        "this class has only static methods");
-  }
-
-  /**
-   * This method can be used to customize the behavior of the static methods, as
-   * they will delegate the work to this instance.
-   * 
-   * @param instance
-   *          new instance to be used by static methods.
-   */
-  public static void setInstance(DbUnitAssert instance) {
-    if (instance == null) {
-      throw new IllegalArgumentException("instance cannot be null");
-    }
-    Assertion.instance = instance;
-  }
+public interface DbUnitAssert {
 
   /**
    * Compare one table present in two datasets ignoring specified columns.
@@ -84,12 +57,9 @@ public class Assertion {
    * @throws org.dbunit.DatabaseUnitException
    *           If an error occurs.
    */
-  public static void assertEqualsIgnoreCols(final IDataSet expectedDataset,
+  void assertEqualsIgnoreCols(final IDataSet expectedDataset,
       final IDataSet actualDataset, final String tableName,
-      final String[] ignoreCols) throws DatabaseUnitException {
-    instance.assertEqualsIgnoreCols(expectedDataset, actualDataset, tableName,
-        ignoreCols);
-  }
+      final String[] ignoreCols) throws DatabaseUnitException;
 
   /**
    * Compare the given tables ignoring specified columns.
@@ -103,11 +73,9 @@ public class Assertion {
    * @throws org.dbunit.DatabaseUnitException
    *           If an error occurs.
    */
-  public static void assertEqualsIgnoreCols(final ITable expectedTable,
+  void assertEqualsIgnoreCols(final ITable expectedTable,
       final ITable actualTable, final String[] ignoreCols)
-      throws DatabaseUnitException {
-    instance.assertEqualsIgnoreCols(expectedTable, actualTable, ignoreCols);
-  }
+      throws DatabaseUnitException;
 
   /**
    * Compare a table from a dataset with a table generated from an sql query.
@@ -127,13 +95,10 @@ public class Assertion {
    * @throws java.sql.SQLException
    *           If an SQL error occurs.
    */
-  public static void assertEqualsByQuery(final IDataSet expectedDataset,
+  void assertEqualsByQuery(final IDataSet expectedDataset,
       final IDatabaseConnection connection, final String sqlQuery,
       final String tableName, final String[] ignoreCols)
-      throws DatabaseUnitException, SQLException {
-    instance.assertEqualsByQuery(expectedDataset, connection, sqlQuery,
-        tableName, ignoreCols);
-  }
+      throws DatabaseUnitException, SQLException;
 
   /**
    * Compare a table with a table generated from an sql query.
@@ -153,34 +118,24 @@ public class Assertion {
    * @throws java.sql.SQLException
    *           If an SQL error occurs.
    */
-  public static void assertEqualsByQuery(final ITable expectedTable,
+  void assertEqualsByQuery(final ITable expectedTable,
       final IDatabaseConnection connection, final String tableName,
       final String sqlQuery, final String[] ignoreCols)
-      throws DatabaseUnitException, SQLException {
-    instance.assertEqualsByQuery(expectedTable, connection, tableName,
-        sqlQuery, ignoreCols);
-  }
+      throws DatabaseUnitException, SQLException;
 
   /**
    * Asserts that the two specified dataset are equals. This method ignore the
    * tables order.
    */
-  public static void assertEquals(IDataSet expectedDataSet,
-      IDataSet actualDataSet) throws DatabaseUnitException {
-    instance.assertEquals(expectedDataSet, actualDataSet);
-  }
+  void assertEquals(IDataSet expectedDataSet, IDataSet actualDataSet)
+      throws DatabaseUnitException;
 
   /**
    * Asserts that the two specified dataset are equals. This method ignore the
    * tables order.
-   * 
-   * @since 2.4
    */
-  public static void assertEquals(IDataSet expectedDataSet,
-      IDataSet actualDataSet, FailureHandler failureHandler)
-      throws DatabaseUnitException {
-    instance.assertEquals(expectedDataSet, actualDataSet, failureHandler);
-  }
+  void assertEquals(IDataSet expectedDataSet, IDataSet actualDataSet,
+      FailureHandler failureHandler) throws DatabaseUnitException;
 
   /**
    * Asserts that the two specified tables are equals. This method ignores the
@@ -193,10 +148,8 @@ public class Assertion {
    *          Table containing all actual results.
    * @throws DatabaseUnitException
    */
-  public static void assertEquals(ITable expectedTable, ITable actualTable)
-      throws DatabaseUnitException {
-    instance.assertEquals(expectedTable, actualTable);
-  }
+  void assertEquals(ITable expectedTable, ITable actualTable)
+      throws DatabaseUnitException;
 
   /**
    * Asserts that the two specified tables are equals. This method ignores the
@@ -222,10 +175,8 @@ public class Assertion {
    *          <code>null</code>
    * @throws DatabaseUnitException
    */
-  public static void assertEquals(ITable expectedTable, ITable actualTable,
-      Column[] additionalColumnInfo) throws DatabaseUnitException {
-    instance.assertEquals(expectedTable, actualTable, additionalColumnInfo);
-  }
+  public void assertEquals(ITable expectedTable, ITable actualTable,
+      Column[] additionalColumnInfo) throws DatabaseUnitException;
 
   /**
    * Asserts that the two specified tables are equals. This method ignores the
@@ -252,9 +203,7 @@ public class Assertion {
    * @throws DatabaseUnitException
    * @since 2.4
    */
-  public static void assertEquals(ITable expectedTable, ITable actualTable,
-      FailureHandler failureHandler) throws DatabaseUnitException {
-    instance.assertEquals(expectedTable, actualTable, failureHandler);
-  }
+  void assertEquals(ITable expectedTable, ITable actualTable,
+      FailureHandler failureHandler) throws DatabaseUnitException;
 
 }
