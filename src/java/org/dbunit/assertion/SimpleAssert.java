@@ -37,7 +37,7 @@ public class SimpleAssert
     /**
      * Logger for this class
      */
-    private static final Logger logger = LoggerFactory.getLogger(SimpleAssert.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleAssert.class);
 
     private FailureHandler failureHandler;
     
@@ -56,7 +56,7 @@ public class SimpleAssert
      */
     protected void assertNotNullNorEmpty( String propertyName, String property )
     {
-        logger.debug("assertNotNullNorEmpty(propertyName={}, property={}) - start", propertyName, property);
+        LOGGER.debug("assertNotNullNorEmpty(propertyName={}, property={}) - start", propertyName, property);
 
         assertTrue( propertyName + " is null", property != null );
         assertTrue( "Invalid " + propertyName, property.trim()
