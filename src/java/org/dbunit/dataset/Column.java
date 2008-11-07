@@ -142,7 +142,8 @@ public class Column
      */
     public static Nullable nullableValue(int nullable)
     {
-        logger.debug("nullableValue(nullable={}) - start", String.valueOf(nullable));
+        if(logger.isDebugEnabled())
+            logger.debug("nullableValue(nullable={}) - start", String.valueOf(nullable));
 
         switch (nullable)
         {
@@ -168,7 +169,9 @@ public class Column
      */
     public static Nullable nullableValue(boolean nullable)
     {
-        logger.debug("nullableValue(nullable={}) - start", String.valueOf(nullable));
+        if(logger.isDebugEnabled())
+            logger.debug("nullableValue(nullable={}) - start", String.valueOf(nullable));
+        
         return nullable ? NULLABLE : NO_NULLS;
     }
 
