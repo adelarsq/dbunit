@@ -530,14 +530,6 @@ public class AssertionTest extends TestCase
     	assertEquals(DataType.UNKNOWN, dataType);
     }
 
-    public void testSetInstanceNull() {
-      try {
-        Assertion.setInstance(null);
-        fail("should have caught an IllegalArgumentException");
-      } catch( IllegalArgumentException e ) {
-        assertNotNull(e.getMessage());
-      }
-    }
     
     
     /**
