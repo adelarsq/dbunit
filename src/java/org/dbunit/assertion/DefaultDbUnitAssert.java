@@ -312,8 +312,8 @@ public class DefaultDbUnitAssert
      * ITable actualTable = ...;
      * ITable expectedTable = ...;
      * ITableMetaData metaData = actualTable.getTableMetaData();
-     * Column[] additionalInfoCols = Columns.getColumns(new String[] {"MY_PK_COLUMN"}, metaData.getColumns());
-     * assertEquals(expectedTable, actualTable, additionalInfoCols);
+     * FailureHandler failureHandler = new DefaultFailureHandler();
+     * assertEquals(expectedTable, actualTable, failureHandler);
      * </pre></code>
      * 
      * @param expectedTable
@@ -608,8 +608,7 @@ public class DefaultDbUnitAssert
                 Column expectedColumn, Column actualColumn,
                 FailureHandler failureHandler) {
             if (logger.isDebugEnabled())
-                logger
-                .debug(
+                logger.debug(
                         "getComparisonDataType(tableName={}, expectedColumn={}, actualColumn={}, failureHandler={}) - start",
                         new Object[] { tableName, expectedColumn, actualColumn,
                                 failureHandler });
