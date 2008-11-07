@@ -55,23 +55,23 @@ public class MySqlDataTypeFactory extends DefaultDataTypeFactory
         if (sqlType == Types.OTHER)
         {
             // CLOB
-            if ("longtext".equals(sqlTypeName))
+            if ("longtext".equalsIgnoreCase(sqlTypeName))
             {
                 return DataType.CLOB;
             }
             // MySQL 5.0 Boolean
-            else if("bit".equals(sqlTypeName))
+            else if("bit".equalsIgnoreCase(sqlTypeName))
             {
                 return DataType.BOOLEAN; 
             }
-            else if("point".equals(sqlTypeName))
+            else if("point".equalsIgnoreCase(sqlTypeName))
             {
                 return DataType.BINARY; 
             }
         }
 
         // Special handling for "TINYINT UNSIGNED"
-        if(SQL_TYPE_NAME_TINYINT_UNSIGNED.equals(sqlTypeName)){
+        if(SQL_TYPE_NAME_TINYINT_UNSIGNED.equalsIgnoreCase(sqlTypeName)){
             return DataType.TINYINT; // It is a bit of a waste here - we could better use a "Short" instead of an "Integer" type
         }
         

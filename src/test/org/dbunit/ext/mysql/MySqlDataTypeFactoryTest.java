@@ -45,31 +45,46 @@ public class MySqlDataTypeFactoryTest extends AbstractDataTypeFactoryTest
 
     public void testCreateLongtextDataType() throws Exception
     {
-        int sqlType = Types.OTHER;
-        String sqlTypeName = "longtext";
-
+        DataType actual = createFactory().createDataType(Types.OTHER, "longtext");
         DataType expected = DataType.CLOB;
-        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
+    public void testCreateLongtextUpperCaseDataType() throws Exception
+    {
+        // MySql 5 reports the datatypes in uppercase, so this here must also work
+        DataType actual = createFactory().createDataType(Types.OTHER, "LONGTEXT");
+        DataType expected = DataType.CLOB;
         assertSame("type", expected, actual);
     }
 
     public void testCreateBooleanDataType() throws Exception
     {
-        int sqlType = Types.OTHER;
-        String sqlTypeName = "bit";
-
+        DataType actual = createFactory().createDataType(Types.OTHER, "bit");
         DataType expected = DataType.BOOLEAN;
-        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
         assertSame("type", expected, actual);
     }
     
+    public void testCreateBooleanUpperCaseDataType() throws Exception
+    {
+        // MySql 5 reports the datatypes in uppercase, so this here must also work
+        DataType actual = createFactory().createDataType(Types.OTHER, "BIT");
+        DataType expected = DataType.BOOLEAN;
+        assertSame("type", expected, actual);
+    }
+
     public void testCreatePointDataType() throws Exception
     {
-        int sqlType = Types.OTHER;
-        String sqlTypeName = "point";
-
+        DataType actual = createFactory().createDataType(Types.OTHER, "point");
         DataType expected = DataType.BINARY;
-        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
+    public void testCreatePointUpperCaseDataType() throws Exception
+    {
+        // MySql 5 reports the datatypes in uppercase, so this here must also work
+        DataType actual = createFactory().createDataType(Types.OTHER, "POINT");
+        DataType expected = DataType.BINARY;
         assertSame("type", expected, actual);
     }
 

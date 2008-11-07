@@ -40,6 +40,7 @@
       <action dev="gommma" type="add" issue="1371813" due-to="dsyer">Make configuration elements settable in ant (see 2041400)</action>
       <action dev="gommma" type="add" issue="1108976" due-to="matty70">Choose encoding for ant export task</action>
       <action dev="gommma" type="fix" issue="564041" due-to="james_a_woods">Share transaction with InsertIdentityOp.</action>
+      <action dev="gommma" type="fix" issue="1798605" due-to="gianasista">New Datatype MySqlDataTypeFactory</action>
     </release>
     <release version="2.3.0" date="Sep 11, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>
