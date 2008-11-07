@@ -49,6 +49,14 @@ public class DefaultFailureHandler implements FailureHandler
     private String[] _additionalColumnInfo;
 
     /**
+     * Default constructor which does not provide any additional column information.
+     */
+    public DefaultFailureHandler()
+    {
+        super();
+    }
+    
+    /**
      * Create a default failure handler
      * @param additionalColumnInfo the column names of the columns for which additional 
      * information should be printed when an assertion failed.
@@ -56,11 +64,11 @@ public class DefaultFailureHandler implements FailureHandler
     public DefaultFailureHandler(Column[] additionalColumnInfo) 
     {
         super();
-        if (additionalColumnInfo == null) {
-            throw new NullPointerException(
-                    "The parameter 'additionalColumnInfo' must not be null");
+        
+        // Null-safe access
+        if (additionalColumnInfo != null) {
+            this._additionalColumnInfo = Columns.getColumnNames(additionalColumnInfo);
         }
-        this._additionalColumnInfo = Columns.getColumnNames(additionalColumnInfo);
     }
 
     /**
@@ -74,6 +82,18 @@ public class DefaultFailureHandler implements FailureHandler
         this._additionalColumnInfo = additionalColumnInfo;
     }
 
+    public Error createFailure(String message, String expected, String actual) 
+    {
+        // Return dbunit's own comparison failure object
+        return new DbComparisonFailure(message, expected, actual);
+    }
+
+    public Error createFailure(String message) 
+    {
+        // Return dbunit's own failure object
+        return new DbAssertionFailedError(message);
+    }
+    
     public String getAdditionalInfo(ITable expectedTable, ITable actualTable,
             int row, String columnName) 
     {
@@ -89,39 +109,45 @@ public class DefaultFailureHandler implements FailureHandler
                     "additionalColumnInfo={}) - start", 
                     new Object[] {expectedTable, actualTable, new Integer(rowIndex), _additionalColumnInfo} );
         
-        String additionalInfo = "";
-        
-        if(_additionalColumnInfo != null && _additionalColumnInfo.length>0) {
-            for (int j = 0; j < _additionalColumnInfo.length; j++) {
-                String columnName = _additionalColumnInfo[j];
-                
-                try 
-                {
-                    // Get the ITable objects to be used for showing the column values (needed in case
-                    // of Filtered tables)
-                    ITable expectedTableForCol = getTableForColumn(expectedTable, columnName);
-                    ITable actualTableForCol = getTableForColumn(actualTable, columnName);
-                    
-                    Object expectedKeyValue = expectedTableForCol.getValue(rowIndex, columnName);
-                    Object actualKeyValue = actualTableForCol.getValue(rowIndex, columnName);
-                    additionalInfo += " ('" + columnName + "': expected=<"+expectedKeyValue+">, actual=<"+actualKeyValue+">)";
-                } 
-                catch (DataSetException e) 
-                {
-                    String msg = "Exception creating more info for column '"+columnName + "'";
-                    msg += ": " + e.getClass().getName() + ": " + e.getMessage();
-                    logger.info(msg, e);
-                    additionalInfo += " (!!!!! " + msg + ")";
-                }
-            }
-            
-            if(additionalInfo.length()>0)
-            {
-                additionalInfo = "Additional row info:" + additionalInfo;
-            }
-            
+        // No columns specified
+        if(_additionalColumnInfo == null || _additionalColumnInfo.length <= 0) {
+            return null;
         }
-        return additionalInfo;
+        
+        String additionalInfo = "";
+        for (int j = 0; j < _additionalColumnInfo.length; j++) {
+            String columnName = _additionalColumnInfo[j];
+            
+            try 
+            {
+                // Get the ITable objects to be used for showing the column values (needed in case
+                // of Filtered tables)
+                ITable expectedTableForCol = getTableForColumn(expectedTable, columnName);
+                ITable actualTableForCol = getTableForColumn(actualTable, columnName);
+                
+                Object expectedKeyValue = expectedTableForCol.getValue(rowIndex, columnName);
+                Object actualKeyValue = actualTableForCol.getValue(rowIndex, columnName);
+                additionalInfo += " ('" + columnName + "': expected=<"+expectedKeyValue+">, actual=<"+actualKeyValue+">)";
+            } 
+            catch (DataSetException e) 
+            {
+                String msg = "Exception creating more info for column '"+columnName + "'";
+                msg += ": " + e.getClass().getName() + ": " + e.getMessage();
+                logger.info(msg, e);
+                additionalInfo += " (!!!!! " + msg + ")";
+            }
+        }
+        
+        if(additionalInfo.length()>0)
+        {
+            additionalInfo = "Additional row info:" + additionalInfo;
+            return additionalInfo;
+        }
+        else
+        {
+            return null;
+        }
+        
     }
 
     private ITable getTableForColumn(ITable table, String columnName) throws DataSetException 

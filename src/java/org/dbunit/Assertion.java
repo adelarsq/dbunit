@@ -24,10 +24,8 @@ package org.dbunit;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-import junit.framework.ComparisonFailure;
-
-import org.dbunit.assertion.DefaultFailureHandler;
 import org.dbunit.assertion.FailureHandler;
+import org.dbunit.assertion.JUnitFailureHandler;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.Columns;
@@ -42,6 +40,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Provides assertions for the most common dbunit test cases.
+ * 
  * @author Manuel Laflamme
  * @version $Revision$
  * @since Mar 22, 2002
@@ -159,11 +159,31 @@ public class Assertion
             IDataSet actualDataSet) throws DatabaseUnitException
     {
         logger.debug("assertEquals(expectedDataSet={}, actualDataSet={}) - start", expectedDataSet, actualDataSet);
+        assertEquals(expectedDataSet, actualDataSet, null);
+    }
+    
+    /**
+     * Asserts that the two specified dataset are equals. This method ignore
+     * the tables order.
+     * @since 2.4
+     */
+    public static void assertEquals(IDataSet expectedDataSet,
+            IDataSet actualDataSet, FailureHandler failureHandler) throws DatabaseUnitException
+    {
+        if(logger.isDebugEnabled())
+            logger.debug("assertEquals(expectedDataSet={}, actualDataSet={}, failureHandler={}) - start", 
+                    new Object[] {expectedDataSet, actualDataSet, failureHandler} );
 
         // do not continue if same instance
         if (expectedDataSet == actualDataSet)
         {
             return;
+        }
+
+        if(failureHandler == null)
+        {
+            logger.debug("FailureHandler is null. Using default implementation");
+            failureHandler = getDefaultFailureHandler();
         }
 
         String[] expectedNames = getSortedUpperTableNames(expectedDataSet);
@@ -172,7 +192,7 @@ public class Assertion
         // tables count
         if(expectedNames.length != actualNames.length)
         {
-            throw new ComparisonFailure("table count", String.valueOf(expectedNames.length), String.valueOf(actualNames.length) );
+            throw failureHandler.createFailure("table count", String.valueOf(expectedNames.length), String.valueOf(actualNames.length) );
         }
 
         // table names in no specific order
@@ -180,7 +200,7 @@ public class Assertion
         {
             if (!actualNames[i].equals(expectedNames[i]))
             {
-                throw new ComparisonFailure("tables", Arrays.asList(expectedNames).toString(), Arrays.asList(actualNames).toString());
+                throw failureHandler.createFailure("tables", Arrays.asList(expectedNames).toString(), Arrays.asList(actualNames).toString());
             }
 
         }
@@ -195,6 +215,7 @@ public class Assertion
 
     }
 
+    
     /**
 	 * Asserts that the two specified tables are equals. This method ignores the
 	 * table names, the columns order, the columns data type and which columns
@@ -237,12 +258,13 @@ public class Assertion
                 new Object[] {expectedTable, actualTable, additionalColumnInfo} );
         
         FailureHandler failureHandler = null;
-        if(additionalColumnInfo!=null)
-            failureHandler = new DefaultFailureHandler(additionalColumnInfo);
+        if(additionalColumnInfo != null)
+            failureHandler = getDefaultFailureHandler(additionalColumnInfo);
         
         Assertion.assertEquals(expectedTable, actualTable, failureHandler);
     }
     
+
     /**
      * Asserts that the two specified tables are equals. This method ignores the
      * table names, the columns order, the columns data type and which columns
@@ -262,6 +284,7 @@ public class Assertion
      * Provides some additional information that may be useful to quickly identify the rows for which the mismatch
      * occurred (for example by printing an additional primary key column). Can be <code>null</code>
      * @throws DatabaseUnitException
+     * @since 2.4
      */
     public static void assertEquals(ITable expectedTable, ITable actualTable, FailureHandler failureHandler)
             throws DatabaseUnitException
@@ -276,6 +299,13 @@ public class Assertion
             return;
         }
 
+        if(failureHandler == null)
+        {
+            logger.debug("FailureHandler is null. Using default implementation");
+            failureHandler = getDefaultFailureHandler();
+        }
+
+        
         ITableMetaData expectedMetaData = expectedTable.getTableMetaData();
         ITableMetaData actualMetaData = actualTable.getTableMetaData();
         String expectedTableName = expectedMetaData.getTableName();
@@ -285,8 +315,8 @@ public class Assertion
         int actualRowsCount = actualTable.getRowCount();
         if(expectedRowsCount != actualRowsCount)
         {
-            throw new ComparisonFailure("row count (table=" + expectedTableName + ")",
-                String.valueOf(expectedRowsCount), String.valueOf(actualRowsCount) );
+            String msg = "row count (table=" + expectedTableName + ")";
+            throw failureHandler.createFailure(msg, String.valueOf(expectedRowsCount), String.valueOf(actualRowsCount));
         }
         // if both tables are empty, it is not necessary to compare columns, as such comparison
         // can fail if column metadata is different (which could occurs when comparing empty tables)
@@ -305,13 +335,15 @@ public class Assertion
     	if(columnDiff.hasDifference())
     	{
     		String message = columnDiff.getMessage();
-    		throw new ComparisonFailure(message,
+    		throw failureHandler.createFailure(
+    		        message,
     				Columns.getColumnNamesAsString(expectedColumns), 
     				Columns.getColumnNamesAsString(actualColumns) );
     	}
         
         // Get the datatypes to be used for comparing the sorted columns
-        ComparisonColumn[] comparisonCols = getComparisonColumns(expectedTableName, expectedColumns, actualColumns);
+        ComparisonColumn[] comparisonCols = getComparisonColumns(
+                    expectedTableName, expectedColumns, actualColumns, failureHandler);
         
         // Finally compare the data
         compareData(expectedTable, actualTable, comparisonCols, failureHandler);
@@ -319,12 +351,33 @@ public class Assertion
 
 
     /**
+     * @return The default failure handler
+     * @since 2.4
+     */
+    private static FailureHandler getDefaultFailureHandler() 
+    {
+        // For backwards compatibility use the JUnitFailureHandler by default
+        return getDefaultFailureHandler(null);
+    }
+    
+    /**
+     * @return The default failure handler
+     * @since 2.4
+     */
+    private static FailureHandler getDefaultFailureHandler(
+            Column[] additionalColumnInfo) 
+    {
+        // For backwards compatibility use the JUnitFailureHandler by default
+        return new JUnitFailureHandler(additionalColumnInfo);
+    }
+
+    /**
      * @param expectedTable Table containing all expected results.
      * @param actualTable Table containing all actual results.
      * @param comparisonCols The columns to be compared, also including the correct {@link DataType}s for comparison
      * @param failureHandler The failure handler used if the assert fails because of a data mismatch.
      * Provides some additional information that may be useful to quickly identify the rows for which the mismatch
-     * occurred (for example by printing an additional primary key column). Can be null
+     * occurred (for example by printing an additional primary key column). Must not be <code>null</code> at this stage
      * @throws DataSetException
      * @since 2.4
      */
@@ -335,6 +388,24 @@ public class Assertion
         logger.debug("assertEquals(expectedTable={}, actualTable={}, " +
         		"comparisonCols={}, failureHandler={}) - start", 
                 new Object[] {expectedTable, actualTable, comparisonCols, failureHandler} );
+        
+        if (expectedTable == null) {
+            throw new NullPointerException(
+                    "The parameter 'expectedTable' must not be null");
+        }
+        if (actualTable == null) {
+            throw new NullPointerException(
+                    "The parameter 'actualTable' must not be null");
+        }
+        if (comparisonCols == null) {
+            throw new NullPointerException(
+                    "The parameter 'comparisonCols' must not be null");
+        }
+        if (failureHandler == null) {
+            throw new NullPointerException(
+                    "The parameter 'failureHandler' must not be null");
+        }
+        
         
         // values as strings
         for (int i = 0; i < expectedTable.getRowCount(); i++)
@@ -351,11 +422,7 @@ public class Assertion
 
                 if (dataType.compare(expectedValue, actualValue) != 0)
                 {
-                    String additionalInfo = null;
-                    if(failureHandler != null)
-                    {
-                        additionalInfo = failureHandler.getAdditionalInfo(expectedTable, actualTable, i, columnName);
-                    }
+                    String additionalInfo = failureHandler.getAdditionalInfo(expectedTable, actualTable, i, columnName);
                     
                     String expectedTableName = expectedTable.getTableMetaData().getTableName();
                     // example message: "value (table=MYTAB, row=232, column=MYCOL, Additional row info: (column=MyIdCol, expected=444, actual=555)): expected:<123> but was:<1234>"
@@ -363,7 +430,7 @@ public class Assertion
                     if(additionalInfo!=null && !additionalInfo.trim().equals(""))
                         msg += ", " + additionalInfo;
                     msg += ")";
-                    throw new ComparisonFailure(msg, String.valueOf(expectedValue), String.valueOf(actualValue));
+                    throw failureHandler.createFailure(msg, String.valueOf(expectedValue), String.valueOf(actualValue));
                 }
                 
             }
@@ -376,11 +443,13 @@ public class Assertion
      * @param expectedTableName
      * @param expectedColumns
      * @param actualColumns
+     * @param failureHandler The {@link FailureHandler} to be used when no datatype
+     * can be determined
      * @return The columns to be used for the assertion, including the correct datatype
      * @since 2.4
      */
     private static ComparisonColumn[] getComparisonColumns(String expectedTableName,
-            Column[] expectedColumns, Column[] actualColumns) 
+            Column[] expectedColumns, Column[] actualColumns, FailureHandler failureHandler) 
     {
         ComparisonColumn[] result = new ComparisonColumn[expectedColumns.length];
         
@@ -388,7 +457,7 @@ public class Assertion
         {
             Column expectedColumn = expectedColumns[j];
             Column actualColumn = actualColumns[j];
-            result[j] = new ComparisonColumn(expectedTableName, expectedColumn, actualColumn);
+            result[j] = new ComparisonColumn(expectedTableName, expectedColumn, actualColumn, failureHandler);
         }
         return result;
     }
@@ -436,13 +505,15 @@ public class Assertion
          * to use for the actual comparison
          * @param actualColumn The actual column needed to resolve the {@link DataType} 
          * to use for the actual comparison
+         * @param failureHandler The {@link FailureHandler} to be used when no datatype
+         * can be determined
          */
         public ComparisonColumn(String tableName,
-                Column expectedColumn, Column actualColumn) 
+                Column expectedColumn, Column actualColumn, FailureHandler failureHandler) 
         {
             super();
             this.columnName = expectedColumn.getColumnName();
-            this.dataType = getComparisonDataType(tableName, expectedColumn, actualColumn);
+            this.dataType = getComparisonDataType(tableName, expectedColumn, actualColumn, failureHandler);
         }
 
         /**
@@ -466,15 +537,19 @@ public class Assertion
          * @param tableName The table name which is only needed for debugging output
          * @param expectedColumn
          * @param actualColumn
+         * @param failureHandler The {@link FailureHandler} to be used when no datatype
+         * can be determined
          * @return The dbunit {@link DataType} to use for comparing the given column.
          */
         private DataType getComparisonDataType(String tableName, Column expectedColumn,
-                Column actualColumn)
+                Column actualColumn, FailureHandler failureHandler)
         {
             if(logger.isDebugEnabled())
-                logger.debug("getComparisonDataType(tableName={}, expectedColumn={}, actualColumn={}) - start", 
-                        new Object[] {tableName, expectedColumn, actualColumn});
+                logger.debug("getComparisonDataType(tableName={}, expectedColumn={}, actualColumn={}, failureHandler={}) - start", 
+                        new Object[] {tableName, expectedColumn, actualColumn, failureHandler});
 
+            
+            
             DataType expectedDataType = expectedColumn.getDataType();
             DataType actualDataType = actualColumn.getDataType();
 
@@ -494,9 +569,9 @@ public class Assertion
                 }
 
                 // Impossible to determine which data type to use
-                throw new ComparisonFailure("Incompatible data types: (table=" + tableName + ", col=" +
-                        expectedColumn.getColumnName() + ")", 
-                        String.valueOf(expectedDataType), String.valueOf(actualDataType));
+                String msg = "Incompatible data types: (table=" + tableName + ", col=" +
+                                expectedColumn.getColumnName() + ")";
+                throw failureHandler.createFailure(msg, String.valueOf(expectedDataType), String.valueOf(actualDataType));
             }
 
             // Both columns have same data type, return any one of them

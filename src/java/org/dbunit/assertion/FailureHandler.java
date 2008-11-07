@@ -34,6 +34,24 @@ public interface FailureHandler
 {
 
     /**
+     * Creates a new failure object which can have different types, depending on
+     * the testing framework you are currently using (e.g. JUnit, TestNG, ...)
+     * @param message The reason for the failure
+     * @param expected The expected result
+     * @param actual The actual result
+     * @return The comparison failure object for this handler (can be JUnit or some other)
+     * which can be thrown on an assertion failure
+     */
+    public Error createFailure(String message, String expected, String actual);
+
+    /**
+     * @param message The reason for the failure
+     * @return The assertion failure object for this handler (can be JUnit or some other)
+     * which can be thrown on an assertion failure
+     */
+    public Error createFailure(String message);
+
+    /**
      * Returns a string to be appended to the assertion failure message
      * @param expectedTable
      * @param actualTable
@@ -43,5 +61,6 @@ public interface FailureHandler
      */
     public String getAdditionalInfo(ITable expectedTable, ITable actualTable,
             int row, String columnName);
-    
+
+
 }

@@ -27,13 +27,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import junit.framework.Assert;
-
+import org.dbunit.assertion.SimpleAssert;
+import org.dbunit.assertion.DefaultFailureHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Simple utility to compare file or stream data with each other based on JUnit.
+ * Simple utility to compare file or stream data with each other.
  * 
  * <p>
  * From  "Dale E Martin" dmartin@c..
@@ -65,6 +65,7 @@ import org.slf4j.LoggerFactory;
  */
 public class FileAsserts
 {
+    private static final SimpleAssert ASSERT = new SimpleAssert(new DefaultFailureHandler());
 
     /**
      * Logger for this class
@@ -122,8 +123,8 @@ public class FileAsserts
     {
         logger.debug("assertEquals(expected={}, actual={}) - start", expected, actual);
 
-        Assert.assertNotNull(expected);
-        Assert.assertNotNull(actual);
+        ASSERT.assertNotNull(expected);
+        ASSERT.assertNotNull(actual);
 
         String problem = null;
         try
@@ -143,7 +144,7 @@ public class FileAsserts
 
         if (problem != null)
         {
-            Assert.fail(problem);
+            ASSERT.fail(problem);
         }
     }
 
@@ -152,10 +153,10 @@ public class FileAsserts
     {
         logger.debug("assertEquals(expected={}, actual={}) - start", expected, actual);
 
-        Assert.assertNotNull(expected);
-        Assert.assertNotNull(actual);
+        ASSERT.assertNotNull(expected);
+        ASSERT.assertNotNull(actual);
 
-        Assert.assertTrue(actual.canRead());
+        ASSERT.assertTrue(actual.canRead());
 
         
         BufferedReader expectedData = new BufferedReader(new InputStreamReader(expected));
@@ -169,11 +170,11 @@ public class FileAsserts
     {
         logger.debug("assertEquals(expected={}, actual={}) - start", expected, actual);
 
-        Assert.assertNotNull(expected);
-        Assert.assertNotNull(actual);
+        ASSERT.assertNotNull(expected);
+        ASSERT.assertNotNull(actual);
 
-        Assert.assertTrue(expected.canRead());
-        Assert.assertTrue(actual.canRead());
+        ASSERT.assertTrue(expected.canRead());
+        ASSERT.assertTrue(actual.canRead());
 
         BufferedReader expectedData =
                 new BufferedReader(new InputStreamReader(new FileInputStream(expected)));

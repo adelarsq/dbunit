@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
 
+import org.dbunit.assertion.JUnitFailureHandler;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.CompositeDataSet;
@@ -480,7 +481,7 @@ public class AssertionTest extends TestCase
     {
     	Column expectedColumn = new Column("COL1", DataType.UNKNOWN);
     	Column actualColumn = new Column("COL1", DataType.VARCHAR);
-    	DataType dataType = new Assertion.ComparisonColumn("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn).getDataType();
+    	DataType dataType = new Assertion.ComparisonColumn("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn, new JUnitFailureHandler()).getDataType();
     	assertEquals(DataType.VARCHAR, dataType);
     }
     
@@ -488,7 +489,7 @@ public class AssertionTest extends TestCase
     {
     	Column expectedColumn = new Column("COL1", DataType.VARCHAR);
     	Column actualColumn = new Column("COL1", DataType.UNKNOWN);
-    	DataType dataType = new Assertion.ComparisonColumn("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn).getDataType();
+    	DataType dataType = new Assertion.ComparisonColumn("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn, new JUnitFailureHandler()).getDataType();
     	assertEquals(DataType.VARCHAR, dataType);
     }
 
@@ -497,7 +498,7 @@ public class AssertionTest extends TestCase
     	Column expectedColumn = new Column("COL1", DataType.VARCHAR);
     	Column actualColumn = new Column("COL1", DataType.NUMERIC);
     	try {
-    	    new Assertion.ComparisonColumn("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn).getDataType();
+    	    new Assertion.ComparisonColumn("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn, new JUnitFailureHandler()).getDataType();
     		fail("Incompatible datatypes should not work");
     	}
     	catch(ComparisonFailure expected){
@@ -512,7 +513,7 @@ public class AssertionTest extends TestCase
     {
     	Column expectedColumn = new Column("COL1", DataType.VARCHAR);
     	Column actualColumn = new Column("COL1", DataType.VARCHAR);
-    	DataType dataType = new Assertion.ComparisonColumn("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn).getDataType();
+    	DataType dataType = new Assertion.ComparisonColumn("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn, new JUnitFailureHandler()).getDataType();
     	assertEquals(DataType.VARCHAR, dataType);
     }
 
@@ -520,7 +521,7 @@ public class AssertionTest extends TestCase
     {
     	Column expectedColumn = new Column("COL1", DataType.UNKNOWN);
     	Column actualColumn = new Column("COL1", DataType.UNKNOWN);
-    	DataType dataType = new Assertion.ComparisonColumn("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn).getDataType();
+    	DataType dataType = new Assertion.ComparisonColumn("BLABLA_TABLE_NOT_NEEDED_HERE", expectedColumn, actualColumn, new JUnitFailureHandler()).getDataType();
     	assertEquals(DataType.UNKNOWN, dataType);
     }
 

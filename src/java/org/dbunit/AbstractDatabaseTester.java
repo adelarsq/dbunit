@@ -21,10 +21,11 @@
 
 package org.dbunit;
 
+import org.dbunit.assertion.SimpleAssert;
+import org.dbunit.assertion.DefaultFailureHandler;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * @version $Revision$ $Date$
  * @since 2.2.0
  */
-public abstract class AbstractDatabaseTester implements IDatabaseTester
+public abstract class AbstractDatabaseTester extends SimpleAssert implements IDatabaseTester
 {
 
 	/**
@@ -52,7 +53,7 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
 
 	public AbstractDatabaseTester()
 	{
-		super();
+		super(new DefaultFailureHandler());
 	}
 
 	public void closeConnection( IDatabaseConnection connection ) throws Exception
@@ -108,31 +109,6 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
 		logger.debug("setTearDownOperation(tearDownOperation={}) - start", tearDownOperation);
 
 		this.tearDownOperation = tearDownOperation;
-	}
-
-	/**
-	 * Asserts that propertyName is not a null String and has a length greater
-	 * than zero.
-	 */
-	protected void assertNotNullNorEmpty( String propertyName, String property )
-	{
-		logger.debug("assertNotNullNorEmpty(propertyName={}, property={}) - start", propertyName, property);
-
-		assertTrue( propertyName + " is null", property != null );
-		assertTrue( "Invalid " + propertyName, property.trim()
-				.length() > 0 );
-	}
-
-	/**
-	 * Method used to avoid JUnit dependency
-	 * @param message message displayed if assertion is false
-	 * @param condition condition to be tested
-	 */
-	protected void assertTrue(String message, boolean condition) {
-		if (!condition) {
-			throw new AssertionFailedError( message );
-		}
-
 	}
 
 	/**
@@ -195,22 +171,6 @@ public abstract class AbstractDatabaseTester implements IDatabaseTester
     	sb.append("]");
     	return sb.toString();
     }
-
-	/**
-	 * Exception used to avoid JUnit dependency.
-	 * @author Felipe Leme
-	 *
-	 */
-	public static class AssertionFailedError extends Error {
-
-		private static final long serialVersionUID= 1L;
-
-		public AssertionFailedError () {
-		}
-		public AssertionFailedError (String message) {
-			super (message);
-		}
-	}
 
 }
 
