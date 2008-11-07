@@ -99,11 +99,11 @@ public class FlatDtdWriter //implements IDataSetConsumer
                 printOut.print(column.getColumnName());
                 if (column.getNullable() == Column.NO_NULLS)
                 {
-                    printOut.print(" CDATA #REQUIRED\n");
+                    printOut.print(" CDATA " + FlatDtdProducer.REQUIRED + "\n");
                 }
                 else
                 {
-                    printOut.print(" CDATA #IMPLIED\n");
+                    printOut.print(" CDATA " + FlatDtdProducer.IMPLIED + "\n");
                 }
             }
             printOut.print(">\n");

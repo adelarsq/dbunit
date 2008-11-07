@@ -71,6 +71,20 @@ import org.xml.sax.ext.LexicalHandler;
  */
 public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHandler, LexicalHandler
 {
+    /**
+     * Constant for the value {@value}
+     */
+    public static final String REQUIRED = "#REQUIRED";
+    
+    /**
+     * Constant for the value {@value}
+     */
+    public static final String IMPLIED = "#IMPLIED";
+
+    /**
+     * Constant for the value {@value}
+     */
+    public static final String ANY = "ANY";
 
     /**
      * Logger for this class
@@ -87,9 +101,6 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
             "http://xml.org/sax/properties/declaration-handler";
     private static final String LEXICAL_HANDLER_PROPERTY_NAME =
             "http://xml.org/sax/properties/lexical-handler";
-
-    private static final String REQUIRED = "#REQUIRED";
-    private static final String IMPLIED = "#IMPLIED";
 
     private InputSource _inputSource;
     private IDataSetConsumer _consumer = EMPTY_CONSUMER;
@@ -266,7 +277,7 @@ public class FlatDtdProducer implements IDataSetProducer, EntityResolver, DeclHa
             }
             else
             {
-                if ("ANY".equalsIgnoreCase(_rootModel))
+                if (ANY.equalsIgnoreCase(_rootModel))
                 {
                     Iterator i = _columnListMap.keySet().iterator();
                     while (i.hasNext()) {
