@@ -19,7 +19,7 @@
  *
  */
 
-package org.dbunit;
+package org.dbunit.assertion;
 
 import java.io.FileReader;
 import java.math.BigDecimal;
@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
 
+import org.dbunit.DatabaseEnvironment;
 import org.dbunit.assertion.DefaultDbUnitAssert;
 import org.dbunit.assertion.JUnitFailureHandler;
 import org.dbunit.database.IDatabaseConnection;
@@ -51,13 +52,11 @@ import org.dbunit.operation.DatabaseOperation;
  * @version $Revision$
  * @since Mar 22, 2002
  */
-public class AssertionTest extends TestCase
+public class DefaultDbUnitAssertTest extends TestCase
 {
-  
-  // TODO: most of theses tests should be moved to a DefaultDbUnitAssertTest class
-
-  
-    public AssertionTest(String s)
+    private DefaultDbUnitAssert assertion = new DefaultDbUnitAssert();
+    
+    public DefaultDbUnitAssertTest(String s)
     {
         super(s);
     }
@@ -74,7 +73,7 @@ public class AssertionTest extends TestCase
     public void testAssertTablesEquals() throws Exception
     {
         IDataSet dataSet = getDataSet();
-        Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+        assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                 dataSet.getTable("TEST_TABLE_WITH_SAME_VALUE"), 
                 new Column[] {new Column("COLUMN0", DataType.VARCHAR)} );
     }
@@ -83,21 +82,21 @@ public class AssertionTest extends TestCase
     {
       IDataSet empty1 = new XmlDataSet(new FileReader("src/xml/assertionTest-empty1.xml"));
       IDataSet empty2 = new FlatXmlDataSet(new FileReader("src/xml/assertionTest-empty2.xml"));
-      Assertion.assertEquals(empty1, empty2);
+      assertion.assertEquals(empty1, empty2);
     }
     
 
 	public void testAssertTablesEqualsColumnNamesCaseInsensitive() throws Exception
     {
         IDataSet dataSet = getDataSet();
-        Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+        assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                 dataSet.getTable("TEST_TABLE_WITH_LOWER_COLUMN_NAMES"));
     }
 
     public void testAssertTablesAndNamesNotEquals() throws Exception
     {
         IDataSet dataSet = getDataSet();
-        Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+        assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                 dataSet.getTable("TEST_TABLE_WITH_DIFFERENT_NAME"));
     }
 
@@ -107,7 +106,7 @@ public class AssertionTest extends TestCase
 
         try
         {
-            Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+            assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                     dataSet.getTable("TEST_TABLE_WITH_3_COLUMNS"));
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
@@ -124,7 +123,7 @@ public class AssertionTest extends TestCase
     {
         IDataSet dataSet = getDataSet();
 
-        Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+        assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                 dataSet.getTable("TEST_TABLE_WITH_DIFFERENT_COLUMN_SEQUENCE"));
     }
 
@@ -134,7 +133,7 @@ public class AssertionTest extends TestCase
 
         try
         {
-            Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+            assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                     dataSet.getTable("TEST_TABLE_WITH_DIFFERENT_COLUMN_NAMES"));
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
@@ -153,7 +152,7 @@ public class AssertionTest extends TestCase
 
         try
         {
-            Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+            assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                     dataSet.getTable("TEST_TABLE_WITH_ONE_ROW"));
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
@@ -172,7 +171,7 @@ public class AssertionTest extends TestCase
 
         try
         {
-            Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+            assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                     dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"));
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
@@ -191,7 +190,7 @@ public class AssertionTest extends TestCase
         
         // Column2 has the wrong value, so exclude -> test should run successfully
         String[] allColumnsThatAreNotEqual = new String[] {"COLUMN2"};
-        Assertion.assertEqualsIgnoreCols(dataSet.getTable("TEST_TABLE"),
+        assertion.assertEqualsIgnoreCols(dataSet.getTable("TEST_TABLE"),
                 dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"),
                 allColumnsThatAreNotEqual );
     }
@@ -204,7 +203,7 @@ public class AssertionTest extends TestCase
         // -> test should fail
         String[] filteredColumns = new String[] {"COLUMN0"};
         try {
-	        Assertion.assertEqualsIgnoreCols(dataSet.getTable("TEST_TABLE"),
+            assertion.assertEqualsIgnoreCols(dataSet.getTable("TEST_TABLE"),
 	                dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"),
 	                filteredColumns );
             throw new IllegalStateException("Should throw an AssertionFailedError");
@@ -227,7 +226,7 @@ public class AssertionTest extends TestCase
         	Column[] additionalColInfo = new Column[]{
         			new Column("COLUMN0", DataType.VARCHAR)
         	};
-            Assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+        	assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
                     dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"),
                     additionalColInfo);
             throw   new IllegalStateException("Should throw an AssertionFailedError");
@@ -274,7 +273,7 @@ public class AssertionTest extends TestCase
 
         try
         {
-            Assertion.assertEquals(expectedTable, actualTable);
+            assertion.assertEquals(expectedTable, actualTable);
         }
         catch (ComparisonFailure expected)
         {
@@ -300,7 +299,7 @@ public class AssertionTest extends TestCase
     	// Ignore COLUMN2 which has been modified by the "ModifyingTable" above and hence does not match.
         // When we ignore this column, the assertion should work without failure
         String[] ignoreCols = new String[] {"COLUMN2"};
-        Assertion.assertEqualsByQuery(expectedTable, connection, "TEST_TABLE", "select * from TEST_TABLE", ignoreCols);
+        assertion.assertEqualsByQuery(expectedTable, connection, "TEST_TABLE", "select * from TEST_TABLE", ignoreCols);
     }
     
     public void testAssertTablesByQueryWithColFilterAndValuesNotEqualNotExcluded() throws Exception
@@ -319,7 +318,7 @@ public class AssertionTest extends TestCase
         // not match and is not ignored. So the assertion should fail.
         String[] ignoreCols = new String[] {"COLUMN1"};
         try {
-        	Assertion.assertEqualsByQuery(expectedTable, connection, "TEST_TABLE", "select * from TEST_TABLE", ignoreCols);
+            assertion.assertEqualsByQuery(expectedTable, connection, "TEST_TABLE", "select * from TEST_TABLE", ignoreCols);
         	fail("The assertion should not work");
         }
         catch (ComparisonFailure expected)
@@ -374,7 +373,7 @@ public class AssertionTest extends TestCase
                 expectedColumns);
         expectedTable.addRow(expectedRow);
 
-        Assertion.assertEquals(expectedTable, actualTable);
+        assertion.assertEquals(expectedTable, actualTable);
     }
 
     public void testAssertDataSetsEquals() throws Exception
@@ -386,7 +385,7 @@ public class AssertionTest extends TestCase
         IDataSet dataSet2 = new FilteredDataSet(names, dataSet1);
 
         assertTrue("assert not same", dataSet1 != dataSet2);
-        Assertion.assertEquals(dataSet1, dataSet2);
+        assertion.assertEquals(dataSet1, dataSet2);
     }
 
     public void testAssertDataSetsEqualsTableNamesCaseInsensitive() throws Exception
@@ -402,7 +401,7 @@ public class AssertionTest extends TestCase
         IDataSet dataSet2 = new FilteredDataSet(names, dataSet1);
 
         assertTrue("assert not same", dataSet1 != dataSet2);
-        Assertion.assertEquals(dataSet1, dataSet2);
+        assertion.assertEquals(dataSet1, dataSet2);
     }
 
     public void testAssertDataSetsAndTableCountNotEquals() throws Exception
@@ -417,7 +416,7 @@ public class AssertionTest extends TestCase
 
         try
         {
-            Assertion.assertEquals(dataSet1, dataSet2);
+            assertion.assertEquals(dataSet1, dataSet2);
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
         catch (ComparisonFailure expected)
@@ -450,7 +449,7 @@ public class AssertionTest extends TestCase
 
         try
         {
-            Assertion.assertEquals(dataSet1, dataSet2);
+            assertion.assertEquals(dataSet1, dataSet2);
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
         catch (ComparisonFailure expected)
@@ -471,7 +470,7 @@ public class AssertionTest extends TestCase
 
         try
         {
-            Assertion.assertEquals(dataSet1, dataSet2);
+            assertion.assertEquals(dataSet1, dataSet2);
             throw new IllegalStateException("Should throw an AssertionFailedError");
         }
         catch (ComparisonFailure expected)
