@@ -287,6 +287,34 @@ A major limitation of this technique is that you cannot use a DTD with your expe
         it the best way in the future.
       </i>
       </p>
+      
+      
+      <a name="assert-collect-diff"><h4>Assert and collect the differences</h4></a>
+      <p>By default, dbunit immediately fails when the first data difference was found.
+      Starting with dbunit 2.4 it is possible to register a custom 
+      <a href="apidocs/org/dbunit/assertion/FailureHandler.html">FailureHandler</a>
+      which lets users specify which kinds of exceptions to be thrown and how to handle
+      the occurrences of data differences. Using the  
+      <a href="apidocs/org/dbunit/assertion/DiffCollectingFailureHandler.html">DiffCollectingFailureHandler</a>
+      you can avoid an exception to be thrown on a data mismatch so that you can
+      evaluate all results of the data comparison afterwards.
+      </p>
+      <p>
+      <source>
+IDataSet dataSet = getDataSet();
+DiffCollectingFailureHandler myHandler = new DiffCollectingFailureHandler();
+//invoke the assertion with the custom handler
+assertion.assertEquals(dataSet.getTable("TEST_TABLE"),
+                       dataSet.getTable("TEST_TABLE_WITH_WRONG_VALUE"),
+                       myHandler);
+// Evaluate the results and throw an failure if you wish
+List diffList = myHandler.getDiffList();
+Difference diff = (Difference)diffList.get(0);
+...
+      </source>
+      </p>
+
+      
       <a name="canoo">
       <h3>DbUnit Ant task and Canoo WebTest</h3>
       </a>

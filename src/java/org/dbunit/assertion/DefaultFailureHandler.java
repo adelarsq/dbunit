@@ -20,6 +20,8 @@
  */
 package org.dbunit.assertion;
 
+import java.util.Arrays;
+
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.ColumnFilterTable;
 import org.dbunit.dataset.Columns;
@@ -47,7 +49,9 @@ public class DefaultFailureHandler implements FailureHandler
 
     
     private String[] _additionalColumnInfo;
-
+    
+    private FailureFactory failureFactory = new DefaultFailureFactory();
+    
     /**
      * Default constructor which does not provide any additional column information.
      */
@@ -82,16 +86,28 @@ public class DefaultFailureHandler implements FailureHandler
         this._additionalColumnInfo = additionalColumnInfo;
     }
 
+    
+    /**
+     * @param failureFactory The {@link FailureFactory} to be used for creating assertion
+     * errors.
+     */
+    public void setFailureFactory(FailureFactory failureFactory) 
+    {
+        if (failureFactory == null) {
+            throw new NullPointerException(
+                    "The parameter 'failureFactory' must not be null");
+        }
+        this.failureFactory = failureFactory;
+    }
+
     public Error createFailure(String message, String expected, String actual) 
     {
-        // Return dbunit's own comparison failure object
-        return new DbComparisonFailure(message, expected, actual);
+        return this.failureFactory.createFailure(message, expected, actual);
     }
 
     public Error createFailure(String message) 
     {
-        // Return dbunit's own failure object
-        return new DbAssertionFailedError(message);
+        return this.failureFactory.createFailure(message);
     }
     
     public String getAdditionalInfo(ITable expectedTable, ITable actualTable,
@@ -150,6 +166,12 @@ public class DefaultFailureHandler implements FailureHandler
         
     }
 
+    /**
+     * @param table The table which might be a decorated table
+     * @param columnName The column name for which a table is searched
+     * @return The table that as a column with the given name
+     * @throws DataSetException If no table could be found having a column with the given name
+     */
     private ITable getTableForColumn(ITable table, String columnName) throws DataSetException 
     {
         ITableMetaData tableMetaData = table.getTableMetaData();
@@ -179,5 +201,71 @@ public class DefaultFailureHandler implements FailureHandler
         }
     }
 
+    public void handle(Difference diff) 
+    {
+        String msg = buildMessage(diff);
+        
+        Error err = this.createFailure(msg,
+                String.valueOf(diff.getExpectedValue()), String.valueOf(diff.getActualValue()));
+        // Throw the assertion error
+        throw err;
+    }
+
+    protected String buildMessage(Difference diff) 
+    {
+        int row = diff.getRowIndex();
+        String columnName = diff.getColumnName();
+        String tableName = diff.getExpectedTable().getTableMetaData().getTableName();
+        
+        // example message:
+        // "value (table=MYTAB, row=232, column=MYCOL, Additional row info: (column=MyIdCol, expected=444, actual=555)): expected:<123> but was:<1234>"
+        String msg = "value (table=" + tableName + ", row=" + row + ", col=" + columnName;
+        
+        String additionalInfo = this.getAdditionalInfo(
+                diff.getExpectedTable(), diff.getActualTable(), row, columnName);
+        if (additionalInfo != null && !additionalInfo.trim().equals(""))
+            msg += ", " + additionalInfo;
+        msg += ")";
+        
+        return msg;
+    }
+
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append(DefaultFailureHandler.class.getName()).append("[");
+        sb.append("_additionalColumnInfo=").append(
+                _additionalColumnInfo==null ? "null" : Arrays.asList(_additionalColumnInfo).toString());
+        sb.append("]");
+        return sb.toString();
+    }
+    
+    
+    
+    
+    /**
+     * Default failure factory which returns DBUnits own assertion error instances.
+     * 
+     * @author gommma (gommma AT users.sourceforge.net)
+     * @author Last changed by: $Author$
+     * @version $Revision$ $Date$
+     * @since 2.4.0
+     */
+    public static class DefaultFailureFactory implements FailureFactory
+    {
+        public Error createFailure(String message, String expected, String actual) 
+        {
+            // Return dbunit's own comparison failure object
+            return new DbComparisonFailure(message, expected, actual);
+        }
+
+        public Error createFailure(String message) 
+        {
+            // Return dbunit's own failure object
+            return new DbAssertionFailedError(message);
+        }
+    }
+    
+    
     
 }

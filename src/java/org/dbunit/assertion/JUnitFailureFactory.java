@@ -20,31 +20,28 @@
  */
 package org.dbunit.assertion;
 
-import org.dbunit.dataset.ITable;
+import junit.framework.AssertionFailedError;
+import junit.framework.ComparisonFailure;
 
 /**
- * Handles the failure of an assertion.
+ * Adapter that lets dbunit create JUnit failure objects.
  * 
  * @author gommma (gommma AT users.sourceforge.net)
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
  * @since 2.4.0
  */
-public interface FailureHandler extends DifferenceListener, FailureFactory
+public class JUnitFailureFactory implements FailureFactory
 {
+    public Error createFailure(String message, String expected, String actual) 
+    {
+        // Return the junit.framework.ComparisonFailure object
+        return new ComparisonFailure(message, expected, actual);
+    }
 
-    /**
-     * Returns a string to be appended to the assertion failure message. Is used to 
-     * provide some more information about a failure (for example to print out some
-     * PK columns for identifying the failed rows in the DB).
-     * @param expectedTable
-     * @param actualTable
-     * @param row The row for which the assertion failed
-     * @param columnName The column for which the assertion failed
-     * @return A string that is appended to the assertion failure message
-     */
-    public String getAdditionalInfo(ITable expectedTable, ITable actualTable,
-            int row, String columnName);
-
-
+    public Error createFailure(String message) 
+    {
+        // Return the junit.framework.AssertionFailedError object
+        return new AssertionFailedError(message);
+    }
 }

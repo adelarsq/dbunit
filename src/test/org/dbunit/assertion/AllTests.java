@@ -36,6 +36,7 @@ public class AllTests extends TestSuite
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(DefaultFailureHandlerTest.class));
         suite.addTest(new TestSuite(DefaultDbUnitAssertTest.class));
+        suite.addTest(new TestSuite(DiffCollectingFailureHandlerTest.class));
         return suite;
     }
 

@@ -20,49 +20,26 @@
  */
 package org.dbunit.assertion;
 
-import org.dbunit.dataset.Column;
-
-import junit.framework.AssertionFailedError;
-import junit.framework.ComparisonFailure;
-
 /**
- * The dbunit adapter for JUnit framework. Creates junit failure objects
- * for dbunit failures.
+ * Callback for {@link DefaultDbUnitAssert} to notify about the 
+ * differences found during an assertion.
+ * <p>
+ * Inspired by the XMLUnit framework.
+ * </p>
  * 
  * @author gommma (gommma AT users.sourceforge.net)
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
  * @since 2.4.0
  */
-public class JUnitFailureHandler extends DefaultFailureHandler 
+public interface DifferenceListener 
 {
 
-    public JUnitFailureHandler() 
-    {
-        super();
-    }
-
-    public JUnitFailureHandler(Column[] additionalColumnInfo) 
-    {
-        super(additionalColumnInfo);
-    }
-
-    public JUnitFailureHandler(String[] additionalColumnInfo) 
-    {
-        super(additionalColumnInfo);
-    }
-
-    public Error createFailure(String message, String expected,
-            String actual) 
-    {
-        // Return the junit.framework.ComparisonFailure object
-        return new ComparisonFailure(message, expected, actual);
-    }
-
-    public Error createFailure(String message) 
-    {
-        // Return the junit.framework.AssertionFailedError object
-        return new AssertionFailedError(message);
-    }
-
+    /**
+     * Is invoked by the {@link DefaultDbUnitAssert} when a data cell difference
+     * has been found.
+     * @param diff The difference that has been found
+     */
+    public void handle(Difference diff);
+    
 }

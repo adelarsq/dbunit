@@ -23,6 +23,7 @@ package org.dbunit.assertion;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.Columns;
@@ -31,13 +32,10 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.datatype.TypeCastException;
 import org.dbunit.dataset.datatype.UnknownDataType;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.dbunit.DatabaseUnitException;
 
 /**
  * Default implementation of DbUnitAssert, based on the original methods present
@@ -338,8 +336,7 @@ public class DefaultDbUnitAssert
 
         // Do not continue if same instance
         if (expectedTable == actualTable) {
-            logger
-            .debug(
+            logger.debug(
                     "The given tables reference the same object. Will return immediately. (Table={})",
                     expectedTable);
             return;
@@ -397,7 +394,7 @@ public class DefaultDbUnitAssert
      * @return The default failure handler
      * @since 2.4
      */
-    private FailureHandler getDefaultFailureHandler() 
+    protected FailureHandler getDefaultFailureHandler() 
     {
         // For backwards compatibility use the JUnitFailureHandler by default
         return getDefaultFailureHandler(null);
@@ -407,10 +404,12 @@ public class DefaultDbUnitAssert
      * @return The default failure handler
      * @since 2.4
      */
-    private FailureHandler getDefaultFailureHandler(Column[] additionalColumnInfo) 
+    protected FailureHandler getDefaultFailureHandler(Column[] additionalColumnInfo) 
     {
         // For backwards compatibility use the JUnitFailureHandler by default
-        return new JUnitFailureHandler(additionalColumnInfo);
+        DefaultFailureHandler failureHandler = new DefaultFailureHandler(additionalColumnInfo);
+        failureHandler.setFailureFactory(new JUnitFailureFactory());
+        return failureHandler;
     }
 
     /**
@@ -455,8 +454,9 @@ public class DefaultDbUnitAssert
             "The parameter 'failureHandler' must not be null");
         }
 
-        // values as strings
+        // iterate over all rows
         for (int i = 0; i < expectedTable.getRowCount(); i++) {
+            // iterate over all columns of the current row
             for (int j = 0; j < comparisonCols.length; j++) {
                 ComparisonColumn compareColumn = comparisonCols[j];
 
@@ -466,35 +466,20 @@ public class DefaultDbUnitAssert
                 Object expectedValue = expectedTable.getValue(i, columnName);
                 Object actualValue = actualTable.getValue(i, columnName);
 
-                compareValues(expectedTable, actualTable, failureHandler, i,
-                        columnName, dataType, expectedValue, actualValue);
+                // Compare the values
+                if (dataType.compare(expectedValue, actualValue) != 0) {
 
+                    Difference diff = new Difference(
+                            expectedTable, actualTable, 
+                            i, columnName, 
+                            expectedValue, actualValue);
+                    
+                    // Handle the difference (throw error immediately or something else)
+                    failureHandler.handle(diff);
+                }
             }
         }
 
-    }
-
-    protected void compareValues(ITable expectedTable, ITable actualTable,
-            FailureHandler failureHandler, int row, String columnName,
-            DataType dataType, Object expectedValue, Object actualValue)
-    throws TypeCastException, Error 
-    {
-        if (dataType.compare(expectedValue, actualValue) != 0) {
-            String additionalInfo = failureHandler.getAdditionalInfo(
-                    expectedTable, actualTable, row, columnName);
-
-            String expectedTableName = expectedTable.getTableMetaData()
-            .getTableName();
-            // example message:
-            // "value (table=MYTAB, row=232, column=MYCOL, Additional row info: (column=MyIdCol, expected=444, actual=555)): expected:<123> but was:<1234>"
-            String msg = "value (table=" + expectedTableName + ", row=" + row
-            + ", col=" + columnName;
-            if (additionalInfo != null && !additionalInfo.trim().equals(""))
-                msg += ", " + additionalInfo;
-            msg += ")";
-            throw failureHandler.createFailure(msg,
-                    String.valueOf(expectedValue), String.valueOf(actualValue));
-        }
     }
 
     /**
