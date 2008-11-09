@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.dbunit.assertion.FailureHandler;
+import org.dbunit.assertion.JUnitFailureFactory;
 import org.dbunit.assertion.SimpleAssert;
 import org.dbunit.assertion.DefaultFailureHandler;
 import org.slf4j.Logger;
@@ -65,7 +67,11 @@ import org.slf4j.LoggerFactory;
  */
 public class FileAsserts
 {
-    private static final SimpleAssert ASSERT = new SimpleAssert(new DefaultFailureHandler());
+    private static final DefaultFailureHandler FAILURE_HANDLER = new DefaultFailureHandler();
+    static{
+        FAILURE_HANDLER.setFailureFactory(new JUnitFailureFactory());
+    }
+    private static final SimpleAssert ASSERT = new SimpleAssert(FAILURE_HANDLER);
 
     /**
      * Logger for this class

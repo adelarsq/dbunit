@@ -61,6 +61,7 @@ public class Column
     private final DataType _dataType;
     private final String _sqlTypeName;
     private final Nullable _nullable;
+    private final String _defaultValue;
 
     /**
      * Creates a Column object. This constructor set nullable to true.
@@ -70,10 +71,7 @@ public class Column
      */
     public Column(String columnName, DataType dataType)
     {
-        _columnName = columnName;
-        _dataType = dataType;
-        _nullable = NULLABLE_UNKNOWN;
-        _sqlTypeName = dataType.toString();
+        this(columnName, dataType, NULLABLE_UNKNOWN);
     }
 
     /**
@@ -81,10 +79,7 @@ public class Column
      */
     public Column(String columnName, DataType dataType, Nullable nullable)
     {
-        _columnName = columnName;
-        _dataType = dataType;
-        _sqlTypeName = dataType.toString();
-        _nullable = nullable;
+        this(columnName, dataType, dataType.toString(), nullable, null);
     }
 
     /**
@@ -93,10 +88,26 @@ public class Column
     public Column(String columnName, DataType dataType, String sqlTypeName,
             Nullable nullable)
     {
+        this(columnName, dataType, sqlTypeName, nullable, null);
+    }
+
+    /**
+     * Creates a Column object.
+     * @param columnName The name of the column
+     * @param dataType The DbUnit {@link DataType} of the column
+     * @param sqlTypeName The SQL name of the column which comes from the JDBC driver.
+     * See value 'TYPE_NAME' in {@link DatabaseMetaData#getColumns(String, String, String, String)}
+     * @param nullable whether or not the column is nullable
+     * @param defaultValue The default value on the DB for this column. Can be <code>null</code>.
+     */
+    public Column(String columnName, DataType dataType, String sqlTypeName,
+            Nullable nullable, String defaultValue)
+    {
         _columnName = columnName;
         _dataType = dataType;
         _sqlTypeName = sqlTypeName;
         _nullable = nullable;
+        _defaultValue = defaultValue;
     }
 
     /**
@@ -131,6 +142,15 @@ public class Column
         return _nullable;
     }
 
+    /**
+     * @return The default value the database uses for this column 
+     * if not specified in the insert column list
+     */
+    public String getDefaultValue()
+    {
+        return _defaultValue;
+    }
+    
     /**
      * Returns the appropriate Nullable constant according specified JDBC
      * DatabaseMetaData constant.
@@ -196,6 +216,16 @@ public class Column
         if (!_dataType.equals(column._dataType)) return false;
         if (!_nullable.equals(column._nullable)) return false;
         if (!_sqlTypeName.equals(column._sqlTypeName)) return false;
+        
+        // Default value is nullable
+        if (_defaultValue==null){
+            if(column._defaultValue!=null)
+                return false;
+        }
+        else{
+            if(!_defaultValue.equals(column._defaultValue))
+                return false;
+        }
 
         return true;
     }
@@ -207,6 +237,7 @@ public class Column
         result = 29 * result + _dataType.hashCode();
         result = 29 * result + _sqlTypeName.hashCode();
         result = 29 * result + _nullable.hashCode();
+        result = 29 * result + (_defaultValue==null? 0 : _defaultValue.hashCode());
         return result;
     }
 

@@ -37,6 +37,7 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.util.QualifiedTableName;
@@ -272,27 +273,10 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                     List columnList = new ArrayList();
                     while (resultSet.next())
                     {
-                        String columnName = resultSet.getString(4);
-                        int sqlType = resultSet.getInt(5);
-                        String sqlTypeName = resultSet.getString(6);
-//                        int columnSize = resultSet.getInt(7);
-                        int nullable = resultSet.getInt(11);
-
-                        // Convert SQL type to DataType
-                        DataType dataType =
-                                dataTypeFactory.createDataType(sqlType, sqlTypeName, tableName, columnName);
-                        if (dataType != DataType.UNKNOWN)
+                        Column column = createColumn(resultSet, dataTypeFactory, datatypeWarning);
+                        if(column != null)
                         {
-                            Column column = new Column(columnName, dataType,
-                                    sqlTypeName, Column.nullableValue(nullable));
                             columnList.add(column);
-                        }
-                        else if (datatypeWarning)
-                        {
-                            logger.warn(
-                                    tableName + "." + columnName +
-                                    " data type (" + sqlType + ", '" + sqlTypeName +
-                                    "') not recognized and will be ignored. See FAQ for more information.");
                         }
                     }
 
@@ -315,6 +299,53 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
             }
         }
         return _columns;
+    }
+
+    /**
+     * Utility method to create a {@link Column} object from a SQL {@link ResultSet} object.
+     * 
+     * TODO Move this into a utility class? For example Columns or SQLHelper
+     * 
+     * @param resultSet A result set produced via {@link DatabaseMetaData#getColumns(String, String, String, String)}
+     * @param dataTypeFactory The factory used to lookup the {@link DataType} for this column
+     * @param datatypeWarning Whether or not a warning should be printed if the column could not
+     * be created because of an unknown datatype.
+     * @return The {@link Column} or <code>null</code> if the column could not be initialized.
+     * @throws SQLException 
+     * @throws DataTypeException 
+     */
+    public static final Column createColumn(ResultSet resultSet,
+            IDataTypeFactory dataTypeFactory, boolean datatypeWarning) 
+    throws SQLException, DataTypeException 
+    {
+        String tableName = resultSet.getString(3);
+        String columnName = resultSet.getString(4);
+        int sqlType = resultSet.getInt(5);
+        String sqlTypeName = resultSet.getString(6);
+//        int columnSize = resultSet.getInt(7);
+        int nullable = resultSet.getInt(11);
+        String columnDefaultValue = resultSet.getString(13);
+
+        // Convert SQL type to DataType
+        DataType dataType =
+                dataTypeFactory.createDataType(sqlType, sqlTypeName, tableName, columnName);
+        if (dataType != DataType.UNKNOWN)
+        {
+            Column column = new Column(columnName, dataType,
+                    sqlTypeName, Column.nullableValue(nullable), columnDefaultValue);
+            return column;
+        }
+        else
+        {
+            if (datatypeWarning)
+                logger.warn(
+                    tableName + "." + columnName +
+                    " data type (" + sqlType + ", '" + sqlTypeName +
+                    "') not recognized and will be ignored. See FAQ for more information.");
+            
+            // datatype unknown - column not created
+            return null;
+        }
     }
 
     public Column[] getPrimaryKeys() throws DataSetException

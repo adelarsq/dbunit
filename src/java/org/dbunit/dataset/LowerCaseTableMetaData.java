@@ -93,7 +93,8 @@ public class LowerCaseTableMetaData extends AbstractTableMetaData
                 column.getColumnName().toLowerCase(),
                 column.getDataType(),
                 column.getSqlTypeName(),
-                column.getNullable());
+                column.getNullable(),
+                column.getDefaultValue());
     }
 
     ////////////////////////////////////////////////////////////////////////////
