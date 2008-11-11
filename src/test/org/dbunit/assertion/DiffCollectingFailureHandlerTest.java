@@ -36,7 +36,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
  */
 public class DiffCollectingFailureHandlerTest extends TestCase
 {
-    private DefaultDbUnitAssert assertion = new DefaultDbUnitAssert();
+    private DbUnitAssert assertion = new DbUnitAssert();
 
     public DiffCollectingFailureHandlerTest(String s)
     {
@@ -45,7 +45,7 @@ public class DiffCollectingFailureHandlerTest extends TestCase
 
     private IDataSet getDataSet() throws Exception
     {
-        return new FlatXmlDataSet(new FileReader(DefaultDbUnitAssertTest.FILE_PATH));
+        return new FlatXmlDataSet(new FileReader(DbUnitAssertTest.FILE_PATH));
     }
 
     public void testAssertTablesWithDifferentValues() throws Exception

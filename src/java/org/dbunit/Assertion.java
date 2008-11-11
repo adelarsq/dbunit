@@ -23,7 +23,7 @@ package org.dbunit;
 
 import java.sql.SQLException;
 
-import org.dbunit.assertion.DefaultDbUnitAssert;
+import org.dbunit.assertion.DbUnitAssert;
 import org.dbunit.assertion.FailureHandler;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
@@ -48,7 +48,7 @@ public class Assertion {
     /**
      * Object that will effectively do the assertions.
      */
-    private static final DefaultDbUnitAssert INSTANCE = new DefaultDbUnitAssert();
+    private static final DbUnitAssert INSTANCE = new DbUnitAssert();
 
     private Assertion() {
         throw new UnsupportedOperationException(

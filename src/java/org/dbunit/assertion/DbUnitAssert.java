@@ -23,6 +23,7 @@ package org.dbunit.assertion;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.Column;
@@ -38,21 +39,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Default implementation of DbUnitAssert, based on the original methods present
- * at Assertion
+ * Default implementation of DbUnit assertions, based on the original methods present
+ * at {@link Assertion}
  * 
  * @author Felipe Leme <dbunit@felipeal.net>
  * @author gommma (gommma AT users.sourceforge.net)
  * @version $Revision$ $Date$
  * @since 2.4.0
  */
-public class DefaultDbUnitAssert
+public class DbUnitAssert
 {
 
     /**
      * Logger for this class
      */
-    private static final Logger logger = LoggerFactory.getLogger(DefaultDbUnitAssert.class);
+    private static final Logger logger = LoggerFactory.getLogger(DbUnitAssert.class);
 
     /**
      * Compare one table present in two datasets ignoring specified columns.
