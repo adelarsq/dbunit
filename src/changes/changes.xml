@@ -45,6 +45,7 @@
       <action dev="gommma" type="add" issue="1897627" due-to="felipeal">Remove JUnit dependency</action>
       <action dev="gommma" type="add" issue="2241776">Provide the complete diff of 2 tables</action>
       <action dev="gommma" type="fix" issue="2017635" due-to="paul0al">MySqlDataTypeFactory incorrectly maps TinyInt</action>
+      <action dev="gommma" type="fix" issue="2263530" due-to="alekssokolov">Excel processing error - update from POI-3.1-FINAL to POI-3.2-FINAL. Date values are read/written as Numeric values for now since the POI Date handling is not consistent (i.e. write Date & read the written Date do not provide equal Date objects).</action>
     </release>
     <release version="2.3.0" date="Sep 11, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
       <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>

@@ -85,7 +85,7 @@ class XlsTable extends AbstractTable
         List columnList = new ArrayList();
         for (int i = 0; ; i++)
         {
-            HSSFCell cell = sampleRow.getCell((short)i);
+            HSSFCell cell = sampleRow.getCell(i);
             if (cell == null)
             {
                 break;
@@ -128,7 +128,7 @@ class XlsTable extends AbstractTable
         assertValidRowIndex(row);
 
         int columnIndex = getColumnIndex(column);
-        HSSFCell cell = _sheet.getRow(row + 1).getCell((short)columnIndex);
+        HSSFCell cell = _sheet.getRow(row + 1).getCell(columnIndex);
         if (cell == null)
         {
             return null;
@@ -140,7 +140,7 @@ class XlsTable extends AbstractTable
             case HSSFCell.CELL_TYPE_NUMERIC:
                 if (HSSFDateUtil.isCellDateFormatted(cell))
                 {
-                    return cell.getDateCellValue();
+                    return getDateValue(cell);
                 }
                 else 
                 {
@@ -170,6 +170,24 @@ class XlsTable extends AbstractTable
         }
     }
     
+    private Object getDateValue(HSSFCell cell) 
+    {
+        logger.debug("getDateValue(cell={}) - start", cell);
+        
+        double numericValue = cell.getNumericCellValue();
+        BigDecimal numericValueBd = new BigDecimal(String.valueOf(numericValue));
+        
+        //TODO use a calendar for XLS Date objects when it is supported better by POI
+//        HSSFCellStyle style = cell.getCellStyle();
+//        HSSFDataFormatter formatter = new HSSFDataFormatter();
+//        Format f = formatter.createFormat(cell);
+//      String formatted = fomatter.formatCellValue(cell);
+//System.out.println("###"+formatted);
+//        Date dateValue = cell.getDateCellValue();
+        
+        return numericValueBd;
+    }
+
     private BigDecimal getNumericValue(HSSFCell cell)
     {
         logger.debug("getNumericValue(cell={}) - start", cell);

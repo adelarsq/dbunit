@@ -22,8 +22,6 @@ package org.dbunit.dataset.excel;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.TimeZone;
 
 import org.dbunit.dataset.AbstractTableTest;
 import org.dbunit.dataset.Column;
@@ -39,8 +37,11 @@ import org.dbunit.dataset.datatype.DataType;
  */
 public class XlsTableTest extends AbstractTableTest
 {
-    private static final long ONE_MINUTE_IN_MILLIS = 60 * 1000;
-    private static final long ONE_HOUR_IN_MILLIS = 60 * ONE_MINUTE_IN_MILLIS;
+//    private static final long ONE_SECOND_IN_MILLIS = 1000;
+//    private static final long ONE_MINUTE_IN_MILLIS = 60 * 1000;
+//    private static final long ONE_HOUR_IN_MILLIS = 60 * ONE_MINUTE_IN_MILLIS;
+//    private static final long ONE_DAY_IN_MILLIS = 24 * ONE_HOUR_IN_MILLIS;
+    
     
     public XlsTableTest(String s)
     {
@@ -105,11 +106,14 @@ public class XlsTableTest extends AbstractTableTest
         int row = 0;
         ITable table = createDataSet().getTable("TABLE_DIFFERENT_DATATYPES");
         
-        long tzOffset = TimeZone.getDefault().getOffset(0);
+//        long tzOffset = TimeZone.getDefault().getOffset(0);
         Object[] expected = {
-                new Date(0-tzOffset), 
-                new Date(0-tzOffset + (10*ONE_HOUR_IN_MILLIS + 45*ONE_MINUTE_IN_MILLIS)), 
-                new BigDecimal("0.563136574074074"), 
+//                new Date(0-tzOffset), 
+//                new Date(0-tzOffset + (10*ONE_HOUR_IN_MILLIS + 45*ONE_MINUTE_IN_MILLIS)),
+//                new Date(0-tzOffset + (13*ONE_HOUR_IN_MILLIS + 30*ONE_MINUTE_IN_MILLIS + 55*ONE_SECOND_IN_MILLIS) ),
+                new BigDecimal("25569.0"),
+                new BigDecimal("25569.447916666668"),
+                new BigDecimal("0.563136574074074"),
                 new BigDecimal("10000.00"), 
                 new BigDecimal("-200"), 
                 new BigDecimal("12345.123456789000") 
@@ -120,7 +124,9 @@ public class XlsTableTest extends AbstractTableTest
         for (int i = 0; i < columns.length; i++)
         {
             Object actual = table.getValue(row, columns[i].getColumnName());
-            assertEquals("value " + i, expected[i], actual);
+            String typesResult = " expected=" + (expected[i]!=null ? expected[i].getClass().getName() : "null") + " - actual=" 
+                                    + (actual!=null ? actual.getClass().getName() : "null");
+            assertEquals("value " + i + " (" + typesResult + ")", expected[i], actual);
         }
     }
 
