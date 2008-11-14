@@ -170,7 +170,7 @@ class XlsTable extends AbstractTable
         }
     }
     
-    private Object getDateValue(HSSFCell cell) 
+    protected Object getDateValue(HSSFCell cell) 
     {
         logger.debug("getDateValue(cell={}) - start", cell);
         
@@ -188,7 +188,7 @@ class XlsTable extends AbstractTable
         return numericValueBd;
     }
 
-    private BigDecimal getNumericValue(HSSFCell cell)
+    protected BigDecimal getNumericValue(HSSFCell cell)
     {
         logger.debug("getNumericValue(cell={}) - start", cell);
 
