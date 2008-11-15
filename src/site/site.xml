@@ -71,6 +71,7 @@
       <item name="Ant Task"         href="/anttask.html"/>
       <item name="Migration Guide"  href="/migration.html"/> 
       <item name="Building DbUnit"  href="/building.html"/>
+      <item name="Developers Guide" href="/devguide.html"/>
       <item name="Resources"        href="/resources.html"/>
       <item name="Credits"          href="/credits.html"/>
     </menu>
