@@ -33,9 +33,9 @@ import org.dbunit.dataset.ITable;
 /**
  * Provides static methods for the most common DbUnit assertion needs.
  * 
- * Although the methods are static, they rely on a {@link DefaultDbUnitAssert} instance 
+ * Although the methods are static, they rely on a {@link DbUnitAssert} instance 
  * to do the work. So, if you need to customize this class behavior, you can create
- * your own {@link DefaultDbUnitAssert} extension.
+ * your own {@link DbUnitAssert} extension.
  * 
  * @author Manuel Laflamme
  * @author Felipe Leme <dbunit@felipeal.net>
@@ -56,7 +56,7 @@ public class Assertion {
     }
 
     /**
-     * @see DefaultDbUnitAssert#assertEqualsIgnoreCols(IDataSet, IDataSet, String, String[])
+     * @see DbUnitAssert#assertEqualsIgnoreCols(IDataSet, IDataSet, String, String[])
      */
     public static void assertEqualsIgnoreCols(final IDataSet expectedDataset,
             final IDataSet actualDataset, final String tableName,
@@ -66,7 +66,7 @@ public class Assertion {
     }
 
     /**
-     * @see DefaultDbUnitAssert#assertEqualsIgnoreCols(ITable, ITable, String[])
+     * @see DbUnitAssert#assertEqualsIgnoreCols(ITable, ITable, String[])
      */
     public static void assertEqualsIgnoreCols(final ITable expectedTable,
             final ITable actualTable, final String[] ignoreCols)
@@ -75,7 +75,7 @@ public class Assertion {
     }
 
     /**
-     * @see DefaultDbUnitAssert#assertEqualsByQuery(IDataSet, IDatabaseConnection, String, String, String[])
+     * @see DbUnitAssert#assertEqualsByQuery(IDataSet, IDatabaseConnection, String, String, String[])
      */
     public static void assertEqualsByQuery(final IDataSet expectedDataset,
             final IDatabaseConnection connection, final String sqlQuery,
@@ -86,7 +86,7 @@ public class Assertion {
     }
 
     /**
-     * @see DefaultDbUnitAssert#assertEqualsByQuery(ITable, IDatabaseConnection, String, String, String[])
+     * @see DbUnitAssert#assertEqualsByQuery(ITable, IDatabaseConnection, String, String, String[])
      */
     public static void assertEqualsByQuery(final ITable expectedTable,
             final IDatabaseConnection connection, final String tableName,
@@ -97,7 +97,7 @@ public class Assertion {
     }
 
     /**
-     * @see DefaultDbUnitAssert#assertEquals(IDataSet, IDataSet)
+     * @see DbUnitAssert#assertEquals(IDataSet, IDataSet)
      */
     public static void assertEquals(IDataSet expectedDataSet,
             IDataSet actualDataSet) throws DatabaseUnitException {
@@ -105,7 +105,7 @@ public class Assertion {
     }
 
     /**
-     * @see DefaultDbUnitAssert#assertEquals(IDataSet, IDataSet, FailureHandler)
+     * @see DbUnitAssert#assertEquals(IDataSet, IDataSet, FailureHandler)
      * @since 2.4
      */
     public static void assertEquals(IDataSet expectedDataSet,
@@ -115,7 +115,7 @@ public class Assertion {
     }
 
     /**
-     * @see DefaultDbUnitAssert#assertEquals(ITable, ITable)
+     * @see DbUnitAssert#assertEquals(ITable, ITable)
      */
     public static void assertEquals(ITable expectedTable, ITable actualTable)
     throws DatabaseUnitException {
@@ -123,7 +123,7 @@ public class Assertion {
     }
 
     /**
-     * @see DefaultDbUnitAssert#assertEquals(ITable, ITable, Column[])
+     * @see DbUnitAssert#assertEquals(ITable, ITable, Column[])
      */
     public static void assertEquals(ITable expectedTable, ITable actualTable,
             Column[] additionalColumnInfo) throws DatabaseUnitException {
@@ -131,7 +131,7 @@ public class Assertion {
     }
 
     /**
-     * @see DefaultDbUnitAssert#assertEquals(ITable, ITable, FailureHandler)
+     * @see DbUnitAssert#assertEquals(ITable, ITable, FailureHandler)
      * @since 2.4
      */
     public static void assertEquals(ITable expectedTable, ITable actualTable,

@@ -21,7 +21,7 @@
 package org.dbunit.assertion;
 
 /**
- * Callback for {@link DefaultDbUnitAssert} to notify about the 
+ * Callback for {@link DbUnitAssert} to notify about the 
  * differences found during an assertion.
  * <p>
  * Inspired by the XMLUnit framework.
@@ -36,7 +36,7 @@ public interface DifferenceListener
 {
 
     /**
-     * Is invoked by the {@link DefaultDbUnitAssert} when a data cell difference
+     * Is invoked by the {@link DbUnitAssert} when a data cell difference
      * has been found.
      * @param diff The difference that has been found
      */

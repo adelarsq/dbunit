@@ -90,6 +90,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 
     /**
      * Write the specified dataset to the specified output stream as DTD.
+     * @see FlatDtdWriter
      */
     public static void write(IDataSet dataSet, OutputStream out)
             throws IOException, DataSetException
@@ -100,6 +101,7 @@ public class FlatDtdDataSet extends AbstractDataSet implements IDataSetConsumer
 
     /**
      * Write the specified dataset to the specified writer as DTD.
+     * @see FlatDtdWriter
      */
     public static void write(IDataSet dataSet, Writer out)
             throws IOException, DataSetException

@@ -131,7 +131,18 @@ public class DatabaseExportSample
         FlatDtdDataSet.write(connection.createDataSet(), new FileOutputStream("test.dtd"));
     }
 }</source>
-      
+      <p>Note that there is a more flexible possibility to write out a DTD which allows you
+         to vary the content model of the DTD:</p>
+      <source>
+        ...
+        IDataSet dataSet = connection.createDataSet();
+        Writer out = new OutputStreamWriter(new FileOutputStream("myFile.dtd");
+        FlatDtdWriter datasetWriter = new FlatDtdWriter(out);
+        datasetWriter.setContentModel(FlatDtdWriter.CHOICE);
+        // You could also use the sequence model which is the default
+        // datasetWriter.setContentModel(FlatDtdWriter.SEQUENCE);
+        datasetWriter.write(dataSet);
+      </source>
       </answer>
     </faq>
 
