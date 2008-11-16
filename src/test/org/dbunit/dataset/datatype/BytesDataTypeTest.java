@@ -29,7 +29,7 @@ import java.util.Arrays;
 import org.dbunit.database.ExtendedMockSingleRowResultSet;
 import org.dbunit.database.statement.MockPreparedStatement;
 import org.dbunit.dataset.ITable;
-import org.dbunit.util.FileAsserts;
+import org.dbunit.testutil.FileAsserts;
 
 
 /**

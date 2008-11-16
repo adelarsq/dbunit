@@ -31,7 +31,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.AbstractDataSetTest;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.util.FileAsserts;
+import org.dbunit.testutil.FileAsserts;
 
 /**
  * @author Manuel Laflamme

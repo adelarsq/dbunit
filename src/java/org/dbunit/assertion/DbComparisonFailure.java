@@ -21,7 +21,8 @@
 package org.dbunit.assertion;
 
 /**
- * DBUnit specific assertion error independent of any testing framework (like JUnit or TestNG).
+ * Exception signaling a DbUnit assertion failure while comparing values. 
+ * Is used to avoid the direct dependency to any other testing framework.
  * 
  * @author gommma (gommma AT users.sourceforge.net)
  * @author Last changed by: $Author$

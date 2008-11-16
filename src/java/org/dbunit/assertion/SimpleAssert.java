@@ -68,7 +68,7 @@ public class SimpleAssert
     }
     
     /**
-     * Method used to avoid JUnit dependency
+     * Evaluate if the given condition is <code>true</code> or not.
      * @param message message displayed if assertion is false
      * @param condition condition to be tested
      */

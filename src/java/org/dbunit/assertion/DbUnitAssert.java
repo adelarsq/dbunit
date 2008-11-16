@@ -397,7 +397,6 @@ public class DbUnitAssert
      */
     protected FailureHandler getDefaultFailureHandler() 
     {
-        // For backwards compatibility use the JUnitFailureHandler by default
         return getDefaultFailureHandler(null);
     }
 

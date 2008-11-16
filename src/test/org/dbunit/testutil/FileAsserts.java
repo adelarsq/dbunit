@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.util;
+package org.dbunit.testutil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,10 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.dbunit.assertion.FailureHandler;
+import org.dbunit.assertion.DefaultFailureHandler;
 import org.dbunit.assertion.JUnitFailureFactory;
 import org.dbunit.assertion.SimpleAssert;
-import org.dbunit.assertion.DefaultFailureHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
