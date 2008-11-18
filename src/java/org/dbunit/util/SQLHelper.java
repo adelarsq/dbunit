@@ -28,13 +28,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.DataTypeException;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Helper for SQL-related stuff.
  * <br>
- * TODO: testcases
+ * TODO: testcases, also think about refactoring so that methods are not static anymore (for better extensibility)
  * @author Felipe Leme (dbunit@felipeal.net)
  * @version $Revision$
  * @since Nov 5, 2005
@@ -241,6 +245,131 @@ public class SQLHelper {
     	finally {
     		outputStream.flush();
     	}
+    }
+
+    
+    
+    /**
+     * Utility method to create a {@link Column} object from a SQL {@link ResultSet} object.
+     * 
+     * @param resultSet A result set produced via {@link DatabaseMetaData#getColumns(String, String, String, String)}
+     * @param dataTypeFactory The factory used to lookup the {@link DataType} for this column
+     * @param datatypeWarning Whether or not a warning should be printed if the column could not
+     * be created because of an unknown datatype.
+     * @return The {@link Column} or <code>null</code> if the column could not be initialized because of an
+     * unknown datatype.
+     * @throws SQLException 
+     * @throws DataTypeException 
+     * @since 2.4.0
+     */
+    public static final Column createColumn(ResultSet resultSet,
+            IDataTypeFactory dataTypeFactory, boolean datatypeWarning) 
+    throws SQLException, DataTypeException 
+    {
+        String tableName = resultSet.getString(3);
+        String columnName = resultSet.getString(4);
+        int sqlType = resultSet.getInt(5);
+        String sqlTypeName = resultSet.getString(6);
+//        int columnSize = resultSet.getInt(7);
+        int nullable = resultSet.getInt(11);
+        String columnDefaultValue = resultSet.getString(13);
+
+        // Convert SQL type to DataType
+        DataType dataType =
+                dataTypeFactory.createDataType(sqlType, sqlTypeName, tableName, columnName);
+        if (dataType != DataType.UNKNOWN)
+        {
+            Column column = new Column(columnName, dataType,
+                    sqlTypeName, Column.nullableValue(nullable), columnDefaultValue);
+            return column;
+        }
+        else
+        {
+            if (datatypeWarning)
+                logger.warn(
+                    tableName + "." + columnName +
+                    " data type (" + sqlType + ", '" + sqlTypeName +
+                    "') not recognized and will be ignored. See FAQ for more information.");
+            
+            // datatype unknown - column not created
+            return null;
+        }
+    }
+
+    /**
+     * Checks if the given <code>resultSet</code> matches the given schema and table name.
+     * The comparison is <b>case sensitive</b>.
+     * @param resultSet A result set produced via {@link DatabaseMetaData#getColumns(String, String, String, String)}
+     * @param schema The name of the schema to check. If <code>null</code> it is ignored in the comparison
+     * @param table The name of the table to check. If <code>null</code> it is ignored in the comparison
+     * @return <code>true</code> if the column metadata of the given <code>resultSet</code> matches
+     * the given schema and table parameters.
+     * @throws SQLException
+     * @since 2.4.0
+     */
+    public static boolean matches(ResultSet resultSet,
+            String schema, String table) 
+    throws SQLException 
+    {
+        return matches(resultSet, null, schema, table, null);
+    }
+    
+    
+    /**
+     * Checks if the given <code>resultSet</code> matches the given schema and table name.
+     * The comparison is <b>case sensitive</b>.
+     * @param resultSet A result set produced via {@link DatabaseMetaData#getColumns(String, String, String, String)}
+     * @param catalog The name of the catalog to check. If <code>null</code> it is ignored in the comparison
+     * @param schema The name of the schema to check. If <code>null</code> it is ignored in the comparison
+     * @param table The name of the table to check. If <code>null</code> it is ignored in the comparison
+     * @param column The name of the column to check. If <code>null</code> it is ignored in the comparison
+     * @return <code>true</code> if the column metadata of the given <code>resultSet</code> matches
+     * the given schema and table parameters.
+     * @throws SQLException
+     * @since 2.4.0
+     */
+    public static boolean matches(ResultSet resultSet,
+            String catalog, String schema,
+            String table, String column) 
+    throws SQLException 
+    {
+        String catalogName = resultSet.getString(1);
+        String schemaName = resultSet.getString(2);
+        String tableName = resultSet.getString(3);
+        String columnName = resultSet.getString(4);
+        boolean areEqual = 
+                areEqualIgnoreNull(catalog, catalogName) &&
+                areEqualIgnoreNull(schema, schemaName) &&
+                areEqualIgnoreNull(table, tableName) &&
+                areEqualIgnoreNull(column, columnName);
+        return areEqual;
+    }
+
+    /**
+     * Compares the given values and returns true if they are equal.
+     * If the first value is <code>null</code> or empty String it always
+     * returns <code>true</code> which is the way of ignoring <code>null</code>s
+     * for this specific case.
+     * @param value1 The first value to compare. Is ignored if null or empty String
+     * @param value2 The second value to be compared
+     * @return <code>true</code> if both values are equal or if the first value
+     * is <code>null</code> or empty string.
+     * @since 2.4.0
+     */
+    private static boolean areEqualIgnoreNull(String value1, String value2) 
+    {
+        if(value1==null || value1.equals(""))
+        {
+            return true;
+        }
+        else if(value1.equals(value2))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

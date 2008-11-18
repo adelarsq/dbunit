@@ -21,11 +21,14 @@
 
 package org.dbunit.database;
 
+import java.io.File;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.DatabaseEnvironment;
+import org.dbunit.HypersonicEnvironment;
 import org.dbunit.TestFeature;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.Columns;
@@ -195,6 +198,40 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         }
     }
  
+    /**
+     * Tests the pattern-like column retrieval from the database. DbUnit
+     * should not interpret any table names as regex patterns. 
+     * @throws Exception
+     */
+    public void testGetColumnsForTablesMatchingSamePattern() throws Exception
+    {
+        Connection jdbcConnection = HypersonicEnvironment.createJdbcConnection("tempdb");
+        HypersonicEnvironment.executeDdlFile(new File("src/sql/hypersonic_dataset_pattern_test.sql"),
+                jdbcConnection);
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        try {
+            String tableName = "PATTERN_LIKE_TABLE_X_";
+            String[] columnNames = {"VARCHAR_COL_XUNDERSCORE"};
+    
+            ITableMetaData metaData = connection.createDataSet().getTableMetaData(tableName);
+            Column[] columns = metaData.getColumns();
+    
+            assertEquals("column count", columnNames.length, columns.length);
+    
+            for (int i = 0; i < columnNames.length; i++)
+            {
+                Column column = Columns.getColumn(columnNames[i], columns);
+                assertEquals(columnNames[i], columnNames[i], column.getColumnName());
+            }
+        }
+        finally {
+            HypersonicEnvironment.shutdown(jdbcConnection);
+            jdbcConnection.close();
+            HypersonicEnvironment.deleteFiles("tempdb");
+        }
+    }
+
 }
 
 

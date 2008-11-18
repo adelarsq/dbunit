@@ -31,6 +31,7 @@ import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.util.SQLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,12 +125,10 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
                     columnNameMeta
             );
 
-            // Scroll resultset forward - must have one result
-            if(!columnsResultSet.next()){
-                throw new IllegalStateException("Did not find column '" + columnNameMeta + "' via DatabaseMetaData.");
-            }
+            // Scroll resultset forward - must have one result which exactly matches the required parameters
+            scrollTo(columnsResultSet, catalogNameMeta, schemaNameMeta, tableNameMeta, columnNameMeta);
             
-            columns[i] = DatabaseTableMetaData.createColumn(columnsResultSet, dataTypeFactory, true);
+            columns[i] = SQLHelper.createColumn(columnsResultSet, dataTypeFactory, true);
 
         }
 
@@ -137,7 +136,30 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
     }
 
     
-	public Column[] getColumns() throws DataSetException {
+	private void scrollTo(ResultSet columnsResultSet, String catalog,
+            String schema, String table, String column) 
+	throws SQLException 
+	{
+	    while(columnsResultSet.next())
+	    {
+	        boolean match = SQLHelper.matches(columnsResultSet, catalog, schema, table, column);
+	        if(match)
+	        {
+	            // All right. Return immediately because the resultSet is positioned on the correct row
+	            return;
+	        }
+	    }
+
+	    // If we get here the column could not be found
+	    String msg = 
+                "Did not find column '" + column + 
+                "' for <schema.table> '" + schema + "." + table + 
+                "' in catalog '" + catalog + "' because names do not exactly match.";
+
+        throw new IllegalStateException(msg);
+    }
+
+    public Column[] getColumns() throws DataSetException {
 		return this.wrappedTableMetaData.getColumns();
 	}
 

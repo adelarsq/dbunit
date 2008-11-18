@@ -21,7 +21,6 @@
 package org.dbunit.database;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -62,23 +61,7 @@ public class DatabaseSequenceFilterTest extends TestCase
         HypersonicEnvironment.shutdown(_jdbcConnection);
         _jdbcConnection.close();
 
-        File[] files = new File(".").listFiles(new FilenameFilter()
-                {
-                    public boolean accept(File dir, String name)
-                    {
-                        if (name.indexOf("tempdb") != -1)
-                        {
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-
-        for (int i = 0; i < files.length; i++)
-        {
-            File file = files[i];
-            file.delete();
-        }
+        HypersonicEnvironment.deleteFiles("tempdb");
     }
 
     public void testGetTableNames() throws Exception

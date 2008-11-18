@@ -46,6 +46,7 @@ public class AllTests extends TestSuite
         suite.addTest(new TestSuite(PrimaryKeyFilteredTableWrapperTest.class));  
         suite.addTest(new TestSuite(JdbcDatabaseTesterConnectionTest.class));
         suite.addTest(new TestSuite(DefaultDatabaseTesterConnectionTest.class));
+        suite.addTest(new TestSuite(ResultSetTableMetaDataTest.class));
 
         return suite;
     }
