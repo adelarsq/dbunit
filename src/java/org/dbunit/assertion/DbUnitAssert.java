@@ -467,7 +467,7 @@ public class DbUnitAssert
                 Object actualValue = actualTable.getValue(i, columnName);
 
                 // Compare the values
-                if(skipCompare(expectedValue, actualValue)){
+                if(skipCompare(columnName, expectedValue, actualValue)){
                     if(logger.isTraceEnabled()){
                         logger.trace( "ignoring comparison " + expectedValue + "=" +
                                 actualValue + " on column " + columnName);                        
@@ -495,12 +495,13 @@ public class DbUnitAssert
      * expected and actual value. Designed to be overridden in order
      * to skip cell comparison by specific cell values.
      * 
+     * @param columnName The column being compared
      * @param expectedValue The expected value to be compared
      * @param actualValue The actual value to be compared
      * @return <code>false</code> always so that the comparison is never skipped
      * @since 2.4
      */
-    protected boolean skipCompare(Object expectedValue, Object actualValue) 
+    protected boolean skipCompare(String columnName, Object expectedValue, Object actualValue) 
     {
         return false;
     }
