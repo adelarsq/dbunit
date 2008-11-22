@@ -41,7 +41,6 @@ public class HsqldbDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         return new HsqldbDataTypeFactory();
     }
 
-    // TODO: this test case is wrong, as it pass even if the custom code on createDataType() is removed
     public void testCreateBooleanDataType() throws Exception
     {
         int sqlType = Types.BIT;

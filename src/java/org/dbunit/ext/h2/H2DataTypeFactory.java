@@ -28,8 +28,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Specialized factory that recognizes H2 data types.
- * TODO: this class is pretty much the same as {@link org.dbunit.ext.hsqldb.HsqldbDataTypeFactory}, 
- * so they should derive from a common superclass - see issue 1897620
  *
  * @author Felipe Leme
  * @author Last changed by: $Author$

@@ -44,8 +44,6 @@ public class H2DataTypeFactoryTest extends AbstractDataTypeFactoryTest
         return new H2DataTypeFactory();
     }
 
-    // TODO: this test case is wrong, as it pass even if the custom code on createDataType() is removed
-    // see issue 1897620
     public void testCreateBooleanDataType() throws Exception
     {
         int sqlType = Types.BIT;
