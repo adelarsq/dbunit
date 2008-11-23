@@ -25,12 +25,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.util.QualifiedTableName;
+import org.dbunit.util.SQLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,22 +127,18 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         }
 
         Statement statement = getConnection().createStatement();
+        ResultSet resultSet = null;
         try
         {
-            ResultSet resultSet = statement.executeQuery(sqlBuffer.toString());
-            try
-            {
-                resultSet.next();
+            resultSet = statement.executeQuery(sqlBuffer.toString());
+            if(resultSet.next())
                 return resultSet.getInt(1);
-            }
-            finally
-            {
-                resultSet.close();
-            }
+            else
+                throw new DatabaseUnitRuntimeException("Select count did not return any results for table '" + tableName + "'.");
         }
         finally
         {
-            statement.close();
+            SQLHelper.close(resultSet, statement);
         }
     }
 
