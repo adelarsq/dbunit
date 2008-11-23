@@ -65,6 +65,7 @@ public class FileHelper
 	/**
 	 * Recursively deletes the given directory
 	 * @param directory The directory to delete
+	 * @return <code>true</code> if the deletion was successfully.
 	 */
 	public static boolean deleteDirectory(File directory)
 	{

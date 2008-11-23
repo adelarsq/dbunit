@@ -35,6 +35,7 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.HypersonicEnvironment;
 import org.dbunit.ant.AbstractStep;
 import org.dbunit.ant.Export;
 import org.dbunit.ant.Operation;
@@ -45,6 +46,7 @@ import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
 import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.util.FileHelper;
 
 public class CsvURLProducerTest extends TestCase {
     private String driverClass;
@@ -110,8 +112,7 @@ public class CsvURLProducerTest extends TestCase {
         operation.execute(connection, consumer);
     }
 
-    // TODO Fix this so it can handle FORMAT_CSV_URL or something similar
-    public void XXXtestInsertOperationWithCsvFormat() throws SQLException, DatabaseUnitException {
+    public void testInsertOperationWithCsvFormat() throws SQLException, DatabaseUnitException {
         Operation operation = new Operation();
         operation.setFormat(AbstractStep.FORMAT_CSV);
         operation.setSrc(new File(THE_DIRECTORY));
@@ -126,44 +127,38 @@ public class CsvURLProducerTest extends TestCase {
         statement.close();
     }
 
-    public void XXXtestExportTaskWithCsvFormat() throws MalformedURLException, DatabaseUnitException, SQLException {
+    public void testExportTaskWithCsvFormat() throws MalformedURLException, DatabaseUnitException, SQLException {
         produceAndInsertToDatabase();
 
         final String fromAnt = "target/csv/from-ant";
         final File dir = new File(fromAnt);
-        deleteDirectory(dir);
-
-        Export export = new Export();
-        // TODO Fix this so it can handle FORMAT_CSV_URL or something similar
-        export.setFormat(AbstractStep.FORMAT_CSV);
-        export.setDest(dir);
-
-        Query query = new Query();
-        query.setName("orders");
-        query.setSql("select * from orders");
-        export.addQuery(query);
-
-        Query query2 = new Query();
-        query2.setName("orders_row");
-        query2.setSql("select * from orders_row");
-        export.addQuery(query2);
-
-        export.execute(getConnection());
-
-        final File ordersFile = new File(fromAnt + "/orders.csv");
-        assertTrue("file '" + ordersFile.getAbsolutePath() + "' does not exists", ordersFile.exists());
-        final File ordersRowFile = new File(fromAnt + "/orders_row.csv");
-        assertTrue("file " + ordersRowFile + " does not exists", ordersRowFile.exists());
-    }
-
-    private void deleteDirectory(final File dir) {
-        File[] files = dir.listFiles();
-        if (files == null) return;
-        for (int i = 0; i < files.length; i++) {
-            File file = files[i];
-            file.delete();
+        try {
+            FileHelper.deleteDirectory(dir);
+    
+            Export export = new Export();
+            export.setFormat(AbstractStep.FORMAT_CSV);
+            export.setDest(dir);
+    
+            Query query = new Query();
+            query.setName("orders");
+            query.setSql("select * from orders");
+            export.addQuery(query);
+    
+            Query query2 = new Query();
+            query2.setName("orders_row");
+            query2.setSql("select * from orders_row");
+            export.addQuery(query2);
+    
+            export.execute(getConnection());
+    
+            final File ordersFile = new File(fromAnt + "/orders.csv");
+            assertTrue("file '" + ordersFile.getAbsolutePath() + "' does not exists", ordersFile.exists());
+            final File ordersRowFile = new File(fromAnt + "/orders_row.csv");
+            assertTrue("file " + ordersRowFile + " does not exists", ordersRowFile.exists());
         }
-        dir.delete();
+        finally {
+            FileHelper.deleteDirectory(dir);
+        }
     }
 
     private IDatabaseConnection getConnection() throws SQLException, DatabaseUnitException {
@@ -197,6 +192,7 @@ public class CsvURLProducerTest extends TestCase {
     }
 
     protected void tearDown() throws Exception {
+        HypersonicEnvironment.shutdown(connection.getConnection());
         connection.close();
     }
 }
