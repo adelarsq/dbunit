@@ -38,7 +38,7 @@ import org.dbunit.dataset.ITable;
  * your own {@link DbUnitAssert} extension.
  * 
  * @author Manuel Laflamme
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
  * @since 1.3 (Mar 22, 2002)

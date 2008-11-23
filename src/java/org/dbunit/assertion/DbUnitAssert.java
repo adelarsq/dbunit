@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * Default implementation of DbUnit assertions, based on the original methods present
  * at {@link Assertion}
  * 
- * @author Felipe Leme <dbunit@felipeal.net>
+ * @author Felipe Leme (dbunit@felipeal.net)
  * @author gommma (gommma AT users.sourceforge.net)
  * @version $Revision$ $Date$
  * @since 2.4.0

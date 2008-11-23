@@ -36,8 +36,10 @@ import org.slf4j.LoggerFactory;
  * data for every table.
  * 
  * @author Manuel Laflamme
- * @since Sep 15, 2003
- * @version $Revision$
+ * @author gommma (gommma AT users.sourceforge.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.5.6 (Sep 15, 2003)
  */
 public class QueryTableIterator implements ITableIterator
 {
