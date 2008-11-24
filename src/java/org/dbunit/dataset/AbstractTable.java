@@ -68,11 +68,8 @@ public abstract class AbstractTable implements ITable
 		logger.debug("assertValidColumn(columnName={}) - start", columnName);
 
         ITableMetaData metaData = getTableMetaData();
-        // TODO Check if common method from Columns class can be reused -> "Columns.getColumnValidated()"
-        if (Columns.getColumn(columnName, metaData.getColumns()) == null)
-        {
-            throw new NoSuchColumnException(metaData.getTableName(), columnName);
-        }
+        // Try to find the column in the metadata - if it cannot be found an exception is thrown
+        Columns.getColumnValidated(columnName, metaData.getColumns(), metaData.getTableName());
     }
 
     protected int getColumnIndex(String columnName) throws DataSetException

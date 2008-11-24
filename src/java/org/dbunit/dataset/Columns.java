@@ -178,7 +178,8 @@ public class Columns
     public static Column getColumnValidated(String columnName, Column[] columns, String tableName) 
     throws NoSuchColumnException
     {
-        logger.debug("getColumn(columnName={}, columns={}, tableName={}) - start", 
+        if (logger.isDebugEnabled())
+            logger.debug("getColumn(columnName={}, columns={}, tableName={}) - start", 
                 new Object[] {columnName, columns, tableName } );
 
         Column column = Columns.getColumn(columnName, columns);
