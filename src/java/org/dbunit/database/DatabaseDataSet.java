@@ -37,6 +37,7 @@ import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.dataset.OrderedTableNameMap;
 import org.dbunit.util.QualifiedTableName;
+import org.dbunit.util.SQLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -163,13 +164,19 @@ public class DatabaseDataSet extends AbstractDataSet
         	logger.debug("Initializing the data set from the database...");
 
         	Connection jdbcConnection = _connection.getConnection();
+            DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
+
             String schema = _connection.getSchema();
             
-            DatabaseConfig config = _connection.getConfig();
+            if(SQLHelper.isSybaseDb(jdbcConnection.getMetaData()) && !jdbcConnection.getMetaData().getUserName().equals(schema) ){
+                logger.warn("For sybase the schema name should be equal to the user name. " +
+                		"Otherwise the DatabaseMetaData#getTables() method might not return any columns. " +
+                		"See dbunit tracker #1628896 and http://issues.apache.org/jira/browse/TORQUE-40?page=all");
+            }
             
+            DatabaseConfig config = _connection.getConfig();
             String[] tableType = (String[])config.getProperty(DatabaseConfig.PROPERTY_TABLE_TYPE);
 
-            DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
             ResultSet resultSet = databaseMetaData.getTables(
                     null, schema, "%", tableType);
 

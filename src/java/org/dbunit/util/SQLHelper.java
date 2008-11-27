@@ -47,6 +47,11 @@ import org.slf4j.LoggerFactory;
 public class SQLHelper {
 
     /**
+     * The database product name reported by Sybase JDBC drivers.
+     */
+    public static final String DB_PRODUCT_SYBASE = "Sybase";
+    
+    /**
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(SQLHelper.class);
@@ -247,7 +252,20 @@ public class SQLHelper {
     	}
     }
 
-    
+    /**
+     * Detects whether or not the given metadata describes the connection to a Sybase database 
+     * or not.
+     * @param metaData The metadata to be checked whether it is a Sybase connection
+     * @return <code>true</code> if and only if the given metadata belongs to a Sybase database.
+     * @throws SQLException
+     */
+    public static boolean isSybaseDb(DatabaseMetaData metaData) throws SQLException 
+    {
+        String dbProductName = metaData.getDatabaseProductName();
+        boolean isSybase = (dbProductName != null && dbProductName.equals(DB_PRODUCT_SYBASE));
+        return isSybase;
+    }
+
     
     /**
      * Utility method to create a {@link Column} object from a SQL {@link ResultSet} object.
