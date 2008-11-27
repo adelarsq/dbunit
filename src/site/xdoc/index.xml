@@ -26,6 +26,10 @@
   <section name="News">
       <table border="1">
         <tr>
+          <td>2008-11-27</td>
+          <td>DbUnit development is very active and is proud to announce the 2.4.0 release! Here the <a href="changes-report.html#a2.4.0">changes</a>.</td>
+        </tr>
+        <tr>
           <td>2008-09-11</td>
           <td>We all are so proud to announce the 2.3.0 release is finally out! Have a look at the <a href="changes-report.html#a2.3.0">changes</a>.</td>
         </tr>

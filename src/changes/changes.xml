@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-    <release version="2.4-SNAPSHOT" date="TBD" description="Some API changes, features added, bugfixes">
+    <release version="2.4.0" date="Nov 27, 2008" description="Some API changes, features added, bugfixes">
       <action dev="felipeal" type="add" issue="2235876">Refactor Assertion class</action>
       <action dev="felipeal" type="fix" issue="2198914">When comparing empty tables, column info should be ignored</action>
       <action dev="felipeal" type="add" issue="2122413">Added "constants" for DatabaseOperation wrappers</action>
