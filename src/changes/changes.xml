@@ -7,11 +7,11 @@
   </properties>
 
   <body>
-    <release version="2.4.1" date="TBD" description="Some API changes, features added, bugfixes">
+    <release version="2.4.1" date="TBD" description="Updates and bugfixes only">
       <action dev="gommma" type="update">Updated slf4j dependencies to version 1.5.6.</action>
       <action dev="gommma" type="add" issue="1628896" due-to="jeromevdl">No metadata Tables found</action>
+      <action dev="gommma" type="add" issue="2356010">Oracle problem rel 2.4 in createQueryTable</action>
     </release>
-
     <release version="2.4.0" date="Nov 27, 2008" description="Some API changes, features added, bugfixes">
       <action dev="felipeal" type="add" issue="2235876">Refactor Assertion class</action>
       <action dev="felipeal" type="fix" issue="2198914">When comparing empty tables, column info should be ignored</action>

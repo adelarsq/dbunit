@@ -114,9 +114,16 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
             
             // use DatabaseMetaData to retrieve the actual column definition
             String catalogNameMeta = metaData.getCatalogName(rsIndex);
+            catalogNameMeta = fixMetaDataValue(catalogNameMeta);
+            
             String schemaNameMeta = metaData.getSchemaName(rsIndex);
+            schemaNameMeta = fixMetaDataValue(schemaNameMeta);
+            
             String tableNameMeta = metaData.getTableName(rsIndex);
+            tableNameMeta = fixMetaDataValue(tableNameMeta);
+            
             String columnNameMeta = metaData.getColumnName(rsIndex);
+            columnNameMeta = fixMetaDataValue(columnNameMeta);
             
             ResultSet columnsResultSet = databaseMetaData.getColumns(
                     catalogNameMeta,
@@ -135,8 +142,26 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
         return new DefaultTableMetaData(tableName, columns);
     }
 
-    
-	private void scrollTo(ResultSet columnsResultSet, String catalog,
+    /**
+     * Needed at least for oracle since the ResultSetMetaData.getXxxx methods
+     * return an empty String instead of the real catalog/schema/table name.
+     * @param value The value to be fixed
+     * @return The fixed String or <code>null</code> if the given value is an empty String.
+     */
+	private String fixMetaDataValue(String value) 
+	{
+	    if(value==null) {
+	        return null;
+	    }
+	    else if(value.trim().equals("")){
+	        return null;
+	    }
+	    else {
+	        return value;
+	    }
+    }
+
+    private void scrollTo(ResultSet columnsResultSet, String catalog,
             String schema, String table, String column) 
 	throws SQLException 
 	{
