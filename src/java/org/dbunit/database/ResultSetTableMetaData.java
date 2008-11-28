@@ -20,8 +20,6 @@
  */
 package org.dbunit.database;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -30,8 +28,8 @@ import org.dbunit.dataset.AbstractTableMetaData;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
-import org.dbunit.util.SQLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,91 +98,31 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
     	if (logger.isDebugEnabled())
     		logger.debug("createMetaData(tableName={}, resultSet={}, dataTypeFactory={}) - start",
     				new Object[]{ tableName, resultSet, dataTypeFactory });
-    	
-    	Connection connection = resultSet.getStatement().getConnection();
-    	DatabaseMetaData databaseMetaData = connection.getMetaData();
-    	
+
     	// Create the columns from the result set
         ResultSetMetaData metaData = resultSet.getMetaData();
-        
         Column[] columns = new Column[metaData.getColumnCount()];
         for (int i = 0; i < columns.length; i++)
         {
-            int rsIndex = i+1;
+            int columnType = metaData.getColumnType(i + 1);
+            String columnTypeName = metaData.getColumnTypeName(i + 1);
+            String columnName = metaData.getColumnName(i + 1);
             
-            // use DatabaseMetaData to retrieve the actual column definition
-            String catalogNameMeta = metaData.getCatalogName(rsIndex);
-            catalogNameMeta = fixMetaDataValue(catalogNameMeta);
+            DataType dataType = dataTypeFactory.createDataType(
+	                    columnType, columnTypeName, tableName, columnName);
             
-            String schemaNameMeta = metaData.getSchemaName(rsIndex);
-            schemaNameMeta = fixMetaDataValue(schemaNameMeta);
-            
-            String tableNameMeta = metaData.getTableName(rsIndex);
-            tableNameMeta = fixMetaDataValue(tableNameMeta);
-            
-            String columnNameMeta = metaData.getColumnName(rsIndex);
-            columnNameMeta = fixMetaDataValue(columnNameMeta);
-            
-            ResultSet columnsResultSet = databaseMetaData.getColumns(
-                    catalogNameMeta,
-                    schemaNameMeta,
-                    tableNameMeta,
-                    columnNameMeta
-            );
-
-            // Scroll resultset forward - must have one result which exactly matches the required parameters
-            scrollTo(columnsResultSet, catalogNameMeta, schemaNameMeta, tableNameMeta, columnNameMeta);
-            
-            columns[i] = SQLHelper.createColumn(columnsResultSet, dataTypeFactory, true);
-
+            columns[i] = new Column(
+                    columnName,
+                    dataType,
+                    columnTypeName,
+                    Column.nullableValue(metaData.isNullable(i + 1)));
         }
 
         return new DefaultTableMetaData(tableName, columns);
     }
 
-    /**
-     * Needed at least for oracle since the ResultSetMetaData.getXxxx methods
-     * return an empty String instead of the real catalog/schema/table name.
-     * @param value The value to be fixed
-     * @return The fixed String or <code>null</code> if the given value is an empty String.
-     */
-	private String fixMetaDataValue(String value) 
-	{
-	    if(value==null) {
-	        return null;
-	    }
-	    else if(value.trim().equals("")){
-	        return null;
-	    }
-	    else {
-	        return value;
-	    }
-    }
-
-    private void scrollTo(ResultSet columnsResultSet, String catalog,
-            String schema, String table, String column) 
-	throws SQLException 
-	{
-	    while(columnsResultSet.next())
-	    {
-	        boolean match = SQLHelper.matches(columnsResultSet, catalog, schema, table, column);
-	        if(match)
-	        {
-	            // All right. Return immediately because the resultSet is positioned on the correct row
-	            return;
-	        }
-	    }
-
-	    // If we get here the column could not be found
-	    String msg = 
-                "Did not find column '" + column + 
-                "' for <schema.table> '" + schema + "." + table + 
-                "' in catalog '" + catalog + "' because names do not exactly match.";
-
-        throw new IllegalStateException(msg);
-    }
-
-    public Column[] getColumns() throws DataSetException {
+    
+	public Column[] getColumns() throws DataSetException {
 		return this.wrappedTableMetaData.getColumns();
 	}
 
