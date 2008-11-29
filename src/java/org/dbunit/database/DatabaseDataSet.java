@@ -84,6 +84,7 @@ public class DatabaseDataSet extends AbstractDataSet
      * @param connection The database connection
      * @param caseSensitiveTableNames Whether or not this dataset should use case sensitive table names
      * @throws SQLException
+     * @since 2.4
      */
     public DatabaseDataSet(IDatabaseConnection connection, boolean caseSensitiveTableNames) throws SQLException
     {
