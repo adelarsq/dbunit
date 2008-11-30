@@ -355,6 +355,14 @@ public class SQLHelper {
         String schemaName = resultSet.getString(2);
         String tableName = resultSet.getString(3);
         String columnName = resultSet.getString(4);
+
+        // MYSQL provides only a catalog but no schema
+        if(schema != null && schemaName == null && catalog==null && catalogName != null){
+            logger.debug("Switching catalog/schema because the are mutually null");
+            schemaName = catalogName;
+            catalogName = null;
+        }
+        
         boolean areEqual = 
                 areEqualIgnoreNull(catalog, catalogName) &&
                 areEqualIgnoreNull(schema, schemaName) &&
@@ -380,7 +388,7 @@ public class SQLHelper {
         {
             return true;
         }
-        else if(value1.equals(value2))
+        else if(value1.equalsIgnoreCase(value2))
         {
             return true;
         }

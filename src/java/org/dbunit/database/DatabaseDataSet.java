@@ -186,9 +186,15 @@ public class DatabaseDataSet extends AbstractDataSet
             	OrderedTableNameMap tableMap = super.createTableNameMap();
                 while (resultSet.next())
                 {
+                    String catalogName = resultSet.getString(1);
                     String schemaName = resultSet.getString(2);
                     String tableName = resultSet.getString(3);
 
+                    // Fix schema/catalog for mysql
+                    if(schemaName == null && catalogName != null) {
+                        schemaName = catalogName;
+                    }
+                    
                     // skip oracle 10g recycle bin system tables if enabled
                     if(config.getFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES)) {
                         // Oracle 10g workaround
