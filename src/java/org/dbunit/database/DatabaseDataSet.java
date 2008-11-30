@@ -271,7 +271,7 @@ public class DatabaseDataSet extends AbstractDataSet
         }
         
         // Create metadata and cache it
-        metaData = new DatabaseTableMetaData(_tableMap.getTableName(tableName), _connection);
+        metaData = new DatabaseTableMetaData(_tableMap.getTableName(tableName), _connection, true, super.isCaseSensitiveTableNames());
         // Put the metadata object into the cache map
         _tableMap.update(tableName, metaData);
 

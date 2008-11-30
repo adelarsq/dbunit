@@ -68,6 +68,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     private final IDatabaseConnection _connection;
     private Column[] _columns;
     private Column[] _primaryKeys;
+    private boolean _caseSensitiveMetaData;
 
     
     DatabaseTableMetaData(String tableName, IDatabaseConnection connection) throws DataSetException
@@ -86,6 +87,22 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
      */
     DatabaseTableMetaData(String tableName, IDatabaseConnection connection, boolean validate) throws DataSetException
     {
+        this(tableName, connection, validate, false);
+    }
+    
+    /**
+     * Creates a new database table metadata
+     * @param tableName The name of the table - can be fully qualified
+     * @param connection The database connection
+     * @param validate Whether or not to validate the given input data. It is not recommended to
+     * set the validation to <code>false</code> because it is then possible to create an instance
+     * of this object for a db table that does not exist.
+     * @param caseSensitiveMetaData Whether or not the metadata looked up in a case sensitive way
+     * @throws DataSetException
+     * @since 2.4.1
+     */
+    DatabaseTableMetaData(String tableName, IDatabaseConnection connection, boolean validate, boolean caseSensitiveMetaData) throws DataSetException
+    {
     	if (tableName == null) {
 			throw new NullPointerException("The parameter 'tableName' must not be null");
 		}
@@ -96,7 +113,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         _connection = connection;
         // qualified names support - table name and schema is stored here
         _qualifiedTableNameSupport = new QualifiedTableName(tableName, _connection.getSchema());
-
+        _caseSensitiveMetaData = caseSensitiveMetaData;
+        
         if(validate) 
         {
 	        String schemaName = _qualifiedTableNameSupport.getSchema();
@@ -138,7 +156,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     				new Object[]{ tableName, resultSet, dataTypeFactory });
     	}
 
-    	return new ResultSetTableMetaData(tableName, resultSet, dataTypeFactory);
+    	return new ResultSetTableMetaData(tableName, resultSet, dataTypeFactory, false);
     }
 
 
@@ -161,7 +179,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     		logger.debug("createMetaData(tableName={}, resultSet={}, connection={}) - start",
     				new Object[] { tableName, resultSet, connection });
     	}
-    	return new ResultSetTableMetaData(tableName,resultSet,connection);
+    	return new ResultSetTableMetaData(tableName,resultSet,connection, false);
     }
 
     private String[] getPrimaryKeyNames() throws SQLException
@@ -273,7 +291,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                     {
                         // Check for exact table/schema name match because
                         // databaseMetaData.getColumns() uses patterns for the lookup
-                        boolean match = SQLHelper.matches(resultSet, schemaName, tableName);
+                        boolean match = SQLHelper.matches(resultSet, schemaName, tableName, _caseSensitiveMetaData);
                         if(match)
                         {
                             Column column = SQLHelper.createColumn(resultSet, dataTypeFactory, datatypeWarning);

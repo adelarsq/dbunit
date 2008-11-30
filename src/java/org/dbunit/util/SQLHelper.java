@@ -320,16 +320,17 @@ public class SQLHelper {
      * @param resultSet A result set produced via {@link DatabaseMetaData#getColumns(String, String, String, String)}
      * @param schema The name of the schema to check. If <code>null</code> it is ignored in the comparison
      * @param table The name of the table to check. If <code>null</code> it is ignored in the comparison
+     * @param caseSensitive Whether or not the comparison should be case sensitive or not
      * @return <code>true</code> if the column metadata of the given <code>resultSet</code> matches
      * the given schema and table parameters.
      * @throws SQLException
      * @since 2.4.0
      */
     public static boolean matches(ResultSet resultSet,
-            String schema, String table) 
+            String schema, String table, boolean caseSensitive) 
     throws SQLException 
     {
-        return matches(resultSet, null, schema, table, null);
+        return matches(resultSet, null, schema, table, null, caseSensitive);
     }
     
     
@@ -341,6 +342,7 @@ public class SQLHelper {
      * @param schema The name of the schema to check. If <code>null</code> it is ignored in the comparison
      * @param table The name of the table to check. If <code>null</code> it is ignored in the comparison
      * @param column The name of the column to check. If <code>null</code> it is ignored in the comparison
+     * @param caseSensitive Whether or not the comparison should be case sensitive or not
      * @return <code>true</code> if the column metadata of the given <code>resultSet</code> matches
      * the given schema and table parameters.
      * @throws SQLException
@@ -348,7 +350,7 @@ public class SQLHelper {
      */
     public static boolean matches(ResultSet resultSet,
             String catalog, String schema,
-            String table, String column) 
+            String table, String column, boolean caseSensitive) 
     throws SQLException 
     {
         String catalogName = resultSet.getString(1);
@@ -364,10 +366,10 @@ public class SQLHelper {
         }
         
         boolean areEqual = 
-                areEqualIgnoreNull(catalog, catalogName) &&
-                areEqualIgnoreNull(schema, schemaName) &&
-                areEqualIgnoreNull(table, tableName) &&
-                areEqualIgnoreNull(column, columnName);
+                areEqualIgnoreNull(catalog, catalogName, caseSensitive) &&
+                areEqualIgnoreNull(schema, schemaName, caseSensitive) &&
+                areEqualIgnoreNull(table, tableName, caseSensitive) &&
+                areEqualIgnoreNull(column, columnName, caseSensitive);
         return areEqual;
     }
 
@@ -382,19 +384,26 @@ public class SQLHelper {
      * is <code>null</code> or empty string.
      * @since 2.4.0
      */
-    private static boolean areEqualIgnoreNull(String value1, String value2) 
+    private static boolean areEqualIgnoreNull(String value1, String value2, boolean caseSensitive) 
     {
         if(value1==null || value1.equals(""))
         {
             return true;
         }
-        else if(value1.equalsIgnoreCase(value2))
+        else 
         {
-            return true;
-        }
-        else
-        {
-            return false;
+            if(caseSensitive && value1.equals(value2))
+            {
+                return true;
+            }
+            else if(!caseSensitive && value1.equalsIgnoreCase(value2))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 

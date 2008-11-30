@@ -78,18 +78,22 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
      * The actual table metadata
      */
     private DefaultTableMetaData wrappedTableMetaData;
-	
+	private boolean _caseSensitiveMetaData;
 
 	/**
 	 * @param tableName The name of the database table
 	 * @param resultSet The JDBC result set that is used to retrieve the columns
 	 * @param connection The connection which is needed to retrieve some configuration values
+	 * @param caseSensitiveMetaData Whether or not the metadata is case sensitive
 	 * @throws DataSetException
 	 * @throws SQLException
 	 */
 	public ResultSetTableMetaData(String tableName,
-            ResultSet resultSet, IDatabaseConnection connection) throws DataSetException, SQLException {
+            ResultSet resultSet, IDatabaseConnection connection, boolean caseSensitiveMetaData) 
+	throws DataSetException, SQLException 
+	{
 		super();
+        _caseSensitiveMetaData = caseSensitiveMetaData;
 		this.wrappedTableMetaData = createMetaData(tableName, resultSet, connection);
 		
 	}
@@ -98,15 +102,20 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
 	 * @param tableName The name of the database table
 	 * @param resultSet The JDBC result set that is used to retrieve the columns
 	 * @param dataTypeFactory
+     * @param caseSensitiveMetaData Whether or not the metadata is case sensitive
 	 * @throws DataSetException
 	 * @throws SQLException
 	 */
 	public ResultSetTableMetaData(String tableName,
-            ResultSet resultSet, IDataTypeFactory dataTypeFactory) throws DataSetException, SQLException {
+            ResultSet resultSet, IDataTypeFactory dataTypeFactory, boolean caseSensitiveMetaData) 
+	throws DataSetException, SQLException 
+	{
 		super();
+		_caseSensitiveMetaData = caseSensitiveMetaData;
 		this.wrappedTableMetaData = createMetaData(tableName, resultSet, dataTypeFactory);
 	}
 
+	
     private DefaultTableMetaData createMetaData(String tableName,
             ResultSet resultSet, IDatabaseConnection connection)
             throws SQLException, DataSetException
@@ -260,7 +269,7 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
     {
         while(columnsResultSet.next())
         {
-            boolean match = SQLHelper.matches(columnsResultSet, catalog, schema, table, column);
+            boolean match = SQLHelper.matches(columnsResultSet, catalog, schema, table, column, _caseSensitiveMetaData);
             if(match)
             {
                 // All right. Return immediately because the resultSet is positioned on the correct row

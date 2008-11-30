@@ -60,12 +60,28 @@ public abstract class AbstractResultSetTable extends AbstractTable
             IDatabaseConnection connection)
             throws DataSetException, SQLException
     {
+        this(tableName, selectStatement, connection, false);
+    }
+    
+    /**
+     * @param tableName
+     * @param selectStatement
+     * @param connection
+     * @param caseSensitiveTableNames
+     * @throws DataSetException
+     * @throws SQLException
+     * @since 2.4.1
+     */
+    public AbstractResultSetTable(String tableName, String selectStatement,
+            IDatabaseConnection connection, boolean caseSensitiveTableNames)
+            throws DataSetException, SQLException
+    {
     	_statement = createStatement(connection);
 
         try
         {
             _resultSet = _statement.executeQuery(selectStatement);
-            _metaData = new ResultSetTableMetaData(tableName, _resultSet, connection);
+            _metaData = new ResultSetTableMetaData(tableName, _resultSet, connection, caseSensitiveTableNames);
         }
         catch (SQLException e)
         {
