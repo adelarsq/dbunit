@@ -20,6 +20,8 @@
  */
 package org.dbunit.database;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -29,14 +31,40 @@ import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.util.SQLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * {@link ResultSet} based {@link org.dbunit.dataset.ITableMetaData} implementation
- * @author gommma
- * @version $Revision$
+ * {@link ResultSet} based {@link org.dbunit.dataset.ITableMetaData} implementation.
+ * <p>
+ * The lookup for the information needed to create the {@link Column} objects is retrieved
+ * in two phases:
+ * <ol>
+ * <li>Try to find the information from the given {@link ResultSet} via a {@link DatabaseMetaData}
+ * object. Therefore the {@link ResultSetMetaData} is used to get the catalog/schema/table/column
+ * names which in turn are used to get column information via
+ * {@link DatabaseMetaData#getColumns(String, String, String, String)}. The reason for this is
+ * that the {@link DatabaseMetaData} is more precise and contains more information about columns
+ * than the {@link ResultSetMetaData} does. Another reason is that some JDBC drivers (currently known
+ * from MYSQL driver) provide an inconsistent implementation of those two MetaData objects
+ * and the {@link DatabaseMetaData} is hence considered to be the master by dbunit.
+ * </li>
+ * <li>
+ * Since some JDBC drivers (one of them being Oracle) cannot (or just do not) provide the 
+ * catalog/schema/table/column values on a {@link ResultSetMetaData} instance the second 
+ * step will create the dbunit {@link Column} using the {@link ResultSetMetaData} methods 
+ * directly (for example {@link ResultSetMetaData#getColumnType(int)}. (This is also the way
+ * dbunit worked until the 2.4 release)
+ * </li>
+ * </ol> 
+ * </p>
+ * 
+ * @author gommma (gommma AT users.sourceforge.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
  * @since 2.3.0
  */
 public class ResultSetTableMetaData extends AbstractTableMetaData 
@@ -83,8 +111,8 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
             ResultSet resultSet, IDatabaseConnection connection)
             throws SQLException, DataSetException
     {
-    	if (logger.isDebugEnabled())
-    		logger.debug("createMetaData(tableName={}, resultSet={}, connection={}) - start",
+    	if (logger.isTraceEnabled())
+    		logger.trace("createMetaData(tableName={}, resultSet={}, connection={}) - start",
     				new Object[] { tableName, resultSet, connection });
 
         IDataTypeFactory typeFactory = super.getDataTypeFactory(connection);
@@ -95,33 +123,160 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
             ResultSet resultSet, IDataTypeFactory dataTypeFactory)
             throws DataSetException, SQLException
     {
-    	if (logger.isDebugEnabled())
-    		logger.debug("createMetaData(tableName={}, resultSet={}, dataTypeFactory={}) - start",
+    	if (logger.isTraceEnabled())
+    		logger.trace("createMetaData(tableName={}, resultSet={}, dataTypeFactory={}) - start",
     				new Object[]{ tableName, resultSet, dataTypeFactory });
 
-    	// Create the columns from the result set
+    	Connection connection = resultSet.getStatement().getConnection();
+    	DatabaseMetaData databaseMetaData = connection.getMetaData();
+    	
         ResultSetMetaData metaData = resultSet.getMetaData();
         Column[] columns = new Column[metaData.getColumnCount()];
         for (int i = 0; i < columns.length; i++)
         {
-            int columnType = metaData.getColumnType(i + 1);
-            String columnTypeName = metaData.getColumnTypeName(i + 1);
-            String columnName = metaData.getColumnName(i + 1);
+            int rsIndex = i+1;
             
-            DataType dataType = dataTypeFactory.createDataType(
-	                    columnType, columnTypeName, tableName, columnName);
+            // 1. try to create the column from the DatabaseMetaData object. The DatabaseMetaData
+            // provides more information and is more precise so that it should always be used in
+            // preference to the ResultSetMetaData object.
+            columns[i] = createColumnFromDbMetaData(metaData, rsIndex, databaseMetaData, dataTypeFactory);
             
-            columns[i] = new Column(
-                    columnName,
-                    dataType,
-                    columnTypeName,
-                    Column.nullableValue(metaData.isNullable(i + 1)));
+            // 2. If we could not create the Column from a DatabaseMetaData object, try to create it
+            // from the ResultSetMetaData object directly
+            if(columns[i] == null)
+            {
+                columns[i] = createColumnFromRsMetaData(metaData, rsIndex, tableName, dataTypeFactory);
+            }
         }
 
         return new DefaultTableMetaData(tableName, columns);
     }
 
-    
+    private Column createColumnFromRsMetaData(ResultSetMetaData rsMetaData,
+            int rsIndex, String tableName, IDataTypeFactory dataTypeFactory) 
+    throws SQLException, DataTypeException 
+    {
+        if(logger.isTraceEnabled()){
+            logger.trace("createColumnFromRsMetaData(rsMetaData={}, rsIndex={}," + 
+                    " tableName={}, dataTypeFactory={}) - start",
+                new Object[]{rsMetaData, String.valueOf(rsIndex), 
+                    tableName, dataTypeFactory});
+        }
+
+        int columnType = rsMetaData.getColumnType(rsIndex);
+        String columnTypeName = rsMetaData.getColumnTypeName(rsIndex);
+        String columnName = rsMetaData.getColumnName(rsIndex);
+        int isNullable = rsMetaData.isNullable(rsIndex);
+
+        DataType dataType = dataTypeFactory.createDataType(
+                    columnType, columnTypeName, tableName, columnName);
+
+        Column column = new Column(
+                columnName,
+                dataType,
+                columnTypeName,
+                Column.nullableValue(isNullable));
+        return column;
+    }
+
+    /**
+     * Try to create the Column using information from the given {@link ResultSetMetaData}
+     * to search the column via the given {@link DatabaseMetaData}. If the
+     * {@link ResultSetMetaData} does not provide the required information 
+     * (one of catalog/schema/table is "")
+     * the search for the Column via {@link DatabaseMetaData} is not executed and <code>null</code>
+     * is returned immediately.
+     * @param rsMetaData The {@link ResultSetMetaData} from which to retrieve the {@link DatabaseMetaData}
+     * @param rsIndex The current index in the {@link ResultSetMetaData}
+     * @param databaseMetaData The {@link DatabaseMetaData} which is used to lookup detailed
+     * information about the column if possible
+     * @param dataTypeFactory dbunit {@link IDataTypeFactory} needed to create the Column
+     * @return The column or <code>null</code> if it can be not created using a 
+     * {@link DatabaseMetaData} object because of missing information in the 
+     * {@link ResultSetMetaData} object
+     * @throws SQLException
+     * @throws DataTypeException 
+     */
+    private Column createColumnFromDbMetaData(ResultSetMetaData rsMetaData, int rsIndex, 
+            DatabaseMetaData databaseMetaData, IDataTypeFactory dataTypeFactory) 
+    throws SQLException, DataTypeException 
+    {
+        if(logger.isTraceEnabled()){
+            logger.trace("createColumnFromMetaData(rsMetaData={}, rsIndex={}," + 
+                    " databaseMetaData={}, dataTypeFactory={}) - start",
+                new Object[]{rsMetaData, String.valueOf(rsIndex), 
+                            databaseMetaData, dataTypeFactory});
+        }
+        
+        // use DatabaseMetaData to retrieve the actual column definition
+        String catalogName = rsMetaData.getCatalogName(rsIndex);
+        String schemaName = rsMetaData.getSchemaName(rsIndex);
+        String tableName = rsMetaData.getTableName(rsIndex);
+        String columnName = rsMetaData.getColumnName(rsIndex);
+        
+        // Check if at least one of catalog/schema/table attributes is
+        // not applicable (i.e. "" is returned). If so do not try
+        // to get the column metadata from the DatabaseMetaData object.
+        // This is the case for all oracle JDBC drivers
+        if(catalogName != null && catalogName.equals("")) {
+            // Catalog name is not required
+            catalogName = null;
+        }
+        if(schemaName != null && schemaName.equals("")) {
+            logger.debug("The 'schemaName' from the ResultSetMetaData is empty-string and not applicable hence. " +
+            "Will not try to lookup column properties via DatabaseMetaData.getColumns.");
+            return null;
+        }
+        if(tableName != null && tableName.equals("")) {
+            logger.debug("The 'tableName' from the ResultSetMetaData is empty-string and not applicable hence. " +
+            "Will not try to lookup column properties via DatabaseMetaData.getColumns.");
+            return null;
+        }
+        
+        logger.debug("All attributes from the ResultSetMetaData are valid, " +
+    		"trying to lookup values in DatabaseMetaData. catalog={}, schema={}, table={}, column={}",
+    		new Object[]{catalogName, schemaName, tableName, columnName} );
+        
+        // All of the retrieved attributes are valid, 
+        // so lookup the column via DatabaseMetaData
+        ResultSet columnsResultSet = databaseMetaData.getColumns(
+                catalogName,
+                schemaName,
+                tableName,
+                columnName
+        );
+
+        // Scroll resultset forward - must have one result which exactly matches the required parameters
+        scrollTo(columnsResultSet, catalogName, schemaName, tableName, columnName);
+
+        Column column = SQLHelper.createColumn(columnsResultSet, dataTypeFactory, true);
+        return column;
+    }
+
+
+    private void scrollTo(ResultSet columnsResultSet, String catalog,
+            String schema, String table, String column) 
+    throws SQLException 
+    {
+        while(columnsResultSet.next())
+        {
+            boolean match = SQLHelper.matches(columnsResultSet, catalog, schema, table, column);
+            if(match)
+            {
+                // All right. Return immediately because the resultSet is positioned on the correct row
+                return;
+            }
+        }
+
+        // If we get here the column could not be found
+        String msg = 
+                "Did not find column '" + column + 
+                "' for <schema.table> '" + schema + "." + table + 
+                "' in catalog '" + catalog + "' because names do not exactly match.";
+
+        throw new IllegalStateException(msg);
+    }
+
 	public Column[] getColumns() throws DataSetException {
 		return this.wrappedTableMetaData.getColumns();
 	}
