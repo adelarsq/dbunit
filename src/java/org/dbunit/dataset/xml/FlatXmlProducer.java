@@ -424,6 +424,8 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
             	if (_dtdHandler == null || !_dtdHandler.isDtdPresent())
             	{
 	            	handleMissingColumns(attributes);
+	            	// Since a new MetaData object was created assign it to the local variable
+	            	activeMetaData = getActiveMetaData();
             	}
             	
             	_lineNumber++;

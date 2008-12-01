@@ -82,7 +82,6 @@ public class BufferedConsumer implements IDataSetConsumer {
 		// Do nothing here - we will buffer all data in the "row" method in order to write
 		// them in the "endTable" method
 		this._activeMetaData = metaData;
-		this._allRows.clear();
 	}
 
 	public void endTable() throws DataSetException 
@@ -119,6 +118,8 @@ public class BufferedConsumer implements IDataSetConsumer {
 		}
 		
 		this._wrappedConsumer.endTable();
+		// Clear the row data for this table finally
+        this._allRows.clear();
 	}
 
 }

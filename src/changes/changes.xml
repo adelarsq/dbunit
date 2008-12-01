@@ -9,8 +9,9 @@
   <body>
     <release version="2.4.1" date="TBD" description="Updates and bugfixes only">
       <action dev="gommma" type="update">Updated slf4j dependencies to version 1.5.6.</action>
-      <action dev="gommma" type="add" issue="1628896" due-to="jeromevdl">No metadata Tables found</action>
-      <action dev="gommma" type="add" issue="2356010">Oracle problem rel 2.4 in createQueryTable</action>
+      <action dev="gommma" type="fix" issue="1628896" due-to="jeromevdl">No metadata Tables found</action>
+      <action dev="gommma" type="fix" issue="2356010">Oracle problem rel 2.4 in createQueryTable</action>
+      <action dev="gommma" type="fix" issue="2370993" due-to="schedinl">Cannot insert table data with self-reference in 2.4.0</action>
     </release>
     <release version="2.4.0" date="Nov 27, 2008" description="Some API changes, features added, bugfixes">
       <action dev="felipeal" type="add" issue="2235876">Refactor Assertion class</action>
