@@ -144,7 +144,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
      * @return The table metadata created for the given parameters
      * @throws DataSetException
      * @throws SQLException
-     * @deprecated since 2.3.0. use {@link ResultSetTableMetaData#ResultSetTableMetaData(String, ResultSet, IDataTypeFactory)}
+     * @deprecated since 2.3.0. use {@link ResultSetTableMetaData#ResultSetTableMetaData(String, ResultSet, IDataTypeFactory, boolean)}
      */
     public static ITableMetaData createMetaData(String tableName,
             ResultSet resultSet, IDataTypeFactory dataTypeFactory)
@@ -168,7 +168,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
      * @return The table metadata created for the given parameters
      * @throws SQLException
      * @throws DataSetException
-     * @deprecated since 2.3.0. use {@link ResultSetTableMetaData#ResultSetTableMetaData(String, ResultSet, IDatabaseConnection)}
+     * @deprecated since 2.3.0. use {@link org.dbunit.database.ResultSetTableMetaData#ResultSetTableMetaData(String, ResultSet, IDatabaseConnection, boolean)}
      */
     public static ITableMetaData createMetaData(String tableName,
             ResultSet resultSet, IDatabaseConnection connection)

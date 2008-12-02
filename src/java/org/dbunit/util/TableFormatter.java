@@ -98,7 +98,7 @@ public class TableFormatter
      * @param s
      * @param length
      * @param padChar
-     * @return
+     * @return The padded string
      */
     public static final String padLeft(String s, int length, char padChar)
     {
@@ -117,7 +117,7 @@ public class TableFormatter
      * @param s
      * @param length
      * @param padChar
-     * @return
+     * @return The padded string
      */
     public static final String padRight(String s, int length, char padChar)
     {
