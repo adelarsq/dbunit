@@ -27,7 +27,7 @@
       <table border="1">
         <tr>
           <td>2008-12-03</td>
-          <td>Previous version introduced a bug on Oracle-based tests, so we are proud to announce a quick new version (2.4.1) that fixes it. More information in the <a href="changes-report.html#a2.4.0">changes</a>.</td>
+          <td>Previous version introduced a bug on Oracle-based tests, so we are proud to announce a quick new version (2.4.1) that fixes it. More information in the <a href="changes-report.html#a2.4.1">changes</a>.</td>
         </tr>
         <tr>
           <td>2008-11-27</td>
