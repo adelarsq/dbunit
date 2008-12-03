@@ -51,7 +51,7 @@
     <menu name="Quick Links">
       <item name="Maven 1.x Plugin" href="http://maven-plugins.sourceforge.net/maven-dbunit-plugin/index.html"/>
       <item name="Maven 2 Plugin"   href="http://mojo.codehaus.org/dbunit-maven-plugin/"/>
-      <item name="Download"         href="http://sourceforge.net/project/showfiles.php?group_id=47439&amp;release_id=242511"/>
+      <item name="Download"         href="http://sourceforge.net/project/showfiles.php?group_id=47439"/>
       <item name="Changes"          href="/changes-report.html"/>
       <item name="FAQ"              href="/faq.html"/>
       <item name="Wiki"             href="http://dbunit.wikidot.com/"/>
