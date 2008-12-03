@@ -4,10 +4,11 @@
     <title>Changes</title>
     <author email="epugh@upstate.com">Eric Pugh</author>
     <author email="mlaflamm@users.sourceforge.net">Manuel Laflamme</author>
+    <author email="dbunit@felipeal.net">Felipe Leme</author>
   </properties>
 
   <body>
-    <release version="2.4.1" date="TBD" description="Updates and bugfixes only">
+    <release version="2.4.1" date="Dec 03, 2008" description="Updates and bugfixes only">
       <action dev="gommma" type="update">Updated slf4j dependencies to version 1.5.6.</action>
       <action dev="gommma" type="fix" issue="1628896" due-to="jeromevdl">No metadata Tables found</action>
       <action dev="gommma" type="fix" issue="2356010">Oracle problem rel 2.4 in createQueryTable</action>

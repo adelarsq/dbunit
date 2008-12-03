@@ -50,14 +50,15 @@ Contributing patches
 
 Maintenance tasks
 
- The tasks described below describes how to maintain DbUnit. Some of these tasks will use <ssh> to upload files to SourceForge, so it is necessary to setup your environment to allow it (typically using <ssh-agent> - see more details on {{{http://sourceforge.net/docman/display_doc.php?docid=761&group_id=1} SourceForge}}).
+ The tasks described below describes how to maintain DbUnit. Some of these tasks will use <ssh> to upload files to SourceForge, so it is necessary to setup your environment to allow it (typically using <ssh-agent> - see more details on {{{http://sourceforge.net/docman/display_doc.php?docid=761&group_id=1} SourceForge}}).  Also notice that in 2008 SourceForge changed the way it provides shell access, so you need to create a temporary shell for your user before using ssh (see instructions {{{http://people.apache.org/~baerrach/maven-site-plugin-2.0-beta-8-SNAPSHOT/examples/site-deploy-to-sourceforge.net.html} here}}.
+
 
 Updating the repository and site
 
  Once new code is incorporated in the SVN code, it is necessary to update the Maven 2 repository with new snapshots, and also update the site. These 2 tasks can be done with a simple command:
 
 ---
-mvn -Pofficial clean source:jar javadoc:jar deploy site:deploy
+mvn -Pofficial clean source:jar javadoc:jar deploy site:site site:deploy
 ---
 
 Cutting a release
