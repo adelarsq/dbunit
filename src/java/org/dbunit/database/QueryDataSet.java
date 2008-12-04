@@ -59,9 +59,22 @@ public class QueryDataSet extends AbstractDataSet
      */
     public QueryDataSet(IDatabaseConnection connection)
     {
-    	if (connection == null) {
-			throw new NullPointerException("The parameter 'connection' must not be null");
-		}
+        this(connection, connection.getConfig().getFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES));
+    }
+
+    /**
+     * Create a QueryDataSet by passing in the connection to the database to use.
+     *
+     * @param connection The connection object to the database.
+     * @param caseSensitiveTableNames Whether or not this dataset should use case sensitive table names
+     * @since 2.4.2
+     */
+    public QueryDataSet(IDatabaseConnection connection, boolean caseSensitiveTableNames)
+    {
+        super(caseSensitiveTableNames);
+        if (connection == null) {
+            throw new NullPointerException("The parameter 'connection' must not be null");
+        }
         _connection = connection;
         _tables = super.createTableNameMap();
     }
