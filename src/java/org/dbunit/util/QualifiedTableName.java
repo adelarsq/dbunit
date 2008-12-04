@@ -20,6 +20,7 @@
  */
 package org.dbunit.util;
 
+import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.database.DatabaseConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -182,7 +183,7 @@ public class QualifiedTableName
      * @param escapePattern The escape pattern to be applied on the prefix and the name. Can be null.
      * @return The qualified name
      */
-    private static String getQualifiedName(String prefix, String name,
+    private String getQualifiedName(String prefix, String name,
             String escapePattern)
     {
         if(logger.isDebugEnabled())
@@ -191,8 +192,8 @@ public class QualifiedTableName
 
         if (escapePattern != null)
         {
-            prefix = QualifiedTableName.getEscapedName(prefix, escapePattern);
-            name = QualifiedTableName.getEscapedName(name, escapePattern);
+            prefix = getEscapedName(prefix, escapePattern);
+            name = getEscapedName(name, escapePattern);
         }
 
         if (prefix == null || prefix.equals("") || name.indexOf(".") >= 0)
@@ -209,13 +210,23 @@ public class QualifiedTableName
      * @param escapePattern
      * @return
      */
-    private static String getEscapedName(String name, String escapePattern)
+    private String getEscapedName(String name, String escapePattern)
     {
         logger.debug("getEscapedName(name={}, escapePattern={}) - start", name, escapePattern);
 
-        if (name == null || escapePattern == null)
+        if (name == null)
         {
             return name;
+        }
+
+        if (escapePattern == null) 
+        {
+            throw new NullPointerException(
+                    "The parameter 'escapePattern' must not be null");
+        }
+        if(escapePattern.trim().equals(""))
+        {
+            throw new DatabaseUnitRuntimeException("Empty string is an invalid escape pattern!");
         }
     
         int split = name.indexOf(".");
@@ -232,7 +243,17 @@ public class QualifiedTableName
 
             return prefix + name + suffix;
         }
-        return name;
+        else if(escapePattern.length() == 1)
+        {
+            // No "?" in the escape pattern and only one character.
+            // use the given escapePattern to surround the given name
+            return escapePattern + name + escapePattern;
+        }
+        else
+        {
+            logger.warn("Invalid escape pattern '" + escapePattern + "'. Will not escape name '" + name + "'.");
+            return name;
+        }
     }
 
 }

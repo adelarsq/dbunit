@@ -60,6 +60,8 @@ public class DataSetUtilsTest extends TestCase
         assertEquals("escaped prefix + name", "[prefix].[name]",
                 DataSetUtils.getQualifiedName("prefix", "name", "[?]"));
 
+        assertEquals("escaped prefix + name", "\"prefix\".\"name\"",
+                DataSetUtils.getQualifiedName("prefix", "name", "\""));
     }
 
     public void testGetEscapedName() throws Exception
@@ -73,6 +75,8 @@ public class DataSetUtilsTest extends TestCase
         assertEquals("name", DataSetUtils.getEscapedName("name", null));
 
         assertEquals("name", DataSetUtils.getEscapedName("name", "invalid pattern!"));
+
+        assertEquals("\"name\"", DataSetUtils.getEscapedName("name", "\""));
     }
 
     public void testGetColumn() throws Exception

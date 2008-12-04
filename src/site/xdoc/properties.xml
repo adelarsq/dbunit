@@ -118,6 +118,12 @@
           <td>Allows schema, table and column names escaping. The property value 
             is an escape pattern where the ? is replaced by the name. For example, 
             the pattern "[?]" is expanded as "[MY_TABLE]" for a table named "MY_TABLE". 
+            The most common escape pattern is "\"?\"" which surrounds the table name
+            with quotes (for the above example it would result in "\"MY_TABLE\"").
+            <br />
+            As a fallback if no questionmark is in the given String and its length is one
+            it is used to surround the table name on the left and right side. For example
+            the escape pattern "\"" will have the same effect as the escape pattern "\"?\"".
           </td>
         </tr>
         <tr> 

@@ -109,6 +109,14 @@ public class QualifiedTableNameTest extends TestCase
 		assertEquals("'MY_TABLE'", qualifiedName);
 	}
 	
+	public void testGetQualifiedTableName_DefaultSchema_FeatureEnabled_EscapingWithoutQuestionmark()
+    {
+        DatabaseConfig config = new DatabaseConfig();
+        config.setFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, true);
+        String qualifiedName = new QualifiedTableName("MY_TABLE", "DEFAULT_SCHEMA", "'").getQualifiedNameIfEnabled(config);
+        assertEquals("'DEFAULT_SCHEMA'.'MY_TABLE'", qualifiedName);
+    }
+
 	public void testConstructorWithNullTable()
 	{
 		try {
