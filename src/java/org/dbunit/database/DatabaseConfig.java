@@ -82,6 +82,8 @@ public class DatabaseConfig
         new ConfigProperty(PROPERTY_FETCH_SIZE, Integer.class, false),
     };
 
+    public static final String FEATURE_CASE_SENSITIVE_TABLE_NAMES =
+            "http://www.dbunit.org/features/caseSensitiveTableNames";
     public static final String FEATURE_QUALIFIED_TABLE_NAMES =
             "http://www.dbunit.org/features/qualifiedTableNames";
     public static final String FEATURE_BATCHED_STATEMENTS =
@@ -95,6 +97,7 @@ public class DatabaseConfig
      * A list of all features as strings
      */
     public static final String[] ALL_FEATURES = new String[] {
+        FEATURE_CASE_SENSITIVE_TABLE_NAMES,
         FEATURE_QUALIFIED_TABLE_NAMES,
         FEATURE_BATCHED_STATEMENTS,
         FEATURE_DATATYPE_WARNING,
@@ -121,6 +124,7 @@ public class DatabaseConfig
     {
         setFeature(FEATURE_BATCHED_STATEMENTS, false);
         setFeature(FEATURE_QUALIFIED_TABLE_NAMES, false);
+        setFeature(FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
         setFeature(FEATURE_DATATYPE_WARNING, true);
 
         setProperty(PROPERTY_STATEMENT_FACTORY, PREPARED_STATEMENT_FACTORY);

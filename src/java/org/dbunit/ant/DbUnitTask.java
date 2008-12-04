@@ -103,6 +103,10 @@ public class DbUnitTask extends Task
 
     private AntClassLoader loader;
     
+    /**
+     * DB configuration child element to configure {@link DatabaseConfig} properties
+     * in a generic way.
+     */
     private DbConfig dbConfig;
 
     /**

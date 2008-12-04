@@ -10,6 +10,7 @@
   <body>
     <release version="2.4.2" date="TBD" description="Bugfixes only">
       <action dev="gommma" type="fix" issue="2356800" due-to="jeremy_finney">Cannot extract contents of table with a column named "AS"</action>
+      <action dev="gommma" type="fix" issue="2382766" due-to="dacota">MySQL case sensitive problem in dataset creation</action>
     </release>
     <release version="2.4.1" date="Dec 03, 2008" description="Updates and bugfixes only">
       <action dev="gommma" type="update">Updated slf4j dependencies to version 1.5.6.</action>

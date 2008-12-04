@@ -41,6 +41,25 @@
           <td>Enable or disable usage of JDBC batched statement by DbUnit. </td>
         </tr>
       </table>
+
+      <a name="casesensitivetablenames"></a>
+      <h4>Case sensitive table names</h4>
+      <table border="1">
+        <tr> 
+          <td>Feature ID</td>
+          <td>http://www.dbunit.org/features/caseSensitiveTableNames</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>false</td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Enable or disable case sensitive table names. If enabled, Dbunit handles all
+            table names in a case sensitive way.</td>
+        </tr>
+      </table>
+
       <a name="qualifiedtablenames"></a>
       <h4>Qualified table names</h4>
       <table border="1">

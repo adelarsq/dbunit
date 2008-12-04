@@ -68,16 +68,9 @@ public class DatabaseDataSet extends AbstractDataSet
      */
     DatabaseDataSet(IDatabaseConnection connection) throws SQLException
     {
-    	super();
-    	if (connection == null) {
-    		throw new NullPointerException(
-					"The parameter 'connection' must not be null");
-		}
-        _connection = connection;
+    	this(connection, connection.getConfig().getFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES));
     }
 
-    
-    
     
     /**
      * Creates a new database data set

@@ -435,6 +435,7 @@
               <property name="datatypeFactory" value="org.dbunit.ext.oracle.OracleDataTypeFactory" />
               <property name="tableType" value="TABLE,SYNONYM" />
               <feature name="batchedStatements" value="true" />
+              <feature name="caseSensitiveTableNames" value="true" />
           </dbconfig>
           <operation type="NONE"/>
       </dbunit>

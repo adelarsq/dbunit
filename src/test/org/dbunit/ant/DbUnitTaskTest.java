@@ -443,6 +443,8 @@ public class DbUnitTaskTest extends TaskdefsTest
         ArrayAssert.assertEquals("tableType", new String[]{"TABLE", "SYNONYM"}, actualTableType);
         assertTrue("batched statements feature should be true", 
                 connection.getConfig().getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
+        assertTrue("qualified tablenames feature should be true", 
+                connection.getConfig().getFeature(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES));
     }
     
     
