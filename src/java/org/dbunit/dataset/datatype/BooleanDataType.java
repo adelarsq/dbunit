@@ -101,41 +101,20 @@ public class BooleanDataType extends AbstractDataType
         throw new TypeCastException(value, this);
     }
 
-    public int compare(Object o1, Object o2) throws TypeCastException
+
+    protected int compareNonNulls(Object value1, Object value2) throws TypeCastException
     {
-        logger.debug("compare(o1={}, o2={}) - start", o1, o2);
-
-        // New since dbunit 2.4 for performance improvement. Most of the times
-        // the "typeCase" can be avoided like this.
-        if(areObjectsEqual(o1, o2))
-        {
-            return 0;
-        }
+        logger.debug("compareNonNulls(value1={}, value2={}) - start", value1, value2);
         
-        Boolean value1 = (Boolean)typeCast(o1);
-        Boolean value2 = (Boolean)typeCast(o2);
-
-        if (value1 == null && value2 == null)
+        Boolean value1bool = (Boolean)value1;
+        Boolean value2bool = (Boolean)value2;
+        
+        if (value1bool.equals(value2bool))
         {
             return 0;
         }
 
-        if (value1 == null && value2 != null)
-        {
-            return -1;
-        }
-
-        if (value1 != null && value2 == null)
-        {
-            return 1;
-        }
-
-        if (value1.equals(value2))
-        {
-            return 0;
-        }
-
-        if (value1.equals(Boolean.FALSE))
+        if (value1bool.equals(Boolean.FALSE))
         {
             return -1;
         }

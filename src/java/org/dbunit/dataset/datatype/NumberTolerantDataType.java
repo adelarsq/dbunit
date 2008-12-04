@@ -74,51 +74,27 @@ public class NumberTolerantDataType extends NumberDataType
 		return toleratedDelta;
 	}
 
+
     /**
      * The only method overwritten from the base implementation to compare numbers allowing a tolerance
-     * @see org.dbunit.dataset.datatype.AbstractDataType#compare(java.lang.Object, java.lang.Object)
+     * @see org.dbunit.dataset.datatype.AbstractDataType#compareNonNulls(java.lang.Object, java.lang.Object)
      */
-    public int compare(Object o1, Object o2) throws TypeCastException
+    protected int compareNonNulls(Object value1cast, Object value2cast)
+        throws TypeCastException 
     {
-        logger.debug("compare(o1={}, o2={}) - start", o1, o2);
-
+        logger.debug("compareNonNulls(value1={}, value2={}) - start", value1cast, value2cast);
+        
         try
         {
-            // New in 2.4: Object level check for equality - should give massive performance improvements
-            // in the most cases because the typecast can be avoided (null values and equal objects)
-            if(areObjectsEqual(o1, o2))
-            {
-                return 0;
-            }
-            
-            
-            Comparable value1 = (Comparable)typeCast(o1);
-            Comparable value2 = (Comparable)typeCast(o2);
-
-            if (value1 == null && value2 == null)
-            {
-                return 0;
-            }
-
-            if (value1 == null && value2 != null)
-            {
-                return -1;
-            }
-
-            if (value1 != null && value2 == null)
-            {
-                return 1;
-            }
-
             // Start of special handling
-            if(value1 instanceof BigDecimal && value2 instanceof BigDecimal){
-                BigDecimal bdValue1 = (BigDecimal)value1;
-                BigDecimal bdValue2 = (BigDecimal)value2;
+            if(value1cast instanceof BigDecimal && value2cast instanceof BigDecimal){
+                BigDecimal bdValue1 = (BigDecimal)value1cast;
+                BigDecimal bdValue2 = (BigDecimal)value2cast;
                 BigDecimal diff = bdValue1.subtract(bdValue2);
                 // Exact match
                 if(isZero(diff)) 
                 {
-                	return 0;
+                    return 0;
                 }
                 
                 BigDecimal toleratedDeltaValue = this.toleratedDelta.getDelta();
@@ -133,8 +109,8 @@ public class NumberTolerantDataType extends NumberDataType
                         return 0;
                     } 
                     else {
-                    	// TODO it would be beautiful to report a precise description about difference and tolerated delta values in the assertion
-                    	// Therefore think about introducing a method "DataType.getCompareInfo()"
+                        // TODO it would be beautiful to report a precise description about difference and tolerated delta values in the assertion
+                        // Therefore think about introducing a method "DataType.getCompareInfo()"
                         return diff.signum();
                     }
                 }
@@ -159,9 +135,10 @@ public class NumberTolerantDataType extends NumberDataType
                 
             }
             else {
+                Comparable value1 = (Comparable)value1cast;
+                Comparable value2 = (Comparable)value2cast;
                 return value1.compareTo(value2);
             }
-            
         }
         catch (ClassCastException e)
         {

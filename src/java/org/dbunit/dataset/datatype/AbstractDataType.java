@@ -79,10 +79,11 @@ public abstract class AbstractDataType extends DataType
         	
         	
         	// Comparable check based on the results of method "typeCast"
-            Comparable value1 = (Comparable)typeCast(o1);
-            Comparable value2 = (Comparable)typeCast(o2);
+            Object value1 = typeCast(o1);
+            Object value2 = typeCast(o2);
 
             // Check for "null"s again because typeCast can produce them
+
             if (value1 == null && value2 == null)
             {
                 return 0;
@@ -98,12 +99,32 @@ public abstract class AbstractDataType extends DataType
                 return 1;
             }
 
-            return value1.compareTo(value2);
+            return compareNonNulls(value1, value2);
+
         }
         catch (ClassCastException e)
         {
             throw new TypeCastException(e);
         }
+    }
+
+    /**
+     * Compares non-null values to each other. Both objects are guaranteed to be not
+     * null and to implement the interface {@link Comparable}. The two given objects
+     * are the results of the {@link #typeCast(Object)} method call which is usually
+     * implemented by a specialized {@link DataType} implementation.
+     * @param value1 First value resulting from the {@link #typeCast(Object)} method call
+     * @param value2 Second value resulting from the {@link #typeCast(Object)} method call
+     * @return The result of the {@link Comparable#compareTo(Object)} invocation.
+     * @throws TypeCastException
+     */
+    protected int compareNonNulls(Object value1, Object value2) throws TypeCastException
+    {
+        logger.debug("compareNonNulls(value1={}, value2={}) - start", value1, value2);
+
+        Comparable value1comp = (Comparable)value1;
+        Comparable value2comp = (Comparable)value2;
+        return value1comp.compareTo(value2comp);
     }
 
     /**

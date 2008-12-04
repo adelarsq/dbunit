@@ -179,38 +179,17 @@ public class BytesDataType extends AbstractDataType
         throw new TypeCastException(value, this);
     }
 
-    public int compare(Object o1, Object o2) throws TypeCastException
+
+    protected int compareNonNulls(Object value1, Object value2) throws TypeCastException
     {
-        logger.debug("compare(o1={}, o2={}) - start", o1, o2);
+        logger.debug("compareNonNulls(value1={}, value2={}) - start", value1, value2);
 
         try
         {
-            // New since dbunit 2.4 for performance improvement. Most of the times
-            // the "typeCase" can be avoided like this.
-            if(areObjectsEqual(o1, o2))
-            {
-                return 0;
-            }
-            
-            byte[] value1 = (byte[])typeCast(o1);
-            byte[] value2 = (byte[])typeCast(o2);
-
-            if (value1 == null && value2 == null)
-            {
-                return 0;
-            }
-
-            if (value1 == null && value2 != null)
-            {
-                return -1;
-            }
-
-            if (value1 != null && value2 == null)
-            {
-                return 1;
-            }
-
-            return compare(value1, value2);
+            byte[] value1cast = (byte[])typeCast(value1);
+            byte[] value2cast = (byte[])typeCast(value2);
+    
+            return compare(value1cast, value2cast);
         }
         catch (ClassCastException e)
         {
