@@ -63,15 +63,26 @@ public class SequenceTableFilter implements ITableFilter
     public SequenceTableFilter(String[] tableNames) 
     throws AmbiguousTableNameException
     {
+        this(tableNames, false);
+    }
+
+    /**
+     * Creates a new SequenceTableFilter with specified table names sequence.
+     * @param tableNames
+     * @param caseSensitiveTableNames
+     * @throws AmbiguousTableNameException If the given array contains ambiguous names
+     * @since 2.4.2
+     */
+    public SequenceTableFilter(String[] tableNames, boolean caseSensitiveTableNames) 
+    throws AmbiguousTableNameException
+    {
         // Gather all tables in the OrderedTableNameMap which also makes the duplicate check
-        _tableNameMap = new OrderedTableNameMap();
+        _tableNameMap = new OrderedTableNameMap(caseSensitiveTableNames);
         for (int i = 0; i < tableNames.length; i++)
         {
             _tableNameMap.add(tableNames[i], null);
         }
-        
     }
-
 
     ////////////////////////////////////////////////////////////////////////////
     // ITableFilter interface

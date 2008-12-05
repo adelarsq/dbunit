@@ -96,6 +96,7 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
      * during the parse process.
      */
     private boolean _columnSensing = false;
+    private boolean _caseSensitiveTableNames;
 
     /**
      * The consumer which is responsible for creating the datasets and tables
@@ -122,6 +123,7 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
         _inputSource = xmlSource;
         _metaDataSet = metaDataSet;
         _resolver = this;
+        _caseSensitiveTableNames = metaDataSet.isCaseSensitiveTableNames();
         initialize(false);
     }
 
@@ -139,11 +141,26 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
      */
     public FlatXmlProducer(InputSource xmlSource, boolean dtdMetadata, boolean columnSensing)
     {
+        this(xmlSource, dtdMetadata, columnSensing, false);
+    }
+    
+    /**
+     * @param xmlSource The input datasource
+     * @param dtdMetadata Whether or not DTD metadata is available to parse via a DTD handler
+     * @param columnSensing Whether or not the column sensing feature should be used (see FAQ)
+     * @param caseSensitiveTableNames Whether or not this dataset should use case sensitive table names
+     * @since 2.4.2
+     */
+    public FlatXmlProducer(InputSource xmlSource, boolean dtdMetadata, boolean columnSensing, boolean caseSensitiveTableNames)
+    {
         _inputSource = xmlSource;
-        _resolver = this;
         _columnSensing = columnSensing;
+        _caseSensitiveTableNames = caseSensitiveTableNames;
+        _resolver = this;
         initialize(dtdMetadata);
     }
+
+
     
     private void initialize(boolean dtdMetadata)
     {
@@ -396,7 +413,7 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
             if (activeMetaData == null && qName.equals(DATASET))
             {
                 _consumer.startDataSet();
-                _orderedTableNameMap = new OrderedTableNameMap();
+                _orderedTableNameMap = new OrderedTableNameMap(_caseSensitiveTableNames);
                 return;
             }
 

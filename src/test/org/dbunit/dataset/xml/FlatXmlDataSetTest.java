@@ -176,6 +176,18 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
         assertEquals("emp", ds.getTableNames()[0]);
     }
 
+    
+    public void testCreateMultipleCaseDuplicateDataSet_CaseSensitive() throws Exception
+    {
+        // Create a FlatXmlDataSet having caseSensitivity=true
+        FlatXmlDataSet dataSet = new FlatXmlDataSet(DUPLICATE_DATASET_MULTIPLE_CASE_FILE, false, false, true);
+        ITable[] tables = dataSet.getTables();
+        assertEquals(3, tables.length);
+        assertEquals("DUPLICATE_TABLE", tables[0].getTableMetaData().getTableName());
+        assertEquals("EMPTY_TABLE", tables[1].getTableMetaData().getTableName());
+        assertEquals("duplicate_TABLE", tables[2].getTableMetaData().getTableName());
+    }
+    
 }
 
 

@@ -32,7 +32,7 @@ public interface IDataSet
 {
     /**
      * Returns names of tables in this dataset in proper sequence. Multiple
-     * occurence of the same name may be returned if multiple tables having
+     * occurrence of the same name may be returned if multiple tables having
      * the same name are present in the dataset.
      */
     public String[] getTableNames() throws DataSetException;
@@ -77,6 +77,14 @@ public interface IDataSet
      * Returns an iterator over the tables in this dataset in reverse sequence.
      */
     public ITableIterator reverseIterator() throws DataSetException;
+    
+    /**
+     * Whether or not this dataset handles table names in a case sensitive way or not.
+     * @return <code>true</code> if the case sensitivity of table names is used in this dataset.
+     * @since 2.4.2
+     */
+    public boolean isCaseSensitiveTableNames();
+
 }
 
 

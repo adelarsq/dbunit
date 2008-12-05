@@ -63,6 +63,26 @@ public class CompositeDataSet extends AbstractDataSet
     public CompositeDataSet(IDataSet[] dataSets, boolean combine)
             throws DataSetException
     {
+        this(dataSets, combine, false);
+    }
+    
+    /**
+     * Creates a composite dataset that combines specified datasets.
+     *
+     * @param dataSets
+     *      list of datasets
+     * @param combine
+     *      if <code>true</code>, tables having the same name are merged into
+     *      one table.
+     * @param caseSensitiveTableNames Whether or not table names are handled in a case sensitive
+     * way over all datasets.
+     * @since 2.4.2
+     */
+    public CompositeDataSet(IDataSet[] dataSets, boolean combine, boolean caseSensitiveTableNames)
+            throws DataSetException
+    {
+        super(caseSensitiveTableNames);
+        
         // Check for duplicates using the OrderedTableNameMap as helper
         OrderedTableNameMap orderedTableMap = super.createTableNameMap();
         for (int i = 0; i < dataSets.length; i++)
@@ -139,6 +159,21 @@ public class CompositeDataSet extends AbstractDataSet
      */
     public CompositeDataSet(ITable[] tables) throws DataSetException
     {
+        this(tables, false);
+    }
+    
+    /**
+     * Creates a composite dataset that combines tables having identical name.
+     * Tables having the same name are merged into one table.
+     * @param tables The tables to merge to one dataset
+     * @param caseSensitiveTableNames Whether or not table names are handled in a case sensitive
+     * way over all datasets.
+     * @since 2.4.2
+     */
+    public CompositeDataSet(ITable[] tables, boolean caseSensitiveTableNames) throws DataSetException
+    {
+        super(caseSensitiveTableNames);
+        
         OrderedTableNameMap orderedTableMap = super.createTableNameMap();
         for (int i = 0; i < tables.length; i++)
         {

@@ -52,6 +52,7 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
      */
     public CachedDataSet()
     {
+        super();
         initialize();
     }
 
@@ -60,6 +61,8 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
      */
     public CachedDataSet(IDataSet dataSet) throws DataSetException
     {
+        super(dataSet.isCaseSensitiveTableNames());
+
         initialize();
 
         ITableIterator iterator = dataSet.iterator();
@@ -75,6 +78,19 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
      */
     public CachedDataSet(IDataSetProducer producer) throws DataSetException
     {
+        this(producer, false);
+    }
+
+    /**
+     * Creates a CachedDataSet that synchronously consume the specified producer.
+     * @param producer
+     * @param caseSensitiveTableNames Whether or not case sensitive table names should be used
+     * @throws DataSetException
+     */
+    public CachedDataSet(IDataSetProducer producer, boolean caseSensitiveTableNames) throws DataSetException
+    {
+        super(caseSensitiveTableNames);
+        
         initialize();
 
         producer.setConsumer(this);

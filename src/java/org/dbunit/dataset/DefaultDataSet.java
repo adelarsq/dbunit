@@ -50,6 +50,17 @@ public class DefaultDataSet extends AbstractDataSet
         _tableMap = super.createTableNameMap();
     }
 
+    /**
+     * Creates a default dataset which is empty initially
+     * @param caseSensitiveTableNames
+     * @since 2.4.2
+     */
+    public DefaultDataSet(boolean caseSensitiveTableNames)
+    {
+        super(caseSensitiveTableNames);
+        _tableMap = super.createTableNameMap();
+    }
+
     public DefaultDataSet(ITable table) throws AmbiguousTableNameException
     {
         this(new ITable[]{table});
@@ -62,6 +73,18 @@ public class DefaultDataSet extends AbstractDataSet
 
     public DefaultDataSet(ITable[] tables) throws AmbiguousTableNameException
     {
+        this(tables, false);
+    }
+    
+    /**
+     * Creates a default dataset which consists of the given tables
+     * @param caseSensitiveTableNames
+     * @since 2.4.2
+     */
+    public DefaultDataSet(ITable[] tables, boolean caseSensitiveTableNames) throws AmbiguousTableNameException
+    {
+        super(caseSensitiveTableNames);
+        
         _tableMap = super.createTableNameMap();
         
         for (int i = 0; i < tables.length; i++)

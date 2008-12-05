@@ -139,6 +139,22 @@ public class FlatXmlDataSet extends CachedDataSet
     }
 
     /**
+     * Creates an FlatXmlDataSet object with the specified xml file.
+     * Relative DOCTYPE uri are resolved from the xml file path.
+     *
+     * @param xmlFile the xml file
+     * @param dtdMetadata if <code>false</code> do not use DTD as metadata
+     * @param columnSensing Whether or not the columns should be sensed automatically. Every XML row
+     * is scanned for columns that have not been there in a previous column.
+     * @param caseSensitiveTableNames Whether or not this dataset should use case sensitive table names
+     */
+    public FlatXmlDataSet(File xmlFile, boolean dtdMetadata, boolean columnSensing, boolean caseSensitiveTableNames)
+    throws IOException, DataSetException
+    {
+        this(xmlFile.toURL(), dtdMetadata, columnSensing, caseSensitiveTableNames);
+    }
+
+    /**
      * Creates an FlatXmlDataSet object with the specified xml URL.
      * Relative DOCTYPE uri are resolved from the xml file path.
      *
@@ -173,12 +189,29 @@ public class FlatXmlDataSet extends CachedDataSet
      * is scanned for columns that have not been there in a previous column.
      */
     public FlatXmlDataSet(URL xmlUrl, boolean dtdMetadata, boolean columnSensing)
-            throws IOException, DataSetException
+    throws IOException, DataSetException
     {
         super(new FlatXmlProducer(
                 new InputSource(xmlUrl.toString()), dtdMetadata, columnSensing));
     }
 
+    /**
+     * Creates an FlatXmlDataSet object with the specified xml file.
+     * Relative DOCTYPE uri are resolved from the xml file path.
+     *
+     * @param xmlFile the xml file
+     * @param dtdMetadata if <code>false</code> do not use DTD as metadata
+     * @param columnSensing Whether or not the columns should be sensed automatically. Every XML row
+     * is scanned for columns that have not been there in a previous column.
+     * @param caseSensitiveTableNames Whether or not this dataset should use case sensitive table names
+     */
+    public FlatXmlDataSet(URL xmlUrl, boolean dtdMetadata, boolean columnSensing, boolean caseSensitiveTableNames)
+    throws IOException, DataSetException
+    {
+        super(new FlatXmlProducer(
+                  new InputSource(xmlUrl.toString()), dtdMetadata, columnSensing, caseSensitiveTableNames), 
+              caseSensitiveTableNames);
+    }
 
     /**
      * Creates an FlatXmlDataSet object with the specified xml reader.

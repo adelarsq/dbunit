@@ -66,16 +66,6 @@ public class OrderedTableNameMap
 	
 	
 	/**
-	 * Creates a new map which does strictly force that one table can only occur once.
-	 * By default case sensitivity is <b>not</b> enabled
-	 * TODO Try to remove this constructor and all invocations of it. Invoker should be forced to specify caseSensitiveTableNames param
-	 */
-	public OrderedTableNameMap()
-	{
-	    this(false);
-	}
-
-	/**
      * Creates a new map which does strictly force that one table can only occur once.
      * @param caseSensitiveTableNames Whether or not table names should be case sensitive
      */
