@@ -186,7 +186,6 @@ public class SortedTable extends AbstractTable
      * DataType for comparing values or not. Default value is <code>false</code> 
      * which means that the old string comparison is used.
      * <br>
-     * Fixes bug [ 1176380 ] Bad comparison in SortedTable
      * @param useComparable
 	 * @since 2.3.0
      */
@@ -195,23 +194,36 @@ public class SortedTable extends AbstractTable
     	if(logger.isDebugEnabled())
     		logger.debug("setUseComparable(useComparable={}) - start", Boolean.valueOf(useComparable));
         
-        if(_indexes != null)
-        {
-        	// TODO this is an ugly design to avoid increasing the number of constructors from 4 to 8. To be discussed how to implement it the best way.
-        	throw new IllegalStateException("Do not use this method after the table has been used (i.e. #getValue() has been called). " +
-        			"Please invoke this method immediately after the intialization of this object.");
-        }
-        
     	if(useComparable)
     	{
-    		this.rowComparator = new RowComparator(this._table, this._columns);
+    		setRowComparator(new RowComparator(this._table, this._columns));
     	}
     	else 
     	{
-    		this.rowComparator = new RowComparatorByString(this._table, this._columns);
+    		setRowComparator(new RowComparatorByString(this._table, this._columns));
     	}
     }
     
+
+    /**
+     * Sets the comparator to be used for sorting the table rows.
+     * @param comparator sorts the table rows
+     * @since 2.4.2
+     */
+    public void setRowComparator(AbstractRowComparator comparator) 
+    {
+        if(logger.isDebugEnabled())
+            logger.debug("setRowComparator(comparator={}) - start", comparator);
+        
+        if(_indexes != null)
+        {
+            // TODO this is an ugly design to avoid increasing the number of constructors from 4 to 8. To be discussed how to implement it the best way.
+            throw new IllegalStateException("Do not use this method after the table has been used (i.e. #getValue() has been called). " +
+                    "Please invoke this method immediately after the intialization of this object.");
+        }
+
+        this.rowComparator = comparator;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // ITable interface
