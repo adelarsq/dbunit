@@ -59,7 +59,7 @@ public class QueryDataSet extends AbstractDataSet
      */
     public QueryDataSet(IDatabaseConnection connection)
     {
-        this(connection, connection.getConfig().getFeature(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES));
+        this(connection, connection.getConfig().getFeature(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES));
     }
 
     /**

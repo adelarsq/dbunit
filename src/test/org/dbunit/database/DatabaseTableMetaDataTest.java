@@ -232,6 +232,42 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         }
     }
 
+    public void testCaseSensitive() throws Exception
+    {
+        Connection jdbcConnection = HypersonicEnvironment.createJdbcConnection("tempdb");
+        HypersonicEnvironment.executeDdlFile(new File("src/sql/hypersonic_case_sensitive_test.sql"),
+                jdbcConnection);
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        try {
+            String tableName = "MixedCaseTable";
+            String tableNameWrongCase = "MIXEDCASETABLE";
+            boolean validate = true;
+            boolean caseSensitive = true;
+
+            ITableMetaData metaData = new DatabaseTableMetaData(tableName,
+                    connection, validate, caseSensitive);
+            Column[] columns = metaData.getColumns();
+            assertEquals(1, columns.length);
+            assertEquals("COL1", columns[0].getColumnName());
+            
+            // Now test with same table name but wrong case
+            try {
+                ITableMetaData metaDataWrongCase = new DatabaseTableMetaData(tableNameWrongCase,
+                        connection, validate, caseSensitive);
+                fail("Should not be able to create DatabaseTableMetaData with non-existing table name " + tableNameWrongCase + 
+                        ". Created "+ metaDataWrongCase);
+            }
+            catch(NoSuchTableException expected){
+                assertTrue(expected.getMessage().indexOf(tableNameWrongCase) != -1);
+            }
+        }
+        finally {
+            HypersonicEnvironment.shutdown(jdbcConnection);
+            jdbcConnection.close();
+            HypersonicEnvironment.deleteFiles("tempdb");
+        }
+    }
 }
 
 
