@@ -28,7 +28,6 @@ import java.util.Date;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -56,10 +55,19 @@ public class XlsDataSetWriter
     public static final String ZEROS = "0000000000000000000000000000000000000000000000000000";
 
     /**
+     * A special format pattern used to create a custom {@link HSSFDataFormat} which
+     * marks {@link Date} values that are stored via POI to an XLS file.
+     * Note that it might produce problems if a normal numeric value uses this format
+     * pattern incidentally.
+     */
+    public static final String DATE_FORMAT_AS_NUMBER_DBUNIT = "####################";
+    /**
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(XlsDataSetWriter.class);
 
+    private HSSFCellStyle dateCellStyle;
+    
     /**
      * Write the specified dataset to the specified Excel document.
      */
@@ -70,6 +78,8 @@ public class XlsDataSetWriter
 
         HSSFWorkbook workbook = new HSSFWorkbook();
 
+        this.dateCellStyle = createDateCellStyle(workbook);
+        
         int index = 0;
         ITableIterator iterator = dataSet.iterator();
         while(iterator.next())
@@ -108,6 +118,9 @@ public class XlsDataSetWriter
                         else if(value instanceof BigDecimal){
                             setNumericCell(cell, (BigDecimal)value, workbook);
                         }
+                        else if(value instanceof Long){
+                            setDateCell(cell, new Date( ((Long)value).longValue()), workbook);
+                        }
                         else {
                             cell.setCellValue(new HSSFRichTextString(DataType.asString(value)));
                         }
@@ -123,11 +136,24 @@ public class XlsDataSetWriter
         out.flush();
     }
     
+    protected static HSSFCellStyle createDateCellStyle(HSSFWorkbook workbook) {
+        HSSFDataFormat format = workbook.createDataFormat();
+        short dateFormatCode = format.getFormat(DATE_FORMAT_AS_NUMBER_DBUNIT);
+        HSSFCellStyle dateCellStyle = workbook.createCellStyle();
+        dateCellStyle.setDataFormat(dateFormatCode);
+        return dateCellStyle;
+    }
+
     protected void setDateCell(HSSFCell cell, Date value, HSSFWorkbook workbook) 
     {
-        double excelDateValue = HSSFDateUtil.getExcelDate(value);
-        cell.setCellValue(excelDateValue);
+//        double excelDateValue = HSSFDateUtil.getExcelDate(value);
+//        cell.setCellValue(excelDateValue);
+//        cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+
+        long timeMillis = value.getTime();
+        cell.setCellValue( (double)timeMillis );
         cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+        cell.setCellStyle(this.dateCellStyle);
         
 //      System.out.println(HSSFDataFormat.getBuiltinFormats());
         // TODO Find out correct cell styles for date objects

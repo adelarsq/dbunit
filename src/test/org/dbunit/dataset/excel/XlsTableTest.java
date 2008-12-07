@@ -111,9 +111,9 @@ public class XlsTableTest extends AbstractTableTest
 //                new Date(0-tzOffset), 
 //                new Date(0-tzOffset + (10*ONE_HOUR_IN_MILLIS + 45*ONE_MINUTE_IN_MILLIS)),
 //                new Date(0-tzOffset + (13*ONE_HOUR_IN_MILLIS + 30*ONE_MINUTE_IN_MILLIS + 55*ONE_SECOND_IN_MILLIS) ),
-                new BigDecimal("25569.0"),
-                new BigDecimal("25569.447916666668"),
-                new BigDecimal("0.563136574074074"),
+                new Long(25569),// Dates stored as Long numbers
+                new Long(25569447916666668L),
+                new Long(563136574074074L),
                 new BigDecimal("10000.00"), 
                 new BigDecimal("-200"), 
                 new BigDecimal("12345.123456789000") 

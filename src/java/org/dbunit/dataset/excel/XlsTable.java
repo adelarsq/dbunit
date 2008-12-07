@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -138,7 +139,9 @@ class XlsTable extends AbstractTable
         switch (type)
         {
             case HSSFCell.CELL_TYPE_NUMERIC:
-                if (HSSFDateUtil.isCellDateFormatted(cell))
+                HSSFCellStyle style = cell.getCellStyle();
+                if (HSSFDateUtil.isCellDateFormatted(cell) || 
+                    XlsDataSetWriter.DATE_FORMAT_AS_NUMBER_DBUNIT.equals(style.getDataFormatString()) )
                 {
                     return getDateValue(cell);
                 }
@@ -176,6 +179,8 @@ class XlsTable extends AbstractTable
         
         double numericValue = cell.getNumericCellValue();
         BigDecimal numericValueBd = new BigDecimal(String.valueOf(numericValue));
+        numericValueBd = stripTrailingZeros(numericValueBd);
+        return new Long(numericValueBd.unscaledValue().longValue());
         
         //TODO use a calendar for XLS Date objects when it is supported better by POI
 //        HSSFCellStyle style = cell.getCellStyle();
@@ -184,10 +189,43 @@ class XlsTable extends AbstractTable
 //      String formatted = fomatter.formatCellValue(cell);
 //System.out.println("###"+formatted);
 //        Date dateValue = cell.getDateCellValue();
-        
-        return numericValueBd;
     }
 
+    /**
+     * Removes all trailing zeros from the end of the given BigDecimal value
+     * up to the decimal point.
+     * @param value The value to be stripped
+     * @return The value without trailing zeros
+     */
+    private BigDecimal stripTrailingZeros(BigDecimal value)
+    {
+        if(value.scale()<=0){
+            return value;
+        }
+        
+        String valueAsString = String.valueOf(value);
+        int idx = valueAsString.indexOf(".");
+        if(idx==-1){
+            return value;
+        }
+        
+        for(int i=valueAsString.length()-1; i>idx; i--){
+            if(valueAsString.charAt(i)=='0'){
+                valueAsString = valueAsString.substring(0, i);
+            }
+            else if(valueAsString.charAt(i)=='.'){
+                valueAsString = valueAsString.substring(0, i);
+                // Stop when decimal point is reached
+                break;
+            }
+            else{
+                break;
+            }
+        }
+        BigDecimal result = new BigDecimal(valueAsString);
+        return result;
+    }
+    
     protected BigDecimal getNumericValue(HSSFCell cell)
     {
         logger.debug("getNumericValue(cell={}) - start", cell);
