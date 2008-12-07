@@ -199,7 +199,7 @@ public class FlatXmlDataSet extends CachedDataSet
      * Creates an FlatXmlDataSet object with the specified xml file.
      * Relative DOCTYPE uri are resolved from the xml file path.
      *
-     * @param xmlFile the xml file
+     * @param xmlUrl the xml file
      * @param dtdMetadata if <code>false</code> do not use DTD as metadata
      * @param columnSensing Whether or not the columns should be sensed automatically. Every XML row
      * is scanned for columns that have not been there in a previous column.
