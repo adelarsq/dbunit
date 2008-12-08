@@ -20,6 +20,8 @@
  */
 package org.dbunit.database;
 
+import java.util.Set;
+
 import org.dbunit.dataset.DataSetException;
 
 /**
@@ -32,5 +34,19 @@ public class CyclicTablesDependencyException extends DataSetException
     public CyclicTablesDependencyException(String message)
     {
         super(message);
+    }
+    
+    /**
+     * @param tableName
+     * @param cyclicTableNames
+     * @since 2.4.2
+     */
+    public CyclicTablesDependencyException(String tableName, Set cyclicTableNames)
+    {
+        this(buildMessage(tableName, cyclicTableNames));
+    }
+
+    private static String buildMessage(String tableName, Set cyclicTableNames) {
+        return "Table: " + tableName + " (" + cyclicTableNames.toString() + ")";
     }
 }

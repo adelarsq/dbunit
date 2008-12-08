@@ -297,7 +297,7 @@ public class DatabaseSequenceFilter extends SequenceTableFilter
             Set intersect = new HashSet(this.allTableDependsOn);
             intersect.retainAll(this.allTableDependent);
             if(!intersect.isEmpty()){
-                throw new CyclicTablesDependencyException(intersect.toString());
+                throw new CyclicTablesDependencyException(tableName, intersect);
             }
         }
 

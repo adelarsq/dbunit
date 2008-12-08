@@ -106,7 +106,8 @@ public class DatabaseSequenceFilterTest extends TestCase
         catch (CyclicTablesDependencyException expected)
         {
             Set expectedCycle = new HashSet(Arrays.asList(new String[]{"A", "C", "E"}));
-            assertEquals(expectedCycle.toString(), expected.getMessage());
+            String expectedMsg = new CyclicTablesDependencyException("D", expectedCycle).getMessage();
+            assertEquals(expectedMsg, expected.getMessage());
         }
     }
 
