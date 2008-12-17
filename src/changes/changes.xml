@@ -16,6 +16,7 @@
       <action dev="gommma" type="fix" issue="2392770" due-to="kkaz">org.dbunit.dataset.datatype.TypeCastException</action>
       <action dev="gommma" type="fix" issue="2398926" due-to="xianpants">SLF4J maven dependencies aren't quite correct</action>
       <action dev="gommma" type="add" issue="2407106" due-to="brentplump">Include table name in cyclic dependency exception</action>
+      <action dev="gommma" type="fix" issue="2439408" due-to="claus437">Insert fails on Oracle multiple schemas</action>
     </release>
     <release version="2.4.1" date="Dec 03, 2008" description="Updates and bugfixes only">
       <action dev="gommma" type="update">Updated slf4j dependencies to version 1.5.6.</action>
