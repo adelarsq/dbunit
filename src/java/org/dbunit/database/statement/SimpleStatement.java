@@ -63,6 +63,9 @@ public class SimpleStatement extends AbstractBatchStatement
         for (int i = 0; i < _list.size(); i++)
         {
             String sql = (String)_list.get(i);
+            if(logger.isDebugEnabled())
+                logger.debug("DbUnit SQL: " + sql);
+            
             boolean r = _statement.execute(sql);
             if(!r)
             {

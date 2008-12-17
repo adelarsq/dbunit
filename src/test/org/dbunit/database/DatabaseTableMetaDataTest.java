@@ -47,6 +47,9 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
  */
 public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
 {
+    
+    public static final String TEST_TABLE = "TEST_TABLE";
+    
     public DatabaseTableMetaDataTest(String s)
     {
         super(s);
@@ -76,7 +79,7 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
 
     public void testGetNoPrimaryKeys() throws Exception
     {
-        String tableName = "TEST_TABLE";
+        String tableName = TEST_TABLE;
 
         ITableMetaData metaData = createDataSet().getTableMetaData(tableName);
         Column[] columns = metaData.getPrimaryKeys();
@@ -267,6 +270,25 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
             jdbcConnection.close();
             HypersonicEnvironment.deleteFiles("tempdb");
         }
+    }
+    
+    /**
+     * Ensure that the same table name is returned by {@link DatabaseTableMetaData#getTableName()}
+     * as the specified by the input parameter.
+     * @throws Exception
+     */
+    public void testFullyQualifiedTableName() throws Exception
+    {
+        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        String schema = environment.getProfile().getSchema();
+        
+        assertNotNull("Precondition: db environment 'schema' must not be null", schema);
+//        Connection jdbcConn = _connection.getConnection();
+//        String schema = SQLHelper.getSchema(jdbcConn);
+        DatabaseTableMetaData metaData = new DatabaseTableMetaData(schema + "." + TEST_TABLE, _connection);
+        assertEquals(schema + "." + TEST_TABLE, metaData.getTableName());
+        
+        
     }
 }
 

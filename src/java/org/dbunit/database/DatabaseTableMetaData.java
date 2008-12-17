@@ -65,6 +65,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
      * Table name, potentially qualified
      */
     private final QualifiedTableName _qualifiedTableNameSupport;
+    private final String _originalTableName;
     private final IDatabaseConnection _connection;
     private Column[] _columns;
     private Column[] _primaryKeys;
@@ -113,6 +114,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         _connection = connection;
         // qualified names support - table name and schema is stored here
         _qualifiedTableNameSupport = new QualifiedTableName(tableName, _connection.getSchema());
+        _originalTableName = tableName;
         _caseSensitiveMetaData = caseSensitiveMetaData;
         
         if(validate) 
@@ -258,7 +260,13 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
     public String getTableName()
     {
-        return this._qualifiedTableNameSupport.getTable();
+        // Ensure that the same table name is returned as specified in the input.
+        // This is necessary to support fully qualified XML dataset imports.
+        //"<dataset>"
+        //"<FREJA.SALES SALES_ID=\"8756\" DEALER_ID=\"4467\"/>"
+        //"<CAS.ORDERS ORDER_ID=\"1000\" DEALER_CODE=\"4468\"/>"
+        //"</dataset>";
+        return this._originalTableName;
     }
 
     public Column[] getColumns() throws DataSetException
