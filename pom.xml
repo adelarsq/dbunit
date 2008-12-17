@@ -4,7 +4,7 @@
 	<groupId>org.dbunit</groupId>
 	<artifactId>dbunit</artifactId>
 	<packaging>jar</packaging>
-	<version>2.4.2-SNAPSHOT</version>
+	<version>2.4.2</version>
 	<name>DbUnit Framework</name>
 	<url>http://dbunit.sourceforge.net</url>
 	<inceptionYear>2002</inceptionYear>
@@ -23,9 +23,9 @@
 		<checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
 	</properties>
 	<scm> 
-		<connection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</connection>
-		<developerConnection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</developerConnection>
-		<url>http://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</url>
+		<connection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/tags/release-2.4.2</connection>
+		<developerConnection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/tags/release-2.4.2</developerConnection>
+		<url>http://dbunit.svn.sourceforge.net/svnroot/dbunit/tags/release-2.4.2</url>
 	</scm>
 	<issueManagement>
 		<system>SourceForge</system>
