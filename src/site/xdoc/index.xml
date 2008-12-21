@@ -26,8 +26,12 @@
   <section name="News">
       <table border="1">
         <tr>
-          <td>2008-12-08</td>
+          <td>2008-12-17</td>
           <td>Some other fixes and a additions have been released. Here a detailed <a href="changes-report.html#a2.4.2">changes</a> report.</td>
+        </tr>
+        <tr>
+          <td>2008-12-15</td>
+          <td>Another Open Source project named <a href="http://jailer.sourceforge.net">Jailer</a> has added support for the DbUnit flat XML dataset file format. The integration provided by the Jailer project allows easy data sharing between the two projects. Well done Ralf!</td>
         </tr>
         <tr>
           <td>2008-12-03</td>

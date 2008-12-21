@@ -8,7 +8,7 @@
   </properties>
 
   <body>
-    <release version="2.4.2" date="Dec 08, 2008" description="Bugfixes, some small additions">
+    <release version="2.4.2" date="Dec 17, 2008" description="Bugfixes, some small additions">
       <action dev="gommma" type="fix" issue="2356800" due-to="jeremy_finney">Cannot extract contents of table with a column named "AS"</action>
       <action dev="gommma" type="fix" issue="2382766" due-to="dacota">MySQL case sensitive problem in dataset creation</action>
       <action dev="gommma" type="add" issue="2390557" due-to="gommma">Add StringIgnoreCase DataType</action>
