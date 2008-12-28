@@ -53,7 +53,17 @@ public abstract class AbstractDatabaseTester extends SimpleAssert implements IDa
 
 	public AbstractDatabaseTester()
 	{
-		super(new DefaultFailureHandler());
+		this(null);
+	}
+
+	/**
+	 * @param schema The schema to be tested. Can be <code>null</code>
+	 * @since 2.4.3
+	 */
+	public AbstractDatabaseTester(String schema)
+	{
+	    super(new DefaultFailureHandler());
+	    this.schema = schema;
 	}
 
 	public void closeConnection( IDatabaseConnection connection ) throws Exception
@@ -94,6 +104,7 @@ public abstract class AbstractDatabaseTester extends SimpleAssert implements IDa
 	{
 		logger.debug("setSchema(schema={}) - start", schema);
 
+		logger.warn("setSchema() should not be used anymore");
 		this.schema = schema;
 	}
 

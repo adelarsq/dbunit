@@ -108,4 +108,18 @@ public class JndiDatabaseTester extends AbstractDatabaseTester
       assertTrue( "DataSource is not set", dataSource!=null );
       initialized = true;
    }
+
+   public String toString()
+   {
+       StringBuffer sb = new StringBuffer();
+       sb.append(getClass().getName()).append("[");
+       sb.append("lookupName=").append(this.lookupName);
+       sb.append(", environment=").append(this.environment);
+       sb.append(", initialized=").append(this.initialized);
+       sb.append(", dataSource=").append(this.dataSource);
+       sb.append(", schema=").append(super.getSchema());
+       sb.append("]");
+       return sb.toString();
+   }
+
 }

@@ -89,13 +89,32 @@ public class SampleTest extends DBTestCase
     ...
 }</source>
       </p>
-      <h4>Step 4: Implement your testXXX() methods</h4>
+
+      <h4>Step 4: (Optional) Override method setUpDatabaseConfig(DatabaseConfig config)</h4>
+      <p>Use this to change some configuration settings of the dbunit DatabaseConfig.</p>
+      <p>The following example demonstrates how you can easily override this method:
+      <source>
+public class SampleTest extends DBTestCase
+{
+    ...
+    /**
+     * Override method to set custom properties/features
+     */
+    protected void setUpDatabaseConfig(DatabaseConfig config) {
+        config.setProperty(DatabaseConfig.PROPERTY_BATCH_SIZE, new Integer(97));
+        config.setFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, true);
+    }
+    ...
+}</source>
+      </p>
+
+      <h4>Step 5: Implement your testXXX() methods</h4>
       <p>Implement your test methods as you normally would with JUnit. Your database
       is now initialized before and cleaned-up after each test methods according
       to what you did in previous steps.</p>
+      
+      
       <a name="noextend">
-      
-      
       <h3>Database setup with your own TestCase subclass</h3>
       </a>
       <p>In order to use Dbunit you are not required to extend the DBTestCase

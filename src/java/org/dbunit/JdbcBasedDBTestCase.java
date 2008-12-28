@@ -41,60 +41,62 @@ public abstract class JdbcBasedDBTestCase extends DBTestCase
      */
     private static final Logger logger = LoggerFactory.getLogger(JdbcBasedDBTestCase.class);
 
-   public JdbcBasedDBTestCase()
-   {
-      super();
-   }
+    public JdbcBasedDBTestCase()
+    {
+        super();
+    }
 
-   public JdbcBasedDBTestCase( String name )
-   {
-      super( name );
-   }
+    public JdbcBasedDBTestCase( String name )
+    {
+        super( name );
+    }
 
-   /**
-    * Creates a new IDatabaseTester.<br>
-    * Default implementation returns a {@link JdbcDatabaseTester} configured
-    * with the values returned from {@link #getDriverClass},
-    * {@link #getConnectionUrl}, {@link #getUsername} and {@link #getPassword()}.
-    */
-   protected IDatabaseTester newDatabaseTester()
-   {
+    /**
+     * Creates a new IDatabaseTester.<br>
+     * Default implementation returns a {@link JdbcDatabaseTester} configured
+     * with the values returned from {@link #getDriverClass},
+     * {@link #getConnectionUrl}, {@link #getUsername} and {@link #getPassword()}.
+     * @throws ClassNotFoundException when the driverClass was not found
+     */
+    protected IDatabaseTester newDatabaseTester() throws ClassNotFoundException
+    {
         logger.debug("newDatabaseTester() - start");
 
-      JdbcDatabaseTester databaseTester = new JdbcDatabaseTester( getDriverClass(),
-            getConnectionUrl() );
-      databaseTester.setUsername( getUsername() );
-      databaseTester.setPassword( getPassword() );
-      return databaseTester;
-   }
+        JdbcDatabaseTester databaseTester = new JdbcDatabaseTester( 
+                getDriverClass(),
+                getConnectionUrl(),
+                getUsername(),
+                getPassword() );
+        return databaseTester;
+    }
 
-   /**
-    * Returns the test connection url.
-    */
-   protected abstract String getConnectionUrl();
+    /**
+     * Returns the test connection url.
+     */
+    protected abstract String getConnectionUrl();
 
-   /**
-    * Returns the JDBC driver classname.
-    */
-   protected abstract String getDriverClass();
+    /**
+     * Returns the JDBC driver classname.
+     */
+    protected abstract String getDriverClass();
 
-   /**
-    * Returns the password for the connection.<br>
-    * Subclasses may override this method to provide a custom password.<br>
-    * Default implementations returns null.
-    */
-   protected String getPassword()
-   {
-      return null;
-   }
+    /**
+     * Returns the password for the connection.<br>
+     * Subclasses may override this method to provide a custom password.<br>
+     * Default implementations returns null.
+     */
+    protected String getPassword()
+    {
+        return null;
+    }
 
-   /**
-    * Returns the username for the connection.<br>
-    * Subclasses may override this method to provide a custom username.<br>
-    * Default implementations returns null.
-    */
-   protected String getUsername()
-   {
-      return null;
-   }
+    /**
+     * Returns the username for the connection.<br>
+     * Subclasses may override this method to provide a custom username.<br>
+     * Default implementations returns null.
+     */
+    protected String getUsername()
+    {
+        return null;
+    }
 }

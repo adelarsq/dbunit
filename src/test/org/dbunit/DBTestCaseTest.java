@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002-2004, DbUnit.org
+ * Copyright (C)2002-2008, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,18 +29,13 @@ import junit.framework.TestCase;
 
 /**
  * @author gommma
- * @author Last changed by: $Author$
- * @version $Revision$ $Date$
- * @since 2.3.0
+ * @author Last changed by: $Author: gommma $
+ * @version $Revision: 789 $ $Date: 2008-08-15 16:45:18 +0200 (Fr, 15. Aug 2008) $
+ * @since 2.4.3
  */
-public class DatabaseTestCaseTest extends TestCase 
+public class DBTestCaseTest extends TestCase 
 {
 
-	public void testTearDownExceptionDoesNotObscureTestException() 
-	{
-		//TODO implement #1087040  	  tearDownOperation Exception obscures underlying problem
-	}
-	
 	/**
 	 * Tests whether the user can simply change the {@link DatabaseConfig} by
 	 * overriding the method {@link DatabaseTestCase#setUpDatabaseConfig(DatabaseConfig)}.
@@ -50,22 +45,20 @@ public class DatabaseTestCaseTest extends TestCase
 	{
 	    DatabaseEnvironment dbEnv = DatabaseEnvironment.getInstance();
 	    final IDatabaseConnection conn = dbEnv.getConnection();
+	    final DefaultDatabaseTester tester = new DefaultDatabaseTester(conn);
 	    
-	    DatabaseTestCase testSubject = new DatabaseTestCase() {
-
+	    DBTestCase testSubject = new DBTestCase() {
+	        
             /**
              * method under test
              */
             protected void setUpDatabaseConfig(DatabaseConfig config) {
                 config.setProperty(DatabaseConfig.PROPERTY_BATCH_SIZE, new Integer(97));
+                config.setFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, true);
             }
 
-            protected IDatabaseConnection getConnection() throws Exception {
-                return conn;
-            }
-
-            protected IDataSet getDataSet() throws Exception {
-                return null;
+            protected IDatabaseTester newDatabaseTester() throws Exception {
+                return tester;
             }
 
             protected DatabaseOperation getSetUpOperation() throws Exception {
@@ -75,6 +68,10 @@ public class DatabaseTestCaseTest extends TestCase
             protected DatabaseOperation getTearDownOperation() throws Exception {
                 return DatabaseOperation.NONE;
             }
+
+            protected IDataSet getDataSet() throws Exception {
+                return null;
+            }
         };
         
         // Simulate JUnit which first of all calls the "setUp" method
@@ -82,8 +79,11 @@ public class DatabaseTestCaseTest extends TestCase
         
         IDatabaseConnection actualConn = testSubject.getConnection();
         assertEquals(new Integer(97), actualConn.getConfig().getProperty(DatabaseConfig.PROPERTY_BATCH_SIZE));
+        assertSame(conn, actualConn);
         
         IDatabaseConnection actualConn2 = testSubject.getDatabaseTester().getConnection();
         assertEquals(new Integer(97), actualConn2.getConfig().getProperty(DatabaseConfig.PROPERTY_BATCH_SIZE));
+        assertSame(tester, testSubject.getDatabaseTester());
+        assertSame(conn, testSubject.getDatabaseTester().getConnection());
 	}
 }

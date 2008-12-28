@@ -25,15 +25,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import junit.framework.TestCase;
+
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
 /**
+ * Convenience class for writing JUnit tests with dbunit easily.
+ * <br />
+ * Note that there are some even more convenient classes available such
+ * as {@link DBTestCase}. 
+ * 
  * @author Manuel Laflamme
  * @version $Revision$
- * @since Feb 17, 2002
- * TODO: mark it as deprecated use #{DBTestCase} instead.
+ * @since 1.0 (Feb 17, 2002)
  */
 public abstract class DatabaseTestCase extends TestCase
 {
@@ -74,8 +80,19 @@ public abstract class DatabaseTestCase extends TestCase
         logger.debug("newDatabaseTester() - start");
 
       final IDatabaseConnection connection = getConnection();
+      setUpDatabaseConfig(connection.getConfig());
       final IDatabaseTester tester = new DefaultDatabaseTester(connection);
       return tester;
+    }
+
+    /**
+     * Designed to be overridden by subclasses in order to set additional configuration
+     * parameters for the {@link IDatabaseConnection}.
+     * @param config The settings of the current {@link IDatabaseConnection} to be configured
+     */
+    protected void setUpDatabaseConfig(DatabaseConfig config) 
+    {
+        // Designed to be overridden.
     }
 
     /**

@@ -58,6 +58,7 @@ public interface IDatabaseTester
 
    /**
     * Sets the schema value.
+    * @deprecated since 2.4.3 Should not be used anymore. Every concrete {@link IDatabaseTester} implementation that needs a schema has the possibility to set it somehow in the constructor
     */
    void setSchema( String schema );
 

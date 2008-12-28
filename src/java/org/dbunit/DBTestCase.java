@@ -51,12 +51,15 @@ public abstract class DBTestCase extends DatabaseTestCase {
     super(name);
   }
 
-  protected IDatabaseConnection getConnection() throws Exception {
+  protected final IDatabaseConnection getConnection() throws Exception {
         logger.debug("getConnection() - start");
 
     final IDatabaseTester databaseTester = getDatabaseTester();
     assertNotNull( "DatabaseTester is not set", databaseTester );
-    return databaseTester.getConnection();
+    IDatabaseConnection connection = databaseTester.getConnection();
+    // Ensure that users have the possibility to configure the connection's configuration
+    setUpDatabaseConfig(connection.getConfig());
+    return connection;
  }
 
   /**
