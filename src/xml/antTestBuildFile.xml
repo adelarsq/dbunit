@@ -6,7 +6,7 @@
 
   <property name="testDataSet" value="src/xml/flatXmlDataSetTest.xml"/>
   <property name="updateDataSet" value="src/xml/antTestDataSet.xml"/>
-  <property name="exportDataSet" value="src/xml/antExportDataSet.xml"/>
+  <property name="exportDataSet" value="target/xml/antExportDataSet.xml"/>
   <property name="exportDtd" value="src/xml/antExport.dtd"/>
   <property name="exportCsv" value="src/xml/antExportCsv"/>
 

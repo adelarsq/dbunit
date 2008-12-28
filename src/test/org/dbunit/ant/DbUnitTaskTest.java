@@ -45,6 +45,7 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.util.FileHelper;
 
 /**
  * Ant-based test class for the Dbunit ant task definition.
@@ -61,7 +62,10 @@ public class DbUnitTaskTest extends TaskdefsTest
     static protected Class classUnderTest = DbUnitTaskTest.class;
     
     private static final String BUILD_FILE_DIR = "src/xml";
-
+    private static final String OUTPUT_DIR = "target/xml";
+    
+    private File outputDir;
+    
     public DbUnitTaskTest(String name)
     {
         super(name);
@@ -73,6 +77,17 @@ public class DbUnitTaskTest extends TaskdefsTest
         DatabaseEnvironment.getInstance();
 
         configureProject(BUILD_FILE_DIR + "/antTestBuildFile.xml");
+        
+        outputDir = new File(getProjectDir(), OUTPUT_DIR);
+        outputDir.mkdirs();
+    }
+
+    protected void tearDown() throws Exception 
+    {
+        super.tearDown();
+        
+        outputDir = new File(getProjectDir(), OUTPUT_DIR);
+        FileHelper.deleteDirectory(outputDir);
     }
 
     public void testNoDriver()
@@ -391,7 +406,8 @@ public class DbUnitTaskTest extends TaskdefsTest
         	Throwable cause = expected.getCause();
         	assertTrue(cause instanceof DatabaseUnitException);
         	DatabaseUnitException dbUnitException = (DatabaseUnitException)cause;
-        	String expectedMsg = "Did not find table in source file '" + new File(getProjectDir(),BUILD_FILE_DIR + "/antExportDataSet.xml").toString() + "' using format 'xml'";
+        	String filename = new File(outputDir, "antExportDataSet.xml").toString();
+        	String expectedMsg = "Did not find table in source file '" + filename + "' using format 'xml'";
         	assertEquals(expectedMsg, dbUnitException.getMessage());
         	assertTrue(dbUnitException.getCause() instanceof NoSuchTableException);
         	NoSuchTableException nstException = (NoSuchTableException)dbUnitException.getCause();
@@ -579,4 +595,5 @@ public class DbUnitTaskTest extends TaskdefsTest
             junit.textui.TestRunner.run(suite());
         }
     }
+
 }
