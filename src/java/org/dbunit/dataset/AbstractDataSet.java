@@ -21,8 +21,6 @@
 
 package org.dbunit.dataset;
 
-import java.util.Arrays;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -201,15 +199,13 @@ public abstract class AbstractDataSet implements IDataSet
 
     public String toString()
     {
-        try
-        {
-            return Arrays.asList(getTableNames()).toString();
-        }
-        catch (Exception e)
-        {
-            return super.toString();
-        }
+        StringBuffer sb = new StringBuffer();
+        sb.append("AbstractDataSet[");
+        sb.append("_orderedTableNameMap=").append(_orderedTableNameMap);
+        sb.append("]");
+        return sb.toString();
     }
+    
 }
 
 

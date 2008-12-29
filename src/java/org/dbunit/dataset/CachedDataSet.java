@@ -127,6 +127,7 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
     public void endDataSet() throws DataSetException
     {
         logger.debug("endDataSet() - start");
+        logger.debug("endDataSet() - the final tableMap is: " + _tables);
     }
 
     public void startTable(ITableMetaData metaData) throws DataSetException
