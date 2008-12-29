@@ -31,6 +31,14 @@
           method setUpDatabaseConfig(DatabaseConfig databaseConfig).
           </td>
         </tr>
+        <tr> 
+          <td>2023994</td>
+          <td><code>Removed setters from org.dbunit.JdbcDatabaseTester and added constructors</code></td>
+          <td>Just invoke the appropriate constructor of JdbcDatabaseTester</td>
+          <td>The target of this little change is to ensure that every
+          JdbcDatabaseTester instance is completely valid when it was successfully created.
+          </td>
+        </tr>
         </table>
     </subsection>
 
