@@ -58,7 +58,7 @@ public class StreamingDataSet extends AbstractDataSet
     protected ITableIterator createIterator(boolean reversed)
             throws DataSetException
     {
-        logger.debug("createIterator(reversed=" + reversed + ") - start");
+        logger.debug("createIterator(reversed={}) - start", Boolean.valueOf(reversed));
 
         if (reversed)
         {
@@ -94,7 +94,7 @@ public class StreamingDataSet extends AbstractDataSet
      */
     public ITableMetaData getTableMetaData(String tableName) throws DataSetException
     {
-        logger.debug("getTableMetaData(tableName=" + tableName + ") - start");
+        logger.debug("getTableMetaData(tableName={}) - start", tableName);
 
         throw new UnsupportedOperationException();
     }
@@ -105,7 +105,7 @@ public class StreamingDataSet extends AbstractDataSet
      */
     public ITable getTable(String tableName) throws DataSetException
     {
-        logger.debug("getTable(tableName=" + tableName + ") - start");
+        logger.debug("getTable(tableName={}) - start", tableName);
 
         throw new UnsupportedOperationException();
     }
