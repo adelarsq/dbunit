@@ -199,10 +199,8 @@ public class DatabaseDataSet extends AbstractDataSet
                     QualifiedTableName qualifiedTableName = new QualifiedTableName(tableName, schemaName);
                     tableName = qualifiedTableName.getQualifiedNameIfEnabled(config);
 
-                    // Create metadata and cache it
-                    DatabaseTableMetaData metaData = new DatabaseTableMetaData(tableMap.getTableName(tableName), _connection, true, super.isCaseSensitiveTableNames());
-                    // Put the metadata object into the cache map
-                    tableMap.add(tableName, metaData);
+                    // Put the table into the table map
+                    tableMap.add(tableName, null);
                 }
 
                 _tableMap = tableMap;
@@ -260,6 +258,16 @@ public class DatabaseDataSet extends AbstractDataSet
 
         // Try to find cached metadata
         ITableMetaData metaData = (ITableMetaData)_tableMap.get(tableName);
+        if (metaData != null)
+        {
+            return metaData;
+        }
+        
+        // Create metadata and cache it
+        metaData = new DatabaseTableMetaData(_tableMap.getTableName(tableName), _connection, true, super.isCaseSensitiveTableNames());
+        // Put the metadata object into the cache map
+        _tableMap.update(tableName, metaData);
+
         return metaData;
     }
 
