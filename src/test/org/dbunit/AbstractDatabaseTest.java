@@ -75,8 +75,11 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
           return getEnvironment().getDatabaseTester();
        }
        catch( Exception e ){
+           //TODO matthias: this here hides original exceptions from being shown in the JUnit results 
+           //(logger is not configured for unit tests). Think about how exceptions can be passed through
+           // So I temporarily added the "e.printStackTrace()"...
           logger.error("getDatabaseTester()", e );
-          // empty
+          e.printStackTrace();
        }
        return super.getDatabaseTester();
     }

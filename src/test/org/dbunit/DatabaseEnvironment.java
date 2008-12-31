@@ -83,8 +83,7 @@ public class DatabaseEnvironment
         File file = new File("src/xml/dataSetTest.xml");
         _dataSet = new XmlDataSet(new FileReader(file));
         _databaseTester = new JdbcDatabaseTester( _profile.getDriverClass(),
-            _profile.getConnectionUrl(), _profile.getUser(), _profile.getPassword() );
-        _databaseTester.setSchema( _profile.getSchema() );
+            _profile.getConnectionUrl(), _profile.getUser(), _profile.getPassword(), _profile.getSchema() );
     }
 
     public IDatabaseConnection getConnection() throws Exception

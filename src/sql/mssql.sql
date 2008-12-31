@@ -66,7 +66,7 @@ CREATE TABLE IDENTITY_TABLE
    COLUMN1 VARCHAR(32), PRIMARY KEY (IDENTITY_TABLE_ID));
 
 -----------------------------------------------------------------------------
--- IDENTITY_TABLE
+-- TEST_IDENTITY_NOT_PK
 -----------------------------------------------------------------------------
 
 CREATE TABLE TEST_IDENTITY_NOT_PK

@@ -27,6 +27,7 @@ import org.dbunit.TestFeature;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.operation.DatabaseOperation;
 
 import java.io.FileReader;
 import java.io.Reader;
@@ -146,6 +147,23 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
                 // Other tables should have not been affected
                 Assertion.assertEquals(tableBefore, tableAfter);
             }
+        }
+    }
+    
+    public void testSetCustomIdentityColumnFilter() throws Exception
+    {
+        _connection.getConfig().setProperty(InsertIdentityOperation.PROPERTY_IDENTITY_COLUMN_FILTER, InsertIdentityOperation.IDENTITY_FILTER_EXTENDED);
+        try {
+            IDataSet dataSet = _connection.createDataSet();
+            ITable table = dataSet.getTable("IDENTITY_TABLE");
+            
+            InsertIdentityOperation op = new InsertIdentityOperation(DatabaseOperation.INSERT);
+            boolean hasIdentityColumn = op.hasIdentityColumn(table.getTableMetaData(), _connection);
+            assertTrue("Identity column not recognized", hasIdentityColumn);
+        }
+        finally{
+            // Reset property
+            _connection.getConfig().setProperty(InsertIdentityOperation.PROPERTY_IDENTITY_COLUMN_FILTER, null);
         }
     }
 }

@@ -11,6 +11,7 @@
     <release version="2.4.3" date="TBD" description="Bugfixes, some small additions">
       <action dev="gommma" type="fix" issue="2023994" due-to="marney">Simplify use of custom datatype factory for DBTestCase</action>
       <action dev="gommma" type="fix" issue="2475264" due-to="erik.van.zijst">problem when verifying against an XmlDataSet</action>
+      <action dev="gommma" type="fix" issue="1182289" due-to="jamapor">IDENTITY_INSERT : Check for identity column incorrect</action>
 	</release>
     <release version="2.4.2" date="Dec 17, 2008" description="Bugfixes, some small additions">
       <action dev="gommma" type="fix" issue="2356800" due-to="jeremy_finney">Cannot extract contents of table with a column named "AS"</action>

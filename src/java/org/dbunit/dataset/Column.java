@@ -34,7 +34,7 @@ import java.sql.DatabaseMetaData;
  * @author Manuel Laflamme
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
- * @since Feb 17, 2002
+ * @since 1.0 (Feb 17, 2002)
  */
 public class Column
 {
@@ -62,6 +62,8 @@ public class Column
     private final String _sqlTypeName;
     private final Nullable _nullable;
     private final String _defaultValue;
+    private final String _remarks;
+    private final AutoIncrement _autoIncrement;
 
     /**
      * Creates a Column object. This constructor set nullable to true.
@@ -103,11 +105,30 @@ public class Column
     public Column(String columnName, DataType dataType, String sqlTypeName,
             Nullable nullable, String defaultValue)
     {
+        this(columnName, dataType, sqlTypeName, nullable, defaultValue, null, null);
+    }
+
+    /**
+     * Creates a Column object.
+     * @param columnName The name of the column
+     * @param dataType The DbUnit {@link DataType} of the column
+     * @param sqlTypeName The SQL name of the column which comes from the JDBC driver.
+     * See value 'TYPE_NAME' in {@link DatabaseMetaData#getColumns(String, String, String, String)}
+     * @param nullable whether or not the column is nullable
+     * @param defaultValue The default value on the DB for this column. Can be <code>null</code>.
+     * @param remarks The remarks on the DB for this column. Can be <code>null</code>.
+     * @param autoIncrement The auto increment setting for this column. Can be <code>null</code>.
+     */
+    public Column(String columnName, DataType dataType, String sqlTypeName,
+            Nullable nullable, String defaultValue, String remarks, AutoIncrement autoIncrement)
+    {
         _columnName = columnName;
         _dataType = dataType;
         _sqlTypeName = sqlTypeName;
         _nullable = nullable;
         _defaultValue = defaultValue;
+        _remarks = remarks;
+        _autoIncrement = autoIncrement;
     }
 
     /**
@@ -149,6 +170,24 @@ public class Column
     public String getDefaultValue()
     {
         return _defaultValue;
+    }
+    
+    /**
+     * @return The remarks set on the database for this column
+     * @since 2.4.3
+     */
+    public String getRemarks()
+    {
+        return _remarks;
+    }
+    
+    /**
+     * @return The auto-increment property for this column
+     * @since 2.4.3
+     */
+    public AutoIncrement getAutoIncrement()
+    {
+        return _autoIncrement;
     }
     
     /**
@@ -194,6 +233,7 @@ public class Column
         
         return nullable ? NULLABLE : NO_NULLS;
     }
+    
 
     ////////////////////////////////////////////////////////////////////////////
     // Object class
@@ -266,6 +306,73 @@ public class Column
         public String toString()
         {
             return _name;
+        }
+    }
+    
+    
+    /**
+     * Enumeration for valid auto-increment values provided by JDBC driver implementations.
+     * 
+     * @author gommma
+     * @author Last changed by: $Author:$
+     * @version $Revision:$ $Date:$
+     * @since 2.4.3
+     * @see Column
+     */
+    public static class AutoIncrement
+    {
+        public static final AutoIncrement YES = new AutoIncrement("YES");
+        public static final AutoIncrement NO = new AutoIncrement("NO");
+        public static final AutoIncrement UNKNOWN = new AutoIncrement("UNKNOWN");
+        
+        /**
+         * Logger for this class
+         */
+        private static final Logger LOGGER = LoggerFactory.getLogger(AutoIncrement.class);
+
+        private final String key;
+        private AutoIncrement(String key)
+        {
+            this.key = key;
+        }
+        
+        /**
+         * Searches the enumeration type for the given String provided by the JDBC driver.
+         * <p>
+         * If the parameter <code>autoIncrementValue</code>
+         * <ul>
+         * <li>equalsIgnoreCase &quot;YES&quot; or equals &quot;1&quot; then {@link AutoIncrement#YES} is returned</li>
+         * <li></li>
+         * </ul>
+         * </p>
+         * @param isAutoIncrement The String from the JDBC driver.
+         * @return The enumeration
+         */
+        public static AutoIncrement autoIncrementValue(String isAutoIncrement) 
+        {
+            if(LOGGER.isDebugEnabled())
+                logger.debug("autoIncrementValue(isAutoIncrement={}) - start", isAutoIncrement);
+            
+            AutoIncrement result = AutoIncrement.UNKNOWN;
+            
+            if(isAutoIncrement != null)
+            {
+                if(isAutoIncrement.equalsIgnoreCase("YES") || isAutoIncrement.equals("1"))
+                {
+                    result = AutoIncrement.YES;
+                }
+                else if(isAutoIncrement.equalsIgnoreCase("NO") || isAutoIncrement.equals("0"))
+                {
+                    result = AutoIncrement.NO;
+                }
+            }
+            return result;
+        }
+
+
+        public String toString()
+        {
+            return "autoIncrement=" + key;
         }
     }
 

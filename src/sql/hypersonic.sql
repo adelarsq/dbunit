@@ -68,5 +68,18 @@ CREATE TABLE EMPTY_MULTITYPE_TABLE
    TIMESTAMP_COL TIMESTAMP,
    VARBINARY_COL VARBINARY(254));
 
+-----------------------------------------------------------------------------
+-- IDENTITY_TABLE
+-----------------------------------------------------------------------------
+CREATE TABLE IDENTITY_TABLE
+  (IDENTITY_TABLE_ID IDENTITY NOT NULL,
+   COLUMN0 VARCHAR(32),
+   COLUMN1 VARCHAR(32), 
+   PRIMARY KEY (IDENTITY_TABLE_ID));
 
-
+-----------------------------------------------------------------------------
+-- TEST_IDENTITY_NOT_PK
+-----------------------------------------------------------------------------
+CREATE TABLE TEST_IDENTITY_NOT_PK
+  (COL01 IDENTITY NOT NULL,
+   COL02 VARCHAR(64));
