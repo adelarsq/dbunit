@@ -25,6 +25,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.DatabaseEnvironment;
@@ -33,6 +34,7 @@ import org.dbunit.TestFeature;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.Columns;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.dataset.datatype.DataType;
@@ -201,6 +203,44 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         }
     }
  
+    /**
+     * Tests whether dbunit works correctly when the local machine has a specific locale set while having
+     * case sensitivity=false (so that the "toUpperCase()" is internally invoked on table names)
+     * @throws Exception
+     */
+    public void testCaseInsensitiveAndI18n() throws Exception
+    {
+        // To test bug report #1537894 where the user has a turkish locale set on his box
+        
+        // Change the locale for this test
+        Locale oldLocale = Locale.getDefault();
+        // Set the locale to turkish where "i".toUpperCase() produces an "\u0131" ("I" with dot above) which is not equal to "I". 
+        Locale.setDefault(new Locale("tr", "TR"));
+        
+        try {
+            // Use the "EMPTY_MULTITYPE_TABLE" because it has an "I" in the name.
+            // Use as input a completely lower-case string so that the internal "toUpperCase()" has effect
+            String tableName = "empty_multitype_table";
+//            boolean validate = true;
+//            boolean caseSensitive = false;
+
+            IDataSet dataSet = this._connection.createDataSet();
+            ITable table = dataSet.getTable(tableName);
+            System.out.println("Table"+table);
+            assertNotNull("Table '" + tableName + "' was not found", table);
+//            ITableMetaData metaData = new DatabaseTableMetaData(tableName,
+//                    this._connection, validate, caseSensitive);
+//            Column[] columns = metaData.getColumns();
+//            assertEquals(1, columns.length);
+//            assertEquals("COL1", columns[0].getColumnName());
+        }
+        finally {
+            //Reset locale
+            Locale.setDefault(oldLocale);
+        }
+    }
+
+
     /**
      * Tests the pattern-like column retrieval from the database. DbUnit
      * should not interpret any table names as regex patterns. 

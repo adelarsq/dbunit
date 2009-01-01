@@ -25,9 +25,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.dbunit.database.AmbiguousTableNameException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Associates a table name with an arbitrary object. Moreover the
@@ -46,7 +49,11 @@ import org.dbunit.database.AmbiguousTableNameException;
  */
 public class OrderedTableNameMap
 {
-	
+    /**
+     * Logger for this class
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderedTableNameMap.class);
+
 	/**
 	 * The map for fast access to the existing table names and for
 	 * associating an arbitrary object with a table name
@@ -114,6 +121,9 @@ public class OrderedTableNameMap
      */
     public boolean isLastTable(String tableName) 
     {
+        if(LOGGER.isDebugEnabled())
+            LOGGER.debug("isLastTable(tableName={}) - start", tableName);
+        
         if(this._tableNames.size() == 0)
         {
             return false;
@@ -133,6 +143,9 @@ public class OrderedTableNameMap
      */
     public String getLastTableName()
     {
+        if(LOGGER.isDebugEnabled())
+            LOGGER.debug("getLastTableName() - start");
+        
         if(_tableNames.size()>0)
         {
             String lastTable = (String) _tableNames.get(this._tableNames.size()-1);
@@ -153,6 +166,9 @@ public class OrderedTableNameMap
 	 */
 	public void add(String tableName, Object object) throws AmbiguousTableNameException 
 	{
+        if(LOGGER.isDebugEnabled())
+            LOGGER.debug("add(tableName={}, object={}) - start", tableName, object);
+	    
 	    // Get the table name in the correct case
         String tableNameCorrectedCase = this.getTableName(tableName);
         // prevent table name conflict
@@ -171,6 +187,9 @@ public class OrderedTableNameMap
      */
     public Collection orderedValues() 
     {
+        if(LOGGER.isDebugEnabled())
+            LOGGER.debug("orderedValues() - start");
+
         List orderedValues = new ArrayList(this._tableNames.size());
         for (Iterator iterator = _tableNames.iterator(); iterator.hasNext();) {
             String tableName = (String) iterator.next();
@@ -188,6 +207,9 @@ public class OrderedTableNameMap
 	 */
 	public void update(String tableName, Object object) 
 	{
+        if(LOGGER.isDebugEnabled())
+            LOGGER.debug("update(tableName={}, object={}) - start", tableName, object);
+
         // prevent table name conflict
         if (!this.containsTable(tableName))
         {
@@ -204,14 +226,21 @@ public class OrderedTableNameMap
      */
     public String getTableName(String tableName) 
     {
-        if(_caseSensitiveTableNames)
+        if(LOGGER.isDebugEnabled())
+            LOGGER.debug("getTableName(tableName={}) - start", tableName);
+        
+        String result = tableName;
+        if(!_caseSensitiveTableNames)
         {
-            return tableName;
+            // "Locale.ENGLISH" Fixes bug #1537894 when clients have a special
+            // locale like turkish. (for release 2.4.3)
+            result = tableName.toUpperCase(Locale.ENGLISH);
         }
-        else
-        {
-            return tableName.toUpperCase();
-        }
+
+        if(LOGGER.isDebugEnabled())
+            LOGGER.debug("getTableName(tableName={}) - end - result={}", tableName, result);
+        
+        return result;
     }
 
 	public String toString()
