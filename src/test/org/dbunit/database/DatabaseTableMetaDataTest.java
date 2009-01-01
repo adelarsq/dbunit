@@ -221,18 +221,11 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
             // Use the "EMPTY_MULTITYPE_TABLE" because it has an "I" in the name.
             // Use as input a completely lower-case string so that the internal "toUpperCase()" has effect
             String tableName = "empty_multitype_table";
-//            boolean validate = true;
-//            boolean caseSensitive = false;
 
             IDataSet dataSet = this._connection.createDataSet();
             ITable table = dataSet.getTable(tableName);
-            System.out.println("Table"+table);
+            // Should now find the table, regardless that we gave the tableName in lowerCase
             assertNotNull("Table '" + tableName + "' was not found", table);
-//            ITableMetaData metaData = new DatabaseTableMetaData(tableName,
-//                    this._connection, validate, caseSensitive);
-//            Column[] columns = metaData.getColumns();
-//            assertEquals(1, columns.length);
-//            assertEquals("COL1", columns[0].getColumnName());
         }
         finally {
             //Reset locale
