@@ -241,7 +241,7 @@ public class DbUnitAssert
         // tables
         for (int i = 0; i < expectedNames.length; i++) {
             String name = expectedNames[i];
-            assertEquals(expectedDataSet.getTable(name), actualDataSet.getTable(name));
+            assertEquals(expectedDataSet.getTable(name), actualDataSet.getTable(name), failureHandler);
         }
 
     }

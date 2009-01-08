@@ -22,6 +22,7 @@
 package org.dbunit.assertion;
 
 import java.io.FileReader;
+import java.io.StringReader;
 import java.math.BigDecimal;
 
 import junit.framework.ComparisonFailure;
@@ -480,6 +481,30 @@ public class DbUnitAssertTest extends TestCase
             assertEquals("row count (table=TEST_TABLE) expected:<[2]> but was:<[4]>", expected.getMessage());
         }
     }
+    
+    public void testAssertDataSetsWithFailureHandler() throws Exception
+    {
+        DiffCollectingFailureHandler fh = new DiffCollectingFailureHandler();
+        
+        String xml1 = 
+            "<dataset>\n"+
+            "<TEST_TABLE COLUMN0='row 0 col 0' COLUMN1='row 0 col 1'/>\n" +
+            "</dataset>\n";
+        IDataSet dataSet1 = new FlatXmlDataSet(new StringReader(xml1));
+        String xml2 = 
+            "<dataset>\n"+
+            "<TEST_TABLE COLUMN0='row 0 col somthing' COLUMN1='row 0 col something mysterious'/>\n" +
+            "</dataset>\n";
+        IDataSet dataSet2 = new FlatXmlDataSet(new StringReader(xml2));
+
+        // Invoke the assertion
+        assertion.assertEquals(dataSet1, dataSet2, fh);
+        // We expect that no failure was thrown even if the dataSets were not equal.
+        // This is because our custom failureHandler
+        assertEquals(2, fh.getDiffList().size());
+    }
+
+    
     
     public void testGetComparisonDataType_ExpectedTypeUnknown()
     {
