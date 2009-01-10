@@ -292,8 +292,18 @@ public class SQLHelper {
         int nullable = resultSet.getInt(11);
         String remarks = resultSet.getString(12);
         String columnDefaultValue = resultSet.getString(13);
-        String isAutoIncrement = resultSet.getString(23);
-
+        // This is only available since Java 5 - so we ca try it and if it does not work default it
+        String isAutoIncrement = Column.AutoIncrement.NO.getKey();
+        try {
+            isAutoIncrement = resultSet.getString(23);
+        }
+        catch(SQLException e){
+            if(logger.isDebugEnabled())
+                logger.debug("Could not retrieve the 'isAutoIncrement' property because not yet running on Java 1.5 - defaulting to NO. " +
+                        "Table=" + tableName + ", Column=" +columnName, e);
+            // Ignore this one here
+        }
+        
         // Convert SQL type to DataType
         DataType dataType =
                 dataTypeFactory.createDataType(sqlType, sqlTypeName, tableName, columnName);

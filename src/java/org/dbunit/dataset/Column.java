@@ -314,8 +314,8 @@ public class Column
      * Enumeration for valid auto-increment values provided by JDBC driver implementations.
      * 
      * @author gommma
-     * @author Last changed by: $Author:$
-     * @version $Revision:$ $Date:$
+     * @author Last changed by: $Author$
+     * @version $Revision$ $Date$
      * @since 2.4.3
      * @see Column
      */
@@ -336,6 +336,11 @@ public class Column
             this.key = key;
         }
         
+        public String getKey() 
+        {
+            return key;
+        }
+
         /**
          * Searches the enumeration type for the given String provided by the JDBC driver.
          * <p>
