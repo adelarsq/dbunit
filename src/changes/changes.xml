@@ -15,6 +15,7 @@
       <action dev="gommma" type="fix" issue="1537894" due-to="skuzey">possibly i18n problem</action>
       <action dev="gommma" type="fix" issue="2494501" due-to="rogerrabbitpro">FailureHandler is not propagated to data comparison stage</action>
       <action dev="gommma" type="fix" issue="2486800" due-to="macha64">Warning message "PostgreSQL not be supported"</action>
+      <action dev="gommma" type="update" issue="1690721" due-to="cdubet">short BLOB are not correctly managed</action>
 	</release>
     <release version="2.4.2" date="Dec 17, 2008" description="Bugfixes, some small additions">
       <action dev="gommma" type="fix" issue="2356800" due-to="jeremy_finney">Cannot extract contents of table with a column named "AS"</action>

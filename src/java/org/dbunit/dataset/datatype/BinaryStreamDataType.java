@@ -81,6 +81,11 @@ public class BinaryStreamDataType extends BytesDataType
         }
     }
 
+    /**
+     * Sets the given value on the given statement and therefore invokes 
+     * {@link BytesDataType#typeCast(Object)}.
+     * @see org.dbunit.dataset.datatype.BytesDataType#setSqlValue(java.lang.Object, int, java.sql.PreparedStatement)
+     */
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
@@ -89,8 +94,17 @@ public class BinaryStreamDataType extends BytesDataType
         		new Object[]{value, new Integer(column), statement} );
 
         byte[] bytes = (byte[])typeCast(value);
-        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        statement.setBinaryStream(column, in, bytes.length);
+        if(value==null || bytes==null)
+        {
+            logger.debug("Setting SQL column value to <null>");
+            statement.setNull(column, getSqlType());
+        }
+        else
+        {
+            ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+            statement.setBinaryStream(column, in, bytes.length);
+        }
+        
     }
 
 }

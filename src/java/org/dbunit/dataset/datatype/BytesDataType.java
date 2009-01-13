@@ -82,6 +82,13 @@ public class BytesDataType extends AbstractDataType
     ////////////////////////////////////////////////////////////////////////////
     // DataType class
 
+    /**
+     * Casts the given value into a byte[] using different strategies. Note
+     * that this might sometimes result in undesired behavior when character
+     * data (Strings) are used.
+     * 
+     * @see org.dbunit.dataset.datatype.DataType#typeCast(java.lang.Object)
+     */
     public Object typeCast(Object value) throws TypeCastException
     {
         logger.debug("typeCast(value={}) - start", value);
@@ -127,8 +134,9 @@ public class BytesDataType extends AbstractDataType
                     }
                     catch (FileNotFoundException e2)
                     {
+                        logger.info("Assuming given string to be Base64 and not a URI or File");
                         // Not a file name either
-                        return Base64.decode((String)value);
+                        return Base64.decode(stringValue);
                     }
                 }
             }
