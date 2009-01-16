@@ -24,6 +24,7 @@ package org.dbunit.dataset.xml;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.StringReader;
 import java.io.Writer;
 
 import org.dbunit.Assertion;
@@ -32,6 +33,7 @@ import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableMetaData;
 
 /**
  * @author Manuel Laflamme
@@ -94,7 +96,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
         assertEquals("column count", 2, columns.length);
     }
 
-    public void testMissingColumnAndDisableDtdMetadataAndSensing() throws Exception
+    public void testMissingColumnAndDisableDtdMetadataEnableSensing() throws Exception
     {
         IDataSet dataSet = new FlatXmlDataSet(FLAT_XML_TABLE, false, true);
 
@@ -187,6 +189,71 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
         assertEquals("EMPTY_TABLE", tables[1].getTableMetaData().getTableName());
         assertEquals("duplicate_TABLE", tables[2].getTableMetaData().getTableName());
     }
+    
+    /**
+     * Overridden from parent because FlatXml has different behaviour than other datasets.
+     * It allows the occurrence of the same table multiple times in arbitrary locations.
+     * @see org.dbunit.dataset.AbstractDataSetTest#testCreateDuplicateDataSet()
+     */
+    //@Override
+    public void testCreateDuplicateDataSet() throws Exception
+    {
+            IDataSet dataSet = createDuplicateDataSet();
+            ITable[] tables = dataSet.getTables();
+            assertEquals(2, tables.length);
+            assertEquals("DUPLICATE_TABLE", tables[0].getTableMetaData().getTableName());
+            assertEquals(3, tables[0].getRowCount());
+            assertEquals("EMPTY_TABLE", tables[1].getTableMetaData().getTableName());
+            assertEquals(0, tables[1].getRowCount());
+    }
+
+    /**
+     * Overridden from parent because FlatXml has different behaviour than other datasets.
+     * It allows the occurrence of the same table multiple times in arbitrary locations.
+     * @see org.dbunit.dataset.AbstractDataSetTest#testCreateMultipleCaseDuplicateDataSet()
+     */
+    //@Override
+    public void testCreateMultipleCaseDuplicateDataSet() throws Exception
+    {
+        IDataSet dataSet = createMultipleCaseDuplicateDataSet();
+        ITable[] tables = dataSet.getTables();
+        assertEquals(2, tables.length);
+        assertEquals("DUPLICATE_TABLE", tables[0].getTableMetaData().getTableName());
+        assertEquals(3, tables[0].getRowCount());
+        assertEquals("EMPTY_TABLE", tables[1].getTableMetaData().getTableName());
+        assertEquals(0, tables[1].getRowCount());
+    }
+
+    public void testCreateDuplicateDataSetWithVaryingColumnsAndColumnSensing() throws Exception
+    {
+        String xmlString = 
+            "<dataset>" +
+                "<MISSING_VALUES_SENSING COLUMN0='row 0 col 0' COLUMN3='row 0 col 3'/>"+
+                "<MISSING_VALUES         COLUMN0='row 1 col 0' COLUMN2='row 1 col 2'/>"+
+                "<MISSING_VALUES_SENSING COLUMN0='row 1 col 0' COLUMN1='row 1 col 1'/>"+
+            "</dataset>";
+        IDataSet dataSet = new FlatXmlDataSet(new StringReader(xmlString), false, true, false);
+        ITable[] tables = dataSet.getTables();
+        assertEquals(2, tables.length);
+        
+        ITableMetaData meta1 = tables[0].getTableMetaData();
+        assertEquals("MISSING_VALUES_SENSING", meta1.getTableName());
+        assertEquals(3, meta1.getColumns().length);
+        assertEquals("COLUMN0", meta1.getColumns()[0].getColumnName());
+        assertEquals("COLUMN3", meta1.getColumns()[1].getColumnName());
+        assertEquals("COLUMN1", meta1.getColumns()[2].getColumnName());
+        assertEquals(2, tables[0].getRowCount());
+        assertEquals("row 0 col 0", tables[0].getValue(0, "COLUMN0"));
+        assertEquals("row 0 col 3", tables[0].getValue(0, "COLUMN3"));
+        assertEquals(null,          tables[0].getValue(0, "COLUMN1"));
+        assertEquals("row 1 col 0", tables[0].getValue(1, "COLUMN0"));
+        assertEquals(null,          tables[0].getValue(1, "COLUMN3"));
+        assertEquals("row 1 col 1", tables[0].getValue(1, "COLUMN1"));
+        
+        assertEquals("MISSING_VALUES", tables[1].getTableMetaData().getTableName());
+        assertEquals(1, tables[1].getRowCount());
+    }
+
     
 }
 

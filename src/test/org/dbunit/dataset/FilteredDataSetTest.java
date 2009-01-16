@@ -57,9 +57,11 @@ public class FilteredDataSetTest extends AbstractDataSetTest
         IDataSet dataSet2 = new XmlDataSet(
                 new FileReader("src/xml/filteredDataSetTest.xml"));
 
+        assertEquals(2, dataSet1.getTableNames().length);
+        assertEquals(1, dataSet2.getTableNames().length);
+        
         IDataSet dataSet = new CompositeDataSet(dataSet1, dataSet2, false);
-        assertEquals("count before filter", getExpectedDuplicateNames().length + 1,
-                dataSet.getTableNames().length);
+        assertEquals("count before filter", 3, dataSet.getTableNames().length);
         return new FilteredDataSet(getExpectedDuplicateNames(), dataSet);
     }
 

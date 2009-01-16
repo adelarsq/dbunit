@@ -66,6 +66,8 @@ public class OrderedTableNameMap
 	 */
 	private List _tableNames = new ArrayList();
 	
+	private String _lastTableNameOverride;
+	
 	/**
 	 * Whether or not case sensitive table names should be used. Defaults to false.
 	 */
@@ -146,6 +148,11 @@ public class OrderedTableNameMap
         if(LOGGER.isDebugEnabled())
             LOGGER.debug("getLastTableName() - start");
         
+        if(_lastTableNameOverride != null)
+        {
+            return _lastTableNameOverride;
+        }
+        
         if(_tableNames.size()>0)
         {
             String lastTable = (String) _tableNames.get(this._tableNames.size()-1);
@@ -157,6 +164,20 @@ public class OrderedTableNameMap
         }
     }
     
+
+    public void setLastTable(String tableName) throws NoSuchTableException 
+    {
+        if(LOGGER.isDebugEnabled())
+            LOGGER.debug("setLastTable(name{}) - start", tableName);
+        
+        if(!this.containsTable(tableName))
+        {
+            throw new NoSuchTableException(tableName);
+        }
+        
+        this._lastTableNameOverride = tableName;
+    }
+
 	/**
 	 * Adds the given table name to the map of table names, associating 
 	 * it with the given object.
@@ -179,6 +200,8 @@ public class OrderedTableNameMap
         else {
             this._tableMap.put(tableNameCorrectedCase, object);
             this._tableNames.add(tableName);
+            // Reset the override of the lastTableName
+            this._lastTableNameOverride = null;
         }
 	}
 	

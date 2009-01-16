@@ -114,6 +114,41 @@ public class XmlDataSetTest extends AbstractDataSetTest
         }
     }
 
+    
+    /**
+     * Overridden from parent because XmlDataSet has different behaviour than other datasets.
+     * It allows the occurrence of the same table multiple times in arbitrary locations.
+     * @see org.dbunit.dataset.AbstractDataSetTest#testCreateDuplicateDataSet()
+     */
+    //@Override
+    public void testCreateDuplicateDataSet() throws Exception
+    {
+            IDataSet dataSet = createDuplicateDataSet();
+            ITable[] tables = dataSet.getTables();
+            assertEquals(2, tables.length);
+            assertEquals("DUPLICATE_TABLE", tables[0].getTableMetaData().getTableName());
+            assertEquals(3, tables[0].getRowCount());
+            assertEquals("EMPTY_TABLE", tables[1].getTableMetaData().getTableName());
+            assertEquals(0, tables[1].getRowCount());
+    }
+
+    /**
+     * Overridden from parent because XmlDataSet has different behaviour than other datasets.
+     * It allows the occurrence of the same table multiple times in arbitrary locations.
+     * @see org.dbunit.dataset.AbstractDataSetTest#testCreateMultipleCaseDuplicateDataSet()
+     */
+    //@Override
+    public void testCreateMultipleCaseDuplicateDataSet() throws Exception
+    {
+        IDataSet dataSet = createMultipleCaseDuplicateDataSet();
+        ITable[] tables = dataSet.getTables();
+        assertEquals(2, tables.length);
+        assertEquals("DUPLICATE_TABLE", tables[0].getTableMetaData().getTableName());
+        assertEquals(3, tables[0].getRowCount());
+        assertEquals("EMPTY_TABLE", tables[1].getTableMetaData().getTableName());
+        assertEquals(0, tables[1].getRowCount());
+    }
+
 }
 
 

@@ -426,10 +426,19 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
                     _consumer.endTable();
                 }
 
-                // Notify start of new table to consumer
-                activeMetaData = createTableMetaData(qName, attributes);
-                _orderedTableNameMap.add(activeMetaData.getTableName(), activeMetaData);
+                // In FlatXML the table might have appeared before already, so check for this
+                if(_orderedTableNameMap.containsTable(qName))
+                {
+                    activeMetaData = (ITableMetaData)_orderedTableNameMap.get(qName);
+                    _orderedTableNameMap.setLastTable(qName);
+                }
+                else
+                {
+                    activeMetaData = createTableMetaData(qName, attributes);
+                    _orderedTableNameMap.add(activeMetaData.getTableName(), activeMetaData);
+                }
                 
+                // Notify start of new table to consumer
                 _consumer.startTable(activeMetaData);
                 _lineNumber = 0;
             }

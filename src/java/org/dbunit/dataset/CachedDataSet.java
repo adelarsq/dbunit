@@ -139,7 +139,18 @@ public class CachedDataSet extends AbstractDataSet implements IDataSetConsumer
     public void endTable() throws DataSetException
     {
         logger.debug("endTable() - start");
-        _tables.add(_activeTable.getTableMetaData().getTableName(), _activeTable);
+        String tableName = _activeTable.getTableMetaData().getTableName();
+        // Check whether the table appeared once before
+        if(_tables.containsTable(tableName))
+        {
+            DefaultTable existingTable = (DefaultTable)_tables.get(tableName);
+            // Add all newly collected rows to the existing table
+            existingTable.addTableRows(_activeTable);
+        }
+        else
+        {
+            _tables.add(tableName, _activeTable);
+        }
         _activeTable = null;
     }
 

@@ -234,7 +234,25 @@ public class FlatXmlDataSet extends CachedDataSet
     public FlatXmlDataSet(Reader xmlReader, boolean dtdMetadata)
             throws IOException, DataSetException
     {
-        super(new FlatXmlProducer(new InputSource(xmlReader), dtdMetadata));
+        this(xmlReader, dtdMetadata, false, false);
+    }
+
+    /**
+     * Creates an FlatXmlDataSet object with the specified xml file.
+     * Relative DOCTYPE uri are resolved from the xml file path.
+     *
+     * @param xmlReader the xml reader
+     * @param dtdMetadata if <code>false</code> do not use DTD as metadata
+     * @param columnSensing Whether or not the columns should be sensed automatically. Every XML row
+     * is scanned for columns that have not been there in a previous column.
+     * @param caseSensitiveTableNames Whether or not this dataset should use case sensitive table names
+     * @since 2.4.3
+     */
+    public FlatXmlDataSet(Reader xmlReader, boolean dtdMetadata, boolean columnSensing, boolean caseSensitiveTableNames)
+    throws IOException, DataSetException
+    {
+        super(new FlatXmlProducer(new InputSource(xmlReader), dtdMetadata, columnSensing, caseSensitiveTableNames),
+                caseSensitiveTableNames);
     }
 
     /**
@@ -360,6 +378,7 @@ public class FlatXmlDataSet extends CachedDataSet
         logger.debug("writeDtd(dataSet={}, out={}) - start", dataSet, out);
         FlatDtdDataSet.write(dataSet, out);
     }
+    
 }
 
 
