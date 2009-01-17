@@ -32,12 +32,8 @@ import org.dbunit.dataset.ITableIterator;
  * @since Mar 7, 2003
  * @version $Revision$
  */
-public interface ITableFilter
+public interface ITableFilter extends ITableFilterSimple
 {
-    /**
-     * Returns <code>true</code> if specified table is allowed by this filter.
-     */
-    public boolean accept(String tableName) throws DataSetException;
 
     /**
      * Returns the table names allowed by this filter from the specified dataset.

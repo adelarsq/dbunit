@@ -36,6 +36,7 @@ import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.dataset.OrderedTableNameMap;
+import org.dbunit.dataset.filter.ITableFilterSimple;
 import org.dbunit.util.QualifiedTableName;
 import org.dbunit.util.SQLHelper;
 import org.slf4j.Logger;
@@ -59,7 +60,9 @@ public class DatabaseDataSet extends AbstractDataSet
 
     private final IDatabaseConnection _connection;
     private OrderedTableNameMap _tableMap = null;
-
+    
+    private final ITableFilterSimple _tableFilter;
+    private final ITableFilterSimple _oracleRecycleBinTableFilter;
 
     /**
      * Creates a new database data set
@@ -81,14 +84,29 @@ public class DatabaseDataSet extends AbstractDataSet
      */
     public DatabaseDataSet(IDatabaseConnection connection, boolean caseSensitiveTableNames) throws SQLException
     {
+        this(connection, caseSensitiveTableNames, null);
+    }
+
+    /**
+     * Creates a new database data set
+     * @param connection The database connection
+     * @param caseSensitiveTableNames Whether or not this dataset should use case sensitive table names
+     * @param tableFilter Table filter to specify tables to be omitted in this dataset. Can be <code>null</code>.
+     * @throws SQLException
+     * @since 2.4.3
+     */
+    public DatabaseDataSet(IDatabaseConnection connection, boolean caseSensitiveTableNames, ITableFilterSimple tableFilter) 
+    throws SQLException
+    {
         super(caseSensitiveTableNames);
         if (connection == null) {
             throw new NullPointerException(
                     "The parameter 'connection' must not be null");
         }
         _connection = connection;
+        _tableFilter = tableFilter;
+        _oracleRecycleBinTableFilter = new OracleRecycleBinTableFilter(connection.getConfig());
     }
-
 
 
 
@@ -188,13 +206,17 @@ public class DatabaseDataSet extends AbstractDataSet
                         schemaName = catalogName;
                     }
                     
-                    // skip oracle 10g recycle bin system tables if enabled
-                    if(config.getFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES)) {
-                        // Oracle 10g workaround
-                        // don't process system tables (oracle recycle bin tables) which
-                        // are reported to the application due a bug in the oracle JDBC driver
-                        if (tableName.startsWith("BIN$")) continue;	
+                    if(_tableFilter != null && !_tableFilter.accept(tableName))
+                    {
+                        logger.debug("Skipping table '{}'", tableName);
+                        continue;
                     }
+                    if(!_oracleRecycleBinTableFilter.accept(tableName))
+                    {
+                        logger.debug("Skipping oracle recycle bin table '{}'", tableName);
+                        continue;
+                    }
+                    
                     
                     QualifiedTableName qualifiedTableName = new QualifiedTableName(tableName, schemaName);
                     tableName = qualifiedTableName.getQualifiedNameIfEnabled(config);
@@ -291,4 +313,30 @@ public class DatabaseDataSet extends AbstractDataSet
             throw new DataSetException(e);
         }
     }
+
+    
+    private static class OracleRecycleBinTableFilter implements ITableFilterSimple
+    {
+        private final DatabaseConfig _config;
+
+        public OracleRecycleBinTableFilter(DatabaseConfig config) 
+        {
+            this._config = config;
+        }
+
+        public boolean accept(String tableName) throws DataSetException 
+        {
+            // skip oracle 10g recycle bin system tables if enabled
+            if(_config.getFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES)) {
+                // Oracle 10g workaround
+                // don't process system tables (oracle recycle bin tables) which
+                // are reported to the application due a bug in the oracle JDBC driver
+                if (tableName.startsWith("BIN$")) 
+                    return false; 
+            }
+            
+            return true;
+        }
+    }
+    
 }

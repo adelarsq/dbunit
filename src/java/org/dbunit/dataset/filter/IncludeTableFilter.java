@@ -71,7 +71,7 @@ public class IncludeTableFilter extends AbstractTableFilter implements ITableFil
      */
     public void includeTable(String patternName)
     {
-        logger.debug("includeTable(patternName=" + patternName + ") - start");
+        logger.debug("includeTable(patternName={} - start", patternName);
 
         _patternMatcher.addPattern(patternName);
     }
@@ -88,7 +88,7 @@ public class IncludeTableFilter extends AbstractTableFilter implements ITableFil
 
     public boolean isValidName(String tableName)
     {
-        logger.debug("isValidName(tableName=" + tableName + ") - start");
+        logger.debug("isValidName(tableName={}) - start", tableName);
 
         return _patternMatcher.accept(tableName);
     }

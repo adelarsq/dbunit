@@ -24,11 +24,14 @@ package org.dbunit.database;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.dataset.AbstractDataSetTest;
 import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableMetaData;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
+import org.dbunit.dataset.filter.ITableFilterSimple;
 import org.dbunit.util.QualifiedTableName;
 
 
@@ -264,6 +267,28 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
     public void testCreateMultipleCaseDuplicateDataSet() throws Exception 
     {
         // Cannot test! Unsupported feature.
+    }
+
+    public void testGetTableThatIsFiltered() throws Exception
+    {
+        final String existingTableToFilter = "TEST_TABLE";
+        ITableFilterSimple tableFilter = new ITableFilterSimple(){
+            public boolean accept(String tableName) throws DataSetException {
+                if(tableName.equals(existingTableToFilter))
+                    return false;
+                return true;
+            }
+        };
+        IDataSet dataSet = new DatabaseDataSet(_connection, false, tableFilter);
+        try
+        {
+            dataSet.getTable(existingTableToFilter);
+            fail("Should not be able to retrieve table from dataset that has not been loaded - expected an exception");
+        }
+        catch(NoSuchTableException expected)
+        {
+            assertEquals(existingTableToFilter, expected.getMessage());
+        }
     }
 
 }
