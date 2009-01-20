@@ -68,6 +68,8 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     private XmlWriter _xmlWriter;
     private ITableMetaData _activeMetaData;
+    private boolean includeColumnComments = false;
+
 
     /**
      * @param outputStream The stream to which the XML will be written.
@@ -106,13 +108,22 @@ public class XmlDataSetWriter implements IDataSetConsumer
     }
 
     /**
+     * Whether or not to write the column name as comment into the XML
+     * @param includeColumnComments Whether or not to write the column name as comment into the XML
+     */
+    public void setIncludeColumnComments(boolean includeColumnComments)
+    {
+      this.includeColumnComments = includeColumnComments;
+    }
+
+    /**
      * Writes the given {@link IDataSet} using this writer.
      * @param dataSet The {@link IDataSet} to be written
      * @throws DataSetException
      */
     public void write(IDataSet dataSet) throws DataSetException
     {
-        logger.debug("write(dataSet{}) - start", dataSet);
+        logger.trace("write(dataSet{}) - start", dataSet);
 
         DataSetProducerAdapter provider = new DataSetProducerAdapter(dataSet);
         provider.setConsumer(this);
@@ -121,7 +132,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     boolean needsCData(String text)
     {
-        logger.debug("needsCData(text={}) - start", text);
+        logger.trace("needsCData(text={}) - start", text);
 
         if (text == null)
         {
@@ -147,7 +158,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     public void startDataSet() throws DataSetException
     {
-        logger.debug("startDataSet() - start");
+        logger.trace("startDataSet() - start");
 
         try
         {
@@ -162,7 +173,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     public void endDataSet() throws DataSetException
     {
-        logger.debug("endDataSet() - start");
+        logger.trace("endDataSet() - start");
 
         try
         {
@@ -177,7 +188,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     public void startTable(ITableMetaData metaData) throws DataSetException
     {
-        logger.debug("startTable(metaData={}) - start", metaData);
+        logger.trace("startTable(metaData={}) - start", metaData);
 
         try
         {
@@ -203,7 +214,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     public void endTable() throws DataSetException
     {
-        logger.debug("endTable() - start");
+        logger.trace("endTable() - start");
 
         try
         {
@@ -218,7 +229,7 @@ public class XmlDataSetWriter implements IDataSetConsumer
 
     public void row(Object[] values) throws DataSetException
     {
-        logger.debug("row(values={}) - start", values);
+        logger.trace("row(values={}) - start", values);
 
         try
         {
@@ -250,11 +261,11 @@ public class XmlDataSetWriter implements IDataSetConsumer
                         _xmlWriter.writeElement(VALUE);
                         if (needsCData(stringValue))
                         {
-                            _xmlWriter.writeCData(stringValue);
+                            writeValueCData(stringValue);
                         }
                         else if (stringValue.length() > 0)
                         {
-                            _xmlWriter.writeText( stringValue );
+                            writeValue(stringValue);
                         }
                         _xmlWriter.endElement();
                     }
@@ -277,10 +288,41 @@ public class XmlDataSetWriter implements IDataSetConsumer
             throw new DataSetException(e);
         }
     }
-    
-    private boolean includeColumnComments = false;
 
-    public void setIncludeColumnComments(boolean b) {
-      this.includeColumnComments = b;
+    /**
+     * Writes the given String as CDATA using the {@link XmlWriter}.
+     * Can be overridden to add custom behavior.
+     * This implementation just invokes {@link XmlWriter#writeCData(String)}
+     * @param stringValue The value to be written
+     * @throws IOException
+     * @since 2.4.4
+     */
+    protected void writeValueCData(String stringValue) throws IOException
+    {
+        logger.trace("writeValueCData(stringValue={}) - start", stringValue);
+        _xmlWriter.writeCData(stringValue);
+    }
+    
+    /**
+     * Writes the given String as normal text using the {@link XmlWriter}.
+     * Can be overridden to add custom behavior.
+     * This implementation just invokes {@link XmlWriter#writeText(String)}.
+     * @param stringValue The value to be written
+     * @throws IOException
+     * @since 2.4.4
+     */
+    protected void writeValue(String stringValue) throws IOException
+    {
+        logger.trace("writeValue(stringValue={}) - start", stringValue);
+        _xmlWriter.writeText(stringValue);
+    }
+
+    /**
+     * @return The {@link XmlWriter} that is used for writing out XML.
+     * @since 2.4.4
+     */
+    protected final XmlWriter getXmlWriter()
+    {
+        return _xmlWriter;
     }
 }
