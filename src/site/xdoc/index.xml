@@ -26,6 +26,10 @@
   <section name="News">
       <table border="1">
         <tr>
+          <td>2009-01-20</td>
+          <td>Development continues to go on, fixes and a additions have been contributed and a new release has been cut. Here a detailed <a href="changes-report.html#a2.4.3">changes</a> report.</td>
+        </tr>
+        <tr>
           <td>2008-12-17</td>
           <td>Some other fixes and a additions have been released. Here a detailed <a href="changes-report.html#a2.4.2">changes</a> report.</td>
         </tr>
