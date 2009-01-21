@@ -600,6 +600,38 @@ IDataSet dataSet = new FlatXmlDataSet(new File("src/xml/flatXmlTableTest.xml"), 
       </answer>
     </faq>
 
+    <faq id="xmlExportPreserveCRLF">
+      <question>
+      Is there any way to preserve \r\n character sequences in an XmlDataSet if they are explicitly stored in the database?
+      </question>
+      <answer>
+        <p>
+          You can easily extend the XmlDataSet class and overwrite the methods that write the string values as follows:
+          <source>
+public class MyXmlWriter extends org.dbunit.dataset.xml.XmlDataSetWriter {
+...
+  protected void writeValueCData(String stringValue) throws IOException {
+    int k = 0;
+    while((k = str.indexOf('\r')) != -1){
+      getXmlWriter().writeCData(str.substring(0, k));
+      getXmlWriter().writeText("\r", true);
+      str = str.substring(k + 1);
+    }
+    getXmlWriter().writeCData(str);
+  }
+
+  protected void writeValue(String stringValue) throws IOException {
+    // Write literally
+    super.getXmlWriter().writeText(stringValue, true);
+  }
+}
+          </source>
+          Just for the sake of completeness: storing such a character sequence explicitly in the database is possible for example using 
+          "insert into test_table(description) values ('Description'|| chr(13) || chr(10) ||'WithLineBreak');" on oracle
+        </p>
+      </answer>
+    </faq>
+
   </part>
 
 
