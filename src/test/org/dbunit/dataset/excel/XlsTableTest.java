@@ -22,6 +22,7 @@ package org.dbunit.dataset.excel;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.TimeZone;
 
 import org.dbunit.dataset.AbstractTableTest;
 import org.dbunit.dataset.Column;
@@ -114,13 +115,13 @@ public class XlsTableTest extends AbstractTableTest
 //                new Long(25569),// Dates stored as Long numbers
 //                new Long(25569447916666668L),
 //                new Long(563136574074074L),
-                new Long(-3600000),// Dates stored as Long numbers
-                new Long(35100000),
-                new Long(-2209030145000L),
+                new Long(0),// Dates stored as Long numbers
+                new Long(38700000),
+                new Long(-2209026545000L),
                 new BigDecimal("10000.00"), 
                 new BigDecimal("-200"), 
                 new BigDecimal("12345.123456789000"),
-                new Long(1233395164000L),
+                new Long(1233398764000L),
                 new Long(1233332866000L) // The last column is a dbunit-date-formatted column in the excel sheet
                 };
 

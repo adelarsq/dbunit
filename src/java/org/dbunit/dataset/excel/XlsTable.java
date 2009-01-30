@@ -26,6 +26,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -195,6 +196,9 @@ class XlsTable extends AbstractTable
         
         double numericValue = cell.getNumericCellValue();
         Date date = HSSFDateUtil.getJavaDate(numericValue);
+        // Add the timezone offset again because it was subtracted automatically by Apache-POI (we need UTC)
+        long tzOffset = TimeZone.getDefault().getOffset(0);
+        date = new Date(date.getTime() + tzOffset);
         return new Long(date.getTime());
         
         //TODO use a calendar for XLS Date objects when it is supported better by POI
