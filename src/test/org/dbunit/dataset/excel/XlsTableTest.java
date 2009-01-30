@@ -111,12 +111,17 @@ public class XlsTableTest extends AbstractTableTest
 //                new Date(0-tzOffset), 
 //                new Date(0-tzOffset + (10*ONE_HOUR_IN_MILLIS + 45*ONE_MINUTE_IN_MILLIS)),
 //                new Date(0-tzOffset + (13*ONE_HOUR_IN_MILLIS + 30*ONE_MINUTE_IN_MILLIS + 55*ONE_SECOND_IN_MILLIS) ),
-                new Long(25569),// Dates stored as Long numbers
-                new Long(25569447916666668L),
-                new Long(563136574074074L),
+//                new Long(25569),// Dates stored as Long numbers
+//                new Long(25569447916666668L),
+//                new Long(563136574074074L),
+                new Long(-3600000),// Dates stored as Long numbers
+                new Long(35100000),
+                new Long(-2209030145000L),
                 new BigDecimal("10000.00"), 
                 new BigDecimal("-200"), 
-                new BigDecimal("12345.123456789000") 
+                new BigDecimal("12345.123456789000"),
+                new Long(1233395164000L),
+                new Long(1233332866000L) // The last column is a dbunit-date-formatted column in the excel sheet
                 };
 
         Column[] columns = table.getTableMetaData().getColumns();

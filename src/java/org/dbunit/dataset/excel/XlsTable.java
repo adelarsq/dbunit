@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -140,10 +141,14 @@ class XlsTable extends AbstractTable
         {
             case HSSFCell.CELL_TYPE_NUMERIC:
                 HSSFCellStyle style = cell.getCellStyle();
-                if (HSSFDateUtil.isCellDateFormatted(cell) || 
-                    XlsDataSetWriter.DATE_FORMAT_AS_NUMBER_DBUNIT.equals(style.getDataFormatString()) )
+                if (HSSFDateUtil.isCellDateFormatted(cell))
                 {
                     return getDateValue(cell);
+                }
+                else if(XlsDataSetWriter.DATE_FORMAT_AS_NUMBER_DBUNIT.equals(style.getDataFormatString()))
+                {
+                    // The special dbunit date format
+                    return getDateValueFromJavaNumber(cell);
                 }
                 else 
                 {
@@ -173,14 +178,24 @@ class XlsTable extends AbstractTable
         }
     }
     
+    protected Object getDateValueFromJavaNumber(HSSFCell cell) 
+    {
+        logger.debug("getDateValueFromJavaNumber(cell={}) - start", cell);
+        
+        double numericValue = cell.getNumericCellValue();
+        BigDecimal numericValueBd = new BigDecimal(String.valueOf(numericValue));
+        numericValueBd = stripTrailingZeros(numericValueBd);
+        return new Long(numericValueBd.longValue());
+//        return new Long(numericValueBd.unscaledValue().longValue());
+    }
+    
     protected Object getDateValue(HSSFCell cell) 
     {
         logger.debug("getDateValue(cell={}) - start", cell);
         
         double numericValue = cell.getNumericCellValue();
-        BigDecimal numericValueBd = new BigDecimal(String.valueOf(numericValue));
-        numericValueBd = stripTrailingZeros(numericValueBd);
-        return new Long(numericValueBd.unscaledValue().longValue());
+        Date date = HSSFDateUtil.getJavaDate(numericValue);
+        return new Long(date.getTime());
         
         //TODO use a calendar for XLS Date objects when it is supported better by POI
 //        HSSFCellStyle style = cell.getCellStyle();
