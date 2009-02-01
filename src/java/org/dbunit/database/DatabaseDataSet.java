@@ -188,6 +188,7 @@ public class DatabaseDataSet extends AbstractDataSet
             
             DatabaseConfig config = _connection.getConfig();
             String[] tableType = (String[])config.getProperty(DatabaseConfig.PROPERTY_TABLE_TYPE);
+            IMetadataHandler metadataHandler = (IMetadataHandler) config.getProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER);
 
             ResultSet resultSet = databaseMetaData.getTables(
                     null, schema, "%", tableType);
@@ -197,15 +198,9 @@ public class DatabaseDataSet extends AbstractDataSet
             	OrderedTableNameMap tableMap = super.createTableNameMap();
                 while (resultSet.next())
                 {
-                    String catalogName = resultSet.getString(1);
-                    String schemaName = resultSet.getString(2);
+                    String schemaName = metadataHandler.getSchema(resultSet);
                     String tableName = resultSet.getString(3);
 
-                    // Fix schema/catalog for mysql
-                    if(schemaName == null && catalogName != null) {
-                        schemaName = catalogName;
-                    }
-                    
                     if(_tableFilter != null && !_tableFilter.accept(tableName))
                     {
                         logger.debug("Skipping table '{}'", tableName);

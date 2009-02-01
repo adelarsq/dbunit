@@ -77,7 +77,7 @@ public abstract class AbstractOperation extends DatabaseOperation
         IDataSet databaseDataSet = connection.createDataSet();
         String tableName = metaData.getTableName();
 
-        ITableMetaData databaseMetaData = databaseDataSet.getTableMetaData(tableName);
+        ITableMetaData tableMetaData = databaseDataSet.getTableMetaData(tableName);
         Column[] columns = metaData.getColumns();
 
         List columnList = new ArrayList();
@@ -86,14 +86,14 @@ public abstract class AbstractOperation extends DatabaseOperation
             String columnName = columns[j].getColumnName();
         	// Check if column exists in database
             // method "getColumnIndex()" throws NoSuchColumnsException when columns have not been found
-        	int dbColIndex = databaseMetaData.getColumnIndex(columnName);
+        	int dbColIndex = tableMetaData.getColumnIndex(columnName);
         	// If we get here the column exists in the database
-        	Column dbColumn = databaseMetaData.getColumns()[dbColIndex];
+        	Column dbColumn = tableMetaData.getColumns()[dbColIndex];
             columnList.add(dbColumn);
         }
 
-        return new DefaultTableMetaData(databaseMetaData.getTableName(),
+        return new DefaultTableMetaData(tableMetaData.getTableName(),
                 (Column[])columnList.toArray(new Column[0]),
-                databaseMetaData.getPrimaryKeys());
+                tableMetaData.getPrimaryKeys());
     }
 }

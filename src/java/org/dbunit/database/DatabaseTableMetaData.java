@@ -284,12 +284,13 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                 Connection jdbcConnection = _connection.getConnection();
                 DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
                 
-                ResultSet resultSet = databaseMetaData.getColumns(
-                        null, schemaName, tableName, "%");
+                DatabaseConfig config = _connection.getConfig();
+                
+                IMetadataHandler metadataHandler = (IMetadataHandler)config.getProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER);
+                ResultSet resultSet = metadataHandler.getColumns(databaseMetaData, schemaName, tableName);
 
                 try
                 {
-                	DatabaseConfig config = _connection.getConfig();
                     IDataTypeFactory dataTypeFactory = super.getDataTypeFactory(_connection);
                     boolean datatypeWarning = config.getFeature(
                             DatabaseConfig.FEATURE_DATATYPE_WARNING);
@@ -299,7 +300,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                     {
                         // Check for exact table/schema name match because
                         // databaseMetaData.getColumns() uses patterns for the lookup
-                        boolean match = SQLHelper.matches(resultSet, schemaName, tableName, _caseSensitiveMetaData);
+                        boolean match = metadataHandler.matches(resultSet, schemaName, tableName, _caseSensitiveMetaData);
                         if(match)
                         {
                             Column column = SQLHelper.createColumn(resultSet, dataTypeFactory, datatypeWarning);

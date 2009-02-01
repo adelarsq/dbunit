@@ -28,6 +28,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.dbunit.database.IMetadataHandler;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
@@ -338,6 +339,7 @@ public class SQLHelper {
      * the given schema and table parameters.
      * @throws SQLException
      * @since 2.4.0
+     * @deprecated since 2.4.4 - use {@link IMetadataHandler#matches(ResultSet, String, String, String, String, boolean)}
      */
     public static boolean matches(ResultSet resultSet,
             String schema, String table, boolean caseSensitive) 
@@ -360,6 +362,7 @@ public class SQLHelper {
      * the given schema and table parameters.
      * @throws SQLException
      * @since 2.4.0
+     * @deprecated since 2.4.4 - use {@link IMetadataHandler#matches(ResultSet, String, String, String, String, boolean)}
      */
     public static boolean matches(ResultSet resultSet,
             String catalog, String schema,
@@ -395,9 +398,9 @@ public class SQLHelper {
      * @param value2 The second value to be compared
      * @return <code>true</code> if both values are equal or if the first value
      * is <code>null</code> or empty string.
-     * @since 2.4.0
+     * @since 2.4.4
      */
-    private static boolean areEqualIgnoreNull(String value1, String value2, boolean caseSensitive) 
+    public static final boolean areEqualIgnoreNull(String value1, String value2, boolean caseSensitive) 
     {
         if(value1==null || value1.equals(""))
         {

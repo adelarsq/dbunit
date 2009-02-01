@@ -39,5 +39,7 @@ public class MySqlConnection extends DatabaseConnection
         super(connection, schema);
         getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
                 new MySqlDataTypeFactory());
+        getConfig().setProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER, 
+                new MySqlMetadataHandler());
     }
 }

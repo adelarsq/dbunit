@@ -105,6 +105,7 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
      * @param caseSensitiveMetaData Whether or not the metadata is case sensitive
 	 * @throws DataSetException
 	 * @throws SQLException
+     * @deprecated since 2.4.4. use {@link ResultSetTableMetaData#ResultSetTableMetaData(String, ResultSet, IDatabaseConnection, boolean)}
 	 */
 	public ResultSetTableMetaData(String tableName,
             ResultSet resultSet, IDataTypeFactory dataTypeFactory, boolean caseSensitiveMetaData) 
@@ -112,7 +113,7 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
 	{
 		super();
 		_caseSensitiveMetaData = caseSensitiveMetaData;
-		this.wrappedTableMetaData = createMetaData(tableName, resultSet, dataTypeFactory);
+		this.wrappedTableMetaData = createMetaData(tableName, resultSet, dataTypeFactory, new DefaultMetadataHandler());
 	}
 
 	
@@ -124,17 +125,19 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
     		logger.trace("createMetaData(tableName={}, resultSet={}, connection={}) - start",
     				new Object[] { tableName, resultSet, connection });
 
+    	DatabaseConfig dbConfig = connection.getConfig();
+    	IMetadataHandler columnFactory = (IMetadataHandler)dbConfig.getProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER);
         IDataTypeFactory typeFactory = super.getDataTypeFactory(connection);
-        return createMetaData(tableName, resultSet, typeFactory);
+        return createMetaData(tableName, resultSet, typeFactory, columnFactory);
     }
 
     private DefaultTableMetaData createMetaData(String tableName,
-            ResultSet resultSet, IDataTypeFactory dataTypeFactory)
+            ResultSet resultSet, IDataTypeFactory dataTypeFactory, IMetadataHandler columnFactory)
             throws DataSetException, SQLException
     {
     	if (logger.isTraceEnabled())
-    		logger.trace("createMetaData(tableName={}, resultSet={}, dataTypeFactory={}) - start",
-    				new Object[]{ tableName, resultSet, dataTypeFactory });
+    		logger.trace("createMetaData(tableName={}, resultSet={}, dataTypeFactory={}, columnFactory={}) - start",
+    				new Object[]{ tableName, resultSet, dataTypeFactory, columnFactory });
 
     	Connection connection = resultSet.getStatement().getConnection();
     	DatabaseMetaData databaseMetaData = connection.getMetaData();
@@ -148,7 +151,7 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
             // 1. try to create the column from the DatabaseMetaData object. The DatabaseMetaData
             // provides more information and is more precise so that it should always be used in
             // preference to the ResultSetMetaData object.
-            columns[i] = createColumnFromDbMetaData(metaData, rsIndex, databaseMetaData, dataTypeFactory);
+            columns[i] = createColumnFromDbMetaData(metaData, rsIndex, databaseMetaData, dataTypeFactory, columnFactory);
             
             // 2. If we could not create the Column from a DatabaseMetaData object, try to create it
             // from the ResultSetMetaData object directly
@@ -200,6 +203,7 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
      * @param databaseMetaData The {@link DatabaseMetaData} which is used to lookup detailed
      * information about the column if possible
      * @param dataTypeFactory dbunit {@link IDataTypeFactory} needed to create the Column
+     * @param metadataHandler the handler to be used for {@link DatabaseMetaData} handling
      * @return The column or <code>null</code> if it can be not created using a 
      * {@link DatabaseMetaData} object because of missing information in the 
      * {@link ResultSetMetaData} object
@@ -207,14 +211,15 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
      * @throws DataTypeException 
      */
     private Column createColumnFromDbMetaData(ResultSetMetaData rsMetaData, int rsIndex, 
-            DatabaseMetaData databaseMetaData, IDataTypeFactory dataTypeFactory) 
+            DatabaseMetaData databaseMetaData, IDataTypeFactory dataTypeFactory,
+            IMetadataHandler metadataHandler) 
     throws SQLException, DataTypeException 
     {
         if(logger.isTraceEnabled()){
             logger.trace("createColumnFromMetaData(rsMetaData={}, rsIndex={}," + 
-                    " databaseMetaData={}, dataTypeFactory={}) - start",
+                    " databaseMetaData={}, dataTypeFactory={}, columnFactory={}) - start",
                 new Object[]{rsMetaData, String.valueOf(rsIndex), 
-                            databaseMetaData, dataTypeFactory});
+                            databaseMetaData, dataTypeFactory, metadataHandler});
         }
         
         // use DatabaseMetaData to retrieve the actual column definition
@@ -242,34 +247,30 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
             return null;
         }
         
-        logger.debug("All attributes from the ResultSetMetaData are valid, " +
-    		"trying to lookup values in DatabaseMetaData. catalog={}, schema={}, table={}, column={}",
-    		new Object[]{catalogName, schemaName, tableName, columnName} );
+        if(logger.isDebugEnabled())
+            logger.debug("All attributes from the ResultSetMetaData are valid, " +
+                    "trying to lookup values in DatabaseMetaData. catalog={}, schema={}, table={}, column={}",
+                    new Object[]{catalogName, schemaName, tableName, columnName} );
         
         // All of the retrieved attributes are valid, 
         // so lookup the column via DatabaseMetaData
-        ResultSet columnsResultSet = databaseMetaData.getColumns(
-                catalogName,
-                schemaName,
-                tableName,
-                columnName
-        );
+        ResultSet columnsResultSet = metadataHandler.getColumns(databaseMetaData, schemaName, tableName);
 
         // Scroll resultset forward - must have one result which exactly matches the required parameters
-        scrollTo(columnsResultSet, catalogName, schemaName, tableName, columnName);
+        scrollTo(columnsResultSet, metadataHandler, catalogName, schemaName, tableName, columnName);
 
         Column column = SQLHelper.createColumn(columnsResultSet, dataTypeFactory, true);
         return column;
     }
 
 
-    private void scrollTo(ResultSet columnsResultSet, String catalog,
-            String schema, String table, String column) 
+    private void scrollTo(ResultSet columnsResultSet, IMetadataHandler metadataHandler,
+            String catalog, String schema, String table, String column) 
     throws SQLException 
     {
         while(columnsResultSet.next())
         {
-            boolean match = SQLHelper.matches(columnsResultSet, catalog, schema, table, column, _caseSensitiveMetaData);
+            boolean match = metadataHandler.matches(columnsResultSet, catalog, schema, table, column, _caseSensitiveMetaData);
             if(match)
             {
                 // All right. Return immediately because the resultSet is positioned on the correct row

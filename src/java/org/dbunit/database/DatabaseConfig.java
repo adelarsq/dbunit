@@ -66,6 +66,8 @@ public class DatabaseConfig
     		"http://www.dbunit.org/properties/batchSize";
 	public static final String PROPERTY_FETCH_SIZE = 
 			"http://www.dbunit.org/properties/fetchSize";
+	public static final String PROPERTY_METADATA_HANDLER =
+	        "http://www.dbunit.org/properties/metadataHandler";
 
     /**
      * A list of all properties as {@link ConfigProperty} objects. 
@@ -80,6 +82,7 @@ public class DatabaseConfig
         new ConfigProperty(PROPERTY_PRIMARY_KEY_FILTER, IColumnFilter.class, true),
         new ConfigProperty(PROPERTY_BATCH_SIZE, Integer.class, false),
         new ConfigProperty(PROPERTY_FETCH_SIZE, Integer.class, false),
+        new ConfigProperty(PROPERTY_METADATA_HANDLER, IMetadataHandler.class, false),
     };
 
     public static final String FEATURE_CASE_SENSITIVE_TABLE_NAMES =
@@ -116,6 +119,7 @@ public class DatabaseConfig
     private static final Integer DEFAULT_FETCH_SIZE = new Integer(100);
 
 
+
     private Set _featuresSet = new HashSet();
     private Map _propertyMap = new HashMap();
     
@@ -134,6 +138,7 @@ public class DatabaseConfig
         setProperty(PROPERTY_TABLE_TYPE, DEFAULT_TABLE_TYPE);
         setProperty(PROPERTY_BATCH_SIZE, DEFAULT_BATCH_SIZE);
         setProperty(PROPERTY_FETCH_SIZE, DEFAULT_FETCH_SIZE);
+        setProperty(PROPERTY_METADATA_HANDLER, new DefaultMetadataHandler());
     }
 
     /**

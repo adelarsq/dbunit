@@ -324,4 +324,25 @@
         </tr>
       </table>
 
+      <a name="metadatahandler"></a>
+      <h4>Metadata Handler</h4>
+      <table border="1">
+        <tr> 
+          <td>Property ID</td>
+          <td>http://www.dbunit.org/properties/metadataHandler</td>
+        </tr>
+        <tr> 
+          <td>Default</td>
+          <td>org.dbunit.database.DefaultMetadataHandler</td>
+        </tr>
+        <tr> 
+          <td>Description</td>
+          <td>Used to configure the handler used to control database metadata related methods. 
+            The Object must implement 
+              <a href="apidocs/org/dbunit/database/IMetadataHandler.html">
+              org.dbunit.database.IMetadataHandler</a>.
+          </td>
+        </tr>
+      </table>
+
 </section></body></document>
