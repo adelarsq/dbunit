@@ -20,9 +20,14 @@
  */
 package org.dbunit;
 
+import java.sql.SQLException;
+
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetTest;
 import org.dbunit.operation.DatabaseOperation;
 
 import junit.framework.TestCase;
@@ -46,6 +51,13 @@ public class DBTestCaseTest extends TestCase
 	    DatabaseEnvironment dbEnv = DatabaseEnvironment.getInstance();
 	    final IDatabaseConnection conn = dbEnv.getConnection();
 	    final DefaultDatabaseTester tester = new DefaultDatabaseTester(conn);
+	    final DatabaseOperation operation = new DatabaseOperation(){
+	        public void execute(IDatabaseConnection connection, IDataSet dataSet)
+            throws DatabaseUnitException, SQLException {
+	            assertEquals(new Integer(97), connection.getConfig().getProperty(DatabaseConfig.PROPERTY_BATCH_SIZE));
+	            assertEquals(true, connection.getConfig().getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
+	        }
+	    };
 	    
 	    DBTestCase testSubject = new DBTestCase() {
 	        
@@ -62,11 +74,11 @@ public class DBTestCaseTest extends TestCase
             }
 
             protected DatabaseOperation getSetUpOperation() throws Exception {
-                return DatabaseOperation.NONE;
+                return operation;
             }
 
             protected DatabaseOperation getTearDownOperation() throws Exception {
-                return DatabaseOperation.NONE;
+                return operation;
             }
 
             protected IDataSet getDataSet() throws Exception {
@@ -86,4 +98,82 @@ public class DBTestCaseTest extends TestCase
         assertSame(tester, testSubject.getDatabaseTester());
         assertSame(conn, testSubject.getDatabaseTester().getConnection());
 	}
+	
+	
+	/**
+     * Tests the simple setup/teardown invocations while keeping the DatabaseConnection open.
+     * @throws Exception
+     */
+    public void testExecuteSetUpTearDown() throws Exception
+    {
+        //TODO implement this
+        DatabaseEnvironment dbEnv = DatabaseEnvironment.getInstance();
+        // Retrieve one single connection which is 
+        final IDatabaseConnection conn = dbEnv.getConnection();
+        try{
+            final DefaultDatabaseTester tester = new DefaultDatabaseTester(conn);
+            final IDataSet dataset = new FlatXmlDataSet(FlatXmlDataSetTest.DATASET_FILE);
+            
+            // Connection should not be closed during setUp/tearDown because of userDefined IOperationListener
+            DBTestCase testSubject = new DBTestCase() {
+                
+                protected IDatabaseTester newDatabaseTester() throws Exception {
+                    return tester;
+                }
+    
+                protected DatabaseOperation getSetUpOperation() throws Exception {
+                    return DatabaseOperation.CLEAN_INSERT;
+                }
+    
+                protected DatabaseOperation getTearDownOperation() throws Exception {
+                    return DatabaseOperation.DELETE_ALL;
+                }
+    
+                protected IDataSet getDataSet() throws Exception {
+                    return dataset;
+                }
+
+                protected IOperationListener getOperationListener() {
+                    return new DefaultOperationListener(){
+                        public void operationSetUpFinished(
+                                IDatabaseConnection connection) 
+                        {
+                            // Do not invoke the "super" method to avoid that the connection is closed
+                            // Just do nothing
+                        }
+
+                        public void operationTearDownFinished(
+                                IDatabaseConnection connection) 
+                        {
+                            // Do not invoke the "super" method to avoid that the connection is closed
+                            // Just do nothing
+                        }
+                        
+                    };
+                }
+                
+                
+            };
+            
+            // Simulate JUnit which first of all calls the "setUp" method
+            testSubject.setUp();
+            // The connection should still be open so we should be able to select from the DB
+            ITable testTableAfterSetup = conn.createTable("TEST_TABLE");
+            assertEquals(6, testTableAfterSetup.getRowCount());
+            assertFalse(conn.getConnection().isClosed());
+            
+            // Simulate JUnit and invoke "tearDown"
+            testSubject.tearDown();
+            // The connection should still be open so we should be able to select from the DB
+            ITable testTableAfterTearDown = conn.createTable("TEST_TABLE");
+            assertEquals(0, testTableAfterTearDown.getRowCount());
+            assertFalse(conn.getConnection().isClosed());
+        }
+        finally{
+            // Ensure that the connection is closed again so that 
+            // it can be established later by subsequent test cases
+            dbEnv.closeConnection();
+        }
+    }
+
 }

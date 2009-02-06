@@ -21,6 +21,7 @@
 
 package org.dbunit;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,9 @@ public abstract class DatabaseTestCase extends TestCase
      */
     private static final Logger logger = LoggerFactory.getLogger(DatabaseTestCase.class);
 
-  private IDatabaseTester tester;
+    private IDatabaseTester tester;
+
+    private IOperationListener operationListener;
 
     public DatabaseTestCase()
     {
@@ -80,7 +83,7 @@ public abstract class DatabaseTestCase extends TestCase
         logger.debug("newDatabaseTester() - start");
 
       final IDatabaseConnection connection = getConnection();
-      setUpDatabaseConfig(connection.getConfig());
+      getOperationListener().connectionRetrieved(connection);
       final IDatabaseTester tester = new DefaultDatabaseTester(connection);
       return tester;
     }
@@ -111,6 +114,7 @@ public abstract class DatabaseTestCase extends TestCase
     /**
      * Close the specified connection. Override this method of you want to
      * keep your connection alive between tests.
+     * @deprecated since 2.4.4 define a user defined {@link #getOperationListener()} in advance
      */
     protected void closeConnection(IDatabaseConnection connection) throws Exception
     {
@@ -148,6 +152,7 @@ public abstract class DatabaseTestCase extends TestCase
         assertNotNull( "DatabaseTester is not set", databaseTester );
         databaseTester.setSetUpOperation( getSetUpOperation() );
         databaseTester.setDataSet( getDataSet() );
+        databaseTester.setOperationListener(getOperationListener());
         databaseTester.onSetup();
     }
 
@@ -155,15 +160,36 @@ public abstract class DatabaseTestCase extends TestCase
     {
         logger.debug("tearDown() - start");
 
-      try {
-        final IDatabaseTester databaseTester = getDatabaseTester();
-        assertNotNull( "DatabaseTester is not set", databaseTester );
-        databaseTester.setTearDownOperation( getTearDownOperation() );
-        databaseTester.setDataSet( getDataSet() );
-        databaseTester.onTearDown();
-      } finally {
-        tester = null;
-        super.tearDown();
-      }
+        try {
+            final IDatabaseTester databaseTester = getDatabaseTester();
+            assertNotNull( "DatabaseTester is not set", databaseTester );
+            databaseTester.setTearDownOperation( getTearDownOperation() );
+            databaseTester.setDataSet( getDataSet() );
+            databaseTester.setOperationListener(getOperationListener());
+            databaseTester.onTearDown();
+        } finally {
+            tester = null;
+            super.tearDown();
+        }
+    }
+    
+    /**
+     * @return The {@link IOperationListener} to be used by the {@link IDatabaseTester}.
+     * @since 2.4.4
+     */
+    protected IOperationListener getOperationListener()
+    {
+        logger.debug("getOperationListener() - start");
+        if(this.operationListener==null){
+            this.operationListener = new DefaultOperationListener(){
+                public void connectionRetrieved(IDatabaseConnection connection) {
+                    super.connectionRetrieved(connection);
+                    // When a new connection has been created then invoke the setUp method
+                    // so that user defined DatabaseConfig parameters can be set.
+                    setUpDatabaseConfig(connection.getConfig());
+                }
+            };
+        }
+        return this.operationListener;
     }
 }

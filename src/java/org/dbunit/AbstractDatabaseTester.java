@@ -46,10 +46,27 @@ public abstract class AbstractDatabaseTester extends SimpleAssert implements IDa
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(AbstractDatabaseTester.class);
 
+	/**
+	 * Enumeration of the valid {@link OperationType}s
+	 */
+	private static final class OperationType {
+	    public static final OperationType SET_UP = new OperationType("setUp"); 
+	    public static final OperationType TEAR_DOWN = new OperationType("tearDown");
+	    
+	    private String key;
+	    private OperationType(String key){
+	        this.key=key;
+	    }
+	    public String toString(){
+	        return "OperationType: " + key;
+	    }
+	}
+	
 	private IDataSet dataSet;
 	private String schema;
 	private DatabaseOperation setUpOperation = DatabaseOperation.CLEAN_INSERT;
 	private DatabaseOperation tearDownOperation = DatabaseOperation.NONE;
+	private IOperationListener operationListener;
 
 	public AbstractDatabaseTester()
 	{
@@ -83,14 +100,13 @@ public abstract class AbstractDatabaseTester extends SimpleAssert implements IDa
 	public void onSetup() throws Exception
 	{
 		logger.debug("onSetup() - start");
-
-		executeOperation( getSetUpOperation() );
+		executeOperation( getSetUpOperation(), OperationType.SET_UP );
 	}
 
 	public void onTearDown() throws Exception
 	{
 		logger.debug("onTearDown() - start");
-		executeOperation( getTearDownOperation() );
+		executeOperation( getTearDownOperation(), OperationType.TEAR_DOWN );
 	}
 
 	public void setDataSet( IDataSet dataSet )
@@ -156,20 +172,44 @@ public abstract class AbstractDatabaseTester extends SimpleAssert implements IDa
 	 * Executes a DatabaseOperation with a IDatabaseConnection supplied by
 	 * {@link getConnection()} and the test dataset.
 	 */
-	private void executeOperation( DatabaseOperation operation ) throws Exception
+	private void executeOperation( DatabaseOperation operation, OperationType type ) throws Exception
 	{
 		logger.debug("executeOperation(operation={}) - start", operation);
 
 		if( operation != DatabaseOperation.NONE ){
+		    // Ensure that the operationListener is set
+		    if(operationListener == null){
+		        logger.debug("OperationListener is null and will be defaulted.");
+		        operationListener = new DefaultOperationListener();
+		    }
+		    
 			IDatabaseConnection connection = getConnection();
+		    operationListener.connectionRetrieved(connection);
+
 			try{
 				operation.execute( connection, getDataSet() );
 			}
 			finally{
-				closeConnection( connection );
+			    // Since 2.4.4 the OperationListener is responsible for closing the connection at the right time
+			    if(type == OperationType.SET_UP){
+			        operationListener.operationSetUpFinished(connection);
+			    }
+			    else if(type == OperationType.TEAR_DOWN){
+			        operationListener.operationTearDownFinished(connection);
+			    }
+			    else{
+			        throw new DatabaseUnitRuntimeException("Cannot happen - unknown OperationType specified: " + type);
+			    }
+//				closeConnection( connection );
 			}
 		}
 	}
+
+    public void setOperationListener(IOperationListener operationListener) 
+    {
+        logger.debug("setOperationListener(operationListener={}) - start", operationListener);
+        this.operationListener = operationListener;
+    }
 
     public String toString()
     {
@@ -179,6 +219,7 @@ public abstract class AbstractDatabaseTester extends SimpleAssert implements IDa
     	sb.append(", dataSet=").append(dataSet);
     	sb.append(", setUpOperation=").append(setUpOperation);
     	sb.append(", tearDownOperation=").append(tearDownOperation);
+    	sb.append(", operationListener=").append(operationListener);
     	sb.append("]");
     	return sb.toString();
     }

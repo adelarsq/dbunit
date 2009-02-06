@@ -88,6 +88,13 @@ public class DatabaseEnvironment
 
     public IDatabaseConnection getConnection() throws Exception
     {
+        // First check if the current connection is still valid and open
+        // The connection may have been closed by a consumer
+        if(_connection != null && _connection.getConnection().isClosed()){
+            // Reset the member so that a new connection will be created
+            _connection = null;
+        }
+        
         if (_connection == null)
         {
             String name = _profile.getDriverClass();

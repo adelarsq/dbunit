@@ -38,6 +38,7 @@ public interface IDatabaseTester
 {
    /**
     * Close the specified connection.
+    * @deprecated since 2.4.4 define a user defined {@link #setOperationListener(IOperationListener)} in advance
     */
    void closeConnection( IDatabaseConnection connection ) throws Exception;
 
@@ -81,4 +82,11 @@ public interface IDatabaseTester
     * TestCases must call this method inside tearDown()
     */
    void onTearDown() throws Exception;
+
+   /**
+    * @param operationListener The operation listener that is invoked on
+    * specific events in the {@link IDatabaseTester}.
+    * @since 2.4.4
+    */
+   void setOperationListener(IOperationListener operationListener);
 }
