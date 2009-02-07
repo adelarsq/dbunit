@@ -13,6 +13,7 @@
       <action dev="gommma" type="fix" issue="2542079" due-to="kkaz">XlsDataSet.write</action>
       <action dev="gommma" type="fix" issue="2545095" due-to="jhattat">Mysql FEATURE_QUALIFIED_TABLE_NAMES column SQLHelper.matches</action>
       <action dev="gommma" type="fix" issue="2567724" due-to="lunatix13">overridden setUpDatabaseConfig not called</action>
+      <action dev="gommma" type="fix" issue="2549683" due-to="chuanghs">DB2 problem after 2.4</action>
     </release>
     <release version="2.4.3" date="Jan 20, 2009" description="Bugfixes, some small additions">
       <action dev="gommma" type="fix" issue="2023994" due-to="marney">Simplify use of custom datatype factory for DBTestCase</action>

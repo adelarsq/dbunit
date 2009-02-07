@@ -256,11 +256,21 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
         // so lookup the column via DatabaseMetaData
         ResultSet columnsResultSet = metadataHandler.getColumns(databaseMetaData, schemaName, tableName);
 
-        // Scroll resultset forward - must have one result which exactly matches the required parameters
-        scrollTo(columnsResultSet, metadataHandler, catalogName, schemaName, tableName, columnName);
+        try
+        {
+            // Scroll resultset forward - must have one result which exactly matches the required parameters
+            scrollTo(columnsResultSet, metadataHandler, catalogName, schemaName, tableName, columnName);
 
-        Column column = SQLHelper.createColumn(columnsResultSet, dataTypeFactory, true);
-        return column;
+            Column column = SQLHelper.createColumn(columnsResultSet, dataTypeFactory, true);
+            return column;
+        }
+        catch(IllegalStateException e)
+        {
+            logger.warn("Cannot find column from ResultSetMetaData info via DatabaseMetaData. Returning null." +
+                    " Even if this is expected to never happen it probably happened due to a JDBC driver bug." +
+                    " To get around this you may want to configure a user defined " + IMetadataHandler.class, e);
+            return null;
+        }
     }
 
 
