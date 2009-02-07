@@ -632,7 +632,42 @@ public class MyXmlWriter extends org.dbunit.dataset.xml.XmlDataSetWriter {
       </answer>
     </faq>
 
+    <faq id="keepconnectionopendbtestcase">
+      <question>
+      How can I keep my IDatabaseConnection open after setUp/tearDown when extending DBTestCase/DatabaseTestCase?
+      </question>
+      <answer>
+        <p>
+        Since DBUnit 2.4.4 there is a new method IDatabaseTester#setOperationListener which allows
+        to set a user defined listener which is invoked on different operations during the test execution. 
+        The DBTestCase/DatabaseTestCase classes make use of this new functionality and by default closes the connection
+        after setUp/tearDown operations were executed. Here an example of how to change this behavior so that
+        the connection will not be closed anymore:
+          <source>
+            public class MyTestCase extends DBTestCase{
+                // Overwrite the method getOperationListener to provide our own operation listener
+                protected IOperationListener getOperationListener() {
+                    return new DefaultOperationListener(){
+                        public void operationSetUpFinished(
+                                IDatabaseConnection connection) 
+                        {
+                            // Do not invoke the "super" method to avoid that the connection is closed
+                        }
+                        public void operationTearDownFinished(
+                                IDatabaseConnection connection) 
+                        {
+                            // Do not invoke the "super" method to avoid that the connection is closed
+                        }
+                    };
+                }
+            }
+          </source>
+        </p>
+      </answer>
+    </faq>
+
   </part>
+
 
 
 

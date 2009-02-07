@@ -7,6 +7,29 @@
     <h2>Migration guide</h2>
         <p>To migrate from an older DbUnit release to a newer one you can find some useful information here.</p>
         
+    <subsection name="2.4.3 to 2.4.4">
+      <p>There has been a very small change to the API.</p>
+      <table border="1">
+        <tr>
+          <th>Tracker #</th>
+          <th>Affects</th>
+          <th>Migration</th>
+          <th>Background information</th>
+        </tr>
+
+        <tr> 
+          <td>2567724</td>
+          <td><code>new method org.dbunit.IDatabaseTester#setOperationListener()</code></td>
+          <td>If you extend from AbstractDatabaseTester then there is nothing to do. If you implement
+          the IDatabaseTester interface then you must support the methods of IOperationListener. As
+          reference implementation you can look at the AbstractDatabaseTester.</td>
+          <td>This change was necessary to ensure that the user defined IDatabaseConnection setup provided by 
+          <code>DatabaseTestCase#setUpDatabaseConfig(DatabaseConfig databaseConfig)</code> is also used in
+          the setUp and tearDown operations.
+          </td>
+        </tr>
+        </table>
+    </subsection>
         
     <subsection name="2.4.2 to 2.4.3">
       <p>There has been a very small change to the API.</p>
