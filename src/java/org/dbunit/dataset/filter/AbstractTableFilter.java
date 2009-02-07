@@ -61,14 +61,14 @@ public abstract class AbstractTableFilter implements ITableFilter
 
     public boolean accept(String tableName) throws DataSetException
     {
-        logger.debug("accept(tableName=" + tableName + ") - start");
+        logger.debug("accept(tableName={}) - start", tableName);
 
         return isValidName(tableName);
     }
 
     public String[] getTableNames(IDataSet dataSet) throws DataSetException
     {
-        logger.debug("getTableNames(dataSet=" + dataSet + ") - start");
+        logger.debug("getTableNames(dataSet={}) - start", dataSet);
 
         String[] tableNames = dataSet.getTableNames();
         List nameList = new ArrayList();
@@ -86,7 +86,7 @@ public abstract class AbstractTableFilter implements ITableFilter
     public ITableIterator iterator(IDataSet dataSet, boolean reversed)
             throws DataSetException
     {
-        logger.debug("iterator(dataSet=" + dataSet + ", reversed=" + reversed + ") - start");
+        logger.debug("iterator(dataSet={}, reversed={}) - start", dataSet, String.valueOf(reversed));
 
         return new FilterIterator(reversed ?
                 dataSet.reverseIterator() : dataSet.iterator());
