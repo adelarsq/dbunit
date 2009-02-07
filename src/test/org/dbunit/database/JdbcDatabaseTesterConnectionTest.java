@@ -45,8 +45,8 @@ public class JdbcDatabaseTesterConnectionTest extends AbstractDatabaseTesterConn
       if( databaseTester == null ){
          DatabaseProfile profile = getEnvironment().getProfile();
          databaseTester = new JdbcDatabaseTester( profile.getDriverClass(),
-               profile.getConnectionUrl(), profile.getUser(), profile.getPassword() );
-         databaseTester.setSchema( profile.getSchema() );
+               profile.getConnectionUrl(), profile.getUser(), profile.getPassword(), 
+               profile.getSchema() );
       }
       return databaseTester;
    }
