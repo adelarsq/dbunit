@@ -71,6 +71,18 @@ public class DefaultMetadataHandler implements IMetadataHandler {
         String tableName = columnsResultSet.getString(3);
         String columnName = columnsResultSet.getString(4);
 
+        if(logger.isDebugEnabled()){
+            logger.debug("Comparing the following values using caseSensitive={} (searched<=>actual): " +
+                    "catalog: {}<=>{} schema: {}<=>{} table: {}<=>{} column: {}<=>{}", 
+                    new Object[] {
+                        Boolean.valueOf(caseSensitive),
+                        catalog, catalogName,
+                        schema, schemaName,
+                        table, tableName,
+                        column, columnName
+                    });
+        }
+        
         boolean areEqual = 
                 areEqualIgnoreNull(catalog, catalogName, caseSensitive) &&
                 areEqualIgnoreNull(schema, schemaName, caseSensitive) &&
