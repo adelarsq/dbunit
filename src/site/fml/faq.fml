@@ -772,5 +772,16 @@ public class MyXmlWriter extends org.dbunit.dataset.xml.XmlDataSetWriter {
     	</answer>
     </faq> 
     
+    <faq id="NoSuchColumnException">
+        <question>
+        Why am I getting a "NoSuchColumnException" but I am sure that the column actually exists?
+        </question>
+        <answer>
+        <p>This exception can occur especially with MySQL RDBMS if you forget to set the special MySqlMetadataHandler
+        on the DatabaseConfig. See <a href="properties.html#metadatahandler">properties</a> page for more.</p>
+        </answer>
+    </faq> 
+    
+    
   </part>
 </faqs>
