@@ -26,6 +26,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.dataset.AbstractDataSet;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
@@ -122,6 +123,11 @@ public class DatabaseDataSet extends AbstractDataSet
         Column[] columns = metaData.getColumns();
         Column[] primaryKeys = metaData.getPrimaryKeys();
 
+        if(columns.length==0){
+            throw new DatabaseUnitRuntimeException("At least one column is required to build a valid select statement. "+
+                    "Cannot load data for " + metaData);
+        }
+        
         // select
         StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("select ");
@@ -281,7 +287,7 @@ public class DatabaseDataSet extends AbstractDataSet
         }
         
         // Create metadata and cache it
-        metaData = new DatabaseTableMetaData(_tableMap.getTableName(tableName), _connection, true, super.isCaseSensitiveTableNames());
+        metaData = new DatabaseTableMetaData(tableName, _connection, true, super.isCaseSensitiveTableNames());
         // Put the metadata object into the cache map
         _tableMap.update(tableName, metaData);
 

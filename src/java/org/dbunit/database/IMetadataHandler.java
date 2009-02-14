@@ -42,6 +42,7 @@ public interface IMetadataHandler
      * @param tableName The table name
      * @return The result set containing all columns
      * @throws SQLException
+     * @since 2.4.4
      */
     ResultSet getColumns(DatabaseMetaData databaseMetaData, String schemaName, String tableName)
     throws SQLException;
@@ -57,6 +58,7 @@ public interface IMetadataHandler
      * the given schema and table parameters.
      * @throws SQLException
      * @see #matches(ResultSet, String, String, String, String, boolean)
+     * @since 2.4.4
      */
     public boolean matches(ResultSet resultSet, String schema, String table, boolean caseSensitive) 
     throws SQLException;
@@ -83,7 +85,9 @@ public interface IMetadataHandler
      * @param resultSet The result set pointing to a valid record in the database that was returned
      * by {@link DatabaseMetaData#getTables(String, String, String, String[])}.
      * @return The name of the schema from the given result set
+     * @since 2.4.4
      */
     String getSchema(ResultSet resultSet)  throws SQLException;
+
 
 }

@@ -112,8 +112,12 @@ public class DeleteAllOperation extends AbstractOperation
                 StringBuffer sqlBuffer = new StringBuffer(128);
                 sqlBuffer.append(getDeleteAllCommand());
                 sqlBuffer.append(getQualifiedName(connection.getSchema(), tableName, connection));
-                statement.addBatch(sqlBuffer.toString());
+                String sql = sqlBuffer.toString();
+                statement.addBatch(sql);
 
+                if(logger.isDebugEnabled())
+                    logger.debug("Added SQL: {}", sql);
+                
                 count++;
             }
 
