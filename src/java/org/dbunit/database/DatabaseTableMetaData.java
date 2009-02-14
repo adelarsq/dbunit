@@ -102,7 +102,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
      * @throws DataSetException
      * @since 2.4.1
      */
-    DatabaseTableMetaData(String tableName, IDatabaseConnection connection, boolean validate, boolean caseSensitiveMetaData) throws DataSetException
+    DatabaseTableMetaData(final String tableName, IDatabaseConnection connection, boolean validate, boolean caseSensitiveMetaData) throws DataSetException
     {
     	if (tableName == null) {
 			throw new NullPointerException("The parameter 'tableName' must not be null");
@@ -112,31 +112,51 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 		}
     	
         _connection = connection;
-        // qualified names support - table name and schema is stored here
-        _qualifiedTableNameSupport = new QualifiedTableName(tableName, _connection.getSchema());
-        _originalTableName = tableName;
         _caseSensitiveMetaData = caseSensitiveMetaData;
+
+        try
+        {
+             Connection jdbcConnection = connection.getConnection();
+             if(!caseSensitiveMetaData)
+             {
+                 _originalTableName = SQLHelper.correctCase(tableName, jdbcConnection);
+                 SQLHelper.logInfoIfValueChanged(tableName, _originalTableName, "Corrected table name:", DatabaseTableMetaData.class);
+             }
+             else
+             {
+                 _originalTableName = tableName;
+             }
+             
+             // qualified names support - table name and schema is stored here
+             _qualifiedTableNameSupport = new QualifiedTableName(_originalTableName, _connection.getSchema());
+
+             if(validate) 
+             {
+                 String schemaName = _qualifiedTableNameSupport.getSchema();
+                 String plainTableName = _qualifiedTableNameSupport.getTable();
+                 logger.debug("Validating if table '{}' exists in schema '{}' ...", plainTableName, schemaName);
+                 try {
+                     DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
+                     if(!SQLHelper.tableExists(databaseMetaData, schemaName, plainTableName))
+                     {
+                         throw new NoSuchTableException("Did not find table '" + plainTableName + "' in schema '" + schemaName + "'");
+                     }
+                 }
+                 catch (SQLException e)
+                 {
+                     throw new DataSetException("Exception while validation existence of table '" + plainTableName + "'", e);
+                 }
+             }
+             else
+             {
+                 logger.debug("Validation switched off. Will not check if table exists.");
+             }
+        }
+        catch (SQLException e)
+        {
+            throw new DataSetException("Exception while retrieving JDBC connection from dbunit connection '" + connection + "'", e);
+        }
         
-        if(validate) 
-        {
-	        String schemaName = _qualifiedTableNameSupport.getSchema();
-	        String plainTableName = _qualifiedTableNameSupport.getTable();
-	        logger.debug("Validating if table '" + plainTableName + "' exists in schema '" + schemaName + "' ...");
-	        try {
-		        DatabaseMetaData databaseMetaData = connection.getConnection().getMetaData();
-		        if(!SQLHelper.tableExists(databaseMetaData, schemaName, plainTableName)) {
-		        	throw new NoSuchTableException("Did not find table '" + plainTableName + "' in schema '" + schemaName + "'");
-		        }
-	        }
-	        catch (SQLException e)
-	        {
-	            throw new DataSetException("Exception while validation existence of table '" + plainTableName + "'", e);
-	        }
-        }
-        else
-        {
-	        logger.debug("Validation switched off. Will not check if table exists.");
-        }
     }
 
     /**

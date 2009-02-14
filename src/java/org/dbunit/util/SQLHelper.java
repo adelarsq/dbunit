@@ -27,7 +27,9 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Locale;
 
+import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.database.IMetadataHandler;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.datatype.DataType;
@@ -149,6 +151,14 @@ public class SQLHelper {
                     return true;
                 }
             }
+            
+            // Especially for MySQL check the catalog
+            if(catalogExists(connection, schema))
+            {
+                logger.debug("Found catalog with name {}. Returning true because DB is probably on MySQL", schema);
+                return true;
+            }
+            
             return false;
         }
         finally
@@ -157,6 +167,44 @@ public class SQLHelper {
         }
     }
 
+    /**
+     * Checks via {@link DatabaseMetaData#getCatalogs()} whether or not the given catalog exists.
+     * @param connection
+     * @param catalog
+     * @return
+     * @throws SQLException
+     * @since 2.4.4
+     */
+    private static boolean catalogExists(Connection connection, String catalog) throws SQLException
+    {
+        logger.debug("catalogExists(connection={}, catalog={}) - start", connection, catalog);
+
+        if(catalog == null)
+        {
+            throw new NullPointerException("The parameter 'catalog' must not be null");
+        }
+
+        DatabaseMetaData metaData = connection.getMetaData();
+        ResultSet rs = metaData.getCatalogs();
+        try
+        {
+            while(rs.next())
+            {
+                String foundCatalog = rs.getString("TABLE_CAT");
+                if(foundCatalog.equals(catalog))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        finally
+        {
+            rs.close();
+        }
+
+    }
+    
     /**
      * Checks if the given table exists.
      * @param metaData The database meta data
@@ -421,6 +469,120 @@ public class SQLHelper {
                 return false;
             }
         }
+    }
+
+    /**
+     * Corrects the case of the given String according to the way in which the database stores metadata.
+     * @param databaseIdentifier A database identifier such as a table name or a schema name for 
+     * which the case should be corrected.
+     * @param connection The connection used to lookup the database metadata. This is needed to determine 
+     * the way in which the database stores its metadata.
+     * @return The database identifier in the correct case for the RDBMS
+     * @since 2.4.4
+     */
+    public static final String correctCase(final String databaseIdentifier, Connection connection) 
+    {
+        logger.trace("correctCase(tableName={}, connection={}) - start", databaseIdentifier, connection);
+        
+        try
+        {
+            return correctCase(databaseIdentifier, connection.getMetaData());
+        } 
+        catch (SQLException e) 
+        {
+            throw new DatabaseUnitRuntimeException("Exception while trying to access database metadata", e);
+        }
+    }
+    
+    /**
+     * Corrects the case of the given String according to the way in which the database stores metadata.
+     * @param databaseIdentifier A database identifier such as a table name or a schema name for 
+     * which the case should be corrected.
+     * @param databaseMetaData The database metadata needed to determine the way in which the database stores
+     * its metadata.
+     * @return The database identifier in the correct case for the RDBMS
+     * @since 2.4.4
+     */
+    public static final String correctCase(final String databaseIdentifier, DatabaseMetaData databaseMetaData) 
+    {
+        logger.trace("correctCase(tableName={}, databaseMetaData={}) - start", databaseIdentifier, databaseMetaData);
+        
+        if (databaseIdentifier == null) {
+            throw new NullPointerException(
+                    "The parameter 'databaseIdentifier' must not be null");
+        }
+        if (databaseMetaData == null) {
+            throw new NullPointerException(
+                    "The parameter 'databaseMetaData' must not be null");
+        }
+        
+        try {
+            String resultTableName = databaseIdentifier;
+            String dbIdentifierQuoteString = databaseMetaData.getIdentifierQuoteString();
+            if(!isEscaped(databaseIdentifier, dbIdentifierQuoteString)){
+                if(databaseMetaData.storesLowerCaseIdentifiers())
+                {
+                    resultTableName = databaseIdentifier.toLowerCase(Locale.ENGLISH);
+                }
+                else if(databaseMetaData.storesUpperCaseIdentifiers())
+                {
+                    resultTableName = databaseIdentifier.toUpperCase(Locale.ENGLISH);
+                }
+                else
+                {
+                    logger.debug("Database does not store upperCase or lowerCase identifiers. " +
+                            "Will not correct case of the table names.");
+                }
+            }
+            else
+            {
+                if(logger.isDebugEnabled())
+                    logger.debug("The tableName '{}' is escaped. Will not correct case.", databaseIdentifier);
+            }
+            return resultTableName;
+        } 
+        catch (SQLException e) 
+        {
+            throw new DatabaseUnitRuntimeException("Exception while trying to access database metadata", e);
+        }
+    }
+
+    /**
+     * Checks whether two given values are unequal and if so print a log message (level INFO)
+     * @param oldValue The old value of a property
+     * @param newValue The new value of a property
+     * @param message The message to be logged
+     * @param source The class which invokes this method - used for enriching the log message
+     * @since 2.4.4
+     */
+    public static final void logInfoIfValueChanged(String oldValue, String newValue, String message, Class source) 
+    {
+        if(logger.isInfoEnabled())
+        {
+            if(oldValue != null && !oldValue.equals(newValue))
+                logger.info("{}. {} oldValue={} newValue={}", new Object[] {source, message, oldValue, newValue});
+        }
+    }
+
+    /**
+     * @param tableName
+     * @param dbIdentifierQuoteString
+     * @return
+     * @since 2.4.4
+     */
+    private static final boolean isEscaped(String tableName, String dbIdentifierQuoteString) 
+    {
+        logger.trace("isEscaped(tableName={}, dbIdentifierQuoteString={}) - start", tableName, dbIdentifierQuoteString);
+        
+        if (dbIdentifierQuoteString == null) {
+            throw new NullPointerException(
+                    "The parameter 'dbIdentifierQuoteString' must not be null");
+        }
+        boolean isEscaped = tableName!=null && (tableName.startsWith(dbIdentifierQuoteString));
+        if(logger.isDebugEnabled())
+            logger.debug("isEscaped returns '{}' for tableName={} (dbIdentifierQuoteString={})", 
+                    new Object[]{Boolean.valueOf(isEscaped), tableName, dbIdentifierQuoteString} );
+        return isEscaped;
     }
 
 }

@@ -23,6 +23,9 @@
 
 package org.dbunit.database;
 
+import java.sql.DatabaseMetaData;
+import java.util.Locale;
+
 import org.dbunit.DatabaseUnitException;
 
 
@@ -77,6 +80,52 @@ public class DatabaseConnectionTest extends AbstractDatabaseConnectionTest
     	boolean validate = false;
         DatabaseConnection dbConnection = new DatabaseConnection(validConnection.getConnection(), schema, validate);
         assertNotNull(dbConnection);
+    }
+
+    
+    public void testCreateConnectionWithSchemaDbStoresUpperCaseIdentifiers() throws Exception
+    {
+        IDatabaseConnection validConnection = super.getConnection();
+        String schema = validConnection.getSchema();
+        assertNotNull("Precondition: schema of connection must not be null", schema);
+        
+        
+        DatabaseMetaData metaData = validConnection.getConnection().getMetaData();
+        if(metaData.storesUpperCaseIdentifiers())
+        {
+            boolean validate = true;
+            DatabaseConnection dbConnection = new DatabaseConnection(validConnection.getConnection(), schema.toLowerCase(Locale.ENGLISH), validate);
+            assertNotNull(dbConnection);
+            assertEquals(schema.toUpperCase(Locale.ENGLISH), dbConnection.getSchema());
+        }
+        else
+        {
+            // skip this test
+            assertTrue(true);
+        }
+    }
+
+    
+    public void testCreateConnectionWithSchemaDbStoresLowerCaseIdentifiers() throws Exception
+    {
+        IDatabaseConnection validConnection = super.getConnection();
+        String schema = validConnection.getSchema();
+        assertNotNull("Precondition: schema of connection must not be null", schema);
+        
+        
+        DatabaseMetaData metaData = validConnection.getConnection().getMetaData();
+        if(metaData.storesLowerCaseIdentifiers())
+        {
+            boolean validate = true;
+            DatabaseConnection dbConnection = new DatabaseConnection(validConnection.getConnection(), schema.toUpperCase(Locale.ENGLISH), validate);
+            assertNotNull(dbConnection);
+            assertEquals(schema.toLowerCase(Locale.ENGLISH), dbConnection.getSchema());
+        }
+        else
+        {
+            // skip this test
+            assertTrue(true);
+        }
     }
 
 }

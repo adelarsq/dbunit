@@ -110,7 +110,16 @@ public class DatabaseConnection extends AbstractDatabaseConnection
             throw new NullPointerException("The parameter 'connection' must not be null");
         }
         _connection = connection;
-        _schema = schema;
+        
+        if(schema != null)
+        {
+            _schema = SQLHelper.correctCase(schema, connection);
+            SQLHelper.logInfoIfValueChanged(schema, _schema, "Corrected schema name:", DatabaseConnection.class);
+        }
+        else
+        {
+            _schema = null;
+        }
 
         printConnectionInfo();
         validateSchema(validate);

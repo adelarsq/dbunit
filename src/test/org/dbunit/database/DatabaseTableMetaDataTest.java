@@ -23,6 +23,7 @@ package org.dbunit.database;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -320,8 +321,40 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
 //        String schema = SQLHelper.getSchema(jdbcConn);
         DatabaseTableMetaData metaData = new DatabaseTableMetaData(schema + "." + TEST_TABLE, _connection);
         assertEquals(schema + "." + TEST_TABLE, metaData.getTableName());
-        
-        
+    }
+    
+    public void testDbStoresUpperCaseTableNames() throws Exception
+    {
+        IDatabaseConnection connection = getConnection();
+        DatabaseMetaData metaData = connection.getConnection().getMetaData();
+        if(metaData.storesUpperCaseIdentifiers())
+        {
+            DatabaseTableMetaData dbTableMetaData = new DatabaseTableMetaData(TEST_TABLE.toLowerCase(Locale.ENGLISH), _connection);
+            // Table name should have been "toUpperCase'd"
+            assertEquals(TEST_TABLE.toUpperCase(Locale.ENGLISH), dbTableMetaData.getTableName());
+        }
+        else
+        {
+            // skip the test
+            assertTrue(true);
+        }
+    }
+
+    public void testDbStoresLowerCaseTableNames() throws Exception
+    {
+        IDatabaseConnection connection = getConnection();
+        DatabaseMetaData metaData = connection.getConnection().getMetaData();
+        if(metaData.storesLowerCaseIdentifiers())
+        {
+            DatabaseTableMetaData dbTableMetaData = new DatabaseTableMetaData(TEST_TABLE.toUpperCase(Locale.ENGLISH), _connection);
+            // Table name should have been "toUpperCase'd"
+            assertEquals(TEST_TABLE.toLowerCase(Locale.ENGLISH), dbTableMetaData.getTableName());
+        }
+        else
+        {
+            // skip the test
+            assertTrue(true);
+        }
     }
 }
 
