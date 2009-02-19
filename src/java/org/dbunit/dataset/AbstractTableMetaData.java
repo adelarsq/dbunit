@@ -212,6 +212,7 @@ public abstract class AbstractTableMetaData implements ITableMetaData
 			addValidCombinationInternal(H2DataTypeFactory.class, "h2");
 			addValidCombinationInternal(HsqldbDataTypeFactory.class, "hsql");
 			addValidCombinationInternal(MsSqlDataTypeFactory.class, "mssql");
+			addValidCombinationInternal(MsSqlDataTypeFactory.class, "Microsoft SQL Server");
 			addValidCombinationInternal(MySqlDataTypeFactory.class, "mysql");
 			addValidCombinationInternal(OracleDataTypeFactory.class, "oracle");
 			addValidCombinationInternal(Oracle10DataTypeFactory.class, "oracle");
