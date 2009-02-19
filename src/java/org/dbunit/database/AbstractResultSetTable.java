@@ -104,6 +104,9 @@ public abstract class AbstractResultSetTable extends AbstractTable
             String schema = connection.getSchema();
             String selectStatement = getSelectStatement(schema, metaData, escapePattern);
 
+            if(logger.isDebugEnabled())
+                logger.debug("Query: {}", selectStatement);
+            
             _resultSet = _statement.executeQuery(selectStatement);
             _metaData = metaData;
         }

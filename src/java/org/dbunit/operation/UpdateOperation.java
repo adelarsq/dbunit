@@ -59,8 +59,9 @@ public class UpdateOperation extends AbstractBatchOperation
 
     public OperationData getOperationData(ITableMetaData metaData, BitSet ignoreMapping, IDatabaseConnection connection) throws DataSetException
     {
-        logger.debug("getOperationData(metaData=" + metaData + ", ignoreMapping=" + ignoreMapping + ", connection="
-                + connection + ") - start");
+        if(logger.isDebugEnabled())
+            logger.debug("getOperationData(metaData={}, ignoreMapping={}, connection={}) - start", 
+                new Object[]{metaData, ignoreMapping, connection});
 
         Column[] columns = metaData.getColumns();
         Column[] primaryKeys = metaData.getPrimaryKeys();
