@@ -21,6 +21,7 @@
 
 package org.dbunit.database;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -85,9 +86,21 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
     {
         logger.debug("createQueryTable(resultName={}, sql={}) - start", resultName, sql);
 
-        ForwardOnlyResultSetTable rsTable = new ForwardOnlyResultSetTable(resultName, sql, this);
-        return new CachedResultSetTable(rsTable);
+        IResultSetTableFactory tableFactory = getResultSetTableFactory();
+        IResultSetTable rsTable = tableFactory.createTable(resultName, sql, this);
+        return rsTable;
     }
+
+    public ITable createTable(String resultName, PreparedStatement preparedStatement)
+    throws DataSetException, SQLException
+    {
+        logger.debug("createQueryTable(resultName={}, preparedStatement={}) - start", resultName, preparedStatement);
+
+        IResultSetTableFactory tableFactory = getResultSetTableFactory();
+        IResultSetTable rsTable = tableFactory.createTable(resultName, preparedStatement, this);
+        return rsTable;
+    }
+
     
     public ITable createTable(String tableName) throws DataSetException,
             SQLException 
@@ -134,7 +147,8 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
             if(resultSet.next())
                 return resultSet.getInt(1);
             else
-                throw new DatabaseUnitRuntimeException("Select count did not return any results for table '" + tableName + "'.");
+                throw new DatabaseUnitRuntimeException("Select count did not return any results for table '" + 
+                        tableName + "'. Statement: " + sqlBuffer.toString());
         }
         finally
         {
@@ -147,11 +161,20 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         return _databaseConfig;
     }
 
+    /**
+     * @deprecated Use {@link #getConfig}
+     */
     public IStatementFactory getStatementFactory()
     {
         return (IStatementFactory)_databaseConfig.getProperty(DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
     }
 
+    private IResultSetTableFactory getResultSetTableFactory()
+    {
+        return (IResultSetTableFactory)_databaseConfig.getProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY);
+        
+    }
+    
     public String toString()
     {
     	StringBuffer sb = new StringBuffer();

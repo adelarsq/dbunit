@@ -24,9 +24,11 @@
 package org.dbunit.database;
 
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.util.Locale;
 
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.dataset.ITable;
 
 
 /**
@@ -125,6 +127,30 @@ public class DatabaseConnectionTest extends AbstractDatabaseConnectionTest
         {
             // skip this test
             assertTrue(true);
+        }
+    }
+
+    public void testCreateQueryWithPreparedStatement() throws Exception
+    {
+        IDatabaseConnection connection = super.getConnection();
+        PreparedStatement pstmt = connection.getConnection().prepareStatement("select * from TEST_TABLE where COLUMN0=?");
+
+        try{
+            pstmt.setString(1, "row 1 col 0");
+            ITable table = connection.createTable("MY_TABLE", pstmt);
+            assertEquals(1, table.getRowCount());
+            assertEquals(4, table.getTableMetaData().getColumns().length);
+            assertEquals("row 1 col 1", table.getValue(0, "COLUMN1"));
+            
+            // Now reuse the prepared statement
+            pstmt.setString(1, "row 2 col 0");
+            ITable table2 = connection.createTable("MY_TABLE", pstmt);
+            assertEquals(1, table2.getRowCount());
+            assertEquals(4, table2.getTableMetaData().getColumns().length);
+            assertEquals("row 2 col 1", table2.getValue(0, "COLUMN1"));
+        }
+        finally{
+            pstmt.close();
         }
     }
 

@@ -28,7 +28,29 @@
           the setUp and tearDown operations.
           </td>
         </tr>
-        </table>
+        <tr> 
+          <td>1956543</td>
+          <td><code>new method org.dbunit.database.IDatabaseConnection#createTable(String tableName, PreparedStatement preparedStatement)</code></td>
+          <td>If you extend from AbstractDatabaseConnection then there is nothing to do. If you implement
+          the IDatabaseConnection interface then you must implement the new method. As
+          reference implementation you can look into AbstractDatabaseConnection.</td>
+          <td>This addition comes from the feature request 
+            <a href='https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1956543&amp;group_id=47439&amp;atid=449494'>1956543</a>
+            where you can read details about why this is useful.
+          </td>
+        </tr>
+        <tr> 
+          <td>1956543</td>
+          <td><code>new method org.dbunit.database.IResultSetTableFactory#createTable(String tableName,
+                        PreparedStatement preparedStatement, IDatabaseConnection connection)</code></td>
+          <td>If you provide a custom IResultSetTableFactory then you have to implement this new method.
+             As reference implementation you can look into ForwardOnlyResultSetTableFactory.</td>
+          <td>This addition comes from the feature request 
+            <a href='https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1956543&amp;group_id=47439&amp;atid=449494'>1956543</a>
+            where you can read details about why this is useful.
+          </td>
+        </tr>
+      </table>
     </subsection>
         
     <subsection name="2.4.2 to 2.4.3">
@@ -62,7 +84,7 @@
           JdbcDatabaseTester instance is completely valid when it was successfully created.
           </td>
         </tr>
-        </table>
+      </table>
     </subsection>
 
 

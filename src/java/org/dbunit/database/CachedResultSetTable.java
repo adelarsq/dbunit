@@ -40,7 +40,7 @@ public class CachedResultSetTable extends CachedTable implements IResultSetTable
      * @param resultSet
      * @throws SQLException
      * @throws DataSetException
-     * @deprecated since 2.3.0 prefer direct usage of {@link ForwardOnlyResultSetTable#ForwardOnlyResultSetTable(ITableMetaData, ResultSet)}
+     * @deprecated since 2.3.0 prefer direct usage of {@link ForwardOnlyResultSetTable#ForwardOnlyResultSetTable(ITableMetaData, ResultSet)} and then invoke {@link CachedResultSetTable#CachedResultSetTable(IResultSetTable)}
      */
     public CachedResultSetTable(ITableMetaData metaData, ResultSet resultSet)
             throws SQLException, DataSetException
@@ -48,6 +48,13 @@ public class CachedResultSetTable extends CachedTable implements IResultSetTable
         this(new ForwardOnlyResultSetTable(metaData, resultSet));
     }
 
+    /**
+     * @param metaData
+     * @param connection
+     * @throws SQLException
+     * @throws DataSetException
+     * @deprecated since 2.4.4 prefer direct usage of {@link ForwardOnlyResultSetTable#ForwardOnlyResultSetTable(ITableMetaData, IDatabaseConnection)} and then invoke {@link CachedResultSetTable#CachedResultSetTable(IResultSetTable)} 
+     */
     public CachedResultSetTable(ITableMetaData metaData,
             IDatabaseConnection connection) throws SQLException, DataSetException
     {

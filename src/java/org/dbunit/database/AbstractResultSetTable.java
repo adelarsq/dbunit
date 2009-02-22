@@ -120,15 +120,13 @@ public abstract class AbstractResultSetTable extends AbstractTable
 
     private Statement createStatement(IDatabaseConnection connection) throws SQLException 
     {
+        logger.trace("createStatement() - start");
+
         Connection jdbcConnection = connection.getConnection();
         Statement stmt = jdbcConnection.createStatement();
-
-        DatabaseConfig config = connection.getConfig();
-        Integer fetchSize = (Integer)config.getProperty(DatabaseConfig.PROPERTY_FETCH_SIZE);
-        stmt.setFetchSize(fetchSize.intValue());
-        logger.debug("Statement fetch size set to {}",fetchSize);
+        connection.getConfig().getConfigurator().configureStatement(stmt);
         return stmt;
-	}
+    }
 
     static String getSelectStatement(String schema, ITableMetaData metaData, String escapePattern)
             throws DataSetException
@@ -149,7 +147,7 @@ public abstract class AbstractResultSetTable extends AbstractTable
 
     public void close() throws DataSetException
     {
-        logger.debug("close() - start");
+        logger.trace("close() - start");
 
         try
         {

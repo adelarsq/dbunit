@@ -20,6 +20,8 @@
  */
 package org.dbunit.database;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -123,6 +125,7 @@ public class DatabaseConfig
     private Set _featuresSet = new HashSet();
     private Map _propertyMap = new HashMap();
     
+    private final Configurator configurator;
 
     public DatabaseConfig()
     {
@@ -139,6 +142,16 @@ public class DatabaseConfig
         setProperty(PROPERTY_BATCH_SIZE, DEFAULT_BATCH_SIZE);
         setProperty(PROPERTY_FETCH_SIZE, DEFAULT_FETCH_SIZE);
         setProperty(PROPERTY_METADATA_HANDLER, new DefaultMetadataHandler());
+
+        this.configurator = new Configurator(this);
+    }
+
+    /**
+     * @return The configurator of this database config
+     */
+    protected Configurator getConfigurator() 
+    {
+        return configurator;
     }
 
     /**
@@ -349,4 +362,52 @@ public class DatabaseConfig
             return sb.toString();
         }
     }
+    
+    
+    
+    /**
+     * Sets parameters stored in the {@link DatabaseConfig} on specific java objects like {@link Statement}.
+     * Is mainly there to avoid code duplication where {@link DatabaseConfig} parameters are used.
+     * @author gommma (gommma AT users.sourceforge.net)
+     * @author Last changed by: $Author$
+     * @version $Revision$ $Date$
+     * @since 2.4.4
+     */
+    protected static class Configurator
+    {
+        /**
+         * Logger for this class
+         */
+        private static final Logger logger = LoggerFactory.getLogger(Configurator.class);
+
+        private DatabaseConfig config;
+        
+        /**
+         * @param config The configuration to be used by this configurator
+         * @since 2.4.4
+         */
+        public Configurator(DatabaseConfig config)
+        {
+            if (config == null) {
+                throw new NullPointerException(
+                        "The parameter 'config' must not be null");
+            }
+            this.config = config;
+        }
+        /**
+         * Configures the given statement so that it has the properties that are configured in this {@link DatabaseConfig}.
+         * @param stmt The statement to be configured.
+         * @throws SQLException
+         * @since 2.4.4
+         */
+        void configureStatement(Statement stmt) throws SQLException 
+        {
+            logger.trace("configureStatement(stmt={}) - start", stmt);
+            Integer fetchSize = (Integer) config.getProperty(DatabaseConfig.PROPERTY_FETCH_SIZE);
+            stmt.setFetchSize(fetchSize.intValue());
+            logger.debug("Statement fetch size set to {}",fetchSize);
+        }
+        
+    }
+
 }

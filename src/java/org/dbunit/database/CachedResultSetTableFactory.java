@@ -20,19 +20,19 @@
  */
 package org.dbunit.database;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
-
-import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
- * @author manuel.laflamme$
- * @since Jul 31, 2003$
- * @version $Revision$
+ * @author manuel.laflamme
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.0 (Jul 31, 2003)
  */
 public class CachedResultSetTableFactory implements IResultSetTableFactory
 {
@@ -45,11 +45,9 @@ public class CachedResultSetTableFactory implements IResultSetTableFactory
     public IResultSetTable createTable(String tableName, String selectStatement,
             IDatabaseConnection connection) throws SQLException, DataSetException
     {
-    	if (logger.isDebugEnabled())	
-    	{
-    		logger.debug("createTable(tableName={}, selectStatement={}, connection={}) - start", 
+    	if (logger.isTraceEnabled())	
+    		logger.trace("createTable(tableName={}, selectStatement={}, connection={}) - start", 
     				new Object[] { tableName, selectStatement, connection });
-    	}
 
         return new CachedResultSetTable(new ForwardOnlyResultSetTable(
                 tableName, selectStatement, connection));
@@ -58,7 +56,23 @@ public class CachedResultSetTableFactory implements IResultSetTableFactory
     public IResultSetTable createTable(ITableMetaData metaData,
             IDatabaseConnection connection) throws SQLException, DataSetException
     {
-        logger.debug("createTable(metaData={}, connection={}) - start", metaData, connection);
-        return new CachedResultSetTable(metaData, connection);
+        logger.trace("createTable(metaData={}, connection={}) - start", metaData, connection);
+        ForwardOnlyResultSetTable resultSetTable = new ForwardOnlyResultSetTable(metaData, connection);
+        return new CachedResultSetTable(resultSetTable);
     }
+    
+    public IResultSetTable createTable(String tableName,
+            PreparedStatement preparedStatement, IDatabaseConnection connection) 
+    throws SQLException, DataSetException
+    {
+        if (logger.isTraceEnabled())
+            logger.trace("createTable(tableName={}, preparedStatement={}, connection={}) - start",
+                new Object[]{ tableName, preparedStatement, connection});
+        
+        // Reuse method from ForwardOnly factory
+        ForwardOnlyResultSetTable table = new ForwardOnlyResultSetTableFactory()
+                    .createForwardOnlyResultSetTable(tableName, preparedStatement, connection);
+        return new CachedResultSetTable(table);
+    }
+
 }

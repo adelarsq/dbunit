@@ -27,6 +27,7 @@ import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.*;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
@@ -123,6 +124,13 @@ public class MockDatabaseConnection implements IDatabaseConnection, Verifiable
 
     public ITable createQueryTable(String resultName, String sql)
             throws DataSetException, SQLException
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public ITable createTable(String tableName,
+            PreparedStatement preparedStatement) throws DataSetException,
+            SQLException 
     {
         throw new UnsupportedOperationException();
     }

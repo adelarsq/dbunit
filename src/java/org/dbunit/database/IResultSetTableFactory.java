@@ -23,6 +23,7 @@ package org.dbunit.database;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITableMetaData;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
@@ -37,6 +38,17 @@ public interface IResultSetTableFactory
             IDatabaseConnection connection) throws SQLException, DataSetException;
 
     public IResultSetTable createTable(ITableMetaData metaData,
+            IDatabaseConnection connection) throws SQLException, DataSetException;
+
+    /**
+     * Creates a table from a preparedStatement
+     * @param tableName
+     * @param preparedStatement
+     * @param connection
+     * @return The table based on a SQL result set
+     * @since 2.4.4
+     */
+    public IResultSetTable createTable(String tableName, PreparedStatement preparedStatement,
             IDatabaseConnection connection) throws SQLException, DataSetException;
 
 
