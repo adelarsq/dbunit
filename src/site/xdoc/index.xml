@@ -26,6 +26,10 @@
   <section name="News">
       <table border="1">
         <tr>
+          <td>2009-02-24</td>
+          <td>We are proud to announce the 2.4.4 release has been cut. Here a detailed <a href="changes-report.html#a2.4.4">changes</a> report.</td>
+        </tr>
+        <tr>
           <td>2009-01-20</td>
           <td>Development continues to go on, fixes and a additions have been contributed and a new 2.4.3 release has been cut. Here a detailed <a href="changes-report.html#a2.4.3">changes</a> report.</td>
         </tr>
