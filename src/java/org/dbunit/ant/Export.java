@@ -37,6 +37,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.csv.CsvDataSetWriter;
+import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlWriter;
@@ -108,13 +109,14 @@ public class Export extends AbstractStep
         if (format.equalsIgnoreCase(FORMAT_FLAT)
                 || format.equalsIgnoreCase(FORMAT_XML)
                 || format.equalsIgnoreCase(FORMAT_DTD)
-                || format.equalsIgnoreCase(FORMAT_CSV))
+                || format.equalsIgnoreCase(FORMAT_CSV)
+                || format.equalsIgnoreCase(FORMAT_XLS))
         {
             _format = format;
         }
         else
         {
-            throw new IllegalArgumentException("Type must be one of: 'flat'(default), 'xml', or 'dtd' but was: " + format);
+            throw new IllegalArgumentException("Type must be one of: 'flat'(default), 'xml', 'dtd' or 'xls' but was: " + format);
         }
     }
 
@@ -210,6 +212,10 @@ public class Export extends AbstractStep
                     {
                         //TODO Should DTD also support encoding? It is basically an XML file...
                         FlatDtdDataSet.write(dataset, out);//, getEncoding());
+                    }
+                    else if (_format.equalsIgnoreCase(FORMAT_XLS))
+                    {
+                        XlsDataSet.write(dataset, out);
                     }
                     else
                     {
