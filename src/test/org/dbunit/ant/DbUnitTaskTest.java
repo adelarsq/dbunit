@@ -32,8 +32,8 @@ import junit.framework.TestSuite;
 import junitx.framework.ArrayAssert;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.BuildFileTest;
 import org.apache.tools.ant.Target;
-import org.apache.tools.ant.taskdefs.TaskdefsTest;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
@@ -57,7 +57,7 @@ import org.dbunit.util.FileHelper;
  * @since Jun 10, 2002
  * @see org.dbunit.ant.AntTest
  */
-public class DbUnitTaskTest extends TaskdefsTest
+public class DbUnitTaskTest extends BuildFileTest
 {
     static protected Class classUnderTest = DbUnitTaskTest.class;
     
@@ -76,7 +76,9 @@ public class DbUnitTaskTest extends TaskdefsTest
         // This line ensure test database is initialized
         DatabaseEnvironment.getInstance();
 
-        configureProject(BUILD_FILE_DIR + "/antTestBuildFile.xml");
+        String filePath = BUILD_FILE_DIR + "/antTestBuildFile.xml";
+        assertTrue("Buildfile not found", new File(filePath).isFile());
+        configureProject(filePath);
         
         outputDir = new File(getProjectDir(), OUTPUT_DIR);
         outputDir.mkdirs();
