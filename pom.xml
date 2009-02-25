@@ -361,8 +361,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
-          <goals>javadoc:javadoc source:jar javadoc:jar
-            deploy site changes:announcement-generate assembly:assembly</goals>
+          <goals>javadoc:javadoc source:jar javadoc:jar deploy site changes:announcement-generate assembly:assembly</goals>
         </configuration>
       </plugin>
       <plugin>
@@ -460,8 +459,7 @@
         <configuration>
           <smtpHost>localhost</smtpHost>
           <smtpPort implementation="java.lang.Integer">25</smtpPort>
-          <introduction>If you are reading this, the maintainer forgot
-            to descrive what's the purpose of this release!!!</introduction>
+          <introduction>If you are reading this, the maintainer forgot to descrive what's the purpose of this release!!!</introduction>
           <toAddresses>
             <toAddress implementation="java.lang.String">dbunit-developer@lists.sourceforge.net</toAddress>
             <toAddress implementation="java.lang.String">dbunit-user@lists.sourceforge.net</toAddress>
