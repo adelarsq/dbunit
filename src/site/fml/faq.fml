@@ -662,6 +662,24 @@ public class MyXmlWriter extends org.dbunit.dataset.xml.XmlDataSetWriter {
                 }
             }
           </source>
+          Note that there dbunit provides such a No-Op implementation of the IOperationListener since 2.4.5:
+          <source>
+            public class MyTestCase extends DBTestCase{
+                // Overwrite the method getOperationListener to provide our own operation listener
+                protected IOperationListener getOperationListener() {
+                    return IOperationListener.NO_OP_OPERATION_LISTENER;
+                }
+            }
+          </source>
+          If you use the IDatabaseTester you can simple invoke the setOperationListener method on it:
+          <source>
+              ...
+              IDatabaseTester dbTester = new DataSourceDatabaseTester(ds);
+              dbTester.setOperationListener(IOperationListener.NO_OP_OPERATION_LISTENER)
+              dbTester.onSetup();
+              ...
+          </source>
+          
         </p>
       </answer>
     </faq>

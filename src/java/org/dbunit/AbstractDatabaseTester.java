@@ -200,7 +200,6 @@ public abstract class AbstractDatabaseTester extends SimpleAssert implements IDa
 			    else{
 			        throw new DatabaseUnitRuntimeException("Cannot happen - unknown OperationType specified: " + type);
 			    }
-//				closeConnection( connection );
 			}
 		}
 	}
