@@ -136,8 +136,10 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
                  String plainTableName = _qualifiedTableNameSupport.getTable();
                  logger.debug("Validating if table '{}' exists in schema '{}' ...", plainTableName, schemaName);
                  try {
+                     DatabaseConfig config = connection.getConfig();
+                     IMetadataHandler metadataHandler = (IMetadataHandler) config.getProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER);
                      DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
-                     if(!SQLHelper.tableExists(databaseMetaData, schemaName, plainTableName))
+                     if(!metadataHandler.tableExists(databaseMetaData, schemaName, plainTableName))
                      {
                          throw new NoSuchTableException("Did not find table '" + plainTableName + "' in schema '" + schemaName + "'");
                      }
@@ -213,8 +215,11 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
 
         Connection connection = _connection.getConnection();
         DatabaseMetaData databaseMetaData = connection.getMetaData();
-        ResultSet resultSet = databaseMetaData.getPrimaryKeys(
-                null, schemaName, tableName);
+        
+        DatabaseConfig config = _connection.getConfig();
+        IMetadataHandler metadataHandler = (IMetadataHandler) config.getProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER);
+        
+        ResultSet resultSet = metadataHandler.getPrimaryKeys(databaseMetaData, schemaName, tableName);
 
         List list = new ArrayList();
         try

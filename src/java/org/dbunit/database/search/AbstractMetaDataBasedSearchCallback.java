@@ -30,6 +30,7 @@ import java.util.TreeSet;
 
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.IMetadataHandler;
 import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.util.QualifiedTableName;
 import org.dbunit.util.SQLHelper;
@@ -176,10 +177,12 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
         
         ResultSet rs = null;
         try {
+            IMetadataHandler metadataHandler = (IMetadataHandler) 
+                    this.connection.getConfig().getProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER);
             // Validate if the table exists
-            if(!SQLHelper.tableExists(metaData, schema, tableName))
+            if(!metadataHandler.tableExists(metaData, schema, tableName))
             {
-                throw new NoSuchTableException("The table '"+tableName+"' does not exist in schema '" + schema + "'");
+                throw new NoSuchTableException("The table '"+tableName+"' does not exist in schema '"+schema+"'");
             }
 
             switch (type) {

@@ -501,6 +501,9 @@ public class DbUnitTask extends Task
 
         // For backwards compatibility (old mode overrides the new one) copy the other attributes to the config
         copyAttributes(config);
+
+        log("Created connection for schema '" + schema + "' with config: " + config, Project.MSG_VERBOSE);
+        
         return connection;
     }
 

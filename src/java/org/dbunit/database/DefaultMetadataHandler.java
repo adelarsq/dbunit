@@ -43,7 +43,12 @@ public class DefaultMetadataHandler implements IMetadataHandler {
     private static final Logger logger = LoggerFactory.getLogger(DefaultMetadataHandler.class);
 
     public ResultSet getColumns(DatabaseMetaData databaseMetaData, String schemaName, String tableName) 
-    throws SQLException {
+    throws SQLException 
+    {
+        if(logger.isTraceEnabled())
+            logger.trace("getColumns(databaseMetaData={}, schemaName={}, tableName={}) - start", 
+                    new Object[] {databaseMetaData, schemaName, tableName} );
+        
         ResultSet resultSet = databaseMetaData.getColumns(
                 null, schemaName, tableName, "%");
         return resultSet;
@@ -97,10 +102,51 @@ public class DefaultMetadataHandler implements IMetadataHandler {
     }
 
     public String getSchema(ResultSet resultSet) throws SQLException {
+        if(logger.isTraceEnabled())
+            logger.trace("getColumns(resultSet={}) - start", resultSet);
+
         String schemaName = resultSet.getString(2);
         return schemaName;
     }
     
-    
+    public boolean tableExists(DatabaseMetaData metaData, String schemaName, String tableName) 
+    throws SQLException 
+    {
+        if(logger.isTraceEnabled())
+            logger.trace("tableExists(metaData={}, schemaName={}, tableName={}) - start", 
+                    new Object[] {metaData, schemaName, tableName} );
+        
+        ResultSet tableRs = metaData.getTables(null, schemaName, tableName, null);
+        try 
+        {
+            return tableRs.next();
+        }
+        finally
+        {
+            SQLHelper.close(tableRs);
+        }
+    }
+
+    public ResultSet getTables(DatabaseMetaData metaData, String schemaName, String[] tableType) 
+    throws SQLException
+    {
+        if(logger.isTraceEnabled())
+            logger.trace("getTables(metaData={}, schemaName={}, tableType={}) - start", 
+                    new Object[] {metaData, schemaName, tableType} );
+
+        return metaData.getTables(null, schemaName, "%", tableType);
+    }
+
+    public ResultSet getPrimaryKeys(DatabaseMetaData metaData, String schemaName, String tableName) 
+    throws SQLException
+    {
+        if(logger.isTraceEnabled())
+            logger.trace("getPrimaryKeys(metaData={}, schemaName={}, tableName={}) - start", 
+                    new Object[] {metaData, schemaName, tableName} );
+
+        ResultSet resultSet = metaData.getPrimaryKeys(
+                null, schemaName, tableName);
+        return resultSet;
+    }
 
 }

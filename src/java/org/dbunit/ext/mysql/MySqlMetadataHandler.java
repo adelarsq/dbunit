@@ -102,4 +102,40 @@ public class MySqlMetadataHandler implements IMetadataHandler {
         return schemaName;
     }
 
+    public boolean tableExists(DatabaseMetaData metaData, String schema, String tableName) 
+    throws SQLException 
+    {
+        ResultSet tableRs = metaData.getTables(schema, null, tableName, null);
+        try 
+        {
+            return tableRs.next();
+        }
+        finally
+        {
+            SQLHelper.close(tableRs);
+        }
+    }
+
+    public ResultSet getTables(DatabaseMetaData metaData, String schemaName, String[] tableType) 
+    throws SQLException
+    {
+        if(logger.isTraceEnabled())
+            logger.trace("tableExists(metaData={}, schemaName={}, tableType={}) - start", 
+                    new Object[] {metaData, schemaName, tableType} );
+
+        return metaData.getTables(schemaName, null, "%", tableType);
+    }
+
+    public ResultSet getPrimaryKeys(DatabaseMetaData metaData, String schemaName, String tableName) 
+    throws SQLException
+    {
+        if(logger.isTraceEnabled())
+            logger.trace("getPrimaryKeys(metaData={}, schemaName={}, tableName={}) - start", 
+                    new Object[] {metaData, schemaName, tableName} );
+
+        ResultSet resultSet = metaData.getPrimaryKeys(
+                schemaName, null, tableName);
+        return resultSet;
+    }
+
 }

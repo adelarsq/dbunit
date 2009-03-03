@@ -89,5 +89,42 @@ public interface IMetadataHandler
      */
     String getSchema(ResultSet resultSet)  throws SQLException;
 
+    /**
+     * Checks if the given table exists.
+     * @param databaseMetaData The database meta data
+     * @param schemaName The schema in which the table should be searched. If <code>null</code>
+     * the schema is not used to narrow the table name.
+     * @param tableName The table name to be searched
+     * @return Returns <code>true</code> if the given table exists in the given schema.
+     * Else returns <code>false</code>.
+     * @throws SQLException
+     * @since 2.4.5
+     */
+    boolean tableExists(DatabaseMetaData databaseMetaData, String schemaName, String tableName)
+    throws SQLException;
+
+    /**
+     * Returns the tables in the given schema that matches one of the given tableTypes.
+     * @param databaseMetaData The database meta data
+     * @param schemaName schema for which the tables should be retrieved; <code>null</code> returns all schemas
+     * @param tableTypes a list of table types to include; <code>null</code> returns all types
+     * @return The ResultSet which is retrieved using {@link DatabaseMetaData#getTables(String, String, String, String[])}
+     * @throws SQLException
+     * @since 2.4.5
+     */
+    ResultSet getTables(DatabaseMetaData databaseMetaData, String schemaName, String[] tableTypes)
+    throws SQLException;
+
+    /**
+     * @param databaseMetaData The database meta data
+     * @param schemaName schema for which the tables should be retrieved; <code>null</code> returns all schemas
+     * @param tableName table for which the primary keys are retrieved
+     * @return The ResultSet which is retrieved using {@link DatabaseMetaData#getPrimaryKeys(String, String, String)}
+     * @throws SQLException
+     * @since 2.4.5
+     */
+    public ResultSet getPrimaryKeys(DatabaseMetaData databaseMetaData, String schemaName, String tableName)
+    throws SQLException;
+
 
 }

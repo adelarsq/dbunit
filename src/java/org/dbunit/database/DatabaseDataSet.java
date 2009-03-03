@@ -196,9 +196,10 @@ public class DatabaseDataSet extends AbstractDataSet
             String[] tableType = (String[])config.getProperty(DatabaseConfig.PROPERTY_TABLE_TYPE);
             IMetadataHandler metadataHandler = (IMetadataHandler) config.getProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER);
 
-            ResultSet resultSet = databaseMetaData.getTables(
-                    null, schema, "%", tableType);
-
+            ResultSet resultSet = metadataHandler.getTables(databaseMetaData, schema, tableType);
+            
+            logger.info(SQLHelper.getDatabaseInfo(jdbcConnection.getMetaData()));
+            
             try
             {
             	OrderedTableNameMap tableMap = super.createTableNameMap();
@@ -276,6 +277,7 @@ public class DatabaseDataSet extends AbstractDataSet
         // Verify if table exist in the database
         if (!_tableMap.containsTable(tableName))
         {
+            logger.info("Table '{}' not found in tableMap={}", tableName, _tableMap);
             throw new NoSuchTableException(tableName);
         }
 

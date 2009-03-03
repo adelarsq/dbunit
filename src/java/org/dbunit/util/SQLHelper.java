@@ -215,6 +215,7 @@ public class SQLHelper {
      * Else returns <code>false</code>.
      * @throws SQLException
      * @since 2.3.0
+     * @deprecated since 2.4.5 - use {@link IMetadataHandler#tableExists(DatabaseMetaData, String, String)}
      */
     public static boolean tableExists(DatabaseMetaData metaData, String schema,
             String tableName) 
