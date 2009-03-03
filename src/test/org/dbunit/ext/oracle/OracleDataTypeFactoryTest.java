@@ -133,4 +133,24 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         assertSame("type", expected, actual);
     }
 
+    public void testCreateBinaryDoubleDataType() throws Exception
+    {
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "BINARY_DOUBLE";
+
+        DataType expected = DataType.DOUBLE;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
+    public void testCreateBinaryFloatDataType() throws Exception
+    {
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "BINARY_FLOAT";
+
+        DataType expected = DataType.FLOAT;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
 }

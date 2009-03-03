@@ -12,6 +12,7 @@
       <action dev="gommma" type="add" issue="2633859" due-to="tjstavenger">Add Excel support to Export</action>
       <action dev="gommma" type="fix" issue="2658082" due-to="Bernard Schubach">MySQL - NoSuchTableException</action>
       <action dev="gommma" type="add" issue="2658136" due-to="ejain">Have DbUnitAssert use JUnit only if present</action>
+      <action dev="gommma" type="add" issue="2645688" due-to="reidmp">Oracle BINARY_DOUBLE+BINARY_FLOAT support</action>
     </release>
     <release version="2.4.4" date="Feb 24, 2009" description="Bugfixes, some small additions">
       <action dev="gommma" type="update" issue="2524180" due-to="gommma"> Better extensibility for XmlDataSetWriter</action>

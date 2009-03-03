@@ -117,6 +117,19 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
             return LONG_RAW;
         }
 
+        // BINARY_DOUBLE/BINARY_FLOAT
+        // Note that you have to configure your driver appropriate:
+        // Oracle-specific property to support IEEE floating-point is enabled setting the following property
+        // <value>SetFloatAndDoubleUseBinary=true</value>
+        if ("BINARY_DOUBLE".equals(sqlTypeName)) 
+        {
+            return DataType.DOUBLE;
+        }
+        if ("BINARY_FLOAT".equals(sqlTypeName)) 
+        {
+            return DataType.FLOAT;
+        }
+
         return super.createDataType(sqlType, sqlTypeName);
     }
 }
