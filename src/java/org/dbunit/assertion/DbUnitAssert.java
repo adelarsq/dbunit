@@ -55,6 +55,15 @@ public class DbUnitAssert
      */
     private static final Logger logger = LoggerFactory.getLogger(DbUnitAssert.class);
 
+    private FailureFactory junitFailureFactory = getJUnitFailureFactory();
+
+    /**
+     * Default constructor
+     */
+    public DbUnitAssert()
+    {
+    }
+    
     /**
      * Compare one table present in two datasets ignoring specified columns.
      * 
@@ -406,10 +415,29 @@ public class DbUnitAssert
      */
     protected FailureHandler getDefaultFailureHandler(Column[] additionalColumnInfo) 
     {
-        // For backwards compatibility use the JUnitFailureHandler by default
         DefaultFailureHandler failureHandler = new DefaultFailureHandler(additionalColumnInfo);
-        failureHandler.setFailureFactory(new JUnitFailureFactory());
+        if (junitFailureFactory != null) {
+        	failureHandler.setFailureFactory(junitFailureFactory);
+        }
         return failureHandler;
+    }
+
+    /**
+     * @return the JUnitFailureFactory if JUnit is on the classpath or <code>null</code> if
+     * JUnit is not on the classpath.
+     */
+    private FailureFactory getJUnitFailureFactory() 
+    {
+        try {
+            Class.forName("junit.framework.Assert");
+            // JUnit available
+            return new JUnitFailureFactory();
+        }
+        catch (ClassNotFoundException e) {
+            // JUnit not available on the classpath return null
+            logger.debug("JUnit does not seem to be on the classpath. " + e);
+        }
+        return null;
     }
 
     /**
