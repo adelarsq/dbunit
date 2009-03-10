@@ -271,6 +271,10 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
                     " To get around this you may want to configure a user defined " + IMetadataHandler.class, e);
             return null;
         }
+        finally
+        {
+            SQLHelper.close(columnsResultSet);
+        }
     }
 
 
