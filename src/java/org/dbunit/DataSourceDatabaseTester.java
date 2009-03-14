@@ -55,10 +55,32 @@ public class DataSourceDatabaseTester extends AbstractDatabaseTester
 	public DataSourceDatabaseTester( DataSource dataSource )
 	{
 		super();
+
+        if (dataSource == null) {
+            throw new NullPointerException(
+                    "The parameter 'dataSource' must not be null");
+        }
 		this.dataSource = dataSource;
 	}
 
-	public IDatabaseConnection getConnection() throws Exception
+	/**
+     * Creates a new DataSourceDatabaseTester with the specified DataSource and schema name.
+     * @param dataSource the DataSource to pull connections from
+	 * @param schema The schema name to be used for new dbunit connections
+	 * @since 2.4.5
+	 */
+	public DataSourceDatabaseTester(DataSource dataSource, String schema) 
+	{
+        super(schema);
+        
+        if (dataSource == null) {
+            throw new NullPointerException(
+                    "The parameter 'dataSource' must not be null");
+        }
+        this.dataSource = dataSource;
+    }
+
+    public IDatabaseConnection getConnection() throws Exception
 	{
 		logger.debug("getConnection() - start");
 

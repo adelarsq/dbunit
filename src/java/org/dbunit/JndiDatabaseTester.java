@@ -49,77 +49,95 @@ public class JndiDatabaseTester extends AbstractDatabaseTester
      */
     private static final Logger logger = LoggerFactory.getLogger(JndiDatabaseTester.class);
 
-   private DataSource dataSource;
-   private Properties environment;
-   private boolean initialized = false;
-   private String lookupName;
+    private DataSource dataSource;
+    private Properties environment;
+    private boolean initialized = false;
+    private String lookupName;
 
-   /**
-    * Creates a JndiDatabaseTester with specific JNDI properties.
-    *
-    * @param environment A Properties object with JNDI properties
-    * @param lookupName the name of the resource in the JNDI context
-    */
-   public JndiDatabaseTester( Properties environment, String lookupName )
-   {
-      super();
-      this.environment = environment;
-      this.lookupName = lookupName;
-   }
+    /**
+     * Creates a JndiDatabaseTester with default JNDI properties.
+     *
+     * @param lookupName the name of the resource in the JNDI context
+     */
+    public JndiDatabaseTester(String lookupName)
+    {
+        this(null, lookupName);
+    }
 
-   /**
-    * Creates a JndiDatabaseTester with default JNDI properties.
-    *
-    * @param lookupName the name of the resource in the JNDI context
-    */
-   public JndiDatabaseTester( String lookupName )
-   {
-      this( null, lookupName );
-   }
+    /**
+     * Creates a JndiDatabaseTester with specific JNDI properties.
+     *
+     * @param environment A Properties object with JNDI properties. Can be null
+     * @param lookupName the name of the resource in the JNDI context
+     */
+    public JndiDatabaseTester(Properties environment, String lookupName)
+    {
+        this(environment, lookupName, null);
+    }
 
-   public IDatabaseConnection getConnection() throws Exception
-   {
-        logger.debug("getConnection() - start");
+    /**
+     * Creates a JndiDatabaseTester with specific JNDI properties.
+     * 
+     * @param environment A Properties object with JNDI properties. Can be <code>null</code>
+     * @param lookupName the name of the resource in the JNDI context
+     * @param schema The schema name to be used for new dbunit connections. Can be <code>null</code>
+     * @since 2.4.5
+     */
+    public JndiDatabaseTester(Properties environment, String lookupName, String schema) 
+    {
+        super(schema);
+
+        if (lookupName == null) {
+            throw new NullPointerException(
+                    "The parameter 'lookupName' must not be null");
+        }
+        this.lookupName = lookupName;
+        this.environment = environment;
+    }
+
+    public IDatabaseConnection getConnection() throws Exception
+    {
+        logger.trace("getConnection() - start");
 
         if( !initialized ){
-        	initialize();
+            initialize();
         }
 
         return new DatabaseConnection( dataSource.getConnection(), getSchema() );
-   }
+    }
 
-   /**
-    * Verifies the configured properties and locates the Datasource through
-    * JNDI.<br>
-    * This method is called by {@link getConnection} if the tester has not been
-    * initialized yet.
-    */
-   private void initialize() throws NamingException
-   {
-        logger.debug("initialize() - start");
+    /**
+     * Verifies the configured properties and locates the Datasource through
+     * JNDI.<br>
+     * This method is called by {@link getConnection} if the tester has not been
+     * initialized yet.
+     */
+    private void initialize() throws NamingException
+    {
+        logger.trace("initialize() - start");
 
-      Context context = new InitialContext( environment );
-      assertNotNullNorEmpty( "lookupName", lookupName );
-      Object obj = context.lookup( lookupName );
-      assertTrue( "JNDI object with [" + lookupName + "] not found", obj!=null );
-      assertTrue( "Object [" + obj + "] at JNDI location [" + lookupName
-            + "] is not of type [" + DataSource.class.getName() + "]", obj instanceof DataSource );
-      dataSource = (DataSource) obj;
-      assertTrue( "DataSource is not set", dataSource!=null );
-      initialized = true;
-   }
+        Context context = new InitialContext( environment );
+        assertNotNullNorEmpty( "lookupName", lookupName );
+        Object obj = context.lookup( lookupName );
+        assertTrue( "JNDI object with [" + lookupName + "] not found", obj!=null );
+        assertTrue( "Object [" + obj + "] at JNDI location [" + lookupName
+                + "] is not of type [" + DataSource.class.getName() + "]", obj instanceof DataSource );
+        dataSource = (DataSource) obj;
+        assertTrue( "DataSource is not set", dataSource!=null );
+        initialized = true;
+    }
 
-   public String toString()
-   {
-       StringBuffer sb = new StringBuffer();
-       sb.append(getClass().getName()).append("[");
-       sb.append("lookupName=").append(this.lookupName);
-       sb.append(", environment=").append(this.environment);
-       sb.append(", initialized=").append(this.initialized);
-       sb.append(", dataSource=").append(this.dataSource);
-       sb.append(", schema=").append(super.getSchema());
-       sb.append("]");
-       return sb.toString();
-   }
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append(getClass().getName()).append("[");
+        sb.append("lookupName=").append(this.lookupName);
+        sb.append(", environment=").append(this.environment);
+        sb.append(", initialized=").append(this.initialized);
+        sb.append(", dataSource=").append(this.dataSource);
+        sb.append(", schema=").append(super.getSchema());
+        sb.append("]");
+        return sb.toString();
+    }
 
 }
