@@ -136,4 +136,26 @@ public class XlsTableTest extends AbstractTableTest
         }
     }
 
+    public void testNumberAsText() throws Exception
+    {
+        int row = 0;
+        ITable table = createDataSet().getTable("TABLE_NUMBER_AS_TEXT");
+        
+        String[] expected = {
+        		"0",
+        		"666",
+        		"66.6",
+        		"66.6",
+        		"-6.66"
+                };
+
+        Column[] columns = table.getTableMetaData().getColumns();
+        assertEquals("column count", expected.length, columns.length);
+        for (int i = 0; i < columns.length; i++)
+        {
+        	String columnName = columns[i].getColumnName();
+            Object actual = table.getValue(row, columnName).toString();
+            assertEquals(columns[i].getColumnName(),expected[i],actual);
+        }
+    }
 }

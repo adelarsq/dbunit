@@ -276,7 +276,13 @@ class XlsTable extends AbstractTable
             }
         }
         else {
-            result = new BigDecimal(String.valueOf(cellValue));
+        	resultString=String.valueOf(cellValue);
+        	// To ensure that intergral numbers do not have decimal point and trailing zero
+        	// (to restore backward compatibility and provide a string representation consistent with Excel)
+        	if (resultString.endsWith(".0")) {
+        		resultString=resultString.substring(0,resultString.length()-2);
+        	}
+            result = new BigDecimal(resultString);
         }
         return result;
     }

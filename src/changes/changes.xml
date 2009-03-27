@@ -14,6 +14,7 @@
       <action dev="gommma" type="add" issue="2658136" due-to="ejain">Have DbUnitAssert use JUnit only if present</action>
       <action dev="gommma" type="add" issue="2645688" due-to="reidmp">Oracle BINARY_DOUBLE+BINARY_FLOAT support</action>
       <action dev="gommma" type="add" issue="2684042" due-to="lumpynose">specify the schema via the api</action>
+      <action dev="gommma" type="fix" issue="2709501" due-to="al0">Breaking change and likely bug in XlsTable.java</action>
     </release>
     <release version="2.4.4" date="Feb 24, 2009" description="Bugfixes, some small additions">
       <action dev="gommma" type="update" issue="2524180" due-to="gommma"> Better extensibility for XmlDataSetWriter</action>
