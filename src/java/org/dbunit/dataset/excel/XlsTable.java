@@ -197,7 +197,7 @@ class XlsTable extends AbstractTable
         double numericValue = cell.getNumericCellValue();
         Date date = HSSFDateUtil.getJavaDate(numericValue);
         // Add the timezone offset again because it was subtracted automatically by Apache-POI (we need UTC)
-        long tzOffset = TimeZone.getDefault().getOffset(0);
+        long tzOffset = TimeZone.getDefault().getOffset(date.getTime());
         date = new Date(date.getTime() + tzOffset);
         return new Long(date.getTime());
         
