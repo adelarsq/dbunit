@@ -204,6 +204,7 @@
               <li><a href="apidocs/org/dbunit/ext/mysql/MySqlDataTypeFactory.html">org.dbunit.ext.mysql.MySqlDataTypeFactory</a></li>
               <li><a href="apidocs/org/dbunit/ext/oracle/OracleDataTypeFactory.html">org.dbunit.ext.oracle.OracleDataTypeFactory</a></li>
               <li><a href="apidocs/org/dbunit/ext/oracle/Oracle10DataTypeFactory.html">org.dbunit.ext.oracle.Oracle10DataTypeFactory</a></li>
+              <li><a href="apidocs/org/dbunit/ext/postgresql/PostgresqlDataTypeFactory.html">org.dbunit.ext.postgresql.PostgresqlDataTypeFactory</a></li>
             </ul>
             When you want to create your own data type factory you may also want to look at the generic base implementation at
             <a href="apidocs/org/dbunit/dataset/datatype/DefaultDataTypeFactory.html">org.dbunit.dataset.datatype.DefaultDataTypeFactory</a>
