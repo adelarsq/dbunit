@@ -54,7 +54,7 @@ public class SortedTable extends AbstractTable
     /**
      * The row comparator which is used for sorting
      */
-    private AbstractRowComparator rowComparator;
+    private Comparator rowComparator;
 
     /**
      * Sort the decorated table by specified columns order.
@@ -207,10 +207,10 @@ public class SortedTable extends AbstractTable
 
     /**
      * Sets the comparator to be used for sorting the table rows.
-     * @param comparator sorts the table rows
+     * @param comparator that sorts the table rows
      * @since 2.4.2
      */
-    public void setRowComparator(AbstractRowComparator comparator) 
+    public void setRowComparator(Comparator comparator) 
     {
         if(logger.isDebugEnabled())
             logger.debug("setRowComparator(comparator={}) - start", comparator);
@@ -258,7 +258,7 @@ public class SortedTable extends AbstractTable
     /**
      * Abstract class for sorting the table rows of a given table in a specific order
      */
-    protected static abstract class AbstractRowComparator implements Comparator
+    public static abstract class AbstractRowComparator implements Comparator
     {
         /**
          * Logger for this class
