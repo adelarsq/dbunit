@@ -39,6 +39,7 @@ public class AllTests extends TestSuite
         suite.addTest(org.dbunit.ext.oracle.AllTests.suite());
         suite.addTest(org.dbunit.ext.hsqldb.AllTests.suite());
         suite.addTest(org.dbunit.ext.h2.AllTests.suite());
+        suite.addTest(org.dbunit.ext.postgresql.AllTests.suite());
         return suite;
     }
 }
