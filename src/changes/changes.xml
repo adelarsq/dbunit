@@ -8,7 +8,10 @@
   </properties>
 
   <body>
-    <release version="2.4.5-SNAPSHOT" date="TBD" description="(no description)">
+    <release version="2.4.6-SNAPSHOT" date="TBD" description="(no description)">
+    </release>
+    
+    <release version="2.4.5-SNAPSHOT" date="May 15, 2009" description="Bugfixes and some few additions">
       <action dev="gommma" type="add" issue="2633859" due-to="tjstavenger">Add Excel support to Export</action>
       <action dev="gommma" type="fix" issue="2658082" due-to="Bernard Schubach">MySQL - NoSuchTableException</action>
       <action dev="gommma" type="add" issue="2658136" due-to="ejain">Have DbUnitAssert use JUnit only if present</action>
