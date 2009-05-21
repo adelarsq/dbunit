@@ -69,19 +69,28 @@
     </mailingList>
   </mailingLists>
 
-  <!-- who the developers are for the project -->
+  <!-- 
+     - Who are the developers for the project, in order of recent activity. 
+    -->
   <developers>
     <!--
-      put my name first, so my email is used by the announcements-email
-      plugin
-    -->
+       - Note: email of first developer is used by the announcements-email plugin
+      -->
+    <developer>
+      <name>Matthias Gommeringer</name>
+      <id>gommma</id>
+      <email>gommma@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer (very active)</role>
+      </roles>
+    </developer>
     <developer>
       <name>Roberto Lo Giacco</name>
       <id>rlogiacco</id>
       <email>rlogiacco@users.sourceforge.net</email>
       <organization>SmartLab</organization>
       <roles>
-        <role>Java Developer</role>
+        <role>Java Developer (active)</role>
       </roles>
     </developer>
     <developer>
@@ -91,15 +100,7 @@
       <organization>GoldenGate Software</organization>
       <timezone>-8</timezone>
       <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Benjamin Cox</name>
-      <id>bdrum</id>
-      <roles>
-        <role>Java Developer</role>
-        <!--  <role>Original Ant Task Contributor</role> -->
+        <role>Java Developer (mostly inactive :-)</role>
       </roles>
     </developer>
     <developer>
@@ -108,7 +109,32 @@
       <email>epugh@opensourceconnections.com</email>
       <organization>OpenSource Connections</organization>
       <roles>
-        <role>Java Developer</role>
+        <role>Java Developer (inactive)</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Sebastien Le Callonnec</name>
+      <id>slecallonnec</id>
+      <email>slecallonnec@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer (inactive)</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Manuel Laflamme</name>
+      <id>mlaflamm</id>
+      <organization>Oz Communication</organization>
+      <roles>
+        <role>Project Founder (inactive)</role>
+        <!--  <role>Java Developer</role> -->
+      </roles>
+    </developer>
+    <developer>
+      <name>Benjamin Cox</name>
+      <id>bdrum</id>
+      <roles>
+        <role>Java Developer (inactive)</role>
+        <!--  <role>Original Ant Task Contributor</role> -->
       </roles>
     </developer>
     <developer>
@@ -117,41 +143,16 @@
       <email>f.spinazzi@masterhouse.it</email>
       <organization>Master House S.r.l</organization>
       <roles>
-        <role>Java Developer</role>
+        <role>Java Developer (inactive)</role>
         <!--  <role>DB2 Contributor</role> -->
-      </roles>
-    </developer>
-    <developer>
-      <name>Manuel Laflamme</name>
-      <id>mlaflamm</id>
-      <organization>Oz Communication</organization>
-      <roles>
-        <role>Project Founder</role>
-        <!--  <role>Java Developer</role> -->
       </roles>
     </developer>
     <developer>
       <name>Timothy J. Ruppert</name>
       <id>zieggy</id>
       <roles>
-        <role>Java Developer</role>
+        <role>Java Developer (inactive)</role>
         <!--  <role>Original Ant Task Contributor</role> -->
-      </roles>
-    </developer>
-    <developer>
-      <name>Sebastien Le Callonnec</name>
-      <id>slecallonnec</id>
-      <email>slecallonnec@users.sourceforge.net</email>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Matthias Gommeringer</name>
-      <id>gommma</id>
-      <email>gommma@users.sourceforge.net</email>
-      <roles>
-        <role>Java Developer</role>
       </roles>
     </developer>
   </developers>
