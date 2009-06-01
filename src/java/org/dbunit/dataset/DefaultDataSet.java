@@ -43,11 +43,9 @@ public class DefaultDataSet extends AbstractDataSet
      */
     private static final Logger logger = LoggerFactory.getLogger(DefaultDataSet.class);
 
-    private final OrderedTableNameMap _tableMap;
-
     public DefaultDataSet()
     {
-        _tableMap = super.createTableNameMap();
+    	super();
     }
 
     /**
@@ -58,7 +56,6 @@ public class DefaultDataSet extends AbstractDataSet
     public DefaultDataSet(boolean caseSensitiveTableNames)
     {
         super(caseSensitiveTableNames);
-        _tableMap = super.createTableNameMap();
     }
 
     public DefaultDataSet(ITable table) throws AmbiguousTableNameException
@@ -85,8 +82,6 @@ public class DefaultDataSet extends AbstractDataSet
     {
         super(caseSensitiveTableNames);
         
-        _tableMap = super.createTableNameMap();
-        
         for (int i = 0; i < tables.length; i++)
         {
             addTable(tables[i]);
@@ -100,7 +95,31 @@ public class DefaultDataSet extends AbstractDataSet
     public void addTable(ITable table) throws AmbiguousTableNameException
     {
         logger.debug("addTable(table={}) - start", table);
-        _tableMap.add(table.getTableMetaData().getTableName(), table);
+        
+        this.initialize();
+        
+        super._orderedTableNameMap.add(table.getTableMetaData().getTableName(), table);
+    }
+
+    /**
+     * Initializes the {@link _orderedTableNameMap} of the parent class if it is not initialized yet.
+     * @throws DataSetException
+     * @since 2.4.6
+     */
+    protected void initialize()
+    {
+        logger.debug("initialize() - start");
+        
+        if(_orderedTableNameMap != null)
+        {
+            logger.debug("The table name map has already been initialized.");
+            // already initialized
+            return;
+        }
+       
+        // Gather all tables in the OrderedTableNameMap which also makes the duplicate check
+        _orderedTableNameMap = this.createTableNameMap();
+
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -110,8 +129,10 @@ public class DefaultDataSet extends AbstractDataSet
             throws DataSetException
     {
         logger.debug("createIterator(reversed={}) - start", Boolean.toString(reversed));
-
-        ITable[] tables = (ITable[])_tableMap.orderedValues().toArray(new ITable[0]);
+        
+        this.initialize();
+        
+        ITable[] tables = (ITable[])_orderedTableNameMap.orderedValues().toArray(new ITable[0]);
         return new DefaultTableIterator(tables, reversed);
     }
 }

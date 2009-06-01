@@ -36,7 +36,9 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractDataSet implements IDataSet
 {
-    private OrderedTableNameMap _orderedTableNameMap;
+    //TODO (matthias) Use a DataSetBuilder PLUS IDataSet to avoid this ugly lazy initialization with loads of protected internals a user must know...
+    
+    protected OrderedTableNameMap _orderedTableNameMap;
     
     /**
      * Whether or not table names of this dataset are case sensitive.
@@ -205,7 +207,7 @@ public abstract class AbstractDataSet implements IDataSet
         sb.append("]");
         return sb.toString();
     }
-    
+
 }
 
 
