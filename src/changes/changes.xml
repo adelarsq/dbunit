@@ -11,6 +11,7 @@
 
   <body>
     <release version="2.4.6-SNAPSHOT" date="TBD" description="(no description)">
+      <action dev="felipeal" type="update">Changed some verbose logging statements from INFO to DEBUG level</action>
       <action dev="gommma" type="fix" issue="2797698" due-to="mkienenb">DefaultDataSet is incompatible w/ AbstractDataSet's IDataSet</action>
     </release>
     
