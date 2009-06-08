@@ -549,7 +549,7 @@ public class SQLHelper {
     }
 
     /**
-     * Checks whether two given values are unequal and if so print a log message (level INFO)
+     * Checks whether two given values are unequal and if so print a log message (level DEBUG)
      * @param oldValue The old value of a property
      * @param newValue The new value of a property
      * @param message The message to be logged
@@ -561,7 +561,7 @@ public class SQLHelper {
         if(logger.isInfoEnabled())
         {
             if(oldValue != null && !oldValue.equals(newValue))
-                logger.info("{}. {} oldValue={} newValue={}", new Object[] {source, message, oldValue, newValue});
+                logger.debug("{}. {} oldValue={} newValue={}", new Object[] {source, message, oldValue, newValue});
         }
     }
 
