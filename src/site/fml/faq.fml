@@ -23,12 +23,21 @@
       </answer>
     </faq>
 
+    <faq id="ddl">
+      <question>
+        Can I use DbUnit in order to check and execute DDL statements?
+      </question>
+      <answer>
+      <p><i>No.</i> DbUnit is not intended to track or test structural DB changes. For this purpose check out <a href="http://www.liquibase.org/">liquibase</a>.</p>
+      </answer>
+    </faq>
+    
     <faq id="p6spy">
       <question>
      How to see SQL statements issued by DbUnit using P6Spy?
       </question>
       <answer>
-     <p><a href="http://www.p6spy.com">P6Spy</a> is a transparent JDBC proxy-driver 
+     <p><a href="http://www.p6spy.com/">P6Spy</a> is a transparent JDBC proxy-driver 
       which log the statements performed against the actual driver you normally would use.
       Using p6spy allows to log the SQL statements issued by DbUnit.
       </p>
