@@ -103,7 +103,7 @@ class XlsTable extends AbstractTable
             // Bugfix for issue ID 2818981 - if a cell has a formatting but no name also ignore it
             if(columnName.length()<=0)
             {
-                logger.debug("The column name of column # {} is empty - will skip here assuming the last column was reached", Integer.valueOf(i));
+                logger.debug("The column name of column # {} is empty - will skip here assuming the last column was reached", String.valueOf(i));
                 break;
             }
             
@@ -285,13 +285,6 @@ class XlsTable extends AbstractTable
         }
         else {
             result = toBigDecimal(cellValue);
-//        	resultString=String.valueOf(cellValue);
-//        	// To ensure that intergral numbers do not have decimal point and trailing zero
-//        	// (to restore backward compatibility and provide a string representation consistent with Excel)
-//        	if (resultString.endsWith(".0")) {
-//        		resultString=resultString.substring(0,resultString.length()-2);
-//        	}
-//            result = new BigDecimal(resultString);
         }
         return result;
     }
