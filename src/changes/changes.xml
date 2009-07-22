@@ -14,6 +14,7 @@
       <action dev="felipeal" type="update">Changed some verbose logging statements from INFO to DEBUG level</action>
       <action dev="gommma" type="fix" issue="2797698" due-to="mkienenb">DefaultDataSet is incompatible w/ AbstractDataSet's IDataSet</action>
       <action dev="gommma" type="fix" issue="2818981" due-to="verreckenk">XlsTable - empty excel columns cause problem</action>
+      <action dev="gommma" type="add" issue="2824505" due-to="agnul">Support for Postgres' inet types</action>
     </release>
     
     <release version="2.4.5" date="May 22, 2009" description="Bugfixes and some few additions">

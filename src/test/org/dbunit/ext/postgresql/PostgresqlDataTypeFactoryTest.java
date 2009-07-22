@@ -39,7 +39,7 @@ public class PostgresqlDataTypeFactoryTest extends TestCase {
     /**
      * Test of createDataType method, of class PostgresqlDataTypeFactory.
      */
-    public void testCreateDataType() throws Exception {
+    public void testCreateUuidType() throws Exception {
         
         PostgresqlDataTypeFactory instance = new PostgresqlDataTypeFactory();
         
@@ -49,14 +49,29 @@ public class PostgresqlDataTypeFactoryTest extends TestCase {
         
         DataType result = instance.createDataType(sqlType, sqlTypeName);
         assertTrue(result instanceof UuidType);
+    }
 
-        // Test a type from DefaultDataTypeFactory created properly
+    public void testCreateInetType() throws Exception {
+        
+        PostgresqlDataTypeFactory instance = new PostgresqlDataTypeFactory();
+        
+        // Test inet type created properly
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "inet";
+        
+        DataType result = instance.createDataType(sqlType, sqlTypeName);
+        assertTrue(result instanceof InetType);
+    }
 
-        sqlType = Types.INTEGER;
-        sqlTypeName = "int";
-        result = instance.createDataType(sqlType, sqlTypeName);
+    public void testCreateDefaultType() throws Exception {
+
+        PostgresqlDataTypeFactory instance = new PostgresqlDataTypeFactory();
+
+        int sqlType = Types.INTEGER;
+        String sqlTypeName = "int";
+
+        DataType result = instance.createDataType(sqlType, sqlTypeName);
         assertTrue(result instanceof IntegerDataType);
-
     }
 
 }

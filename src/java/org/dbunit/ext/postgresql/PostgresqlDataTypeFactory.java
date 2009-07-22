@@ -53,6 +53,8 @@ public class PostgresqlDataTypeFactory
             // Treat Postgresql UUID types as VARCHARS
             if ("uuid".equals(sqlTypeName))
                 return new UuidType();
+            if ("inet".equals(sqlTypeName))
+                return new InetType();
 
         return super.createDataType(sqlType, sqlTypeName);
     }
