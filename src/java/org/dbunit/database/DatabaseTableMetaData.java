@@ -70,6 +70,8 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
     private Column[] _columns;
     private Column[] _primaryKeys;
     private boolean _caseSensitiveMetaData;
+	//added by hzhan032
+    private IColumnFilter lastKeyFilter;
 
     
     DatabaseTableMetaData(String tableName, IDatabaseConnection connection) throws DataSetException
@@ -362,24 +364,25 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
         return _columns;
     }
 
+    private boolean primaryKeyFilterChanged(IColumnFilter keyFilter)
+    {
+        return (keyFilter != lastKeyFilter);
+    }
+
     public Column[] getPrimaryKeys() throws DataSetException
     {
         logger.debug("getPrimaryKeys() - start");
-
-        if (_primaryKeys == null)
-        {
-            try
-            {
                 DatabaseConfig config = _connection.getConfig();
-                IColumnFilter primaryKeysFilter = (IColumnFilter)config.getProperty(
+        IColumnFilter primaryKeysFilter = (IColumnFilter) config.getProperty(
                         DatabaseConfig.PROPERTY_PRIMARY_KEY_FILTER);
-                if (primaryKeysFilter != null)
-                {
+
+        if (_primaryKeys == null || primaryKeyFilterChanged(primaryKeysFilter)) {
+            try {
+                lastKeyFilter = primaryKeysFilter;
+                if (primaryKeysFilter != null) {
                 	_primaryKeys = Columns.getColumns(getTableName(), getColumns(),
                             primaryKeysFilter);
-                }
-                else
-                {
+                } else {
                 	String[] pkNames = getPrimaryKeyNames();
                     _primaryKeys = Columns.getColumns(pkNames, getColumns());
                 }
