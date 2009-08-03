@@ -134,6 +134,21 @@ public class IntegerDataTypeTest extends AbstractDataTypeTest
         }
     }
 
+    /**
+     * Empty string should be treated the same as null
+     * @throws Exception
+     * @since 2.4.6
+     */
+    public void testTypeCastEmptyString() throws Exception
+    {
+        String emptyString = "";
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            DataType type = TYPES[i];
+            assertEquals("typecast " + type, null, type.typeCast(emptyString));
+        }
+    }
+    
     public void testTypeCastNone() throws Exception
     {
         for (int i = 0; i < TYPES.length; i++)

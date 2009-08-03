@@ -143,7 +143,15 @@ public class BooleanDataType extends AbstractDataType
     		logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
         		new Object[]{value, new Integer(column), statement} );
 
-        statement.setBoolean(column, ((Boolean)typeCast(value)).booleanValue());
+    	Boolean castValue = (Boolean)typeCast(value);
+    	if(castValue==null)
+    	{
+    	    statement.setNull(column, Types.BOOLEAN);
+    	}
+    	else
+    	{
+    	    statement.setBoolean(column, castValue.booleanValue());
+    	}
     }
 
 }

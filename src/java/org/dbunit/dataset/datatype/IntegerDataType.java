@@ -65,9 +65,16 @@ public class IntegerDataType extends AbstractDataType
             return new Integer(((Number)value).intValue());
         }
 
+        // Bugfix in release 2.4.6
+        String stringValue = value.toString().trim();
+        if(stringValue.length()<=0)
+        {
+            return null;
+        }
+        
         try
         {
-            return typeCast(new BigDecimal(value.toString()));
+            return typeCast(new BigDecimal(stringValue));
         }
         catch (java.lang.NumberFormatException e)
         {
