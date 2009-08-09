@@ -17,6 +17,7 @@
       <action dev="gommma" type="add" issue="2824505" due-to="agnul">Support for Postgres' inet types</action>
       <action dev="gommma" type="fix" issue="2823165" due-to="porkchop009">primaryFilterKey is not always respected</action>
       <action dev="gommma" type="fix" issue="2831696" due-to="kalpana">Nullable tinyint on mysql cannot be inserted</action>
+      <action dev="gommma" type="fix" issue="2806016" due-to="gommma">Unify dbunit features & properties</action>
     </release>
     
     <release version="2.4.5" date="May 22, 2009" description="Bugfixes and some few additions">

@@ -23,9 +23,7 @@ package org.dbunit.database;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.database.statement.PreparedStatementFactory;
@@ -71,6 +69,17 @@ public class DatabaseConfig
 	public static final String PROPERTY_METADATA_HANDLER =
 	        "http://www.dbunit.org/properties/metadataHandler";
 
+    public static final String FEATURE_CASE_SENSITIVE_TABLE_NAMES =
+        "http://www.dbunit.org/features/caseSensitiveTableNames";
+    public static final String FEATURE_QUALIFIED_TABLE_NAMES =
+        "http://www.dbunit.org/features/qualifiedTableNames";
+    public static final String FEATURE_BATCHED_STATEMENTS =
+        "http://www.dbunit.org/features/batchedStatements";
+    public static final String FEATURE_DATATYPE_WARNING =
+        "http://www.dbunit.org/features/datatypeWarning";
+    public static final String FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES =
+        "http://www.dbunit.org/features/skipOracleRecycleBinTables";
+
     /**
      * A list of all properties as {@link ConfigProperty} objects. 
      * The objects contain the allowed java type and whether or not a property is nullable.
@@ -85,18 +94,12 @@ public class DatabaseConfig
         new ConfigProperty(PROPERTY_BATCH_SIZE, Integer.class, false),
         new ConfigProperty(PROPERTY_FETCH_SIZE, Integer.class, false),
         new ConfigProperty(PROPERTY_METADATA_HANDLER, IMetadataHandler.class, false),
+        new ConfigProperty(FEATURE_CASE_SENSITIVE_TABLE_NAMES, Object.class, false),
+        new ConfigProperty(FEATURE_QUALIFIED_TABLE_NAMES, Object.class, false),
+        new ConfigProperty(FEATURE_BATCHED_STATEMENTS, Object.class, false),
+        new ConfigProperty(FEATURE_DATATYPE_WARNING, Object.class, false),
+        new ConfigProperty(FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES, Object.class, false),
     };
-
-    public static final String FEATURE_CASE_SENSITIVE_TABLE_NAMES =
-            "http://www.dbunit.org/features/caseSensitiveTableNames";
-    public static final String FEATURE_QUALIFIED_TABLE_NAMES =
-            "http://www.dbunit.org/features/qualifiedTableNames";
-    public static final String FEATURE_BATCHED_STATEMENTS =
-            "http://www.dbunit.org/features/batchedStatements";
-    public static final String FEATURE_DATATYPE_WARNING =
-            "http://www.dbunit.org/features/datatypeWarning";
-    public static final String FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES =
-            "http://www.dbunit.org/features/skipOracleRecycleBinTables";
 
     /**
      * A list of all features as strings
@@ -122,7 +125,6 @@ public class DatabaseConfig
 
 
 
-    private Set _featuresSet = new HashSet();
     private Map _propertyMap = new HashMap();
     
     private final Configurator configurator;
@@ -162,16 +164,9 @@ public class DatabaseConfig
      */
     public void setFeature(String name, boolean value)
     {
-        logger.debug("setFeature(name={}, value={}) - start", name, String.valueOf(value));
+        logger.trace("setFeature(name={}, value={}) - start", name, String.valueOf(value));
 
-        if (value)
-        {
-            _featuresSet.add(name);
-        }
-        else
-        {
-            _featuresSet.remove(name);
-        }
+        setProperty(name, Boolean.valueOf(value));
     }
 
     /**
@@ -182,8 +177,24 @@ public class DatabaseConfig
      */
     public boolean getFeature(String name)
     {
-        logger.debug("getFeature(name={}) - start", name);
-        return _featuresSet.contains(name);
+        logger.trace("getFeature(name={}) - start", name);
+        
+        Object property = getProperty(name);
+        if(property == null)
+        {
+            return false;
+        }
+        else if(property instanceof Boolean)
+        {
+            Boolean feature = (Boolean) property;
+            return feature.booleanValue();
+        }
+        else
+        {
+            String propString = String.valueOf(property);
+            Boolean feature = Boolean.valueOf(propString);
+            return feature.booleanValue();
+        }
     }
 
     /**
@@ -194,7 +205,7 @@ public class DatabaseConfig
      */
     public void setProperty(String name, Object value)
     {
-        logger.debug("setProperty(name={}, value={}) - start", name, value);
+        logger.trace("setProperty(name={}, value={}) - start", name, value);
         
         // Validate if the type of the given object is correct
         checkObjectAllowed(name, value);
@@ -211,7 +222,9 @@ public class DatabaseConfig
      */
     public Object getProperty(String name)
     {
-       return _propertyMap.get(name);
+        logger.trace("getProperty(name={}) - start", name);
+
+        return _propertyMap.get(name);
     }
 
     /**
@@ -222,6 +235,8 @@ public class DatabaseConfig
      */
     protected void checkObjectAllowed(String property, Object value)
     {
+        logger.trace("checkObjectAllowed(property={}, value={}) - start", property, value);
+
         ConfigProperty prop = findByName(property);
         
         if(prop != null)
@@ -277,7 +292,6 @@ public class DatabaseConfig
     {
     	StringBuffer sb = new StringBuffer();
     	sb.append(getClass().getName()).append("[");
-    	sb.append("_featuresSet=").append(_featuresSet);
     	sb.append(", _propertyMap=").append(_propertyMap);
     	sb.append("]");
     	return sb.toString();

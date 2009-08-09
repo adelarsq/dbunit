@@ -96,4 +96,20 @@ public class DatabaseConfigTest extends TestCase
         assertEquals(null, config.getProperty(DatabaseConfig.PROPERTY_PRIMARY_KEY_FILTER));
     }
 
+    public void testSetFeatureViaSetPropertyMethod() throws Exception
+    {
+        DatabaseConfig config = new DatabaseConfig();
+        config.setProperty(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, "true");
+        assertEquals("true", config.getProperty(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
+        assertEquals(true, config.getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
+    }
+
+    public void testSetFeatureViaSetFeatureMethod() throws Exception
+    {
+        DatabaseConfig config = new DatabaseConfig();
+        config.setFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, true);
+        assertEquals(Boolean.valueOf(true), config.getProperty(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
+        assertEquals(true, config.getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
+    }
+
 }

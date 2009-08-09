@@ -8,7 +8,8 @@
         or not, using the <code>getFeature</code>, <code>setFeature</code>, 
         <code>getProperty</code>, and <code>setProperty</code> methods 
         of <code>DatabaseConfig</code>. </p>
-      <p>While feature flags are always boolean, property values are arbitrary objects. </p>
+      <p>While feature flags are always boolean, property values are arbitrary objects.
+         Note that starting with dbunit 2.4.6 features can also be set using the setProperty method.</p>
         <p>The following sample displays the <code>batched statement</code> feature status:
       <source><![CDATA[  String id = "http://www.dbunit.org/features/batchedStatements"; 
   DatabaseConfig config = connection.getConfig(); 
