@@ -53,10 +53,36 @@ public class PostgresqlDataTypeFactory
             // Treat Postgresql UUID types as VARCHARS
             if ("uuid".equals(sqlTypeName))
                 return new UuidType();
-            if ("inet".equals(sqlTypeName))
+            else if ("inet".equals(sqlTypeName))
                 return new InetType();
+            else
+            {
+                // Finally check whether the user defined a custom datatype
+                if(isEnumType(sqlTypeName))
+                {
+                    if(logger.isDebugEnabled())
+                        logger.debug("Custom enum type used for sqlTypeName {} (sqlType '{}')", 
+                                new Object[] {sqlTypeName, new Integer(sqlType)} );
+                    return new GenericEnumType(sqlTypeName);
+                }
+            }
 
         return super.createDataType(sqlType, sqlTypeName);
+    }
+
+    /**
+     * Returns a data type for the given sql type name if the user wishes one.
+     * <b>Designed to be overridden by custom implementations extending this class.</b>
+     * Override this method if you have a custom enum type in the database and want
+     * to map it via dbunit.
+     * @param sqlTypeName The sql type name for which users can specify a custom data type.
+     * @return <code>null</code> if the given type name is not a custom
+     * type which is the default implementation.
+     * @since 2.4.6 
+     */
+    public boolean isEnumType(String sqlTypeName) 
+    {
+        return false;
     }
 
 }

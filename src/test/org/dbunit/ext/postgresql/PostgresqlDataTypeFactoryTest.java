@@ -31,7 +31,7 @@ import org.dbunit.dataset.datatype.IntegerDataType;
  * @since 2.4.5 (Apr 27, 2009)
  */
 public class PostgresqlDataTypeFactoryTest extends TestCase {
-    
+
     public PostgresqlDataTypeFactoryTest(String testName) {
         super(testName);
     }
@@ -40,27 +40,47 @@ public class PostgresqlDataTypeFactoryTest extends TestCase {
      * Test of createDataType method, of class PostgresqlDataTypeFactory.
      */
     public void testCreateUuidType() throws Exception {
-        
+
         PostgresqlDataTypeFactory instance = new PostgresqlDataTypeFactory();
-        
+
         // Test UUID type created properly
         int sqlType = Types.OTHER;
         String sqlTypeName = "uuid";
-        
+
         DataType result = instance.createDataType(sqlType, sqlTypeName);
         assertTrue(result instanceof UuidType);
     }
 
     public void testCreateInetType() throws Exception {
-        
+
         PostgresqlDataTypeFactory instance = new PostgresqlDataTypeFactory();
-        
+
         // Test inet type created properly
         int sqlType = Types.OTHER;
         String sqlTypeName = "inet";
-        
+
         DataType result = instance.createDataType(sqlType, sqlTypeName);
         assertTrue(result instanceof InetType);
+    }
+
+    public void testCreateEnumType() throws Exception {
+
+        PostgresqlDataTypeFactory instance = new PostgresqlDataTypeFactory(){
+            public boolean isEnumType(String sqlTypeName) {
+                if(sqlTypeName.equalsIgnoreCase("abc_enum")){
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        // Test Enum type created properly
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "abc_enum";
+
+        DataType result = instance.createDataType(sqlType, sqlTypeName);
+        assertTrue(result instanceof GenericEnumType);
+        assertEquals("abc_enum", ((GenericEnumType)result).getSqlTypeName());
     }
 
     public void testCreateDefaultType() throws Exception {

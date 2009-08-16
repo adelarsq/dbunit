@@ -124,5 +124,16 @@ public class DefaultDataTypeFactory implements IDataTypeFactory
     	this._toleratedDeltaMap.addToleratedDelta(delta);
     }
     
-
+    /**
+     * Returns a string representation of this {@link DefaultDataTypeFactory} instance
+     * @since 2.4.6
+     */
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append(getClass().getName()).append("[");
+        sb.append("_toleratedDeltaMap=").append(_toleratedDeltaMap);
+        sb.append("]");
+        return sb.toString();
+    }
 }
