@@ -19,6 +19,7 @@
       <action dev="gommma" type="fix" issue="2831696" due-to="kalpana">Nullable tinyint on mysql cannot be inserted</action>
       <action dev="gommma" type="fix" issue="2806016" due-to="gommma">Unify dbunit features & properties</action>
       <action dev="gommma" type="add" issue="2833897" due-to="user2037">Support for Postgresql Enum</action>
+      <action dev="gommma" type="fix" issue="2838922" due-to="matthieus">DB2 problem with schema names</action>
     </release>
     
     <release version="2.4.5" date="May 22, 2009" description="Bugfixes and some few additions">

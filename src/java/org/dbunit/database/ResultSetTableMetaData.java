@@ -228,6 +228,12 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
         String tableName = rsMetaData.getTableName(rsIndex);
         String columnName = rsMetaData.getColumnName(rsIndex);
         
+        // Due to a bug in the DB2 JDBC driver we have to trim the names
+        catalogName = trim(catalogName);
+        schemaName = trim(schemaName);
+        tableName = trim(tableName);
+        columnName = trim(columnName);
+        
         // Check if at least one of catalog/schema/table attributes is
         // not applicable (i.e. "" is returned). If so do not try
         // to get the column metadata from the DatabaseMetaData object.
@@ -277,6 +283,17 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
         }
     }
 
+
+    /**
+     * Trims the given string in a null-safe way
+     * @param value
+     * @return
+     * @since 2.4.6
+     */
+    private String trim(String value) 
+    {
+        return (value==null ? null : value.trim());
+    }
 
     private void scrollTo(ResultSet columnsResultSet, IMetadataHandler metadataHandler,
             String catalog, String schema, String table, String column) 
