@@ -693,7 +693,32 @@ public class MyXmlWriter extends org.dbunit.dataset.xml.XmlDataSetWriter {
       </answer>
     </faq>
 
+    <faq id="postgresqlEnumTypes">
+      <question>
+      Are Postgresql enum types supported by dbunit?
+      </question>
+      <answer>
+        <p>
+          There is limited support for postgresql enums because only reading and writing strings is supported since dbunit 2.4.6.
+          To do so you have to override the method "isEnumType" in the PostgresqlDataTypeFactory like this:
+          <source>
+PostgresqlDataTypeFactory factory = new PostgresqlDataTypeFactory(){
+  public boolean isEnumType(String sqlTypeName) {
+    if(sqlTypeName.equalsIgnoreCase("abc_enum")){
+      return true;
+    }
+    return false;
+  }
+}; 
+          </source>
+        </p>
+      </answer>
+    </faq>
+
+
   </part>
+
+
 
 
 
@@ -808,7 +833,6 @@ public class MyXmlWriter extends org.dbunit.dataset.xml.XmlDataSetWriter {
         on the DatabaseConfig. See <a href="properties.html#metadatahandler">properties</a> page for more.</p>
         </answer>
     </faq> 
-    
     
   </part>
 </faqs>
