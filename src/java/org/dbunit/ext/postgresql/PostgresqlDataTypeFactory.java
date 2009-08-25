@@ -53,6 +53,9 @@ public class PostgresqlDataTypeFactory
             // Treat Postgresql UUID types as VARCHARS
             if ("uuid".equals(sqlTypeName))
                 return new UuidType();
+        	// Intervals are custom types
+            else if ("interval".equals(sqlTypeName))
+            	return new IntervalType();
             else if ("inet".equals(sqlTypeName))
                 return new InetType();
             else

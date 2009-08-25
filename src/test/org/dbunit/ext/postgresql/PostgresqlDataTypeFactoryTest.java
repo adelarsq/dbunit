@@ -28,6 +28,7 @@ import org.dbunit.dataset.datatype.IntegerDataType;
 /**
  *
  * @author Jarvis Cochrane (jarvis@cochrane.com.au)
+ * @author Roberto Lo Giacco (rlogiacco@users.sourceforge.ent)
  * @since 2.4.5 (Apr 27, 2009)
  */
 public class PostgresqlDataTypeFactoryTest extends TestCase {
@@ -49,6 +50,18 @@ public class PostgresqlDataTypeFactoryTest extends TestCase {
 
         DataType result = instance.createDataType(sqlType, sqlTypeName);
         assertTrue(result instanceof UuidType);
+    }
+    
+    public void testCreateIntervalType() throws Exception {
+
+        PostgresqlDataTypeFactory instance = new PostgresqlDataTypeFactory();
+
+        // Test interval type created properly
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "interval";
+
+        DataType result = instance.createDataType(sqlType, sqlTypeName);
+        assertTrue(result instanceof IntervalType);
     }
 
     public void testCreateInetType() throws Exception {
