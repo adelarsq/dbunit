@@ -1,4 +1,4 @@
-/*
+/**
  *
  * The DbUnit Database Testing Framework
  * Copyright (C)2002-2004, DbUnit.org
@@ -36,13 +36,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Adapter to handle conversion between Postgresql
- * native Interval type and strings.
+ * native Interval type and Strings.
  *
  * @author James A. Russo (jr@halo3.net)
- * @since 2.4.6 (Aug 25, 2009)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.4.6
  */
-public class IntervalType
-        extends AbstractDataType {
+public class IntervalType extends AbstractDataType {
 
     /**
      * Logger for this class
@@ -55,7 +56,7 @@ public class IntervalType
     }
 
     public Object getSqlValue(int column, ResultSet resultSet) throws SQLException, TypeCastException {
-    	return resultSet.getString(column);
+        return resultSet.getString(column);
     }
 
     public void setSqlValue(Object interval, int column,
@@ -68,13 +69,13 @@ public class IntervalType
     }
 
     private Object getInterval(Object value, Connection connection) throws TypeCastException { 
-    	logger.debug("getInterval(value={}, connection={}) - start", value, connection);
+        logger.debug("getInterval(value={}, connection={}) - start", value, connection);
 
         Object tempInterval = null;
 
         try {
             Class aPGIntervalClass = super.loadClass("org.postgresql.util.PGInterval", connection);
-            Constructor ct = aPGIntervalClass.getConstructor(null);
+            Constructor ct = aPGIntervalClass.getConstructor(new Class[]{String.class});
             tempInterval = ct.newInstance(new Object[]{value});
         } catch (ClassNotFoundException e) {
             throw new TypeCastException(value, this, e);
