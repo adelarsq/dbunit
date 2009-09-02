@@ -27,6 +27,7 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.BinaryStreamDataType;
+import org.dbunit.dataset.datatype.StringDataType;
 
 import java.sql.Types;
 
@@ -51,7 +52,10 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
     
     public static final DataType LONG_RAW = new BinaryStreamDataType(
             "LONG RAW", Types.LONGVARBINARY);
+    
+    public static final DataType ROWID_TYPE = new StringDataType("ROWID", Types.OTHER);
 
+    
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
     	if(logger.isDebugEnabled())
@@ -128,6 +132,12 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
         if ("BINARY_FLOAT".equals(sqlTypeName)) 
         {
             return DataType.FLOAT;
+        }
+
+        // ROWID
+        if ("ROWID".equals(sqlTypeName))
+        {
+            return ROWID_TYPE;
         }
 
         return super.createDataType(sqlType, sqlTypeName);
