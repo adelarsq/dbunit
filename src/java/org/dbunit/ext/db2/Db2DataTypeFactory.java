@@ -21,15 +21,16 @@
 
 package org.dbunit.ext.db2;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.sql.Types;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.StringDataType;
-
-import java.sql.Types;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Specialized factory that recognizes DB2 data types.
@@ -47,12 +48,25 @@ public class Db2DataTypeFactory extends DefaultDataTypeFactory
      */
     private static final Logger logger = LoggerFactory.getLogger(Db2DataTypeFactory.class);
 
+    /**
+     * Database product names supported.
+     */
+    private static final Collection DATABASE_PRODUCTS = Arrays.asList(new String[] {"db2"});
+
     static final DataType DB2XML_XMLVARCHAR = new StringDataType(
             "DB2XML.XMLVARCHAR", Types.DISTINCT);
     static final DataType DB2XML_XMLCLOB = new StringDataType(
             "DB2XML.XMLCLOB", Types.DISTINCT);
     static final DataType DB2XML_XMLFILE = new StringDataType(
             "DB2XML.XMLFILE", Types.DISTINCT);
+
+    /**
+     * @see org.dbunit.dataset.datatype.IDbProductRelatable#getValidDbProducts()
+     */
+    public Collection getValidDbProducts()
+    {
+      return DATABASE_PRODUCTS;
+    }
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {

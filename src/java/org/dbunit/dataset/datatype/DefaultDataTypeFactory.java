@@ -21,6 +21,8 @@
 package org.dbunit.dataset.datatype;
 
 import java.sql.Types;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.dbunit.dataset.datatype.ToleratedDeltaMap.ToleratedDelta;
 import org.slf4j.Logger;
@@ -33,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * @since May 17, 2003
  * @version $Revision$
  */
-public class DefaultDataTypeFactory implements IDataTypeFactory
+public class DefaultDataTypeFactory implements IDataTypeFactory, IDbProductRelatable
 {
 
 	private ToleratedDeltaMap _toleratedDeltaMap = new ToleratedDeltaMap();
@@ -42,6 +44,18 @@ public class DefaultDataTypeFactory implements IDataTypeFactory
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(DefaultDataTypeFactory.class);
+    /**
+     * Database product names supported.
+     */
+    private static final Collection DATABASE_PRODUCTS = Arrays.asList(new String[]{"derby"});
+
+    /**
+     * @see IDbProductRelatable#getValidDbProducts()
+     */
+    public Collection getValidDbProducts()
+    {
+      return DATABASE_PRODUCTS;
+    }
 
     /**
      * @see org.dbunit.dataset.datatype.IDataTypeFactory#createDataType(int, java.lang.String)

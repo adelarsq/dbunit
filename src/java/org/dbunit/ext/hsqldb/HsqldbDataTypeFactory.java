@@ -20,12 +20,14 @@
  */
 package org.dbunit.ext.hsqldb;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Specialized factory that recognizes HSQLDB data types.
@@ -42,6 +44,18 @@ public class HsqldbDataTypeFactory extends DefaultDataTypeFactory
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(HsqldbDataTypeFactory.class);
+    /**
+     * Database product names supported.
+     */
+    private static final Collection DATABASE_PRODUCTS = Arrays.asList(new String[] {"hsql"});
+
+    /**
+     * @see org.dbunit.dataset.datatype.IDbProductRelatable#getValidDbProducts()
+     */
+    public Collection getValidDbProducts()
+    {
+      return DATABASE_PRODUCTS;
+    }
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {

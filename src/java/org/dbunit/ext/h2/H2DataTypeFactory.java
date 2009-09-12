@@ -20,6 +20,18 @@
  */
 package org.dbunit.ext.h2;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import java.util.Arrays;
+import java.util.Collection;
+
+import java.util.Arrays;
+import java.util.Collection;
+
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
@@ -41,6 +53,18 @@ public class H2DataTypeFactory extends DefaultDataTypeFactory
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(H2DataTypeFactory.class);
+    /**
+     * Database product names supported.
+     */
+    private static final Collection DATABASE_PRODUCTS = Arrays.asList(new String[] {"h2"});
+
+    /**
+     * @see org.dbunit.dataset.datatype.IDbProductRelatable#getValidDbProducts()
+     */
+    public Collection getValidDbProducts()
+    {
+      return DATABASE_PRODUCTS;
+    }
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {

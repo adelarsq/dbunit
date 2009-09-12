@@ -20,12 +20,14 @@
  */
 package org.dbunit.ext.mssql;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Specialized factory that recognizes MS SQL Server data types.
@@ -41,10 +43,22 @@ public class MsSqlDataTypeFactory extends DefaultDataTypeFactory
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(MsSqlDataTypeFactory.class);
+    /**
+     * Database product names supported.
+     */
+    private static final Collection DATABASE_PRODUCTS = Arrays.asList(new String[] {"mssql", "Microsoft SQL Server"});
 
     public static final int NCHAR = -8;
     public static final int NVARCHAR = -9;
     public static final int NTEXT = -10;
+
+    /**
+     * @see org.dbunit.dataset.datatype.IDbProductRelatable#getValidDbProducts()
+     */
+    public Collection getValidDbProducts()
+    {
+      return DATABASE_PRODUCTS;
+    }
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {

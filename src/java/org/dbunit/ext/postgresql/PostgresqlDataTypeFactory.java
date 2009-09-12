@@ -20,12 +20,15 @@
  */
 package org.dbunit.ext.postgresql;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.sql.Types;
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
-import java.sql.Types;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Specialized factory that recognizes Postgresql data types.
@@ -36,14 +39,24 @@ import java.sql.Types;
  * @author manuel.laflamme
  * @since 2.4.5 (Apr 27, 2009)
  */
-public class PostgresqlDataTypeFactory
-        extends DefaultDataTypeFactory {
+public class PostgresqlDataTypeFactory extends DefaultDataTypeFactory {
 
     /**
      * Logger for this class
      */
-    private static final Logger logger = LoggerFactory.getLogger(
-            PostgresqlDataTypeFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(PostgresqlDataTypeFactory.class);
+    /**
+     * Database product names supported.
+     */
+    private static final Collection DATABASE_PRODUCTS = Arrays.asList(new String[] {"PostgreSQL"});
+
+    /**
+     * @see org.dbunit.dataset.datatype.IDbProductRelatable#getValidDbProducts()
+     */
+    public Collection getValidDbProducts()
+    {
+      return DATABASE_PRODUCTS;
+    }
 
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException {
         logger.debug("createDataType(sqlType={}, sqlTypeName={})",

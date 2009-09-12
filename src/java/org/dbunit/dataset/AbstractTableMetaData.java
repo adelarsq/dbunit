@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package org.dbunit.dataset;
 
 import java.sql.Connection;
@@ -26,32 +25,23 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.dbunit.dataset.datatype.IDbProductRelatable;
 import org.dbunit.dataset.filter.IColumnFilter;
-import org.dbunit.ext.db2.Db2DataTypeFactory;
-import org.dbunit.ext.h2.H2DataTypeFactory;
-import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
-import org.dbunit.ext.mssql.MsSqlDataTypeFactory;
-import org.dbunit.ext.mysql.MySqlDataTypeFactory;
-import org.dbunit.ext.oracle.Oracle10DataTypeFactory;
-import org.dbunit.ext.oracle.OracleDataTypeFactory;
-import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author Manuel Laflamme
- * @version $Revision$
- * @since Mar 8, 2002
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 1.0 (Mar 8, 2002)
  */
 public abstract class AbstractTableMetaData implements ITableMetaData
 {
@@ -62,8 +52,6 @@ public abstract class AbstractTableMetaData implements ITableMetaData
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(AbstractTableMetaData.class);
-
-    private DataTypeFactoryValidator dataTypeFactoryValidator = new DataTypeFactoryValidator();
 
     /**
      * Default constructor
@@ -170,136 +158,59 @@ public abstract class AbstractTableMetaData implements ITableMetaData
         IDataTypeFactory dataTypeFactory = (IDataTypeFactory)factoryObj;
         
     	// Validate, e.g. oracle metaData + oracleDataTypeFactory ==> OK
-    	Connection jdbcConnection = connection.getConnection();
-    	DatabaseMetaData metaData = jdbcConnection.getMetaData();
-    	String validationResult = dataTypeFactoryValidator.validate(metaData, dataTypeFactory);
-    	if(validationResult != null)
-    	{
-    		// Inform the user that we think he could get trouble with the current configuration
-    		logger.warn("Potential problem found: " + validationResult);
+        Connection jdbcConnection = connection.getConnection();
+        DatabaseMetaData metaData = jdbcConnection.getMetaData();
+    	String validationMessage = validateDataTypeFactory(dataTypeFactory, metaData);
+    	if(validationMessage!=null){
+            // Inform the user that we think he could get trouble with the current configuration
+            logger.warn("Potential problem found: " + validationMessage);
     	}
-        
-        return dataTypeFactory;
+
+    	return dataTypeFactory;
 	}
-    
-	
-	
+
 	/**
-	 * Utility to validate a given {@link IDataTypeFactory} against a given physical database system.
-	 * For details refer to {@link #validate(DatabaseMetaData, IDataTypeFactory)}.
-	 * 
-	 * @author gommma
-	 * @version $Revision$
-	 * @since 2.3.0
+	 * Verifies that the data type factory supports the database product on the connection.
+	 * If the data type factory is not valid for the connection, a warning is logged.
+	 * @param dataTypeFactory The data type factory to validate.
+	 * @param metaData The {@link DatabaseMetaData} needed to get the DB product name of the connection RDBMS.
+	 * @return A validation message if there is a potential problem or <code>null</code> if everything is fine.
+	 * @throws java.sql.SQLException A database problem.
 	 */
-	public static class DataTypeFactoryValidator
+	String validateDataTypeFactory(IDataTypeFactory dataTypeFactory, DatabaseMetaData metaData)
+	throws SQLException
 	{
-	    /**
-	     * Logger for this class
-	     */
-	    private static final Logger logger = LoggerFactory.getLogger(AbstractTableMetaData.class);
+	    if (!(dataTypeFactory instanceof IDbProductRelatable))
+	    {
+	        return null;
+	    }
+	    IDbProductRelatable productRelatable = (IDbProductRelatable) dataTypeFactory;
+	    String databaseProductName = metaData.getDatabaseProductName();
 
-		/**
-		 * Map that holds: {@link IDataTypeFactory} class ==> {@link Collection} [String validDbProductNames]
-		 */
-		private Map dataTypeFactoryToDbProductMap = new HashMap();
-		
-		public DataTypeFactoryValidator()
-		{
-			addValidCombinationInternal(Db2DataTypeFactory.class, "db2");
-//			addValidCombinationInternal(DefaultDataTypeFactory.class, "hsql");
-			addValidCombinationInternal(DefaultDataTypeFactory.class, "derby");
-			addValidCombinationInternal(PostgresqlDataTypeFactory.class, "PostgreSQL");
-			addValidCombinationInternal(H2DataTypeFactory.class, "h2");
-			addValidCombinationInternal(HsqldbDataTypeFactory.class, "hsql");
-			addValidCombinationInternal(MsSqlDataTypeFactory.class, "mssql");
-			addValidCombinationInternal(MsSqlDataTypeFactory.class, "Microsoft SQL Server");
-			addValidCombinationInternal(MySqlDataTypeFactory.class, "mysql");
-			addValidCombinationInternal(OracleDataTypeFactory.class, "oracle");
-			addValidCombinationInternal(Oracle10DataTypeFactory.class, "oracle");
-		}
-		
-		/**
-		 * @param iDataTypeFactoryImpl The class of the {@link IDataTypeFactory} to be validated
-		 * @param databaseProductName The database product name considered to be 
-		 * valid for the given {@link IDataTypeFactory}
-		 */
-		public void addValidCombination(Class iDataTypeFactoryImpl, String databaseProductName)
-		{
-			addValidCombinationInternal(iDataTypeFactoryImpl, databaseProductName);
-			
-		}
-		
-		private void addValidCombinationInternal(Class iDataTypeFactoryImpl, String databaseProductName)
-		{
-			logger.debug("addValidCombinationInternal(iDataTypeFactoryImpl={}, databaseProductName={}) - start", 
-					iDataTypeFactoryImpl, databaseProductName);
+	    Collection validDbProductCollection = productRelatable.getValidDbProducts();
+	    if (validDbProductCollection != null)
+	    {
+	        String lowerCaseDbProductName = databaseProductName.toLowerCase();
+	        for (Iterator iterator = validDbProductCollection.iterator(); iterator.hasNext();) {
+	            String validDbProduct = ((String) iterator.next()).toLowerCase();
+	            if(lowerCaseDbProductName.indexOf(validDbProduct) > -1) {
+	                logger.debug("The current database '{}' fits to the configured data type factory '{}'. Validation successful.",
+	                        databaseProductName, dataTypeFactory);
+	                return null;
+	            }
+	        }
+	    }
 
-			this.addValidCombinationInternal(iDataTypeFactoryImpl, new String[]{databaseProductName});
-		}
-		
-		private void addValidCombinationInternal(Class iDataTypeFactoryImpl, String[] databaseProductNameList)
-		{
-			logger.debug("addValidCombinationInternal(iDataTypeFactoryImpl={}, databaseProductNameList={}) - start", 
-					iDataTypeFactoryImpl, databaseProductNameList);
-
-			Set dbProductSet = (Set)this.dataTypeFactoryToDbProductMap.get(iDataTypeFactoryImpl);
-			if(dbProductSet == null)
-			{
-				dbProductSet = new HashSet();
-				this.dataTypeFactoryToDbProductMap.put(iDataTypeFactoryImpl, dbProductSet);
-			}
-			
-			for (int i = 0; i < databaseProductNameList.length; i++) 
-			{
-				if(databaseProductNameList[i] != null && databaseProductNameList[i].trim().length()>0)
-				{
-					dbProductSet.add(databaseProductNameList[i].toLowerCase());
-				}
-			}
-		}
-
-		/**
-		 * Validates if the database system is supported by the given {@link IDataTypeFactory}.
-		 * @param databaseMetaData The database metadata of the current database
-		 * @param dataTypeFactory The {@link IDataTypeFactory} to be validated with the given database metadata
-		 * @return <code>null</code> if the validation was successful. Otherwise a validation message
-		 * is returned with details about why the validation failed.
-		 * @throws SQLException 
-		 */
-		public String validate(DatabaseMetaData databaseMetaData, IDataTypeFactory dataTypeFactory) 
-		throws SQLException
-		{
-			Class dataTypeFactoryClass = dataTypeFactory.getClass();
-			String databaseProductName = databaseMetaData.getDatabaseProductName();
-
-			Collection validDbProductCollection = (Collection)this.dataTypeFactoryToDbProductMap.get(dataTypeFactoryClass);
-			if(validDbProductCollection != null)
-			{
-				String lowerCaseDbProductName = databaseProductName.toLowerCase();
-				for (Iterator iterator = validDbProductCollection.iterator(); iterator.hasNext();) {
-					String validDbProduct = (String) iterator.next();
-					if(lowerCaseDbProductName.indexOf(validDbProduct) > -1) {
-						logger.debug("The current database '" + databaseProductName + "' " +
-								"fits to the configured data type factory '" + dataTypeFactory + "'. Validation successful.");
-						return null;
-					}
-				}
-			}
-			
-			// If we get here, the validation failed
-			String validationMessage = "The configured data type factory '" + dataTypeFactoryClass + 
-					"' might cause problems with the current database '" + databaseProductName + 
-					"' (e.g. some datatypes may not be supported properly). " +
-					"In rare cases you might see this message because the list of supported database " +
-					"products is incomplete (list=" + validDbProductCollection + "). " +
-					"If so please request a java-class update via the forums.";
-//			String validationMessage = "The current database '" + databaseProductName + "' " +
-//					"is not supported by the data type factory '" + dataTypeFactoryClass + "'. " +
-//							"In some cases this can happen when the list of supported database " +
-//							"products is incomplete (list=" + validDbProductCollection + "). " +
-//									"If so please request a java-class update via the forums.";
-			return validationMessage;
-		}
+	    // If we get here, the validation failed
+	    String validationMessage = "The configured data type factory '" + dataTypeFactory.getClass() +
+    	    "' might cause problems with the current database '" + databaseProductName +
+    	    "' (e.g. some datatypes may not be supported properly). " +
+    	    "In rare cases you might see this message because the list of supported database " +
+    	    "products is incomplete (list=" + validDbProductCollection + "). " +
+    	    "If so please request a java-class update via the forums." +
+    	    "If you are using your own IDataTypeFactory extending " +
+    	    "DefaultDataTypeFactory, ensure that you override getValidDbProducts() " +
+    	    "to specify the supported database products.";
+	    return validationMessage;
 	}
 }
