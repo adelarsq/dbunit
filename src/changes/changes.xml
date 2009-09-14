@@ -23,6 +23,7 @@
       <action dev="gommma" type="fix" issue="2838922" due-to="matthieus">DB2 problem with schema names</action>
       <action dev="gommma" type="add">Support for Oracle ROWID</action>
       <action dev="gommma" type="update" issue="2856524" due-to="jbhurst">AbstractTableMetaData hardcoded dependency on IDataTypeFactory</action>
+      <action dev="gommma" type="fix" issue="2858410" due-to="acecacec">Numbers with more than 19 digits cannot be saved in a BIGINT column</action>
     </release>
     
     <release version="2.4.5" date="May 22, 2009" description="Bugfixes and some few additions">

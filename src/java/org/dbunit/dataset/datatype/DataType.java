@@ -72,7 +72,13 @@ public abstract class DataType
     public static final DataType INTEGER = new IntegerDataType(
             "INTEGER", Types.INTEGER);
 
-    public static final DataType BIGINT = new LongDataType();
+//    public static final DataType BIGINT = new LongDataType();
+    public static final DataType BIGINT = new BigIntegerDataType();
+    /**
+     * Auxiliary for the BIGINT type using a long. Is currently only
+     * needed for method {@link DataType#forObject(Object)}.
+     */
+    public static final DataType BIGINT_AUX_LONG = new LongDataType();
 
     public static final DataType REAL = new FloatDataType();
 
@@ -97,6 +103,8 @@ public abstract class DataType
         VARCHAR, CHAR, LONGVARCHAR, CLOB, NUMERIC, DECIMAL, BOOLEAN, BIT, INTEGER,
         TINYINT, SMALLINT, BIGINT, REAL, DOUBLE, FLOAT, DATE, TIME, TIMESTAMP,
         VARBINARY, BINARY, LONGVARBINARY, BLOB,
+        //auxiliary types at the very end
+        BIGINT_AUX_LONG
     };
 
     /**

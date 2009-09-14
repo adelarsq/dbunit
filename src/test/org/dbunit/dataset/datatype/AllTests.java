@@ -34,6 +34,7 @@ public class AllTests extends TestSuite
     {
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(BooleanDataTypeTest.class));
+        suite.addTest(new TestSuite(BigIntegerDataTypeTest.class));
         suite.addTest(new TestSuite(BitDataTypeTest.class));
         suite.addTest(new TestSuite(BytesDataTypeTest.class));
         suite.addTest(new TestSuite(BlobDataTypeTest.class));

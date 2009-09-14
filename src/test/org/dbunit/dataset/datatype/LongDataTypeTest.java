@@ -34,7 +34,7 @@ import java.sql.Types;
 
 public class LongDataTypeTest extends AbstractDataTypeTest
 {
-    private final static DataType THIS_TYPE = DataType.BIGINT;
+    private final static DataType THIS_TYPE = DataType.BIGINT_AUX_LONG;
 
     public LongDataTypeTest(String name)
     {
@@ -244,14 +244,18 @@ public class LongDataTypeTest extends AbstractDataTypeTest
 
     public void testSqlType() throws Exception
     {
-        assertEquals(THIS_TYPE, DataType.forSqlType(Types.BIGINT));
-        assertEquals("forSqlTypeName", THIS_TYPE, DataType.forSqlTypeName(THIS_TYPE.toString()));
-        assertEquals(Types.BIGINT, THIS_TYPE.getSqlType());
+        // This test was commented out in release 2.4.6 because the LongDataType is not used anymore
+        // by default for the SQL type BIGINT. This is due to a bug with values that have more than 19 digits
+        // where a BigInteger is now favored.
+//        assertEquals(THIS_TYPE, DataType.forSqlType(Types.BIGINT));
+//        assertEquals("forSqlTypeName", THIS_TYPE, DataType.forSqlTypeName(THIS_TYPE.toString()));
+//        assertEquals(Types.BIGINT, THIS_TYPE.getSqlType());
     }
 
     public void testForObject() throws Exception
     {
-        assertEquals(THIS_TYPE, DataType.forObject(new Long(1234)));
+        DataType actual = DataType.forObject(new Long(1234));
+        assertEquals(THIS_TYPE, actual);
     }
 
     public void testAsString() throws Exception
