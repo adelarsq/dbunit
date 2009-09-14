@@ -24,6 +24,7 @@
       <action dev="gommma" type="add">Support for Oracle ROWID</action>
       <action dev="gommma" type="update" issue="2856524" due-to="jbhurst">AbstractTableMetaData hardcoded dependency on IDataTypeFactory</action>
       <action dev="gommma" type="fix" issue="2858410" due-to="acecacec">Numbers with more than 19 digits cannot be saved in a BIGINT column</action>
+      <action dev="gommma" type="fix" issue="2854788" due-to="olibye">Sybace - SQLHelper.getDatabaseInfo exception getDatabaseMajorVersion()</action>
     </release>
     
     <release version="2.4.5" date="May 22, 2009" description="Bugfixes and some few additions">

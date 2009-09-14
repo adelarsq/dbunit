@@ -22,9 +22,12 @@
 package org.dbunit.util;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 import org.dbunit.AbstractHSQLTestCase;
+
+import com.mockobjects.sql.MockDatabaseMetaData;
 
 /**
  * @author Felipe Leme (dbunit@felipeal.net)
@@ -50,4 +53,40 @@ public class SQLHelperTest extends AbstractHSQLTestCase {
     }
   }
   
+  public void testGetDatabaseInfoWithException() throws Exception{
+      final String productName="Some product";
+      final String exceptionText="Dummy exception to simulate unimplemented operation exception as occurs " +
+      "in sybase 'getDatabaseMajorVersion()' (com.sybase.jdbc3.utils.UnimplementedOperationException)";
+      
+      DatabaseMetaData metaData = new MockDatabaseMetaData(){
+          public String getDatabaseProductName() throws SQLException {
+              return productName;
+          }
+          public String getDatabaseProductVersion() throws SQLException{
+              return null;
+          }
+          public int getDriverMajorVersion() {
+              return -1;
+          }
+          public int getDriverMinorVersion() {
+              return -1;
+          }
+          public String getDriverName() throws SQLException {
+              return null;
+          }
+          public String getDriverVersion() throws SQLException {
+              return null;
+          }
+          public int getDatabaseMajorVersion() throws SQLException {
+              throw new SQLException(exceptionText);
+          }
+          public int getDatabaseMinorVersion() throws SQLException {
+              return -1;
+          }
+      };
+      String info = SQLHelper.getDatabaseInfo(metaData);
+      assertNotNull(info);
+      assertTrue(info.indexOf(productName)>-1);
+      assertTrue(info.indexOf(exceptionText)>-1);
+  }
 }

@@ -198,7 +198,8 @@ public class DatabaseDataSet extends AbstractDataSet
 
             ResultSet resultSet = metadataHandler.getTables(databaseMetaData, schema, tableType);
             
-            logger.debug(SQLHelper.getDatabaseInfo(jdbcConnection.getMetaData()));
+            if(logger.isDebugEnabled())
+                logger.debug(SQLHelper.getDatabaseInfo(jdbcConnection.getMetaData()));
             
             try
             {

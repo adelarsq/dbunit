@@ -268,20 +268,70 @@ public class SQLHelper {
      * Returns the database and JDBC driver information as pretty formatted string
      * @param metaData The JDBC database metadata needed to retrieve database information
      * @return The database information as formatted string
-     * @throws SQLException
      */
-    public static String getDatabaseInfo(DatabaseMetaData metaData) throws SQLException
+    public static String getDatabaseInfo(DatabaseMetaData metaData)
     {
     	StringBuffer sb = new StringBuffer();
     	sb.append("\n");
-    	sb.append("\tdatabase name=").append(metaData.getDatabaseProductName()).append("\n");
-    	sb.append("\tdatabase version=").append(metaData.getDatabaseProductVersion()).append("\n");
-    	sb.append("\tdatabase major version=").append(metaData.getDatabaseMajorVersion()).append("\n");
-    	sb.append("\tdatabase minor version=").append(metaData.getDatabaseMinorVersion()).append("\n");
-    	sb.append("\tjdbc driver name=").append(metaData.getDriverName()).append("\n");
-    	sb.append("\tjdbc driver version=").append(metaData.getDriverVersion()).append("\n");
-    	sb.append("\tjdbc driver major version=").append(metaData.getDriverMajorVersion()).append("\n");
-    	sb.append("\tjdbc driver minor version=").append(metaData.getDriverMinorVersion()).append("\n");
+    	
+    	String dbInfo = null;
+    	
+    	dbInfo = new ExceptionWrapper(){
+            public String wrappedCall(DatabaseMetaData metaData) throws Exception {
+                return metaData.getDatabaseProductName();
+            }
+    	}.executeWrappedCall(metaData);
+        sb.append("\tdatabase product name=").append(dbInfo).append("\n");
+
+        dbInfo = new ExceptionWrapper(){
+            public String wrappedCall(DatabaseMetaData metaData) throws Exception {
+                return metaData.getDatabaseProductVersion();
+            }
+        }.executeWrappedCall(metaData);
+    	sb.append("\tdatabase version=").append(dbInfo).append("\n");
+    	
+    	dbInfo = new ExceptionWrapper(){
+            public String wrappedCall(DatabaseMetaData metaData) throws Exception {
+                return String.valueOf(metaData.getDatabaseMajorVersion());
+            }
+        }.executeWrappedCall(metaData);
+        sb.append("\tdatabase major version=").append(dbInfo).append("\n");
+
+        dbInfo = new ExceptionWrapper(){
+            public String wrappedCall(DatabaseMetaData metaData) throws Exception {
+                return String.valueOf(metaData.getDatabaseMinorVersion());
+            }
+        }.executeWrappedCall(metaData);
+        sb.append("\tdatabase minor version=").append(dbInfo).append("\n");
+        
+        dbInfo = new ExceptionWrapper(){
+            public String wrappedCall(DatabaseMetaData metaData) throws Exception {
+                return metaData.getDriverName();
+            }
+        }.executeWrappedCall(metaData);
+    	sb.append("\tjdbc driver name=").append(dbInfo).append("\n");
+    	
+        dbInfo = new ExceptionWrapper(){
+            public String wrappedCall(DatabaseMetaData metaData) throws Exception {
+                return metaData.getDriverVersion();
+            }
+        }.executeWrappedCall(metaData);
+        sb.append("\tjdbc driver version=").append(dbInfo).append("\n");
+
+        dbInfo = new ExceptionWrapper(){
+            public String wrappedCall(DatabaseMetaData metaData) throws Exception {
+                return String.valueOf(metaData.getDriverMajorVersion());
+            }
+        }.executeWrappedCall(metaData);
+        sb.append("\tjdbc driver major version=").append(dbInfo).append("\n");
+    	
+        dbInfo = new ExceptionWrapper(){
+            public String wrappedCall(DatabaseMetaData metaData) throws Exception {
+                return String.valueOf(metaData.getDriverMinorVersion());
+            }
+        }.executeWrappedCall(metaData);
+    	sb.append("\tjdbc driver minor version=").append(dbInfo).append("\n");
+    	
     	return sb.toString();
     }
 
@@ -584,6 +634,48 @@ public class SQLHelper {
             logger.debug("isEscaped returns '{}' for tableName={} (dbIdentifierQuoteString={})", 
                     new Object[]{Boolean.valueOf(isEscaped), tableName, dbIdentifierQuoteString} );
         return isEscaped;
+    }
+
+    
+    /**
+     * Performs a method invocation and catches all exceptions that occur during the invocation.
+     * Utility which works similar to a closure, just a bit less elegant.
+     * @author gommma (gommma AT users.sourceforge.net)
+     * @author Last changed by: $Author$
+     * @version $Revision$ $Date$
+     * @since 2.4.6
+     */
+    private static abstract class ExceptionWrapper{
+
+        /**
+         * Default constructor
+         */
+        public ExceptionWrapper()
+        {
+        }
+        
+        /**
+         * Executes the call and catches all exception that might occur.
+         * @param metaData
+         * @return The result of the call
+         */
+        public final String executeWrappedCall(DatabaseMetaData metaData) {
+            try{
+                String result = wrappedCall(metaData);
+                return result;
+            }
+            catch(Exception e){
+                logger.debug("Could not retrieve database metadata", e);
+                return "Could not retrieve database metadata. " + e;
+            }
+        }
+        /**
+         * Calls the method that might throw an exception to be handled
+         * @param metaData
+         * @return The result of the call
+         * @throws Exception
+         */
+        public abstract String wrappedCall(DatabaseMetaData metaData) throws Exception;
     }
 
 }
