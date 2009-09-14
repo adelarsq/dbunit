@@ -132,7 +132,7 @@ public class SQLHelper {
     public static boolean schemaExists(Connection connection, String schema) 
     throws SQLException
     {
-        logger.debug("schemaExists(connection={}, schema={}) - start", connection, schema);
+        logger.trace("schemaExists(connection={}, schema={}) - start", connection, schema);
 
         if(schema == null)
         {
@@ -177,7 +177,7 @@ public class SQLHelper {
      */
     private static boolean catalogExists(Connection connection, String catalog) throws SQLException
     {
-        logger.debug("catalogExists(connection={}, catalog={}) - start", connection, catalog);
+        logger.trace("catalogExists(connection={}, catalog={}) - start", connection, catalog);
 
         if(catalog == null)
         {
@@ -645,8 +645,10 @@ public class SQLHelper {
      * @version $Revision$ $Date$
      * @since 2.4.6
      */
-    private static abstract class ExceptionWrapper{
+    static abstract class ExceptionWrapper{
 
+        public static final String NOT_AVAILABLE_TEXT = "<not available>";
+        
         /**
          * Default constructor
          */
@@ -665,15 +667,15 @@ public class SQLHelper {
                 return result;
             }
             catch(Exception e){
-                logger.debug("Could not retrieve database metadata", e);
-                return "Could not retrieve database metadata. " + e;
+                logger.trace("Problem retrieving DB information via DatabaseMetaData", e);
+                return NOT_AVAILABLE_TEXT;
             }
         }
         /**
          * Calls the method that might throw an exception to be handled
          * @param metaData
-         * @return The result of the call
-         * @throws Exception
+         * @return The result of the call as human readable string
+         * @throws Exception Any exception that might occur during the method invocation
          */
         public abstract String wrappedCall(DatabaseMetaData metaData) throws Exception;
     }

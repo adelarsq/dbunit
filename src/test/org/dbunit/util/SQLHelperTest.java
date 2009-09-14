@@ -87,6 +87,6 @@ public class SQLHelperTest extends AbstractHSQLTestCase {
       String info = SQLHelper.getDatabaseInfo(metaData);
       assertNotNull(info);
       assertTrue(info.indexOf(productName)>-1);
-      assertTrue(info.indexOf(exceptionText)>-1);
+      assertTrue(info.indexOf(SQLHelper.ExceptionWrapper.NOT_AVAILABLE_TEXT)>-1);
   }
 }
