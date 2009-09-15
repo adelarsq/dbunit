@@ -206,6 +206,7 @@
               <li><a href="apidocs/org/dbunit/ext/oracle/OracleDataTypeFactory.html">org.dbunit.ext.oracle.OracleDataTypeFactory</a></li>
               <li><a href="apidocs/org/dbunit/ext/oracle/Oracle10DataTypeFactory.html">org.dbunit.ext.oracle.Oracle10DataTypeFactory</a></li>
               <li><a href="apidocs/org/dbunit/ext/postgresql/PostgresqlDataTypeFactory.html">org.dbunit.ext.postgresql.PostgresqlDataTypeFactory</a></li>
+              <li><a href="apidocs/org/dbunit/ext/netezza/NetezzaDataTypeFactory.html">org.dbunit.ext.netezza.NetezzaDataTypeFactory</a></li>
             </ul>
             When you want to create your own data type factory you may also want to look at the generic base implementation at
             <a href="apidocs/org/dbunit/dataset/datatype/DefaultDataTypeFactory.html">org.dbunit.dataset.datatype.DefaultDataTypeFactory</a>
@@ -343,6 +344,17 @@
             The Object must implement 
               <a href="apidocs/org/dbunit/database/IMetadataHandler.html">
               org.dbunit.database.IMetadataHandler</a>.
+          </td>
+        </tr>
+        <tr> 
+          <td>Note</td>
+          <td>The following RDBMS specific handlers are currently available:
+            <ul>
+              <li><a href="apidocs/org/dbunit/ext/mysql/MySqlMetadataHandler.html">org.dbunit.ext.mysql.MySqlMetadataHandler</a></li>
+              <li><a href="apidocs/org/dbunit/ext/netezza/NetezzaMetadataHandler.html">org.dbunit.ext.netezza.NetezzaMetadataHandler</a></li>
+            </ul>
+            For all others the default handler should do the job:
+            <a href="apidocs/org/dbunit/database/DefaultMetadataHandler.html">org.dbunit.database.DefaultMetadataHandler</a>
           </td>
         </tr>
       </table>

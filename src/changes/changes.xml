@@ -18,13 +18,14 @@
       <action dev="gommma" type="add" issue="2824505" due-to="agnul">Support for Postgres' inet types</action>
       <action dev="gommma" type="fix" issue="2823165" due-to="porkchop009">primaryFilterKey is not always respected</action>
       <action dev="gommma" type="fix" issue="2831696" due-to="kalpana">Nullable tinyint on mysql cannot be inserted</action>
-      <action dev="gommma" type="fix" issue="2806016" due-to="gommma">Unify dbunit features & properties</action>
+      <action dev="gommma" type="fix" issue="2806016" due-to="gommma">Unify dbunit features and properties</action>
       <action dev="gommma" type="add" issue="2833897" due-to="user2037">Support for Postgresql Enum</action>
       <action dev="gommma" type="fix" issue="2838922" due-to="matthieus">DB2 problem with schema names</action>
       <action dev="gommma" type="add">Support for Oracle ROWID</action>
       <action dev="gommma" type="update" issue="2856524" due-to="jbhurst">AbstractTableMetaData hardcoded dependency on IDataTypeFactory</action>
       <action dev="gommma" type="fix" issue="2858410" due-to="acecacec">Numbers with more than 19 digits cannot be saved in a BIGINT column</action>
       <action dev="gommma" type="fix" issue="2854788" due-to="olibye">Sybace - SQLHelper.getDatabaseInfo exception getDatabaseMajorVersion()</action>
+      <action dev="gommma" type="add" issue="2828869" due-to="amit3011">DBUnit support for Netezza database</action>
     </release>
     
     <release version="2.4.5" date="May 22, 2009" description="Bugfixes and some few additions">
