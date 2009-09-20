@@ -10,7 +10,9 @@
   </properties>
 
   <body>
-    <release version="2.4.6-SNAPSHOT" date="TBD" description="(no description)">
+    <release version="2.4.7-SNAPSHOT" date="TBD" description="(no description)">
+    </release>
+    <release version="2.4.6" date="Sep 20, 2009" description="Bugfixes and some database specific additions">
       <action dev="rlogiacco" type="add" issue="284432" due-to="JamesR">Add support for interval type on postgres</action>
       <action dev="felipeal" type="update">Changed some verbose logging statements from INFO to DEBUG level</action>
       <action dev="gommma" type="fix" issue="2797698" due-to="mkienenb">DefaultDataSet is incompatible w/ AbstractDataSet's IDataSet</action>

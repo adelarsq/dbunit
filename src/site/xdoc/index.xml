@@ -26,6 +26,10 @@
   <section name="News">
       <table border="1">
         <tr>
+          <td>2009-09-20</td>
+          <td>Your contributions has led us to cut a new release: DbUnit 2.4.5 is out. Here a detailed <a href="changes-report.html#a2.4.6">changes</a> report.</td>
+        </tr>
+        <tr>
           <td>2009-05-23</td>
           <td>Another bugfixing release has been cut: DbUnit 2.4.5 is out. Here a detailed <a href="changes-report.html#a2.4.5">changes</a> report.</td>
         </tr>
