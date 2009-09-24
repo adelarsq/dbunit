@@ -86,7 +86,7 @@ public class CsvProducer implements IDataSetProducer {
 
         _consumer.startDataSet();
         try {
-        	List tableSpecs = CsvProducer.getTables(dir.toURL(), "table-ordering.txt");
+        	List tableSpecs = CsvProducer.getTables(dir.toURL(), CsvDataSet.TABLE_ORDERING_FILE);
         	for (Iterator tableIter = tableSpecs.iterator(); tableIter.hasNext();) {
 				String table = (String) tableIter.next();
 	            try {
@@ -105,7 +105,7 @@ public class CsvProducer implements IDataSetProducer {
     }
 
     private void produceFromFile(File theDataFile) throws DataSetException, CsvParserException {
-        logger.debug("produceFromFile(theDataFile=" + theDataFile + ") - start");
+        logger.debug("produceFromFile(theDataFile={}) - start", theDataFile);
 
         try {
             CsvParser parser = new CsvParserImpl();
@@ -144,19 +144,27 @@ public class CsvProducer implements IDataSetProducer {
 	 * @throws IOException when IO on the base URL has issues.
 	 */
 	public static List getTables(URL base, String tableList) throws IOException {
-        logger.debug("getTables(base=" + base + ", tableList=" + tableList + ") - start");
+        logger.debug("getTables(base={}, tableList={}) - start", base, tableList);
 
 		List orderedNames = new ArrayList();
 		InputStream tableListStream = new URL(base, tableList).openStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(tableListStream));
-		String line = null;
-		while((line = reader.readLine()) != null) {
-			String table = line.trim();
-			if (table.length() > 0) {
-				orderedNames.add(table);
-			}
+		BufferedReader reader = null;
+		try {
+    		reader = new BufferedReader(new InputStreamReader(tableListStream));
+    		String line = null;
+    		while((line = reader.readLine()) != null) {
+    			String table = line.trim();
+    			if (table.length() > 0) {
+    				orderedNames.add(table);
+    			}
+    		}
 		}
-		reader.close();
+		finally {
+		    if(reader != null)
+		    {
+		        reader.close();
+		    }
+		}
 		return orderedNames;
 	}
 

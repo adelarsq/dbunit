@@ -102,18 +102,24 @@ public class CsvDataSetWriter implements IDataSetConsumer {
         logger.debug("endDataSet() - start");
 
     	// write out table ordering file
-    	File orderingFile = new File(getTheDirectory(), "table-ordering.txt");
+    	File orderingFile = new File(getTheDirectory(), CsvDataSet.TABLE_ORDERING_FILE);
     	
+    	PrintWriter pw = null;
     	try {
-			PrintWriter pw = new PrintWriter(new FileWriter(orderingFile));
+			pw = new PrintWriter(new FileWriter(orderingFile));
 			for (Iterator fileNames = tableList.iterator(); fileNames.hasNext();) {
 				String file = (String) fileNames.next();
 				pw.println(file);
 			}
-			pw.close();
-		} catch (IOException e) {
+		} 
+    	catch (IOException e) {
 			throw new DataSetException("problems writing the table ordering file", e);
 		}
+    	finally {
+    	    if(pw != null){
+    	        pw.close();
+    	    }
+    	}
     }
 
     public void startTable(ITableMetaData metaData) throws DataSetException {
