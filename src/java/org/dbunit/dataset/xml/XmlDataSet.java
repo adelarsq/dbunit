@@ -35,21 +35,21 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 /**
- *     Reads and writes original XML dataset document. This format
- *        is very verbose and must conform to the following DTD:
- *      <pre>
- *
- * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
- * &lt;!ELEMENT dataset (table+)&gt;
- * &lt;!ELEMENT table (column*, row*)&gt;
- * &lt;!ATTLIST table
- *    name CDATA #REQUIRED
- * &gt;
- * &lt;!ELEMENT column (#PCDATA)&gt;
- * &lt;!ELEMENT row (value | null | none)*&gt;
- * &lt;!ELEMENT value (#PCDATA)&gt;
- * &lt;!ELEMENT null EMPTY&gt;
- *</pre>
+ * Reads and writes original XML dataset document. This format
+ * is very verbose and must conform to the following DTD:
+ * 
+<pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!ELEMENT dataset (table+)&gt;
+&lt;!ELEMENT table (column*, row*)&gt;
+&lt;!ATTLIST table name CDATA #REQUIRED&gt;
+&lt;!ELEMENT column (#PCDATA)&gt;
+&lt;!ELEMENT row (value | null | none)*&gt;
+&lt;!ELEMENT value (#PCDATA)&gt;
+&lt;!ELEMENT null EMPTY&gt;
+&lt;!ELEMENT none EMPTY&gt;
+</pre>
+
  *
  * @author Manuel Laflamme
  * @author Last changed by: $Author$
