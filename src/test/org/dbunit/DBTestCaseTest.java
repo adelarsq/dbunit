@@ -26,7 +26,7 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.FlatXmlDataSetTest;
 import org.dbunit.operation.DatabaseOperation;
 
@@ -112,7 +112,7 @@ public class DBTestCaseTest extends TestCase
         final IDatabaseConnection conn = dbEnv.getConnection();
         try{
             final DefaultDatabaseTester tester = new DefaultDatabaseTester(conn);
-            final IDataSet dataset = new FlatXmlDataSet(FlatXmlDataSetTest.DATASET_FILE);
+            final IDataSet dataset = new FlatXmlDataSetBuilder().build(FlatXmlDataSetTest.DATASET_FILE);
             
             // Connection should not be closed during setUp/tearDown because of userDefined IOperationListener
             DBTestCase testSubject = new DBTestCase() {

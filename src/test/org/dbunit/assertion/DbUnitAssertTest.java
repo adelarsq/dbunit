@@ -42,7 +42,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
@@ -65,7 +65,7 @@ public class DbUnitAssertTest extends TestCase
 
     private IDataSet getDataSet() throws Exception
     {
-        return new FlatXmlDataSet(new FileReader(FILE_PATH));
+        return new FlatXmlDataSetBuilder().build(new FileReader(FILE_PATH));
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -82,7 +82,7 @@ public class DbUnitAssertTest extends TestCase
     public void testAssertTablesEmtpyEquals() throws Exception
     {
       IDataSet empty1 = new XmlDataSet(new FileReader("src/xml/assertionTest-empty1.xml"));
-      IDataSet empty2 = new FlatXmlDataSet(new FileReader("src/xml/assertionTest-empty2.xml"));
+      IDataSet empty2 = new FlatXmlDataSetBuilder().build(new FileReader("src/xml/assertionTest-empty2.xml"));
       assertion.assertEquals(empty1, empty2);
     }
     
@@ -490,12 +490,12 @@ public class DbUnitAssertTest extends TestCase
             "<dataset>\n"+
             "<TEST_TABLE COLUMN0='row 0 col 0' COLUMN1='row 0 col 1'/>\n" +
             "</dataset>\n";
-        IDataSet dataSet1 = new FlatXmlDataSet(new StringReader(xml1));
+        IDataSet dataSet1 = new FlatXmlDataSetBuilder().build(new StringReader(xml1));
         String xml2 = 
             "<dataset>\n"+
             "<TEST_TABLE COLUMN0='row 0 col somthing' COLUMN1='row 0 col something mysterious'/>\n" +
             "</dataset>\n";
-        IDataSet dataSet2 = new FlatXmlDataSet(new StringReader(xml2));
+        IDataSet dataSet2 = new FlatXmlDataSetBuilder().build(new StringReader(xml2));
 
         // Invoke the assertion
         assertion.assertEquals(dataSet1, dataSet2, fh);

@@ -21,16 +21,20 @@
 
 package org.dbunit.ext.mssql;
 
+import java.io.FileReader;
+import java.io.Reader;
+
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
 import org.dbunit.TestFeature;
-import org.dbunit.dataset.*;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.ForwardOnlyDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
-
-import java.io.FileReader;
-import java.io.Reader;
 
 /**
  * @author Manuel Laflamme
@@ -60,7 +64,7 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
     public void testExecuteFlatXML() throws Exception
     {
         Reader in = new FileReader("src/xml/insertIdentityOperationTestFlat.xml");
-        IDataSet dataSet = new FlatXmlDataSet(in);
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(in);
 
         testExecute(dataSet);
     }
@@ -68,7 +72,7 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
     public void testExecuteLowerCase() throws Exception
     {
         Reader in = new FileReader("src/xml/insertIdentityOperationTestFlat.xml");
-        IDataSet dataSet = new LowerCaseDataSet(new FlatXmlDataSet(in));
+        IDataSet dataSet = new LowerCaseDataSet(new FlatXmlDataSetBuilder().build(in));
 
         testExecute(dataSet);
     }
@@ -76,7 +80,7 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
     public void testExecuteForwardOnly() throws Exception
     {
         Reader in = new FileReader("src/xml/insertIdentityOperationTestFlat.xml");
-        IDataSet dataSet = new ForwardOnlyDataSet(new FlatXmlDataSet(in));
+        IDataSet dataSet = new ForwardOnlyDataSet(new FlatXmlDataSetBuilder().build(in));
 
         testExecute(dataSet);
     }
@@ -124,7 +128,7 @@ public class InsertIdentityOperationTest extends AbstractDatabaseTest
     public void testIdentityInsertNoPK() throws Exception
     {
         Reader in = new FileReader("src/xml/insertIdentityOperationTestNoPK.xml");
-        IDataSet xmlDataSet = new FlatXmlDataSet(in);
+        IDataSet xmlDataSet = new FlatXmlDataSetBuilder().build(in);
 
         ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
         InsertIdentityOperation.CLEAN_INSERT.execute(_connection, xmlDataSet);

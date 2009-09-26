@@ -20,15 +20,16 @@
  */
 package org.dbunit.dataset;
 
-import org.dbunit.Assertion;
-import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Date;
 
 import junit.framework.Assert;
+
+import org.dbunit.Assertion;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 
 /**
  *
@@ -50,8 +51,8 @@ public class ReplacementTableTest extends AbstractTableTest
 
     private IDataSet createDataSet() throws Exception
     {
-        return new ReplacementDataSet(
-                new FlatXmlDataSet(new File("src/xml/flatXmlTableTest.xml")));
+        FlatXmlDataSet fds = new FlatXmlDataSetBuilder().build(new File("src/xml/flatXmlTableTest.xml"));
+        return new ReplacementDataSet(fds);
     }
 
     public void testGetMissingValue() throws Exception

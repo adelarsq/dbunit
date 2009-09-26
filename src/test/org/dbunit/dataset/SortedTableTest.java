@@ -25,7 +25,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 
 /**
  * @author Manuel Laflamme
@@ -52,7 +52,7 @@ public class SortedTableTest extends AbstractTableTest
 
     private IDataSet createUnsortedDataSet() throws DataSetException, IOException 
     {
-    	return new FlatXmlDataSet(sortedTableTestFile);
+    	return new FlatXmlDataSetBuilder().build(sortedTableTestFile);
     }
 
     private ITable createNumericTable() throws Exception

@@ -4,13 +4,8 @@ import java.io.FileReader;
 
 import junit.framework.TestCase;
 
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.IRowValueProvider;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.RowFilterTable;
 import org.dbunit.dataset.filter.IRowFilter;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 
 /**
  * @author gommma
@@ -21,7 +16,7 @@ public class RowFilterTableTest extends TestCase
 	
     private IDataSet getDataSet() throws Exception
     {
-        return new FlatXmlDataSet(new FileReader(
+        return new FlatXmlDataSetBuilder().build(new FileReader(
                 "src/xml/rowFilterTableTest.xml"));
     }
 

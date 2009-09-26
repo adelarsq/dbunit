@@ -12,6 +12,7 @@
   <body>
     <release version="2.4.7-SNAPSHOT" date="TBD" description="(no description)">
       <action dev="gommma" type="fix" issue="2685615" due-to="lumpynose">dtd for XmlDataSet</action>
+      <action dev="gommma" type="fix" issue="2866150" due-to="rlogiacco">Column sensing not available for InputStream</action>
     </release>
     <release version="2.4.6" date="Sep 20, 2009" description="Bugfixes and some database specific additions">
       <action dev="rlogiacco" type="add" issue="284432" due-to="JamesR">Add support for interval type on postgres</action>

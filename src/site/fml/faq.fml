@@ -583,8 +583,17 @@ connection.getConfig().setProperty(
         Since DBUnit 2.3.0 there is a functionality called "column sensing" which basically reads in the whole XML into
         a buffer and dynamically adds new columns as they appear. It can be used as demonstrated in the following example:
           <source>
+//Since release 2.4.7 we use a builder:
+FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+builder.setColumnSensing(true);
+IDataSet dataSet = builder.build(new File("src/xml/flatXmlTableTest.xml"));
+          </source>
+          <source>
+              //This is for release &lt 2.4.7
+              <del>
 boolean enableColumnSensing = true;
 IDataSet dataSet = new FlatXmlDataSet(new File("src/xml/flatXmlTableTest.xml"), false, enableColumnSensing);
+              </del>
           </source>
         </p>
       </answer>

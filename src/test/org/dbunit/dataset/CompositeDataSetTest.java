@@ -25,7 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.XmlDataSet;
 
 /**
@@ -80,12 +80,12 @@ public class CompositeDataSetTest extends AbstractDataSetTest
     private CompositeDataSet createCompositeDataSet(boolean combined, boolean multipleCase) 
     throws DataSetException, FileNotFoundException, IOException 
     {
-        IDataSet dataSet1 = new FlatXmlDataSet(
+        IDataSet dataSet1 = new FlatXmlDataSetBuilder().build(
                 new FileReader("src/xml/compositeDataSetDuplicateTest1.xml"));
         assertTrue("count before combine (1)",
                 dataSet1.getTableNames().length < getExpectedDuplicateNames().length);
 
-        IDataSet dataSet2 = new FlatXmlDataSet(
+        IDataSet dataSet2 = new FlatXmlDataSetBuilder().build(
                 new FileReader("src/xml/compositeDataSetDuplicateTest2.xml"));
         assertTrue("count before combine (2)",
                 dataSet2.getTableNames().length < getExpectedDuplicateNames().length);

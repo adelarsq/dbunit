@@ -24,6 +24,7 @@ import org.dbunit.dataset.stream.AbstractProducerTest;
 import org.dbunit.dataset.stream.DataSetProducerAdapter;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 
 import java.io.File;
 
@@ -44,7 +45,7 @@ public class DataSetProducerAdapterTest extends AbstractProducerTest
 
     protected IDataSetProducer createProducer() throws Exception
     {
-        FlatXmlDataSet dataSet = new FlatXmlDataSet(DATASET_FILE);
+        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(DATASET_FILE);
         return new DataSetProducerAdapter(dataSet);
     }
 

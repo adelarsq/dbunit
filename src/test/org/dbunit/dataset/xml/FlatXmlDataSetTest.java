@@ -62,23 +62,24 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        return new FlatXmlDataSet(DATASET_FILE);
+        return new FlatXmlDataSetBuilder().build(DATASET_FILE);
     }
 
     protected IDataSet createDuplicateDataSet() throws Exception
     {
-        return new FlatXmlDataSet(
-                DUPLICATE_DATASET_FILE);
+        return new FlatXmlDataSetBuilder().build(DUPLICATE_DATASET_FILE);
     }
 
     protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception 
     {
-        return new FlatXmlDataSet(DUPLICATE_DATASET_MULTIPLE_CASE_FILE);
+        return new FlatXmlDataSetBuilder().build(DUPLICATE_DATASET_MULTIPLE_CASE_FILE);
     }
 
     public void testMissingColumnAndEnableDtdMetadata() throws Exception
     {
-        IDataSet dataSet = new FlatXmlDataSet(FLAT_XML_TABLE, true);
+        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+        builder.setDtdMetadata(true);
+        IDataSet dataSet = builder.build(FLAT_XML_TABLE);
 
         ITable table = dataSet.getTable("MISSING_VALUES");
 
@@ -88,8 +89,10 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
     public void testMissingColumnAndDisableDtdMetadata() throws Exception
     {
-        IDataSet dataSet = new FlatXmlDataSet(FLAT_XML_TABLE, false);
-
+        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+        builder.setDtdMetadata(false);
+        IDataSet dataSet = builder.build(FLAT_XML_TABLE);
+        
         ITable table = dataSet.getTable("MISSING_VALUES");
 
         Column[] columns = table.getTableMetaData().getColumns();
@@ -98,7 +101,10 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
 
     public void testMissingColumnAndDisableDtdMetadataEnableSensing() throws Exception
     {
-        IDataSet dataSet = new FlatXmlDataSet(FLAT_XML_TABLE, false, true);
+        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+        builder.setDtdMetadata(false);
+        builder.setColumnSensing(true);
+        IDataSet dataSet = builder.build(FLAT_XML_TABLE);
 
         ITable table = dataSet.getTable("MISSING_VALUES_SENSING");
 
@@ -138,7 +144,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
             FileReader in = new FileReader(tempFile);
             try
             {
-                IDataSet actualDataSet = new FlatXmlDataSet(in);
+                IDataSet actualDataSet = new FlatXmlDataSetBuilder().build(in);
 
                 // verify table count
                 assertEquals("table count", expectedDataSet.getTableNames().length,
@@ -173,7 +179,7 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
     public void testReadFlatXmlWithDifferentCaseInDtd()throws Exception
     {
         // The creation of such a dataset should work
-        IDataSet ds = new FlatXmlDataSet(FLAT_XML_DTD_DIFFERENT_CASE_FILE);
+        IDataSet ds = new FlatXmlDataSetBuilder().build(FLAT_XML_DTD_DIFFERENT_CASE_FILE);
         assertEquals(1, ds.getTableNames().length);
         assertEquals("emp", ds.getTableNames()[0]);
     }
@@ -181,8 +187,13 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
     
     public void testCreateMultipleCaseDuplicateDataSet_CaseSensitive() throws Exception
     {
+        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+        builder.setDtdMetadata(false);
+        builder.setColumnSensing(false);
         // Create a FlatXmlDataSet having caseSensitivity=true
-        FlatXmlDataSet dataSet = new FlatXmlDataSet(DUPLICATE_DATASET_MULTIPLE_CASE_FILE, false, false, true);
+        builder.setCaseSensitiveTableNames(true);
+        IDataSet dataSet = builder.build(DUPLICATE_DATASET_MULTIPLE_CASE_FILE);
+
         ITable[] tables = dataSet.getTables();
         assertEquals(3, tables.length);
         assertEquals("DUPLICATE_TABLE", tables[0].getTableMetaData().getTableName());
@@ -232,7 +243,11 @@ public class FlatXmlDataSetTest extends AbstractDataSetTest
                 "<MISSING_VALUES         COLUMN0='row 1 col 0' COLUMN2='row 1 col 2'/>"+
                 "<MISSING_VALUES_SENSING COLUMN0='row 1 col 0' COLUMN1='row 1 col 1'/>"+
             "</dataset>";
-        IDataSet dataSet = new FlatXmlDataSet(new StringReader(xmlString), false, true, false);
+        
+        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+        builder.setDtdMetadata(false);
+        builder.setColumnSensing(true);
+        IDataSet dataSet = builder.build(new StringReader(xmlString));
         ITable[] tables = dataSet.getTables();
         assertEquals(2, tables.length);
         

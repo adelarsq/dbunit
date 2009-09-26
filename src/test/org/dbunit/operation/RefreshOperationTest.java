@@ -21,17 +21,26 @@
 
 package org.dbunit.operation;
 
+import java.io.FileReader;
+import java.io.Reader;
+
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.ForwardOnlyDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.NoPrimaryKeyException;
+import org.dbunit.dataset.NoSuchColumnException;
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-
-import java.io.FileReader;
-import java.io.Reader;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 
 /**
  * @author Manuel Laflamme
@@ -48,7 +57,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
     public void testExecute() throws Exception
     {
         Reader reader = new FileReader("src/xml/refreshOperationTest.xml");
-        IDataSet dataSet = new FlatXmlDataSet(reader);
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(reader);
 
         testExecute(dataSet);
     }
@@ -56,7 +65,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
     public void testExecuteCaseInsensitive() throws Exception
     {
         Reader reader = new FileReader("src/xml/refreshOperationTest.xml");
-        IDataSet dataSet = new FlatXmlDataSet(reader);
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(reader);
 
         testExecute(new LowerCaseDataSet(dataSet));
     }
@@ -64,7 +73,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
     public void testExecuteForwardOnly() throws Exception
     {
         Reader reader = new FileReader("src/xml/refreshOperationTest.xml");
-        IDataSet dataSet = new FlatXmlDataSet(reader);
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(reader);
 
         testExecute(new ForwardOnlyDataSet(dataSet));
     }
@@ -86,7 +95,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
         DatabaseOperation.REFRESH.execute(_connection, dataSet);
 
         // verify table after
-        IDataSet expectedDataSet = new FlatXmlDataSet(
+        IDataSet expectedDataSet = new FlatXmlDataSetBuilder().build(
                 new FileReader("src/xml/refreshOperationTestExpected.xml"));
 
         for (int i = 0; i < tableNames.length; i++)
@@ -102,7 +111,7 @@ public class RefreshOperationTest extends AbstractDatabaseTest
         String tableName = "test_table";
 
         Reader reader = new FileReader("src/xml/refreshOperationNoPKTest.xml");
-        IDataSet dataSet = new FlatXmlDataSet(reader);
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(reader);
 
         // verify table before
         assertEquals("row count before", 6, _connection.getRowCount(tableName));

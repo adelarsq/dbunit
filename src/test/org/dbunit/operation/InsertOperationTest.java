@@ -18,8 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package org.dbunit.operation;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
+import java.sql.SQLException;
 
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
@@ -29,15 +33,20 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.DataSetUtils;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.ForwardOnlyDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.NoSuchColumnException;
+import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.XmlDataSet;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
-import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
@@ -331,7 +340,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
             String tableName = "CLOB_TABLE";
 
             Reader in = new FileReader(new File("src/xml/clobInsertTest.xml"));
-            IDataSet xmlDataSet = new FlatXmlDataSet(in);
+            IDataSet xmlDataSet = new FlatXmlDataSetBuilder().build(in);
 
             assertEquals("count before", 0, _connection.getRowCount(tableName));
 
@@ -352,7 +361,7 @@ public class InsertOperationTest extends AbstractDatabaseTest
             String tableName = "BLOB_TABLE";
 
             Reader in = new FileReader(new File("src/xml/blobInsertTest.xml"));
-            IDataSet xmlDataSet = new FlatXmlDataSet(in);
+            IDataSet xmlDataSet = new FlatXmlDataSetBuilder().build(in);
 
             assertEquals("count before", 0, _connection.getRowCount(tableName));
 

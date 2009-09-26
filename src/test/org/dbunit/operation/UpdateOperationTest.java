@@ -21,6 +21,10 @@
 
 package org.dbunit.operation;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
+
 import org.dbunit.AbstractDatabaseTest;
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseEnvironment;
@@ -29,14 +33,19 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
 import org.dbunit.database.statement.MockStatementFactory;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.CompositeDataSet;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.DefaultTable;
+import org.dbunit.dataset.DefaultTableMetaData;
+import org.dbunit.dataset.ForwardOnlyDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.LowerCaseDataSet;
+import org.dbunit.dataset.NoPrimaryKeyException;
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.XmlDataSet;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
 
 /**
  * @author Manuel Laflamme
@@ -61,14 +70,14 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         if (environment.support(TestFeature.BLOB))
         {
             dataSet = new CompositeDataSet(
-                    new FlatXmlDataSet(new File("src/xml/blobInsertTest.xml")),
+                    new FlatXmlDataSetBuilder().build(new File("src/xml/blobInsertTest.xml")),
                     dataSet);
         }
 
         if (environment.support(TestFeature.CLOB))
         {
             dataSet = new CompositeDataSet(
-                    new FlatXmlDataSet(new File("src/xml/clobInsertTest.xml")),
+                    new FlatXmlDataSetBuilder().build(new File("src/xml/clobInsertTest.xml")),
                     dataSet);
         }
 
@@ -206,7 +215,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
             String tableName = "CLOB_TABLE";
 
             {
-                IDataSet beforeDataSet = new FlatXmlDataSet(
+                IDataSet beforeDataSet = new FlatXmlDataSetBuilder().build(
                         new File("src/xml/clobInsertTest.xml"));
 
                 ITable tableBefore = _connection.createDataSet().getTable(tableName);
@@ -214,7 +223,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
                 Assertion.assertEquals(beforeDataSet.getTable(tableName), tableBefore);
             }
 
-            IDataSet afterDataSet = new FlatXmlDataSet(
+            IDataSet afterDataSet = new FlatXmlDataSetBuilder().build(
                     new File("src/xml/clobUpdateTest.xml"));
             DatabaseOperation.REFRESH.execute(_connection, afterDataSet);
 
@@ -235,7 +244,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
             String tableName = "BLOB_TABLE";
 
             {
-                IDataSet beforeDataSet = new FlatXmlDataSet(
+                IDataSet beforeDataSet = new FlatXmlDataSetBuilder().build(
                         new File("src/xml/blobInsertTest.xml"));
 
                 ITable tableBefore = _connection.createDataSet().getTable(tableName);
@@ -246,7 +255,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 //                FlatXmlDataSet.write(_connection.createDataSet(), System.out);
             }
 
-            IDataSet afterDataSet = new FlatXmlDataSet(
+            IDataSet afterDataSet = new FlatXmlDataSetBuilder().build(
                     new File("src/xml/blobUpdateTest.xml"));
             DatabaseOperation.REFRESH.execute(_connection, afterDataSet);
 
@@ -294,7 +303,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
         String tableName = "test_table";
 
         Reader reader = new FileReader("src/xml/updateOperationNoPKTest.xml");
-        IDataSet dataSet = new FlatXmlDataSet(reader);
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(reader);
 
         // verify table before
         assertEquals("row count before", 6, _connection.getRowCount(tableName));

@@ -170,6 +170,14 @@ public class FlatXmlProducer extends DefaultHandler implements IDataSetProducer,
         }
     }
     
+    /**
+     * @return Whether or not this producer works case sensitively
+     * @since 2.4.7
+     */
+    public boolean isCaseSensitiveTableNames() {
+        return _caseSensitiveTableNames;
+    }
+
     private ITableMetaData createTableMetaData(String tableName, Attributes attributes) throws DataSetException
     {
     	if (logger.isDebugEnabled())

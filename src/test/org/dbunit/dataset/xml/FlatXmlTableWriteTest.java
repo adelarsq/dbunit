@@ -61,7 +61,7 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
             FileReader in = new FileReader(tempFile);
             try
             {
-                return new FlatXmlDataSet(in);
+                return new FlatXmlDataSetBuilder().build(in);
             }
             finally
             {
@@ -106,7 +106,7 @@ public class FlatXmlTableWriteTest extends FlatXmlTableTest
             FileReader in = new FileReader(tempFile);
             try
             {
-                FlatXmlDataSet xmlDataSet2 = new FlatXmlDataSet(in);
+                FlatXmlDataSet xmlDataSet2 = new FlatXmlDataSetBuilder().build(in);
 
                 // verify each table
                 for (int i = 0; i < tables.length; i++)

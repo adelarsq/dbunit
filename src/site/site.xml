@@ -59,6 +59,7 @@
       <item name="Get source"       href="/source-repository.html"/>
       <item name="Browse source"    href="/xref/index.html"/>
       <item name="JavaDocs"         href="/apidocs/index.html"/>
+      <item name="DBUnit AT ohloh"  href="http://www.ohloh.net/p/dbunit"/>
     </menu>
 
     <menu name="Overview">

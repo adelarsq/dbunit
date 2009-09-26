@@ -61,7 +61,7 @@ public class SampleTest extends DBTestCase
 
     protected IDataSet getDataSet() throws Exception
     {
-        return new FlatXmlDataSet(new FileInputStream("dataset.xml"));
+        return new FlatXmlDataSetBuilder().build(new FileInputStream("dataset.xml"));
     }
 }</source>
 </p>      
@@ -239,7 +239,7 @@ public class SampleTest extends TestCase
         ITable actualTable = databaseDataSet.getTable("TABLE_NAME");
 
         // Load expected data from an XML dataset
-        IDataSet expectedDataSet = new FlatXmlDataSet(new File("expectedDataSet.xml"));
+        IDataSet expectedDataSet = new FlatXmlDataSetBuilder().build(new File("expectedDataSet.xml"));
         ITable expectedTable = expectedDataSet.getTable("TABLE_NAME");
 
         // Assert actual database table match expected table
