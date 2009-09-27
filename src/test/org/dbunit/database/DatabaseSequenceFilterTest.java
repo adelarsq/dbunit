@@ -111,5 +111,25 @@ public class DatabaseSequenceFilterTest extends TestCase
         }
     }
 
+    public void testCaseSensitiveTableNames() throws Exception
+    {
+        String[] expectedNoFilter = {"MixedCaseTable","UPPER_CASE_TABLE"};
+        String[] expectedFiltered = {"MixedCaseTable","UPPER_CASE_TABLE"};
+
+        HypersonicEnvironment.executeDdlFile(new File("src/sql/hypersonic_case_sensitive_test.sql"),
+                _jdbcConnection);
+        IDatabaseConnection connection = new DatabaseConnection(_jdbcConnection);
+
+        connection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, Boolean.TRUE);
+
+        IDataSet databaseDataset = connection.createDataSet();
+        String[] actualNoFilter = databaseDataset.getTableNames();
+        assertEquals("no filter", Arrays.asList(expectedNoFilter), Arrays.asList(actualNoFilter));
+
+        ITableFilter filter = new DatabaseSequenceFilter(connection);
+        IDataSet filteredDataSet = new FilteredDataSet(filter, databaseDataset);
+        String[] actualFiltered = filteredDataSet.getTableNames();
+        assertEquals("filtered", Arrays.asList(expectedFiltered), Arrays.asList(actualFiltered));
+    }
 
 }

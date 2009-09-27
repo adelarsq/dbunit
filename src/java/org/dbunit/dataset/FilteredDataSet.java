@@ -60,7 +60,7 @@ public class FilteredDataSet extends AbstractDataSet
     public FilteredDataSet(String[] tableNames, IDataSet dataSet) 
     throws AmbiguousTableNameException
     {
-        _filter = new SequenceTableFilter(tableNames);
+        _filter = new SequenceTableFilter(tableNames, dataSet.isCaseSensitiveTableNames());
         _dataSet = dataSet;
     }
 

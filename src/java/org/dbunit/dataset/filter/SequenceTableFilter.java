@@ -112,6 +112,7 @@ public class SequenceTableFilter implements ITableFilter
             }
             catch (NoSuchTableException e)
             {
+                logger.debug("Table '{}' not found in filtered dataset {}", tableNames[i], dataSet);
                 // Skip this table name because the filtered dataset does not
                 // contains it.
             }

@@ -589,7 +589,7 @@ builder.setColumnSensing(true);
 IDataSet dataSet = builder.build(new File("src/xml/flatXmlTableTest.xml"));
           </source>
           <source>
-              //This is for release &lt 2.4.7
+              //This is for release &lt; 2.4.7
               <del>
 boolean enableColumnSensing = true;
 IDataSet dataSet = new FlatXmlDataSet(new File("src/xml/flatXmlTableTest.xml"), false, enableColumnSensing);
