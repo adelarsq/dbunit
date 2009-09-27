@@ -17,7 +17,7 @@ Generating the JAR
 
  [[3]] Download DbUnit code, either current or released source (see <<Quick Links>> on left menu)
 
- [[4]] On the root directory, simply type <<<mvn>>> in the command line (if you need to clean up the binaries, run <<<mvn clean install>>> instead). The jar file will be generated in the target directory.
+ [[4]] On the root directory, simply type <<<mvn>>> in the command line.  (If you need to clean up the binaries, run <<<mvn clean install>>> instead.)  The jar file will be generated in the target directory.
 
 
 Creating the site
@@ -50,7 +50,9 @@ Contributing patches
 
 Maintenance tasks
 
- The tasks described below describes how to maintain DbUnit. Some of these tasks will use <ssh> to upload files to SourceForge, so it is necessary to setup your environment to allow it (typically using <ssh-agent> - see more details on {{{http://sourceforge.net/docman/display_doc.php?docid=761&group_id=1} SourceForge}}).  Also notice that in 2008 SourceForge changed the way it provides shell access, so you need to create a temporary shell for your user before using ssh (see instructions {{{http://people.apache.org/~baerrach/maven-site-plugin-2.0-beta-8-SNAPSHOT/examples/site-deploy-to-sourceforge.net.html} here}}.
+ The tasks below describe how to maintain DbUnit. Some of these tasks will use <ssh> to upload files to SourceForge, so it is necessary to setup your environment to allow it (typically using <ssh-agent> - see more details on {{{http://sourceforge.net/docman/display_doc.php?docid=761&group_id=1} SourceForge}}).  Also notice that in 2008 SourceForge changed the way it provides shell access, so you need to create a temporary shell for your user before using ssh (see instructions {{{http://people.apache.org/~baerrach/maven-site-plugin-2.0-beta-8-SNAPSHOT/examples/site-deploy-to-sourceforge.net.html} here}}.
+
+ 2009-09-28 TODO: The two links above are dead.  This section needs to be revised.
 
 
 Updating the repository and site
@@ -64,8 +66,8 @@ mvn -Pofficial clean source:jar javadoc:jar deploy site:site site:deploy
 Cutting a release
 
  Cutting a release requires the following steps: creating a SVN tag, generating the artifacts, updating the site, uploading the artifacts into SourceForge, uploading the artifacts on {{{http://ibiblio.net/maven2}ibiblio}}, and sending the announcement emails.
- 
- Fortunatelly, most of the steps can be automated by Maven. The first 3 steps can be achieve using {{{http://maven.apache.org/plugins/maven-release-plugin/}Maven Release Plugin}}, as follow:
+
+ Fortunately, most of the steps can be automated by Maven. The first 3 steps can be achieved using {{{http://maven.apache.org/plugins/maven-release-plugin/}Maven Release Plugin}}, as follow:
 
 ---
 mvn -Pofficial release:prepare
@@ -77,7 +79,7 @@ mvn -Pofficial release:prepare
 mvn -Pofficial release:perform
 ---
 
- That last command has created all necesary files for the fourth and fifth steps in the <<<target/checkout/target>>> directory. So, for the fourth step, log in SourceForge and uploading the following files:
+ That last command has created all necesary files for the fourth and fifth steps in the <<<target/checkout/target>>> directory. So, for the fourth step, log in to SourceForge and upload the following files:
 
  * <dbunit-RELEASE.jar>
 
