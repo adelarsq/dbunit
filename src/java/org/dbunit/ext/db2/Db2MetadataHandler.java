@@ -20,6 +20,7 @@
  */
 package org.dbunit.ext.db2;
 
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -45,6 +46,19 @@ public class Db2MetadataHandler extends DefaultMetadataHandler {
         super();
     }
 
+    /**
+     * This method is overridden since - at least with DB2 driver db2jcc-9.5.jar - there is a
+     * problem that the {@link DatabaseMetaData} does not return the same values for catalog and schema
+     * like the columns {@link ResultSet} does. The debugging constellation is as follows
+     * <pre>
+     * catalog="BLA", catalogName=<null>
+     * schema="BLA", schemaName="BLA"
+     * </pre>
+     * This problem is taken into account by this metadata handler.
+     * 
+     * {@inheritDoc}
+     * @see org.dbunit.database.DefaultMetadataHandler#matches(java.sql.ResultSet, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean)
+     */
     public boolean matches(ResultSet columnsResultSet, String catalog,
             String schema, String table, String column, boolean caseSensitive)
             throws SQLException {
