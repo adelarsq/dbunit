@@ -143,4 +143,27 @@ public class XmlWriterTest extends TestCase
            assertEquals(expected, out.toString("ISO-8859-1"));
        }
 	   
+	public void testEncodedXmlChar() throws Exception
+	{
+		String expectedText = "&#174;text1&#xA;text2&#xD;text3&#174;";
+		String expectedXml = "<COLUMN1 ATTR=\"" + expectedText + "\">" + expectedText + "</COLUMN1>\n";
+
+		boolean literally = true;
+        StringBuffer textBuilder = new StringBuffer();
+        String registeredSymbol = new String(new char[] { 174 });
+        textBuilder.append(registeredSymbol);
+        textBuilder.append("text1\ntext2\rtext3");
+        textBuilder.append(registeredSymbol);
+        String text = textBuilder.toString();
+        Writer writer = new StringWriter();
+        XmlWriter xmlWriter = new XmlWriter(writer);
+		xmlWriter.writeElement("COLUMN1");
+		xmlWriter.writeAttribute("ATTR", text, literally);
+		xmlWriter.writeText(text, literally);
+		xmlWriter.endElement();
+		xmlWriter.close();
+		String actualXml = writer.toString();
+		assertEquals(expectedXml, actualXml);
+	}
+	
 }

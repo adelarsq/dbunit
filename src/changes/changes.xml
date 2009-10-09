@@ -15,6 +15,7 @@
       <action dev="gommma" type="fix" issue="2866150" due-to="rlogiacco">Column sensing not available for InputStream</action>
       <action dev="gommma" type="fix" issue="2741077" due-to="dnap">DatabaseSequenceFilter fails on case sensitive tables</action>
       <action dev="gommma" type="fix" issue="2838922" due-to="matthieus, simon_wu">DB2 problem with schema names</action>
+      <action dev="gommma" type="fix" issue="2875262" due-to="caseylucas">Handle non-typical characters in xml encoding</action>
     </release>
     <release version="2.4.6" date="Sep 20, 2009" description="Bugfixes and some database specific additions">
       <action dev="rlogiacco" type="add" issue="284432" due-to="JamesR">Add support for interval type on postgres</action>

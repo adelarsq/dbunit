@@ -351,11 +351,7 @@ public class XmlWriter
         this.attrs.append(" ");
         this.attrs.append(attr);
         this.attrs.append("=\"");
-        String val = escapeXml(value);
-        if(literally){
-        	val = escapeMetaCharacters(val);
-        }
-        this.attrs.append(val);
+        this.attrs.append(escapeXml(value, literally));
         this.attrs.append("\"");
         return this;
     }
@@ -452,11 +448,7 @@ public class XmlWriter
         this.empty = false;
         this.wroteText = true;
 
-        String val = escapeXml(text);
-        if(literally){
-        	val = escapeMetaCharacters(val);
-        }
-        this.out.write(val);
+        this.out.write(escapeXml(text, literally));
         return this;
     }
 
@@ -581,32 +573,131 @@ public class XmlWriter
 
     /**
      * Escapes some meta characters like \n, \r that should be preserved in the XML
-     * so that a reader will not filter out those symbols.
+     * so that a reader will not filter out those symbols.  This code is modified
+     * from xmlrpc:
+     * https://svn.apache.org/repos/asf/webservices/xmlrpc/branches/XMLRPC_1_2_BRANCH/src/java/org/apache/xmlrpc/XmlWriter.java
+     *
      * @param str The string to be escaped
+     * @param literally If the writer should be literally on the given value
+     * which means that meta characters will also be preserved by escaping them. 
+     * Mainly preserves newlines and carriage returns.
      * @return The escaped string
-     * @since 2.3.0
      */
-    private String escapeMetaCharacters(String str)
+    private String escapeXml(String str, boolean literally)
     {
-        logger.debug("escapeXml(str={}) - start", str);
+        logger.debug("escapeXml(str={}, literally={}) - start", str, Boolean.toString(literally));
 
-        // 2. Do additional escapes. See http://www.w3.org/TR/2004/REC-xml-20040204/#AVNormalize
-        str = replace(str, "\n", "&#xA;"); // linefeed (LF)
-        str = replace(str, "\r", "&#xD;"); // carriage return (CR)
-        return str;
+        char [] block = null;
+        int last = 0;
+        StringBuffer buffer = null;
+        int strLength = str.length();
+        int index = 0;
+
+        for (index=0; index<strLength; index++)
+        {
+            String entity = null;
+            char currentChar = str.charAt(index);
+            switch (currentChar)
+            {
+                case '\t':
+                    entity = "&#09;";
+                    break;
+                case '\n':
+                    if (literally) { entity = "&#xA;"; }
+                    break;
+                case '\r':
+                    if (literally) { entity = "&#xD;"; }
+                    break;
+                case '&':
+                    entity = "&amp;";
+                    break;
+                case '<':
+                    entity = "&lt;";
+                    break;
+                case '>':
+                    entity = "&gt;";
+                    break;
+                case '\"':
+                    entity = "&quot;";
+                    break;
+                case '\'':
+                    entity = "&apos;";
+                    break;
+                default:
+                    if ((currentChar > 0x7f) || !isValidXmlChar(currentChar))
+                    {
+                        entity = "&#" + String.valueOf((int) currentChar) + ";";
+                    }
+                    break;
+            }
+
+            // If we found something to substitute, then copy over previous
+            // data then do the substitution.
+            if (entity != null)
+            {
+                if (block == null)
+                {
+                    block = str.toCharArray();
+                }
+                if (buffer == null)
+                {
+                    buffer = new StringBuffer();
+                }
+                buffer.append(block, last, index - last);
+                buffer.append(entity);
+                last = index + 1;
+            }
+        }
+
+        // nothing found, just return source
+        if (last == 0)
+        {
+            return str;
+        }
+
+        if (last < strLength)
+        {
+            if (block == null)
+            {
+                block = str.toCharArray();
+            }
+            if (buffer == null)
+            {
+                buffer = new StringBuffer();
+            }
+            buffer.append(block, last, index - last);
+        }
+
+        return buffer.toString();
     }
-    
-    private String escapeXml(String str)
-    {
-        logger.debug("escapeXml(str={}) - start", str);
 
-        str = replace(str, "&", "&amp;");
-        str = replace(str, "<", "&lt;");
-        str = replace(str, ">", "&gt;");
-        str = replace(str, "\"", "&quot;");
-        str = replace(str, "'", "&apos;");
-        str = replace(str, "\t", "&#09;"); // tab
-        return str;
+    /**
+     * Section 2.2 of the XML spec describes which Unicode code points
+     * are valid in XML:
+     *
+     * <blockquote><code>#x9 | #xA | #xD | [#x20-#xD7FF] |
+     * [#xE000-#xFFFD] | [#x10000-#x10FFFF]</code></blockquote>
+     *
+     * Code points outside this set must be entity encoded to be
+     * represented in XML.
+     *
+     * @param c The character to inspect.
+     * @return Whether the specified character is valid in XML.
+     */
+    private static final boolean isValidXmlChar(char c)
+    {
+        switch (c)
+        {
+            case 0x9:
+            case 0xa:  // line feed, '\n'
+            case 0xd:  // carriage return, '\r'
+                return true;
+
+            default:
+                return ( (0x20 <= c && c <= 0xd7ff) ||
+                    (0xe000 <= c && c <= 0xfffd) ||
+                    (0x10000 <= c && c <= 0x10ffff) );
+        }
     }
 
     private String replace(String value, String original, String replacement)
