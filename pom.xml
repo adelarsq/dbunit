@@ -38,6 +38,13 @@
     <database.oracle.password>dbunit</database.oracle.password>
     <database.oracle.unsupportedFeatures>INSERT_IDENTITY</database.oracle.unsupportedFeatures>
 
+    <database.postgresql.driverClass>TODO</database.postgresql.driverClass>
+    <database.postgresql.url>TODO</database.postgresql.url>
+    <database.postgresql.schema>TODO</database.postgresql.schema>
+    <database.postgresql.user>TODO</database.postgresql.user>
+    <database.postgresql.password>TODO</database.postgresql.password>
+    <database.postgresql.unsupportedFeatures>TODO</database.postgresql.unsupportedFeatures>
+
     <database.mysql.driverClass>com.mysql.jdbc.Driver</database.mysql.driverClass>
     <database.mysql.url>jdbc:mysql://localhost:3306/dbunit</database.mysql.url>
     <database.mysql.schema>DBUNIT</database.mysql.schema>
@@ -52,12 +59,12 @@
     <database.mssql.password>dbunit</database.mssql.password>
     <database.mssql.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET</database.mssql.unsupportedFeatures>
 
-    <database.db2.driverClass></database.db2.driverClass>
-    <database.db2.url></database.db2.url>
-    <database.db2.schema></database.db2.schema>
-    <database.db2.user></database.db2.user>
-    <database.db2.password></database.db2.password>
-    <database.db2.unsupportedFeatures></database.db2.unsupportedFeatures>
+    <database.db2.driverClass>TODO</database.db2.driverClass>
+    <database.db2.url>TODO</database.db2.url>
+    <database.db2.schema>TODO</database.db2.schema>
+    <database.db2.user>TODO</database.db2.user>
+    <database.db2.password>TODO</database.db2.password>
+    <database.db2.unsupportedFeatures>TODO</database.db2.unsupportedFeatures>
 
     <database.derby.driverClass>org.apache.derby.jdbc.EmbeddedDriver</database.derby.driverClass>
     <database.derby.url>jdbc\:derby\:target\/derby_db;create\=true</database.derby.url>
