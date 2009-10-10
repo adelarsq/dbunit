@@ -41,7 +41,7 @@ public class ScrollableResultSetTableTest extends AbstractTableTest
     }
     
     protected boolean runTest(String testName) {
-      return AbstractDatabaseTest.environmentHasFeature(TestFeature.SCOLLABLE_RESULTSET);
+      return AbstractDatabaseTest.environmentHasFeature(TestFeature.SCROLLABLE_RESULTSET);
     }
     
     protected ITable createTable() throws Exception
