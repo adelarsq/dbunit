@@ -172,10 +172,12 @@
     </dbunit>
   </target>
 
+  <!-- JH_TODO: I added the schema attribute, seems to be required for Oracle. Do we need to test other DBs without it? -->
   <target name="test-export-full" depends="test-type-clean-insert">
     <dbunit driver="${database.driverClass}"
             url="${database.url}"
-        userid="${database.user}"
+            schema="${database.schema}"
+            userid="${database.user}"
             password="${database.password}">
       <export dest="${exportDataSet}"/>
     </dbunit>
@@ -185,13 +187,14 @@
   <target name="test-export-partial" depends="test-type-clean-insert">
     <dbunit driver="${database.driverClass}"
             url="${database.url}"
-        userid="${database.user}"
+            schema="${database.schema}"
+            userid="${database.user}"
             password="${database.password}">
       <export dest="${exportDataSet}">
         <table name="TEST_TABLE"/>
         <table name="PK_TABLE"/>
       </export>
-      <compare src="${exportDataSet}" format="flat"/>
+      <compare src="${exportDataSet}" format="flat" sort="true"/>
     </dbunit>
     <delete file="${exportDataSet}"/>
   </target>
@@ -199,7 +202,8 @@
   <target name="test-export-format-flat" depends="test-type-clean-insert">
     <dbunit driver="${database.driverClass}"
             url="${database.url}"
-        userid="${database.user}"
+            schema="${database.schema}"
+            userid="${database.user}"
             password="${database.password}">
       <export dest="${exportDataSet}" format="flat"/>
       <compare src="${exportDataSet}" format="flat"/>
@@ -210,7 +214,8 @@
   <target name="test-export-format-flat-with-doctype" depends="test-type-clean-insert">
     <dbunit driver="${database.driverClass}"
             url="${database.url}"
-        userid="${database.user}"
+            schema="${database.schema}"
+            userid="${database.user}"
             password="${database.password}">
       <export dest="${exportDataSet}" format="flat" doctype="dataset.dtd"/>
     </dbunit>
@@ -220,6 +225,7 @@
     <target name="test-export-format-flat-with-encoding" depends="test-type-clean-insert">
       <dbunit driver="${database.driverClass}"
               url="${database.url}"
+              schema="${database.schema}"
               userid="${database.user}"
               password="${database.password}">
         <export dest="${exportDataSet}" format="flat" encoding="ISO-8859-1"/>
@@ -230,7 +236,8 @@
   <target name="test-export-format-xml" depends="test-type-clean-insert">
     <dbunit driver="${database.driverClass}"
             url="${database.url}"
-        userid="${database.user}"
+            schema="${database.schema}"
+            userid="${database.user}"
             password="${database.password}">
       <export dest="${exportDataSet}" format="xml"/>
       <compare src="${exportDataSet}" format="xml"/>
@@ -241,7 +248,8 @@
     <target name="test-export-format-xml-ordered" depends="test-type-clean-insert">
       <dbunit driver="${database.driverClass}"
               url="${database.url}"
-          userid="${database.user}"
+              schema="${database.schema}"
+              userid="${database.user}"
               password="${database.password}">
         <export dest="${exportDataSet}" format="xml" ordered="true" />
         <compare src="${exportDataSet}" format="xml"/>
@@ -252,7 +260,8 @@
   <target name="test-export-format-dtd">
     <dbunit driver="${database.driverClass}"
             url="${database.url}"
-        userid="${database.user}"
+            schema="${database.schema}"
+            userid="${database.user}"
             password="${database.password}">
       <export dest="${exportDtd}" format="dtd"/>
     </dbunit>
@@ -262,6 +271,7 @@
   <target name="test-export-format-csv" depends="test-type-clean-insert">
     <dbunit driver="${database.driverClass}"
             url="${database.url}"
+            schema="${database.schema}"
             userid="${database.user}"
             password="${database.password}">
       <export dest="${exportCsv}" format="csv"/>
@@ -274,7 +284,7 @@
 
   	<dbunit driver="${database.driverClass}"
             url="${database.url}"
-        userid="${database.user}"
+            userid="${database.user}"
             password="${database.password}">
 
       <export dest="${exportCsv}" format="csv">
@@ -297,7 +307,7 @@
   <target name="invalid-queryset">
   	<dbunit driver="${database.driverClass}"
             url="${database.url}"
-        userid="${database.user}"
+            userid="${database.user}"
             password="${database.password}">
       <export dest="${exporDataSet}" format="flat">
       		<queryset id="someid" refid="someid"/>
