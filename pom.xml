@@ -326,6 +326,28 @@
       <version>1.8.0.1</version>
       <scope>test</scope>
     </dependency>
+    <!--
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>classes12</artifactId>
+      <version>8.1.7.1</version>
+      <scope>test</scope>
+    </dependency>
+    -->
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>ojdbc14</artifactId>
+      <version>10.2.0.4.0</version>
+      <scope>test</scope>
+    </dependency>
+    <!--
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>ojdbc6</artifactId>
+      <version>11.1.0.7.0</version>
+      <scope>test</scope>
+    </dependency>
+    -->
     <dependency>
       <!--
         Only needed when "profile.properties" is set to "derby"
