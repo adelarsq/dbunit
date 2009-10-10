@@ -300,7 +300,7 @@ public class DbUnitAssertTest extends TestCase
     	// Ignore COLUMN2 which has been modified by the "ModifyingTable" above and hence does not match.
         // When we ignore this column, the assertion should work without failure
         String[] ignoreCols = new String[] {"COLUMN2"};
-        assertion.assertEqualsByQuery(expectedTable, connection, "TEST_TABLE", "select * from TEST_TABLE", ignoreCols);
+        assertion.assertEqualsByQuery(expectedTable, connection, "TEST_TABLE", "select * from TEST_TABLE order by 1", ignoreCols);
     }
     
     public void testAssertTablesByQueryWithColFilterAndValuesNotEqualNotExcluded() throws Exception
@@ -319,7 +319,7 @@ public class DbUnitAssertTest extends TestCase
         // not match and is not ignored. So the assertion should fail.
         String[] ignoreCols = new String[] {"COLUMN1"};
         try {
-            assertion.assertEqualsByQuery(expectedTable, connection, "TEST_TABLE", "select * from TEST_TABLE", ignoreCols);
+            assertion.assertEqualsByQuery(expectedTable, connection, "TEST_TABLE", "select * from TEST_TABLE order by 1", ignoreCols);
         	fail("The assertion should not work");
         }
         catch (ComparisonFailure expected)
