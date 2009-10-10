@@ -12,7 +12,6 @@
         <include>LICENSE*</include>
         <include>NOTICE*</include>
         <include>pom.xml</include>
-        <include>profile.properties</include>
       </includes>
     </fileSet>
     <fileSet>

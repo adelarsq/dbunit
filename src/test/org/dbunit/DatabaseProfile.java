@@ -21,10 +21,7 @@
 
 package org.dbunit;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * @author Manuel Laflamme
@@ -35,61 +32,59 @@ public class DatabaseProfile
 {
 	private static final String[] EMPTY_ARRAY = new String[0];
 	
-    private static final String PROFILE_PREFIX = "dbunit.profile";
-
-    private static final String DRIVER_CLASS = "driverClass";
-    private static final String CONNECTION_URL = "connectionUrl";
-    private static final String SCHEMA = "schema";
-    private static final String USER = "user";
-    private static final String PASSWORD = "password";
-    private static final String UNSUPPORTED_FEATURES = "unsupportedFeatures";
+    private static final String DATABASE_PROFILE = "database.profile";
+    private static final String DATABASE_DRIVER_CLASS = "database.driverClass";
+    private static final String DATABASE_URL = "database.url";
+    private static final String DATABASE_SCHEMA = "database.schema";
+    private static final String DATABASE_USER = "database.user";
+    private static final String DATABASE_PASSWORD = "database.password";
+    private static final String DATABASE_UNSUPPORTED_FEATURES = "database.unsupportedFeatures";
 
     private final Properties _properties;
 
     public DatabaseProfile(Properties properties)
     {
         _properties = properties;
-    }
+//        ArrayList keys = new ArrayList(properties.keySet());
+//        for (int i = 0; i < keys.size(); i++) {
+//            System.out.println("key = " + keys.get(i) + ", value = " + properties.get(keys.get(i)));
+//        }
 
-    private String getPropertyKey(String name)
-    {
-        return PROFILE_PREFIX + "." + getActiveProfile() + "." + name;
     }
 
     public String getActiveProfile()
     {
-        return _properties.getProperty(PROFILE_PREFIX);
+        return _properties.getProperty(DATABASE_PROFILE);
     }
 
     public String getDriverClass()
     {
-        return _properties.getProperty(getPropertyKey(DRIVER_CLASS));
+        return _properties.getProperty(DATABASE_DRIVER_CLASS);
     }
 
     public String getConnectionUrl()
     {
-        return _properties.getProperty(getPropertyKey(CONNECTION_URL));
+        return _properties.getProperty(DATABASE_URL);
     }
 
     public String getSchema()
     {
-        return _properties.getProperty(getPropertyKey(SCHEMA), null);
+        return _properties.getProperty(DATABASE_SCHEMA, null);
     }
 
     public String getUser()
     {
-        return _properties.getProperty(getPropertyKey(USER));
+        return _properties.getProperty(DATABASE_USER);
     }
 
     public String getPassword()
     {
-        return _properties.getProperty(getPropertyKey(PASSWORD));
+        return _properties.getProperty(DATABASE_PASSWORD);
     }
 
     public String[] getUnsupportedFeatures()
     {
-        String property = _properties.getProperty(
-                getPropertyKey(UNSUPPORTED_FEATURES));
+        String property = _properties.getProperty(DATABASE_UNSUPPORTED_FEATURES);
         
         // If property is not set return an empty array
         if(property == null){
@@ -102,7 +97,7 @@ public class DatabaseProfile
         {
             stringList.add(tokenizer.nextToken().trim());
         }
-        return (String[])stringList.toArray(new String[0]);
+        return (String[])stringList.toArray(new String[stringList.size()]);
     }
 
 }

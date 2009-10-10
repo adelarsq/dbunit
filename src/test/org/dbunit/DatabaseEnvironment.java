@@ -22,11 +22,9 @@
 package org.dbunit;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Properties;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -51,12 +49,10 @@ public class DatabaseEnvironment
     {
         if (INSTANCE == null)
         {
-            Properties properties = new Properties();
-            properties.load(new FileInputStream(new File("profile.properties")));
-            DatabaseProfile profile = new DatabaseProfile(properties);
+            DatabaseProfile profile = new DatabaseProfile(System.getProperties());
 
             String profileName = profile.getActiveProfile();
-            if (profileName == null || profileName.equals("hypersonic"))
+            if (profileName == null || profileName.equals("hsqldb"))
             {
                 INSTANCE = new HypersonicEnvironment(profile);
             }
@@ -64,7 +60,7 @@ public class DatabaseEnvironment
             {
                 INSTANCE = new OracleEnvironment(profile);
             }
-            else if (profileName.equals("derbyembedded"))
+            else if (profileName.equals("derby"))
             {
                 INSTANCE = new DerbyEnvironment(profile);
             }

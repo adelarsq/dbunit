@@ -21,7 +21,59 @@
   <properties>
     <compileSource>1.4</compileSource>
     <checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
+
+    <database.profile>hsqldb</database.profile>
+
+    <database.hsqldb.driverClass>org.hsqldb.jdbcDriver</database.hsqldb.driverClass>
+    <database.hsqldb.url>jdbc:hsqldb:mem:.</database.hsqldb.url>
+    <database.hsqldb.schema>PUBLIC</database.hsqldb.schema>
+    <database.hsqldb.user>sa</database.hsqldb.user>
+    <database.hsqldb.password></database.hsqldb.password>
+    <database.hsqldb.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE</database.hsqldb.unsupportedFeatures>
+
+    <database.oracle.driverClass>oracle.jdbc.driver.OracleDriver</database.oracle.driverClass>
+    <database.oracle.url>jdbc:oracle:thin:@demowin:1521:demowin</database.oracle.url>
+    <database.oracle.schema>DBUNIT</database.oracle.schema>
+    <database.oracle.user>dbunit</database.oracle.user>
+    <database.oracle.password>dbunit</database.oracle.password>
+    <database.oracle.unsupportedFeatures>INSERT_IDENTITY</database.oracle.unsupportedFeatures>
+
+    <database.mysql.driverClass>com.mysql.jdbc.Driver</database.mysql.driverClass>
+    <database.mysql.url>jdbc:mysql://localhost:3306/dbunit</database.mysql.url>
+    <database.mysql.schema>DBUNIT</database.mysql.schema>
+    <database.mysql.user>dbunit</database.mysql.user>
+    <database.mysql.password>dbunit</database.mysql.password>
+    <database.mysql.unsupportedFeatures>BLOB,CLOB,TRANSACTION,INSERT_IDENTITY</database.mysql.unsupportedFeatures>
+
+    <database.mssql.driverClass>com.microsoft.jdbc.sqlserver.SQLServerDriver</database.mssql.driverClass>
+    <database.mssql.url>jdbc:microsoft:sqlserver://localhost\\dbunit:1433;DatabaseName=dbunit;SelectMethod=cursor</database.mssql.url>
+    <database.mssql.schema>dbo</database.mssql.schema>
+    <database.mssql.user>dbunit</database.mssql.user>
+    <database.mssql.password>dbunit</database.mssql.password>
+    <database.mssql.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET</database.mssql.unsupportedFeatures>
+
+    <database.db2.driverClass></database.db2.driverClass>
+    <database.db2.url></database.db2.url>
+    <database.db2.schema></database.db2.schema>
+    <database.db2.user></database.db2.user>
+    <database.db2.password></database.db2.password>
+    <database.db2.unsupportedFeatures></database.db2.unsupportedFeatures>
+
+    <database.derby.driverClass>org.apache.derby.jdbc.EmbeddedDriver</database.derby.driverClass>
+    <database.derby.url>jdbc\:derby\:target\/derby_db;create\=true</database.derby.url>
+    <database.derby.schema>APP</database.derby.schema>
+    <database.derby.user>APP</database.derby.user>
+    <database.derby.password>APP</database.derby.password>
+    <database.derby.unsupportedFeatures>VARBINARY,BLOB,CLOB,TRANSACTION,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE</database.derby.unsupportedFeatures>
+
+    <database.h2.driverClass>TODO</database.h2.driverClass>
+    <database.h2.url>TODO</database.h2.url>
+    <database.h2.schema>TODO</database.h2.schema>
+    <database.h2.user>TODO</database.h2.user>
+    <database.h2.password>TODO</database.h2.password>
+    <database.h2.unsupportedFeatures>TODO</database.h2.unsupportedFeatures>
   </properties>
+
   <scm>
     <connection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</connection>
     <developerConnection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</developerConnection>
@@ -69,8 +121,8 @@
     </mailingList>
   </mailingLists>
 
-  <!-- 
-     - Who are the developers for the project, in order of recent activity. 
+  <!--
+     - Who are the developers for the project, in order of recent activity.
     -->
   <developers>
     <!--
@@ -346,6 +398,36 @@
           <includes>
             <include>**/*Test.java</include>
           </includes>
+          <systemProperties>
+            <property>
+              <name>database.profile</name>
+              <value>${database.profile}</value>
+            </property>
+            <property>
+              <name>database.driverClass</name>
+              <value>${database.driverClass}</value>
+            </property>
+            <property>
+              <name>database.url</name>
+              <value>${database.url}</value>
+            </property>
+            <property>
+              <name>database.schema</name>
+              <value>${database.schema}</value>
+            </property>
+            <property>
+              <name>database.user</name>
+              <value>${database.user}</value>
+            </property>
+            <property>
+              <name>database.password</name>
+              <value>${database.password}</value>
+            </property>
+            <property>
+              <name>database.unsupportedFeatures</name>
+              <value>${database.unsupportedFeatures}</value>
+            </property>
+          </systemProperties>
         </configuration>
       </plugin>
       <plugin>
@@ -558,6 +640,105 @@
           </plugin>
         </plugins>
       </reporting>
+    </profile>
+    <profile>
+      <id>hsqldb</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <database.profile>hsqldb</database.profile>
+        <database.driverClass>${database.hsqldb.driverClass}</database.driverClass>
+        <database.url>${database.hsqldb.url}</database.url>
+        <database.schema>${database.hsqldb.schema}</database.schema>
+        <database.user>${database.hsqldb.user}</database.user>
+        <database.password>${database.hsqldb.password}</database.password>
+        <database.unsupportedFeatures>${database.hsqldb.unsupportedFeatures}</database.unsupportedFeatures>
+      </properties>
+    </profile>
+    <profile>
+      <id>oracle</id>
+      <properties>
+        <database.profile>oracle</database.profile>
+        <database.driverClass>${database.oracle.driverClass}</database.driverClass>
+        <database.url>${database.oracle.url}</database.url>
+        <database.schema>${database.oracle.schema}</database.schema>
+        <database.user>${database.oracle.user}</database.user>
+        <database.password>${database.oracle.password}</database.password>
+        <database.unsupportedFeatures>${database.oracle.unsupportedFeatures}</database.unsupportedFeatures>
+      </properties>
+    </profile>
+    <profile>
+      <id>mysql</id>
+      <properties>
+        <database.profile>mysql</database.profile>
+        <database.driverClass>${database.mysql.driverClass}</database.driverClass>
+        <database.url>${database.mysql.url}</database.url>
+        <database.schema>${database.mysql.schema}</database.schema>
+        <database.user>${database.mysql.user}</database.user>
+        <database.password>${database.mysql.password}</database.password>
+        <database.unsupportedFeatures>${database.mysql.unsupportedFeatures}</database.unsupportedFeatures>
+      </properties>
+    </profile>
+    <profile>
+      <id>mssql</id>
+      <properties>
+        <database.profile>mssql</database.profile>
+        <database.driverClass>${database.mssql.driverClass}</database.driverClass>
+        <database.url>${database.mssql.url}</database.url>
+        <database.schema>${database.mssql.schema}</database.schema>
+        <database.user>${database.mssql.user}</database.user>
+        <database.password>${database.mssql.password}</database.password>
+        <database.unsupportedFeatures>${database.mssql.unsupportedFeatures}</database.unsupportedFeatures>
+      </properties>
+    </profile>
+    <profile>
+      <id>db2</id>
+      <properties>
+        <database.profile>db2</database.profile>
+        <database.driverClass>${database.db2.driverClass}</database.driverClass>
+        <database.url>${database.db2.url}</database.url>
+        <database.schema>${database.db2.schema}</database.schema>
+        <database.user>${database.db2.user}</database.user>
+        <database.password>${database.db2.password}</database.password>
+        <database.unsupportedFeatures>${database.db2.unsupportedFeatures}</database.unsupportedFeatures>
+      </properties>
+    </profile>
+    <profile>
+      <id>derby</id>
+      <properties>
+        <database.profile>derby</database.profile>
+        <database.driverClass>${database.derby.driverClass}</database.driverClass>
+        <database.url>${database.derby.url}</database.url>
+        <database.schema>${database.derby.schema}</database.schema>
+        <database.user>${database.derby.user}</database.user>
+        <database.password>${database.derby.password}</database.password>
+        <database.unsupportedFeatures>${database.derby.unsupportedFeatures}</database.unsupportedFeatures>
+      </properties>
+    </profile>
+    <profile>
+      <id>postgresql</id>
+      <properties>
+        <database.profile>postgresql</database.profile>
+        <database.driverClass>${database.postgresql.driverClass}</database.driverClass>
+        <database.url>${database.postgresql.url}</database.url>
+        <database.schema>${database.postgresql.schema}</database.schema>
+        <database.user>${database.postgresql.user}</database.user>
+        <database.password>${database.postgresql.password}</database.password>
+        <database.unsupportedFeatures>${database.postgresql.unsupportedFeatures}</database.unsupportedFeatures>
+      </properties>
+    </profile>
+    <profile>
+      <id>h2</id>
+      <properties>
+        <database.profile>h2</database.profile>
+        <database.driverClass>${database.h2.driverClass}</database.driverClass>
+        <database.url>${database.h2.url}</database.url>
+        <database.schema>${database.h2.schema}</database.schema>
+        <database.user>${database.h2.user}</database.user>
+        <database.password>${database.h2.password}</database.password>
+        <database.unsupportedFeatures>${database.h2.unsupportedFeatures}</database.unsupportedFeatures>
+      </properties>
     </profile>
   </profiles>
 
