@@ -200,7 +200,18 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         {
             Column column = columns[i];
             assertEquals("name", (String)expectedNames.get(i), column.getColumnName());
-            assertEquals("datatype", (DataType)expectedTypes.get(i), column.getDataType());
+            if (expectedTypes.get(i).equals(DataType.NUMERIC))
+            {
+                // 2009-10-10 John Hurst: hack for Oracle, returns java.sql.Types.DECIMAL for this column
+                assertTrue("Expected numeric datatype, got [" + column.getDataType() + "]",
+                        column.getDataType().equals(DataType.NUMERIC) ||
+                        column.getDataType().equals(DataType.DECIMAL)
+                );
+            }
+            else
+            {
+                assertEquals("datatype", (DataType)expectedTypes.get(i), column.getDataType());
+            }
         }
     }
  
