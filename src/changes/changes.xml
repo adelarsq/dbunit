@@ -2,7 +2,7 @@
 <document>
   <properties>
     <title>Changes</title>
-    <!-- Commented out as recent versions of maven-changes-plugin generate 
+    <!-- Commented out as recent versions of maven-changes-plugin generate
          errors parsing multiple author tags
     <author email="epugh@upstate.com">Eric Pugh</author>
     <author email="mlaflamm@users.sourceforge.net">Manuel Laflamme</author>
@@ -16,6 +16,7 @@
       <action dev="gommma" type="fix" issue="2741077" due-to="dnap">DatabaseSequenceFilter fails on case sensitive tables</action>
       <action dev="gommma" type="fix" issue="2838922" due-to="matthieus, simon_wu">DB2 problem with schema names</action>
       <action dev="gommma" type="fix" issue="2875262" due-to="caseylucas">Handle non-typical characters in xml encoding</action>
+      <action dev="jbhurst" type="fix" issue="2875235" due-to="jbhurst">Fix integration tests.</action>
     </release>
     <release version="2.4.6" date="Sep 20, 2009" description="Bugfixes and some database specific additions">
       <action dev="rlogiacco" type="add" issue="284432" due-to="JamesR">Add support for interval type on postgres</action>
@@ -34,7 +35,7 @@
       <action dev="gommma" type="fix" issue="2854788" due-to="olibye">Sybace - SQLHelper.getDatabaseInfo exception getDatabaseMajorVersion()</action>
       <action dev="gommma" type="add" issue="2828869" due-to="amit3011">DBUnit support for Netezza database</action>
     </release>
-    
+
     <release version="2.4.5" date="May 22, 2009" description="Bugfixes and some few additions">
       <action dev="gommma" type="add" issue="2633859" due-to="tjstavenger">Add Excel support to Export</action>
       <action dev="gommma" type="fix" issue="2658082" due-to="Bernard Schubach">MySQL - NoSuchTableException</action>
@@ -280,12 +281,12 @@
     <release version="1.5.1" date="April 4, 2003">
        <action dev="" type="fix">Fixed DELETE operation that was not deleting tables in reverse order as expected.</action>
        <action dev="" type="fix">712329 - setObject fails on BEA JDriver for MS-SQL.</action>
-     
+
        <action dev="" type="update">DbUnitTask DTD export optimization. </action>
        <action dev="" type="update">REFRESH operation optimization.</action>
     </release>
     <release version="1.5" date="March 1, 2003">
-       <action dev="" type="fix">Multiple bugfixes.</action>    
+       <action dev="" type="fix">Multiple bugfixes.</action>
        <action dev="" type="add">533321 - DbUnit is now case insensitive.</action>
        <action dev="" type="add">555455- Supports table names escaping (see escapePattern property).</action>
        <action dev="" type="add">551925 - Allows duplicate table names in datasets. A new method, getTables(), have been added in the IDataSet interface.</action>
@@ -294,8 +295,8 @@
       <action dev="" type="add">645691 - Added the &lt;classpath&gt; nested element in DbUnitTask ant task; used to load the JDBC classes.</action>
       <action dev="" type="add">Added &lt;query&gt; nested element in DbUnitTask &lt;export&gt;. Allows exporting the result of a SELECT as a table of a dataset. See ant task documentation.</action>
       <action dev="" type="add">New Canoo Webtest integration guide.</action>
-    
-   </release> 
+
+   </release>
    <release version="1.4" date="July 17, 2002">
       <action dev="" type="add">DbUnitTask for Ant contributed by Timothy Ruppert and Ben Cox.</action>
       <action dev="" type="update">Moved the Base64 class to the org.dbunit.util package because Visual Age for Java is not able to handle classes located in the default package.</action>
@@ -304,7 +305,7 @@
       <action dev="" type="add">542462 - Added a system property to disable usage of batch statement even if the target database support it..</action>
       <action dev="" type="update">545238 - Sort tables prior to comparing them. DbUnit now generates an ORDER BY clause in the select statement used by DatabaseDataSet.getTable(). Rows are sorted by primary keys.</action>
       <action dev="" type="update">554249 - None column values.</action>
-      <action dev="" type="add">Added support for BLOB and CLOB data types.</action> 
+      <action dev="" type="add">Added support for BLOB and CLOB data types.</action>
     </release>
 
     <release version="1.3" date="April 4, 2002">
@@ -336,7 +337,7 @@
     </release>
 
     <release version="1.0" date="Febuary 27, 2002" description="Initial public release.">
-    </release>      
+    </release>
 
   </body>
 </document>
