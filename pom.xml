@@ -36,7 +36,7 @@
     <database.oracle.schema>DBUNIT</database.oracle.schema>
     <database.oracle.user>dbunit</database.oracle.user>
     <database.oracle.password>dbunit</database.oracle.password>
-    <database.oracle.unsupportedFeatures>INSERT_IDENTITY</database.oracle.unsupportedFeatures>
+    <database.oracle.unsupportedFeatures>INSERT_IDENTITY,SCROLLABLE_RESULTSET</database.oracle.unsupportedFeatures>
 
     <database.postgresql.driverClass>TODO</database.postgresql.driverClass>
     <database.postgresql.url>TODO</database.postgresql.url>
