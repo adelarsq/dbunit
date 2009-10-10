@@ -32,13 +32,13 @@ public class DatabaseProfile
 {
 	private static final String[] EMPTY_ARRAY = new String[0];
 	
-    private static final String DATABASE_PROFILE = "database.profile";
-    private static final String DATABASE_DRIVER_CLASS = "database.driverClass";
-    private static final String DATABASE_URL = "database.url";
-    private static final String DATABASE_SCHEMA = "database.schema";
-    private static final String DATABASE_USER = "database.user";
-    private static final String DATABASE_PASSWORD = "database.password";
-    private static final String DATABASE_UNSUPPORTED_FEATURES = "database.unsupportedFeatures";
+    private static final String DATABASE_PROFILE = "dbunit.profile";
+    private static final String PROFILE_DRIVER_CLASS = "dbunit.profile.driverClass";
+    private static final String PROFILE_URL = "dbunit.profile.url";
+    private static final String PROFILE_SCHEMA = "dbunit.profile.schema";
+    private static final String PROFILE_USER = "dbunit.profile.user";
+    private static final String PROFILE_PASSWORD = "dbunit.profile.password";
+    private static final String PROFILE_UNSUPPORTED_FEATURES = "dbunit.profile.unsupportedFeatures";
 
     private final Properties _properties;
 
@@ -59,32 +59,32 @@ public class DatabaseProfile
 
     public String getDriverClass()
     {
-        return _properties.getProperty(DATABASE_DRIVER_CLASS);
+        return _properties.getProperty(PROFILE_DRIVER_CLASS);
     }
 
     public String getConnectionUrl()
     {
-        return _properties.getProperty(DATABASE_URL);
+        return _properties.getProperty(PROFILE_URL);
     }
 
     public String getSchema()
     {
-        return _properties.getProperty(DATABASE_SCHEMA, null);
+        return _properties.getProperty(PROFILE_SCHEMA, null);
     }
 
     public String getUser()
     {
-        return _properties.getProperty(DATABASE_USER);
+        return _properties.getProperty(PROFILE_USER);
     }
 
     public String getPassword()
     {
-        return _properties.getProperty(DATABASE_PASSWORD);
+        return _properties.getProperty(PROFILE_PASSWORD);
     }
 
     public String[] getUnsupportedFeatures()
     {
-        String property = _properties.getProperty(DATABASE_UNSUPPORTED_FEATURES);
+        String property = _properties.getProperty(PROFILE_UNSUPPORTED_FEATURES);
         
         // If property is not set return an empty array
         if(property == null){
