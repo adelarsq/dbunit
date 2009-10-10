@@ -659,8 +659,9 @@
         <dbunit.profile.unsupportedFeatures>${dbunit.profile.hsqldb.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
       </properties>
     </profile>
+    <!-- "original" OracleDataTypeFactory (NOT 10g) with Oracle 8 JDBC driver for Java 1.2 -->
     <profile>
-      <id>oracle</id>
+      <id>oracle-classes12</id>
       <properties>
         <dbunit.profile>oracle</dbunit.profile>
         <dbunit.profile.driverClass>${dbunit.profile.oracle.driverClass}</dbunit.profile.driverClass>
@@ -672,27 +673,53 @@
       </properties>
       <dependencies>
         <dependency>
-          <!--
-          <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>classes12</artifactId>
-            <version>8.1.7.1</version>
-            <scope>test</scope>
-          </dependency>
-          -->
+          <groupId>com.oracle</groupId>
+          <artifactId>classes12</artifactId>
+          <version>8.1.7.1</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <!-- "original" OracleDataTypeFactory (NOT 10g) with Oracle 10 JDBC driver for Java 1.4 -->
+    <profile>
+      <id>oracle-ojdbc14</id>
+      <properties>
+        <dbunit.profile>oracle</dbunit.profile>
+        <dbunit.profile.driverClass>${dbunit.profile.oracle.driverClass}</dbunit.profile.driverClass>
+        <dbunit.profile.url>${dbunit.profile.oracle.url}</dbunit.profile.url>
+        <dbunit.profile.schema>${dbunit.profile.oracle.schema}</dbunit.profile.schema>
+        <dbunit.profile.user>${dbunit.profile.oracle.user}</dbunit.profile.user>
+        <dbunit.profile.password>${dbunit.profile.oracle.password}</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>${dbunit.profile.oracle.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+      </properties>
+      <dependencies>
+        <dependency>
           <groupId>com.oracle</groupId>
           <artifactId>ojdbc14</artifactId>
           <version>10.2.0.4.0</version>
           <scope>test</scope>
         </dependency>
-        <!--
+      </dependencies>
+    </profile>
+    <!-- "original" OracleDataTypeFactory (NOT 10g) with Oracle 11 JDBC driver for Java 6 -->
+    <profile>
+      <id>oracle-ojdbc6</id>
+      <properties>
+        <dbunit.profile>oracle</dbunit.profile>
+        <dbunit.profile.driverClass>${dbunit.profile.oracle.driverClass}</dbunit.profile.driverClass>
+        <dbunit.profile.url>${dbunit.profile.oracle.url}</dbunit.profile.url>
+        <dbunit.profile.schema>${dbunit.profile.oracle.schema}</dbunit.profile.schema>
+        <dbunit.profile.user>${dbunit.profile.oracle.user}</dbunit.profile.user>
+        <dbunit.profile.password>${dbunit.profile.oracle.password}</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>${dbunit.profile.oracle.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+      </properties>
+      <dependencies>
         <dependency>
           <groupId>com.oracle</groupId>
           <artifactId>ojdbc6</artifactId>
           <version>11.1.0.7.0</version>
           <scope>test</scope>
         </dependency>
-        -->
       </dependencies>
     </profile>
     <profile>
