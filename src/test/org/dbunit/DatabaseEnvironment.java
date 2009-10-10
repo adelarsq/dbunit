@@ -26,6 +26,7 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
@@ -102,6 +103,11 @@ public class DatabaseEnvironment
                     _profile.getSchema());
         }
         return _connection;
+    }
+
+    protected void setupDatabaseConfig(DatabaseConfig config)
+    {
+//         override in subclasses as necessary
     }
     
     public IDatabaseTester getDatabaseTester()

@@ -21,6 +21,7 @@
 
 package org.dbunit;
 
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
@@ -67,6 +68,7 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
         super.setUp();
 
         _connection = getDatabaseTester().getConnection();
+        setUpDatabaseConfig(_connection.getConfig());
     }
 
     protected IDatabaseTester getDatabaseTester() throws Exception
@@ -82,6 +84,18 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
           e.printStackTrace();
        }
        return super.getDatabaseTester();
+    }
+
+    protected void setUpDatabaseConfig(DatabaseConfig config)
+    {
+        try
+        {
+            getEnvironment().setupDatabaseConfig(config);
+        }
+        catch (Exception ex)
+        {
+            throw new RuntimeException(ex); // JH_TODO: is this the "DbUnit way" to handle exceptions?
+        }
     }
 
     protected void tearDown() throws Exception
