@@ -61,6 +61,10 @@ public class DatabaseEnvironment
             {
                 INSTANCE = new OracleEnvironment(profile);
             }
+            else if (profileName.equals("oracle10"))
+            {
+                INSTANCE = new Oracle10Environment(profile);
+            }
             else if (profileName.equals("derby"))
             {
                 INSTANCE = new DerbyEnvironment(profile);

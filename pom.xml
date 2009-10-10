@@ -38,6 +38,8 @@
     <dbunit.profile.oracle.password>dbunit</dbunit.profile.oracle.password>
     <dbunit.profile.oracle.unsupportedFeatures>INSERT_IDENTITY,SCROLLABLE_RESULTSET</dbunit.profile.oracle.unsupportedFeatures>
 
+    <dbunit.profile.oracle10.driverClass>oracle.jdbc.OracleDriver</dbunit.profile.oracle10.driverClass>
+
     <dbunit.profile.postgresql.driverClass>TODO</dbunit.profile.postgresql.driverClass>
     <dbunit.profile.postgresql.url>TODO</dbunit.profile.postgresql.url>
     <dbunit.profile.postgresql.schema>TODO</dbunit.profile.postgresql.schema>
@@ -707,6 +709,48 @@
       <properties>
         <dbunit.profile>oracle</dbunit.profile>
         <dbunit.profile.driverClass>${dbunit.profile.oracle.driverClass}</dbunit.profile.driverClass>
+        <dbunit.profile.url>${dbunit.profile.oracle.url}</dbunit.profile.url>
+        <dbunit.profile.schema>${dbunit.profile.oracle.schema}</dbunit.profile.schema>
+        <dbunit.profile.user>${dbunit.profile.oracle.user}</dbunit.profile.user>
+        <dbunit.profile.password>${dbunit.profile.oracle.password}</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>${dbunit.profile.oracle.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>ojdbc6</artifactId>
+          <version>11.1.0.7.0</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <!-- "newer" Oracle10DataTypeFactory with Oracle 10 JDBC driver for Java 1.4 -->
+    <profile>
+      <id>oracle10-ojdbc14</id>
+      <properties>
+        <dbunit.profile>oracle10</dbunit.profile>
+        <dbunit.profile.driverClass>${dbunit.profile.oracle10.driverClass}</dbunit.profile.driverClass>
+        <dbunit.profile.url>${dbunit.profile.oracle.url}</dbunit.profile.url>
+        <dbunit.profile.schema>${dbunit.profile.oracle.schema}</dbunit.profile.schema>
+        <dbunit.profile.user>${dbunit.profile.oracle.user}</dbunit.profile.user>
+        <dbunit.profile.password>${dbunit.profile.oracle.password}</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>${dbunit.profile.oracle.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>ojdbc14</artifactId>
+          <version>10.2.0.4.0</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <!-- "newer" Oracle10DataTypeFactory with Oracle 11 JDBC driver for Java 6 -->
+    <profile>
+      <id>oracle10-ojdbc6</id>
+      <properties>
+        <dbunit.profile>oracle10</dbunit.profile>
+        <dbunit.profile.driverClass>${dbunit.profile.oracle10.driverClass}</dbunit.profile.driverClass>
         <dbunit.profile.url>${dbunit.profile.oracle.url}</dbunit.profile.url>
         <dbunit.profile.schema>${dbunit.profile.oracle.schema}</dbunit.profile.schema>
         <dbunit.profile.user>${dbunit.profile.oracle.user}</dbunit.profile.user>
