@@ -336,12 +336,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.oracle</groupId>
-      <artifactId>ojdbc14</artifactId>
-      <version>10.2.0.4.0</version>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>gsbase</groupId>
       <artifactId>gsbase</artifactId>
       <version>2.0.1</version>
@@ -647,6 +641,20 @@
       </reporting>
     </profile>
     <profile>
+      <id>oracle-default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>ojdbc14</artifactId>
+          <version>10.2.0.4.0</version>
+          <optional>true</optional>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
       <id>hsqldb</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -662,6 +670,7 @@
       </properties>
     </profile>
     <!-- "original" OracleDataTypeFactory (NOT 10g) with Oracle 8 JDBC driver for Java 1.2 -->
+    <!-- Doesn't work.
     <profile>
       <id>oracle-classes12</id>
       <properties>
@@ -678,10 +687,11 @@
           <groupId>com.oracle</groupId>
           <artifactId>classes12</artifactId>
           <version>8.1.7.1</version>
-          <scope>test</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>
+    -->
     <!-- "original" OracleDataTypeFactory (NOT 10g) with Oracle 10 JDBC driver for Java 1.4 -->
     <profile>
       <id>oracle-ojdbc14</id>
@@ -699,7 +709,7 @@
           <groupId>com.oracle</groupId>
           <artifactId>ojdbc14</artifactId>
           <version>10.2.0.4.0</version>
-          <scope>test</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>
@@ -720,7 +730,7 @@
           <groupId>com.oracle</groupId>
           <artifactId>ojdbc6</artifactId>
           <version>11.1.0.7.0</version>
-          <scope>test</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>
@@ -741,7 +751,7 @@
           <groupId>com.oracle</groupId>
           <artifactId>ojdbc14</artifactId>
           <version>10.2.0.4.0</version>
-          <scope>test</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>
@@ -762,7 +772,7 @@
           <groupId>com.oracle</groupId>
           <artifactId>ojdbc6</artifactId>
           <version>11.1.0.7.0</version>
-          <scope>test</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>

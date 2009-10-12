@@ -20,13 +20,14 @@
  */
 package org.dbunit.ext.oracle;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import oracle.jdbc.OraclePreparedStatement;
+import oracle.jdbc.OracleResultSet;
+import oracle.sql.OPAQUE;
+import oracle.sql.OpaqueDescriptor;
 
 import org.dbunit.dataset.datatype.BlobDataType;
 import org.dbunit.dataset.datatype.TypeCastException;
@@ -44,119 +45,23 @@ public class OracleXMLTypeDataType extends BlobDataType
 
     public Object getSqlValue(int column, ResultSet resultSet) throws SQLException, TypeCastException
     {
-        Object data = new byte[0];
-        try
+        byte[] data = new byte[0];
+        OracleResultSet oracleResultSet = (OracleResultSet) resultSet;
+        OPAQUE opaque = oracleResultSet.getOPAQUE(column);
+        if (opaque != null) 
         {
-            ClassLoader classLoader = resultSet.getClass().getClassLoader();
-            // Classes
-            Class cOracleResultSet = super.loadClass("oracle.jdbc.OracleResultSet", classLoader);
-            Class cOPAQUE = super.loadClass("oracle.sql.OPAQUE", classLoader);
-
-            // Methods
-            Method mGetOPAQUE = cOracleResultSet.getMethod("getOPAQUE", new Class[]{ Integer.TYPE });
-            Method mGetBytes = cOPAQUE.getMethod("getBytes", null);
-
-            // cast resultSet to an OracleResultSet
-//            Object ors = cOracleResultSet.cast(resultSet); // TODO activate this with java 1.5
-            Object ors = resultSet;
-
-            // call ors.getOPAQUE(column)
-            Object opaque = mGetOPAQUE.invoke(ors, new Object[]{ new Integer(column) });
-
-            // if there is any data for this column call opaque.getBytes() to get it.
-            if (opaque != null)
-            {
-                data = mGetBytes.invoke(opaque, null);
-            }
-        }
-        catch (SecurityException e)
-        {
-            throw new TypeCastException(data, this, e);
-        }
-        catch (IllegalArgumentException e)
-        {
-            throw new TypeCastException(data, this, e);
-        }
-        catch (ClassNotFoundException e)
-        {
-            throw new TypeCastException(data, this, e);
-        }
-        catch (NoSuchMethodException e)
-        {
-            throw new TypeCastException(data, this, e);
-        }
-        catch (IllegalAccessException e)
-        {
-            throw new TypeCastException(data, this, e);
-        }
-        catch (InvocationTargetException e)
-        {
-            throw new TypeCastException(data, this, e);
+            data = opaque.getBytes();
         }
 
         // return the byte data (using typeCast to cast it to Base64 notation)
-        return typeCast((byte[]) data);
+        return typeCast(data);
     }
 
     public void setSqlValue(Object value, int column, PreparedStatement statement) throws SQLException, TypeCastException
     {
-        try
-        {
-            ClassLoader classLoader = statement.getClass().getClassLoader();
-            // Classes
-            Class cOraclePreparedStatement = super.loadClass("oracle.jdbc.OraclePreparedStatement", classLoader);
-            Class cOpaqueDescriptor = super.loadClass("oracle.sql.OpaqueDescriptor", classLoader);
-            Class cOPAQUE = super.loadClass("oracle.sql.OPAQUE", classLoader);
-
-            // Methods (inc. the constructor for the class OPAQUE)
-            Constructor mOPAQUEConstructor = cOPAQUE.getConstructor(new Class[]{ cOpaqueDescriptor, new byte[0].getClass(), Connection.class });
-            Method mCreateDescriptor = cOpaqueDescriptor.getMethod("createDescriptor", new Class[]{ String.class, Connection.class });
-            Method mSetOPAQUE = cOraclePreparedStatement.getMethod("setOPAQUE", new Class[]{ Integer.TYPE, cOPAQUE });
-
-            // Cast statement to OraclePreparedStatement
-//            Object oraclePreparedStatement = cOraclePreparedStatement.cast(statement); // TODO activate this with java 1.5
-            Object oraclePreparedStatement = statement;
-
-            // Create the OpaqueDescriptor for type SYS.XMLTYPE
-            Object opaqueDescriptor = mCreateDescriptor.invoke(null, new Object[]{ "SYS.XMLTYPE", statement.getConnection() });
-
-            // Create the OPAQUE object
-            Object opaque = mOPAQUEConstructor.newInstance(new Object[]{ opaqueDescriptor, typeCast(value), statement.getConnection() });
-
-            // call oraclePreparedStatement.setOPAQUE(column, opaque)
-            mSetOPAQUE.invoke(oraclePreparedStatement, new Object[]{ new Integer(column), opaque });
-        }
-        catch (TypeCastException e)
-        {
-            throw new TypeCastException(value, this, e);
-        }
-        catch (SecurityException e)
-        {
-            throw new TypeCastException(value, this, e);
-        }
-        catch (IllegalArgumentException e)
-        {
-            throw new TypeCastException(value, this, e);
-        }
-        catch (ClassNotFoundException e)
-        {
-            throw new TypeCastException(value, this, e);
-        }
-        catch (NoSuchMethodException e)
-        {
-            throw new TypeCastException(value, this, e);
-        }
-        catch (IllegalAccessException e)
-        {
-            throw new TypeCastException(value, this, e);
-        }
-        catch (InvocationTargetException e)
-        {
-            throw new TypeCastException(value, this, e);
-        }
-        catch (InstantiationException e)
-        {
-            throw new TypeCastException(value, this, e);
-        }
+        OraclePreparedStatement oraclePreparedStatement = (OraclePreparedStatement) statement;
+        OpaqueDescriptor opaqueDescriptor = OpaqueDescriptor.createDescriptor("SYS.XMLTYPE", statement.getConnection());
+        OPAQUE opaque = new OPAQUE(opaqueDescriptor, (byte[]) typeCast(value), statement.getConnection());
+        oraclePreparedStatement.setOPAQUE(column, opaque);
     }
 }

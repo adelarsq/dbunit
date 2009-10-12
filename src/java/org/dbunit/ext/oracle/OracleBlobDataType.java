@@ -20,6 +20,8 @@
  */
 package org.dbunit.ext.oracle;
 
+import oracle.sql.BLOB;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +30,6 @@ import org.dbunit.dataset.datatype.TypeCastException;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -49,13 +49,7 @@ public class OracleBlobDataType extends BlobDataType
      */
     private static final Logger logger = LoggerFactory.getLogger(OracleBlobDataType.class);
 
-    private static final Integer DURATION_SESSION = new Integer(1);
-//    private static final Integer DURATION_CALL = new Integer(2);
-//    private static final Integer MODE_READONLY = new Integer(0);
-    private static final Integer MODE_READWRITE = new Integer(1);
-
-    public Object getSqlValue(int column, ResultSet resultSet)
-            throws SQLException, TypeCastException
+    public Object getSqlValue(int column, ResultSet resultSet) throws SQLException, TypeCastException
     {
     	if(logger.isDebugEnabled())
     		logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
@@ -73,31 +67,16 @@ public class OracleBlobDataType extends BlobDataType
         statement.setObject(column, getBlob(value, statement.getConnection()));
     }
 
-    private Object getBlob(Object value, Connection connection)
-            throws TypeCastException
+    private Object getBlob(Object value, Connection connection) throws TypeCastException
     {
         logger.debug("getBlob(value={}, connection={}) - start", value, connection);
 
-        Object tempBlob = null;
+        oracle.sql.BLOB tempBlob = null;
         try
         {
-            Class aBlobClass = super.loadClass("oracle.sql.BLOB", connection);
-
-            // Create new temporary Blob
-            Method createTemporaryMethod = aBlobClass.getMethod("createTemporary",
-                    new Class[]{Connection.class, Boolean.TYPE, Integer.TYPE});
-            tempBlob = createTemporaryMethod.invoke(null,
-                    new Object[]{connection, Boolean.TRUE, DURATION_SESSION});
-
-            // Open the temporary Blob in readwrite mode to enable writing
-            Method openMethod = aBlobClass.getMethod("open", new Class[]{Integer.TYPE});
-            openMethod.invoke(tempBlob, new Object[]{MODE_READWRITE});
-
-            // Get the output stream to write
-            Method getOutputStreamMethod = tempBlob.getClass().getMethod(
-                    "getBinaryOutputStream", new Class[0]);
-            OutputStream tempBlobOutputStream = (OutputStream)getOutputStreamMethod.invoke(
-                    tempBlob, new Object[0]);
+            tempBlob = oracle.sql.BLOB.createTemporary(connection, true, oracle.sql.BLOB.DURATION_SESSION);
+            tempBlob.open(oracle.sql.BLOB.MODE_READWRITE);
+            OutputStream tempBlobOutputStream = tempBlob.getBinaryOutputStream();
 
             // Write the data into the temporary BLOB
             tempBlobOutputStream.write((byte[])typeCast(value));
@@ -107,31 +86,16 @@ public class OracleBlobDataType extends BlobDataType
             tempBlobOutputStream.close();
 
             // Close the temporary Blob
-            Method closeMethod = tempBlob.getClass().getMethod(
-                    "close", new Class[0]);
-            closeMethod.invoke(tempBlob, new Object[0]);
+            tempBlob.close();
         }
-        catch (IllegalAccessException e)
+        catch (SQLException e)
         {
-            freeTemporaryBlob(tempBlob);
-            throw new TypeCastException(value, this, e);
-        }
-        catch (NoSuchMethodException e)
-        {
+            // JH_TODO: shouldn't freeTemporary be called in finally {} ?
+            // It wasn't done like that in the original reflection-styled DbUnit code.
             freeTemporaryBlob(tempBlob);
             throw new TypeCastException(value, this, e);
         }
         catch (IOException e)
-        {
-            freeTemporaryBlob(tempBlob);
-            throw new TypeCastException(value, this, e);
-        }
-        catch (InvocationTargetException e)
-        {
-            freeTemporaryBlob(tempBlob);
-            throw new TypeCastException(value, this, e.getTargetException());
-        }
-        catch (ClassNotFoundException e)
         {
             freeTemporaryBlob(tempBlob);
             throw new TypeCastException(value, this, e);
@@ -141,7 +105,7 @@ public class OracleBlobDataType extends BlobDataType
     }
 
 
-    private void freeTemporaryBlob(Object tempBlob) throws TypeCastException
+    private void freeTemporaryBlob(oracle.sql.BLOB tempBlob) throws TypeCastException
     {
         logger.debug("freeTemporaryBlob(tempBlob={}) - start", tempBlob);
 
@@ -152,20 +116,11 @@ public class OracleBlobDataType extends BlobDataType
 
         try
         {
-            Method freeTemporaryMethod = tempBlob.getClass().getMethod("freeTemporary", new Class[0]);
-            freeTemporaryMethod.invoke(tempBlob, new Object[0]);
+            tempBlob.freeTemporary();
         }
-        catch (NoSuchMethodException e)
+        catch (SQLException e)
         {
             throw new TypeCastException("Error freeing Oracle BLOB", e);
-        }
-        catch (IllegalAccessException e)
-        {
-            throw new TypeCastException("Error freeing Oracle BLOB", e);
-        }
-        catch (InvocationTargetException e)
-        {
-            throw new TypeCastException("Error freeing Oracle BLOB", e.getTargetException());
         }
     }
 

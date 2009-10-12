@@ -28,8 +28,6 @@ import org.dbunit.dataset.datatype.TypeCastException;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,11 +46,6 @@ public class OracleClobDataType extends ClobDataType
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(OracleClobDataType.class);
-
-    private static final Integer DURATION_SESSION = new Integer(1);
-//    private static final Integer DURATION_CALL = new Integer(2);
-//    private static final Integer MODE_READONLY = new Integer(0);
-    private static final Integer MODE_READWRITE = new Integer(1);
 
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
@@ -73,31 +66,16 @@ public class OracleClobDataType extends ClobDataType
         statement.setObject(column, getClob(value, statement.getConnection()));
     }
 
-    protected Object getClob(Object value, Connection connection)
-            throws TypeCastException
+    protected Object getClob(Object value, Connection connection) throws TypeCastException
     {
         logger.debug("getClob(value={}, connection={}) - start", value, connection);
 
-        Object tempClob = null;
+        oracle.sql.CLOB tempClob = null;
         try
         {
-            Class aClobClass = super.loadClass("oracle.sql.CLOB", connection);
-            
-            // Create new temporary CLOB
-            Method createTemporaryMethod = aClobClass.getMethod("createTemporary",
-                    new Class[]{Connection.class, Boolean.TYPE, Integer.TYPE});
-            tempClob = createTemporaryMethod.invoke(null,
-                    new Object[]{connection, Boolean.TRUE, DURATION_SESSION});
-
-            // Open the temporary CLOB in readwrite mode to enable writing
-            Method openMethod = aClobClass.getMethod("open", new Class[]{Integer.TYPE});
-            openMethod.invoke(tempClob, new Object[]{MODE_READWRITE});
-
-            // Get the output stream to write
-            Method getCharacterOutputStreamMethod = tempClob.getClass().getMethod(
-                    "getCharacterOutputStream", new Class[0]);
-            Writer tempClobWriter = (Writer)getCharacterOutputStreamMethod.invoke(
-                    tempClob, new Object[0]);
+            tempClob = oracle.sql.CLOB.createTemporary(connection, true, oracle.sql.CLOB.DURATION_SESSION);
+            tempClob.open(oracle.sql.CLOB.MODE_READWRITE);
+            Writer tempClobWriter = tempClob.getCharacterOutputStream();
 
             // Write the data into the temporary CLOB
             tempClobWriter.write((String)typeCast(value));
@@ -107,31 +85,16 @@ public class OracleClobDataType extends ClobDataType
             tempClobWriter.close();
 
             // Close the temporary CLOB
-            Method closeMethod = tempClob.getClass().getMethod(
-                    "close", new Class[0]);
-            closeMethod.invoke(tempClob, new Object[0]);
-        }
-        catch (IllegalAccessException e)
-        {
-            freeTemporaryClob(tempClob);
-            throw new TypeCastException(value, this, e);
-        }
-        catch (NoSuchMethodException e)
-        {
-            freeTemporaryClob(tempClob);
-            throw new TypeCastException(value, this, e);
+            tempClob.close();
         }
         catch (IOException e)
         {
+            // JH_TODO: shouldn't freeTemporary be called in finally {} ?
+            // It wasn't done like that in the original reflection-styled DbUnit code.
             freeTemporaryClob(tempClob);
             throw new TypeCastException(value, this, e);
         }
-        catch (InvocationTargetException e)
-        {
-            freeTemporaryClob(tempClob);
-            throw new TypeCastException(value, this, e.getTargetException());
-        }
-        catch (ClassNotFoundException e)
+        catch (SQLException e)
         {
             freeTemporaryClob(tempClob);
             throw new TypeCastException(value, this, e);
@@ -141,7 +104,7 @@ public class OracleClobDataType extends ClobDataType
     }
 
 
-    protected void freeTemporaryClob(Object tempClob) throws TypeCastException
+    protected void freeTemporaryClob(oracle.sql.CLOB tempClob) throws TypeCastException
     {
         logger.debug("freeTemporaryClob(tempClob={}) - start", tempClob);
 
@@ -152,20 +115,11 @@ public class OracleClobDataType extends ClobDataType
 
         try
         {
-            Method freeTemporaryMethod = tempClob.getClass().getMethod("freeTemporary", new Class[0]);
-            freeTemporaryMethod.invoke(tempClob, new Object[0]);
+            tempClob.freeTemporary();
         }
-        catch (NoSuchMethodException e)
+        catch (SQLException e)
         {
-            throw new TypeCastException("Error freeing Oracle CLOB", e);
-        }
-        catch (IllegalAccessException e)
-        {
-            throw new TypeCastException("Error freeing Oracle CLOB", e);
-        }
-        catch (InvocationTargetException e)
-        {
-            throw new TypeCastException("Error freeing Oracle CLOB", e.getTargetException());
+            throw new TypeCastException("error freeing Oracle CLOB", e);
         }
     }
 

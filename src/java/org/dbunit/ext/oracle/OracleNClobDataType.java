@@ -20,11 +20,11 @@
 */
 package org.dbunit.ext.oracle;
 
+import oracle.jdbc.OraclePreparedStatement;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -44,8 +44,6 @@ public class OracleNClobDataType extends OracleClobDataType {
      */
     private static final Logger logger = LoggerFactory.getLogger(OracleNClobDataType.class);
 
-    protected static final Short FORM_NCHAR = new Short((short)2);
-    
     public void setSqlValue(Object value, int column, PreparedStatement statement)
             throws SQLException, TypeCastException
     {
@@ -53,29 +51,8 @@ public class OracleNClobDataType extends OracleClobDataType {
     		logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
     				new Object[]{value, new Integer(column), statement} );
 
-        try 
-        {
-            Class statementClass = super.loadClass("oracle.jdbc.OraclePreparedStatement", statement.getConnection());
-            Method formOfUse = statementClass.getMethod("setFormOfUse", new Class[] { Integer.TYPE, Short.TYPE });
-            formOfUse.invoke(statement, new Object[] { new Integer(column), FORM_NCHAR });
-        }
-        catch (IllegalAccessException e) 
-        {
-            throw new TypeCastException(value, this, e);
-        } 
-        catch (NoSuchMethodException e) 
-        {
-            throw new TypeCastException(value, this, e);
-        } 
-        catch (InvocationTargetException e) 
-        {
-            throw new TypeCastException(value, this, e.getTargetException());
-        }
-        catch (ClassNotFoundException e) 
-        {
-            throw new TypeCastException(value, this, e);
-        }
-        
+        OraclePreparedStatement oraclePreparedStatement = (OraclePreparedStatement) statement;
+        oraclePreparedStatement.setFormOfUse(column, OraclePreparedStatement.FORM_NCHAR);
         statement.setObject(column, getClob(value, statement.getConnection()));
     }
     

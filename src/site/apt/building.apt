@@ -7,22 +7,60 @@ Felipe Leme
 
 Overview
 
-  Building DbUnit is quite simple; all you need is JDK 1.4+, Subversion and Maven 2. Once you have them all, you can build DbUnit by just typing <<mvn>>! Anyway, the items below describe every step.
+  Building DbUnit is quite simple.  You need the following software installed:
+
+  * {{{http://java.sun.com/javase}Java SE SDK 1.4+}} (Java 1.4 is required by Maven 2 as well as DbUnit)
+
+  * {{{http://maven.apache.org}Maven 2}}
+
+  * Oracle ojdbc14.jar (see below)
+
+  []
+
+  Once you have them all, you can build DbUnit by just typing <<mvn>>!  Anyway, the items below describe every step.
+
+  If you wish to work on the latest DbUnit source code, you also may want to install a {{{http://subversion.tigris.org} Subversion}} client.
+
+
+Installing the Oracle JDBC driver
+
+  DbUnit includes a dependency on the Oracle JDBC driver, which is not available in a public Maven repository.
+  You must download the JAR manually and install it into your local Maven repository.
+
+  <<Note:>> This dependency is required to compile DbUnit.
+  It is not required to run DbUnit, unless you're actually using Oracle.
+
+  [[1]] Point your web browser to {{{http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html} http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html}}. (Or Google "Oracle JDBC download" if this link breaks.)
+
+  [[2]] Download the Oracle Database 10g Release 2 (10.2.0.4) JDBC Driver for JDK 1.4 and 1.5 (ojdbc14.jar).
+
+  [[3]] Install it into your Maven repository with:
+
+---
+mvn install:install-file \
+-Dfile=ojdbc14.jar \
+-DgroupId=com.oracle \
+-DartifactId=ojdbc14 \
+-Dversion=10.2.0.4.0 \
+-Dpackaging=jar \
+-DgeneratePom=true
+---
+
+  (If you're using Windows, you need to put the whole command on one line, without the backslashes.)
 
 Generating the JAR
 
- [[1]] Install {{{http://java.sun.com/javase/}Java SE SDK}} version 1.4 or newer (Java 1.4 is required by Maven 2 as well as DbUnit)
+  [[1]] Install Java SE SDK 1.4+, Maven 2 and the Oracle JDBC Driver.
 
- [[2]] Install {{{http://maven.apache.org}Maven 2}}
+  [[2]] Download DbUnit code, either current or released source (see <<Quick Links>> on left menu)
 
- [[3]] Download DbUnit code, either current or released source (see <<Quick Links>> on left menu)
-
- [[4]] On the root directory, simply type <<<mvn>>> in the command line.  (If you need to clean up the binaries, run <<<mvn clean install>>> instead.)  The jar file will be generated in the target directory.
+  [[3]] On the root directory, simply type <<<mvn>>> in the command line.  (If you need to clean up the binaries, run <<<mvn clean install>>> instead.)  The jar file will be generated in the target directory.
 
 
 Creating the site
 
- Run <<<mvn site:site>>> in the command line; the site will be available on <<<target/site/index.html>>>. Note that you might get an <OutOfMemoryExceptionError>; if that happens, you must increase the heap size through the <MAVEN_OPTS> variable (for instance, on Unix systems, you could run <<<MAVEN_OPTS=-mx512M mvn site:site>>>).
+  Run <<<mvn site:site>>> in the command line; the site will be available on <<<target/site/index.html>>>. Note that you might get an <OutOfMemoryExceptionError>; if that happens, you must increase the heap size through the <MAVEN_OPTS> variable (for instance, on Unix systems, you could run <<<MAVEN_OPTS=-mx512M mvn site:site>>>).
+
 
 Using an IDE
 
@@ -50,14 +88,20 @@ Contributing patches
 
 Maintenance tasks
 
- The tasks below describe how to maintain DbUnit. Some of these tasks will use <ssh> to upload files to SourceForge, so it is necessary to setup your environment to allow it (typically using <ssh-agent> - see more details on {{{http://sourceforge.net/docman/display_doc.php?docid=761&group_id=1} SourceForge}}).  Also notice that in 2008 SourceForge changed the way it provides shell access, so you need to create a temporary shell for your user before using ssh (see instructions {{{http://people.apache.org/~baerrach/maven-site-plugin-2.0-beta-8-SNAPSHOT/examples/site-deploy-to-sourceforge.net.html} here}}.
+  The tasks below describe how to maintain DbUnit.
+  Some of these tasks will use <ssh> to upload files to SourceForge,
+  so it is necessary to setup your environment to allow it (typically using <ssh-agent> -
+  see more details on {{{http://sourceforge.net/docman/display_doc.php?docid=761&group_id=1} SourceForge}}).
+  Also notice that in 2008 SourceForge changed the way it provides shell access,
+  so you need to create a temporary shell for your user before using ssh
+  (see instructions {{{http://people.apache.org/~baerrach/maven-site-plugin-2.0-beta-8-SNAPSHOT/examples/site-deploy-to-sourceforge.net.html} here}}.
 
  2009-09-28 TODO: The two links above are dead.  This section needs to be revised.
 
 
 Updating the repository and site
 
- Once new code is incorporated in the SVN code, it is necessary to update the Maven 2 repository with new snapshots, and also update the site. These 2 tasks can be done with a simple command:
+  Once new code is incorporated in the SVN code, it is necessary to update the Maven 2 repository with new snapshots, and also update the site. These 2 tasks can be done with a simple command:
 
 ---
 mvn -Pofficial clean source:jar javadoc:jar deploy site:site site:deploy
@@ -73,32 +117,32 @@ Cutting a release
 mvn -Pofficial release:prepare
 ---
 
- and then:
+  and then:
 
 ---
 mvn -Pofficial release:perform
 ---
 
- That last command has created all necessary files for the fourth and fifth steps in the <<<target/checkout/target>>> directory. So, for the fourth step, log in to SourceForge and upload the following files:
+  That last command has created all necessary files for the fourth and fifth steps in the <<<target/checkout/target>>> directory. So, for the fourth step, log in to SourceForge and upload the following files:
 
- * <dbunit-RELEASE.jar>
+  * <dbunit-RELEASE.jar>
 
- * <dbunit-RELEASE-sources.jar>
+  * <dbunit-RELEASE-sources.jar>
 
- * <dbunit-RELEASE-javadoc.jar>
+  * <dbunit-RELEASE-javadoc.jar>
 
- []
+  []
 
- And for the fifth step, create a {{{http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&issuetype=3}Jira request}} and upload the <<<XXX/target/dbunit-RELEASE-bundle.jar>>>) file (see {{{http://maven.apache.org/guides/mini/guide-ibiblio-upload.html}Guide to uploading artifacts to The Central Repository}} for detailed instructions). NOTE: it is also necessary to create dbunit-RELEASE.tar.gz and dbunit-RELEASE.zip - I think Maven does that, but could not test by the time of the 2.2 release.
+  And for the fifth step, create a {{{http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&issuetype=3}Jira request}} and upload the <<<XXX/target/dbunit-RELEASE-bundle.jar>>>) file (see {{{http://maven.apache.org/guides/mini/guide-ibiblio-upload.html}Guide to uploading artifacts to The Central Repository}} for detailed instructions). NOTE: it is also necessary to create dbunit-RELEASE.tar.gz and dbunit-RELEASE.zip - I think Maven does that, but could not test by the time of the 2.2 release.
 
- The final step can also be done by Maven, using the {{{http://maven.apache.org/plugins/maven-changes-plugin/}Maven Changes Plugin}}:
+  The final step can also be done by Maven, using the {{{http://maven.apache.org/plugins/maven-changes-plugin/}Maven Changes Plugin}}:
 
 ---
 mvn changes:announcement-mail
 ---
 
- Note that it is nice to change the release's introduction message first - look for the plugin's <<<introduction>>> parameter in the <<<pom.xml>>>; please change such an element before tagging the release.
+  Note that it is nice to change the release's introduction message first - look for the plugin's <<<introduction>>> parameter in the <<<pom.xml>>>; please change such an element before tagging the release.
 
 Fixing a bug/request
 
- Everytime a bug is fixed (or request is implemented), it is necessary to update the <<<src/changes/changes.xml>>> file.
+  Every time a bug is fixed (or request is implemented), it is necessary to update the <<<src/changes/changes.xml>>> file.
