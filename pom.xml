@@ -21,66 +21,6 @@
   <properties>
     <compileSource>1.4</compileSource>
     <checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
-
-    <dbunit.profile>hsqldb</dbunit.profile>
-
-    <dbunit.profile.hsqldb.driverClass>org.hsqldb.jdbcDriver</dbunit.profile.hsqldb.driverClass>
-    <dbunit.profile.hsqldb.url>jdbc:hsqldb:mem:.</dbunit.profile.hsqldb.url>
-    <dbunit.profile.hsqldb.schema>PUBLIC</dbunit.profile.hsqldb.schema>
-    <dbunit.profile.hsqldb.user>sa</dbunit.profile.hsqldb.user>
-    <dbunit.profile.hsqldb.password></dbunit.profile.hsqldb.password>
-    <dbunit.profile.hsqldb.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE</dbunit.profile.hsqldb.unsupportedFeatures>
-
-    <dbunit.profile.oracle.driverClass>oracle.jdbc.driver.OracleDriver</dbunit.profile.oracle.driverClass>
-    <dbunit.profile.oracle.url>jdbc:oracle:thin:@demowin:1521:demowin</dbunit.profile.oracle.url>
-    <dbunit.profile.oracle.schema>DBUNIT</dbunit.profile.oracle.schema>
-    <dbunit.profile.oracle.user>dbunit</dbunit.profile.oracle.user>
-    <dbunit.profile.oracle.password>dbunit</dbunit.profile.oracle.password>
-    <dbunit.profile.oracle.unsupportedFeatures>INSERT_IDENTITY,SCROLLABLE_RESULTSET</dbunit.profile.oracle.unsupportedFeatures>
-
-    <dbunit.profile.oracle10.driverClass>oracle.jdbc.OracleDriver</dbunit.profile.oracle10.driverClass>
-
-    <dbunit.profile.postgresql.driverClass>TODO</dbunit.profile.postgresql.driverClass>
-    <dbunit.profile.postgresql.url>TODO</dbunit.profile.postgresql.url>
-    <dbunit.profile.postgresql.schema>TODO</dbunit.profile.postgresql.schema>
-    <dbunit.profile.postgresql.user>TODO</dbunit.profile.postgresql.user>
-    <dbunit.profile.postgresql.password>TODO</dbunit.profile.postgresql.password>
-    <dbunit.profile.postgresql.unsupportedFeatures>TODO</dbunit.profile.postgresql.unsupportedFeatures>
-
-    <dbunit.profile.mysql.driverClass>com.mysql.jdbc.Driver</dbunit.profile.mysql.driverClass>
-    <dbunit.profile.mysql.url>jdbc:mysql://localhost:3306/dbunit</dbunit.profile.mysql.url>
-    <dbunit.profile.mysql.schema>DBUNIT</dbunit.profile.mysql.schema>
-    <dbunit.profile.mysql.user>dbunit</dbunit.profile.mysql.user>
-    <dbunit.profile.mysql.password>dbunit</dbunit.profile.mysql.password>
-    <dbunit.profile.mysql.unsupportedFeatures>BLOB,CLOB,TRANSACTION,INSERT_IDENTITY</dbunit.profile.mysql.unsupportedFeatures>
-
-    <dbunit.profile.mssql.driverClass>com.microsoft.jdbc.sqlserver.SQLServerDriver</dbunit.profile.mssql.driverClass>
-    <dbunit.profile.mssql.url>jdbc:microsoft:sqlserver://localhost\\dbunit:1433;DatabaseName=dbunit;SelectMethod=cursor</dbunit.profile.mssql.url>
-    <dbunit.profile.mssql.schema>dbo</dbunit.profile.mssql.schema>
-    <dbunit.profile.mssql.user>dbunit</dbunit.profile.mssql.user>
-    <dbunit.profile.mssql.password>dbunit</dbunit.profile.mssql.password>
-    <dbunit.profile.mssql.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET</dbunit.profile.mssql.unsupportedFeatures>
-
-    <dbunit.profile.db2.driverClass>TODO</dbunit.profile.db2.driverClass>
-    <dbunit.profile.db2.url>TODO</dbunit.profile.db2.url>
-    <dbunit.profile.db2.schema>TODO</dbunit.profile.db2.schema>
-    <dbunit.profile.db2.user>TODO</dbunit.profile.db2.user>
-    <dbunit.profile.db2.password>TODO</dbunit.profile.db2.password>
-    <dbunit.profile.db2.unsupportedFeatures>TODO</dbunit.profile.db2.unsupportedFeatures>
-
-    <dbunit.profile.derby.driverClass>org.apache.derby.jdbc.EmbeddedDriver</dbunit.profile.derby.driverClass>
-    <dbunit.profile.derby.url>jdbc\:derby\:target\/derby_db;create\=true</dbunit.profile.derby.url>
-    <dbunit.profile.derby.schema>APP</dbunit.profile.derby.schema>
-    <dbunit.profile.derby.user>APP</dbunit.profile.derby.user>
-    <dbunit.profile.derby.password>APP</dbunit.profile.derby.password>
-    <dbunit.profile.derby.unsupportedFeatures>VARBINARY,BLOB,CLOB,TRANSACTION,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE</dbunit.profile.derby.unsupportedFeatures>
-
-    <dbunit.profile.h2.driverClass>TODO</dbunit.profile.h2.driverClass>
-    <dbunit.profile.h2.url>TODO</dbunit.profile.h2.url>
-    <dbunit.profile.h2.schema>TODO</dbunit.profile.h2.schema>
-    <dbunit.profile.h2.user>TODO</dbunit.profile.h2.user>
-    <dbunit.profile.h2.password>TODO</dbunit.profile.h2.password>
-    <dbunit.profile.h2.unsupportedFeatures>TODO</dbunit.profile.h2.unsupportedFeatures>
   </properties>
 
   <scm>
@@ -661,48 +601,25 @@
       </activation>
       <properties>
         <dbunit.profile>hsqldb</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.hsqldb.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.hsqldb.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.hsqldb.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.hsqldb.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.hsqldb.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.hsqldb.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>org.hsqldb.jdbcDriver</dbunit.profile.driverClass>
+        <dbunit.profile.url>jdbc:hsqldb:mem:.</dbunit.profile.url>
+        <dbunit.profile.schema>PUBLIC</dbunit.profile.schema>
+        <dbunit.profile.user>sa</dbunit.profile.user>
+        <dbunit.profile.password></dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE</dbunit.profile.unsupportedFeatures>
       </properties>
     </profile>
-    <!-- "original" OracleDataTypeFactory (NOT 10g) with Oracle 8 JDBC driver for Java 1.2 -->
-    <!-- Doesn't work.
-    <profile>
-      <id>oracle-classes12</id>
-      <properties>
-        <dbunit.profile>oracle</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.oracle.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.oracle.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.oracle.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.oracle.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.oracle.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.oracle.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
-      </properties>
-      <dependencies>
-        <dependency>
-          <groupId>com.oracle</groupId>
-          <artifactId>classes12</artifactId>
-          <version>8.1.7.1</version>
-          <optional>true</optional>
-        </dependency>
-      </dependencies>
-    </profile>
-    -->
     <!-- "original" OracleDataTypeFactory (NOT 10g) with Oracle 10 JDBC driver for Java 1.4 -->
     <profile>
       <id>oracle-ojdbc14</id>
       <properties>
         <dbunit.profile>oracle</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.oracle.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.oracle.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.oracle.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.oracle.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.oracle.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.oracle.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>oracle.jdbc.OracleDriver</dbunit.profile.driverClass>
+        <dbunit.profile.url>jdbc:oracle:thin:@demowin:1521:demowin</dbunit.profile.url>
+        <dbunit.profile.schema>DBUNIT</dbunit.profile.schema>
+        <dbunit.profile.user>dbunit</dbunit.profile.user>
+        <dbunit.profile.password>dbunit</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>INSERT_IDENTITY,SCROLLABLE_RESULTSET</dbunit.profile.unsupportedFeatures>
       </properties>
       <dependencies>
         <dependency>
@@ -718,12 +635,12 @@
       <id>oracle-ojdbc6</id>
       <properties>
         <dbunit.profile>oracle</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.oracle.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.oracle.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.oracle.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.oracle.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.oracle.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.oracle.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>oracle.jdbc.OracleDriver</dbunit.profile.driverClass>
+        <dbunit.profile.url>jdbc:oracle:thin:@demowin:1521:demowin</dbunit.profile.url>
+        <dbunit.profile.schema>DBUNIT</dbunit.profile.schema>
+        <dbunit.profile.user>dbunit</dbunit.profile.user>
+        <dbunit.profile.password>dbunit</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>INSERT_IDENTITY,SCROLLABLE_RESULTSET</dbunit.profile.unsupportedFeatures>
       </properties>
       <dependencies>
         <dependency>
@@ -739,12 +656,12 @@
       <id>oracle10-ojdbc14</id>
       <properties>
         <dbunit.profile>oracle10</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.oracle10.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.oracle.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.oracle.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.oracle.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.oracle.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.oracle.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>oracle.jdbc.OracleDriver</dbunit.profile.driverClass>
+        <dbunit.profile.url>jdbc:oracle:thin:@demowin:1521:demowin</dbunit.profile.url>
+        <dbunit.profile.schema>DBUNIT</dbunit.profile.schema>
+        <dbunit.profile.user>dbunit</dbunit.profile.user>
+        <dbunit.profile.password>dbunit</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>INSERT_IDENTITY,SCROLLABLE_RESULTSET</dbunit.profile.unsupportedFeatures>
       </properties>
       <dependencies>
         <dependency>
@@ -760,12 +677,12 @@
       <id>oracle10-ojdbc6</id>
       <properties>
         <dbunit.profile>oracle10</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.oracle10.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.oracle.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.oracle.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.oracle.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.oracle.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.oracle.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>oracle.jdbc.OracleDriver</dbunit.profile.driverClass>
+        <dbunit.profile.url>jdbc:oracle:thin:@demowin:1521:demowin</dbunit.profile.url>
+        <dbunit.profile.schema>DBUNIT</dbunit.profile.schema>
+        <dbunit.profile.user>dbunit</dbunit.profile.user>
+        <dbunit.profile.password>dbunit</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>INSERT_IDENTITY,SCROLLABLE_RESULTSET</dbunit.profile.unsupportedFeatures>
       </properties>
       <dependencies>
         <dependency>
@@ -780,48 +697,48 @@
       <id>mysql</id>
       <properties>
         <dbunit.profile>mysql</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.mysql.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.mysql.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.mysql.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.mysql.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.mysql.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.mysql.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>com.mysql.jdbc.Driver</dbunit.profile.driverClass>
+        <dbunit.profile.url>jdbc:mysql://localhost:3306/dbunit</dbunit.profile.url>
+        <dbunit.profile.schema>DBUNIT</dbunit.profile.schema>
+        <dbunit.profile.user>dbunit</dbunit.profile.user>
+        <dbunit.profile.password>dbunit</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,TRANSACTION,INSERT_IDENTITY</dbunit.profile.unsupportedFeatures>
       </properties>
     </profile>
     <profile>
       <id>mssql</id>
       <properties>
         <dbunit.profile>mssql</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.mssql.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.mssql.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.mssql.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.mssql.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.mssql.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.mssql.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>com.microsoft.jdbc.sqlserver.SQLServerDriver</dbunit.profile.driverClass>
+        <dbunit.profile.url>jdbc:microsoft:sqlserver://localhost\\dbunit:1433;DatabaseName=dbunit;SelectMethod=cursor</dbunit.profile.url>
+        <dbunit.profile.schema>dbo</dbunit.profile.schema>
+        <dbunit.profile.user>dbunit</dbunit.profile.user>
+        <dbunit.profile.password>dbunit</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET</dbunit.profile.unsupportedFeatures>
       </properties>
     </profile>
     <profile>
       <id>db2</id>
       <properties>
         <dbunit.profile>db2</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.db2.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.db2.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.db2.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.db2.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.db2.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.db2.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>TODO</dbunit.profile.driverClass>
+        <dbunit.profile.url>TODO</dbunit.profile.url>
+        <dbunit.profile.schema>TODO</dbunit.profile.schema>
+        <dbunit.profile.user>TODO</dbunit.profile.user>
+        <dbunit.profile.password>TODO</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>TODO</dbunit.profile.unsupportedFeatures>
       </properties>
     </profile>
     <profile>
       <id>derby</id>
       <properties>
         <dbunit.profile>derby</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.derby.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.derby.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.derby.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.derby.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.derby.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.derby.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>org.apache.derby.jdbc.EmbeddedDriver</dbunit.profile.driverClass>
+        <dbunit.profile.url>jdbc\:derby\:target\/derby_db;create\=true</dbunit.profile.url>
+        <dbunit.profile.schema>APP</dbunit.profile.schema>
+        <dbunit.profile.user>APP</dbunit.profile.user>
+        <dbunit.profile.password>APP</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>VARBINARY,BLOB,CLOB,TRANSACTION,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE</dbunit.profile.unsupportedFeatures>
       </properties>
       <dependencies>
         <dependency>
@@ -836,24 +753,24 @@
       <id>postgresql</id>
       <properties>
         <dbunit.profile>postgresql</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.postgresql.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.postgresql.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.postgresql.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.postgresql.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.postgresql.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.postgresql.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>TODO</dbunit.profile.driverClass>
+        <dbunit.profile.url>TODO</dbunit.profile.url>
+        <dbunit.profile.schema>TODO</dbunit.profile.schema>
+        <dbunit.profile.user>TODO</dbunit.profile.user>
+        <dbunit.profile.password>TODO</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>TODO</dbunit.profile.unsupportedFeatures>
       </properties>
     </profile>
     <profile>
       <id>h2</id>
       <properties>
         <dbunit.profile>h2</dbunit.profile>
-        <dbunit.profile.driverClass>${dbunit.profile.h2.driverClass}</dbunit.profile.driverClass>
-        <dbunit.profile.url>${dbunit.profile.h2.url}</dbunit.profile.url>
-        <dbunit.profile.schema>${dbunit.profile.h2.schema}</dbunit.profile.schema>
-        <dbunit.profile.user>${dbunit.profile.h2.user}</dbunit.profile.user>
-        <dbunit.profile.password>${dbunit.profile.h2.password}</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>${dbunit.profile.h2.unsupportedFeatures}</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>TODO</dbunit.profile.driverClass>
+        <dbunit.profile.url>TODO</dbunit.profile.url>
+        <dbunit.profile.schema>TODO</dbunit.profile.schema>
+        <dbunit.profile.user>TODO</dbunit.profile.user>
+        <dbunit.profile.password>TODO</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>TODO</dbunit.profile.unsupportedFeatures>
       </properties>
     </profile>
   </profiles>
