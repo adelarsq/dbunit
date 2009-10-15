@@ -20,7 +20,7 @@
 
   <skin>
     <groupId>org.apache.maven.skins</groupId>
-    <!-- 
+    <!--
          The choices are
          maven-application-skin
          maven-classic-skin
@@ -49,32 +49,33 @@
     </links>
 
     <menu name="Quick Links">
-      <item name="Maven 1.x Plugin" href="http://maven-plugins.sourceforge.net/maven-dbunit-plugin/index.html"/>
-      <item name="Maven 2 Plugin"   href="http://mojo.codehaus.org/dbunit-maven-plugin/"/>
-      <item name="Download"         href="http://sourceforge.net/project/showfiles.php?group_id=47439"/>
-      <item name="Changes"          href="/changes-report.html"/>
-      <item name="FAQ"              href="/faq.html"/>
-      <item name="Wiki"             href="http://dbunit.wikidot.com/"/>
-      <item name="Get Support"      href="http://sourceforge.net/support/getsupport.php?group_id=47439"/>
-      <item name="Get source"       href="/source-repository.html"/>
-      <item name="Browse source"    href="/xref/index.html"/>
-      <item name="JavaDocs"         href="/apidocs/index.html"/>
-      <item name="DBUnit AT ohloh"  href="http://www.ohloh.net/p/dbunit"/>
+      <item name="Maven 1.x Plugin"  href="http://maven-plugins.sourceforge.net/maven-dbunit-plugin/index.html"/>
+      <item name="Maven 2 Plugin"    href="http://mojo.codehaus.org/dbunit-maven-plugin/"/>
+      <item name="Download"          href="http://sourceforge.net/project/showfiles.php?group_id=47439"/>
+      <item name="Changes"           href="/changes-report.html"/>
+      <item name="FAQ"               href="/faq.html"/>
+      <item name="Wiki"              href="http://dbunit.wikidot.com/"/>
+      <item name="Get Support"       href="http://sourceforge.net/support/getsupport.php?group_id=47439"/>
+      <item name="Get source"        href="/source-repository.html"/>
+      <item name="Browse source"     href="/xref/index.html"/>
+      <item name="JavaDocs"          href="/apidocs/index.html"/>
+      <item name="DBUnit AT ohloh"   href="http://www.ohloh.net/p/dbunit"/>
     </menu>
 
     <menu name="Overview">
-      <item name="About DbUnit"     href="/index.html"/>
-      <item name="Database Testing" href="/intro.html"/>
-      <item name="Getting Started"  href="/howto.html"/>
-      <item name="Best Practices"   href="/bestpractices.html"/>
-      <item name="Core Components"  href="/components.html"/>
-      <item name="Properties"       href="/properties.html"/>
-      <item name="Ant Task"         href="/anttask.html"/>
-      <item name="Migration Guide"  href="/migration.html"/> 
-      <item name="Building DbUnit"  href="/building.html"/>
-      <item name="Developers Guide" href="/devguide.html"/>
-      <item name="Resources"        href="/resources.html"/>
-      <item name="Credits"          href="/credits.html"/>
+      <item name="About DbUnit"      href="/index.html"/>
+      <item name="Database Testing"  href="/intro.html"/>
+      <item name="Getting Started"   href="/howto.html"/>
+      <item name="Best Practices"    href="/bestpractices.html"/>
+      <item name="Core Components"   href="/components.html"/>
+      <item name="Properties"        href="/properties.html"/>
+      <item name="Ant Task"          href="/anttask.html"/>
+      <item name="Migration Guide"   href="/migration.html"/>
+      <item name="Building DbUnit"   href="/building.html"/>
+      <item name="Developers Guide"  href="/devguide.html"/>
+      <item name="Integration Tests" href="/integrationtests.html"/>
+      <item name="Resources"         href="/resources.html"/>
+      <item name="Credits"           href="/credits.html"/>
     </menu>
 
     <menu ref="parent"/>
