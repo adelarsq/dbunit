@@ -80,6 +80,7 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
      * indexes of the column names on the MetaData result sets.
      */
     protected static final int[] TABLENAME_INDEXES = { 3, 7 };  
+    protected static final int[] SCHEMANAME_INDEXES = { 2, 6 };  
     protected static final int[] PK_INDEXES = { 4, 4 };
     protected static final int[] FK_INDEXES = { 8, 8 };
 
@@ -194,16 +195,20 @@ public abstract class AbstractMetaDataBasedSearchCallback extends AbstractNodesF
                 break;
             }
             
+            
+            
             DatabaseConfig dbConfig = this.connection.getConfig();
             while (rs.next()) {
                 int index = TABLENAME_INDEXES[type];
+                int schemaindex = SCHEMANAME_INDEXES[type];
                 String dependentTableName = rs.getString(index);
+                String dependentSchemaName = rs.getString(schemaindex);
                 String pkColumn = rs.getString( PK_INDEXES[type] );
                 String fkColumn = rs.getString( FK_INDEXES[type] );
 
                 // set the schema in front if there is none ("SCHEMA.TABLE") - depending on the "qualified table names" feature
             	tableName = new QualifiedTableName(tableName, schema).getQualifiedNameIfEnabled(dbConfig);
-            	dependentTableName = new QualifiedTableName(dependentTableName, schema).getQualifiedNameIfEnabled(dbConfig);
+            	dependentTableName = new QualifiedTableName(dependentTableName, dependentSchemaName).getQualifiedNameIfEnabled(dbConfig);
                 
                 IEdge edge = newEdge(rs, type, tableName, dependentTableName, fkColumn, pkColumn );
                 if ( logger.isDebugEnabled() ) {
