@@ -56,7 +56,6 @@ CREATE TABLE EMPTY_MULTITYPE_TABLE
    TIMESTAMP_COL DATE,
    VARBINARY_COL RAW(255));
 
-
 -----------------------------------------------------------------------------
 -- CLOB_TABLE
 -----------------------------------------------------------------------------
@@ -72,4 +71,14 @@ CREATE TABLE CLOB_TABLE
 CREATE TABLE BLOB_TABLE
   (PK NUMERIC(38, 0) NOT NULL,
    BLOB BLOB, PRIMARY KEY (PK));
+
+-----------------------------------------------------------------------------
+-- SDO_GEOMETRY_TABLE
+-----------------------------------------------------------------------------
+
+CREATE TABLE SDO_GEOMETRY_TABLE
+  (PK NUMERIC(38, 0) NOT NULL,
+   VAL SDO_GEOMETRY,
+   PRIMARY KEY(PK));
+
 

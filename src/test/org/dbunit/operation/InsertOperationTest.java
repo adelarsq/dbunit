@@ -45,6 +45,7 @@ import org.dbunit.dataset.LowerCaseDataSet;
 import org.dbunit.dataset.NoSuchColumnException;
 import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.XmlDataSet;
 
@@ -361,6 +362,27 @@ public class InsertOperationTest extends AbstractDatabaseTest
             String tableName = "BLOB_TABLE";
 
             Reader in = new FileReader(new File("src/xml/blobInsertTest.xml"));
+            IDataSet xmlDataSet = new FlatXmlDataSetBuilder().build(in);
+
+            assertEquals("count before", 0, _connection.getRowCount(tableName));
+
+            DatabaseOperation.INSERT.execute(_connection, xmlDataSet);
+
+            ITable tableAfter = _connection.createDataSet().getTable(tableName);
+            assertEquals("count after", 1, tableAfter.getRowCount());
+            Assertion.assertEquals(xmlDataSet.getTable(tableName), tableAfter);
+        }
+    }
+
+    public void testInsertSdoGeometry() throws Exception
+    {
+        // execute this test only if the target database supports SDO_GEOMETRY
+        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        if (environment.support(TestFeature.SDO_GEOMETRY))
+        {
+            String tableName = "SDO_GEOMETRY_TABLE";
+
+            Reader in = new FileReader(new File("src/xml/sdoGeometryInsertTest.xml"));
             IDataSet xmlDataSet = new FlatXmlDataSetBuilder().build(in);
 
             assertEquals("count before", 0, _connection.getRowCount(tableName));

@@ -153,4 +153,14 @@ public class OracleDataTypeFactoryTest extends AbstractDataTypeFactoryTest
         assertSame("type", expected, actual);
     }
 
+    public void testCreateSdoGeometryDataType() throws Exception
+    {
+        int sqlType = Types.STRUCT;
+        String sqlTypeName = "SDO_GEOMETRY";
+
+        DataType expected = OracleDataTypeFactory.ORACLE_SDO_GEOMETRY_TYPE;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertSame("type", expected, actual);
+    }
+
 }

@@ -81,6 +81,14 @@ public class UpdateOperationTest extends AbstractDatabaseTest
                     dataSet);
         }
 
+        if (environment.support(TestFeature.SDO_GEOMETRY))
+        {
+            dataSet = new CompositeDataSet(
+                    new FlatXmlDataSetBuilder().build(new File("src/xml/sdoGeometryInsertTest.xml")),
+                    dataSet
+            );
+        }
+
         return dataSet;
     }
 
@@ -266,6 +274,35 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
 //                System.out.println("****** AFTER *******");
 //                FlatXmlDataSet.write(_connection.createDataSet(), System.out);
+            }
+        }
+    }
+
+    public void testUpdateSdoGeometry() throws Exception
+    {
+        // execute this test only if the target database supports SDO_GEOMETRY
+        DatabaseEnvironment environment = DatabaseEnvironment.getInstance();
+        if (environment.support(TestFeature.SDO_GEOMETRY))
+        {
+            String tableName = "SDO_GEOMETRY_TABLE";
+
+            {
+                IDataSet beforeDataSet = new FlatXmlDataSetBuilder().build(
+                        new File("src/xml/sdoGeometryInsertTest.xml"));
+
+                ITable tableBefore = _connection.createDataSet().getTable(tableName);
+                assertEquals("count before", 1, _connection.getRowCount(tableName));
+                Assertion.assertEquals(beforeDataSet.getTable(tableName), tableBefore);
+            }
+
+            IDataSet afterDataSet = new FlatXmlDataSetBuilder().build(
+                    new File("src/xml/sdoGeometryUpdateTest.xml"));
+            DatabaseOperation.REFRESH.execute(_connection, afterDataSet);
+
+            {
+                ITable tableAfter = _connection.createDataSet().getTable(tableName);
+                assertEquals("count after", 2, tableAfter.getRowCount());
+                Assertion.assertEquals(afterDataSet.getTable(tableName), tableAfter);
             }
         }
     }

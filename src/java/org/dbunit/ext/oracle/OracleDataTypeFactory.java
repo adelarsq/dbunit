@@ -54,6 +54,7 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
     public static final DataType ORACLE_CLOB = new OracleClobDataType();
     public static final DataType ORACLE_NCLOB = new OracleNClobDataType();
     public static final DataType ORACLE_XMLTYPE = new OracleXMLTypeDataType();
+    public static final DataType ORACLE_SDO_GEOMETRY_TYPE = new OracleSdoGeometryDataType();
     
     public static final DataType LONG_RAW = new BinaryStreamDataType(
             "LONG RAW", Types.LONGVARBINARY);
@@ -150,6 +151,12 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
         if ("ROWID".equals(sqlTypeName))
         {
             return ROWID_TYPE;
+        }
+
+        // SDO_GEOMETRY
+        if ("SDO_GEOMETRY".equals(sqlTypeName) || "MDSYS.SDO_GEOMETRY".equals(sqlTypeName))
+        {
+            return ORACLE_SDO_GEOMETRY_TYPE;
         }
 
         return super.createDataType(sqlType, sqlTypeName);

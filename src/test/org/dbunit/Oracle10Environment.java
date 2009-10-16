@@ -22,11 +22,6 @@
 package org.dbunit;
 
 import org.dbunit.database.DatabaseConfig;
-import org.dbunit.dataset.CompositeDataSet;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.DefaultTable;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
 import org.dbunit.ext.oracle.Oracle10DataTypeFactory;
 
 /**
@@ -34,7 +29,7 @@ import org.dbunit.ext.oracle.Oracle10DataTypeFactory;
  * @version $Revision$
  * @since DbUnit 2.4.7
  */
-public class Oracle10Environment extends DatabaseEnvironment
+public class Oracle10Environment extends OracleEnvironment
 {
     public Oracle10Environment(DatabaseProfile profile) throws Exception
     {
@@ -46,15 +41,5 @@ public class Oracle10Environment extends DatabaseEnvironment
         config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new Oracle10DataTypeFactory());
     }
 
-    public IDataSet getInitDataSet() throws Exception
-    {
-        ITable[] extraTables = {
-            new DefaultTable("CLOB_TABLE"),
-            new DefaultTable("BLOB_TABLE"),
-        };
-
-        return new CompositeDataSet(super.getInitDataSet(),
-                new DefaultDataSet(extraTables));
-    }
 }
 

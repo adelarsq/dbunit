@@ -606,7 +606,7 @@
         <dbunit.profile.schema>PUBLIC</dbunit.profile.schema>
         <dbunit.profile.user>sa</dbunit.profile.user>
         <dbunit.profile.password></dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
       </properties>
     </profile>
     <!-- "original" OracleDataTypeFactory (NOT 10g) with Oracle 10 JDBC driver for Java 1.4 -->
@@ -702,7 +702,7 @@
         <dbunit.profile.schema>DBUNIT</dbunit.profile.schema>
         <dbunit.profile.user>dbunit</dbunit.profile.user>
         <dbunit.profile.password>dbunit</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,TRANSACTION,INSERT_IDENTITY</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,TRANSACTION,INSERT_IDENTITY,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
       </properties>
     </profile>
     <profile>
@@ -714,7 +714,7 @@
         <dbunit.profile.schema>dbo</dbunit.profile.schema>
         <dbunit.profile.user>dbunit</dbunit.profile.user>
         <dbunit.profile.password>dbunit</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
       </properties>
     </profile>
     <profile>
@@ -738,7 +738,7 @@
         <dbunit.profile.schema>APP</dbunit.profile.schema>
         <dbunit.profile.user>APP</dbunit.profile.user>
         <dbunit.profile.password>APP</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>VARBINARY,BLOB,CLOB,TRANSACTION,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.unsupportedFeatures>VARBINARY,BLOB,CLOB,TRANSACTION,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
       </properties>
       <dependencies>
         <dependency>

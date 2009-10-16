@@ -16,9 +16,10 @@
       <action dev="gommma" type="fix" issue="2741077" due-to="dnap">DatabaseSequenceFilter fails on case sensitive tables</action>
       <action dev="gommma" type="fix" issue="2838922" due-to="matthieus, simon_wu">DB2 problem with schema names</action>
       <action dev="gommma" type="fix" issue="2875262" due-to="caseylucas">Handle non-typical characters in xml encoding</action>
-      <action dev="jbhurst" type="fix" issue="2875235" due-to="jbhurst">Fix integration tests.</action>
+      <action dev="jbhurst" type="fix" issue="2875235" due-to="jbhurst">Fix integration tests</action>
       <action dev="gommma" type="fix" issue="2880113" due-to="jherico">FK table sorting does not work with cross-schema FKs</action>
-      <action dev="jbhurst" type="update" issue="2876909" due-to="jbhurst">Replaced reflection-based Oracle data types with static calls.</action>
+      <action dev="jbhurst" type="update" issue="2876909" due-to="jbhurst">Replaced reflection-based Oracle data types with static calls</action>
+      <action dev="jbhurst" type="add" issue="2875253" due-to="caseylucas">Add support for Oracle SDO_GEOMETRY datatype</action>
     </release>
     <release version="2.4.6" date="Sep 20, 2009" description="Bugfixes and some database specific additions">
       <action dev="rlogiacco" type="add" issue="284432" due-to="JamesR">Add support for interval type on postgres</action>

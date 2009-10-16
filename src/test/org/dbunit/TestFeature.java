@@ -33,7 +33,8 @@ public class TestFeature
     public static final TestFeature TRANSACTION = new TestFeature("TRANSACTION");
     public static final TestFeature SCROLLABLE_RESULTSET = new TestFeature("SCROLLABLE_RESULTSET");
     public static final TestFeature INSERT_IDENTITY = new TestFeature("INSERT_IDENTITY");
-    public static final TestFeature TRUNCATE_TABLE = new TestFeature("TRUNCATE_TABLE");;
+    public static final TestFeature TRUNCATE_TABLE = new TestFeature("TRUNCATE_TABLE");
+    public static final TestFeature SDO_GEOMETRY = new TestFeature("SDO_GEOMETRY");
 
     private final String _name;
 

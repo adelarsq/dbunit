@@ -59,8 +59,10 @@ public abstract class AbstractDataSetTest extends AbstractTest
         List nameList = new ArrayList(Arrays.asList(names));
         nameList.remove("BLOB_TABLE");
         nameList.remove("CLOB_TABLE");
+        nameList.remove("SDO_GEOMETRY_TABLE");
         nameList.remove("DBUNIT.BLOB_TABLE");
         nameList.remove("DBUNIT.CLOB_TABLE");
+        nameList.remove("DBUNIT.SDO_GEOMETRY");
         /*
         this table shows up on MSSQLServer.  It is a user table for storing diagram information
         that really should be considered a system table.
