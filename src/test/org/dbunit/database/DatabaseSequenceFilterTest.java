@@ -28,6 +28,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.dbunit.H2Environment;
 import org.dbunit.HypersonicEnvironment;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
@@ -130,6 +131,36 @@ public class DatabaseSequenceFilterTest extends TestCase
         IDataSet filteredDataSet = new FilteredDataSet(filter, databaseDataset);
         String[] actualFiltered = filteredDataSet.getTableNames();
         assertEquals("filtered", Arrays.asList(expectedFiltered), Arrays.asList(actualFiltered));
+    }
+
+    
+    
+    /**
+     * Note that this test uses the H2 database because we could not find
+     * out how to create 2 separate schemas in the hsqldb in memory DB.
+     * @throws Exception
+     */
+    public void testMultiSchemaFks() throws Exception
+    {
+        Connection jdbcConnection = H2Environment.createJdbcConnection("test");
+        H2Environment.executeDdlFile(new File("src/sql/h2_multischema_fk_test.sql"), jdbcConnection);
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+        connection.getConfig().setProperty(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, Boolean.TRUE);
+
+        
+        IDataSet databaseDataset = connection.createDataSet();
+        ITableFilter filter = new DatabaseSequenceFilter(connection);
+        IDataSet filteredDataSet = new FilteredDataSet(filter, databaseDataset);
+
+        String[] actualNoFilter = databaseDataset.getTableNames();
+        assertEquals(2, actualNoFilter.length);
+        assertEquals("A.FOO", actualNoFilter[0]);
+        assertEquals("B.BAR", actualNoFilter[1]);
+        
+        String[] actualFiltered = filteredDataSet.getTableNames();
+        assertEquals(2, actualFiltered.length);
+        assertEquals("A.FOO", actualFiltered[0]);
+        assertEquals("B.BAR", actualFiltered[1]);
     }
 
 }
