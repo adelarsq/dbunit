@@ -86,6 +86,22 @@
       </roles>
     </developer>
     <developer>
+      <name>John Hurst</name>
+      <id>jbhurst</id>
+      <email>jbhurst@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer (very active)</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jeff Jensen</name>
+      <id>jeffjensen</id>
+      <email>jeffjensen@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer (active)</role>
+      </roles>
+    </developer>
+    <developer>
       <name>Roberto Lo Giacco</name>
       <id>rlogiacco</id>
       <email>rlogiacco@users.sourceforge.net</email>

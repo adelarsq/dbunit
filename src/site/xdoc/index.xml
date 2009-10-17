@@ -26,6 +26,10 @@
   <section name="News">
       <table border="1">
         <tr>
+          <td>2009-10-09</td>
+          <td>We wish to welcome Jeff Jensen as a DbUnit developer, the project team is growing!</td>
+        </tr>
+        <tr>
           <td>2009-09-24</td>
           <td>Another member joined the DbUnit project developers group: welcome John Hurst!</td>
         </tr>
