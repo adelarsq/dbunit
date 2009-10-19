@@ -79,7 +79,7 @@
         </tr>
         <tr> 
           <td>Note</td>
-          <td>This feature is not compatible with the <a href="#escapepattern">escape pattern</a> property.</td>
+          <td>This feature was not compatible with the <a href="#escapepattern">escape pattern</a> property until the 2.2.1 release. Since then the two properties can be mixed without problem: each element will be properly escaped.</td>
         </tr>
       </table>
 
@@ -148,8 +148,8 @@
         </tr>
         <tr> 
           <td>Note</td>
-          <td>This property is not compatible with the <a href="#qualifiedtablenames">qualified 
-            table names</a> feature.
+          <td>This property was not compatible with the <a href="#qualifiedtablenames">qualified 
+            table names</a> feature until 2.2.1. Since then the two properties can be mixed resulting in each element properly escaped.
           </td>
         </tr>
       </table>
