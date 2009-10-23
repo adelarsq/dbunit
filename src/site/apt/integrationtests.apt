@@ -70,7 +70,7 @@ Database Properties
 </settings>
 ---
 
-Riunning HSQLDB Integration Tests
+Running HSQLDB Integration Tests
 
   Nothing special is required.
 
