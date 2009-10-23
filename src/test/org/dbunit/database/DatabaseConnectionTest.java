@@ -27,6 +27,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.util.Locale;
 
+import org.dbunit.DatabaseEnvironment;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.dataset.ITable;
 
@@ -43,6 +44,12 @@ public class DatabaseConnectionTest extends AbstractDatabaseConnectionTest
         super(s);
     }
 
+    protected String convertString(String str) throws Exception
+    {
+        return getEnvironment().convertString(str);
+    }
+
+
     public void testCreateNullConnection() throws Exception
     {
         try
@@ -58,8 +65,9 @@ public class DatabaseConnectionTest extends AbstractDatabaseConnectionTest
 
     public void testCreateConnectionWithNonExistingSchemaAndStrictValidation() throws Exception
     {
+        DatabaseEnvironment environment = getEnvironment();
+        String schema = environment.convertString("XYZ_INVALID_SCHEMA_1642344539");
         IDatabaseConnection validConnection = super.getConnection();
-        String schema = "XYZ_INVALID_SCHEMA_1642344539";
         // Try to create a database connection with an invalid schema
         try
         {
@@ -69,15 +77,16 @@ public class DatabaseConnectionTest extends AbstractDatabaseConnectionTest
         }
         catch(DatabaseUnitException expected)
         {
-            String expectedMsg = "The given schema 'XYZ_INVALID_SCHEMA_1642344539' does not exist.";
+            String expectedMsg = "The given schema '" + convertString(schema) + "' does not exist.";
             assertEquals(expectedMsg, expected.getMessage());
         }
     }
     
     public void testCreateConnectionWithNonExistingSchemaAndLenientValidation() throws Exception
     {
+        DatabaseEnvironment environment = getEnvironment();
+        String schema = environment.convertString("XYZ_INVALID_SCHEMA_1642344539");
         IDatabaseConnection validConnection = super.getConnection();
-        String schema = "XYZ_INVALID_SCHEMA_1642344539";
         // Try to create a database connection with an invalid schema
     	boolean validate = false;
         DatabaseConnection dbConnection = new DatabaseConnection(validConnection.getConnection(), schema, validate);

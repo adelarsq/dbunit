@@ -23,6 +23,7 @@ package org.dbunit.dataset;
 
 import junit.framework.TestCase;
 
+import org.dbunit.DatabaseEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +51,19 @@ public abstract class AbstractTableTest extends TestCase
      */
     protected abstract ITable createTable() throws Exception;
 
+    /**
+     * Returns the string converted as an identifier according to the metadata rules of the database environment.
+     * Most databases convert all metadata identifiers to uppercase.
+     * PostgreSQL converts identifiers to lowercase.
+     * MySQL preserves case.
+     * @param str The identifier.
+     * @return The identifier converted according to database rules.
+     */
+    protected String convertString(String str) throws Exception
+    {
+        return str;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // Test methods
 
@@ -64,7 +78,7 @@ public abstract class AbstractTableTest extends TestCase
         assertEquals("column count", COLUMN_COUNT, columns.length);
         for (int i = 0; i < columns.length; i++)
         {
-            String expected = "COLUMN" + i;
+            String expected = convertString("COLUMN" + i);
             String actual = columns[i].getColumnName();
             assertEquals("column name", expected, actual);
         }

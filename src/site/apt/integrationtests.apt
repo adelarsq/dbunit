@@ -70,9 +70,9 @@ Database Properties
 </settings>
 ---
 
-Setting up for HSQLDB Integration Tests
+Riunning HSQLDB Integration Tests
 
-  Nothing is required.
+  Nothing special is required.
 
   Run the full test suite, including integration tests, with this command:
 
@@ -80,14 +80,14 @@ Setting up for HSQLDB Integration Tests
 mvn clean test
 ---
 
-Setting up for Oracle Integration Tests
+Running Oracle Integration Tests
 
   [[1]] Install Oracle database.  This can be on your local machine, or you can use any Oracle database you have access to.
 
   [[2]] Create a "dbunit" user with password "dbunit".
 
-  These are the defaults configured in the project.
-  If you use different values, you will need to override the properties in your settings.xml.
+  These values are the defaults configured in the project.
+  If you use different values, you will need to override the properties in your Maven settings.xml.
 
   [[3]] Log in to your dbunit schema and run src/sql/oracle.sql.
 
@@ -104,6 +104,39 @@ mvn clean test -Poracle-ojdbc6
 mvn clean test -Poracle10-ojdbc14
 mvn clean test -Poracle10-ojdbc6
 ---
+
+Running PostgreSQL Integration Tests
+
+  [[1]] Install PostgreSQL database.  This can be on your local machine, or you can use any PostgreSQL database you have access to.
+
+  [[2]] Create a "dbunit" user and database, for example with these commands:
+
+---
+sudo -u postgres psql <<EOF
+CREATE USER dbunit WITH PASSWORD 'dbunit';
+CREATE DATABASE dbunit OWNER dbunit;
+
+\q
+EOF
+---
+
+  These values are the defaults configured in the project.
+  If you use different values, you will need to override the properties in your Maven settings.xml.
+
+  [[3]] Log in to your dbunit user and run src/sql/postgresql.sql.
+
+  []
+
+  This should create the DbUnit test schema in your PostgreSQL database.
+  You are now ready to run tests.
+
+  Run the full test suite, including integration tests, with this command:
+
+---
+mvn clean test -Poracle-default,postgresql
+---
+
+  <<Note:>> currently the oracle-default profile is required, along with the postgresql profile, to ensure all JARs required on the compile-time classpath in Maven.
 
 TODO: Other databases.
 

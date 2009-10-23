@@ -73,7 +73,7 @@ public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTes
     	try {
 			IDatabaseConnection dbConnection = dbTester.getConnection();
 			
-			assertEquals(nonexistingSchema, dbConnection.getSchema());
+			assertEquals(convertString(nonexistingSchema), dbConnection.getSchema());
 			try {
 				dbConnection.getRowCount("test_table");
 				fail("Should not be able to retrieve row count for non-existing schema " + nonexistingSchema);

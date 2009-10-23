@@ -69,6 +69,12 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
     ////////////////////////////////////////////////////////////////////////////
     // AbstractDataSetTest class
 
+
+    protected String convertString(String str) throws Exception
+    {
+        return DatabaseEnvironment.getInstance().convertString(str);
+    }
+
     protected IDataSet createDataSet() throws Exception
     {
         return _connection.createDataSet();
@@ -197,7 +203,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         assertEquals("column count", expected.length, columns.length);
         for (int i = 0; i < columns.length; i++)
         {
-            assertEquals("column name", expected[i], columns[i].getColumnName());
+            assertEquals("column name", convertString(expected[i]), columns[i].getColumnName());
         }
     }
 
@@ -218,7 +224,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         assertEquals("column count", expected.length, columns.length);
         for (int i = 0; i < columns.length; i++)
         {
-            assertEquals("column name", expected[i], columns[i].getColumnName());
+            assertEquals("column name", convertString(expected[i]), columns[i].getColumnName());
         }
     }
 
@@ -249,7 +255,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
         assertEquals("column count", expected.length, columns.length);
         for (int i = 0; i < columns.length; i++)
         {
-            assertEquals("column name", expected[i], columns[i].getColumnName());
+            assertEquals("column name", convertString(expected[i]), columns[i].getColumnName());
         }
     }
 
@@ -271,7 +277,7 @@ public class DatabaseDataSetTest extends AbstractDataSetTest
 
     public void testGetTableThatIsFiltered() throws Exception
     {
-        final String existingTableToFilter = "TEST_TABLE";
+        final String existingTableToFilter = convertString("TEST_TABLE");
         ITableFilterSimple tableFilter = new ITableFilterSimple(){
             public boolean accept(String tableName) throws DataSetException {
                 if(tableName.equals(existingTableToFilter))

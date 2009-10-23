@@ -60,6 +60,19 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
 //        return _connection.createQueryTable(tableName, sql);
     }
 
+    /**
+     * Returns the string converted as an identifier according to the metadata rules of the database environment.
+     * Most databases convert all metadata identifiers to uppercase.
+     * PostgreSQL converts identifiers to lowercase.
+     * MySQL preserves case.
+     * @param str The identifier.
+     * @return The identifier converted according to database rules.
+     */
+    protected String convertString(String str) throws Exception
+    {
+        return str;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // TestCase class
 

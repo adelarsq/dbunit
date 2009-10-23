@@ -40,12 +40,12 @@ import org.dbunit.testutil.FileAsserts;
  */
 public class FlatDtdDataSetTest extends AbstractDataSetTest
 {
-    private static final File DTD_FILE =
-            new File("src/dtd/flatDtdDataSetTest.dtd");
-    private static final File DUPLICATE_FILE =
-            new File("src/dtd/flatDtdDataSetDuplicateTest.dtd");
-    private static final File DUPLICATE_MULTIPLE_CASE_FILE =
-        new File("src/dtd/flatDtdDataSetDuplicateMultipleCaseTest.dtd");
+    private static final String DTD_FILE =
+            "src/dtd/flatDtdDataSetTest.dtd";
+    private static final String DUPLICATE_FILE =
+            "src/dtd/flatDtdDataSetDuplicateTest.dtd";
+    private static final String DUPLICATE_MULTIPLE_CASE_FILE =
+        "src/dtd/flatDtdDataSetDuplicateMultipleCaseTest.dtd";
 
     public FlatDtdDataSetTest(String s)
     {
@@ -54,6 +54,11 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
 
     ////////////////////////////////////////////////////////////////////////////
     // AbstractDataSetTest class
+
+    private File getFile(String fileName) throws Exception
+    {
+        return DatabaseEnvironment.getInstance().getFile(fileName);
+    }
 
     protected IDataSet createDataSet() throws Exception
     {
@@ -134,7 +139,7 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
             }
 
             FileAsserts.assertEquals(
-                    new BufferedReader(new FileReader(DTD_FILE)),
+                    new BufferedReader(new FileReader(getFile(DTD_FILE))),
                     new BufferedReader(new FileReader(tempFile)));
         }
         finally

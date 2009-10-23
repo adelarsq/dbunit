@@ -26,6 +26,7 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import org.apache.commons.io.FilenameUtils;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -64,6 +65,10 @@ public class DatabaseEnvironment
             else if (profileName.equals("oracle10"))
             {
                 INSTANCE = new Oracle10Environment(profile);
+            }
+            else if (profileName.equals("postgresql"))
+            {
+                INSTANCE = new PostgresqlEnvironment(profile);
             }
             else if (profileName.equals("derby"))
             {
@@ -151,6 +156,35 @@ public class DatabaseEnvironment
         }
 
         return true;
+    }
+
+    public File getFile(String fileName)
+    {
+        String fullPath = FilenameUtils.getFullPath(fileName);
+        String baseName = FilenameUtils.getBaseName(fileName);
+        String extension = FilenameUtils.getExtension(fileName);
+        File profileFile = new File(fullPath + baseName + "-" + _profile.getActiveProfile() + "." + extension);
+        if (profileFile.exists())
+        {
+            return profileFile;
+        }
+        else
+        {
+            return new File(fileName);
+        }
+    }
+
+    /**
+     * Returns the string converted as an identifier according to the metadata rules of the database environment.
+     * Most databases convert all metadata identifiers to uppercase.
+     * PostgreSQL converts identifiers to lowercase.
+     * MySQL preserves case.
+     * @param str The identifier.
+     * @return The identifier converted according to database rules.
+     */
+    public String convertString(String str)
+    {
+        return str == null ? null : str.toUpperCase();
     }
     
     public String toString()

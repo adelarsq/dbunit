@@ -51,6 +51,11 @@ public class ForwardOnlyResultSetTableTest extends ForwardOnlyTableTest
         return new ForwardOnlyResultSetTable("TEST_TABLE", selectStatement, connection);
     }
 
+    protected String convertString(String str) throws Exception
+    {
+        return DatabaseEnvironment.getInstance().convertString(str);
+    }
+
     public void testGetMissingValue() throws Exception
     {
         // Do not test this!
