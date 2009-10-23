@@ -291,13 +291,13 @@
       <version>1.8.0.1</version>
       <scope>test</scope>
     </dependency>
-	<dependency>
-		<groupId>com.h2database</groupId>
-		<artifactId>h2</artifactId>
-		<version>1.1.113</version>
-		<!-- Note that the 1.1.113 version is the last one officially built with JDK 1.4 -->
-		<scope>test</scope>
-	</dependency> 
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.1.113</version>
+      <!-- Note that the 1.1.113 version is the last one officially built with JDK 1.4 -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>gsbase</groupId>
       <artifactId>gsbase</artifactId>
@@ -717,6 +717,25 @@
       </dependencies>
     </profile>
     <profile>
+      <id>postgresql</id>
+      <properties>
+        <dbunit.profile>postgresql</dbunit.profile>
+        <dbunit.profile.driverClass>org.postgresql.Driver</dbunit.profile.driverClass>
+        <dbunit.profile.url>jdbc:postgresql://host/database</dbunit.profile.url>
+        <dbunit.profile.schema>public</dbunit.profile.schema>
+        <dbunit.profile.user>dbunit</dbunit.profile.user>
+        <dbunit.profile.password>dbunit</dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>INSERT_IDENTITY,CLOB,BLOB,SCROLLABLE_RESULTSET,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>8.4-701.jdbc3</version>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
       <id>mysql</id>
       <properties>
         <dbunit.profile>mysql</dbunit.profile>
@@ -771,18 +790,6 @@
           <scope>test</scope>
         </dependency>
       </dependencies>
-    </profile>
-    <profile>
-      <id>postgresql</id>
-      <properties>
-        <dbunit.profile>postgresql</dbunit.profile>
-        <dbunit.profile.driverClass>TODO</dbunit.profile.driverClass>
-        <dbunit.profile.url>TODO</dbunit.profile.url>
-        <dbunit.profile.schema>TODO</dbunit.profile.schema>
-        <dbunit.profile.user>TODO</dbunit.profile.user>
-        <dbunit.profile.password>TODO</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>TODO</dbunit.profile.unsupportedFeatures>
-      </properties>
     </profile>
     <profile>
       <id>h2</id>
