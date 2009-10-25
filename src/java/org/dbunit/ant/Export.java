@@ -68,7 +68,6 @@ public class Export extends AbstractStep
     private File _dest;
     private String _format = FORMAT_FLAT;
     private String _doctype = null;
-    private boolean _ordered = false;
     private String _encoding = null; // if no encoding set by script than the default encoding (UTF-8) of the wrietr is used
     private List _tables = new ArrayList();
 
@@ -120,16 +119,6 @@ public class Export extends AbstractStep
         }
     }
 
-    public boolean isOrdered() 
-    {
-    	return _ordered;
-    }
-
-    public void setOrdered(boolean ordered) 
-    {
-    	this._ordered = ordered;
-    }
-    
     /**
      * Encoding for XML-Output
      * @return Returns the encoding.

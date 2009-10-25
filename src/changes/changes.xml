@@ -20,6 +20,7 @@
       <action dev="gommma" type="fix" issue="2880113" due-to="jherico">FK table sorting does not work with cross-schema FKs</action>
       <action dev="jbhurst" type="update" issue="2876909" due-to="jbhurst">Replaced reflection-based Oracle data types with static calls</action>
       <action dev="jbhurst" type="add" issue="2875253" due-to="caseylucas">Add support for Oracle SDO_GEOMETRY datatype</action>
+      <action dev="gommma" type="add" issue="2884634" due-to="ymenager">Improvements to the ant operation task</action>
     </release>
     <release version="2.4.6" date="Sep 20, 2009" description="Bugfixes and some database specific additions">
       <action dev="rlogiacco" type="add" issue="284432" due-to="JamesR">Add support for interval type on postgres</action>

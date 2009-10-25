@@ -228,6 +228,26 @@
                 <p>No</p>
               </td>
             </tr>
+            <tr>
+              <td>ordered</td>
+              <td>If set to "true" the tables of the exported dataset 
+              are ordered using a database key. Therefore dbunit uses
+              the FilteredDataSet combined with the DatabaseSequenceFilter. 
+              Defaults to <b>"false"</b></td>
+              <td>
+                <p>No</p>
+              </td>
+            </tr>
+            <tr>
+              <td>nullToken</td>
+              <td>A String used to replace all occurrences of this String
+              in a dataset with &lt;null&gt;. A common value for this 
+              is &quot;[NULL]&quot;. Defaults to <b>null</b> which means 
+              that no replacement occurrs.</td>
+              <td>
+                <p>No</p>
+              </td>
+            </tr>
           </table>
         </td>
       </tr>
@@ -270,10 +290,10 @@
             </tr>
             <tr>
               <td>ordered</td>
-              <td>If set to "true" the tables of the exported
-              dataset are ordered using the FilteredDataSet
-              combined with the DatabaseSequenceFilter. Defaults to
-              "false"</td>
+              <td>If set to "true" the tables of the exported dataset 
+              are ordered using a database key. Therefore dbunit uses
+              the FilteredDataSet combined with the DatabaseSequenceFilter. 
+              Defaults to <b>"false"</b></td>
               <td>No</td>
             </tr>
             <tr>

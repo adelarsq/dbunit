@@ -72,7 +72,9 @@ public abstract class AbstractStep extends ProjectComponent implements DbUnitTas
     public static final String FORMAT_CSV = "csv";
     public static final String FORMAT_XLS = "xls";
 
-	
+    private boolean ordered = false;
+
+    
     protected IDataSet getDatabaseDataSet(IDatabaseConnection connection,
             List tables, boolean forwardonly) throws DatabaseUnitException
     {
@@ -268,5 +270,22 @@ public abstract class AbstractStep extends ProjectComponent implements DbUnitTas
         return source;
 	}
 	
+    public boolean isOrdered() 
+    {
+        return ordered;
+    }
+
+    public void setOrdered(boolean ordered) 
+    {
+        this.ordered = ordered;
+    }
+    
+    public String toString()
+    {
+        StringBuffer result = new StringBuffer();
+        result.append("AbstractStep: ");
+        result.append("ordered=").append(this.ordered);
+        return result.toString();
+    }
 
 }

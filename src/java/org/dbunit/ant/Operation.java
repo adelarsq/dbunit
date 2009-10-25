@@ -21,15 +21,17 @@
 
 package org.dbunit.ant;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ReplacementDataSet;
+import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.TransactionOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -61,102 +63,21 @@ public class Operation extends AbstractStep
     private boolean _transaction = false;
     private DatabaseOperation _operation;
     private boolean _forwardOperation = true;
-
-    public String getType()
-    {
-        return _type;
-    }
+    private String _nullToken;
 
     public File getSrc()
     {
         return _src;
     }
 
-    public DatabaseOperation getDbOperation()
+    public void setSrc(File src)
     {
-        return _operation;
+        _src = src;
     }
 
     public String getFormat()
     {
         return _format != null ? _format : DEFAULT_FORMAT;
-    }
-
-    public boolean isTransaction()
-    {
-        logger.debug("isTransaction() - start");
-
-        return _transaction;
-    }
-
-    public void setType(String type)
-    {
-        logger.debug("setType(type={}) - start", type);
-
-        if ("UPDATE".equals(type))
-        {
-            _operation = DatabaseOperation.UPDATE;
-            _forwardOperation = true;
-        }
-        else if ("INSERT".equals(type))
-        {
-            _operation = DatabaseOperation.INSERT;
-            _forwardOperation = true;
-        }
-        else if ("REFRESH".equals(type))
-        {
-            _operation = DatabaseOperation.REFRESH;
-            _forwardOperation = true;
-        }
-        else if ("DELETE".equals(type))
-        {
-            _operation = DatabaseOperation.DELETE;
-            _forwardOperation = false;
-        }
-        else if ("DELETE_ALL".equals(type))
-        {
-            _operation = DatabaseOperation.DELETE_ALL;
-            _forwardOperation = false;
-        }
-        else if ("CLEAN_INSERT".equals(type))
-        {
-            _operation = DatabaseOperation.CLEAN_INSERT;
-            _forwardOperation = false;
-        }
-        else if ("NONE".equals(type))
-        {
-            _operation = DatabaseOperation.NONE;
-            _forwardOperation = true;
-        }
-        else if ("MSSQL_CLEAN_INSERT".equals(type))
-        {
-            _operation = InsertIdentityOperation.CLEAN_INSERT;
-            _forwardOperation = false;
-        }
-        else if ("MSSQL_INSERT".equals(type))
-        {
-            _operation = InsertIdentityOperation.INSERT;
-            _forwardOperation = true;
-        }
-        else if ("MSSQL_REFRESH".equals(type))
-        {
-            _operation = InsertIdentityOperation.REFRESH;
-            _forwardOperation = true;
-        }
-        else
-        {
-            throw new IllegalArgumentException("Type must be one of: UPDATE, INSERT,"
-                    + " REFRESH, DELETE, DELETE_ALL, CLEAN_INSERT, MSSQL_INSERT, "
-                    + " or MSSQL_REFRESH but was: " + type);
-        }
-        _type = type;
-    }
-
-    public void setSrc(File src)
-    {
-        logger.debug("setSrc(src={}) - start", src);
-
-        _src = src;
     }
 
     public void setFormat(String format)
@@ -169,10 +90,76 @@ public class Operation extends AbstractStep
         _format = format;
     }
 
+    public boolean isTransaction()
+    {
+        return _transaction;
+    }
+
     public void setTransaction(boolean transaction)
     {
-        logger.debug("setTransaction(transaction={}) - start", String.valueOf(transaction));
         _transaction = transaction;
+    }
+
+    public String getNullToken() 
+    {
+        return _nullToken;
+    }
+
+    public void setNullToken(final String nullToken) 
+    {
+        this._nullToken = nullToken;
+    }
+
+    public DatabaseOperation getDbOperation()
+    {
+        return _operation;
+    }
+
+    public String getType()
+    {
+        return _type;
+    }
+
+    public void setType(String type) 
+    {
+        logger.debug("setType(type={}) - start", type);
+
+        if ("UPDATE".equals(type)) {
+            _operation = DatabaseOperation.UPDATE;
+            _forwardOperation = true;
+        } else if ("INSERT".equals(type)) {
+            _operation = DatabaseOperation.INSERT;
+            _forwardOperation = true;
+        } else if ("REFRESH".equals(type)) {
+            _operation = DatabaseOperation.REFRESH;
+            _forwardOperation = true;
+        } else if ("DELETE".equals(type)) {
+            _operation = DatabaseOperation.DELETE;
+            _forwardOperation = false;
+        } else if ("DELETE_ALL".equals(type)) {
+            _operation = DatabaseOperation.DELETE_ALL;
+            _forwardOperation = false;
+        } else if ("CLEAN_INSERT".equals(type)) {
+            _operation = DatabaseOperation.CLEAN_INSERT;
+            _forwardOperation = false;
+        } else if ("NONE".equals(type)) {
+            _operation = DatabaseOperation.NONE;
+            _forwardOperation = true;
+        } else if ("MSSQL_CLEAN_INSERT".equals(type)) {
+            _operation = InsertIdentityOperation.CLEAN_INSERT;
+            _forwardOperation = false;
+        } else if ("MSSQL_INSERT".equals(type)) {
+            _operation = InsertIdentityOperation.INSERT;
+            _forwardOperation = true;
+        } else if ("MSSQL_REFRESH".equals(type)) {
+            _operation = InsertIdentityOperation.REFRESH;
+            _forwardOperation = true;
+        } else {
+            throw new IllegalArgumentException("Type must be one of: UPDATE, INSERT,"
+                    + " REFRESH, DELETE, DELETE_ALL, CLEAN_INSERT, MSSQL_INSERT, "
+                    + " or MSSQL_REFRESH but was: " + type);
+        }
+        _type = type;
     }
 
     public void execute(IDatabaseConnection connection) throws DatabaseUnitException
@@ -188,10 +175,18 @@ public class Operation extends AbstractStep
             return;
         }
 
-        try
-        {
-        	DatabaseOperation operation = (_transaction ? new TransactionOperation(_operation) : _operation);
+        try {
+            DatabaseOperation operation = (_transaction ? new TransactionOperation(_operation) : _operation);
             IDataSet dataset = getSrcDataSet(getSrc(), getFormat(), _forwardOperation);
+            if (_nullToken != null) {
+                dataset = new ReplacementDataSet(dataset);
+                ((ReplacementDataSet)dataset).addReplacementObject(_nullToken, null);
+            }
+            if(isOrdered()) 
+            {
+                DatabaseSequenceFilter databaseSequenceFilter = new DatabaseSequenceFilter(connection);
+                dataset = new FilteredDataSet(databaseSequenceFilter, dataset);
+            }
             operation.execute(connection, dataset);
         }
         catch (SQLException e)
@@ -212,11 +207,12 @@ public class Operation extends AbstractStep
     {
         StringBuffer result = new StringBuffer();
         result.append("Operation: ");
-        result.append(" type=" + _type);
-        result.append(", format=" + _format);
-        result.append(", src=" + (_src == null ? "null" : _src.getAbsolutePath()));
-        result.append(", operation = " + _operation);
-
+        result.append(" type=").append(_type);
+        result.append(", format=").append(_format);
+        result.append(", src=").append(_src == null ? "null" : _src.getAbsolutePath());
+        result.append(", operation=").append(_operation);
+        result.append(", nullToken=").append(_nullToken);
+        result.append(", ordered=").append(super.isOrdered());
         return result.toString();
     }
 }
