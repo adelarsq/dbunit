@@ -723,16 +723,25 @@ PostgresqlDataTypeFactory factory = new PostgresqlDataTypeFactory(){
         </p>
       </answer>
     </faq>
-
-
+    <faq id="DefaultDataTypeFactory">
+      <question>
+     Why am I getting an "The configured data type factory 'class org.dbunit.dataset.datatype.DefaultDataTypeFactory' might cause problems with the current database ..."?
+      </question>
+      <answer>
+      <p>This warning occurs when no data type factory has been configured and DbUnit defaults to its <code>org.dbunit.dataset.datatype.DefaultDataTypeFactory</code> which supports a limited set of RDBMS.</p>
+      <p>You can solve this problem in two different ways:
+      <ol>
+        <li>set the appropriate data type factory for your RDBMS through the <a href="properties.html#typefactory">data type factory</a> feature; this is the preferred solution if you RDBMS is among the ones already having an IDataTypeFactory implementation</li>
+        <li>disable the warning notification through the <a href="properties.html#typewarning">data type warning</a> property, but only if a data type factory is not available for your RDBMS and your tests doesn't use features specific of your RDBMS!</li>
+      </ol>
+     If you are not in any of the above cases please help us to write down an IDataTypeFactory implementation for your RDBMS. 
+      </p>
+      </answer>
+    </faq>
   </part>
 
 
-
-
-
-
-  <part id="use">
+  <part id="errors">
     <title>Errors</title>
 
     <faq id="AmbiguousTableNameException">
@@ -809,7 +818,6 @@ PostgresqlDataTypeFactory factory = new PostgresqlDataTypeFactory(){
       </answer>
     </faq>    
     
-    <h5>SLF4J Errors</h5>
     <faq id="slf4jdependency">
     	<question>
     	Why am I getting the following error: "java.lang.NoClassDefFoundError: org/slf4j/LoggerFactory"
