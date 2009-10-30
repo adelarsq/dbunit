@@ -39,7 +39,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This filter orders tables using dependency information provided by
- * {@link java.sql.DatabaseMetaData#getExportedKeys}.
+ * {@link java.sql.DatabaseMetaData#getExportedKeys}. Note that this class
+ * name is a bit misleading since it is not at all related to database
+ * sequences. It just brings database tables in a specific order.
  *
  * @author Manuel Laflamme
  * @author Erik Price
