@@ -51,7 +51,8 @@ public class MsSqlDataTypeFactory extends DefaultDataTypeFactory
     public static final int NCHAR = -8;
     public static final int NVARCHAR = -9;
     public static final int NTEXT = -10;
-
+    public static final int NTEXT_MSSQL_2005 = -16;
+    
     /**
      * @see org.dbunit.dataset.datatype.IDbProductRelatable#getValidDbProducts()
      */
@@ -70,6 +71,7 @@ public class MsSqlDataTypeFactory extends DefaultDataTypeFactory
             case NCHAR: return DataType.CHAR; // nchar
             case NVARCHAR: return DataType.VARCHAR; // nvarchar
             case NTEXT: return DataType.LONGVARCHAR; // ntext
+            case NTEXT_MSSQL_2005: return DataType.LONGVARCHAR; // ntext
             default: return super.createDataType(sqlType, sqlTypeName);
         }
     }

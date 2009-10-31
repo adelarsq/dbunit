@@ -44,9 +44,19 @@ public class MsSqlDataTypeFactoryTest extends TestCase {
     	assertEquals("type", expected, actual);
     }
 
-    public void testCreateLongVarcharDataType() throws Exception
+    public void testCreateLongVarcharDataTypeFromNtext() throws Exception
     {
     	int sqlType = MsSqlDataTypeFactory.NTEXT;
+    	String sqlTypeName = "ntext";
+
+    	DataType expected = DataType.LONGVARCHAR;
+    	DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+    	assertEquals("type", expected, actual);
+    }
+    
+    public void testCreateLongVarcharDataTypeFromNtextMsSql2005() throws Exception
+    {
+    	int sqlType = MsSqlDataTypeFactory.NTEXT_MSSQL_2005;
     	String sqlTypeName = "ntext";
 
     	DataType expected = DataType.LONGVARCHAR;
