@@ -177,7 +177,9 @@ public class Operation extends AbstractStep
 
         try {
             DatabaseOperation operation = (_transaction ? new TransactionOperation(_operation) : _operation);
-            IDataSet dataset = getSrcDataSet(getSrc(), getFormat(), _forwardOperation);
+            // TODO This is not very nice and the design should be reviewed but it works for now (gommma)
+            boolean useForwardOnly = _forwardOperation && ! isOrdered();
+            IDataSet dataset = getSrcDataSet(getSrc(), getFormat(), useForwardOnly);
             if (_nullToken != null) {
                 dataset = new ReplacementDataSet(dataset);
                 ((ReplacementDataSet)dataset).addReplacementObject(_nullToken, null);

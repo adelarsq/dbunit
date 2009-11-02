@@ -36,11 +36,13 @@ import org.apache.tools.ant.BuildFileTest;
 import org.apache.tools.ant.Target;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.IDatabaseTester;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.NoSuchTableException;
+import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
@@ -498,7 +500,37 @@ public class DbUnitTaskTest extends BuildFileTest
             assertEquals("nested exception type", ClassNotFoundException.class, e.getException().getClass());
         }
     }
-	
+
+    public void testReplaceOperation() throws Exception {
+        String targetName = "test-replace";
+        final IDatabaseTester dbTest = DatabaseEnvironment.getInstance().getDatabaseTester();
+        executeTarget(targetName);
+        final IDataSet ds = dbTest.getConnection().createDataSet();
+        final ITable table = ds.getTable("PK_TABLE");
+        assertNull(table.getValue(0,"NORMAL0"));
+        assertEquals("row 1",table.getValue(1,"NORMAL0"));
+    }
+
+    public void testOrderedOperation() throws Exception {
+        String targetName = "test-ordered";
+        final IDatabaseTester dbTest = DatabaseEnvironment.getInstance().getDatabaseTester();
+        executeTarget(targetName);
+        final IDataSet ds = dbTest.getConnection().createDataSet();
+        final ITable table = ds.getTable("PK_TABLE");
+        assertEquals("row 0",table.getValue(0,"NORMAL0"));
+        assertEquals("row 1",table.getValue(1,"NORMAL0"));
+    }
+
+    public void testReplaceOrderedOperation() throws Exception {
+        String targetName = "test-replace-ordered";
+        final IDatabaseTester dbTest = DatabaseEnvironment.getInstance().getDatabaseTester();
+        executeTarget(targetName);
+        final IDataSet ds = dbTest.getConnection().createDataSet();
+        final ITable table = ds.getTable("PK_TABLE");
+        assertNull(table.getValue(0,"NORMAL0"));
+        assertEquals("row 1",table.getValue(1,"NORMAL0"));
+    }
+
     protected void assertOperationType(String failMessage, String targetName, DatabaseOperation expected)
     {
         Operation oper = (Operation)getFirstStepFromTarget(targetName);

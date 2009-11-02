@@ -80,6 +80,33 @@
     </dbunit>
   </target>
 
+  <target name="test-replace">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.url}"
+            userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="REFRESH" src="${updateDataSet}" format="flat" nullToken="row 0"/>
+    </dbunit>
+  </target>
+
+  <target name="test-ordered">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.url}"
+            userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="REFRESH" src="${updateDataSet}" format="flat" ordered="true"/>
+    </dbunit>
+  </target>
+
+  <target name="test-replace-ordered">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.url}"
+            userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+      <operation type="REFRESH" src="${updateDataSet}" format="flat" ordered="true" nullToken="row 0"/>
+    </dbunit>
+  </target>
+
   <target name="test-type-insert">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
