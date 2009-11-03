@@ -1,0 +1,54 @@
+<!ELEMENT dataset (
+    test_table*,
+    second_table*,
+    empty_table*,
+    pk_table*,
+    only_pk_table*,
+    empty_multitype_table*)>
+
+<!ELEMENT test_table EMPTY>
+<!ATTLIST test_table
+    column0 CDATA #IMPLIED
+    column1 CDATA #IMPLIED
+    column2 CDATA #IMPLIED
+    column3 CDATA #IMPLIED
+>
+
+<!ELEMENT second_table EMPTY>
+<!ATTLIST second_table
+    column0 CDATA #IMPLIED
+    column1 CDATA #IMPLIED
+    column2 CDATA #IMPLIED
+    column3 CDATA #IMPLIED
+>
+
+<!ELEMENT empty_table EMPTY>
+<!ATTLIST empty_table
+    column0 CDATA #IMPLIED
+    column1 CDATA #IMPLIED
+    column2 CDATA #IMPLIED
+    column3 CDATA #IMPLIED
+>
+
+<!ELEMENT pk_table EMPTY>
+<!ATTLIST pk_table
+    pk0 CDATA #REQUIRED
+    pk1 CDATA #REQUIRED
+    pk2 CDATA #REQUIRED
+    normal0 CDATA #IMPLIED
+    normal1 CDATA #IMPLIED
+>
+
+<!ELEMENT only_pk_table EMPTY>
+<!ATTLIST only_pk_table
+    pk0 CDATA #REQUIRED
+>
+
+<!ELEMENT empty_multitype_table EMPTY>
+<!ATTLIST empty_multitype_table
+    varchar_col CDATA #IMPLIED
+    numeric_col CDATA #IMPLIED
+    timestamp_col CDATA #IMPLIED
+    varbinary_col CDATA #IMPLIED
+>
+

@@ -1,0 +1,38 @@
+#
+bacco, tabacco, e venere
+col\"bacco", biribibacco, "e venere, villa pamphili, numa pompili"
+"anche marzio", anco marzio, "1,2"
+
+#
+marzio, marzio, marzio
+marzio,,
+,marzio,
+,,marzio
+
+#
+\"marzio,\"marzio,\"marzio
+\"marzio,,
+,\"marzio,
+,,\"marzio
+
+#
+"Main Street, 3", "Secondary \"Street, 4\"", "Tertiary Street, 5"
+"Main Street, 3",, 
+,"Main Street, 3",
+,,"Main Street, 3"
+
+#
+\\,\\,\\
+"\\,\\,\\","\\,\\,\\","\\,\\,\\"
+
+#
+anche marzio, O"Connor, foo
+"\"anche marzio", O'Connor, foo
+\"anche marzio, O'Connor, foo
+
+#
+anche marzio, O\"Connor, foo
+
+#
+a""""a,b"""b,c"c
+a"""",b""",c"

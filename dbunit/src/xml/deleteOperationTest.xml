@@ -1,0 +1,19 @@
+<!-- edited with XML Spy v3.5 (http://www.xmlspy.com) by  () -->
+<dataset>
+	<table name="PK_TABLE">
+		<column>PK0</column>
+		<column>PK1</column>
+		<column>PK2</column>
+		<column>NORMAL0</column>
+		<column>NORMAL1</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+			<value>row 0</value>
+			<value>0 wor</value>
+		</row>
+	</table>
+</dataset>
+
+

@@ -1,0 +1,58 @@
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Manuel Laflamme (Java development) -->
+<dataset>
+	<table name="EMPTY_TABLE">
+		<column>COLUMN0</column>
+		<column>COLUMN1</column>
+		<column>COLUMN2</column>
+		<column>COLUMN3</column>
+		<row>
+			<value>row 0 col 0</value>
+			<value>row 0 col 1</value>
+			<value>row 0 col 2</value>
+			<value>row 0 col 3</value>
+		</row>
+		<row>
+			<value>row 1 col 0</value>
+			<value>row 1 col 1</value>
+			<value>row 1 col 2</value>
+			<value>row 1 col 3</value>
+		</row>
+		<row>
+			<value>row 2 col 0</value>
+			<value>row 2 col 1</value>
+			<value>row 2 col 2</value>
+			<value>row 2 col 3</value>
+		</row>
+		<row>
+			<value>row 3 col 0</value>
+			<value>row 3 col 1</value>
+			<value>row 3 col 2</value>
+			<value>row 3 col 3</value>
+		</row>
+		<row>
+			<value>row 4 col 0</value>
+			<value>row 4 col 1</value>
+			<value>row 4 col 2</value>
+			<value>row 4 col 3</value>
+		</row>
+		<row>
+			<value>row 5 col 0</value>
+			<value>row 5 col 1</value>
+			<value>row 5 col 2</value>
+			<value>row 5 col 3</value>
+		</row>
+	</table>
+	<table name="EMPTY_MULTITYPE_TABLE">
+		<column>VARCHAR_COL</column>
+		<column>NUMERIC_COL</column>
+		<column>TIMESTAMP_COL</column>
+		<column>VARBINARY_COL</column>
+		<row>
+			<value>qwe'rty</value>
+			<value>12345</value>
+			<value>1974-06-23 23:15:00.0</value>
+			<value>YWJjZA==</value>
+		</row>
+	</table>
+</dataset>
+

@@ -1,0 +1,17 @@
+
+<dataset>
+	<table name="PK_TABLE">
+		<column>PK0</column>
+		<column>PK1</column>
+		<column>PK2</column>
+		<column>NORMAL0</column>
+		<column>NORMAL1</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+			<value>toto</value>
+			<value>qwerty</value>
+		</row>
+	</table>
+</dataset>

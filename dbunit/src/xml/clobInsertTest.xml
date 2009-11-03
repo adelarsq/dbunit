@@ -1,0 +1,6 @@
+<dataset>
+	<CLOB_TABLE PK="0" CLOB="clob0"/>
+	<CLOB_TABLE PK="1" CLOB="clob1"/>
+	<CLOB_TABLE PK="2" CLOB="clob2"/>
+</dataset>
+

@@ -1,0 +1,855 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="Frequently Asked Questions">
+
+  <part id="general">
+    <title>General</title>
+    <faq id="supportedvendors">
+      <question>
+        Which relational database systems are supported?
+      </question>
+      <answer>
+      <p>See the publicly maintained <a href="http://dbunit.wikidot.com/supportedrdbms">list 
+      of compatible RDBMS</a> at the <a href="http://dbunit.wikidot.com">DbUnit Wiki.</a> 
+      Don't hesitate to contribute to this list, particularly for databases not listed yet.</p>
+      </answer>
+    </faq>
+
+    <faq id="build">
+      <question>
+        How to build DbUnit?
+      </question>
+      <answer>
+      <p><i>Cf.</i> <a href="building.html">Building DbUnit</a> detailed instruction.</p>
+      </answer>
+    </faq>
+
+    <faq id="ddl">
+      <question>
+        Can I use DbUnit in order to check and execute DDL statements?
+      </question>
+      <answer>
+      <p><i>No.</i> DbUnit is not intended to track or test structural DB changes. For this purpose check out <a href="http://www.liquibase.org/">liquibase</a>.</p>
+      </answer>
+    </faq>
+    
+    <faq id="p6spy">
+      <question>
+     How to see SQL statements issued by DbUnit using P6Spy?
+      </question>
+      <answer>
+     <p><a href="http://www.p6spy.com/">P6Spy</a> is a transparent JDBC proxy-driver 
+      which log the statements performed against the actual driver you normally would use.
+      Using p6spy allows to log the SQL statements issued by DbUnit.
+      </p>
+      <p>To install P6Spy, complete the following steps:
+      <ol>
+        <li>Put the p6spy.jar file in your classpath.
+        </li><li>Move spy.properties into a directory listed in your classpath.  Unlike
+        JAR files, you do not directly reference your property file in the
+        classpath (e.g.: if you have the file c:\r\proj\conf\spy.properties make sure you 
+        put c:\r\proj\conf in the classpath).
+        </li><li>Modify your application to use the P6Spy database driver i.e.
+        com.p6spy.engine.spy.P6SpyDriver.
+        </li><li>Modify the realdriver line in the spy.properties file to reflect the
+        wrapped database driver. An example of a modified realdriver line follows:
+        realdriver = oracle.jdbc.driver.OracleDriver
+      </li></ol>
+      Installation is complete. When you run your application, a spy.log file is
+      generated in the same directory from where you run the application. 
+      The log file contains a list of all of the database statements
+      executed. You can change both the destination of spy.log and what it logs by
+      editing the spy.properties file.</p>
+      </answer>
+    </faq>    
+
+    <faq id="knownfixedissues">
+      <question>
+        How to learn more about known and fixed issues?
+      </question>
+      <answer>
+      <p>Look at <a href="changes-report.html">Changes Report</a> and at <a href="issue-tracking.html">Issue Tracking</a>.</p>
+      </answer>
+    </faq>
+  </part>  
+
+  <part id="use">
+    <title>Using DbUnit</title>
+    <faq id="extract">
+      <question>
+        How to extract a flat XML dataset from my database?
+      </question>
+      <answer>
+      <p>
+        The following sample demonstrates how you can export one or many tables
+        from a database to a flat XML dataset file.
+        Note that if you want to specify a schema you can do this in the constructor of
+        <a href="apidocs/org/dbunit/database/DatabaseConnection.html">DatabaseConnection</a>.
+      <source>
+public class DatabaseExportSample
+{
+    public static void main(String[] args) throws Exception
+    {
+        // database connection
+        Class driverClass = Class.forName("org.hsqldb.jdbcDriver");
+        Connection jdbcConnection = DriverManager.getConnection(
+                "jdbc:hsqldb:sample", "sa", "");
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        // partial database export
+        QueryDataSet partialDataSet = new QueryDataSet(connection);
+        partialDataSet.addTable("FOO", "SELECT * FROM TABLE WHERE COL='VALUE'");
+        partialDataSet.addTable("BAR");
+        FlatXmlDataSet.write(partialDataSet, new FileOutputStream("partial.xml"));
+
+        // full database export
+        IDataSet fullDataSet = connection.createDataSet();
+        FlatXmlDataSet.write(fullDataSet, new FileOutputStream("full.xml"));
+        
+        // dependent tables database export: export table X and all tables that
+        // have a PK which is a FK on X, in the right order for insertion
+        String[] depTableNames = 
+          TablesDependencyHelper.getAllDependentTables( connection, "X" );
+        IDataSet depDataset = connection.createDataSet( depTableNames );
+        FlatXmlDataSet.write(depDataSet, new FileOutputStream("dependents.xml"));          
+        
+    }
+}
+      </source>
+      </p>
+    </answer>
+    </faq>
+
+    <faq id="generatedtd">
+      <question>
+        How to generate a DTD representing my database schema?
+      </question>
+      <answer>
+      <p>The following sample demonstrates how you can generate a flat xml dataset
+        DTD from a database.</p>
+      <source>
+public class DatabaseExportSample
+{
+    public static void main(String[] args) throws Exception
+    {
+        // database connection
+        Class driverClass = Class.forName("org.hsqldb.jdbcDriver");
+        Connection jdbcConnection = DriverManager.getConnection("jdbc:hsqldb:sample", "sa", "");
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        // write DTD file
+        FlatDtdDataSet.write(connection.createDataSet(), new FileOutputStream("test.dtd"));
+    }
+}</source>
+      <p>Note that there is a more flexible possibility to write out a DTD which allows you
+         to vary the content model of the DTD:</p>
+      <source>
+        ...
+        IDataSet dataSet = connection.createDataSet();
+        Writer out = new OutputStreamWriter(new FileOutputStream("myFile.dtd");
+        FlatDtdWriter datasetWriter = new FlatDtdWriter(out);
+        datasetWriter.setContentModel(FlatDtdWriter.CHOICE);
+        // You could also use the sequence model which is the default
+        // datasetWriter.setContentModel(FlatDtdWriter.SEQUENCE);
+        datasetWriter.write(dataSet);
+      </source>
+      </answer>
+    </faq>
+
+    <faq id="multipleschema">
+      <question>
+        Can I work with multiple database schemas having tables with identical name?
+      </question>
+      <answer>
+        Yes, see <a href="#AmbiguousTableNameException">Why do I get a "AmbiguousTableNameException"?</a>.
+      </answer>
+    </faq>
+
+    <faq id="identity">
+      <question>
+        Can I use DbUnit with IDENTITY or auto-increment columns?
+      </question>
+      <answer>
+         <p>
+         Many RDBMSes allow IDENTITY and auto-increment columns to be implicitly overwritten with client values. 
+         DbUnit can be used with these RDBMS natively.  Some databases, like MS SQL Server and Sybase, 
+         need to explicitly activate client values writing. The way to activate this feature is vendor-specific. 
+         <br/>
+		DbUnit provides this functionality for MS SQL Server with the 
+		<a href="components.html#IdentityInsertOperation">IdentityInsertOperation</a> class. 
+      </p>
+      </answer>
+    </faq>
+
+    <faq id="flatxmlnull">
+      <question>
+     How to specify NULL values with flat XML dataset?
+      </question>
+      <answer>
+      <p>See <a href="components.html#FlatXmlDataSet">FlatXmlDataSet documentation</a></p>
+      </answer>
+    </faq>  
+    
+    <faq id="views">
+      <question>
+      Can I use DbUnit with database views? 
+      </question>
+      <answer>
+      <p>
+      Yes. By default DbUnit is configured to only recognize normal tables. Modify the 
+      <a href="properties.html#tabletype">table type property</a> to work with other table types.
+      For example, use <code>{"TABLE", "VIEW"}</code> for views.
+      </p>
+      <p>
+      Be aware that REFRESH, DELETE and UPDATE operations are not compatible with tables without 
+      primary keys. They are not usable with views without <a href="#customprimarykeys">overriding primary keys detection</a>. 
+      CLEAN_INSERT, INSERT and DELETE_ALL operations are compatible with views.
+      </p>
+      </answer>
+    </faq>  
+    
+    <faq id="batchstatement">
+      <question>
+      How to enable batched statement?
+      </question>
+      <answer>
+      See <a href="properties.html#batchstatement">batched statement</a> feature.
+      </answer>
+    </faq>  
+    
+    <faq id="dateformat">
+      <question>
+      What are the date formats supported by DbUnit?
+      </question>
+      <answer>
+     <p>DbUnit use the JDBC escape formats for string representation.
+      <table border="1">
+        <tr> 
+          <th>Type</th>
+          <th>Format</th>
+        </tr>
+        <tr> 
+          <td>DATE</td>
+          <td>yyyy-mm-dd</td>
+        </tr>
+        <tr> 
+          <td>TIME</td>
+          <td>hh:mm:ss</td>
+        </tr>
+        <tr> 
+          <td>TIMESTAMP</td>
+          <td>yyyy-mm-dd hh:mm:ss.fffffffff</td>
+        </tr>
+      </table>
+</p>
+      </answer>
+    </faq>    
+
+    <faq id="typefactory">
+      <question>
+       How to replace the default data type factory?
+      </question>
+      <answer>
+      <p>
+You can replace the default DbUnit <a href="properties.html#typefactory">data type factory</a> to get support for custom data types. 
+DbUnit provides extended factories for some vendors, which are located in <code>org.dbunit.ext</code> subpackages.
+      </p>
+      <p>
+Here is how to setup the Oracle factory:
+<source>
+IDatabaseConnection connection = new DatabaseConnection(jdbcConnection, schema);
+DatabaseConfig config = connection.getConfig();
+config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new OracleDataTypeFactory());
+</source>
+      </p>
+      <p>
+Don't hesitate to submit your own implementation if you encounter types not currently supported by DbUnit. 
+      </p>
+      </answer>
+    </faq>    
+
+    <faq id="streaming">
+      <question>
+        How to perform streamed import and export?
+      </question>
+      <answer>
+        <p>
+        Historically, DbUnit has had memory consumption issues when working with very large dataset files. 
+        DbUnit 2.0 includes many improvements, like using SAX2 instead of the Electric XML parser
+        and streamed XML dataset writing, to overcome the memory consumption problems. 
+        </p>
+		<p>
+        For compatibility reason, streamed export and import are not enabled by default. 
+        When working with large dataset, using this feature can make a huge difference.
+        </p>
+    <h5>
+    Database Export:
+        </h5>
+
+    <p>
+    Configure your DbUnit connection to use ForwardOnlyResultSetTable when exporting very 
+    large dataset. ForwardOnlyResultSetTable is a very efficient database table implememtation, useful 
+    when random data access is not required. By default, DbUnit uses CachedResultSetTable which consume 
+    more memory but provides random data access.
+        </p>
+
+    <p>
+    Following sample shows how to configure your DbUnit connection to use
+ForwardOnlyResultSetTable:
+<source>
+IDatabaseConnection connection = new DatabaseConnection(jdbcConnection, schema);
+DatabaseConfig config = connection.getConfig();
+
+config.setProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY, new ForwardOnlyResultSetTableFactory());
+</source>
+        </p>
+    <h5>
+    Database Import:
+    </h5>
+    <p>
+    Use the very efficient <a href="components.html#streamingdataset">StreamingDataSet</a> to load your XML dataset when 
+    working with forward only database operations like UPDATE, INSERT, REFRESH. 
+    </p>
+
+      </answer>
+    </faq>    
+    
+    <faq id="flatxmlvalidation">
+      <question>
+      How to enable flat XML dataset validation?
+      </question>
+      <answer>
+      <p>
+      Flat XML validation is disabled by default even if you are using a DTD. Following sample demonstrate 
+      how to load a flat XML dataset with DTD validation enabled:
+<source>
+FlatXmlProducer producer = new FlatXmlProducer(new InputSource("dataset.xml"));
+producer.setValidating(true);
+IDataSet dataSet = new CachedDataSet(producer);
+</source>
+</p>
+
+      </answer>
+    </faq>  
+
+    <faq id="performance">
+      <question>
+      How to improve the performance of my DbUnit tests?
+      </question>
+      <answer>
+      <p>
+      It is normal that testing with a real database is slower than testing with <a href="http://www.mockobjects.com/">MockObjects</a>. 
+      Here are few tricks that will help to speed up your DbUnit tests.
+      </p>
+      <h5>
+      1. Reuse the same connection thorough your test suite
+      </h5>
+      <p>
+      Creating a new DbUnit connection every time has a cost. The overhead is much more than just creating a new JDBC connection. 
+      DbUnit needs to fetch the metadata of tables to retrieve the column data types. This information is cached in the DbUnit connection. 
+      So it is highly recommended to reuse the same DbUnit connection throughout your test suite; the more tables you have, 
+      the greater the benefits. 
+      </p>
+      <h5>
+      2. Specify the database schema name 
+      </h5>
+      <p>
+      If your database server supports multiple schemas, like Oracle, you should always specify the schema name you want to use when 
+      creating the DbUnit connection. DbUnit can potentially fetch the metadata of all tables it has access to. 
+      This includes tables from other schemas if you are using a <b>god JDBC connection</b>. So in this situation, 
+      specifying a schema name can dramatically improve DbUnit performance. 
+      </p>
+      <h5>
+      3. Test with little data
+      </h5>
+      <p>
+      Unit testing requires relatively little data. So try to <a href="bestpractices.html#smalldatasets">keep 
+      your setup datasets as small as possible</a>. There is no necessity to reset the entire database content 
+      at the beginning of every test. Try to use only the data you need for a particular test case.  
+      </p>
+      <h5>
+      4. Setup stale data once for the entire test suite
+      </h5>
+      <p>
+      If most of your tests are using the same read-only data, you should consider initializing this data once 
+      for an entire test class or test suite. 
+      </p>
+      <h5>
+      5. Enable the batched statement feature
+      </h5>
+      <p>
+      The <a href="properties.html#batchstatement">batched statements</a> feature is disabled by default 
+      because there are many JDBC drivers incompatible with it. It is recommended to enable this feature 
+      if your driver supports it. The performance gain may not be very significant when testing with 
+      <a href="bestpractices.html#smalldatasets">small datasets</a>, though.
+	</p>
+
+      </answer>
+    </faq>  
+    
+    <faq id="tableseq">
+      <question>
+        How to automatically order tables by their foreign keys?
+      </question>
+      <answer>
+        DbUnit inserts and updates rows in the order they are found in your 
+        dataset; deletes on the other hand are done in reverse order.  You must therefore order 
+        your tables and rows appropriately in your datasets to prevent foreign keys constraint violation.
+        <br/>
+    Since version 2.0, the <a href="components.html#filtereddataset">DatabaseSequenceFilter</a> 
+    can now be used to automatically determine the tables order using foreign/exported keys information. 
+        <br/>
+    The following sample demonstrates how to use this class to export a flat XML dataset:
+<source>
+IDatabaseConnection conn = new DatabaseConnection(jdbcConn);
+
+ITableFilter filter = new DatabaseSequenceFilter(conn);
+IDataSet dataset = new FilteredDataSet(filter, conn.createDataSet());
+       
+FlatXmlDataSet.write(dataset, new File(fileName));
+</source>
+      </answer>
+    </faq>    
+    <faq id="doctypeexport">
+      <question>
+    How to add the DOCTYPE declaration when writing a flat XML dataset?
+      </question>
+      <answer>
+      <p>
+    Use the setDocType() method of the FlatXmlWriter class like this:
+<source>
+FlatXmlWriter datasetWriter = new FlatXmlWriter(new FileOutputStream("dataset.xml")); 
+datasetWriter.setDocType("dataset.dtd"); 
+datasetWriter.write(connection.createDataSet());
+</source>
+    This can also be done with the <a href="anttask.html">DbUnit Ant task</a>.
+</p>    
+      </answer>
+    </faq> 
+
+    <faq id="columnfilter">
+      <question>
+      How to exclude some table columns at runtime?
+      </question>
+      <answer>
+<p>
+      The FilteredTableMetaData class introduced in DbUnit 2.1 can be used in combination 
+      with the IColumnFilter interface to decide the inclusion or exclusion of table columns at runtime.
+<source>
+FilteredTableMetaData metaData = new FilteredTableMetaData(originalTable.getTableMetaData(), new MyColumnFilter());
+ITable filteredTable = new CompositeTable(metaData, originalTable);
+</source>
+</p>
+<p>
+You can use your own IColumnFilter implementation or use the DefaultColumnFilter 
+class provided by DbUnit. DefaultColumnFilter supports wildcards. This class also offers 
+some convenience methods, includedColumnsTable() and excludedColumnsTable(), to ease creation of column filtered table.
+<br/>
+The following sample demonstrates the usage of DefaultColumnFilter to exclude all columns prefixed with "PK" or suffixed by "TIME". 
+</p>
+<source>
+DefaultColumnFilter columnFilter = new DefaultColumnFilter();
+columnFilter.excludeColumn("PK*");
+columnFilter.excludeColumn("*TIME");
+
+FilteredTableMetaData metaData = new FilteredTableMetaData(originalTable.getTableMetaData(), columnFilter);
+</source>
+<p>
+Same than above but using the excludedColumnsTable() convenience method.
+<source>
+ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(originalTable, new String[]{"PK*", "*TIME"});
+</source>
+</p>
+<p>
+See also <a href="howto.html#compareignorecolumns">Ignoring some columns in comparison</a>.
+</p>
+      </answer>
+    </faq> 
+    
+    <faq id="rowfilter">
+        <question>
+            How to filter rows of an ITable by checking their column values?
+        </question>
+        <answer>
+            <p>
+            By implementing the interface IRowFilter it is possible to query column values and to return either
+            <i>true</i> if this row should be accepted or <i>false</i> if it should be filtered out.
+            <source>
+IRowFilter rowFilter = new IRowFilter() {
+    public boolean accept(IRowValueProvider rowValueProvider) {
+        Object columnValue = rowValueProvider.getColumnValue("COLUMN1");
+        if(((String)columnValue).equalsIgnoreCase("customerAbroad")) {
+            return true;
+        }
+        return false;
+    }
+};
+ITable filteredTable = new RowFilterTable(iTable, rowFilter);
+            </source>
+            </p>
+        </answer>
+    </faq>
+
+    
+    <faq id="tolerateddelta">
+        <question>
+            Is there an equivalent to JUnit's <i>assertEquals(double expected, double actual, double delta)</i> 
+            to define a tolerance level when comparing numeric values?
+        </question>
+        <answer>
+            <p>
+            The DefaultDataTypeFactory provides the method "addToleratedDelta()" to define an allowed deviation of the
+            compared values for a specific database column.
+            <source>
+DefaultDataTypeFactory datatypeFactory = new OracleDataTypeFactory();
+datatypeFactory.addToleratedDelta(new ToleratedDelta("TEST_TABLE", "COLUMN0", 0.0001));
+// Set the datatype factory
+DatabaseConnection dbConnection = new DatabaseConnection(jdbcConnection);
+dbConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, datatypeFactory);
+            </source>
+            </p>
+        </answer>
+    </faq>
+    
+    <faq id="additionalassertinfo">
+        <question>
+            Can I add more information to the result of an <i>assertEquals(double expected, double actual)</i> 
+            call so that I can easily identify the rows that mismatch?
+        </question>
+        <answer>
+            <p>
+            There is a method <i>assertEquals(ITable expectedTable, ITable actualTable, Column[] additionalColumnInfo)</i>
+            that allows to specify additional columns as third parameter. If two rows are not equal the values of the
+            given columns are printed out in the assertion text.
+            <source>
+Assertion.assertEquals(iTableExpected, iTableActual, new Column[] {new Column("COLUMN0", DataType.VARCHAR)} );
+            </source>
+            </p>
+        </answer>
+    </faq>
+
+    <faq id="usertypeidentity">
+      <question>
+      How to use InsertIdentityOperation with user defined types?
+      </question>
+      <answer>
+      <p>
+      The IColumnFilter interface is now used by InsertIdentityOperation to detect identity columns. 
+      The default implementation assumes that type name of identity columns end with "identity". 
+      If you are using user defined types that does not follow this assumption you can now provide 
+      your own implementation via the <a href="properties.html#identitycolumnfilter">MS SQL identity column filter property</a>.
+<source>
+IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+connection.getConfig().setProperty(
+    "http://www.dbunit.org/properties/mssql/identityColumnFilter",
+    new MyIndentityFilter());
+</source>
+</p>    
+      </answer>
+    </faq>  
+    
+    <faq id="customprimarykeys">
+      <question>
+      How to customize primary keys detection?
+      </question>
+      <answer>
+      <p>
+      The IColumnFilter interface can also be used to determine which columns are primary keys 
+      instead of using DatabaseMetaData.getPrimaryKeys().  This can be useful if your primary 
+      keys are not explicitly defined in your database model.
+<source>
+IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+connection.getConfig().setProperty(
+    "http://www.dbunit.org/properties/primaryKeyFilter",
+    new MyPrimaryKeyFilter());
+</source>
+</p>    
+      </answer>
+    </faq>
+    
+    <faq id="differentcolumnnumber">
+      <question>
+      I'm getting the following message: Extra columns on line x.  Those columns will be ignored.  
+      Please add the extra columns to line 1, or use a DTD to make sure the value of those columns are populated.
+      Why is that?
+      </question>
+      <answer>
+        <p>
+        DbUnit uses the first tag for a table to define the columns to be populated.  If the following records 
+        for this table contain extra columns, these ones will therefore not be populated.  To solve this, either
+        define all the columns of the table in the first row (using NULL values for the empty columns), or use
+        a DTD to define the metadata of the tables you use.
+        </p>
+        <p>
+        Since DBUnit 2.3.0 there is a functionality called "column sensing" which basically reads in the whole XML into
+        a buffer and dynamically adds new columns as they appear. It can be used as demonstrated in the following example:
+          <source>
+//Since release 2.4.7 we use a builder:
+FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+builder.setColumnSensing(true);
+IDataSet dataSet = builder.build(new File("src/xml/flatXmlTableTest.xml"));
+          </source>
+          <source>
+              //This is for release &lt; 2.4.7
+              <del>
+boolean enableColumnSensing = true;
+IDataSet dataSet = new FlatXmlDataSet(new File("src/xml/flatXmlTableTest.xml"), false, enableColumnSensing);
+              </del>
+          </source>
+        </p>
+      </answer>
+    </faq>
+    
+    <faq id="systemTimeInTest">
+      <question>
+      Is there any way I can specify the current system time for my testcase?
+      </question>
+      <answer>
+        <p>
+          The simplest way is to use the ReplacementTable/ReplacementDataSet.
+          <source>
+            ITable actualTable = ... // Load actual table from database or somewhere else
+            ITable table = new XmlDataSet(new FileInputStream("myFile.xml")).getTable("TABLE");
+            ReplacementTable replacementTable = new ReplacementTable(table);
+            replacementTable.addReplacementObject("special-now", new java.util.Date(System.currentTimeMillis()));
+            Assertion.assertEquals(replacementTable, actualTable);
+          </source>
+          Every "special-now" column value from your XML-dataset will be replaced by the current systime represented by a java.util.Date object.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="xmlExportPreserveCRLF">
+      <question>
+      Is there any way to preserve \r\n character sequences in an XmlDataSet if they are explicitly stored in the database?
+      </question>
+      <answer>
+        <p>
+          You can easily extend the XmlDataSet class and overwrite the methods that write the string values as follows:
+          <source>
+public class MyXmlWriter extends org.dbunit.dataset.xml.XmlDataSetWriter {
+...
+  protected void writeValueCData(String stringValue) throws IOException {
+    int k = 0;
+    while((k = str.indexOf('\r')) != -1){
+      getXmlWriter().writeCData(str.substring(0, k));
+      getXmlWriter().writeText("\r", true);
+      str = str.substring(k + 1);
+    }
+    getXmlWriter().writeCData(str);
+  }
+
+  protected void writeValue(String stringValue) throws IOException {
+    // Write literally
+    super.getXmlWriter().writeText(stringValue, true);
+  }
+}
+          </source>
+          Just for the sake of completeness: storing such a character sequence explicitly in the database is possible for example using 
+          "insert into test_table(description) values ('Description'|| chr(13) || chr(10) ||'WithLineBreak');" on oracle
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="keepconnectionopendbtestcase">
+      <question>
+      How can I keep my IDatabaseConnection open after setUp/tearDown when extending DBTestCase/DatabaseTestCase?
+      </question>
+      <answer>
+        <p>
+        Since DBUnit 2.4.4 there is a new method IDatabaseTester#setOperationListener which allows
+        to set a user defined listener which is invoked on different operations during the test execution. 
+        The DBTestCase/DatabaseTestCase classes make use of this new functionality and by default closes the connection
+        after setUp/tearDown operations were executed. Here an example of how to change this behavior so that
+        the connection will not be closed anymore:
+          <source>
+            public class MyTestCase extends DBTestCase{
+                // Overwrite the method getOperationListener to provide our own operation listener
+                protected IOperationListener getOperationListener() {
+                    return new DefaultOperationListener(){
+                        public void operationSetUpFinished(
+                                IDatabaseConnection connection) 
+                        {
+                            // Do not invoke the "super" method to avoid that the connection is closed
+                        }
+                        public void operationTearDownFinished(
+                                IDatabaseConnection connection) 
+                        {
+                            // Do not invoke the "super" method to avoid that the connection is closed
+                        }
+                    };
+                }
+            }
+          </source>
+          Note that there dbunit provides such a No-Op implementation of the IOperationListener since 2.4.5:
+          <source>
+            public class MyTestCase extends DBTestCase{
+                // Overwrite the method getOperationListener to provide our own operation listener
+                protected IOperationListener getOperationListener() {
+                    return IOperationListener.NO_OP_OPERATION_LISTENER;
+                }
+            }
+          </source>
+          If you use the IDatabaseTester you can simple invoke the setOperationListener method on it:
+          <source>
+              ...
+              IDatabaseTester dbTester = new DataSourceDatabaseTester(ds);
+              dbTester.setOperationListener(IOperationListener.NO_OP_OPERATION_LISTENER)
+              dbTester.onSetup();
+              ...
+          </source>
+          
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="postgresqlEnumTypes">
+      <question>
+      Are Postgresql enum types supported by dbunit?
+      </question>
+      <answer>
+        <p>
+          There is limited support for postgresql enums because only reading and writing strings is supported since dbunit 2.4.6.
+          To do so you have to override the method "isEnumType" in the PostgresqlDataTypeFactory like this:
+          <source>
+PostgresqlDataTypeFactory factory = new PostgresqlDataTypeFactory(){
+  public boolean isEnumType(String sqlTypeName) {
+    if(sqlTypeName.equalsIgnoreCase("abc_enum")){
+      return true;
+    }
+    return false;
+  }
+}; 
+          </source>
+        </p>
+      </answer>
+    </faq>
+    <faq id="DefaultDataTypeFactory">
+      <question>
+     Why am I getting an "The configured data type factory 'class org.dbunit.dataset.datatype.DefaultDataTypeFactory' might cause problems with the current database ..."?
+      </question>
+      <answer>
+      <p>This warning occurs when no data type factory has been configured and DbUnit defaults to its <code>org.dbunit.dataset.datatype.DefaultDataTypeFactory</code> which supports a limited set of RDBMS.</p>
+      <p>You can solve this problem in two different ways:
+      <ol>
+        <li>set the appropriate data type factory for your RDBMS through the <a href="properties.html#typefactory">data type factory</a> feature; this is the preferred solution if you RDBMS is among the ones already having an IDataTypeFactory implementation</li>
+        <li>disable the warning notification through the <a href="properties.html#typewarning">data type warning</a> property, but only if a data type factory is not available for your RDBMS and your tests doesn't use features specific of your RDBMS!</li>
+      </ol>
+     If you are not in any of the above cases please help us to write down an IDataTypeFactory implementation for your RDBMS. 
+      </p>
+      </answer>
+    </faq>
+  </part>
+
+
+  <part id="errors">
+    <title>Errors</title>
+
+    <faq id="AmbiguousTableNameException">
+      <question>
+     Why am I getting an "AmbiguousTableNameException"?
+      </question>
+      <answer>
+      <p>This error occurs when no schema is specified and that DbUnit detect 
+        that it is getting columns information from multiple tables having the 
+        same name and located in different schemas.</p>
+      <p>You can solve this problem in three different ways:
+      <ol>
+        <li>Provide the schema name when creating the database connection. <b>Note that for Oracle 
+        you must specify the schema name in uppercase.</b></li>
+        <li>Ensure that the connection is restricted to access only one schema.</li>
+        <li>Enable the <a href="properties.html#qualifiedtablenames">qualified table names</a> feature.</li>
+      </ol>
+      </p>
+      </answer>
+    </faq>     
+
+    <faq id="fkconstraintviolation">
+      <question>
+        Why am I getting a "Foreign keys constraint violation" error?
+      </question>
+      <answer>
+        See <a href="#tableseq">How to automatically orders table according their foreign keys?</a>
+      </answer>
+    </faq>
+    
+    <faq id="typenotrecognized">
+      <question>
+       Why am I getting a "data type not recognized" warning?
+      </question>
+      <answer>
+      <p>
+        By default, DbUnit only supports standard JDBC data types. You are getting this warning message 
+        if you are using vendor-specific data types. 
+      </p>
+      <p>
+		Read how to <a href="#typefactory"> replace the default data type factory</a> and 
+		how to <a href="properties.html#typewarning">disable this warning message</a>.
+      </p>
+
+      </answer>
+    </faq>    
+    
+    <faq id="clonedconnection">
+      <question>
+       Why am I getting a "Can't start a cloned connection" 
+        exception when I use InsertIdentityOperation?
+      </question>
+      <answer>
+        <p>If you are using the Microsoft driver (i.e. <a class="code">com.microsoft.jdbc.sqlserver.SQLServerDriver</a>), 
+        you need to use the <a class="code">SelectMethod=cursor</a> parameter 
+        in the JDBC connection string (as outlined by <a href="http://forum.java.sun.com/thread.jsp?forum=48&amp;thread=184797">this 
+        JDBC thread</a>). Your database Url would look something like: 
+      <source>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb;SelectMethod=cursor</source>
+      </p>
+      </answer>
+    </faq>    
+    
+    <faq id="UnsatisfiedLinkError">
+      <question>
+      Why am I getting an "UnsatisfiedLinkError" with the DB2 driver?
+      </question>
+      <answer>
+       <p>DbUnit uses JDBC 2.0 features (batch updates). By default, DB2 installs 
+        the JDBC 1.0 driver. You have to install the JDBC 2.0 driver
+        for DbUnit to work, or you will get an <a class="code">UnsatisfiedLinkError</a> 
+        from the DB2 JDBC 1.0 driver.</p>
+      <p>The steps for installing the DB2 JDBC 2.0 driver are covered in the DB2 
+        documentation.</p>
+      </answer>
+    </faq>    
+    
+    <faq id="slf4jdependency">
+    	<question>
+    	Why am I getting the following error: "java.lang.NoClassDefFoundError: org/slf4j/LoggerFactory"
+    	</question>
+    	<answer>
+    	<p>Since version <a href="changes-report.html#a2.2.1">2.2.1</a>, DbUnit uses SLF4J for logging purposes (See 
+    	<a href="http://www.dbunit.org/dependencies.html">dependencies</a>).  You must therefore download
+    	SLF4J and include slf4j-api-*.jar and the jar corresponding to your favourite logging library
+    	in your classpath (<i>e.g.</i> slf4j-log4j12-*.jar for Log4j or slf4j-jcl-*.jar for commons-logging).
+    	See the <a href="http://www.slf4j.org/">SLF4J homepage</a> for more details.</p>
+    	</answer>
+    </faq>
+   
+    <faq id="slf4jstackoverflow">
+    	<question>
+    	Why am I getting a "StackOverflowError" when using Jakarta Commons Logging (JCL)?
+    	</question>
+    	<answer>
+    	<p>Please make sure there is only one slf4j implementation library in your classpath.
+    	In particular, jcl104-over-slf4j-*.jar and slf4j-jcl-*.jar must not be used together</p>
+    	</answer>
+    </faq> 
+    
+    <faq id="NoSuchColumnException">
+        <question>
+        Why am I getting a "NoSuchColumnException" but I am sure that the column actually exists?
+        </question>
+        <answer>
+        <p>This exception can occur especially with MySQL RDBMS if you forget to set the special MySqlMetadataHandler
+        on the DatabaseConfig. See <a href="properties.html#metadatahandler">properties</a> page for more.</p>
+        </answer>
+    </faq> 
+    
+  </part>
+</faqs>

@@ -1,0 +1,61 @@
+<dataset>
+	<table name="TEST_TABLE">
+		<column>column0</column>
+		<column>column1</column>
+		<column>column2</column>
+		<column>column3</column>
+		<row>
+			<value>row 0 col 0</value>
+			<value>row 0 col 1</value>
+			<value>row 0 col 2</value>
+			<value>row 0 col 3</value>
+		</row>
+		<row>
+			<value>row 1 col 0</value>
+			<value>row 1 col 1</value>
+			<value>row 1 col 2</value>
+			<value>row 1 col 3</value>
+		</row>
+		<row>
+			<value>row 2 col 0</value>
+			<value>row 2 col 1</value>
+			<value>row 2 col 2</value>
+			<value>row 2 col 3</value>
+		</row>
+		<row>
+			<value>row 3 col 0</value>
+			<value>row 3 col 1</value>
+			<value>row 3 col 2</value>
+			<value>row 3 col 3</value>
+		</row>
+		<row>
+			<value>row 4 col 0</value>
+			<value>row 4 col 1</value>
+			<value>row 4 col 2</value>
+			<value>row 4 col 3</value>
+		</row>
+		<row>
+			<value>row 5 col 0</value>
+			<value>row 5 col 1</value>
+			<value>row 5 col 2</value>
+			<value>row 5 col 3</value>
+		</row>
+	</table>
+	<table name="MISSING_AND_NULL_VALUES">
+		<column>column0</column>
+		<column>column1</column>
+		<column>column2</column>
+		<column>column3</column>
+		<column>column4</column>
+		<column>column5</column>
+		<row>
+			<null/>
+			<none/>
+			<value>value</value>
+			<value/>
+			<value>   </value>
+		</row>
+	</table>
+</dataset>
+
+

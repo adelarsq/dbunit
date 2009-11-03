@@ -1,0 +1,8 @@
+<dataset>
+    <table name="PATTERN_LIKE_TABLE_XX">
+        <column>VARCHAR_COL_XX</column>
+    </table>
+    <table name="PATTERN_LIKE_TABLE_X_">
+        <column>VARCHAR_COL_XUNDERSCORE</column>
+    </table>
+</dataset>

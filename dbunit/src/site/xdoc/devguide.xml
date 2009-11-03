@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<properties><title>Developer's Guide</title></properties>
+<body>
+<section>
+
+    <h2>Developer's Guide</h2>
+        <p>Here you find all information needed to contribute good code. These are
+           naming conventions, heading comments, javadoc and unit tests.</p>
+
+    <subsection name="Java file header">
+        <p>For new class files this header is recommended.</p>
+        <source><![CDATA[
+/*
+ *
+ * The DbUnit Database Testing Framework
+ * Copyright (C)2002-2008, DbUnit.org
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+        ]]></source>
+    </subsection>
+
+    <subsection name="Javadoc class header">
+        <p>For java class definitions this header is recommended.</p>
+        <source><![CDATA[
+/**
+ * @author <developer> (<sf-user-name> AT users.sourceforge.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since <dbunit-version>
+ */
+        ]]></source>
+        <p>Here an example:</p>
+        <source><![CDATA[
+/**
+ * @author gommma (gommma AT users.sourceforge.net)
+ * @author Last changed by: $Author$
+ * @version $Revision$ $Date$
+ * @since 2.4.0
+ */
+        ]]></source>
+    </subsection>
+
+    <subsection name="Javadoc for methods">
+        <p>Besides the standard javadoc tags it is desired to also add the dbunit version
+        in which the method was introduced. This lets users and developers keep track of
+        the changes that are made to the old/existing API.</p>
+        <source><![CDATA[
+/**
+ * @param myValue <some comment>
+ * @since <dbunit-version>
+ */
+public void assertSomething(String myValue) {
+...
+        ]]></source>
+    </subsection>
+
+
+</section>
+</body>
+</document>

@@ -1,0 +1,142 @@
+  ---
+Running DbUnit Integration Tests
+  ---
+John Hurst
+  ---
+13 October 2009
+
+Overview
+
+  DbUnit includes a comprehensive test suite.
+  Most of the tests are <<unit tests>>, and do not rely on any particular database environment.
+  Some of the tests are <<integration tests>>, and can test DbUnit functionality against a particular database.
+
+  Maven profiles control which database environment is in use for a particular test run.
+
+  The default profile runs the tests using an HSQLDB in-memory database, which does not require a database server.
+
+  Other profiles run against server-based database products.
+
+  For example, to run the tests using the DbUnit Oracle10DataTypeFactory and the Oracle 10 JDBC driver for JDK 1.4,
+  use this command:
+
+---
+mvn clean test -Poracle10-ojdbc14
+---
+
+  List all profiles using this command:
+
+---
+mvn help:all-profiles
+---
+
+Database Properties
+
+  Each database is configured by properties and dependencies.
+  The properties relate to standard JDBC connection parameters,
+  and the dependencies cover the database-specific JDBC driver.
+
+  The properties include:
+
+  * dbunit.profile - the name of the database environment
+
+  * dbunit.profile.driverClass - JDBC driver class
+
+  * dbunit.profile.url - JDBC connection URL
+
+  * dbunit.profile.schema - database schema (may be case-sensitive)
+
+  * dbunit.profile.user - database connection user name
+
+  * dbunit.profile.password - database connection password
+
+  * dbunit.profile.unsupportedFeatures - comma-separated list of features not to test
+
+  []
+
+  These properties are all configured with defaults per test profile.
+  You can override these defaults in ~/.m2/settings.xml:
+
+---
+<settings>
+  <profiles>
+    <profile>
+      <id>oracle-ojdbc14</id>
+      <properties>
+        <dbunit.profile.url>jdbc:oracle:thin:@myhost:1521:mysid</dbunit.profile.url>
+      </properties>
+    </profile>
+  </profiles>
+</settings>
+---
+
+Running HSQLDB Integration Tests
+
+  Nothing special is required.
+
+  Run the full test suite, including integration tests, with this command:
+
+---
+mvn clean test
+---
+
+Running Oracle Integration Tests
+
+  [[1]] Install Oracle database.  This can be on your local machine, or you can use any Oracle database you have access to.
+
+  [[2]] Create a "dbunit" user with password "dbunit".
+
+  These values are the defaults configured in the project.
+  If you use different values, you will need to override the properties in your Maven settings.xml.
+
+  [[3]] Log in to your dbunit schema and run src/sql/oracle.sql.
+
+  []
+
+  This should create the DbUnit test schema in your Oracle database.
+  You are now ready to run tests.
+
+  Run the full test suite, including integration tests, with one of these commands:
+
+---
+mvn clean test -Poracle-ojdbc14
+mvn clean test -Poracle-ojdbc6
+mvn clean test -Poracle10-ojdbc14
+mvn clean test -Poracle10-ojdbc6
+---
+
+Running PostgreSQL Integration Tests
+
+  [[1]] Install PostgreSQL database.  This can be on your local machine, or you can use any PostgreSQL database you have access to.
+
+  [[2]] Create a "dbunit" user and database, for example with these commands:
+
+---
+sudo -u postgres psql <<EOF
+CREATE USER dbunit WITH PASSWORD 'dbunit';
+CREATE DATABASE dbunit OWNER dbunit;
+
+\q
+EOF
+---
+
+  These values are the defaults configured in the project.
+  If you use different values, you will need to override the properties in your Maven settings.xml.
+
+  [[3]] Log in to your dbunit user and run src/sql/postgresql.sql.
+
+  []
+
+  This should create the DbUnit test schema in your PostgreSQL database.
+  You are now ready to run tests.
+
+  Run the full test suite, including integration tests, with this command:
+
+---
+mvn clean test -Poracle-default,postgresql
+---
+
+  <<Note:>> currently the oracle-default profile is required, along with the postgresql profile, to ensure all JARs required on the compile-time classpath in Maven.
+
+TODO: Other databases.
+

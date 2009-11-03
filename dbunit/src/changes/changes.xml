@@ -1,0 +1,349 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Changes</title>
+    <!-- Commented out as recent versions of maven-changes-plugin generate
+         errors parsing multiple author tags
+    <author email="epugh@upstate.com">Eric Pugh</author>
+    <author email="mlaflamm@users.sourceforge.net">Manuel Laflamme</author>
+    <author email="dbunit@felipeal.net">Felipe Leme</author>  -->
+  </properties>
+
+  <body>
+    <release version="2.4.7-SNAPSHOT" date="TBD" description="(no description)">
+      <action dev="gommma" type="fix" issue="2685615" due-to="lumpynose">dtd for XmlDataSet</action>
+      <action dev="gommma" type="fix" issue="2866150" due-to="rlogiacco">Column sensing not available for InputStream</action>
+      <action dev="gommma" type="fix" issue="2741077" due-to="dnap">DatabaseSequenceFilter fails on case sensitive tables</action>
+      <action dev="gommma" type="fix" issue="2838922" due-to="matthieus, simon_wu">DB2 problem with schema names</action>
+      <action dev="gommma" type="fix" issue="2875262" due-to="caseylucas">Handle non-typical characters in xml encoding</action>
+      <action dev="jbhurst" type="fix" issue="2875235" due-to="jbhurst">Fix integration tests</action>
+      <action dev="gommma" type="fix" issue="2880113" due-to="jherico">FK table sorting does not work with cross-schema FKs</action>
+      <action dev="jbhurst" type="update" issue="2876909" due-to="jbhurst">Replaced reflection-based Oracle data types with static calls</action>
+      <action dev="jbhurst" type="add" issue="2875253" due-to="caseylucas">Add support for Oracle SDO_GEOMETRY datatype</action>
+      <action dev="gommma" type="add" issue="2884634" due-to="ymenager">Improvements to the ant operation task</action>
+      <action dev="gommma" type="add" issue="2889757" due-to="carcher">MsSqlDataTypeFactory does not support MS SQL 2005 NTEXT</action>
+    </release>
+    <release version="2.4.6" date="Sep 20, 2009" description="Bugfixes and some database specific additions">
+      <action dev="rlogiacco" type="add" issue="284432" due-to="JamesR">Add support for interval type on postgres</action>
+      <action dev="felipeal" type="update">Changed some verbose logging statements from INFO to DEBUG level</action>
+      <action dev="gommma" type="fix" issue="2797698" due-to="mkienenb">DefaultDataSet is incompatible w/ AbstractDataSet's IDataSet</action>
+      <action dev="gommma" type="fix" issue="2818981" due-to="verreckenk">XlsTable - empty excel columns cause problem</action>
+      <action dev="gommma" type="add" issue="2824505" due-to="agnul">Support for Postgres' inet types</action>
+      <action dev="gommma" type="fix" issue="2823165" due-to="porkchop009">primaryFilterKey is not always respected</action>
+      <action dev="gommma" type="fix" issue="2831696" due-to="kalpana">Nullable tinyint on mysql cannot be inserted</action>
+      <action dev="gommma" type="fix" issue="2806016" due-to="gommma">Unify dbunit features and properties</action>
+      <action dev="gommma" type="add" issue="2833897" due-to="user2037">Support for Postgresql Enum</action>
+      <action dev="gommma" type="fix" issue="2838922" due-to="matthieus">DB2 problem with schema names</action>
+      <action dev="gommma" type="add">Support for Oracle ROWID</action>
+      <action dev="gommma" type="update" issue="2856524" due-to="jbhurst">AbstractTableMetaData hardcoded dependency on IDataTypeFactory</action>
+      <action dev="gommma" type="fix" issue="2858410" due-to="acecacec">Numbers with more than 19 digits cannot be saved in a BIGINT column</action>
+      <action dev="gommma" type="fix" issue="2854788" due-to="olibye">Sybace - SQLHelper.getDatabaseInfo exception getDatabaseMajorVersion()</action>
+      <action dev="gommma" type="add" issue="2828869" due-to="amit3011">DBUnit support for Netezza database</action>
+    </release>
+
+    <release version="2.4.5" date="May 22, 2009" description="Bugfixes and some few additions">
+      <action dev="gommma" type="add" issue="2633859" due-to="tjstavenger">Add Excel support to Export</action>
+      <action dev="gommma" type="fix" issue="2658082" due-to="Bernard Schubach">MySQL - NoSuchTableException</action>
+      <action dev="gommma" type="add" issue="2658136" due-to="ejain">Have DbUnitAssert use JUnit only if present</action>
+      <action dev="gommma" type="add" issue="2645688" due-to="reidmp">Oracle BINARY_DOUBLE+BINARY_FLOAT support</action>
+      <action dev="gommma" type="add" issue="2684042" due-to="lumpynose">specify the schema via the api</action>
+      <action dev="gommma" type="fix" issue="2783773" due-to="cyberroadie">XslTableTest.testDifferentDatatypes() fails (in trunk)</action>
+      <action dev="gommma" type="fix" issue="2709501" due-to="al0">Breaking change and likely bug in XlsTable.java</action>
+      <action dev="gommma" type="add" issue="2783531" due-to="cyberroadie, firsttiger">Support for UUID data type Postgresql</action>
+    </release>
+    <release version="2.4.4" date="Feb 24, 2009" description="Bugfixes, some small additions">
+      <action dev="gommma" type="update" issue="2524180" due-to="gommma"> Better extensibility for XmlDataSetWriter</action>
+      <action dev="gommma" type="fix" issue="2542079" due-to="kkaz"> XlsDataSet.write</action>
+      <action dev="gommma" type="fix" issue="2545095" due-to="jhattat"> Mysql FEATURE_QUALIFIED_TABLE_NAMES column SQLHelper.matches</action>
+      <action dev="gommma" type="fix" issue="2567724" due-to="lunatix13"> overridden setUpDatabaseConfig not called</action>
+      <action dev="gommma" type="fix" issue="2549683" due-to="chuanghs">DB2 problem after 2.4</action>
+      <action dev="gommma" type="fix" issue="2517257" due-to="jhattat"> Mysql Linux metatdata UpperCase Comparison</action>
+      <action dev="gommma" type="fix" issue="2616420" due-to="ihr-staal"> JTDS Driver causes warning in class AbstractTableMetaData</action>
+      <action dev="gommma" type="add" issue="1956543" due-to="jeffjensen">Add DatabaseConnection methods to support PreparedStatements</action>
+    </release>
+    <release version="2.4.3" date="Jan 20, 2009" description="Bugfixes, some small additions">
+      <action dev="gommma" type="fix" issue="2023994" due-to="marney"> Simplify use of custom datatype factory for DBTestCase</action>
+      <action dev="gommma" type="fix" issue="2475264" due-to="erik.van.zijst"> problem when verifying against an XmlDataSet</action>
+      <action dev="gommma" type="fix" issue="1182289" due-to="jamapor"> IDENTITY_INSERT : Check for identity column incorrect</action>
+      <action dev="gommma" type="fix" issue="1537894" due-to="skuzey"> possibly i18n problem</action>
+      <action dev="gommma" type="fix" issue="2494501" due-to="rogerrabbitpro"> FailureHandler is not propagated to data comparison stage</action>
+      <action dev="gommma" type="fix" issue="2486800" due-to="macha64"> Warning message "PostgreSQL not be supported"</action>
+      <action dev="gommma" type="update" issue="1690721" due-to="cdubet"> short BLOB are not correctly managed</action>
+      <action dev="gommma" type="fix" issue="2489228" due-to="xianpants"> MySQL AmbiguousTableNameException incorrectly thrown</action>
+      <action dev="gommma" type="add" issue="1452382" due-to="akhilss"> TableName pattern filtering</action>
+    </release>
+    <release version="2.4.2" date="Dec 17, 2008" description="Bugfixes, some small additions">
+      <action dev="gommma" type="fix" issue="2356800" due-to="jeremy_finney"> Cannot extract contents of table with a column named "AS"</action>
+      <action dev="gommma" type="fix" issue="2382766" due-to="dacota"> MySQL case sensitive problem in dataset creation</action>
+      <action dev="gommma" type="add" issue="2390557" due-to="gommma">Add StringIgnoreCase DataType</action>
+      <action dev="gommma" type="fix" issue="2391757" due-to="j_zimmermann"> FEATURE_CASE_SENSITIVE_TABLE_NAMES doesn't work completely (fixed wrong DatabaseConfig property)</action>
+      <action dev="gommma" type="fix" issue="2392770" due-to="kkaz"> org.dbunit.dataset.datatype.TypeCastException</action>
+      <action dev="gommma" type="fix" issue="2398926" due-to="xianpants"> SLF4J maven dependencies aren't quite correct</action>
+      <action dev="gommma" type="add" issue="2407106" due-to="brentplump"> Include table name in cyclic dependency exception</action>
+      <action dev="gommma" type="fix" issue="2439408" due-to="claus437"> Insert fails on Oracle multiple schemas</action>
+    </release>
+    <release version="2.4.1" date="Dec 03, 2008" description="Updates and bugfixes only">
+      <action dev="gommma" type="update">Updated slf4j dependencies to version 1.5.6.</action>
+      <action dev="gommma" type="fix" issue="1628896" due-to="jeromevdl">No metadata Tables found</action>
+      <action dev="gommma" type="fix" issue="2356010">Oracle problem rel 2.4 in createQueryTable</action>
+      <action dev="gommma" type="fix" issue="2370993" due-to="schedinl"> Cannot insert table data with self-reference in 2.4.0</action>
+    </release>
+    <release version="2.4.0" date="Nov 27, 2008" description="Some API changes, features added, bugfixes">
+      <action dev="felipeal" type="add" issue="2235876">Refactor Assertion class</action>
+      <action dev="felipeal" type="fix" issue="2198914">When comparing empty tables, column info should be ignored</action>
+      <action dev="felipeal" type="add" issue="2122413">Added "constants" for DatabaseOperation wrappers</action>
+      <action dev="gommma" type="update">ISearchAlgorithm.search returns strongly typed ListOrderedSet instead of a normal Set so that TableDependencyHelper can return tables in correct order. API change.</action>
+      <action dev="gommma" type="fix" issue="1628105" due-to="ozonobon"> XmlWriter can't write nested CDATA sections</action>
+      <action dev="gommma" type="fix" issue="1464982" due-to="woollybarr"> XMLType Support for Oracle - Again</action>
+      <action dev="gommma" type="fix" issue="2122773" due-to="mkejzar"> QueryDataSet does not cache query results - Implies API change - new method IDatabaseConnection.createTable(String tableName)</action>
+      <action dev="gommma" type="update" issue="2132121">Fail-Fast if AmbiguousTableNames found</action>
+      <action dev="gommma" type="add" issue="1735092" due-to="stritti"> [PATCH] Support Oracle SQLLoader files for datasets - refactored the CSV Pipeline infrastructure so that it can be reused for sqlldr files</action>
+      <action dev="gommma" type="update">Updated apache commons-collections from 3.1 to 3.2.1</action>
+      <action dev="gommma" type="fix" issue="1159489" due-to="srinirang"> BigDecimal values read by XlsDataSet have wrong precision</action>
+      <action dev="gommma" type="add" issue="2148079">give tolerated delta as percentage in floating-point compare</action>
+      <action dev="gommma" type="remove" issue="2148099">Remove commons-lang dependency</action>
+      <action dev="gommma" type="update" issue="1180734" due-to="che---"> DbUnitTask#createConnection</action>
+      <action dev="gommma" type="add" issue="1432308" due-to="hack"> FlatDtdProducer does not support Element dataset ANY</action>
+      <action dev="gommma" type="fix" issue="1344618" due-to="ianjoyce"> tinyint being ignored</action>
+      <action dev="gommma" type="fix" issue="1194928" due-to="rahulr"> DBUnit does not recognise "Unsigned" INTEGER columns</action>
+      <action dev="gommma" type="fix" issue="1063128" due-to="djocal"> FlatXMLdataSet counts 14 tables instead of 1 table of 14 row</action>
+      <action dev="gommma" type="fix" issue="2163902" due-to="olegc"> Better reporting of extra columns in FlatXmlProducer</action>
+      <action dev="gommma" type="fix" issue="2163897" due-to="olegc"> BufferedConsumer never cleans _allRows</action>
+      <action dev="gommma" type="fix" issue="2119648" due-to="powerlord">new SortedTable throws NoSuchColumnException</action>
+      <action dev="gommma" type="fix" issue="2122773" due-to="mkejzar"> QueryDataSet does not cache query results</action>
+      <action dev="gommma" type="fix" issue="1214252" due-to="bilaco"> problem because tableName is case insensitive</action>
+      <action dev="gommma" type="fix" issue="1531883" due-to="fordfrog"> DatabaseSequenceFilter infinite loop on cyclic dependency</action>
+      <action dev="gommma" type="update">Performance improvement in Assertions.assertEquals(ITable expected, ITable actual) - Lookup the DataTypes for every column only once and not for every single row</action>
+      <action dev="gommma" type="fix" issue="2166291" due-to="lyrzine"> Field forgot under insert step - enabled columnSensing feature for ant task when format "flat" is used</action>
+      <action dev="gommma" type="add" issue="1196357" due-to="ips_khanwale"> Need a way to NOT pretty format xml</action>
+      <action dev="gommma" type="add" issue="2212329">Additional column info also for filtered columns</action>
+      <action dev="gommma" type="update" issue="1277038" due-to="lennymarks"> QuerySet docs (includes little refactoring)</action>
+      <action dev="gommma" type="add" issue="2041400" due-to="moschen">add primaryKeyFilter-Property in ant</action>
+      <action dev="gommma" type="add" issue="1371813" due-to="dsyer"> Make configuration elements settable in ant (see 2041400)</action>
+      <action dev="gommma" type="add" issue="1108976" due-to="matty70"> Choose encoding for ant export task</action>
+      <action dev="gommma" type="fix" issue="564041" due-to="james_a_woods"> Share transaction with InsertIdentityOp.</action>
+      <action dev="gommma" type="fix" issue="1798605" due-to="gianasista">New Datatype MySqlDataTypeFactory</action>
+      <action dev="gommma" type="add" issue="1897627" due-to="felipeal"> Remove JUnit dependency</action>
+      <action dev="gommma" type="add" issue="2241776">Provide the complete diff of 2 tables</action>
+      <action dev="gommma" type="fix" issue="2017635" due-to="paul0al"> MySqlDataTypeFactory incorrectly maps TinyInt</action>
+      <action dev="gommma" type="fix" issue="2263530" due-to="alekssokolov"> Excel processing error - update from POI-3.1-FINAL to POI-3.2-FINAL. Date values are read/written as Numeric values for now since the POI Date handling is not consistent (i.e. write Date and read the written Date do not provide equal Date objects).</action>
+      <action dev="gommma" type="fix" issue="2230097" due-to="stevensa"> dataset generated with getAllDependentTables contradicts DTD</action>
+      <action dev="gommma" type="fix" issue="1644650" due-to="j_linz"> MetaData get() are Pattern-Like</action>
+      <action dev="gommma" type="update" issue="1897620" due-to="felipeal"> Improvements on HxxxxDataFactory</action>
+    </release>
+    <release version="2.3.0" date="Sep 11, 2008" description="Some API changes, features added, bugfixes, performance improvements in assertions. See migration guide for additional help">
+      <action dev="slecallonnec" type="fix" issue="1968640">Trimming is now done on Excel column names to prevent NoSuchColumnException.</action>
+      <action dev="rlogiacco" type="fix" issue="1981449" due-to="gommma"> Patch for Bug #1421590 "Problem in data import if all the columns are not populated"</action>
+      <action dev="slecallonnec" type="fix" issue="1975499" due-to="gommma">NoSuchColumnException now thrown when column name does not exist.</action>
+      <action dev="gommma" type="add" issue="1969355" due-to="ymenager"> Patch: some extra comparison methods for Assertion.</action>
+      <action dev="gommma" type="add" issue="1966517">Assertion.equals to provide more info about failure</action>
+      <action dev="slecallonnec" type="fix" issue="1636182"> StreamingDataSet.toString() now returning default value rather UnsupportedOperationException.</action>
+      <action dev="gommma" type="add" issue="1993243">Performance optimization getColumnIndex() - Implies API change: new method ITableMetaData.getColumnIndex</action>
+      <action dev="gommma" type="add" issue="1959771">Support RowFilter on ITable</action>
+      <action dev="gommma" type="add" issue="1961269">support for tolerated delta in floating-point comparisons - Implies API change: new method IDataTypeFactory.createDataType(int sqlType, String sqlTypeName, String tableName, String columnName)</action>
+      <action dev="slecallonnec" type="add">Added batchSize as a parameter.</action>
+      <action dev="gommma" type="add" issue="1358137" due-to="rinkrank"> Excel support in Ant task</action>
+      <action dev="gommma" type="add" issue="1176380" due-to="easyproglife">Bad comparison in SortedTable</action>
+      <action dev="gommma" type="add">Added fetchSize as a parameter.</action>
+      <action dev="gommma" type="add" issue="1685474" due-to="jacobrobertson"> ReplacementTable - allow fail if value not replaced</action>
+      <action dev="slecallonnec" type="fix" issue="2009747">Fixing erroneous logger.error in BytesDataType.typeCast().</action>
+      <action dev="slecallonnec" type="add" issue="2004349" due-to="gommma">Refactoring of column-related methods.</action>
+      <action dev="gommma" type="fix" issue="2007635" due-to="phisf"> TablesDependencyHelper with Oracle schema bug - Implies API change - the constructors of DatabaseConnection throw a DatabaseUnitException if the connection/schema are not valid</action>
+      <action dev="gommma" type="add" issue="2010546" due-to="damian_golda"> Assertion: replace Assert.fail with ComparisonFailure</action>
+      <action dev="gommma" type="add" issue="2010567" due-to="damian_golda"> Alternative support for CLOB and BLOB in Oracle 11 JDBC</action>
+      <action dev="gommma" type="fix" issue="1499591" due-to="loedolff"> datatypeFactory documentation note needed</action>
+      <action dev="gommma" type="fix" issue="2014884" due-to="pasha_z"> getAllDependentTables ORA-01000: maximum open cursors exceed</action>
+      <action dev="gommma" type="fix" issue="1746373" due-to="byte-error"> getAllDependentTables didn't work with full qualified names</action>
+      <action dev="gommma" type="add">Added constructors to NoSuchColumnException taking table name and column name as arguments - set old constructors to deprecated</action>
+      <action dev="gommma" type="fix" issue="1789402" due-to="jondi"> Exception in DTD generation - Implies API behaviour change. DatabaseTableMetaData.getColumns() does not throw a NoColumnsFoundExcepion anymore but returns an empty Column[] when a table does not have any dbunit-supported columns</action>
+      <action dev="gommma" type="add">Assertion.equals provides more information than just the column count when a column mismatch between expected and result tables was found. All columns are reported so that the user can see immediately which columns are missing</action>
+      <action dev="gommma" type="add">Write validation message when the configured IDataTypeFactory probably does not match to the current database system. The validation implicitly takes place when AbstractTableMetaData.getDataTypeFactory() is invoked.</action>
+      <action dev="gommma" type="add">Maven pom.xml updates: Added ciManagement section, added some plugins for reporting</action>
+      <action dev="gommma" type="fix" issue="1497369" due-to="bascan"> Test error: testExportWithQuerySet</action>
+      <action dev="gommma" type="add" issue="2012491" due-to="rpuchkovskiy"> Topological sorting of tables when exporting</action>
+      <action dev="gommma" type="fix" issue="2012495" due-to="rpuchkovskiy">Use DataType.BLOB instead of DataType.LONGVARBINARY</action>
+      <action dev="gommma" type="fix" due-to="rpuchkovskiy">DbUnit is only JDK 1.4 compatible and not 1.3 (as claimed until now). Several methods are in use that did not exist in JDK 1.3. To build with JDK 1.4 and maven it is now required to set the environment variable JAVA_1_4_HOME to your JDK 1.4 home directory</action>
+      <action dev="gommma" type="add" issue="2029693">Update apache POI to latest release (2.5.1 -> 3.1)</action>
+      <action dev="gommma" type="fix" issue="1984596" due-to="bustuila"> Inserting of clobs fails</action>
+      <action dev="gommma" type="fix" issue="1214234" due-to="bilaco"> method getRowCount don't use schema.</action>
+      <action dev="gommma" type="fix" issue="1224643" due-to="bugmenot"> Column count for empty XlsDataSet returns 0.</action>
+      <action dev="gommma" type="fix" issue="948472" due-to="gmathijssen"> Values with newlines cannot be compared with assertEquals.</action>
+      <action dev="gommma" type="fix" issue="1031870" due-to="chadwl"> Infinite wait in StreamingIterator.</action>
+      <action dev="gommma" type="fix" issue="1144269" due-to="berni123"> Types.BOOLEAN not recognized.</action>
+      <action dev="gommma" type="add" issue="1448932" due-to="palsnagaraj"> "compare" + "table" tag throw NoSuchTableException - added more information about the cause to the thrown exception.</action>
+      <action dev="gommma" type="fix" issue="1339675" due-to="vanhill21">DTD Creation and Parsing - throw meaningful exception if DTD ELEMENT declaration is missing.</action>
+      <action dev="gommma" type="add" issue="2059253" due-to="kornstaedt"> Added more information in case of a wrong configured DataTypeFactory.</action>
+    </release>
+    <release version="2.2.3" date="May 23, 2008" description="Bugfixing release">
+      <action dev="rlogiacco" type="fix" issue="1967969">Missing License file in distribution jars</action>
+      <action dev="slecallonnec" type="fix" issue="1925603">Removed redundant and erroneous ERROR logging.</action>
+      <action dev="rlogiacco" type="fix" issue="1955585">Memory leak.</action>
+      <action dev="slecallonnec" type="add">A warning message is now displayed when rows contain more columns than the first row.</action>
+    </release>
+    <release version="2.2.2" date="May 5, 2008" description="Bugfixing release">
+      <action dev="rlogiacco" type="fix" issue="1953115" due-to="Mike Norrish"> End of table name cut off when bracketed in FlatDtdProducer</action>
+      <action dev="rlogiacco" type="fix" issue="1926302"> IncompatibleClassChangeError with 2.2.1</action>
+      <action dev="rlogiacco" type="fix" issue="1955929">junit jar-file should be JDK 1.4 compatible</action>
+      <action dev="rlogiacco" type="fix" issue="1475565">Version 2.2-dev, Java 1.4 compatibility issue</action>
+      <action dev="slecallonnec" type="fix" issue="1925603">Changed logger.error into logger.debug when the exception can be disregarded.</action>
+      <action dev="slecallonnec" type="fix" issue="1806363" due-to="Brian Atkinson">Fixed issue with CLOB datatype in Derby.</action>
+    </release>
+    <release version="2.2.1" date="March 17, 2008" description="Another official release after a long, long time...">
+      <action dev="rlogiacco" type="add">Added SLF4J dependency and logging statements</action>
+      <action dev="felipeal" type="fix" issue="1897627">Removed JUnit dependency on IDatabaseTester implementations</action>
+      <action dev="felipeal" type="add" issue="1897612">Created H2 data factory</action>
+      <action dev="felipeal" type="add" issue="1798605" due-to="Vera Wahler"> New point Datatype on MySqlDataTypeFactory</action>
+      <action dev="felipeal" type="fix" issue="1735506" due-to="Greg Morgan"> Improvements on M2 build - Additional files</action>
+      <action dev="rlogiacco" type="fix" issue="1849219" due-to="JensFransson"> NPE in FlatDtdProducer.java at line 224</action>
+      <action dev="rlogiacco" type="fix" issue="1849165" due-to="Markus Thielen"> Bug in XmlWriter / escapeXml</action>
+      <action dev="rlogiacco" type="fix" issue="1786425">Database schema with escape pattern doesn't work</action>
+      <action dev="rlogiacco" type="fix" issue="1712122" due-to="Chris R. Salch"> Misleading error reported by RowOutOfBoundsException</action>
+      <action dev="rlogiacco" type="fix" issue="1328956" due-to="Reuben Firmin"> NPE In InsertIdentityOperation</action>
+      <action dev="rlogiacco" type="fix" issue="1710743" due-to="Will Sargent"> DataSourceDatabaseTest does not use setSchema()</action>
+      <action dev="rlogiacco" type="fix" issue="1637089" due-to="Chuck Hill"> Columns in ORDER BY Not Quoted</action>
+      <action dev="rlogiacco" type="fix" issue="1214536" due-to="S&#xe9;bastien Le Callonnec">ReplacementTable broken for multiple replacements</action>
+      <action dev="rlogiacco" type="fix" issue="1721870" due-to="S&#xe9;bastien Le Callonnec">Null pointer exception in FlatXMLDataSet.write(compositeDS)</action>
+      <action dev="rlogiacco" type="fix" issue="1721870" due-to="S&#xe9;bastien Le Callonnec">Null pointer exception in FlatXMLDataSet.write(compositeDS)</action>
+      <action dev="rlogiacco" type="fix" issue="1459205" due-to="S&#xe9;bastien Le Callonnec">Problem with Oracle 10g Recyclebin</action>
+    </release>
+    <release version="2.2" date="December 28, 2006" description="First official release in a long, long time...">
+      <action dev="felipeal" type="add" issue="1473744" due-to="Andres Almiray"> Enable TestCase compositions</action>
+      <action dev="felipeal" type="add">Migrate SCM to Subversion</action>
+      <action dev="felipeal" type="fix" issue="1494257" due-to="Bas Cancrinus"> Support for MySQL 5.0 boolean datatype</action>
+      <action dev="felipeal" type="add" issue="1482990">Added pom.xml so it can be built by Maven 2.</action>
+      <action dev="felipeal" type="add">XmlDataSetWriter now has a flag to include column's name as comment.</action>
+      <action dev="felipeal" type="add" issue="1273949">Added org.dbunit.util.search and org.dbunit.database.search packages, whose classes can be used to search tables depedencies for a given table.</action>
+      <action dev="dep4b" due-to="John Lewis" type="add" issue="1264212"> Add "transaction" attribute to ant tasks to wrap operations in a single transaction. Can make operations faster.</action>
+      <action dev="dep4b" due-to="Jeremy Frens" type="fix">Typo in howto example</action>
+      <action dev="dep4b" due-to="Cris Daniluk" type="add">Properly support writing NCLOBs to Oracle</action>
+      <action dev="dep4b" type="add" due-to="Dion Gillard" issue="1114490"> Support CSV files from a URL (e.g. jar file) + CSV fixes</action>
+      <action dev="dep4b" type="fix">Fix the driver in classpath/driver not in classpath to always work regardless of configured driver.</action>
+      <action dev="dep4b" type="fix" due-to="Dion Gillard" issue="1114487"> Typo in test class AbstractDataSetTest</action>
+      <action dev="dep4b" type="add" due-to="Klas Axell">new HsqldbDataTypeFactory for working with booleans in HsqlDB.</action>
+    </release>
+    <release version="2.1" date="May 31, 2004" description="Multiple bugfixes and enhancements.">
+       <action dev="" type="add">741394 - New database compare Ant tag. See Ant task documentation.</action>
+      <action dev="fspinazzi" type="add">New Comma Separated Values (CSV) dataset implementation.</action>
+      <action dev="" type="add">824328 &amp; 948479 - Ability to add DOCTYPE declaration when writing a flat Xml dataset. See FAQ.</action>
+      <action dev="" type="add">884422 - FlatDtdWriter has now the ability to generate DTDs with choice model instead of sequence model.</action>
+      <action dev="" type="add">Ability to import external file for binary data types like BLOB; the value can be either a qualified URL or a file path name.</action>
+      <action dev="" type="update">Do not omit NULL values anymore in INSERT statements. Now only XmlDataSet's &lt;none/&gt; tag are omitted. With FlatXmlDataSet you must use the ReplacementDataSet to achieve the same behavior.</action>
+      <action dev="" type="fix">937732 - XlsDataSet now use UTF-16 encoding to support Asian characters. Patch submitted by Shuhei Kondo.</action>
+      <action dev="" type="fix">Applied XlsTable empty table detection patch submitted by Deepak Kaimal.</action>
+      <action dev="" type="fix">Added back FlatXmlDataSet constructors taking URL as argument missing in version 2.0.</action>
+      <action dev="" type="fix">918631 &amp; 925585 - Fixed FlatXmlDataSet constructors taking InputStream/Reader for loading DTD.</action>
+      <action dev="" type="fix">DELETE_ALL operation now deletes tables only *once* in reverse order they are encountered. Before, duplicate tables were resulting in multiple deletes. Patch submitted by John Hurst.</action>
+      <action dev="" type="update">DELETE_ALL operation now compatible with StreamingDataSet.</action>
+      <action dev="" type="fix">947330 - Now closing ResultSet before Statement to fix exceptions thrown by the Firebird JDBC driver and the OpenBase 8.0 JDBC driver.</action>
+      <action dev="" type="fix">921869 - Fixed ParameterIndexOutOfBoundsException with InterBase.</action>
+      <action dev="" type="update">947809 - Moved createMetaData() static method from AbstractResultSet to DatabaseTableMetaData and made it public. Can now be used to create ITable from a ResultSet.</action>
+      <action dev="" type="fix">Support for large Oracle BLOB. Must use OracleDataTypeFactory.</action>
+      <action dev="" type="add">Oracle LONG RAW data type support via OracleDataTypeFactory. Original patch submitted by Markus Muller.</action>
+      <action dev="" type="fix">Added back support for Oracle FLOAT missing in DbUnit 2.0. Must use OracleDataTypeFactory.</action>
+      <action dev="" type="add">Support for Oracle NCHAR2 as proposed by Deepak Kaimal. Must use OracleDataTypeFactory.</action>
+      <action dev="" type="update">Added DataType.isDateTime() method proposed by Ayman Mahfouz.</action>
+      <action dev="" type="add">726366 &amp; 884422 - Added IColumnFilter interface. Can be used to filter out some table columns. See FAQ.</action>
+      <action dev="" type="update">Renamed ITableFilter.isValidName() method to accept() to be consistent with the new IColumnFilter interface. </action>
+      <action dev="" type="add">955354 - Ability to determine the primary keys with IColumnFilter interface instead of DatabaseMetaData.getPrimaryKeys(). Primary keys sequence is not predictable when using filter. See FAQ.</action>
+      <action dev="" type="add">Ability to plug custom IDENTITY column detection strategy for InsertIdentityOperation when using user defined types. See FAQ.</action>
+      <action dev="" type="add">Added DefaultTableFilter class, which combines capability of the Include/ExcludeTableFilter classes.</action>
+    </release>
+    <release version="2.0" date="January 22, 2004" description="Major release.">
+       <action dev="" type="update">Mavenized the build and the website!</action>
+      <action dev="" type="update">Now use SAX2 instead of Electric XML DOM parser. Streamed mode allows importing and exporting very large XML datasets with minimal memory consumption.</action>
+      <action dev="" type="add">Flat XML dataset validation.</action>
+      <action dev="" type="add">New ITableIterator interface used to iterate thru dataset tables. Allows lazy tables initialization for some dataset implementations. The IDataSet.getTables method have been deprecated and usage should be avoided.</action>
+      <action dev="" type="update">Global System properties are not supported anymore. You must now use the new DatabaseConfig object to alter DbUnit behaviours. </action>
+      <action dev="" type="add">Configurable data type factory to easily integrates new data types with the DbUnit core. Factory implementations available for some database vendors. Submit your own!</action>
+      <action dev="" type="add">Oracle TIMESTAMP data type support via the OracleDataTypeFactory.</action>
+      <action dev="" type="fix">Fix truncated Oracle DATE. Must use the OracleDataTypeFactory.</action>
+      <action dev="" type="fix">Fix for Oracle CLOB greater than 4000 bytes. Must use the OracleDataTypeFactory.</action>
+      <action dev="" type="add">MySQL 'longtext' data type support via the MySqlDataTypeFactory.</action>
+      <action dev="" type="add">DB2 XML data types support via the Db2DataTypeFactory.</action>
+      <action dev="" type="add">Database views support.</action>
+      <action dev="" type="add">New pluggable filter strategies for DataSetFilter. You can now exclude/include tables using wildcard patterns.</action>
+      <action dev="" type="add">Ability to sort tables by their dependencies with the new DatabaseSequenceFilter strategy.</action>
+      <action dev="" type="add">New ReplacementDataSet decorator, which can replace decorated dataset values on the fly. Can be used with flat XML dataset as a new way to specify null values.</action>
+      <action dev="" type="add">New XlsDataSet. An MS Excel dataset implementation. Uses the Jakarta POI package.</action>
+      <action dev="" type="update">Assertion.assertEquals is now performing typed comparison instead of string representation comparison.</action>
+      <action dev="" type="update">INSERT, CLEAN_INSERT and REFRESH operations do not override database default values anymore with null values. Null values are now omitted from insert statements. Operations use multiple prepared statements for the same table, when null values vary from row to row.</action>
+      <action dev="" type="update">Moved InsertIdentityOperation to "org.dbunit.ext.mssql" package to be consistent with other vendor extensions. Temporary keep a deprecated copy in "org.dbunit.operation.mssqlserver" to ease transition to DbUnit 2. </action>
+    </release>
+    <release version="1.5.6" date="October 5, 2003">
+       <action dev="" type="fix">786543 - NULL primitive values incorrectly returned as zero (0).</action>
+       <action dev="" type="fix">Fix Oracle CLOB values incorrectly returned as NULL.</action>
+    </release>
+    <release version="1.5.5" date="July 16, 2003">
+       <action dev="" type="update">DatabaseDataSet improvements: faster access to metadata cache and keep original database table ordering.</action>
+       <action dev="" type="update">Better handling of the various data types in general. WARNING! New abstract methods have been added to the DataType class. This change may break your environment if you have implemented your own data types.</action>
+      <action dev="" type="update">More efficient XmlDataSet writing. Now put values in CData block only when necessary.</action>
+      <action dev="" type="update">Do not enable batched statement by default anymore. Many JDBC drivers have problems with this feature.</action>
+      <action dev="" type="fix">Fixed table name issue with case sensitive database.</action>
+      <action dev="" type="fix">615636 &amp; 735095 - Incorrect XML encoding. Better handling of the XML encoding while writing and reading XML datasets. InputStream and OutputStream methods in XML dataset implementations are no more deprecated.</action>
+      <action dev="" type="fix">736439 - Problems with InsertOperation and triggers.</action>
+      <action dev="" type="fix">736967 - Wrong scale for numeric value with the jConnect driver for Sybase ASE.</action>
+    </release>
+    <release version="1.5.1" date="April 4, 2003">
+       <action dev="" type="fix">Fixed DELETE operation that was not deleting tables in reverse order as expected.</action>
+       <action dev="" type="fix">712329 - setObject fails on BEA JDriver for MS-SQL.</action>
+
+       <action dev="" type="update">DbUnitTask DTD export optimization. </action>
+       <action dev="" type="update">REFRESH operation optimization.</action>
+    </release>
+    <release version="1.5" date="March 1, 2003">
+       <action dev="" type="fix">Multiple bugfixes.</action>
+       <action dev="" type="add">533321 - DbUnit is now case insensitive.</action>
+       <action dev="" type="add">555455- Supports table names escaping (see escapePattern property).</action>
+       <action dev="" type="add">551925 - Allows duplicate table names in datasets. A new method, getTables(), have been added in the IDataSet interface.</action>
+       <action dev="" type="add">590245 &amp; 684610 - New Reader and Writers methods to read and write XML datasets. InputStream and OutputStream methods are now deprecated.</action>
+      <action dev="" type="add">New SortedTable and SortedDataSet decorator classes.</action>
+      <action dev="" type="add">645691 - Added the &lt;classpath&gt; nested element in DbUnitTask ant task; used to load the JDBC classes.</action>
+      <action dev="" type="add">Added &lt;query&gt; nested element in DbUnitTask &lt;export&gt;. Allows exporting the result of a SELECT as a table of a dataset. See ant task documentation.</action>
+      <action dev="" type="add">New Canoo Webtest integration guide.</action>
+
+   </release>
+   <release version="1.4" date="July 17, 2002">
+      <action dev="" type="add">DbUnitTask for Ant contributed by Timothy Ruppert and Ben Cox.</action>
+      <action dev="" type="update">Moved the Base64 class to the org.dbunit.util package because Visual Age for Java is not able to handle classes located in the default package.</action>
+      <action dev="" type="update">Added system properties documentation.</action>
+      <action dev="" type="update">542034 - Detect ambiguous table names. </action>
+      <action dev="" type="add">542462 - Added a system property to disable usage of batch statement even if the target database support it..</action>
+      <action dev="" type="update">545238 - Sort tables prior to comparing them. DbUnit now generates an ORDER BY clause in the select statement used by DatabaseDataSet.getTable(). Rows are sorted by primary keys.</action>
+      <action dev="" type="update">554249 - None column values.</action>
+      <action dev="" type="add">Added support for BLOB and CLOB data types.</action>
+    </release>
+
+    <release version="1.3" date="April 4, 2002">
+      <action dev="" type="add">Added support for binary data types: BINARY, VARBINARY and LONGVARBINARY. Binary data is persisted in xml datasets using the base64 encoding scheme.</action>
+      <action dev="" type="update">Deprecated the DataSetUtils.assertEquals() methods. You should now use Assertion.assertEquals(). </action>
+      <action dev="" type="fix">533537 - FlatXmlDataSet and null values.</action>
+      <action dev="" type="fix">533537 - Problem with single quotes.</action>
+      <action dev="" type="fix">534810 - Problem when primary key include all columns</action>
+    </release>
+
+    <release version="1.2.4" date="March 19, 2002">
+      <action dev="" type="add">Added support for multiple schemas per connection. See FAQ document.</action>
+      <action dev="" type="remove">Removed element &lt;none/&gt; from dataset.dtd. This feature was incompatible with future support for the binary data types.</action>
+      <action dev="" type="fix">530998 - DataSetUtils.AssertEquals(ITable table, ITable table). </action>
+      <action dev="" type="fix">533540 - Problem with DATE, TIME and TIMESTAMP.</action></release>
+
+    <release version="1.2" date="March 15, 2002">
+      <action dev="" type="add">Added the flat XML dataset format. See the FlatXmlDataSet
+    in Core Components document.</action>
+      <action dev="" type="add">Added database data verification feature. See Getting Started document.</action>
+      <action dev="" type="update">Updated Electric XML parser to version 3.2. </action></release>
+
+    <release version="1.1" date="March 10, 2002">
+      <action dev="" type="update">Connections are now closed in each setUp() and tearDown(). You   must override the DatabaseTestCase.closeConnection() and provide   an empty body to modify this behavior. This is not recommended to bypass connection close if   you use connection pooling.</action>
+      <action dev="" type="add">Added the IDatabaseConnection interface.</action>
+      <action dev="" type="add">Added the DatabaseDataSourceConnection class. This class provides support for accessing JDBC connections from a DataSource. JDBC connections are requested on demand from the DataSource.</action>
+      <action dev="" type="update">Multiple performance improvement.</action>
+      <action dev="" type="fix">526235 - Cannot export tables with JDBC-ODBC bridge and MS-SQL.</action>
+    </release>
+
+    <release version="1.0" date="Febuary 27, 2002" description="Initial public release.">
+    </release>
+
+  </body>
+</document>
+

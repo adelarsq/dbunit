@@ -1,0 +1,23 @@
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Manuel Laflamme (Java development) -->
+<dataset>
+	<TEST_TABLE COLUMN0="row 0 col 0" COLUMN1="row 0 col 1" COLUMN2="row 0 col 2" COLUMN3="row 0 col 3"/>
+	<TEST_TABLE COLUMN0="row 1 col 0" COLUMN1="row 1 col 1" COLUMN2="row 1 col 2" COLUMN3="row 1 col 3"/>
+	<TEST_TABLE_WITH_SAME_VALUE COLUMN0="row 0 col 0" COLUMN1="row 0 col 1" COLUMN2="row 0 col 2" COLUMN3="row 0 col 3"/>
+	<TEST_TABLE_WITH_SAME_VALUE COLUMN0="row 1 col 0" COLUMN1="row 1 col 1" COLUMN2="row 1 col 2" COLUMN3="row 1 col 3"/>
+	<TEST_TABLE_WITH_LOWER_COLUMN_NAMES column0="row 0 col 0" column1="row 0 col 1" column2="row 0 col 2" column3="row 0 col 3"/>
+	<TEST_TABLE_WITH_LOWER_COLUMN_NAMES column0="row 1 col 0" column1="row 1 col 1" column2="row 1 col 2" column3="row 1 col 3"/>
+	<TEST_TABLE_WITH_DIFFERENT_NAME COLUMN0="row 0 col 0" COLUMN1="row 0 col 1" COLUMN2="row 0 col 2" COLUMN3="row 0 col 3"/>
+	<TEST_TABLE_WITH_DIFFERENT_NAME COLUMN0="row 1 col 0" COLUMN1="row 1 col 1" COLUMN2="row 1 col 2" COLUMN3="row 1 col 3"/>
+	<TEST_TABLE_WITH_WRONG_VALUE COLUMN0="row 0 col 0" COLUMN1="row 0 col 1" COLUMN2="row 0 col 2" COLUMN3="row 0 col 3"/>
+	<TEST_TABLE_WITH_WRONG_VALUE COLUMN0="row 1 col 0" COLUMN1="row 1 col 1" COLUMN2="wrong value" COLUMN3="row 1 col 3"/>
+	<TEST_TABLE_WITH_DIFFERENT_COLUMN_NAMES COLUMN4="row 0 col 0" COLUMN5="row 0 col 1" COLUMN6="row 0 col 2" COLUMN7="row 0 col 3"/>
+	<TEST_TABLE_WITH_DIFFERENT_COLUMN_NAMES COLUMN4="row 1 col 0" COLUMN5="row 1 col 1" COLUMN6="row 1 col 2" COLUMN7="row 1 col 3"/>
+	<TEST_TABLE_WITH_DIFFERENT_COLUMN_SEQUENCE COLUMN3="row 0 col 3" COLUMN2="row 0 col 2" COLUMN1="row 0 col 1" COLUMN0="row 0 col 0"/>
+	<TEST_TABLE_WITH_DIFFERENT_COLUMN_SEQUENCE COLUMN3="row 1 col 3" COLUMN2="row 1 col 2" COLUMN1="row 1 col 1" COLUMN0="row 1 col 0"/>
+	<TEST_TABLE_WITH_ONE_ROW COLUMN0="row 0 col 0" COLUMN1="row 0 col 1" COLUMN2="row 0 col 2" COLUMN3="row 0 col 3"/>
+	<TEST_TABLE_WITH_3_COLUMNS COLUMN0="row 0 col 0" COLUMN1="row 0 col 1" COLUMN2="row 0 col 2"/>
+	<TEST_TABLE_WITH_3_COLUMNS COLUMN0="row 1 col 0" COLUMN1="row 1 col 1" COLUMN2="row 1 col 2"/>
+</dataset>
+
+
+
