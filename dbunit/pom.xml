@@ -789,7 +789,7 @@
       <properties>
         <dbunit.profile>derby</dbunit.profile>
         <dbunit.profile.driverClass>org.apache.derby.jdbc.EmbeddedDriver</dbunit.profile.driverClass>
-        <dbunit.profile.url>jdbc\:derby\:target\/derby_db;create\=true</dbunit.profile.url>
+        <dbunit.profile.url>jdbc:derby:target/derby_db;create=true</dbunit.profile.url>
         <dbunit.profile.schema>APP</dbunit.profile.schema>
         <dbunit.profile.user>APP</dbunit.profile.user>
         <dbunit.profile.password>APP</dbunit.profile.password>

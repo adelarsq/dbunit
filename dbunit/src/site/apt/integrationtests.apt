@@ -176,5 +176,17 @@ mvn clean test -Poracle-default,mysql
 
   <<Note:>> currently the oracle-default profile is required, along with the mysql profile, to ensure all JARs required on the compile-time classpath in Maven.
 
+Running Apache Derby Integration Tests
+
+  Nothing special is required.
+
+  Run the full test suite, including integration tests, with this command:
+
+---
+mvn clean test -Poracle-default,derby
+---
+
+  <<Note:>> currently the oracle-default profile is required, along with the derby profile, to ensure all JARs required on the compile-time classpath in Maven.
+
 TODO: Other databases.
 
