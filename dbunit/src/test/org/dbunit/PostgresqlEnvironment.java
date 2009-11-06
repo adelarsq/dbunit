@@ -25,7 +25,7 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory;
 
 /**
- * @author John Hurst (adpated from Manuel Laflamme: OracleEnvironment)
+ * @author John Hurst (adapted from Manuel Laflamme: OracleEnvironment)
  * @version $Revision$
  * @since DbUnit 2.4.7
  */
