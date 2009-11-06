@@ -750,7 +750,7 @@
         <dbunit.profile.schema></dbunit.profile.schema>
         <dbunit.profile.user>dbunit</dbunit.profile.user>
         <dbunit.profile.password>dbunit</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,TRANSACTION,INSERT_IDENTITY,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,INSERT_IDENTITY,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
       </properties>
       <dependencies>
         <dependency>
