@@ -22,7 +22,7 @@
 
   <target name="no-driver">
     <dbunit url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="CLEAN_INSERT" src="${testDataSet}"/>
     </dbunit>
@@ -30,7 +30,7 @@
 
   <target name="no-db-url">
     <dbunit driver="${dbunit.profile.driverClass}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="CLEAN_INSERT" src="${testDataSet}"/>
     </dbunit>
@@ -39,7 +39,6 @@
   <target name="no-userid">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-
             password="${dbunit.profile.password}">
       <operation type="CLEAN_INSERT" src="${testDataSet}"/>
     </dbunit>
@@ -48,7 +47,7 @@
   <target name="no-password">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}">
+            userid="${dbunit.profile.user}">
       <operation type="CLEAN_INSERT" src="${testDataSet}"/>
     </dbunit>
   </target>
@@ -56,7 +55,7 @@
   <target name="invalid-db-info">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="jdbc:foobar://localhost/dbunittest"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="CLEAN_INSERT" src="${testDataSet}"/>
     </dbunit>
@@ -65,7 +64,7 @@
   <target name="set-format-xml">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="INSERT" src="${testDataSet}" format="xml"/>
     </dbunit>
@@ -74,7 +73,7 @@
   <target name="test-type-none">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="NONE" src="${testDataSet}"/>
     </dbunit>
@@ -110,7 +109,7 @@
   <target name="test-type-insert">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="INSERT" src="${testDataSet}"/>
     </dbunit>
@@ -119,7 +118,7 @@
   <target name="test-type-update">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="UPDATE" src="${updateDataSet}"/>
     </dbunit>
@@ -128,7 +127,7 @@
   <target name="test-type-refresh">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="REFRESH" src="${updateDataSet}"/>
     </dbunit>
@@ -137,7 +136,7 @@
   <target name="test-type-delete">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="DELETE" src="${updateDataSet}"/>
     </dbunit>
@@ -146,7 +145,7 @@
   <target name="test-type-delete-all">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="DELETE_ALL" src="${testDataSet}"/>
     </dbunit>
@@ -155,7 +154,7 @@
   <target name="test-type-clean-insert">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="CLEAN_INSERT" src="${testDataSet}"/>
     </dbunit>
@@ -164,7 +163,7 @@
   <target name="test-type-mssql-insert" depends="test-type-delete-all">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="MSSQL_INSERT" src="${testDataSet}"/>
     </dbunit>
@@ -173,7 +172,7 @@
   <target name="test-type-mssql-refresh">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="MSSQL_REFRESH" src="${updateDataSet}"/>
     </dbunit>
@@ -182,7 +181,7 @@
   <target name="test-type-mssql-clean-insert">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="MSSQL_CLEAN_INSERT" src="${testDataSet}"/>
     </dbunit>
@@ -191,7 +190,7 @@
   <target name="invalid-type">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="CLEAN_INSERT" src="${testDataSet}"/>
       <operation type="DELETE" src="${updateDataSet}"/>
@@ -308,70 +307,66 @@
   </target>
 
   <target name="test-export-with-queryset" depends="test-type-clean-insert">
-
-  	<dbunit driver="${dbunit.profile.driverClass}"
+    <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
             userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
-
       <export dest="${exportCsv}" format="csv">
-      	 <query name="SECOND_TABLE" sql="SELECT * FROM SECOND_TABLE"/>
-      	 <queryset>
-      	 	<query name="TEST_TABLE"
-      	 		sql="SELECT * FROM TEST_TABLE WHERE COLUMN0 = 'row 0 col 0'"/>
-      	 </queryset>
-      	 <queryset>
-      	 	<query name="PK_TABLE" sql="SELECT * FROM PK_TABLE"/>
-      	 	<query name="TEST_TABLE"
-      	 		sql="SELECT * FROM TEST_TABLE WHERE COLUMN0 = 'row 1 col 0'"/>
-      	 </queryset>
-      	 <table name="EMPTY_TABLE"/>
+        <query name="SECOND_TABLE" sql="SELECT * FROM SECOND_TABLE"/>
+        <queryset>
+          <query name="TEST_TABLE"
+            sql="SELECT * FROM TEST_TABLE WHERE COLUMN0 = 'row 0 col 0'"/>
+         </queryset>
+         <queryset>
+            <query name="PK_TABLE" sql="SELECT * FROM PK_TABLE"/>
+          <query name="TEST_TABLE"
+            sql="SELECT * FROM TEST_TABLE WHERE COLUMN0 = 'row 1 col 0'"/>
+        </queryset>
+        <table name="EMPTY_TABLE"/>
       </export>
     </dbunit>
     <delete dir="${exportCsv}" failonerror="false" />
   </target>
 
   <target name="invalid-queryset">
-  	<dbunit driver="${dbunit.profile.driverClass}"
+    <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
             userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <export dest="${exporDataSet}" format="flat">
-      		<queryset id="someid" refid="someid"/>
+        <queryset id="someid" refid="someid"/>
       </export>
     </dbunit>
     <delete file="${exportDataSet}"/>
   </target>
 
   <target name="test-queryset-reference">
+    <queryset id="queryset-id">
+      <query name="TEST_TABLE"
+        sql="SELECT * FROM TEST_TABLE WHERE COLUMN0 = '@colValue@'"/>
+      <query name="SECOND_TABLE"
+        sql="SELECT B.* FROM TEST_TABLE A, SECOND_TABLE B WHERE A.COLUMN0 = '@colValue@' AND B.COLUMN0 = A.COLUMN0"/>
+    </queryset>
 
-  	<queryset id="queryset-id">
-  		<query name="TEST_TABLE"
-  			sql="SELECT * FROM TEST_TABLE WHERE COLUMN0 = '@colValue@'"/>
-  		<query name="SECOND_TABLE"
-  			sql="SELECT B.* FROM TEST_TABLE A, SECOND_TABLE B WHERE A.COLUMN0 = '@colValue@' AND B.COLUMN0 = A.COLUMN0"/>
-  	</queryset>
-
-  	<dbunit driver="${dbunit.profile.driverClass}"
+    <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        	userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <export dest="${exportDataSet}" format="flat">
-      		<queryset refid="queryset-id">
-      			<filterset>
-      				<filter token="colValue" value="row0 col0"/>
-      			</filterset>
-      		</queryset>
+        <queryset refid="queryset-id">
+          <filterset>
+            <filter token="colValue" value="row0 col0"/>
+          </filterset>
+        </queryset>
       </export>
     </dbunit>
     <delete file="${exportDataSet}"/>
   </target>
 
-
   <target name="invalid-export-format">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
-        userid="${dbunit.profile.user}"
+            userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <export dest="${exportDtd}" format="invalid"/>
     </dbunit>
@@ -413,7 +408,6 @@
             url="${dbunit.profile.url}"
             userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
-
       <export dest="${exportDataSet}" format="flat">
         <table name="TEST_TABLE" />
       </export>
@@ -431,7 +425,7 @@
             password="">
       <operation type="INSERT" src="${testDataSet}" format="xml"/>
       <classpath>
-      	<pathelement location="./lib/mm.mysql-2.0.11-bin.jar"/>
+        <pathelement location="./lib/mm.mysql-2.0.11-bin.jar"/>
       </classpath>
     </dbunit>
   </target>
@@ -443,45 +437,45 @@
             password="">
       <operation type="INSERT" src="${testDataSet}" format="xml"/>
       <classpath>
-      	<pathelement location="./lib/unknown.jar"/>
+        <pathelement location="./lib/unknown.jar"/>
       </classpath>
     </dbunit>
   </target>
 
-    <target name="test-datatypefactory">
-      <dbunit driver="${dbunit.profile.driverClass}"
-              datatypeFactory="org.dbunit.ext.oracle.OracleDataTypeFactory"
-              url="${dbunit.profile.url}"
-              userid="${dbunit.profile.user}"
-              password="${dbunit.profile.password}">
-          <operation type="NONE"/>
-      </dbunit>
-    </target>
+  <target name="test-datatypefactory">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            datatypeFactory="org.dbunit.ext.oracle.OracleDataTypeFactory"
+            url="${dbunit.profile.url}"
+            userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+        <operation type="NONE"/>
+    </dbunit>
+  </target>
 
-    <target name="test-escapepattern">
-      <dbunit driver="${dbunit.profile.driverClass}"
-              escapePattern="[?]"
-              url="${dbunit.profile.url}"
-              userid="${dbunit.profile.user}"
-              password="${dbunit.profile.password}">
-          <operation type="NONE" src="${testDataSet}"/>
-      </dbunit>
-    </target>
+  <target name="test-escapepattern">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            escapePattern="[?]"
+            url="${dbunit.profile.url}"
+            userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+        <operation type="NONE" src="${testDataSet}"/>
+    </dbunit>
+  </target>
 
-    <target name="test-datatypefactory-via-generic-config">
-      <dbunit driver="${dbunit.profile.driverClass}"
-              url="${dbunit.profile.url}"
-              userid="${dbunit.profile.user}"
-              password="${dbunit.profile.password}">
-          <dbconfig>
-              <property name="datatypeFactory" value="org.dbunit.ext.oracle.OracleDataTypeFactory" />
-              <property name="tableType" value="TABLE,SYNONYM" />
-              <feature name="batchedStatements" value="true" />
-              <feature name="caseSensitiveTableNames" value="true" />
-          </dbconfig>
-          <operation type="NONE"/>
-      </dbunit>
-    </target>
+  <target name="test-datatypefactory-via-generic-config">
+    <dbunit driver="${dbunit.profile.driverClass}"
+            url="${dbunit.profile.url}"
+            userid="${dbunit.profile.user}"
+            password="${dbunit.profile.password}">
+        <dbconfig>
+            <property name="datatypeFactory" value="org.dbunit.ext.oracle.OracleDataTypeFactory" />
+            <property name="tableType" value="TABLE,SYNONYM" />
+            <feature name="batchedStatements" value="true" />
+            <feature name="caseSensitiveTableNames" value="true" />
+        </dbconfig>
+        <operation type="NONE"/>
+    </dbunit>
+  </target>
 
 </project>
 
