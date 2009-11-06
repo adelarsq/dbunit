@@ -88,18 +88,22 @@
     </dbunit>
   </target>
 
+  <!-- JH_TODO: I added the schema attribute, seems to be required for Oracle. Do we need to test other DBs without it? -->
   <target name="test-ordered">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
+            schema="${dbunit.profile.schema}"
             userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="REFRESH" src="${updateDataSet}" format="flat" ordered="true"/>
     </dbunit>
   </target>
 
+  <!-- JH_TODO: I added the schema attribute, seems to be required for Oracle. Do we need to test other DBs without it? -->
   <target name="test-replace-ordered">
     <dbunit driver="${dbunit.profile.driverClass}"
             url="${dbunit.profile.url}"
+            schema="${dbunit.profile.schema}"
             userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <operation type="REFRESH" src="${updateDataSet}" format="flat" ordered="true" nullToken="row 0"/>
