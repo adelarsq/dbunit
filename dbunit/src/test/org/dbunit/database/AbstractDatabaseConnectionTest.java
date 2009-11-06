@@ -54,13 +54,13 @@ public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTes
 
 	public final void testGetRowCount() throws Exception
     {
-        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("empty_table", null));
-        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("empty_table"));
+        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("EMPTY_TABLE", null));
+        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("EMPTY_TABLE"));
 
-        assertEquals("TEST_TABLE", 6, _connection.getRowCount("test_table", null));
-        assertEquals("TEST_TABLE", 6, _connection.getRowCount("test_table"));
+        assertEquals("TEST_TABLE", 6, _connection.getRowCount("TEST_TABLE", null));
+        assertEquals("TEST_TABLE", 6, _connection.getRowCount("TEST_TABLE"));
 
-        assertEquals("PK_TABLE", 1, _connection.getRowCount("pk_table", "where PK0 = 0"));
+        assertEquals("PK_TABLE", 1, _connection.getRowCount("PK_TABLE", "where PK0 = 0"));
     }
 
     public final void testGetRowCount_NonexistingSchema() throws Exception
@@ -75,7 +75,7 @@ public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTes
 			
 			assertEquals(convertString(nonexistingSchema), dbConnection.getSchema());
 			try {
-				dbConnection.getRowCount("test_table");
+				dbConnection.getRowCount("TEST_TABLE");
 				fail("Should not be able to retrieve row count for non-existing schema " + nonexistingSchema);
 			}
 			catch(SQLException expected)
@@ -98,7 +98,7 @@ public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTes
 			IDatabaseConnection dbConnection = dbTester.getConnection();
 			
 			assertEquals(null, dbConnection.getSchema());
-	        assertEquals("TEST_TABLE", 6, _connection.getRowCount("test_table", null));
+	        assertEquals("TEST_TABLE", 6, _connection.getRowCount("TEST_TABLE", null));
     	}
     	finally {
     		// Reset the testers schema for subsequent tests (environment.dbTester is a singleton)

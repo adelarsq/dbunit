@@ -47,7 +47,7 @@ public class ForwardOnlyResultSetTableTest extends ForwardOnlyTableTest
 
         DatabaseOperation.CLEAN_INSERT.execute(connection, env.getInitDataSet());
 
-        String selectStatement = "select * from test_table order by COLUMN0";
+        String selectStatement = "select * from TEST_TABLE order by COLUMN0";
         return new ForwardOnlyResultSetTable("TEST_TABLE", selectStatement, connection);
     }
 

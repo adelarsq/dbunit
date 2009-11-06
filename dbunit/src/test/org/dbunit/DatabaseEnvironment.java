@@ -70,6 +70,10 @@ public class DatabaseEnvironment
             {
                 INSTANCE = new PostgresqlEnvironment(profile);
             }
+            else if (profileName.equals("mysql"))
+            {
+                INSTANCE = new MySqlEnvironment(profile);
+            }
             else if (profileName.equals("derby"))
             {
                 INSTANCE = new DerbyEnvironment(profile);

@@ -138,5 +138,43 @@ mvn clean test -Poracle-default,postgresql
 
   <<Note:>> currently the oracle-default profile is required, along with the postgresql profile, to ensure all JARs required on the compile-time classpath in Maven.
 
+Running MySQL Integration Tests
+
+  [[1]] Install MySQL database.  This can be on your local machine, or you can use any MySQL database you have access to.
+
+  [[2]] Create a "dbunit" user and database, for example with these commands:
+
+---
+mysql -uroot -p <<EOF
+# (enter database root password)
+CREATE DATABASE dbunit;
+GRANT ALL ON dbunit.* TO dbunit@localhost IDENTIFIED BY "dbunit";
+EOF
+---
+
+  These values are the defaults configured in the project.
+  If you use different values, you will need to override the properties in your Maven settings.xml.
+  If you need to connect remotely to your database your need to specify the client host name.
+  You may also need to adjust your MySQL configuration to permit remote connection.
+
+  [[3]] Log in to your dbunit user and run src/sql/mysql.sql:
+
+---
+mysql -hmysql_host -Ddbunit -udbunit -pdbunit <src/sql/mysql.sql
+---
+
+  []
+
+  This should create the DbUnit test schema in your MySQL database.
+  You are now ready to run tests.
+
+  Run the full test suite, including integration tests, with this command:
+
+---
+mvn clean test -Poracle-default,mysql
+---
+
+  <<Note:>> currently the oracle-default profile is required, along with the mysql profile, to ensure all JARs required on the compile-time classpath in Maven.
+
 TODO: Other databases.
 

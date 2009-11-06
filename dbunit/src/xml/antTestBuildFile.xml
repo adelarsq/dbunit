@@ -383,8 +383,8 @@
             userid="${dbunit.profile.user}"
             password="${dbunit.profile.password}">
       <export dest="${exportDataSet}">
-        <query name="TEST_TABLE" sql="SELECT * FROM test_table ORDER BY column0 DESC"/>
-        <query name="PK_TABLE" sql="SELECT * FROM pk_table"/>
+        <query name="TEST_TABLE" sql="SELECT * FROM TEST_TABLE ORDER BY column0 DESC"/>
+        <query name="PK_TABLE" sql="SELECT * FROM PK_TABLE"/>
       </export>
       <compare src="${exportDataSet}" sort="true"/>
     </dbunit>
@@ -398,10 +398,10 @@
             password="${dbunit.profile.password}">
       <export dest="${exportDataSet}">
         <table name="TEST_TABLE" />
-        <query name="PK_TABLE" sql="SELECT * FROM pk_table WHERE normal1='0 wor'"/>
+        <query name="PK_TABLE" sql="SELECT * FROM PK_TABLE WHERE normal1='0 wor'"/>
       </export>
       <compare src="${exportDataSet}">
-        <query name="PK_TABLE" sql="SELECT * FROM pk_table WHERE normal1='0 wor'"/>
+        <query name="PK_TABLE" sql="SELECT * FROM PK_TABLE WHERE normal1='0 wor'"/>
         <table name="TEST_TABLE" />
       </compare>
     </dbunit>

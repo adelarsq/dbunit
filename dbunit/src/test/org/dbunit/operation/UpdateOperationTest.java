@@ -337,7 +337,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
     public void testExecuteAndNoPrimaryKeys() throws Exception
     {
-        String tableName = "test_table";
+        String tableName = "TEST_TABLE";
 
         Reader reader = new FileReader("src/xml/updateOperationNoPKTest.xml");
         IDataSet dataSet = new FlatXmlDataSetBuilder().build(reader);

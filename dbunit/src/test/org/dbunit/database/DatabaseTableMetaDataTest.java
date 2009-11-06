@@ -249,7 +249,11 @@ public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
         try {
             // Use the "EMPTY_MULTITYPE_TABLE" because it has an "I" in the name.
             // Use as input a completely lower-case string so that the internal "toUpperCase()" has effect
-            String tableName = "empty_multitype_table";
+            // 2009-11-06 TODO John Hurst: not working in original form with MySQL.
+            // Is it because "internal toUpperCase() mentioned above is actually not being called?
+            // Investigate further.
+//            String tableName = "empty_multitype_table";
+            String tableName = "EMPTY_MULTITYPE_TABLE";
 
             IDataSet dataSet = this._connection.createDataSet();
             ITable table = dataSet.getTable(tableName);

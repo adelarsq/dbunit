@@ -1,7 +1,7 @@
 /*
  *
  * The DbUnit Database Testing Framework
- * Copyright (C)2002-2004, DbUnit.org
+ * Copyright (C)2002-2009, DbUnit.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,28 +19,26 @@
  *
  */
 
-package org.dbunit.database;
+package org.dbunit;
 
-import org.dbunit.AbstractDatabaseTesterTest;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 
 /**
- * @author Andres Almiray
+ * @author John Hurst (adapted from Manuel Laflamme: OracleEnvironment)
+ * @version $Revision$
+ * @since DbUnit 2.4.7
  */
-public abstract class AbstractDatabaseTesterConnectionTest extends AbstractDatabaseTesterTest
+public class MySqlEnvironment extends DatabaseEnvironment
 {
-    public AbstractDatabaseTesterConnectionTest(String s)
+    public MySqlEnvironment(DatabaseProfile profile) throws Exception
     {
-        super(s);
+        super(profile);
     }
 
-    public final void testGetRowCount() throws Exception
+    protected void setupDatabaseConfig(DatabaseConfig config)
     {
-        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("EMPTY_TABLE", null));
-        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("EMPTY_TABLE"));
-
-        assertEquals("TEST_TABLE", 6, _connection.getRowCount("TEST_TABLE", null));
-        assertEquals("TEST_TABLE", 6, _connection.getRowCount("TEST_TABLE"));
-
-        assertEquals("PK_TABLE", 1, _connection.getRowCount("PK_TABLE", "where PK0 = 0"));
+        config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
     }
+
 }

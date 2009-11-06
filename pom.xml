@@ -9,13 +9,11 @@
   <url>http://dbunit.sourceforge.net</url>
   <inceptionYear>2002</inceptionYear>
   <description>
-    DbUnit is a JUnit extension targeted for database-driven projects that, among other things, puts your database into a known state between test runs. 
+    DbUnit is a JUnit extension targeted for database-driven projects that, among other things, puts your database into a known state between test runs.
     This is an excellent way to avoid the myriad of problems that can occur when one test case corrupts the database and causes subsequent tests to fail or exacerbate the damage.
   </description>
-
   <modules>
     <module>dbunit</module>
     <module>dbunit-maven-plugin</module>
   </modules>
-
 </project>

@@ -65,11 +65,6 @@ public class QueryDataSetTest extends AbstractDataSetTest
     ////////////////////////////////////////////////////////////////////////////
     // AbstractDataSetTest class
 
-    protected String[] getExpectedNames() throws Exception
-    {
-        return getExpectedLowerNames();
-    }
-
     protected IDataSet createDataSet() throws Exception
     {
         String[] names = getExpectedNames();
@@ -134,7 +129,7 @@ public class QueryDataSetTest extends AbstractDataSetTest
         return dataSet;
     }
 
-    
+
     ////////////////////////////////////////////////////////////////////////////
     // Test methods
 
@@ -142,7 +137,7 @@ public class QueryDataSetTest extends AbstractDataSetTest
     {
 
         QueryDataSet ptds = new QueryDataSet(_connection);
-        ptds.addTable("PK_TABLE", "SELECT PK0, PK1 FROM pk_table where PK0 = 0");
+        ptds.addTable("PK_TABLE", "SELECT PK0, PK1 FROM PK_TABLE where PK0 = 0");
 
         ITable table = ptds.getTable("PK_TABLE");
         assertEquals("", "0", table.getValue(0, "PK0").toString());
@@ -154,7 +149,7 @@ public class QueryDataSetTest extends AbstractDataSetTest
     {
 
         QueryDataSet ptds = new QueryDataSet(_connection);
-        ptds.addTable("PK_TABLE", "SELECT * FROM pk_table where PK0 = 0");
+        ptds.addTable("PK_TABLE", "SELECT * FROM PK_TABLE where PK0 = 0");
 
         ITable table = ptds.getTable("PK_TABLE");
         assertEquals("", "0", table.getValue(0, "PK0").toString());
@@ -166,7 +161,7 @@ public class QueryDataSetTest extends AbstractDataSetTest
     {
 
         QueryDataSet ptds = new QueryDataSet(_connection);
-        ptds.addTable("PK_TABLE", "SELECT PK0 FROM pk_table");
+        ptds.addTable("PK_TABLE", "SELECT PK0 FROM PK_TABLE");
 
         ITable table = ptds.getTable("PK_TABLE");
         assertEquals("", "0", table.getValue(0, "PK0").toString());
@@ -178,7 +173,7 @@ public class QueryDataSetTest extends AbstractDataSetTest
     {
 
         QueryDataSet ptds = new QueryDataSet(_connection);
-        ptds.addTable("PK_TABLE", "SELECT PK0 FROM pk_table");
+        ptds.addTable("PK_TABLE", "SELECT PK0 FROM PK_TABLE");
 
         ITable table = ptds.getTable("PK_TABLE");
         assertEquals("", "0", table.getValue(0, "PK0").toString());
@@ -200,7 +195,7 @@ public class QueryDataSetTest extends AbstractDataSetTest
 
         QueryDataSet ptds = new QueryDataSet(_connection);
         ptds.addTable("SECOND_TABLE",
-                "SELECT * FROM second_table where COLUMN0='row 0 col 0'");
+                "SELECT * FROM SECOND_TABLE where COLUMN0='row 0 col 0'");
 
         ITable table = ptds.getTable("SECOND_TABLE");
         assertEquals("", "row 0 col 0", table.getValue(0, "COLUMN0").toString());
@@ -214,7 +209,7 @@ public class QueryDataSetTest extends AbstractDataSetTest
 
         QueryDataSet ptds = new QueryDataSet(_connection);
         ptds.addTable("SECOND_TABLE",
-                "SELECT COLUMN0, COLUMN3 FROM second_table where COLUMN0='row 0 col 0' and COLUMN2='row 0 col 2'");
+                "SELECT COLUMN0, COLUMN3 FROM SECOND_TABLE where COLUMN0='row 0 col 0' and COLUMN2='row 0 col 2'");
 
         ITable table = ptds.getTable("SECOND_TABLE");
         assertEquals("", "row 0 col 0", table.getValue(0, "COLUMN0").toString());
@@ -229,9 +224,9 @@ public class QueryDataSetTest extends AbstractDataSetTest
 
         QueryDataSet ptds = new QueryDataSet(_connection);
         ptds.addTable("SECOND_TABLE",
-                "SELECT * from second_table where COLUMN0='row 0 col 0' and COLUMN2='row 0 col 2'");
+                "SELECT * from SECOND_TABLE where COLUMN0='row 0 col 0' and COLUMN2='row 0 col 2'");
         ptds.addTable("PK_TABLE",
-                "SELECT * FROM pk_table where PK0 = 0");
+                "SELECT * FROM PK_TABLE where PK0 = 0");
 
         table = ptds.getTable("SECOND_TABLE");
         assertEquals("", "row 0 col 0", table.getValue(0, "COLUMN0").toString());
@@ -248,7 +243,7 @@ public class QueryDataSetTest extends AbstractDataSetTest
     {
         QueryDataSet ptds = new QueryDataSet(_connection);
         ptds.addTable("SECOND_TABLE",
-                "SELECT * from second_table where COLUMN0='row 0 col 0' and COLUMN2='row 0 col 2'");
+                "SELECT * from SECOND_TABLE where COLUMN0='row 0 col 0' and COLUMN2='row 0 col 2'");
         ptds.addTable("PK_TABLE", null);
     }
 }

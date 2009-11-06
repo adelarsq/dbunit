@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <groupId>org.dbunit</groupId>
   <artifactId>dbunit</artifactId>
   <version>2.4.7-SNAPSHOT</version>
@@ -747,11 +747,18 @@
         <dbunit.profile>mysql</dbunit.profile>
         <dbunit.profile.driverClass>com.mysql.jdbc.Driver</dbunit.profile.driverClass>
         <dbunit.profile.url>jdbc:mysql://localhost:3306/dbunit</dbunit.profile.url>
-        <dbunit.profile.schema>DBUNIT</dbunit.profile.schema>
+        <dbunit.profile.schema></dbunit.profile.schema>
         <dbunit.profile.user>dbunit</dbunit.profile.user>
         <dbunit.profile.password>dbunit</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,TRANSACTION,INSERT_IDENTITY,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,TRANSACTION,INSERT_IDENTITY,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
       </properties>
+      <dependencies>
+        <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>5.1.6</version>
+        </dependency>
+      </dependencies>
     </profile>
     <profile>
       <id>mssql</id>
