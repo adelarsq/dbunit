@@ -808,13 +808,20 @@
       <id>h2</id>
       <properties>
         <dbunit.profile>h2</dbunit.profile>
-        <dbunit.profile.driverClass>TODO</dbunit.profile.driverClass>
-        <dbunit.profile.url>TODO</dbunit.profile.url>
-        <dbunit.profile.schema>TODO</dbunit.profile.schema>
-        <dbunit.profile.user>TODO</dbunit.profile.user>
-        <dbunit.profile.password>TODO</dbunit.profile.password>
-        <dbunit.profile.unsupportedFeatures>TODO</dbunit.profile.unsupportedFeatures>
+        <dbunit.profile.driverClass>org.h2.Driver</dbunit.profile.driverClass>
+        <dbunit.profile.url>jdbc:h2:target/h2/test</dbunit.profile.url>
+        <dbunit.profile.schema>PUBLIC</dbunit.profile.schema>
+        <dbunit.profile.user>sa</dbunit.profile.user>
+        <dbunit.profile.password></dbunit.profile.password>
+        <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
       </properties>
+      <dependencies>
+        <dependency>
+           <groupId>com.h2database</groupId>
+           <artifactId>h2</artifactId>
+           <version>1.1.118</version>
+       </dependency>
+      </dependencies>
     </profile>
   </profiles>
 

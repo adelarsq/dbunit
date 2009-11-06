@@ -78,6 +78,10 @@ public class DatabaseEnvironment
             {
                 INSTANCE = new DerbyEnvironment(profile);
             }
+            else if (profileName.equals("h2"))
+            {
+                INSTANCE = new H2Environment(profile);
+            }
             else
             {
                 INSTANCE = new DatabaseEnvironment(profile);

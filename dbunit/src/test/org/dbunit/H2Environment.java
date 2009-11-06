@@ -44,7 +44,7 @@ public class H2Environment extends DatabaseEnvironment
         super(profile);
 
         // Creates required tables into the hypersonic in-memory database
-        File ddlFile = new File("src/sql/hypersonic.sql");
+        File ddlFile = new File("src/sql/h2.sql");
         Connection connection = getConnection().getConnection();
 
         executeDdlFile(ddlFile, connection);
