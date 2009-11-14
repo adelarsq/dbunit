@@ -100,7 +100,7 @@ public class DatabaseConfigTest extends TestCase
     {
         DatabaseConfig config = new DatabaseConfig();
         config.setProperty(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, "true");
-        assertEquals("true", config.getProperty(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
+        assertEquals(Boolean.TRUE, config.getProperty(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
         assertEquals(true, config.getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
     }
 
@@ -108,7 +108,7 @@ public class DatabaseConfigTest extends TestCase
     {
         DatabaseConfig config = new DatabaseConfig();
         config.setFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS, true);
-        assertEquals(Boolean.valueOf(true), config.getProperty(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
+        assertEquals(Boolean.TRUE, config.getProperty(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
         assertEquals(true, config.getFeature(DatabaseConfig.FEATURE_BATCHED_STATEMENTS));
     }
 
