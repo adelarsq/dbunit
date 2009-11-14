@@ -111,27 +111,45 @@ public class DbUnitTask extends Task
 
     /**
      * Flag for using the qualified table names.
+     * @deprecated since 2.4. Use {@link #dbConfig} instead. Only here because of backwards compatibility should be removed in the next major release.
      */
     private Boolean useQualifiedTableNames = null;
 
     /**
      * Flag for using batched statements.
+     * @deprecated since 2.4. Use {@link #dbConfig} instead. Only here because of backwards compatibility should be removed in the next major release.
      */
     private Boolean supportBatchStatement = null;
 
     /**
      * Flag for datatype warning.
+     * @deprecated since 2.4. Use {@link #dbConfig} instead. Only here because of backwards compatibility should be removed in the next major release.
      */
     private Boolean datatypeWarning = null;
 
+    /**
+     * @deprecated since 2.4. Use {@link #dbConfig} instead. Only here because of backwards compatibility should be removed in the next major release.
+     */
     private String escapePattern = null;
 
+    /**
+     * @deprecated since 2.4. Use {@link #dbConfig} instead. Only here because of backwards compatibility should be removed in the next major release.
+     */
     private String dataTypeFactory = null;
 
+    /**
+     * @deprecated since 2.4. Use {@link #dbConfig} instead. Only here because of backwards compatibility should be removed in the next major release.
+     */
     private String batchSize = null;
     
+    /**
+     * @deprecated since 2.4. Use {@link #dbConfig} instead. Only here because of backwards compatibility should be removed in the next major release.
+     */
     private String fetchSize = null;
 
+    /**
+     * @deprecated since 2.4. Use {@link #dbConfig} instead. Only here because of backwards compatibility should be removed in the next major release.
+     */
     private Boolean skipOracleRecycleBinTables = null;
 
     /**
@@ -139,7 +157,7 @@ public class DbUnitTask extends Task
      */
     public void setDriver(String driver)
     {
-        logger.debug("setDriver(driver={}) - start", driver);
+        logger.trace("setDriver(driver={}) - start", driver);
         this.driver = driver;
     }
 
@@ -148,7 +166,7 @@ public class DbUnitTask extends Task
      */
     public void setUrl(String url)
     {
-        logger.debug("setUrl(url={}) - start", url);
+        logger.trace("setUrl(url={}) - start", url);
         this.url = url;
     }
 
@@ -157,7 +175,7 @@ public class DbUnitTask extends Task
      */
     public void setUserid(String userId)
     {
-        logger.debug("setUserid(userId={}) - start", userId);
+        logger.trace("setUserid(userId={}) - start", userId);
         this.userId = userId;
     }
 
@@ -166,7 +184,7 @@ public class DbUnitTask extends Task
      */
     public void setPassword(String password)
     {
-        logger.debug("setPassword(password=*****) - start");
+        logger.trace("setPassword(password=*****) - start");
         this.password = password;
     }
 
@@ -175,7 +193,7 @@ public class DbUnitTask extends Task
      */
     public void setSchema(String schema)
     {
-        logger.debug("setSchema(schema={}) - start", schema);
+        logger.trace("setSchema(schema={}) - start", schema);
         this.schema = schema;
     }
 
@@ -184,7 +202,7 @@ public class DbUnitTask extends Task
      */
     public void setUseQualifiedTableNames(Boolean useQualifiedTableNames)
     {
-        logger.debug("setUseQualifiedTableNames(useQualifiedTableNames={}) - start", String.valueOf(useQualifiedTableNames));
+        logger.trace("setUseQualifiedTableNames(useQualifiedTableNames={}) - start", String.valueOf(useQualifiedTableNames));
         this.useQualifiedTableNames = useQualifiedTableNames;
     }
 
@@ -195,25 +213,25 @@ public class DbUnitTask extends Task
      */
     public void setSupportBatchStatement(Boolean supportBatchStatement)
     {
-        logger.debug("setSupportBatchStatement(supportBatchStatement={}) - start", String.valueOf(supportBatchStatement));
+        logger.trace("setSupportBatchStatement(supportBatchStatement={}) - start", String.valueOf(supportBatchStatement));
         this.supportBatchStatement = supportBatchStatement;
     }
 
     public void setDatatypeWarning(Boolean datatypeWarning)
     {
-        logger.debug("setDatatypeWarning(datatypeWarning={}) - start", String.valueOf(datatypeWarning));
+        logger.trace("setDatatypeWarning(datatypeWarning={}) - start", String.valueOf(datatypeWarning));
         this.datatypeWarning = datatypeWarning;
     }
 
     public void setDatatypeFactory(String datatypeFactory)
     {
-        logger.debug("setDatatypeFactory(datatypeFactory={}) - start", datatypeFactory);
+        logger.trace("setDatatypeFactory(datatypeFactory={}) - start", datatypeFactory);
         this.dataTypeFactory = datatypeFactory;
     }
 
     public void setEscapePattern(String escapePattern)
     {
-        logger.debug("setEscapePattern(escapePattern={}) - start", escapePattern);
+        logger.trace("setEscapePattern(escapePattern={}) - start", escapePattern);
         this.escapePattern = escapePattern;
     }
 
@@ -230,7 +248,7 @@ public class DbUnitTask extends Task
 
     public void addDbConfig(DbConfig dbConfig)
     {
-        logger.debug("addDbConfig(dbConfig={}) - start", dbConfig);
+        logger.trace("addDbConfig(dbConfig={}) - start", dbConfig);
         this.dbConfig = dbConfig;
     }
     
@@ -239,7 +257,7 @@ public class DbUnitTask extends Task
      */
     public void setClasspath(Path classpath)
     {
-        logger.debug("setClasspath(classpath={}) - start", classpath);
+        logger.trace("setClasspath(classpath={}) - start", classpath);
         if (this.classpath == null)
         {
             this.classpath = classpath;
@@ -255,7 +273,7 @@ public class DbUnitTask extends Task
      */
     public Path createClasspath()
     {
-        logger.debug("createClasspath() - start");
+        logger.trace("createClasspath() - start");
 
         if (this.classpath == null)
         {
@@ -269,7 +287,7 @@ public class DbUnitTask extends Task
      */
     public void setClasspathRef(Reference r)
     {
-        logger.debug("setClasspathRef(r={}) - start", r);
+        logger.trace("setClasspathRef(r={}) - start", r);
 
         createClasspath().setRefid(r);
     }
@@ -287,7 +305,7 @@ public class DbUnitTask extends Task
      */
     public void addOperation(Operation operation)
     {
-        logger.debug("addOperation({}) - start", operation);
+        logger.trace("addOperation({}) - start", operation);
 
         steps.add(operation);
     }
@@ -297,7 +315,7 @@ public class DbUnitTask extends Task
      */
     public void addCompare(Compare compare)
     {
-        logger.debug("addCompare({}) - start", compare);
+        logger.trace("addCompare({}) - start", compare);
 
         steps.add(compare);
     }
@@ -307,7 +325,7 @@ public class DbUnitTask extends Task
      */
     public void addExport(Export export)
     {
-        logger.debug("addExport(export={}) - start", export);
+        logger.trace("addExport(export={}) - start", export);
 
         steps.add(export);
     }
@@ -348,7 +366,7 @@ public class DbUnitTask extends Task
      */
     public void execute() throws BuildException
     {
-        logger.debug("execute() - start");
+        logger.trace("execute() - start");
 
         try
         {
@@ -388,7 +406,7 @@ public class DbUnitTask extends Task
 
     protected IDatabaseConnection createConnection() throws SQLException
     {
-        logger.debug("createConnection() - start");
+        logger.trace("createConnection() - start");
 
         if (driver == null)
         {
@@ -475,6 +493,8 @@ public class DbUnitTask extends Task
     protected IDatabaseConnection createDatabaseConnection(Connection jdbcConnection,
             String dbSchema) 
     {
+        logger.trace("createDatabaseConnection(jdbcConnection={}, dbSchema={}) - start", jdbcConnection, dbSchema);
+
         IDatabaseConnection connection = null;
         try
         {

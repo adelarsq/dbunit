@@ -23,8 +23,11 @@ package org.dbunit.database;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.database.statement.PreparedStatementFactory;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
@@ -94,15 +97,16 @@ public class DatabaseConfig
         new ConfigProperty(PROPERTY_BATCH_SIZE, Integer.class, false),
         new ConfigProperty(PROPERTY_FETCH_SIZE, Integer.class, false),
         new ConfigProperty(PROPERTY_METADATA_HANDLER, IMetadataHandler.class, false),
-        new ConfigProperty(FEATURE_CASE_SENSITIVE_TABLE_NAMES, Object.class, false),
-        new ConfigProperty(FEATURE_QUALIFIED_TABLE_NAMES, Object.class, false),
-        new ConfigProperty(FEATURE_BATCHED_STATEMENTS, Object.class, false),
-        new ConfigProperty(FEATURE_DATATYPE_WARNING, Object.class, false),
-        new ConfigProperty(FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES, Object.class, false),
+        new ConfigProperty(FEATURE_CASE_SENSITIVE_TABLE_NAMES, Boolean.class, false),
+        new ConfigProperty(FEATURE_QUALIFIED_TABLE_NAMES, Boolean.class, false),
+        new ConfigProperty(FEATURE_BATCHED_STATEMENTS, Boolean.class, false),
+        new ConfigProperty(FEATURE_DATATYPE_WARNING, Boolean.class, false),
+        new ConfigProperty(FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES, Boolean.class, false),
     };
 
     /**
      * A list of all features as strings
+     * @deprecated since 2.4.7 Use the {@link #ALL_PROPERTIES} where features are listed now as well
      */
     public static final String[] ALL_FEATURES = new String[] {
         FEATURE_CASE_SENSITIVE_TABLE_NAMES,
@@ -161,6 +165,7 @@ public class DatabaseConfig
      *
      * @param name the feature id
      * @param value the feature status
+     * @deprecated since 2.4.7 Use the {@link #setProperty(String, Object)} also for features
      */
     public void setFeature(String name, boolean value)
     {
@@ -174,6 +179,7 @@ public class DatabaseConfig
      *
      * @param name the feature id
      * @return the feature status
+     * @deprecated since 2.4.7 Use the {@link #getProperty(String)} where features are listed now as well
      */
     public boolean getFeature(String name)
     {
@@ -207,6 +213,8 @@ public class DatabaseConfig
     {
         logger.trace("setProperty(name={}, value={}) - start", name, value);
         
+        value = convertIfNeeded(name, value);
+        
         // Validate if the type of the given object is correct
         checkObjectAllowed(name, value);
         
@@ -225,6 +233,25 @@ public class DatabaseConfig
         logger.trace("getProperty(name={}) - start", name);
 
         return _propertyMap.get(name);
+    }
+
+    private Object convertIfNeeded(String property, Object value) 
+    {
+        logger.trace("convertIfNeeded(property={}, value={}) - start", property, value);
+
+        ConfigProperty prop = findByName(property);
+        Class allowedPropType = prop.getPropertyType();
+
+        if(allowedPropType == Boolean.class || allowedPropType == boolean.class)
+        {
+            // String -> Boolean is a special mapping which is allowed
+            if(value instanceof String)
+            {
+                return Boolean.valueOf((String)value);
+            }
+        }
+        
+        return value;
     }
 
     /**
@@ -272,6 +299,108 @@ public class DatabaseConfig
     }
     
     /**
+     * Sets the given properties on the {@link DatabaseConfig} instance using the given String values.
+     * This is useful to set properties configured as strings by a build tool like ant or maven. 
+     * If the required property type is an object it uses reflection to create an instance of the class
+     * specified as string.
+     * @param stringProperties The properties as strings. The key of the properties can be either the long or
+     * the short name.
+     * @throws DatabaseUnitException 
+     */
+    public void setPropertiesByString(Properties stringProperties) throws DatabaseUnitException
+    {
+        for (Iterator iterator = stringProperties.entrySet().iterator(); iterator.hasNext();) {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            
+            String propKey = (String)entry.getKey();
+            String propValue = (String)entry.getValue();
+
+            ConfigProperty dbunitProp = DatabaseConfig.findByName(propKey);
+            if(dbunitProp == null)
+            {
+                logger.debug("Did not find long name property {} - trying short name...", entry);
+                dbunitProp = DatabaseConfig.findByShortName(propKey);
+            }
+
+            if(dbunitProp == null)
+            {
+                logger.info("Could not set property '" + entry + "' - not found in the list of known properties.");
+            }
+            else
+            {
+                String fullPropName = dbunitProp.getProperty();
+                Object obj = createObjectFromString(dbunitProp, propValue);
+                this.setProperty(fullPropName, obj);
+            }
+        }
+    }
+    
+    private Object createObjectFromString(ConfigProperty dbunitProp, String propValue) 
+    throws DatabaseUnitException 
+    {
+        if (dbunitProp == null) {
+            throw new NullPointerException(
+                    "The parameter 'dbunitProp' must not be null");
+        }
+        if (propValue == null) {
+            // Null must not be casted
+            return null;
+        }
+        
+        Class targetClass = dbunitProp.getPropertyType();
+        if(targetClass == String.class)
+        {
+            return propValue;
+        }
+        else if(targetClass == Boolean.class)
+        {
+            return Boolean.valueOf(propValue);
+        }
+        else if(targetClass == String[].class)
+        {
+            String[] result = propValue.split(",");
+            for (int i = 0; i < result.length; i++) {
+                result[i] = result[i].trim();
+            }
+            return result;
+        }
+        else if(targetClass == Integer.class)
+        {
+            return new Integer(propValue);
+        }
+        else
+        {
+            // Try via reflection
+            return createInstance(propValue);
+        }
+    }
+
+    private Object createInstance(String className) throws DatabaseUnitException 
+    {
+        // Setup data type factory for example.
+        try
+        {
+            Object o = Class.forName(className).newInstance();
+            return o;
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new DatabaseUnitException(
+                    "Class Not Found: '" + className + "' could not be loaded", e);
+        }
+        catch (IllegalAccessException e)
+        {
+            throw new DatabaseUnitException(
+                    "Illegal Access: '" + className + "' could not be loaded", e);
+        }
+        catch (InstantiationException e)
+        {
+            throw new DatabaseUnitException(
+                    "Instantiation Exception: '" + className + "' could not be loaded", e);
+        }
+    }
+
+    /**
      * Searches the {@link ConfigProperty} object for the property with the given name
      * @param property The property for which the enumerated object should be resolved
      * @return The property object or <code>null</code> if it was not found.
@@ -288,6 +417,28 @@ public class DatabaseConfig
         return null;
     }
     
+    /**
+     * Searches the {@link ConfigProperty} object for the property with the given name
+     * @param propShortName The property short name for which the enumerated object should be resolved.
+     * Example: the short name of {@value #PROPERTY_FETCH_SIZE} is <code>fetchSize</code> which is the
+     * last part of the fully qualified URL.
+     * @return The property object or <code>null</code> if it was not found.
+     */
+    public static final ConfigProperty findByShortName(String propShortName) 
+    {
+        for (int i = 0; i < DatabaseConfig.ALL_PROPERTIES.length; i++) {
+            String fullProperty = DatabaseConfig.ALL_PROPERTIES[i].getProperty();
+            if(fullProperty.endsWith(propShortName))
+            {
+                return DatabaseConfig.ALL_PROPERTIES[i];
+            }
+        }
+        // Property not found
+        logger.info("The property ending with '" + propShortName + "' was not found. " +
+                "Please notify a dbunit developer to add the property to the " + DatabaseConfig.class);
+        return null;
+    }
+
     public String toString()
     {
     	StringBuffer sb = new StringBuffer();
