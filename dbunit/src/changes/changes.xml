@@ -10,7 +10,9 @@
   </properties>
 
   <body>
-    <release version="2.4.7-SNAPSHOT" date="TBD" description="(no description)">
+    <release version="2.4.8" date="TBD" description="TBD">
+    </release>
+    <release version="2.4.7" date="Nov 09, 2009" description="Bugfixes and some non breaking refactoring">
       <action dev="gommma" type="fix" issue="2685615" due-to="lumpynose">dtd for XmlDataSet</action>
       <action dev="gommma" type="fix" issue="2866150" due-to="rlogiacco">Column sensing not available for InputStream</action>
       <action dev="gommma" type="fix" issue="2741077" due-to="dnap">DatabaseSequenceFilter fails on case sensitive tables</action>
