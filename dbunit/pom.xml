@@ -4,7 +4,7 @@
 
   <groupId>org.dbunit</groupId>
   <artifactId>dbunit</artifactId>
-  <version>2.4.7-SNAPSHOT</version>
+  <version>2.4.7</version>
   <packaging>jar</packaging>
   <name>DbUnit Framework</name>
   <url>http://dbunit.sourceforge.net</url>
@@ -25,9 +25,9 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</connection>
-    <developerConnection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</developerConnection>
-    <url>http://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk</url>
+    <connection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/tags/dbunit-2.4.7</connection>
+    <developerConnection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/tags/dbunit-2.4.7</developerConnection>
+    <url>http://dbunit.svn.sourceforge.net/svnroot/dbunit/tags/dbunit-2.4.7</url>
   </scm>
   <issueManagement>
     <system>SourceForge</system>
@@ -634,7 +634,7 @@
         <dbunit.profile.url>jdbc:hsqldb:mem:.</dbunit.profile.url>
         <dbunit.profile.schema>PUBLIC</dbunit.profile.schema>
         <dbunit.profile.user>sa</dbunit.profile.user>
-        <dbunit.profile.password></dbunit.profile.password>
+        <dbunit.profile.password />
         <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
       </properties>
     </profile>
@@ -747,7 +747,7 @@
         <dbunit.profile>mysql</dbunit.profile>
         <dbunit.profile.driverClass>com.mysql.jdbc.Driver</dbunit.profile.driverClass>
         <dbunit.profile.url>jdbc:mysql://localhost:3306/dbunit</dbunit.profile.url>
-        <dbunit.profile.schema></dbunit.profile.schema>
+        <dbunit.profile.schema />
         <dbunit.profile.user>dbunit</dbunit.profile.user>
         <dbunit.profile.password>dbunit</dbunit.profile.password>
         <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,INSERT_IDENTITY,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
@@ -812,7 +812,7 @@
         <dbunit.profile.url>jdbc:h2:target/h2/test</dbunit.profile.url>
         <dbunit.profile.schema>PUBLIC</dbunit.profile.schema>
         <dbunit.profile.user>sa</dbunit.profile.user>
-        <dbunit.profile.password></dbunit.profile.password>
+        <dbunit.profile.password />
         <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
       </properties>
       <dependencies>
