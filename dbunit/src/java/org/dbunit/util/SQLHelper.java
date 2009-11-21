@@ -390,14 +390,7 @@ public class SQLHelper {
         //If Types.DISTINCT like SQL DOMAIN, then get Source Date Type of SQL-DOMAIN
         if(sqlType == java.sql.Types.DISTINCT)
         {
-            try {
-                sqlType = resultSet.getInt("SOURCE_DATA_TYPE");
-            }
-            catch(SQLException e){
-                logger.warn("Could not retrieve the 'SOURCE_DATA_TYPE' property because not yet running on Java 1.5. " +
-                        "Table=" + tableName + ", Column=" +columnName, e);
-                // Ignore this one here
-            }
+            sqlType = resultSet.getInt("SOURCE_DATA_TYPE");
         }
         
         String sqlTypeName = resultSet.getString(6);
