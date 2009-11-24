@@ -34,6 +34,7 @@ public class AllTests extends TestSuite
     {
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(PostgresqlDataTypeFactoryTest.class));
+        suite.addTest(new TestSuite(SQLHelperDomainPostgreSQLTest.class));
         return suite;
     }
 }
