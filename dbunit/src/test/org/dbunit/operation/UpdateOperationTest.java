@@ -301,7 +301,7 @@ public class UpdateOperationTest extends AbstractDatabaseTest
 
             {
                 ITable tableAfter = _connection.createDataSet().getTable(tableName);
-                assertEquals("count after", 2, tableAfter.getRowCount());
+                assertEquals("count after", 8, tableAfter.getRowCount());
                 Assertion.assertEquals(afterDataSet.getTable(tableName), tableAfter);
             }
         }

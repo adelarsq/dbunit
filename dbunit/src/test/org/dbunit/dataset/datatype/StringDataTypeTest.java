@@ -25,6 +25,7 @@ import org.dbunit.database.ExtendedMockSingleRowResultSet;
 import org.dbunit.dataset.ITable;
 
 import java.sql.Types;
+import java.sql.SQLException;
 
 /**
  * @author Manuel Laflamme
@@ -133,24 +134,62 @@ public class StringDataTypeTest extends AbstractDataTypeTest
         }
     }
 
+    /**
+     * Return a bad clob that throws SQLException on all its operations.
+     */
+    private Object getBadClob()
+    {
+        // need to use proxy / reflection to work arround Clob differences
+        // in jdk 1.4+
+        java.lang.reflect.InvocationHandler alwaysThrowSqlExceptionHandler =
+            new java.lang.reflect.InvocationHandler()
+        {
+            public Object invoke(Object proxy, java.lang.reflect.Method method, Object[] args)
+                throws Throwable
+            {
+                if ("toString".equals(method.getName()))
+                {
+                    return this.toString();
+                }
+                else if ("equals".equals(method.getName()))
+                {
+                    return Boolean.FALSE;
+                }
+                throw new SQLException();
+            }
+        };
+
+        return java.lang.reflect.Proxy.newProxyInstance(
+            java.sql.Clob.class.getClassLoader(), new Class[] { java.sql.Clob.class },
+            alwaysThrowSqlExceptionHandler);
+    }
+
     public void testTypeCastInvalid() throws Exception
     {
         Object[] values = {
-            new Object()
+            new Object() { public String toString() { return "ABC123";} },
+            new Object() { public String toString() { return "XXXX";} },
+            new Object() { public String toString() { return "X";} },
         };
 
         for (int i = 0; i < TYPES.length; i++)
         {
             for (int j = 0; j < values.length; j++)
             {
-                try
-                {
-                    TYPES[i].typeCast(values[j]);
-                    fail("Should throw TypeCastException");
-                }
-                catch (TypeCastException e)
-                {
-                }
+                assertEquals(TYPES[i].typeCast(values[j]), values[j].toString());
+            }
+        }
+
+        Object badClob = getBadClob();
+        for (int i = 0; i < TYPES.length; i++)
+        {
+            try
+            {
+                TYPES[i].typeCast(badClob);
+                fail("Should throw TypeCastException");
+            }
+            catch (TypeCastException e)
+            {
             }
         }
     }
@@ -197,7 +236,7 @@ public class StringDataTypeTest extends AbstractDataTypeTest
     public void testCompareInvalid() throws Exception
     {
         Object[] values1 = {
-            new Object(),
+            getBadClob(),
         };
         Object[] values2 = {
             null,

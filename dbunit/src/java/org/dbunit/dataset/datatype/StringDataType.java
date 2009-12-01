@@ -129,7 +129,11 @@ public class StringDataType extends AbstractDataType
             }
         }
 
-        throw new TypeCastException(value, this);
+        logger.warn("Unknown/unsupported object type '{}' - " +
+                "will invoke toString() as last fallback which " +
+                "might produce undesired results",
+                value.getClass().getName());
+        return value.toString();
     }
 
     public Object getSqlValue(int column, ResultSet resultSet)

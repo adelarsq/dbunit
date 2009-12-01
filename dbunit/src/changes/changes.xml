@@ -12,6 +12,7 @@
   <body>
     <release version="2.4.8" date="TBD" description="TBD">
       <action dev="gommma" type="fix" issue="2887115" due-to="unwissender2009">SQL: "Create Domain" ... Data Types are not supported.</action>
+      <action dev="jbhurst" type="add" issue="2875253" due-to="caseylucas">Additional refinements for Oracle SDO_GEOMETRY datatype</action>
     </release>
     <release version="2.4.7" date="Nov 09, 2009" description="Bugfixes and some non breaking refactoring">
       <action dev="gommma" type="fix" issue="2685615" due-to="lumpynose">dtd for XmlDataSet</action>
