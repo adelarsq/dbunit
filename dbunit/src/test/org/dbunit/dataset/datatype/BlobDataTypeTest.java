@@ -20,13 +20,13 @@
  */
 package org.dbunit.dataset.datatype;
 
+import java.sql.Blob;
 import java.sql.Types;
 
 import junit.framework.TestCase;
 import junitx.framework.ArrayAssert;
 
 import org.dbunit.database.statement.MockPreparedStatement;
-import org.hsqldb.jdbc.jdbcBlob;
 
 /**
  * @author gommma
@@ -50,9 +50,9 @@ public class BlobDataTypeTest extends TestCase
 	{
 		// Create a hsqldb specific blob
 		byte[] byteArray = new byte[]{1, 2, 3, 4, 5, 6};
-		jdbcBlob jdbcBlob = new jdbcBlob(byteArray);
+		Blob blob = new TestBlob(byteArray);
 		MockPreparedStatement statement = new MockPreparedStatement();
-		TYPE.setSqlValue(jdbcBlob, 1, statement);
+		TYPE.setSqlValue(blob, 1, statement);
 		assertEquals(1, statement.getLastSetObjectParamIndex());
 		assertEquals(Types.BLOB, statement.getLastSetObjectTargetSqlType());
 		assertEquals(byte[].class, statement.getLastSetObjectParamValue().getClass());

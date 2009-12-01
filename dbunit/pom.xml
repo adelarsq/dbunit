@@ -287,12 +287,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-      <version>1.8.0.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>1.1.113</version>
@@ -634,9 +628,17 @@
         <dbunit.profile.url>jdbc:hsqldb:mem:.</dbunit.profile.url>
         <dbunit.profile.schema>PUBLIC</dbunit.profile.schema>
         <dbunit.profile.user>sa</dbunit.profile.user>
-        <dbunit.profile.password />
+        <dbunit.profile.password></dbunit.profile.password>
         <dbunit.profile.unsupportedFeatures>BLOB,CLOB,SCROLLABLE_RESULTSET,INSERT_IDENTITY,TRUNCATE_TABLE,SDO_GEOMETRY</dbunit.profile.unsupportedFeatures>
       </properties>
+      <dependencies>
+        <dependency>
+          <groupId>hsqldb</groupId>
+          <artifactId>hsqldb</artifactId>
+          <version>1.8.0.1</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
     </profile>
     <!-- "original" OracleDataTypeFactory (NOT 10g) with Oracle 10 JDBC driver for Java 1.4 -->
     <profile>
