@@ -175,7 +175,7 @@ public class DatabaseExportSample
          need to explicitly activate client values writing. The way to activate this feature is vendor-specific. 
          <br/>
 		DbUnit provides this functionality for MS SQL Server with the 
-		<a href="components.html#IdentityInsertOperation">IdentityInsertOperation</a> class. 
+		<a href="components.html#InsertIdentityOperation">InsertIdentityOperation</a> class. 
       </p>
       </answer>
     </faq>
@@ -795,7 +795,7 @@ PostgresqlDataTypeFactory factory = new PostgresqlDataTypeFactory(){
         exception when I use InsertIdentityOperation?
       </question>
       <answer>
-        <p>If you are using the Microsoft driver (i.e. <a class="code">com.microsoft.jdbc.sqlserver.SQLServerDriver</a>), 
+        <p>If you are using the Microsoft driver (i.e. <a class="code">com.microsoft.sqlserver.jdbc.SQLServerDriver</a>), 
         you need to use the <a class="code">SelectMethod=cursor</a> parameter 
         in the JDBC connection string (as outlined by <a href="http://forum.java.sun.com/thread.jsp?forum=48&amp;thread=184797">this 
         JDBC thread</a>). Your database Url would look something like: 

@@ -332,7 +332,7 @@ dataSet.addReplacementObject("[NULL]", null);]]></source>
         of a transaction.</td>
         </tr>
         <tr> 
-          <td><a name="InsertIdentityOperation" href="apidocs/org/dbunit/ext/mssql/InsertIdentityOperation.html">IdentityInsertOperation</a></td>
+          <td><a name="InsertIdentityOperation" href="apidocs/org/dbunit/ext/mssql/InsertIdentityOperation.html">InsertIdentityOperation</a></td>
           <td>This operation decorates an insert operation and disables the MS SQL 
         Server automatic identifier generation (IDENTITY) during its execution. 
         Use following constants InsertIdentityOperation.INSERT, InsertIdentityOperation.CLEAN_INSERT 
