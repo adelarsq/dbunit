@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
 
 /**
  * @author John Hurst
@@ -54,46 +53,46 @@ public class TestBlob implements Blob
 
     public InputStream getBinaryStream() throws SQLException
     {
-        throw new SQLFeatureNotSupportedException("TestBlob does not support getBinaryStream()");
+        throw new SQLException("TestBlob does not support getBinaryStream()");
     }
 
     public long position(byte[] pattern, long start) throws SQLException
     {
-        throw new SQLFeatureNotSupportedException("TestBlob does not support position(byte[], long)");
+        throw new SQLException("TestBlob does not support position(byte[], long)");
     }
 
     public long position(Blob pattern, long start) throws SQLException
     {
-        throw new SQLFeatureNotSupportedException("TestBlob does not support position(Blob, long)");
+        throw new SQLException("TestBlob does not support position(Blob, long)");
     }
 
     public int setBytes(long pos, byte[] bytes) throws SQLException
     {
-        throw new SQLFeatureNotSupportedException("TestBlob does not support setBytes(long, byte[])");
+        throw new SQLException("TestBlob does not support setBytes(long, byte[])");
     }
 
     public int setBytes(long pos, byte[] bytes, int offset, int len) throws SQLException
     {
-        throw new SQLFeatureNotSupportedException("TestBlob does not support setBytes(long, byte[], int, int)");
+        throw new SQLException("TestBlob does not support setBytes(long, byte[], int, int)");
     }
 
     public OutputStream setBinaryStream(long pos) throws SQLException
     {
-        throw new SQLFeatureNotSupportedException("TestBlob does not support setBinaryStream(long)");
+        throw new SQLException("TestBlob does not support setBinaryStream(long)");
     }
 
     public void truncate(long len) throws SQLException
     {
-        throw new SQLFeatureNotSupportedException("TestBlob does not support truncate(long)");
+        throw new SQLException("TestBlob does not support truncate(long)");
     }
 
     public void free() throws SQLException
     {
-        throw new SQLFeatureNotSupportedException("TestBlob does not support free()");
+        throw new SQLException("TestBlob does not support free()");
     }
 
     public InputStream getBinaryStream(long pos, long length) throws SQLException
     {
-        throw new SQLFeatureNotSupportedException("TestBlob does not support getBinaryStream(long, long)");
+        throw new SQLException("TestBlob does not support getBinaryStream(long, long)");
     }
 }
