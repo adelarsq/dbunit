@@ -15,6 +15,7 @@
       <action dev="jbhurst" type="add" issue="2875253" due-to="caseylucas">Additional refinements for Oracle SDO_GEOMETRY datatype</action>
       <action dev="jbhurst" type="add" issue="2921131" due-to="vlamp">Add timezone support for timestamp data type</action>
       <action dev="jbhurst" type="add" issue="2905970" due-to="pkamm">Upgrade to POI Version 3.5-FINAL</action>
+      <action dev="jbhurst" type="add" issue="2919427" due-to="dbamberghi (Daniele Bamberghi)">OracleDataTypeFactory recognises "SYS.XMLTYPE"</action>
     </release>
     <release version="2.4.7" date="Nov 09, 2009" description="Bugfixes and some non breaking refactoring">
       <action dev="gommma" type="fix" issue="2685615" due-to="lumpynose">dtd for XmlDataSet</action>

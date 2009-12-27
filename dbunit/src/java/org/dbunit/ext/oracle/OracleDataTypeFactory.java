@@ -87,7 +87,7 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
         }
 
         // XMLTYPE
-        if ("XMLTYPE".equals(sqlTypeName))
+        if ("XMLTYPE".equals(sqlTypeName) || "SYS.XMLTYPE".equals(sqlTypeName))
         {
             return ORACLE_XMLTYPE;
         }
@@ -162,3 +162,5 @@ public class OracleDataTypeFactory extends DefaultDataTypeFactory
         return super.createDataType(sqlType, sqlTypeName);
     }
 }
+
+ 	  	 
