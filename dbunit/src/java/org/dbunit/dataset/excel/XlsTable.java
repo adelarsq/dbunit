@@ -30,9 +30,9 @@ import java.util.TimeZone;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.dbunit.dataset.AbstractTable;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
@@ -150,7 +150,7 @@ class XlsTable extends AbstractTable
         {
             case HSSFCell.CELL_TYPE_NUMERIC:
                 HSSFCellStyle style = cell.getCellStyle();
-                if (HSSFDateUtil.isCellDateFormatted(cell))
+                if (DateUtil.isCellDateFormatted(cell))
                 {
                     return getDateValue(cell);
                 }
@@ -203,7 +203,7 @@ class XlsTable extends AbstractTable
         logger.debug("getDateValue(cell={}) - start", cell);
         
         double numericValue = cell.getNumericCellValue();
-        Date date = HSSFDateUtil.getJavaDate(numericValue);
+        Date date = DateUtil.getJavaDate(numericValue);
         // Add the timezone offset again because it was subtracted automatically by Apache-POI (we need UTC)
         long tzOffset = TimeZone.getDefault().getOffset(date.getTime());
         date = new Date(date.getTime() + tzOffset);
