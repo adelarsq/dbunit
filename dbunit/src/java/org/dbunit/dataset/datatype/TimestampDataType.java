@@ -26,6 +26,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.dbunit.dataset.ITable;
 import org.slf4j.Logger;
@@ -83,27 +87,30 @@ public class TimestampDataType extends AbstractDataType
         {
             String stringValue = (String)value;
 
-            // Probably a java.sql.Date, try it just in case!
-            if (stringValue.length() == 10)
-            {
-                try
-                {
-                    long time = java.sql.Date.valueOf(stringValue).getTime();
-                    return new java.sql.Timestamp(time);
-                }
-                catch (IllegalArgumentException e)
-                {
-                    // Was not a java.sql.Date, let Timestamp handle this value
-                }
-            }
+            String[] patterns = {
+            		"yyyy-MM-dd HH:mm:ss.SSS Z",
+            		"yyyy-MM-dd HH:mm:ss.SSS",
+            		"yyyy-MM-dd HH:mm:ss Z",
+            		"yyyy-MM-dd HH:mm:ss",
+            		"yyyy-MM-dd HH:mm Z",
+            		"yyyy-MM-dd HH:mm",
+            		"yyyy-MM-dd Z",
+            		"yyyy-MM-dd"
+            };
 
-            try
-            {
-                return java.sql.Timestamp.valueOf(stringValue);
-            }
-            catch (IllegalArgumentException e)
-            {
-                throw new TypeCastException(value, this, e);
+            for (int i = 0; i < patterns.length; ++i) {
+            	String p = patterns[i];
+	            try
+	            {
+	            	DateFormat df = new SimpleDateFormat(p);
+	            	Date date = df.parse(stringValue);
+	            	return new java.sql.Timestamp(date.getTime());
+	            }
+	            catch (ParseException e)
+	            {
+	            	if (i < patterns.length) continue;
+	            	throw new TypeCastException(value, this, e);
+	            }
             }
         }
 

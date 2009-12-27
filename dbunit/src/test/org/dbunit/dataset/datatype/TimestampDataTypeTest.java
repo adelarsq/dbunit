@@ -28,6 +28,9 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * @author Manuel Laflamme
@@ -69,6 +72,35 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
         assertEquals("is date/time", true, THIS_TYPE.isDateTime());
     }
 
+    private static Timestamp makeTimestamp(int year, int month, int day, int hour, int minute, int second, int millis, TimeZone timeZone)
+    {
+        Calendar cal = new GregorianCalendar(timeZone);
+        cal.clear();
+        cal.set(year, month, day, hour, minute, second);
+        cal.set(Calendar.MILLISECOND, millis);
+        return new Timestamp(cal.getTime().getTime());
+    }
+
+    private static Timestamp makeTimestamp(int year, int month, int day, int hour, int minute, int second, int millis, String timeZone)
+    {
+       return makeTimestamp(year, month, day, hour, minute, second, millis, TimeZone.getTimeZone(timeZone));
+    }
+
+    private static Timestamp makeTimestamp(int year, int month, int day, int hour, int minute, int second, int millis)
+    {
+        return makeTimestamp(year, month, day, hour, minute, second, millis, TimeZone.getDefault());
+    }
+
+    private static Timestamp makeTimestamp(int year, int month, int day, int hour, int minute, int second, String timeZone)
+    {
+        return makeTimestamp(year, month, day, hour, minute, second, 0, TimeZone.getTimeZone(timeZone));
+    }
+
+    private static Timestamp makeTimestamp(int year, int month, int day, int hour, int minute, int second)
+    {
+        return makeTimestamp(year, month, day, hour, minute, second, 0, TimeZone.getDefault());
+    }
+
     public void testTypeCast() throws Exception
     {
         Object[] values = {
@@ -79,6 +111,11 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
             new Timestamp(1234).toString(),
             new Date(1234).toString(),
             new java.util.Date(1234),
+            "1995-01-07 01:22:41.923 -0500",
+            "1995-01-07 01:22:41.923",
+            "1995-01-07 01:22:41 -0500",
+            "1995-01-07 01:22:41",
+            "2008-11-27 14:52:38 +0100"
         };
 
         Timestamp[] expected = {
@@ -89,6 +126,11 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
             new Timestamp(1234),
             new Timestamp(Date.valueOf((new Date(1234).toString())).getTime()),
             new Timestamp(1234),
+            makeTimestamp(1995, 0, 7, 1, 22, 41, 923, "America/New_York"),
+            makeTimestamp(1995, 0, 7, 1, 22, 41, 923),
+            makeTimestamp(1995, 0, 7, 1, 22, 41, "America/New_York"),
+            makeTimestamp(1995, 0, 7, 1, 22, 41),
+            makeTimestamp(2008, 10, 27, 14, 52, 38, "Europe/Berlin")
         };
 
         assertEquals("actual vs expected count", values.length, expected.length);
