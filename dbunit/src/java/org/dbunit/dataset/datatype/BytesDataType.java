@@ -134,7 +134,7 @@ public class BytesDataType extends AbstractDataType
                     }
                     catch (FileNotFoundException e2)
                     {
-                        logger.info("Assuming given string to be Base64 and not a URI or File");
+                        logger.debug("Assuming given string to be Base64 and not a URI or File");
                         // Not a file name either
                         return Base64.decode(stringValue);
                     }

@@ -122,7 +122,7 @@ public class DatabaseTableMetaData extends AbstractTableMetaData
              if(!caseSensitiveMetaData)
              {
                  _originalTableName = SQLHelper.correctCase(tableName, jdbcConnection);
-                 SQLHelper.logInfoIfValueChanged(tableName, _originalTableName, "Corrected table name:", DatabaseTableMetaData.class);
+                 SQLHelper.logDebugIfValueChanged(tableName, _originalTableName, "Corrected table name:", DatabaseTableMetaData.class);
              }
              else
              {

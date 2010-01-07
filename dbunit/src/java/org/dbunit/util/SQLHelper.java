@@ -622,6 +622,23 @@ public class SQLHelper {
     }
 
     /**
+     * Checks whether two given values are unequal and if so print a log message (level DEBUG)
+     * @param oldValue The old value of a property
+     * @param newValue The new value of a property
+     * @param message The message to be logged
+     * @param source The class which invokes this method - used for enriching the log message
+     * @since 2.4.8
+     */
+    public static final void logDebugIfValueChanged(String oldValue, String newValue, String message, Class source)
+    {
+        if (logger.isDebugEnabled())
+        {
+            if (oldValue != null && !oldValue.equals(newValue))
+                logger.debug("{}. {} oldValue={} newValue={}", new Object[] {source, message, oldValue, newValue});
+        }
+    }
+
+    /**
      * @param tableName
      * @param dbIdentifierQuoteString
      * @return
