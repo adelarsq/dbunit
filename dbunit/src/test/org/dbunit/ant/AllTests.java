@@ -33,7 +33,7 @@ public class AllTests extends TestSuite
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(DbUnitTaskTest.class));
+        suite.addTest(new TestSuite(DbUnitTaskIT.class));
         return suite;
     }
 }

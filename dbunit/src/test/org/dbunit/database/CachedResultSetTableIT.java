@@ -30,9 +30,9 @@ import org.dbunit.operation.DatabaseOperation;
  * @since Apr 11, 2003
  * @version $Revision$
  */
-public class CachedResultSetTableTest extends AbstractTableTest
+public class CachedResultSetTableIT extends AbstractTableTest
 {
-    public CachedResultSetTableTest(String s)
+    public CachedResultSetTableIT(String s)
     {
         super(s);
     }

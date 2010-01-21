@@ -21,7 +21,7 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.XmlDataSet;
@@ -35,9 +35,9 @@ import java.io.Reader;
  * @version $Revision$
  * @since Feb 19, 2002
  */
-public class CompositeOperationTest extends AbstractDatabaseTest
+public class CompositeOperationIT extends AbstractDatabaseIT
 {
-    public CompositeOperationTest(String s)
+    public CompositeOperationIT(String s)
     {
         super(s);
     }

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.HypersonicEnvironment;
 import org.dbunit.TestFeature;
@@ -48,12 +48,12 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
  * @version $Revision$
  * @since Mar 14, 2002
  */
-public class DatabaseTableMetaDataTest extends AbstractDatabaseTest
+public class DatabaseTableMetaDataIT extends AbstractDatabaseIT
 {
     
     public static final String TEST_TABLE = "TEST_TABLE";
     
-    public DatabaseTableMetaDataTest(String s)
+    public DatabaseTableMetaDataIT(String s)
     {
         super(s);
     }

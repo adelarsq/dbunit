@@ -25,7 +25,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.DatabaseProfile;
 import org.dbunit.IDatabaseTester;
 
@@ -34,12 +34,12 @@ import org.dbunit.IDatabaseTester;
  * @version $Revision$
  * @since Mar 26, 2002
  */
-public abstract class AbstractDatabaseConnectionTest extends AbstractDatabaseTest
+public abstract class AbstractDatabaseConnectionIT extends AbstractDatabaseIT
 {
 	private String schema;
 	private DatabaseProfile profile;
 	
-	public AbstractDatabaseConnectionTest(String s)
+	public AbstractDatabaseConnectionIT(String s)
     {
         super(s);
     }

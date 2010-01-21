@@ -25,7 +25,7 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.sql.SQLException;
 
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.TestFeature;
@@ -45,7 +45,6 @@ import org.dbunit.dataset.LowerCaseDataSet;
 import org.dbunit.dataset.NoSuchColumnException;
 import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.XmlDataSet;
 
@@ -54,9 +53,9 @@ import org.dbunit.dataset.xml.XmlDataSet;
  * @version $Revision$
  * @since Feb 19, 2002
  */
-public class InsertOperationTest extends AbstractDatabaseTest
+public class InsertOperationIT extends AbstractDatabaseIT
 {
-    public InsertOperationTest(String s)
+    public InsertOperationIT(String s)
     {
         super(s);
     }

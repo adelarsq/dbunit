@@ -27,7 +27,7 @@ import java.io.Reader;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.TestFeature;
 import org.dbunit.dataset.IDataSet;
@@ -39,9 +39,9 @@ import org.dbunit.dataset.xml.XmlDataSet;
  * @version $Revision$
  * @since Feb 21, 2002
  */
-public class TransactionOperationTest extends AbstractDatabaseTest
+public class TransactionOperationIT extends AbstractDatabaseIT
 {
-    public TransactionOperationTest(String s)
+    public TransactionOperationIT(String s)
     {
         super(s);
     }

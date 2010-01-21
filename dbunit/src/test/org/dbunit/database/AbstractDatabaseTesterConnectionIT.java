@@ -18,35 +18,29 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package org.dbunit.operation;
 
-import org.dbunit.TestFeature;
+package org.dbunit.database;
+
+import org.dbunit.AbstractDatabaseTesterIT;
 
 /**
- * @author Manuel Laflamme
- * @since Apr 13, 2003
- * @version $Revision$
+ * @author Andres Almiray
  */
-public class TruncateTableOperationTest extends DeleteAllOperationTest
+public abstract class AbstractDatabaseTesterConnectionIT extends AbstractDatabaseTesterIT
 {
-    public TruncateTableOperationTest(String s)
+    public AbstractDatabaseTesterConnectionIT(String s)
     {
         super(s);
     }
 
-    protected DatabaseOperation getDeleteAllOperation()
+    public final void testGetRowCount() throws Exception
     {
-        return new TruncateTableOperation();
-    }
+        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("EMPTY_TABLE", null));
+        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("EMPTY_TABLE"));
 
-    protected String getExpectedStament(String tableName)
-    {
-        return "truncate table " + tableName;
-    }
-    
-    protected boolean runTest(String testName) {
-      return environmentHasFeature(TestFeature.TRUNCATE_TABLE);
-    }
+        assertEquals("TEST_TABLE", 6, _connection.getRowCount("TEST_TABLE", null));
+        assertEquals("TEST_TABLE", 6, _connection.getRowCount("TEST_TABLE"));
 
+        assertEquals("PK_TABLE", 1, _connection.getRowCount("PK_TABLE", "where PK0 = 0"));
+    }
 }
-

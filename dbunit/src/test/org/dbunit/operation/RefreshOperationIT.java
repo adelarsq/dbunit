@@ -24,7 +24,7 @@ package org.dbunit.operation;
 import java.io.FileReader;
 import java.io.Reader;
 
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.Assertion;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
@@ -47,9 +47,9 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
  * @version $Revision$
  * @since Feb 19, 2002
  */
-public class RefreshOperationTest extends AbstractDatabaseTest
+public class RefreshOperationIT extends AbstractDatabaseIT
 {
-    public RefreshOperationTest(String s)
+    public RefreshOperationIT(String s)
     {
         super(s);
     }

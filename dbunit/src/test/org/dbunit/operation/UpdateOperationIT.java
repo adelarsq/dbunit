@@ -25,7 +25,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseEnvironment;
 import org.dbunit.TestFeature;
@@ -52,9 +52,9 @@ import org.dbunit.dataset.xml.XmlDataSet;
  * @version $Revision$
  * @since Feb 19, 2002
  */
-public class UpdateOperationTest extends AbstractDatabaseTest
+public class UpdateOperationIT extends AbstractDatabaseIT
 {
-    public UpdateOperationTest(String s)
+    public UpdateOperationIT(String s)
     {
         super(s);
     }

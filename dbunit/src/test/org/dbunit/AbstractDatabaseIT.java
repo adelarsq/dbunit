@@ -35,13 +35,13 @@ import org.slf4j.LoggerFactory;
  * @version $Revision$
  * @since Feb 18, 2002
  */
-public abstract class AbstractDatabaseTest extends DatabaseTestCase
+public abstract class AbstractDatabaseIT extends DatabaseTestCase
 {
     protected IDatabaseConnection _connection;
     
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public AbstractDatabaseTest(String s)
+    public AbstractDatabaseIT(String s)
     {
         super(s);
     }
@@ -70,7 +70,7 @@ public abstract class AbstractDatabaseTest extends DatabaseTestCase
      */
     protected String convertString(String str) throws Exception
     {
-        return str;
+        return getEnvironment().convertString(str);
     }
 
     ////////////////////////////////////////////////////////////////////////////

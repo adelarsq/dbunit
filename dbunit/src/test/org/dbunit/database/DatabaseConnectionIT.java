@@ -37,9 +37,9 @@ import org.dbunit.dataset.ITable;
  * @version $Revision$
  * @since Mar 26, 2002
  */
-public class DatabaseConnectionTest extends AbstractDatabaseConnectionTest
+public class DatabaseConnectionIT extends AbstractDatabaseConnectionIT
 {
-    public DatabaseConnectionTest(String s)
+    public DatabaseConnectionIT(String s)
     {
         super(s);
     }

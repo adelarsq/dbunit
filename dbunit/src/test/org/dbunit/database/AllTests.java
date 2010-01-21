@@ -34,19 +34,19 @@ public class AllTests extends TestSuite
     {
         TestSuite suite = new TestSuite();
         suite.addTest(org.dbunit.database.statement.AllTests.suite());
-        suite.addTest(new TestSuite(CachedResultSetTableTest.class));
+        suite.addTest(new TestSuite(CachedResultSetTableIT.class));
         suite.addTest(new TestSuite(DatabaseConfigTest.class));
-        suite.addTest(new TestSuite(DatabaseConnectionTest.class));
-        suite.addTest(new TestSuite(DatabaseDataSetTest.class));
+        suite.addTest(new TestSuite(DatabaseConnectionIT.class));
+        suite.addTest(new TestSuite(DatabaseDataSetIT.class));
         suite.addTest(new TestSuite(DatabaseSequenceFilterTest.class));
         suite.addTest(new TestSuite(DatabaseTableIteratorTest.class));
-        suite.addTest(new TestSuite(DatabaseTableMetaDataTest.class));
-        suite.addTest(new TestSuite(ForwardOnlyResultSetTableTest.class));
-        suite.addTest(new TestSuite(QueryDataSetTest.class));
+        suite.addTest(new TestSuite(DatabaseTableMetaDataIT.class));
+        suite.addTest(new TestSuite(ForwardOnlyResultSetTableIT.class));
+        suite.addTest(new TestSuite(QueryDataSetIT.class));
         suite.addTest(new TestSuite(PrimaryKeyFilteredTableWrapperTest.class));  
-        suite.addTest(new TestSuite(JdbcDatabaseTesterConnectionTest.class));
-        suite.addTest(new TestSuite(DefaultDatabaseTesterConnectionTest.class));
-        suite.addTest(new TestSuite(ResultSetTableMetaDataTest.class));
+        suite.addTest(new TestSuite(JdbcDatabaseTesterConnectionIT.class));
+        suite.addTest(new TestSuite(DefaultDatabaseTesterConnectionIT.class));
+        suite.addTest(new TestSuite(ResultSetTableMetaDataIT.class));
 
         return suite;
     }

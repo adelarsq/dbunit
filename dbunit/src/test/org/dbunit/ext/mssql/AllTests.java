@@ -34,7 +34,7 @@ public class AllTests extends TestSuite
     {
         TestSuite suite = new TestSuite();
 
-        suite.addTest(new TestSuite(InsertIdentityOperationTest.class));
+        suite.addTest(new TestSuite(InsertIdentityOperationIT.class));
         suite.addTest(new TestSuite(MsSqlDataTypeFactoryTest.class));
 
         return suite;

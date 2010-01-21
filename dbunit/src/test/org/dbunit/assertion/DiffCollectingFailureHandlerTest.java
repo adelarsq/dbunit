@@ -45,7 +45,7 @@ public class DiffCollectingFailureHandlerTest extends TestCase
 
     private IDataSet getDataSet() throws Exception
     {
-        return new FlatXmlDataSet(new FileReader(DbUnitAssertTest.FILE_PATH));
+        return new FlatXmlDataSet(new FileReader(DbUnitAssertIT.FILE_PATH));
     }
 
     public void testAssertTablesWithDifferentValues() throws Exception

@@ -21,7 +21,7 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.MockDatabaseConnection;
 import org.dbunit.database.statement.MockBatchStatement;
@@ -42,9 +42,9 @@ import org.dbunit.dataset.LowerCaseDataSet;
  * @version $Revision$
  * @since Feb 18, 2002
  */
-public class DeleteAllOperationTest extends AbstractDatabaseTest
+public class DeleteAllOperationIT extends AbstractDatabaseIT
 {
-    public DeleteAllOperationTest(String s)
+    public DeleteAllOperationIT(String s)
     {
         super(s);
     }

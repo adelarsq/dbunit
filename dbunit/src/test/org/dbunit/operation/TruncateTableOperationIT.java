@@ -18,43 +18,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package org.dbunit.operation;
 
-import org.dbunit.AbstractDatabaseTest;
-import org.dbunit.database.MockDatabaseConnection;
+import org.dbunit.TestFeature;
 
 /**
  * @author Manuel Laflamme
+ * @since Apr 13, 2003
  * @version $Revision$
- * @since Mar 6, 2002
  */
-public class CloseConnectionOperationTest extends AbstractDatabaseTest
+public class TruncateTableOperationIT extends DeleteAllOperationIT
 {
-    public CloseConnectionOperationTest(String s)
+    public TruncateTableOperationIT(String s)
     {
         super(s);
     }
 
-    public void testMockExecute() throws Exception
+    protected DatabaseOperation getDeleteAllOperation()
     {
-        // setup mock objects
-        MockDatabaseOperation operation = new MockDatabaseOperation();
-        operation.setExpectedExecuteCalls(1);
+        return new TruncateTableOperation();
+    }
 
-        MockDatabaseConnection connection = new MockDatabaseConnection();
-        connection.setExpectedCloseCalls(1);
-
-        // execute operation
-        new CloseConnectionOperation(operation).execute(connection, null);
-
-        // verify
-        operation.verify();
-        connection.verify();
+    protected String getExpectedStament(String tableName)
+    {
+        return "truncate table " + tableName;
+    }
+    
+    protected boolean runTest(String testName) {
+      return environmentHasFeature(TestFeature.TRUNCATE_TABLE);
     }
 
 }
-
-
-
 

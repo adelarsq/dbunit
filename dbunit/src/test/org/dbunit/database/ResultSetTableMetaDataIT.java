@@ -3,7 +3,7 @@ package org.dbunit.database;
 import java.io.File;
 import java.sql.Connection;
 
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.HypersonicEnvironment;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.Columns;
@@ -15,10 +15,10 @@ import org.dbunit.dataset.IDataSet;
  * @version $Revision$ $Date$
  * @since 2.4.0
  */
-public class ResultSetTableMetaDataTest extends AbstractDatabaseTest
+public class ResultSetTableMetaDataIT extends AbstractDatabaseIT
 {
     
-    public ResultSetTableMetaDataTest(String s)
+    public ResultSetTableMetaDataIT(String s)
     {
         super(s);
     }

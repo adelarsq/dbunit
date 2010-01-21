@@ -21,7 +21,7 @@
 
 package org.dbunit.operation;
 
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.XmlDataSet;
 
@@ -33,9 +33,9 @@ import java.io.Reader;
  * @version $Revision$
  * @since May 7, 2002
  */
-public class AbstractBatchOperationTest extends AbstractDatabaseTest
+public class AbstractBatchOperationIT extends AbstractDatabaseIT
 {
-    public AbstractBatchOperationTest(String s)
+    public AbstractBatchOperationIT(String s)
     {
         super(s);
     }
@@ -72,7 +72,7 @@ public class AbstractBatchOperationTest extends AbstractDatabaseTest
                 Column databaseColumn = Columns.getColumn(resultColumn.getColumnName(), databaseMetaData.getColumns());
                 Column xmlColumn = xmlMetaData.getColumns()[j];
 
-                assertEquals("column name", xmlColumn.getColumnName(),
+                assertEquals("column name", convertString(xmlColumn.getColumnName()),
                         resultColumn.getColumnName());
                 assertSame("column instance", resultColumn, databaseColumn);
             }

@@ -24,7 +24,7 @@ package org.dbunit.ext.mssql;
 import java.io.FileReader;
 import java.io.Reader;
 
-import org.dbunit.AbstractDatabaseTest;
+import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.Assertion;
 import org.dbunit.TestFeature;
 import org.dbunit.dataset.DataSetUtils;
@@ -42,9 +42,9 @@ import org.dbunit.operation.DatabaseOperation;
  * @version $Revision$
  * @since Feb 19, 2002
  */
-public class InsertIdentityOperationTest extends AbstractDatabaseTest
+public class InsertIdentityOperationIT extends AbstractDatabaseIT
 {
-    public InsertIdentityOperationTest(String s)
+    public InsertIdentityOperationIT(String s)
     {
         super(s);
     }

@@ -38,7 +38,7 @@ import junit.framework.TestCase;
  * @version $Revision: 789 $ $Date: 2008-08-15 16:45:18 +0200 (Fr, 15. Aug 2008) $
  * @since 2.4.3
  */
-public class DBTestCaseTest extends TestCase 
+public class DBTestCaseIT extends TestCase
 {
 
 	/**

@@ -40,11 +40,11 @@ import org.dbunit.util.QualifiedTableName;
  * @version $Revision$
  * @since Feb 18, 2002
  */
-public class DatabaseDataSetTest extends AbstractDataSetTest
+public class DatabaseDataSetIT extends AbstractDataSetTest
 {
     private IDatabaseConnection _connection;
 
-    public DatabaseDataSetTest(String s)
+    public DatabaseDataSetIT(String s)
     {
         super(s);
     }

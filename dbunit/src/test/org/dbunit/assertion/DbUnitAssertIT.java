@@ -51,14 +51,14 @@ import org.dbunit.operation.DatabaseOperation;
  * @version $Revision$
  * @since Mar 22, 2002
  */
-public class DbUnitAssertTest extends TestCase
+public class DbUnitAssertIT extends TestCase
 {
     public static final String FILE_PATH = "src/xml/assertionTest.xml";
     
     private DbUnitAssert assertion = new DbUnitAssert();
     
     
-    public DbUnitAssertTest(String s)
+    public DbUnitAssertIT(String s)
     {
         super(s);
     }

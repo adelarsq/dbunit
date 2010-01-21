@@ -35,16 +35,16 @@ public class AllTests extends TestSuite
     {
         TestSuite suite = new TestSuite();
 
-        suite.addTest(new TestSuite(AbstractBatchOperationTest.class));
-        suite.addTest(new TestSuite(CloseConnectionOperationTest.class));
-        suite.addTest(new TestSuite(CompositeOperationTest.class));
-        suite.addTest(new TestSuite(DeleteAllOperationTest.class));
-        suite.addTest(new TestSuite(DeleteOperationTest.class));
-        suite.addTest(new TestSuite(InsertOperationTest.class));
-        suite.addTest(new TestSuite(RefreshOperationTest.class));
-        suite.addTest(new TestSuite(TransactionOperationTest.class));
-        suite.addTest(new TestSuite(TruncateTableOperationTest.class));
-        suite.addTest(new TestSuite(UpdateOperationTest.class));
+        suite.addTest(new TestSuite(AbstractBatchOperationIT.class));
+        suite.addTest(new TestSuite(CloseConnectionOperationIT.class));
+        suite.addTest(new TestSuite(CompositeOperationIT.class));
+        suite.addTest(new TestSuite(DeleteAllOperationIT.class));
+        suite.addTest(new TestSuite(DeleteOperationIT.class));
+        suite.addTest(new TestSuite(InsertOperationIT.class));
+        suite.addTest(new TestSuite(RefreshOperationIT.class));
+        suite.addTest(new TestSuite(TransactionOperationIT.class));
+        suite.addTest(new TestSuite(TruncateTableOperationIT.class));
+        suite.addTest(new TestSuite(UpdateOperationIT.class));
 
         return suite;
     }

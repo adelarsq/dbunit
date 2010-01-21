@@ -33,9 +33,9 @@ import org.dbunit.operation.DatabaseOperation;
  * @since Apr 11, 2003
  * @version $Revision$
  */
-public class ForwardOnlyResultSetTableTest extends ForwardOnlyTableTest
+public class ForwardOnlyResultSetTableIT extends ForwardOnlyTableTest
 {
-    public ForwardOnlyResultSetTableTest(String s)
+    public ForwardOnlyResultSetTableIT(String s)
     {
         super(s);
     }

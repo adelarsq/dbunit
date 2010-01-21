@@ -399,6 +399,52 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>failsafe-maven-plugin</artifactId>
+        <version>2.4.3-alpha-1</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <systemProperties>
+            <property>
+              <name>dbunit.profile</name>
+              <value>${dbunit.profile}</value>
+            </property>
+            <property>
+              <name>dbunit.profile.driverClass</name>
+              <value>${dbunit.profile.driverClass}</value>
+            </property>
+            <property>
+              <name>dbunit.profile.url</name>
+              <value>${dbunit.profile.url}</value>
+            </property>
+            <property>
+              <name>dbunit.profile.schema</name>
+              <value>${dbunit.profile.schema}</value>
+            </property>
+            <property>
+              <name>dbunit.profile.user</name>
+              <value>${dbunit.profile.user}</value>
+            </property>
+            <property>
+              <name>dbunit.profile.password</name>
+              <value>${dbunit.profile.password}</value>
+            </property>
+            <property>
+              <name>dbunit.profile.unsupportedFeatures</name>
+              <value>${dbunit.profile.unsupportedFeatures}</value>
+            </property>
+          </systemProperties>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>

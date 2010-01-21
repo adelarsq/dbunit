@@ -38,7 +38,7 @@ import org.dbunit.testutil.FileAsserts;
  * @version $Revision$
  * @since Apr 4, 2002
  */
-public class FlatDtdDataSetTest extends AbstractDataSetTest
+public class FlatDtdDataSetIT extends AbstractDataSetTest
 {
     private static final String DTD_FILE =
             "src/dtd/flatDtdDataSetTest.dtd";
@@ -47,7 +47,7 @@ public class FlatDtdDataSetTest extends AbstractDataSetTest
     private static final String DUPLICATE_MULTIPLE_CASE_FILE =
         "src/dtd/flatDtdDataSetDuplicateMultipleCaseTest.dtd";
 
-    public FlatDtdDataSetTest(String s)
+    public FlatDtdDataSetIT(String s)
     {
         super(s);
     }

@@ -19,7 +19,7 @@ import org.xml.sax.InputSource;
  * @author Philipp S. (Unwissender2009)
  * @since Nov 23, 2009
  */
-public class SQLHelperDomainPostgreSQLTest extends TestCase{
+public class SQLHelperDomainPostgreSQLIT extends TestCase{
 
 	private IDatabaseConnection _connection;
 

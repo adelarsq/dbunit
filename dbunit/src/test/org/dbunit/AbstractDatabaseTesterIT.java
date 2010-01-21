@@ -36,19 +36,19 @@ import org.slf4j.LoggerFactory;
  * @version $Revision$ $Date$
  * @since 2.2.0
  */
-public abstract class AbstractDatabaseTesterTest extends TestCase
+public abstract class AbstractDatabaseTesterIT extends TestCase
 {
    protected IDatabaseConnection _connection;
    protected IDatabaseTester _databaseTester;
 
-   protected final Logger logger = LoggerFactory.getLogger(AbstractDatabaseTesterTest.class);
+   protected final Logger logger = LoggerFactory.getLogger(AbstractDatabaseTesterIT.class);
 
-   public AbstractDatabaseTesterTest( String s )
+   public AbstractDatabaseTesterIT( String s )
    {
       super( s );
    }
 
-   protected DatabaseEnvironment getEnvironment() throws Exception
+    protected DatabaseEnvironment getEnvironment() throws Exception
    {
       return DatabaseEnvironment.getInstance();
    }

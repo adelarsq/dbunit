@@ -59,16 +59,16 @@ import org.dbunit.util.FileHelper;
  * @since Jun 10, 2002
  * @see org.dbunit.ant.AntTest
  */
-public class DbUnitTaskTest extends BuildFileTest
+public class DbUnitTaskIT extends BuildFileTest
 {
-    static protected Class classUnderTest = DbUnitTaskTest.class;
+    static protected Class classUnderTest = DbUnitTaskIT.class;
 
     private static final String BUILD_FILE_DIR = "src/xml";
     private static final String OUTPUT_DIR = "target/xml";
 
     private File outputDir;
 
-    public DbUnitTaskTest(String name)
+    public DbUnitTaskIT(String name)
     {
         super(name);
     }

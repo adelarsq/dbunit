@@ -32,11 +32,11 @@ import org.dbunit.IDatabaseTester;
  * @version $Revision$ $Date$
  * @since 2.2.0
  */
-public class DefaultDatabaseTesterConnectionTest extends AbstractDatabaseTesterConnectionTest
+public class DefaultDatabaseTesterConnectionIT extends AbstractDatabaseTesterConnectionIT
 {
    private PropertiesBasedJdbcDatabaseTester databaseTester;
 
-   public DefaultDatabaseTesterConnectionTest( String s )
+   public DefaultDatabaseTesterConnectionIT( String s )
    {
       super( s );
    }

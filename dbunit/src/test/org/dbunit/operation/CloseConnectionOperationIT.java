@@ -19,28 +19,42 @@
  *
  */
 
-package org.dbunit.database;
+package org.dbunit.operation;
 
-import org.dbunit.AbstractDatabaseTesterTest;
+import org.dbunit.AbstractDatabaseIT;
+import org.dbunit.database.MockDatabaseConnection;
 
 /**
- * @author Andres Almiray
+ * @author Manuel Laflamme
+ * @version $Revision$
+ * @since Mar 6, 2002
  */
-public abstract class AbstractDatabaseTesterConnectionTest extends AbstractDatabaseTesterTest
+public class CloseConnectionOperationIT extends AbstractDatabaseIT
 {
-    public AbstractDatabaseTesterConnectionTest(String s)
+    public CloseConnectionOperationIT(String s)
     {
         super(s);
     }
 
-    public final void testGetRowCount() throws Exception
+    public void testMockExecute() throws Exception
     {
-        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("EMPTY_TABLE", null));
-        assertEquals("EMPTY_TABLE", 0, _connection.getRowCount("EMPTY_TABLE"));
+        // setup mock objects
+        MockDatabaseOperation operation = new MockDatabaseOperation();
+        operation.setExpectedExecuteCalls(1);
 
-        assertEquals("TEST_TABLE", 6, _connection.getRowCount("TEST_TABLE", null));
-        assertEquals("TEST_TABLE", 6, _connection.getRowCount("TEST_TABLE"));
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setExpectedCloseCalls(1);
 
-        assertEquals("PK_TABLE", 1, _connection.getRowCount("PK_TABLE", "where PK0 = 0"));
+        // execute operation
+        new CloseConnectionOperation(operation).execute(connection, null);
+
+        // verify
+        operation.verify();
+        connection.verify();
     }
+
 }
+
+
+
+

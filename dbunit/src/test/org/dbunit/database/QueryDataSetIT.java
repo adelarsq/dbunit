@@ -33,11 +33,11 @@ import org.dbunit.operation.DatabaseOperation;
  * @version $Revision$
  * @since Feb 18, 2002
  */
-public class QueryDataSetTest extends AbstractDataSetTest
+public class QueryDataSetIT extends AbstractDataSetTest
 {
     private IDatabaseConnection _connection;
 
-    public QueryDataSetTest(String s)
+    public QueryDataSetIT(String s)
     {
         super(s);
     }

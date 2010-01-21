@@ -33,7 +33,7 @@ import junit.framework.TestCase;
  * @version $Revision$ $Date$
  * @since 2.3.0
  */
-public class DatabaseTestCaseTest extends TestCase 
+public class DatabaseTestCaseIT extends TestCase
 {
 
 	public void testTearDownExceptionDoesNotObscureTestException() 
