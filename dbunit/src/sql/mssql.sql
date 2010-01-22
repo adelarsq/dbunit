@@ -2,6 +2,7 @@
 -- TEST_TABLE
 -----------------------------------------------------------------------------
 
+DROP TABLE TEST_TABLE;
 CREATE TABLE TEST_TABLE
   (COLUMN0 VARCHAR(32),
    COLUMN1 VARCHAR(32),
@@ -12,6 +13,7 @@ CREATE TABLE TEST_TABLE
 -- SECOND_TABLE
 -----------------------------------------------------------------------------
 
+DROP TABLE SECOND_TABLE;
 CREATE TABLE SECOND_TABLE
   (COLUMN0 VARCHAR(32),
    COLUMN1 VARCHAR(32),
@@ -22,6 +24,7 @@ CREATE TABLE SECOND_TABLE
 -- EMPTY_TABLE
 -----------------------------------------------------------------------------
 
+DROP TABLE EMPTY_TABLE;
 CREATE TABLE EMPTY_TABLE
   (COLUMN0 VARCHAR(32),
    COLUMN1 VARCHAR(32),
@@ -32,6 +35,7 @@ CREATE TABLE EMPTY_TABLE
 -- PK_TABLE
 -----------------------------------------------------------------------------
 
+DROP TABLE PK_TABLE;
 CREATE TABLE PK_TABLE
   (PK0 NUMERIC(38, 0) NOT NULL,
    PK1 NUMERIC(38, 0) NOT NULL,
@@ -43,6 +47,7 @@ CREATE TABLE PK_TABLE
 -- ONLY_PK_TABLE
 -----------------------------------------------------------------------------
 
+DROP TABLE ONLY_PK_TABLE;
 CREATE TABLE ONLY_PK_TABLE
   (PK0 NUMERIC(38, 0) NOT NULL PRIMARY KEY);
 
@@ -50,6 +55,7 @@ CREATE TABLE ONLY_PK_TABLE
 -- EMPTY_MULTITYPE_TABLE
 -----------------------------------------------------------------------------
 
+DROP TABLE EMPTY_MULTITYPE_TABLE;
 CREATE TABLE EMPTY_MULTITYPE_TABLE
   (VARCHAR_COL VARCHAR(32),
    NUMERIC_COL NUMERIC(38, 0),
@@ -60,6 +66,7 @@ CREATE TABLE EMPTY_MULTITYPE_TABLE
 -- IDENTITY_TABLE
 -----------------------------------------------------------------------------
 
+DROP TABLE IDENTITY_TABLE;
 CREATE TABLE IDENTITY_TABLE
   (IDENTITY_TABLE_ID INT IDENTITY (1, 1) NOT NULL,
    COLUMN0 VARCHAR(32),
@@ -69,6 +76,8 @@ CREATE TABLE IDENTITY_TABLE
 -- TEST_IDENTITY_NOT_PK
 -----------------------------------------------------------------------------
 
+DROP TABLE TEST_IDENTITY_NOT_PK;
 CREATE TABLE TEST_IDENTITY_NOT_PK
   (COL01 INT IDENTITY (1, 1) NOT NULL,
    COL02 VARCHAR(64));
+
