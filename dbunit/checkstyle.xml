@@ -8,6 +8,11 @@ Run "ant style" to check for source code style deviations.
      "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
      "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 <module name="Checker">
+    <module name="RegexpHeader">
+        <property
+            name="header"
+            value="^/\*\n.*\n.*\n.*Copyright.*\(C\)\d\d\d\d.*DbUnit.org.*"/>
+    </module>
     <module name="TreeWalker">
         <module name="AvoidStarImport"/>
         <module name="IllegalImport"/>
@@ -18,11 +23,6 @@ Run "ant style" to check for source code style deviations.
             <property name="authorFormat" value=".*"/>
             <property name="versionFormat" value="\$Revision.*\$.*"/>
             <!--<property name="versionFormat" value="\$Revision.*\$ \$Date.*\$.*"/>-->
-        </module>
-        <module name="RegexpHeader">
-            <property
-                name="header"
-                value="^/\*\n.*\n.*\n.*Copyright.*\(C\)\d\d\d\d.*DbUnit.org.*"/>
         </module>
         <module name="JavadocStyle">
             <property name="scope" value="public"/>
