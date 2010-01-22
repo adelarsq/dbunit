@@ -355,6 +355,17 @@
 
       <testResources> <testResource> </testResource> </testResources>
     -->
+    
+    <!-- not ideal yet, but gets these files on test classpath -->
+    <testResources>
+      <testResource>
+        <directory>${project.basedir}/src/xml</directory>
+      </testResource>
+      <testResource>
+        <directory>${project.basedir}/src/csv</directory>
+      </testResource>
+    </testResources>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
