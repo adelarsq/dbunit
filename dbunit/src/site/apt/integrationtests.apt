@@ -8,8 +8,12 @@ John Hurst
 Overview
 
   DbUnit includes a comprehensive test suite.
+
   Most of the tests are <<unit tests>>, and do not rely on any particular database environment.
+  The unit tests are executed in the normal Maven test phase.
+
   Some of the tests are <<integration tests>>, and can test DbUnit functionality against a particular database.
+  The integration tests are executed in the Maven integration-test phase.
 
   Maven profiles control which database environment is in use for a particular test run.
 
@@ -21,7 +25,7 @@ Overview
   use this command:
 
 ---
-mvn clean test -Poracle10-ojdbc14
+mvn clean verify -Poracle10-ojdbc14
 ---
 
   List all profiles using this command:
@@ -52,6 +56,8 @@ Database Properties
 
   * dbunit.profile.unsupportedFeatures - comma-separated list of features not to test
 
+  * dbunit.profile.ddl - database-specific DDL script to create tables
+
   []
 
   These properties are all configured with defaults per test profile.
@@ -77,7 +83,7 @@ Running HSQLDB Integration Tests
   Run the full test suite, including integration tests, with this command:
 
 ---
-mvn clean test
+mvn clean verify
 ---
 
 Running Oracle Integration Tests
@@ -89,20 +95,17 @@ Running Oracle Integration Tests
   These values are the defaults configured in the project.
   If you use different values, you will need to override the properties in your Maven settings.xml.
 
-  [[3]] Log in to your dbunit schema and run src/sql/oracle.sql.
-
   []
 
-  This should create the DbUnit test schema in your Oracle database.
   You are now ready to run tests.
 
   Run the full test suite, including integration tests, with one of these commands:
 
 ---
-mvn clean test -Poracle-ojdbc14
-mvn clean test -Poracle-ojdbc6
-mvn clean test -Poracle10-ojdbc14
-mvn clean test -Poracle10-ojdbc6
+mvn clean verify -Poracle-ojdbc14
+mvn clean verify -Poracle-ojdbc6
+mvn clean verify -Poracle10-ojdbc14
+mvn clean verify -Poracle10-ojdbc6
 ---
 
 Running PostgreSQL Integration Tests
@@ -123,17 +126,14 @@ EOF
   These values are the defaults configured in the project.
   If you use different values, you will need to override the properties in your Maven settings.xml.
 
-  [[3]] Log in to your dbunit user and run src/sql/postgresql.sql.
-
   []
 
-  This should create the DbUnit test schema in your PostgreSQL database.
   You are now ready to run tests.
 
   Run the full test suite, including integration tests, with this command:
 
 ---
-mvn clean test -Poracle-default,postgresql
+mvn clean verify -Poracle-default,postgresql
 ---
 
   <<Note:>> currently the oracle-default profile is required, along with the postgresql profile, to ensure all JARs required on the compile-time classpath in Maven.
@@ -157,21 +157,14 @@ EOF
   If you need to connect remotely to your database your need to specify the client host name.
   You may also need to adjust your MySQL configuration to permit remote connection.
 
-  [[3]] Log in to your dbunit user and run src/sql/mysql.sql:
-
----
-mysql -hmysql_host -Ddbunit -udbunit -pdbunit <src/sql/mysql.sql
----
-
   []
 
-  This should create the DbUnit test schema in your MySQL database.
   You are now ready to run tests.
 
   Run the full test suite, including integration tests, with this command:
 
 ---
-mvn clean test -Poracle-default,mysql
+mvn clean verify -Poracle-default,mysql
 ---
 
   <<Note:>> currently the oracle-default profile is required, along with the mysql profile, to ensure all JARs required on the compile-time classpath in Maven.
@@ -183,10 +176,22 @@ Running Apache Derby Integration Tests
   Run the full test suite, including integration tests, with this command:
 
 ---
-mvn clean test -Poracle-default,derby
+mvn clean verify -Poracle-default,derby
 ---
 
   <<Note:>> currently the oracle-default profile is required, along with the derby profile, to ensure all JARs required on the compile-time classpath in Maven.
 
-TODO: Other databases.
+Running H2 Integration Tests
+
+  Nothing special is required.
+
+  Run the full test suite, including integration tests, with this command:
+
+---
+mvn clean verify -Poracle-default,h2
+---
+
+  <<Note:>> currently the oracle-default profile is required, along with the h2 profile, to ensure all JARs required on the compile-time classpath in Maven.
+
+TODO: Other databases, notably mssql, db2.
 
