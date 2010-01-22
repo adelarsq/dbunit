@@ -34,6 +34,8 @@ mvn clean verify -Poracle10-ojdbc14
 mvn help:all-profiles
 ---
 
+  <<Note:>> The integration tests are run using the {{{http://mojo.codehaus.org/failsafe-maven-plugin/}Maven failsafe-plugin}}.
+
 Database Properties
 
   Each database is configured by properties and dependencies.
@@ -136,7 +138,7 @@ EOF
 mvn clean verify -Poracle-default,postgresql
 ---
 
-  <<Note:>> currently the oracle-default profile is required, along with the postgresql profile, to ensure all JARs required on the compile-time classpath in Maven.
+  <<Note:>> Currently the oracle-default profile is required, along with the postgresql profile, to ensure all JARs required on the compile-time classpath in Maven.
 
 Running MySQL Integration Tests
 
@@ -167,7 +169,7 @@ EOF
 mvn clean verify -Poracle-default,mysql
 ---
 
-  <<Note:>> currently the oracle-default profile is required, along with the mysql profile, to ensure all JARs required on the compile-time classpath in Maven.
+  <<Note:>> Currently the oracle-default profile is required, along with the mysql profile, to ensure all JARs required on the compile-time classpath in Maven.
 
 Running Apache Derby Integration Tests
 
@@ -179,7 +181,7 @@ Running Apache Derby Integration Tests
 mvn clean verify -Poracle-default,derby
 ---
 
-  <<Note:>> currently the oracle-default profile is required, along with the derby profile, to ensure all JARs required on the compile-time classpath in Maven.
+  <<Note:>> Currently the oracle-default profile is required, along with the derby profile, to ensure all JARs required on the compile-time classpath in Maven.
 
 Running H2 Integration Tests
 
@@ -191,7 +193,7 @@ Running H2 Integration Tests
 mvn clean verify -Poracle-default,h2
 ---
 
-  <<Note:>> currently the oracle-default profile is required, along with the h2 profile, to ensure all JARs required on the compile-time classpath in Maven.
+  <<Note:>> Currently the oracle-default profile is required, along with the h2 profile, to ensure all JARs required on the compile-time classpath in Maven.
 
 TODO: Other databases, notably mssql, db2.
 
