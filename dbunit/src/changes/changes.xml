@@ -14,7 +14,6 @@
       <action dev="gommma" type="fix" issue="2887115" due-to="unwissender2009">SQL: "Create Domain" ... Data Types are not supported.</action>
       <action dev="jbhurst" type="add" issue="2875253" due-to="caseylucas">Additional refinements for Oracle SDO_GEOMETRY datatype</action>
       <action dev="jbhurst" type="add" issue="2921131" due-to="vlamp">Add timezone support for timestamp data type</action>
-      <action dev="jbhurst" type="add" issue="2905970" due-to="pkamm">Upgrade to POI Version 3.5-FINAL</action>
       <action dev="jbhurst" type="add" issue="2919427" due-to="dbamberghi (Daniele Bamberghi)">OracleDataTypeFactory recognises "SYS.XMLTYPE"</action>
       <action dev="jeffjensen" type="add" issue="2938029" due-to="jeffjensen">Add "file loader" utility for various data file types</action>
     </release>
