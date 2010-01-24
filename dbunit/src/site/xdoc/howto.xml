@@ -10,6 +10,9 @@
       <li><a href="#assertdata">
         Database data verification
       </a></li>
+      <li><a href="#fileloader">
+        Data File Loader
+      </a></li>
       <li><a href="#canoo">
         DbUnit Ant task and Canoo WebTest 
       </a></li></ol>    
@@ -333,6 +336,30 @@ Difference diff = (Difference)diffList.get(0);
       </source>
       </p>
 
+      
+      <a name="fileloader">
+      <h3>Data File Loader</h3>
+      </a>
+      <p>
+      Nearly all tests need to load data from one or more files, 
+      particularly for prep or expected data.
+      dbUnit has a set of data file loader utility helper classes
+      to load data sets from files on the classpath.
+      The available loaders are in package org.dbunit.util.fileloader.
+      A simple usage example:
+      </p>
+      <source>
+DataFileLoader loader = new FlatXmlDataFileLoader();
+IDataSet ds = loader.load("/the/package/prepData.xml");
+      </source>
+      <p>
+      Note the constructors for the various DataFileLoaders
+      accept replacement object and replacement substring maps
+      as used with ReplacementDataSet.
+      </p>
+      <p>
+      Refer to the DataFileLoader JavaDoc for further details.
+      </p>
       
       <a name="canoo">
       <h3>DbUnit Ant task and Canoo WebTest</h3>
