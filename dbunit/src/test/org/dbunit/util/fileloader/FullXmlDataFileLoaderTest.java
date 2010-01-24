@@ -32,14 +32,14 @@ import org.dbunit.dataset.IDataSet;
  * @version $Revision$ $Date$
  * @since 2.4.8
  */
-public class DataFileLoaderFullXmlTest extends TestCase {
-    DataFileLoaderFullXml loader = null;
+public class FullXmlDataFileLoaderTest extends TestCase {
+    FullXmlDataFileLoader loader = null;
 
     /**
      * {@inheritDoc}
      */
     protected void setUp() throws Exception {
-        loader = new DataFileLoaderFullXml();
+        loader = new FullXmlDataFileLoader();
     }
 
     /**

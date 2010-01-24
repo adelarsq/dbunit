@@ -34,13 +34,13 @@ import org.dbunit.dataset.IDataSet;
  */
 public class AbstractDataFileLoaderTest extends TestCase {
     // just using this one so can run tests.
-    DataFileLoaderFlatXml loader = null;
+    FlatXmlDataFileLoader loader = null;
 
     /**
      * {@inheritDoc}
      */
     protected void setUp() throws Exception {
-        loader = new DataFileLoaderFlatXml();
+        loader = new FlatXmlDataFileLoader();
     }
 
     public void testLoadDefaultDataSetEmpty() throws DataSetException {

@@ -36,9 +36,9 @@ import org.dbunit.dataset.csv.CsvURLDataSet;
  * @since <dbunit-version>
  * 
  */
-public class DataFileLoaderCsv extends AbstractDataFileLoader {
+public class CsvDataFileLoader extends AbstractDataFileLoader {
     /** Create new instance. */
-    public DataFileLoaderCsv() {
+    public CsvDataFileLoader() {
     }
 
     /**
@@ -48,7 +48,7 @@ public class DataFileLoaderCsv extends AbstractDataFileLoader {
      *            The replacement objects for use with
      *            {@link org.dbunit.dataset.ReplacementDataSet}.
      */
-    public DataFileLoaderCsv(Map ro) {
+    public CsvDataFileLoader(Map ro) {
         super(ro);
     }
 
@@ -62,7 +62,7 @@ public class DataFileLoaderCsv extends AbstractDataFileLoader {
      *            The replacement substrings for use with
      *            {@link org.dbunit.dataset.ReplacementDataSet}.
      */
-    public DataFileLoaderCsv(Map ro, Map rs) {
+    public CsvDataFileLoader(Map ro, Map rs) {
         super(ro, rs);
     }
 

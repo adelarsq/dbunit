@@ -36,9 +36,9 @@ import org.dbunit.dataset.xml.XmlDataSet;
  * @version $Revision$ $Date$
  * @since 2.4.8
  */
-public class DataFileLoaderFullXml extends AbstractDataFileLoader {
+public class FullXmlDataFileLoader extends AbstractDataFileLoader {
     /** Create new instance. */
-    public DataFileLoaderFullXml() {
+    public FullXmlDataFileLoader() {
     }
 
     /**
@@ -48,7 +48,7 @@ public class DataFileLoaderFullXml extends AbstractDataFileLoader {
      *            The replacement objects for use with
      *            {@link org.dbunit.dataset.ReplacementDataSet}.
      */
-    public DataFileLoaderFullXml(Map ro) {
+    public FullXmlDataFileLoader(Map ro) {
         super(ro);
     }
 
@@ -62,7 +62,7 @@ public class DataFileLoaderFullXml extends AbstractDataFileLoader {
      *            The replacement substrings for use with
      *            {@link org.dbunit.dataset.ReplacementDataSet}.
      */
-    public DataFileLoaderFullXml(Map ro, Map rs) {
+    public FullXmlDataFileLoader(Map ro, Map rs) {
         super(ro, rs);
     }
 

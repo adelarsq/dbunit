@@ -32,14 +32,14 @@ import org.dbunit.dataset.IDataSet;
  * @version $Revision$ $Date$
  * @since 2.4.8
  */
-public class DataFileLoaderXlsTest extends TestCase {
-    DataFileLoaderXls loader = null;
+public class XlsDataFileLoaderTest extends TestCase {
+    XlsDataFileLoader loader = null;
 
     /**
      * {@inheritDoc}
      */
     protected void setUp() throws Exception {
-        loader = new DataFileLoaderXls();
+        loader = new XlsDataFileLoader();
     }
 
     /**

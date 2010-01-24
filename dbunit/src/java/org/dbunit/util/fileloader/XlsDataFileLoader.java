@@ -37,9 +37,9 @@ import org.dbunit.dataset.excel.XlsDataSet;
  * @since 2.4.8
  * 
  */
-public class DataFileLoaderXls extends AbstractDataFileLoader {
+public class XlsDataFileLoader extends AbstractDataFileLoader {
     /** Create new instance. */
-    public DataFileLoaderXls() {
+    public XlsDataFileLoader() {
     }
 
     /**
@@ -49,7 +49,7 @@ public class DataFileLoaderXls extends AbstractDataFileLoader {
      *            The replacement objects for use with
      *            {@link org.dbunit.dataset.ReplacementDataSet}.
      */
-    public DataFileLoaderXls(Map ro) {
+    public XlsDataFileLoader(Map ro) {
         super(ro);
     }
 
@@ -63,7 +63,7 @@ public class DataFileLoaderXls extends AbstractDataFileLoader {
      *            The replacement substrings for use with
      *            {@link org.dbunit.dataset.ReplacementDataSet}.
      */
-    public DataFileLoaderXls(Map ro, Map rs) {
+    public XlsDataFileLoader(Map ro, Map rs) {
         super(ro, rs);
     }
 

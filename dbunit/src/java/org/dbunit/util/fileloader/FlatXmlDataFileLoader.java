@@ -34,11 +34,11 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
  * @version $Revision$ $Date$
  * @since 2.4.8
  */
-public class DataFileLoaderFlatXml extends AbstractDataFileLoader {
+public class FlatXmlDataFileLoader extends AbstractDataFileLoader {
     private FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
 
     /** Create new instance. */
-    public DataFileLoaderFlatXml() {
+    public FlatXmlDataFileLoader() {
     }
 
     /**
@@ -48,7 +48,7 @@ public class DataFileLoaderFlatXml extends AbstractDataFileLoader {
      *            The replacement objects for use with
      *            {@link org.dbunit.dataset.ReplacementDataSet}.
      */
-    public DataFileLoaderFlatXml(Map ro) {
+    public FlatXmlDataFileLoader(Map ro) {
         super(ro);
     }
 
@@ -62,7 +62,7 @@ public class DataFileLoaderFlatXml extends AbstractDataFileLoader {
      *            The replacement substrings for use with
      *            {@link org.dbunit.dataset.ReplacementDataSet}.
      */
-    public DataFileLoaderFlatXml(Map ro, Map rs) {
+    public FlatXmlDataFileLoader(Map ro, Map rs) {
         super(ro, rs);
     }
 
@@ -80,7 +80,7 @@ public class DataFileLoaderFlatXml extends AbstractDataFileLoader {
      *            The {@link org.dbunit.dataset.xml.FlatXmlDataSetBuilder} to
      *            use.
      */
-    public DataFileLoaderFlatXml(Map ro, Map rs, FlatXmlDataSetBuilder builder) {
+    public FlatXmlDataFileLoader(Map ro, Map rs, FlatXmlDataSetBuilder builder) {
         super(ro, rs);
         this.builder = builder;
     }
@@ -93,7 +93,7 @@ public class DataFileLoaderFlatXml extends AbstractDataFileLoader {
      *            The {@link org.dbunit.dataset.xml.FlatXmlDataSetBuilder} to
      *            use.
      */
-    public DataFileLoaderFlatXml(FlatXmlDataSetBuilder builder) {
+    public FlatXmlDataFileLoader(FlatXmlDataSetBuilder builder) {
         this.builder = builder;
     }
 
