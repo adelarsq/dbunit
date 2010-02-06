@@ -196,7 +196,7 @@ public class SampleTest extends TestCase
 
         databaseTester.setDataSet( dataSet );
 	// will call default setUpOperation
-        databaseTester.onSetUp();
+        databaseTester.onSetup();
     }
 
     protected void tearDown() throws Exception
