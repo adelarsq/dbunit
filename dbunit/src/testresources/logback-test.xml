@@ -1,0 +1,28 @@
+<!-- logback config file for testing-->
+<configuration scan="true">
+  <contextName>dbunit</contextName> 
+
+  <logger name="org.dbunit" level="TRACE" />
+
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <!-- NOTE: user must append slash in property -->
+    <file>${logback.file.path:-target/}dbunit-TEST.log</file>
+    <append>false</append>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%date %contextName [%thread] %-5level %-55logger{55} %mdc: %marker: %msg%n</pattern>
+    </layout>
+  </appender>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}: %msg%n</pattern>
+    </layout>
+  </appender>
+
+  <root level="DEBUG">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE" />
+  </root>
+
+  <jmxConfigurator contextName="dbunit"/>
+</configuration>

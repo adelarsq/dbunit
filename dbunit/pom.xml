@@ -22,6 +22,8 @@
   <properties>
     <compileSource>1.4</compileSource>
     <checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
+    <logbackVersion>0.9.15</logbackVersion>
+    <slf4jVersion>1.5.6</slf4jVersion>
   </properties>
 
   <scm>
@@ -226,6 +228,26 @@
 
     <!-- TODO: add exclusion for dependencies that include xerces/xalan -->
 
+    <!-- LOGGING -->
+    <!-- NOTE: must list slf4j first to override other logger frameworks -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4jVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>${slf4jVersion}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logbackVersion}</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
@@ -236,11 +258,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.5.6</version>
     </dependency>
     <dependency>
       <groupId>commons-collections</groupId>
@@ -257,6 +274,16 @@
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
       <version>3.2-FINAL</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
       <optional>true</optional>
     </dependency>
 
@@ -311,13 +338,6 @@
       <version>1.4</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-nop</artifactId>
-      <version>1.5.6</version>
-      <scope>runtime</scope>
-      <optional>true</optional>
-    </dependency>
   </dependencies>
 
   <build>
@@ -363,6 +383,9 @@
       </testResource>
       <testResource>
         <directory>${project.basedir}/src/csv</directory>
+      </testResource>
+      <testResource>
+        <directory>${project.basedir}/src/testresources</directory>
       </testResource>
     </testResources>
 
