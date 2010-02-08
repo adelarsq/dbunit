@@ -48,12 +48,12 @@ public class DefaultOperationListener implements IOperationListener{
     }
 
     public void operationSetUpFinished(IDatabaseConnection connection) {
-        logger.debug("operationSetUpDone(connection={}) - start", connection);
+        logger.debug("operationSetUpFinished(connection={}) - start", connection);
         closeConnection(connection);
     }
 
     public void operationTearDownFinished(IDatabaseConnection connection) {
-        logger.debug("operationTearDownDone(connection={}) - start", connection);
+        logger.debug("operationTearDownFinished(connection={}) - start", connection);
         closeConnection(connection);
     }
 
