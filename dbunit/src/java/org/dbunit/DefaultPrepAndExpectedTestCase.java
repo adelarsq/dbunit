@@ -416,6 +416,20 @@ public class DefaultPrepAndExpectedTestCase extends TestCase implements
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public IDataSet getPrepDataset() {
+        return prepDs;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IDataSet getExpectedDataset() {
+        return expectedDs;
+    }
+
+    /**
      * Get the databaseTester.
      * 
      * @see {@link databaseTester}.
@@ -462,17 +476,6 @@ public class DefaultPrepAndExpectedTestCase extends TestCase implements
     }
 
     /**
-     * Get the prepDs.
-     * 
-     * @see {@link prepDs}.
-     * 
-     * @return The prepDs.
-     */
-    public IDataSet getPrepDs() {
-        return prepDs;
-    }
-
-    /**
      * Set the prepDs.
      * 
      * @see {@link prepDs}.
@@ -482,17 +485,6 @@ public class DefaultPrepAndExpectedTestCase extends TestCase implements
      */
     public void setPrepDs(IDataSet prepDs) {
         this.prepDs = prepDs;
-    }
-
-    /**
-     * Get the expectedDs.
-     * 
-     * @see {@link expectedDs}.
-     * 
-     * @return The expectedDs.
-     */
-    public IDataSet getExpectedDs() {
-        return expectedDs;
     }
 
     /**

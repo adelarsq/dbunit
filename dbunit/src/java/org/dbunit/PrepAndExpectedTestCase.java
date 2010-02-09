@@ -20,6 +20,8 @@
  */
 package org.dbunit;
 
+import org.dbunit.dataset.IDataSet;
+
 /**
  * Test case supporting prep data and expected data.
  * 
@@ -58,4 +60,18 @@ public interface PrepAndExpectedTestCase {
      * @throws Exception
      */
     void postTest() throws Exception;
+
+    /**
+     * Get the prep dataset, created from the prepDataFiles.
+     * 
+     * @return The prep dataset.
+     */
+    IDataSet getPrepDataset();
+
+    /**
+     * Get the expected dataset, created from the expectedDataFiles.
+     * 
+     * @return The expected dataset.
+     */
+    IDataSet getExpectedDataset();
 }

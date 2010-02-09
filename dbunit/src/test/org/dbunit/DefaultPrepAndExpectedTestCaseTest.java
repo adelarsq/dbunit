@@ -34,10 +34,10 @@ public class DefaultPrepAndExpectedTestCaseTest extends TestCase {
                 .getTableDefs());
 
         IDataSet expPrepDs = dataFileLoader.load(PREP_DATA_FILE_NAME);
-        Assertion.assertEquals(expPrepDs, tc.getPrepDs());
+        Assertion.assertEquals(expPrepDs, tc.getPrepDataset());
 
         IDataSet expExpDs = dataFileLoader.load(EXP_DATA_FILE_NAME);
-        Assertion.assertEquals(expExpDs, tc.getExpectedDs());
+        Assertion.assertEquals(expExpDs, tc.getExpectedDataset());
     }
 
     public void testPreTest() throws Exception {
