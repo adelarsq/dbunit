@@ -79,9 +79,9 @@ import org.slf4j.LoggerFactory;
  * 
  * &#064;Test
  * public void testExample() throws Exception {
- *     VerifyTableDefinition[] tables = {};
  *     String[] prepDataFiles = {};
  *     String[] expectedDataFiles = {};
+ *     VerifyTableDefinition[] tables = {};
  * 
  *     tc.configureTest(tables, prepDataFiles, expectedDataFiles);
  *     tc.preTest();
@@ -105,9 +105,9 @@ import org.slf4j.LoggerFactory;
  *     setDatabaseTester(databaseTester);
  *     setDataFileLoader(dataFileLoader);
  * 
- *     VerifyTableDefinition[] tables = {};
  *     String[] prepDataFiles = {};
  *     String[] expectedDataFiles = {};
+ *     VerifyTableDefinition[] tables = {};
  * 
  *     configureTest(tables, prepDataFiles, expectedDataFiles);
  *     preTest();

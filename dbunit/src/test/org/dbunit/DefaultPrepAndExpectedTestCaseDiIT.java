@@ -50,11 +50,10 @@ public class DefaultPrepAndExpectedTestCaseDiIT extends TestCase {
     }
 
     public void testSuccessRun() throws Exception {
-        VerifyTableDefinition[] tables = {TEST_TABLE, SECOND_TABLE};
-
         // use same files to have no data comparison fails
         String[] prepDataFiles = {PREP_DATA_FILE_NAME};
         String[] expectedDataFiles = {PREP_DATA_FILE_NAME};
+        VerifyTableDefinition[] tables = {TEST_TABLE, SECOND_TABLE};
 
         tc.configureTest(tables, prepDataFiles, expectedDataFiles);
         tc.preTest();
@@ -71,10 +70,9 @@ public class DefaultPrepAndExpectedTestCaseDiIT extends TestCase {
     }
 
     public void testFailRun() throws Exception {
-        VerifyTableDefinition[] tables = {TEST_TABLE, SECOND_TABLE};
-
         String[] prepDataFiles = {PREP_DATA_FILE_NAME};
         String[] expectedDataFiles = {EXP_DATA_FILE_NAME};
+        VerifyTableDefinition[] tables = {TEST_TABLE, SECOND_TABLE};
 
         tc.configureTest(tables, prepDataFiles, expectedDataFiles);
         tc.preTest();

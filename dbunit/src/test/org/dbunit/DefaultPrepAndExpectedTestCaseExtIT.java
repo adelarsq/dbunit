@@ -50,10 +50,9 @@ public class DefaultPrepAndExpectedTestCaseExtIT extends
     }
 
     public void testSuccessRun() throws Exception {
-        VerifyTableDefinition[] tables = {TEST_TABLE, SECOND_TABLE};
-
         String[] prepDataFiles = {PREP_DATA_FILE_NAME};
         String[] expectedDataFiles = {PREP_DATA_FILE_NAME};
+        VerifyTableDefinition[] tables = {TEST_TABLE, SECOND_TABLE};
 
         tc.configureTest(tables, prepDataFiles, expectedDataFiles);
         tc.preTest();
@@ -70,10 +69,9 @@ public class DefaultPrepAndExpectedTestCaseExtIT extends
     }
 
     public void testFailRun() throws Exception {
-        VerifyTableDefinition[] tables = {TEST_TABLE, SECOND_TABLE};
-
         String[] prepDataFiles = {PREP_DATA_FILE_NAME};
         String[] expectedDataFiles = {EXP_DATA_FILE_NAME};
+        VerifyTableDefinition[] tables = {TEST_TABLE, SECOND_TABLE};
 
         tc.configureTest(tables, prepDataFiles, expectedDataFiles);
         tc.preTest();

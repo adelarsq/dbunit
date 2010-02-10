@@ -24,9 +24,9 @@ public class DefaultPrepAndExpectedTestCaseTest extends TestCase {
     }
 
     public void testConfigureTest() throws Exception {
-        VerifyTableDefinition[] tables = {};
         String[] prepDataFiles = {PREP_DATA_FILE_NAME};
         String[] expectedDataFiles = {EXP_DATA_FILE_NAME};
+        VerifyTableDefinition[] tables = {};
 
         tc.configureTest(tables, prepDataFiles, expectedDataFiles);
 
