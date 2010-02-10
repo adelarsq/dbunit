@@ -50,7 +50,7 @@
 
     <menu name="Quick Links">
       <item name="Maven 1.x Plugin"  href="http://maven-plugins.sourceforge.net/maven-dbunit-plugin/index.html"/>
-      <item name="Maven 2 Plugin"    href="http://mojo.codehaus.org/dbunit-maven-plugin/"/>
+      <item name="Maven 2.x Plugin"  href="http://mojo.codehaus.org/dbunit-maven-plugin/"/>
       <item name="Download"          href="http://sourceforge.net/project/showfiles.php?group_id=47439"/>
       <item name="Changes"           href="/changes-report.html"/>
       <item name="FAQ"               href="/faq.html"/>
@@ -71,11 +71,14 @@
       <item name="Properties"        href="/properties.html"/>
       <item name="Ant Task"          href="/anttask.html"/>
       <item name="Migration Guide"   href="/migration.html"/>
+      <item name="Resources"         href="/resources.html"/>
+      <item name="Credits"           href="/credits.html"/>
+    </menu>
+
+    <menu name="Developer">
       <item name="Building DbUnit"   href="/building.html"/>
       <item name="Developers Guide"  href="/devguide.html"/>
       <item name="Integration Tests" href="/integrationtests.html"/>
-      <item name="Resources"         href="/resources.html"/>
-      <item name="Credits"           href="/credits.html"/>
     </menu>
 
     <menu ref="parent"/>
