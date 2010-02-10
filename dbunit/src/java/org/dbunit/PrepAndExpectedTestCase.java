@@ -62,6 +62,15 @@ public interface PrepAndExpectedTestCase {
     void postTest() throws Exception;
 
     /**
+     * Cleanup tables specified in prep and expected datasets, using the
+     * provided databaseTester. See
+     * {@link org.dbunit.IDatabaseTester#onTearDown()}.
+     * 
+     * @throws Exception
+     */
+    void cleanupData() throws Exception;
+
+    /**
      * Get the prep dataset, created from the prepDataFiles.
      * 
      * @return The prep dataset.

@@ -214,6 +214,20 @@ public class DefaultPrepAndExpectedTestCase extends TestCase implements
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public void cleanupData() throws Exception {
+        if (databaseTester == null) {
+            throw new IllegalStateException(
+                    "databaseTester is null; must configure or set it first");
+        }
+
+        IDataSet dataset = new CompositeDataSet(prepDs, expectedDs);
+        databaseTester.setDataSet(dataset);
+        databaseTester.onTearDown();
+    }
+
+    /**
      * Use the provided databaseTester to prep the database with the provided
      * prep dataset. See {@link org.dbunit.IDatabaseTester#onSetup()}.
      * 
@@ -311,24 +325,6 @@ public class DefaultPrepAndExpectedTestCase extends TestCase implements
 
         LOG.debug("Comparing expected table to actual table");
         Assertion.assertEquals(expectedSortedTable, actualSortedTable);
-    }
-
-    /**
-     * Cleanup tables specified in prep and expected datasets, using the
-     * provided databaseTester. See
-     * {@link org.dbunit.IDatabaseTester#onTearDown()}.
-     * 
-     * @throws Exception
-     */
-    protected void cleanupData() throws Exception {
-        if (databaseTester == null) {
-            throw new IllegalStateException(
-                    "databaseTester is null; must configure or set it first");
-        }
-
-        IDataSet dataset = new CompositeDataSet(prepDs, expectedDs);
-        databaseTester.setDataSet(dataset);
-        databaseTester.onTearDown();
     }
 
     /**
