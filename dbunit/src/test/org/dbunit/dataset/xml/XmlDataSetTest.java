@@ -34,6 +34,7 @@ import org.dbunit.dataset.AbstractDataSetTest;
 import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -51,21 +52,21 @@ public class XmlDataSetTest extends AbstractDataSetTest
     protected IDataSet createDataSet() throws Exception
     {
         Reader in = new FileReader(
-                new File("src/xml/dataSetTest.xml"));
+                TestUtils.getFile("xml/dataSetTest.xml"));
         return new XmlDataSet(in);
     }
 
     protected IDataSet createDuplicateDataSet() throws Exception
     {
         InputStream in = new FileInputStream(
-                new File("src/xml/xmlDataSetDuplicateTest.xml"));
+                TestUtils.getFile("xml/xmlDataSetDuplicateTest.xml"));
         return new XmlDataSet(in);
     }
 
     protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception 
     {
         InputStream in = new FileInputStream(
-                new File("src/xml/xmlDataSetDuplicateMultipleCaseTest.xml"));
+                TestUtils.getFile("xml/xmlDataSetDuplicateMultipleCaseTest.xml"));
         return new XmlDataSet(in);
     }
 

@@ -27,6 +27,7 @@ import junit.framework.TestCase;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Stephan Strittmatter (stritti AT users.sourceforge.net)
@@ -46,7 +47,7 @@ public class SqlLoaderCsvDataSetTest extends TestCase {
     protected IDataSet getDataSet() throws DataSetException {
 
         SqlLoaderControlDataSet loadedDataSet =
-            new SqlLoaderControlDataSet(new File("src/sqlloader"), new File("src/sqlloader/tables.lst"));
+            new SqlLoaderControlDataSet(TestUtils.getFile("sqlloader"), TestUtils.getFile("sqlloader/tables.lst"));
 
         return loadedDataSet;
     }

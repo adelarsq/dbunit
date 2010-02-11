@@ -24,6 +24,7 @@ package org.dbunit.dataset;
 import java.io.FileReader;
 
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -40,9 +41,9 @@ public class FilteredDataSetTest extends AbstractDataSetTest
     protected IDataSet createDataSet() throws Exception
     {
         IDataSet dataSet1 = new XmlDataSet(
-                new FileReader("src/xml/dataSetTest.xml"));
+                TestUtils.getFileReader("xml/dataSetTest.xml"));
         IDataSet dataSet2 = new XmlDataSet(
-                new FileReader("src/xml/filteredDataSetTest.xml"));
+                TestUtils.getFileReader("xml/filteredDataSetTest.xml"));
 
         IDataSet dataSet = new CompositeDataSet(dataSet1, dataSet2);
         assertEquals("count before filter", getExpectedNames().length + 1,
@@ -53,9 +54,9 @@ public class FilteredDataSetTest extends AbstractDataSetTest
     protected IDataSet createDuplicateDataSet() throws Exception
     {
         IDataSet dataSet1 = new XmlDataSet(
-                new FileReader("src/xml/xmlDataSetDuplicateTest.xml"));
+                TestUtils.getFileReader("xml/xmlDataSetDuplicateTest.xml"));
         IDataSet dataSet2 = new XmlDataSet(
-                new FileReader("src/xml/filteredDataSetTest.xml"));
+                TestUtils.getFileReader("xml/filteredDataSetTest.xml"));
 
         assertEquals(2, dataSet1.getTableNames().length);
         assertEquals(1, dataSet2.getTableNames().length);

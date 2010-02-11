@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 
 import org.dbunit.dataset.filter.IRowFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author gommma
@@ -16,8 +17,8 @@ public class RowFilterTableTest extends TestCase
 	
     private IDataSet getDataSet() throws Exception
     {
-        return new FlatXmlDataSetBuilder().build(new FileReader(
-                "src/xml/rowFilterTableTest.xml"));
+        return new FlatXmlDataSetBuilder().build(TestUtils.getFileReader(
+                "xml/rowFilterTableTest.xml"));
     }
 
 

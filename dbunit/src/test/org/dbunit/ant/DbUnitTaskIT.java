@@ -47,6 +47,7 @@ import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.testutil.TestUtils;
 import org.dbunit.util.FileHelper;
 
 /**
@@ -63,7 +64,7 @@ public class DbUnitTaskIT extends BuildFileTest
 {
     static protected Class classUnderTest = DbUnitTaskIT.class;
 
-    private static final String BUILD_FILE_DIR = "src/xml";
+    private static final String BUILD_FILE_DIR = "xml";
     private static final String OUTPUT_DIR = "target/xml";
 
     private File outputDir;
@@ -79,8 +80,8 @@ public class DbUnitTaskIT extends BuildFileTest
         DatabaseEnvironment.getInstance();
 
         String filePath = BUILD_FILE_DIR + "/antTestBuildFile.xml";
-        assertTrue("Buildfile not found", new File(filePath).isFile());
-        configureProject(filePath);
+        assertTrue("Buildfile not found", TestUtils.getFile(filePath).isFile());
+        configureProject(TestUtils.getFileName(filePath));
 
         outputDir = new File(getProjectDir(), OUTPUT_DIR);
         outputDir.mkdirs();

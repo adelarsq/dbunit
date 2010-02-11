@@ -26,6 +26,7 @@ import java.io.IOException;
 
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -33,7 +34,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
  */
 public class SortedTableTest extends AbstractTableTest
 {
-	private File sortedTableTestFile = new File("src/xml/sortedTableTest.xml");
+	private File sortedTableTestFile = TestUtils.getFile("xml/sortedTableTest.xml");
 	
     public SortedTableTest(String s)
     {

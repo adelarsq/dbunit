@@ -25,6 +25,7 @@ import org.dbunit.dataset.AbstractTableTest;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.testutil.TestUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -50,7 +51,7 @@ public class XmlTableTest extends AbstractTableTest
     protected IDataSet createDataSet() throws Exception
     {
         Reader in = new FileReader(
-                new File("src/xml/xmlTableTest.xml"));
+                TestUtils.getFile("xml/xmlTableTest.xml"));
         return new XmlDataSet(in);
     }
 

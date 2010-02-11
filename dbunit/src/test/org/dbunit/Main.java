@@ -57,8 +57,8 @@ public class Main
         IDatabaseConnection connection =
                 DatabaseEnvironment.getInstance().getConnection();
 
-//        IDataSet dataSet = new XmlDataSet(new FileReader("src/xml/dataSetTest.xml"));
-        InputSource source = new InputSource(new File("src/xml/xmlTableTest.xml").toURL().toString());
+//        IDataSet dataSet = new XmlDataSet(TestUtils.getFileReader("xml/dataSetTest.xml"));
+        InputSource source = new InputSource(TestUtils.getFile("xml/xmlTableTest.xml").toURL().toString());
 //        InputSource source = new InputSource(new File("writerTest.xml").toURL().toString());
         FlatXmlProducer flatXmlProducer = new FlatXmlProducer(source);
         XmlProducer xmlProducer = new XmlProducer(source);
@@ -176,7 +176,7 @@ public class Main
 
 
 //        ////////////////////////////////
-//        Document document = new Document(new File("src/xml/flatXmlDataSetTest.xml"));
+//        Document document = new Document(TestUtils.getFile("xml/flatXmlDataSetTest.xml"));
 //        DocType docType = document.getDocType();
 //        System.out.println(docType);
 //
@@ -191,7 +191,7 @@ public class Main
 //        IDataSet dataSet = new FlatXmlDataSet(
 //                new FileInputStream("flatXmlDataSetTest.xml"));
 //        FlatDtdDataSet.write(new FlatXmlDataSet(
-//                new FileInputStream("src/xml/flatXmlDataSetTest.xml")),
+//                TestUtils.getFileInputStream("xml/flatXmlDataSetTest.xml")),
 //                new FileOutputStream("src/dtd/flatXmlDataSetTest.dtd"));
     }
 

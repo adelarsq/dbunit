@@ -47,6 +47,7 @@ import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -339,7 +340,7 @@ public class InsertOperationIT extends AbstractDatabaseIT
         {
             String tableName = "CLOB_TABLE";
 
-            Reader in = new FileReader(new File("src/xml/clobInsertTest.xml"));
+            Reader in = new FileReader(TestUtils.getFile("xml/clobInsertTest.xml"));
             IDataSet xmlDataSet = new FlatXmlDataSetBuilder().build(in);
 
             assertEquals("count before", 0, _connection.getRowCount(tableName));
@@ -360,7 +361,7 @@ public class InsertOperationIT extends AbstractDatabaseIT
         {
             String tableName = "BLOB_TABLE";
 
-            Reader in = new FileReader(new File("src/xml/blobInsertTest.xml"));
+            Reader in = new FileReader(TestUtils.getFile("xml/blobInsertTest.xml"));
             IDataSet xmlDataSet = new FlatXmlDataSetBuilder().build(in);
 
             assertEquals("count before", 0, _connection.getRowCount(tableName));
@@ -381,7 +382,7 @@ public class InsertOperationIT extends AbstractDatabaseIT
         {
             String tableName = "SDO_GEOMETRY_TABLE";
 
-            Reader in = new FileReader(new File("src/xml/sdoGeometryInsertTest.xml"));
+            Reader in = new FileReader(TestUtils.getFile("xml/sdoGeometryInsertTest.xml"));
             IDataSet xmlDataSet = new FlatXmlDataSetBuilder().build(in);
 
             assertEquals("count before", 0, _connection.getRowCount(tableName));
@@ -396,7 +397,7 @@ public class InsertOperationIT extends AbstractDatabaseIT
 
     public void testMissingColumns() throws Exception
     {
-        Reader in = new FileReader("src/xml/missingColumnTest.xml");
+        Reader in = TestUtils.getFileReader("xml/missingColumnTest.xml");
         IDataSet xmlDataSet = new XmlDataSet(in);
 
         ITable[] tablesBefore = DataSetUtils.getTables(_connection.createDataSet());
@@ -454,7 +455,7 @@ public class InsertOperationIT extends AbstractDatabaseIT
 
     public void testExecute() throws Exception
     {
-        Reader in = new FileReader("src/xml/insertOperationTest.xml");
+        Reader in = TestUtils.getFileReader("xml/insertOperationTest.xml");
         IDataSet dataSet = new XmlDataSet(in);
 
         testExecute(dataSet);
@@ -462,7 +463,7 @@ public class InsertOperationIT extends AbstractDatabaseIT
 
     public void testExecuteCaseInsensitive() throws Exception
     {
-        Reader in = new FileReader("src/xml/insertOperationTest.xml");
+        Reader in = TestUtils.getFileReader("xml/insertOperationTest.xml");
         IDataSet dataSet = new XmlDataSet(in);
 
         testExecute(new LowerCaseDataSet(dataSet));
@@ -470,7 +471,7 @@ public class InsertOperationIT extends AbstractDatabaseIT
 
     public void testExecuteForwardOnly() throws Exception
     {
-        Reader in = new FileReader("src/xml/insertOperationTest.xml");
+        Reader in = TestUtils.getFileReader("xml/insertOperationTest.xml");
         IDataSet dataSet = new XmlDataSet(in);
 
         testExecute(new ForwardOnlyDataSet(dataSet));

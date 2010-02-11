@@ -33,7 +33,7 @@ import junit.framework.TestCase;
 
 import org.dbunit.dataset.common.handlers.IllegalInputCharacterException;
 import org.dbunit.dataset.common.handlers.PipelineException;
-
+import org.dbunit.testutil.TestUtils;
 
 public class CsvParserTest extends TestCase {
 
@@ -89,8 +89,8 @@ public class CsvParserTest extends TestCase {
     }
 
     public void testAFileCanContainFieldWithNewLine () throws IOException, CsvParserException {
-        final String pathname = "src/csv/with-newlines.csv";
-        List list = parser.parse(new File(pathname));
+        final String pathname = "csv/with-newlines.csv";
+        List list = parser.parse(TestUtils.getFile(pathname));
         assertEquals("wrong number of lines parsed from " + pathname, 2, list.size());
         List row = (List) list.get(1);
         assertEquals("AA\nAAA", row.get(0));
@@ -98,12 +98,12 @@ public class CsvParserTest extends TestCase {
     }
 
     public void testRaiseACSVParserExceptonWhenParsingAnEmptyFile () throws IOException {
-        failParsing(new File("src/csv/empty-file.csv"));
+        failParsing(TestUtils.getFile("csv/empty-file.csv"));
     }
 
     public void testRaiseACSVParserExceptonWhenParsingFileWithDifferentNumberOfColumns () throws IllegalInputCharacterException, IOException, PipelineException {
-        failParsing(new File("src/csv/different-column-numbers-last.csv"));
-        failParsing(new File("src/csv/different-column-numbers-first.csv"));
+        failParsing(TestUtils.getFile("csv/different-column-numbers-last.csv"));
+        failParsing(TestUtils.getFile("csv/different-column-numbers-first.csv"));
     }
 
     private void failParsing(File sample) throws IOException {
@@ -117,7 +117,7 @@ public class CsvParserTest extends TestCase {
 
     public void testSample() throws Exception {
 
-        File sample = new File("src/csv/sample.csv");
+        File sample = TestUtils.getFile("csv/sample.csv");
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(sample)));
         LineNumberReader lineNumberReader = new LineNumberReader(reader);
         String line;
@@ -142,7 +142,7 @@ public class CsvParserTest extends TestCase {
         assertEquals(2, parsed.size());
         assertEquals("Hello", parsed.get(0));
         assertEquals("world", parsed.get(1));
-        csv = "\" Hello, \",\" world \"";;
+        csv = "\" Hello, \",\" world \"";
         parsed = parser.parse(csv);
         assertEquals(2, parsed.size());
         assertEquals(" Hello, ", parsed.get(0));

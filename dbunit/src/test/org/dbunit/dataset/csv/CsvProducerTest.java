@@ -34,6 +34,7 @@ import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
 import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.testutil.TestUtils;
 import org.dbunit.util.FileHelper;
 
 import java.io.File;
@@ -52,7 +53,7 @@ public class CsvProducerTest extends TestCase {
     private IDatabaseConnection connection;
     private static final int ORDERS_ROWS_NUMBER = 5;
     private static final int ORDERS_ROW_ROWS_NUMBER = 3;
-    private static final String THE_DIRECTORY = "src/csv/orders";
+    private static final String THE_DIRECTORY = TestUtils.getFileName("csv/orders");
 
     public void testProduceFromFolder() throws DataSetException {
         CsvProducer producer = new CsvProducer(THE_DIRECTORY);
@@ -150,7 +151,7 @@ public class CsvProducerTest extends TestCase {
 
     protected void setUp() throws Exception {
         Properties properties = new Properties();
-        final FileInputStream inStream = new FileInputStream("src/csv/cvs-tests.properties");
+        final FileInputStream inStream = TestUtils.getFileInputStream("csv/cvs-tests.properties");
         properties.load(inStream);
         inStream.close();
         driverClass = properties.getProperty("cvs-tests.driver.class");

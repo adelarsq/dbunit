@@ -34,6 +34,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.PrimaryKeyFilter.PkTableMap;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.NoSuchTableException;
+import org.dbunit.testutil.TestUtils;
 import org.dbunit.util.search.SearchException;
 
 /**
@@ -56,7 +57,7 @@ public class TablesDependencyHelperTest extends TestCase {
     protected void setUp( String[] sqlFileList ) throws Exception {
         this.jdbcConnection = HypersonicEnvironment.createJdbcConnection("mem:tempdb");
         for (int i = 0; i < sqlFileList.length; i++) {
-        	File sql = new File("src/sql/" + sqlFileList[i]);
+        	File sql = TestUtils.getFile("sql/" + sqlFileList[i]);
             HypersonicEnvironment.executeDdlFile(sql, this.jdbcConnection);
 		}
         this.connection = new DatabaseConnection(jdbcConnection);

@@ -45,6 +45,7 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -53,7 +54,7 @@ import org.dbunit.operation.DatabaseOperation;
  */
 public class DbUnitAssertIT extends TestCase
 {
-    public static final String FILE_PATH = "src/xml/assertionTest.xml";
+    public static final String FILE_PATH = "xml/assertionTest.xml";
     
     private DbUnitAssert assertion = new DbUnitAssert();
     
@@ -65,7 +66,7 @@ public class DbUnitAssertIT extends TestCase
 
     private IDataSet getDataSet() throws Exception
     {
-        return new FlatXmlDataSetBuilder().build(new FileReader(FILE_PATH));
+        return new FlatXmlDataSetBuilder().build(TestUtils.getFileReader(FILE_PATH));
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -81,8 +82,8 @@ public class DbUnitAssertIT extends TestCase
     
     public void testAssertTablesEmtpyEquals() throws Exception
     {
-      IDataSet empty1 = new XmlDataSet(new FileReader("src/xml/assertionTest-empty1.xml"));
-      IDataSet empty2 = new FlatXmlDataSetBuilder().build(new FileReader("src/xml/assertionTest-empty2.xml"));
+      IDataSet empty1 = new XmlDataSet(TestUtils.getFileReader("xml/assertionTest-empty1.xml"));
+      IDataSet empty2 = new FlatXmlDataSetBuilder().build(TestUtils.getFileReader("xml/assertionTest-empty2.xml"));
       assertion.assertEquals(empty1, empty2);
     }
     

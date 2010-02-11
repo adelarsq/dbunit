@@ -25,6 +25,7 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.stream.AbstractProducerTest;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.stream.MockDataSetConsumer;
+import org.dbunit.testutil.TestUtils;
 import org.xml.sax.InputSource;
 
 import java.io.File;
@@ -41,7 +42,7 @@ import junitx.framework.StringAssert;
 public class FlatDtdProducerTest extends AbstractProducerTest
 {
     private static final File DTD_FILE =
-            new File("src/dtd/flatDtdProducerTest.dtd");
+            TestUtils.getFile("dtd/flatDtdProducerTest.dtd");
 
     public FlatDtdProducerTest(String s)
     {

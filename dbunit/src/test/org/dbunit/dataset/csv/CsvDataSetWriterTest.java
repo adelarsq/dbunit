@@ -5,6 +5,7 @@ import org.dbunit.Assertion;
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.testutil.TestUtils;
 
 import java.io.File;
 
@@ -19,7 +20,7 @@ import java.io.File;
  */
 public class CsvDataSetWriterTest extends TestCase {
     private static final String DEST = "target/csv/orders-out";
-    private static final String SOURCE = "src/csv/orders";
+    private static final String SOURCE = TestUtils.getFileName("csv/orders");
 
     public void testProduceAndWriteBackToDisk () throws Exception {
         produceToFolder (SOURCE, DEST);

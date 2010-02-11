@@ -24,6 +24,7 @@ package org.dbunit.operation;
 import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 import java.io.FileReader;
 import java.io.Reader;
@@ -42,7 +43,7 @@ public class AbstractBatchOperationIT extends AbstractDatabaseIT
 
     public void testGetOperationMetaDataAndMissingColumns() throws Exception
     {
-        Reader in = new FileReader("src/xml/missingColumnTest.xml");
+        Reader in = TestUtils.getFileReader("xml/missingColumnTest.xml");
         IDataSet xmlDataSet = new XmlDataSet(in);
 
         ITable[] xmlTables = DataSetUtils.getTables(xmlDataSet);
@@ -93,7 +94,7 @@ public class AbstractBatchOperationIT extends AbstractDatabaseIT
     public void testGetOperationMetaDataAndUnknownColumns() throws Exception
     {
         String tableName = "PK_TABLE";
-        Reader in = new FileReader("src/xml/unknownColumnTest.xml");
+        Reader in = TestUtils.getFileReader("xml/unknownColumnTest.xml");
         IDataSet xmlDataSet = new XmlDataSet(in);
 
         ITable xmlTable = xmlDataSet.getTable(tableName);

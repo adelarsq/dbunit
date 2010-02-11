@@ -29,6 +29,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.StringTokenizer;
 
+import org.dbunit.testutil.TestUtils;
 import org.dbunit.util.FileHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,7 @@ public class DerbyEnvironment extends DatabaseEnvironment
 		// when the connection is retrieved the first time
 		FileHelper.deleteDirectory(new File("./target/derby_db"));
 
-		File ddlFile = new File("src/sql/derby.sql");
+		File ddlFile = TestUtils.getFile("sql/derby.sql");
 		Connection connection = getConnection().getConnection();
 
 		executeDdlFile(ddlFile, connection);

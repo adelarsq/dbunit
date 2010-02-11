@@ -23,6 +23,7 @@ package org.dbunit.dataset;
 
 import org.dbunit.database.AmbiguousTableNameException;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 import java.io.FileReader;
 
@@ -41,7 +42,7 @@ public class DefaultDataSetTest extends AbstractDataSetTest
     protected IDataSet createDataSet() throws Exception
     {
         IDataSet dataSet = new XmlDataSet(
-                new FileReader("src/xml/dataSetTest.xml"));
+                TestUtils.getFileReader("xml/dataSetTest.xml"));
         ITable[] tables = DataSetUtils.getTables(dataSet);
 
         return new DefaultDataSet(tables);

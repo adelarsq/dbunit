@@ -22,6 +22,7 @@ package org.dbunit.dataset.filter;
 
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 import java.io.FileReader;
 
@@ -42,7 +43,7 @@ public abstract class AbstractTableFilterTest
     protected IDataSet createDataSet() throws Exception
     {
         IDataSet dataSet1 = new XmlDataSet(
-                new FileReader("src/xml/dataSetTest.xml"));
+                TestUtils.getFileReader("xml/dataSetTest.xml"));
         IDataSet dataSet2 = new DefaultDataSet(
                 new DefaultTable(getExtraTableName()));
 
@@ -55,7 +56,7 @@ public abstract class AbstractTableFilterTest
     protected IDataSet createDuplicateDataSet() throws Exception
     {
         IDataSet dataSet1 = new XmlDataSet(
-                new FileReader("src/xml/xmlDataSetDuplicateTest.xml"));
+                TestUtils.getFileReader("xml/xmlDataSetDuplicateTest.xml"));
         IDataSet dataSet2 = new DefaultDataSet(
                 new DefaultTable(getExtraTableName()));
 

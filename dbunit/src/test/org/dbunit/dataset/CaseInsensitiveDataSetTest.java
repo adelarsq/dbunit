@@ -24,6 +24,7 @@ package org.dbunit.dataset;
 import java.io.FileReader;
 
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -40,8 +41,8 @@ public class CaseInsensitiveDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        return new CaseInsensitiveDataSet(new XmlDataSet(new FileReader(
-                "src/xml/caseInsensitiveDataSetTest.xml")));
+        return new CaseInsensitiveDataSet(new XmlDataSet(TestUtils.getFileReader(
+                "xml/caseInsensitiveDataSetTest.xml")));
     }
 
     protected IDataSet createDuplicateDataSet() throws Exception

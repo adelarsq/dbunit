@@ -26,12 +26,12 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import org.apache.commons.io.FilenameUtils;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -94,7 +94,7 @@ public class DatabaseEnvironment
     public DatabaseEnvironment(DatabaseProfile profile) throws Exception
     {
         _profile = profile;
-        File file = new File("src/xml/dataSetTest.xml");
+        File file = TestUtils.getFile("xml/dataSetTest.xml");
         _dataSet = new XmlDataSet(new FileReader(file));
         _databaseTester = new JdbcDatabaseTester( _profile.getDriverClass(),
             _profile.getConnectionUrl(), _profile.getUser(), _profile.getPassword(), _profile.getSchema() );
@@ -164,22 +164,6 @@ public class DatabaseEnvironment
         }
 
         return true;
-    }
-
-    public File getFile(String fileName)
-    {
-        String fullPath = FilenameUtils.getFullPath(fileName);
-        String baseName = FilenameUtils.getBaseName(fileName);
-        String extension = FilenameUtils.getExtension(fileName);
-        File profileFile = new File(fullPath + baseName + "-" + _profile.getActiveProfile() + "." + extension);
-        if (profileFile.exists())
-        {
-            return profileFile;
-        }
-        else
-        {
-            return new File(fileName);
-        }
     }
 
     /**

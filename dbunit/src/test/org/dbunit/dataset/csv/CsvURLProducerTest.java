@@ -46,6 +46,7 @@ import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
 import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.testutil.TestUtils;
 import org.dbunit.util.FileHelper;
 
 public class CsvURLProducerTest extends TestCase {
@@ -56,15 +57,15 @@ public class CsvURLProducerTest extends TestCase {
     private IDatabaseConnection connection;
     private static final int ORDERS_ROWS_NUMBER = 5;
     private static final int ORDERS_ROW_ROWS_NUMBER = 3;
-    private static final String THE_DIRECTORY = "src/csv/orders";
+    private static final String THE_DIRECTORY = "csv/orders";
 
     public void testProduceFromFolder() throws DataSetException, MalformedURLException {
-        CsvURLProducer producer = new CsvURLProducer(new File(THE_DIRECTORY).toURL(), CsvDataSet.TABLE_ORDERING_FILE);
+        CsvURLProducer producer = new CsvURLProducer(TestUtils.getFile(THE_DIRECTORY).toURL(), CsvDataSet.TABLE_ORDERING_FILE);
         doTestWithProducer(producer);
     }
 
     public void testProduceFromJar() throws DataSetException, IOException {
-    	File file = new File(THE_DIRECTORY + "/orders.jar");
+    	File file = TestUtils.getFile(THE_DIRECTORY + "/orders.jar");
     	URL jarFile = new URL("jar:" + file.toURL() + "!/");
         CsvURLProducer producer = new CsvURLProducer(jarFile, CsvDataSet.TABLE_ORDERING_FILE);
         doTestWithProducer(producer);
@@ -104,7 +105,7 @@ public class CsvURLProducerTest extends TestCase {
     }
 
     private void produceAndInsertToDatabase() throws DatabaseUnitException, SQLException, MalformedURLException {
-        CsvURLProducer producer = new CsvURLProducer(new File(THE_DIRECTORY).toURL(), CsvDataSet.TABLE_ORDERING_FILE);
+        CsvURLProducer producer = new CsvURLProducer(TestUtils.getFile(THE_DIRECTORY).toURL(), CsvDataSet.TABLE_ORDERING_FILE);
         CachedDataSet consumer = new CachedDataSet();
         producer.setConsumer(consumer);
         producer.produce();
@@ -115,7 +116,7 @@ public class CsvURLProducerTest extends TestCase {
     public void testInsertOperationWithCsvFormat() throws SQLException, DatabaseUnitException {
         Operation operation = new Operation();
         operation.setFormat(AbstractStep.FORMAT_CSV);
-        operation.setSrc(new File(THE_DIRECTORY));
+        operation.setSrc(TestUtils.getFile(THE_DIRECTORY));
         operation.setType("INSERT");
         operation.execute(connection);
         Statement statement = connection.getConnection().createStatement();
@@ -167,7 +168,7 @@ public class CsvURLProducerTest extends TestCase {
 
     protected void setUp() throws Exception {
         Properties properties = new Properties();
-        final FileInputStream inStream = new FileInputStream("src/csv/cvs-tests.properties");
+        final FileInputStream inStream = TestUtils.getFileInputStream("csv/cvs-tests.properties");
         properties.load(inStream);
         inStream.close();
         driverClass = properties.getProperty("cvs-tests.driver.class");

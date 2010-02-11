@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Lenny Marks (lenny@aps.org)
@@ -44,7 +45,7 @@ public class CsvURLDataSetTest extends TestCase {
     }
 
     public void testNullColumns() throws DataSetException, MalformedURLException {
-		URL csvDir = new File("src/csv/orders/").toURL();
+		URL csvDir = TestUtils.getFile("csv/orders/").toURL();
     	CsvURLDataSet dataSet = new CsvURLDataSet(csvDir);
     	
     	ITable table = dataSet.getTable("orders");
@@ -52,7 +53,7 @@ public class CsvURLDataSetTest extends TestCase {
     }
 
     public void testSpacesInColumns() throws DataSetException, MalformedURLException {
-		URL csvDir = new File("src/csv/accounts/").toURL();
+		URL csvDir = TestUtils.getFile("csv/accounts/").toURL();
     	CsvURLDataSet dataSet = new CsvURLDataSet(csvDir);
     	
     	ITable table = dataSet.getTable("accounts");

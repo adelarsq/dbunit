@@ -33,6 +33,7 @@ import org.dbunit.dataset.Columns;
 import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -48,13 +49,13 @@ public class XlsDataSetTest extends AbstractDataSetTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        return new XlsDataSet(new File("src/xml/dataSetTest.xls"));
+        return new XlsDataSet(TestUtils.getFile("xml/dataSetTest.xls"));
     }
 
     protected IDataSet createDuplicateDataSet() throws Exception
     {
         return new XlsDataSet(
-                new File("src/xml/dataSetDuplicateTest.xls"));
+                TestUtils.getFile("xml/dataSetDuplicateTest.xls"));
     }
 
     protected IDataSet createMultipleCaseDuplicateDataSet() throws Exception 
@@ -122,7 +123,7 @@ public class XlsDataSetTest extends AbstractDataSetTest
 
     public void testColumnNameWithSpace() throws Exception
     {
-    		IDataSet dataSet = new XlsDataSet(new FileInputStream("./src/xml/contactor.xls"));
+    		IDataSet dataSet = new XlsDataSet(TestUtils.getFileInputStream("xml/contactor.xls"));
     		ITable customerTable = dataSet.getTable("customer");
             Column column = Columns.getColumn("name",  customerTable.getTableMetaData().getColumns());
             assertNotNull(column);

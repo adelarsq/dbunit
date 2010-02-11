@@ -23,6 +23,7 @@ package org.dbunit.dataset;
 
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.XmlTableTest;
+import org.dbunit.testutil.TestUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -48,7 +49,7 @@ public class CaseInsensitiveTableTest extends XmlTableTest
     protected IDataSet createDataSet() throws Exception
     {
         Reader in = new FileReader(
-                new File("src/xml/caseInsensitiveTableTest.xml"));
+                TestUtils.getFile("xml/caseInsensitiveTableTest.xml"));
         return new XmlDataSet(in);
     }
 

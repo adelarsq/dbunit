@@ -25,6 +25,7 @@ import org.dbunit.dataset.stream.DataSetProducerAdapter;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.testutil.TestUtils;
 
 import java.io.File;
 
@@ -36,7 +37,7 @@ import java.io.File;
 public class DataSetProducerAdapterTest extends AbstractProducerTest
 {
     private static final File DATASET_FILE =
-            new File("src/xml/flatXmlProducerTest.xml");
+            TestUtils.getFile("xml/flatXmlProducerTest.xml");
 
     public DataSetProducerAdapterTest(String s)
     {

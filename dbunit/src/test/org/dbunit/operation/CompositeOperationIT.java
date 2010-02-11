@@ -25,6 +25,7 @@ import org.dbunit.AbstractDatabaseIT;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -47,7 +48,7 @@ public class CompositeOperationIT extends AbstractDatabaseIT
         String tableName = "PK_TABLE";
         String columnName = "PK0";
         Reader in = new FileReader(
-                new File("src/xml/compositeOperationTest.xml"));
+                TestUtils.getFile("xml/compositeOperationTest.xml"));
         IDataSet xmlDataSet = new XmlDataSet(in);
 
         // verify table before

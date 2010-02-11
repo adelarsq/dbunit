@@ -29,6 +29,7 @@ import org.dbunit.dataset.Column;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -56,7 +57,7 @@ public class XlsTableTest extends AbstractTableTest
 
     protected IDataSet createDataSet() throws Exception
     {
-        return new XlsDataSet(new File("src/xml/tableTest.xls"));
+        return new XlsDataSet(TestUtils.getFile("xml/tableTest.xls"));
     }
 
     public void testGetMissingValue() throws Exception

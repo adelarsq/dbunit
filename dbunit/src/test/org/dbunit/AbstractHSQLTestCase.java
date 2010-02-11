@@ -9,6 +9,7 @@ import junit.framework.TestCase;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 
+import org.dbunit.testutil.TestUtils;
 import org.dbunit.util.CollectionsHelper;
 
 import org.slf4j.Logger;
@@ -71,8 +72,8 @@ public abstract class AbstractHSQLTestCase extends TestCase {
     super.setUp();
 
     this.jdbcConnection = HypersonicEnvironment.createJdbcConnection("mem:tempdb");
-    HypersonicEnvironment.executeDdlFile(new File(
-        "src/sql/" + sqlFile), jdbcConnection);
+    HypersonicEnvironment.executeDdlFile(TestUtils.getFile(
+        "sql/" + sqlFile), jdbcConnection);
     this.connection = new DatabaseConnection(jdbcConnection);
   }
 

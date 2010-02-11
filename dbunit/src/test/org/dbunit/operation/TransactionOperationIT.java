@@ -33,6 +33,7 @@ import org.dbunit.TestFeature;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -54,7 +55,7 @@ public class TransactionOperationIT extends AbstractDatabaseIT
     {
         String tableName = "TEST_TABLE";
         Reader in = new FileReader(
-                new File("src/xml/transactionOperationTest.xml"));
+                TestUtils.getFile("xml/transactionOperationTest.xml"));
         IDataSet xmlDataSet = new XmlDataSet(in);
         Connection jdbcConnection = _connection.getConnection();
 
@@ -77,7 +78,7 @@ public class TransactionOperationIT extends AbstractDatabaseIT
     {
         String tableName = "TEST_TABLE";
         Reader in = new FileReader(
-                new File("src/xml/transactionOperationTest.xml"));
+                TestUtils.getFile("xml/transactionOperationTest.xml"));
         IDataSet xmlDataSet = new XmlDataSet(in);
         Connection jdbcConnection = _connection.getConnection();
 
@@ -113,7 +114,7 @@ public class TransactionOperationIT extends AbstractDatabaseIT
     {
         String tableName = "TEST_TABLE";
         Reader in = new FileReader(
-                new File("src/xml/transactionOperationTest.xml"));
+                TestUtils.getFile("xml/transactionOperationTest.xml"));
         IDataSet xmlDataSet = new XmlDataSet(in);
         Exception[] exceptions = new Exception[]{
             new SQLException(),

@@ -41,6 +41,7 @@ import org.dbunit.dataset.NoPrimaryKeyException;
 import org.dbunit.dataset.NoSuchColumnException;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -56,7 +57,7 @@ public class RefreshOperationIT extends AbstractDatabaseIT
 
     public void testExecute() throws Exception
     {
-        Reader reader = new FileReader("src/xml/refreshOperationTest.xml");
+        Reader reader = TestUtils.getFileReader("xml/refreshOperationTest.xml");
         IDataSet dataSet = new FlatXmlDataSetBuilder().build(reader);
 
         testExecute(dataSet);
@@ -64,7 +65,7 @@ public class RefreshOperationIT extends AbstractDatabaseIT
 
     public void testExecuteCaseInsensitive() throws Exception
     {
-        Reader reader = new FileReader("src/xml/refreshOperationTest.xml");
+        Reader reader = TestUtils.getFileReader("xml/refreshOperationTest.xml");
         IDataSet dataSet = new FlatXmlDataSetBuilder().build(reader);
 
         testExecute(new LowerCaseDataSet(dataSet));
@@ -72,7 +73,7 @@ public class RefreshOperationIT extends AbstractDatabaseIT
 
     public void testExecuteForwardOnly() throws Exception
     {
-        Reader reader = new FileReader("src/xml/refreshOperationTest.xml");
+        Reader reader = TestUtils.getFileReader("xml/refreshOperationTest.xml");
         IDataSet dataSet = new FlatXmlDataSetBuilder().build(reader);
 
         testExecute(new ForwardOnlyDataSet(dataSet));
@@ -96,7 +97,7 @@ public class RefreshOperationIT extends AbstractDatabaseIT
 
         // verify table after
         IDataSet expectedDataSet = new FlatXmlDataSetBuilder().build(
-                new FileReader("src/xml/refreshOperationTestExpected.xml"));
+                TestUtils.getFileReader("xml/refreshOperationTestExpected.xml"));
 
         for (int i = 0; i < tableNames.length; i++)
         {
@@ -110,7 +111,7 @@ public class RefreshOperationIT extends AbstractDatabaseIT
     {
         String tableName = "TEST_TABLE";
 
-        Reader reader = new FileReader("src/xml/refreshOperationNoPKTest.xml");
+        Reader reader = TestUtils.getFileReader("xml/refreshOperationNoPKTest.xml");
         IDataSet dataSet = new FlatXmlDataSetBuilder().build(reader);
 
         // verify table before

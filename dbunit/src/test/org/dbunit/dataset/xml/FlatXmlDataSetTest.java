@@ -34,6 +34,7 @@ import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -43,17 +44,17 @@ import org.dbunit.dataset.ITableMetaData;
 public class FlatXmlDataSetTest extends AbstractDataSetTest
 {
     public static final File DATASET_FILE =
-            new File("src/xml/flatXmlDataSetTest.xml");
+            TestUtils.getFile("xml/flatXmlDataSetTest.xml");
     public static final File DUPLICATE_DATASET_FILE =
-            new File("src/xml/flatXmlDataSetDuplicateTest.xml");
+            TestUtils.getFile("xml/flatXmlDataSetDuplicateTest.xml");
     public static final File DUPLICATE_DATASET_MULTIPLE_CASE_FILE = 
-            new File("src/xml/flatXmlDataSetDuplicateMultipleCaseTest.xml");
+            TestUtils.getFile("xml/flatXmlDataSetDuplicateMultipleCaseTest.xml");
 
     private static final File FLAT_XML_TABLE = 
-    		new File("src/xml/flatXmlTableTest.xml");
+    		    TestUtils.getFile("xml/flatXmlTableTest.xml");
 
     private static final File FLAT_XML_DTD_DIFFERENT_CASE_FILE = 
-            new File("src/xml/flatXmlDataSetDtdDifferentCaseTest.xml");
+            TestUtils.getFile("xml/flatXmlDataSetDtdDifferentCaseTest.xml");
     
     public FlatXmlDataSetTest(String s)
     {

@@ -8,6 +8,7 @@ import org.dbunit.HypersonicEnvironment;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.Columns;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author gommma (gommma AT users.sourceforge.net)
@@ -36,7 +37,7 @@ public class ResultSetTableMetaDataIT extends AbstractDatabaseIT
     public void testGetColumnsForTablesMatchingSamePattern() throws Exception
     {
         Connection jdbcConnection = HypersonicEnvironment.createJdbcConnection("tempdb");
-        HypersonicEnvironment.executeDdlFile(new File("src/sql/hypersonic_dataset_pattern_test.sql"),
+        HypersonicEnvironment.executeDdlFile(TestUtils.getFile("sql/hypersonic_dataset_pattern_test.sql"),
                 jdbcConnection);
         IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
 

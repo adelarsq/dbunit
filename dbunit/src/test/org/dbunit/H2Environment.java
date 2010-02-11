@@ -22,6 +22,7 @@
 package org.dbunit;
 
 import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.testutil.TestUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,7 +45,7 @@ public class H2Environment extends DatabaseEnvironment
         super(profile);
 
         // Creates required tables into the hypersonic in-memory database
-        File ddlFile = new File("src/sql/h2.sql");
+        File ddlFile = TestUtils.getFile("sql/h2.sql");
         Connection connection = getConnection().getConnection();
 
         executeDdlFile(ddlFile, connection);

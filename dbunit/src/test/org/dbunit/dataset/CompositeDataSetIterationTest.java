@@ -37,6 +37,7 @@ import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 
 /**
@@ -54,7 +55,7 @@ public class CompositeDataSetIterationTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.jdbcConnection = HypersonicEnvironment.createJdbcConnection("mem:tempdb");
-		HypersonicEnvironment.executeDdlFile(new File("src/sql/" + sqlFile), jdbcConnection);
+		HypersonicEnvironment.executeDdlFile(TestUtils.getFile("sql/" + sqlFile), jdbcConnection);
 		this.connection = new DatabaseConnection(jdbcConnection);
 	}
 	

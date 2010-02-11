@@ -27,6 +27,7 @@ import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.stream.AbstractProducerTest;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.stream.MockDataSetConsumer;
+import org.dbunit.testutil.TestUtils;
 
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -44,7 +45,7 @@ import java.io.StringReader;
 public class FlatXmlProducerTest extends AbstractProducerTest
 {
     private static final File DATASET_FILE =
-            new File("src/xml/flatXmlProducerTest.xml");
+            TestUtils.getFile("xml/flatXmlProducerTest.xml");
 
     public FlatXmlProducerTest(String s)
     {

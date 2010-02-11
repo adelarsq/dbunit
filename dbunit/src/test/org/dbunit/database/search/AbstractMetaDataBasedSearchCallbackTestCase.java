@@ -31,6 +31,7 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 
 import org.dbunit.HypersonicEnvironment;
+import org.dbunit.testutil.TestUtils;
 import org.dbunit.util.CollectionsHelper;
 import org.dbunit.util.search.DepthFirstSearch;
 import org.dbunit.util.search.ISearchCallback;
@@ -55,8 +56,10 @@ public abstract class AbstractMetaDataBasedSearchCallbackTestCase extends TestCa
    
    protected void setUp() throws Exception {
      this.jdbcConnection = HypersonicEnvironment.createJdbcConnection("mem:tempdb");
-     HypersonicEnvironment.executeDdlFile(new File(
-         "src/sql/" + this.sqlFile), this.jdbcConnection);
+     HypersonicEnvironment.executeDdlFile(
+         TestUtils.getFile("sql/" + this.sqlFile),
+         this.jdbcConnection
+     );
      this.connection = new DatabaseConnection(jdbcConnection);
    }
 

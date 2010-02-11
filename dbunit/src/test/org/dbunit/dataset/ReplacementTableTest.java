@@ -20,7 +20,6 @@
  */
 package org.dbunit.dataset;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Date;
 
@@ -30,6 +29,7 @@ import org.dbunit.Assertion;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.testutil.TestUtils;
 
 /**
  *
@@ -51,7 +51,7 @@ public class ReplacementTableTest extends AbstractTableTest
 
     private IDataSet createDataSet() throws Exception
     {
-        FlatXmlDataSet fds = new FlatXmlDataSetBuilder().build(new File("src/xml/flatXmlTableTest.xml"));
+        FlatXmlDataSet fds = new FlatXmlDataSetBuilder().build(TestUtils.getFile("xml/flatXmlTableTest.xml"));
         return new ReplacementDataSet(fds);
     }
 

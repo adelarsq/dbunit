@@ -26,6 +26,7 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.AbstractProducerTest;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.stream.MockDataSetConsumer;
+import org.dbunit.testutil.TestUtils;
 import org.xml.sax.InputSource;
 
 import java.io.File;
@@ -39,7 +40,7 @@ import java.io.StringReader;
 public class XmlProducerTest extends AbstractProducerTest
 {
     private static final File DATASET_FILE =
-            new File("src/xml/xmlProducerTest.xml");
+            TestUtils.getFile("xml/xmlProducerTest.xml");
 
     public XmlProducerTest(String s)
     {

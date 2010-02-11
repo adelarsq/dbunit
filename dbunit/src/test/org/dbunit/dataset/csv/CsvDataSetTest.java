@@ -32,6 +32,7 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DataSetUtils;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.testutil.TestUtils;
 import org.dbunit.util.FileHelper;
 
 /**
@@ -40,7 +41,7 @@ import org.dbunit.util.FileHelper;
  * @since Sep 12, 2004 (pre 2.3)
  */
 public class CsvDataSetTest extends TestCase {
-	protected static final File DATASET_DIR = new File("src/csv/orders");
+	protected static final File DATASET_DIR = TestUtils.getFile("csv/orders");
     
     public CsvDataSetTest(String s) {
         super(s);

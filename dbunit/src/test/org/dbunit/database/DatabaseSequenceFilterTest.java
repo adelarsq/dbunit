@@ -33,6 +33,7 @@ import org.dbunit.HypersonicEnvironment;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -70,7 +71,7 @@ public class DatabaseSequenceFilterTest extends TestCase
         String[] expectedNoFilter = {"A","B","C","D","E","F","G","H",};
         String[] expectedFiltered = {"D","A","F","C","G","E","H","B",};
 
-        HypersonicEnvironment.executeDdlFile(new File("src/sql/hypersonic_fk.sql"),
+        HypersonicEnvironment.executeDdlFile(TestUtils.getFile("sql/hypersonic_fk.sql"),
                 _jdbcConnection);
         IDatabaseConnection connection = new DatabaseConnection(_jdbcConnection);
 
@@ -89,7 +90,7 @@ public class DatabaseSequenceFilterTest extends TestCase
     {
         String[] expectedNoFilter = {"A","B","C","D","E",};
 
-        HypersonicEnvironment.executeDdlFile(new File("src/sql/hypersonic_cyclic.sql"),
+        HypersonicEnvironment.executeDdlFile(TestUtils.getFile("sql/hypersonic_cyclic.sql"),
                 _jdbcConnection);
         IDatabaseConnection connection = new DatabaseConnection(_jdbcConnection);
 
@@ -117,7 +118,7 @@ public class DatabaseSequenceFilterTest extends TestCase
         String[] expectedNoFilter = {"MixedCaseTable","UPPER_CASE_TABLE"};
         String[] expectedFiltered = {"MixedCaseTable","UPPER_CASE_TABLE"};
 
-        HypersonicEnvironment.executeDdlFile(new File("src/sql/hypersonic_case_sensitive_test.sql"),
+        HypersonicEnvironment.executeDdlFile(TestUtils.getFile("sql/hypersonic_case_sensitive_test.sql"),
                 _jdbcConnection);
         IDatabaseConnection connection = new DatabaseConnection(_jdbcConnection);
 
@@ -143,7 +144,7 @@ public class DatabaseSequenceFilterTest extends TestCase
     public void testMultiSchemaFks() throws Exception
     {
         Connection jdbcConnection = H2Environment.createJdbcConnection("test");
-        H2Environment.executeDdlFile(new File("src/sql/h2_multischema_fk_test.sql"), jdbcConnection);
+        H2Environment.executeDdlFile(TestUtils.getFile("sql/h2_multischema_fk_test.sql"), jdbcConnection);
         IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
         connection.getConfig().setProperty(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, Boolean.TRUE);
 

@@ -37,6 +37,7 @@ import org.dbunit.dataset.LowerCaseDataSet;
 import org.dbunit.dataset.NoPrimaryKeyException;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -197,7 +198,7 @@ public class DeleteOperationIT extends AbstractDatabaseIT
     public void testExecute() throws Exception
     {
         Reader in = new FileReader(
-                new File("src/xml/deleteOperationTest.xml"));
+                TestUtils.getFile("xml/deleteOperationTest.xml"));
         IDataSet dataSet = new XmlDataSet(in);
 
         testExecute(dataSet);
@@ -207,7 +208,7 @@ public class DeleteOperationIT extends AbstractDatabaseIT
     public void testExecuteCaseInsensitive() throws Exception
     {
         Reader in = new FileReader(
-                new File("src/xml/deleteOperationTest.xml"));
+                TestUtils.getFile("xml/deleteOperationTest.xml"));
         IDataSet dataSet = new XmlDataSet(in);
 
         testExecute(new LowerCaseDataSet(dataSet));

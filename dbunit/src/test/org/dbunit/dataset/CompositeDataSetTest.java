@@ -27,6 +27,7 @@ import java.io.IOException;
 
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.testutil.TestUtils;
 
 /**
  * @author Manuel Laflamme
@@ -44,12 +45,12 @@ public class CompositeDataSetTest extends AbstractDataSetTest
     protected IDataSet createDataSet() throws Exception
     {
         IDataSet dataSet1 = new XmlDataSet(
-                new FileReader("src/xml/compositeDataSetTest1.xml"));
+                TestUtils.getFileReader("xml/compositeDataSetTest1.xml"));
         assertTrue("count before combine (1)",
                 dataSet1.getTableNames().length < getExpectedNames().length);
 
         IDataSet dataSet2 = new XmlDataSet(
-                new FileReader("src/xml/compositeDataSetTest2.xml"));
+                TestUtils.getFileReader("xml/compositeDataSetTest2.xml"));
         assertTrue("count before combine (2)",
                 dataSet2.getTableNames().length < getExpectedNames().length);
 
@@ -81,12 +82,12 @@ public class CompositeDataSetTest extends AbstractDataSetTest
     throws DataSetException, FileNotFoundException, IOException 
     {
         IDataSet dataSet1 = new FlatXmlDataSetBuilder().build(
-                new FileReader("src/xml/compositeDataSetDuplicateTest1.xml"));
+                TestUtils.getFileReader("xml/compositeDataSetDuplicateTest1.xml"));
         assertTrue("count before combine (1)",
                 dataSet1.getTableNames().length < getExpectedDuplicateNames().length);
 
         IDataSet dataSet2 = new FlatXmlDataSetBuilder().build(
-                new FileReader("src/xml/compositeDataSetDuplicateTest2.xml"));
+                TestUtils.getFileReader("xml/compositeDataSetDuplicateTest2.xml"));
         assertTrue("count before combine (2)",
                 dataSet2.getTableNames().length < getExpectedDuplicateNames().length);
 
