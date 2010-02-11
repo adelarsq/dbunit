@@ -37,16 +37,17 @@ public class DefaultPrepAndExpectedTestCaseExtIT extends
     private IDatabaseConnection connection;
     private IDatabaseTester databaseTester;
 
-    private DefaultPrepAndExpectedTestCase tc;
-
     protected void setUp() throws Exception {
         dbEnv = DatabaseEnvironment.getInstance();
         connection = dbEnv.getConnection();
         databaseTester = new DefaultDatabaseTester(connection);
 
-        tc = new DefaultPrepAndExpectedTestCase(dataFileLoader, databaseTester);
+        setDataFileLoader(dataFileLoader);
+        setDatabaseTester(databaseTester);
 
-        super.setUp();
+        // don't call super.setUp() here as prep data is not loaded yet
+        // (getDataSet() is null)
+        // super.setUp();
     }
 
     public void testSuccessRun() throws Exception {
@@ -54,8 +55,8 @@ public class DefaultPrepAndExpectedTestCaseExtIT extends
         String[] expectedDataFiles = {PREP_DATA_FILE_NAME};
         VerifyTableDefinition[] tables = {TEST_TABLE, SECOND_TABLE};
 
-        tc.configureTest(tables, prepDataFiles, expectedDataFiles);
-        tc.preTest();
+        configureTest(tables, prepDataFiles, expectedDataFiles);
+        preTest();
 
         // skip modifying data and just verify the insert
 
@@ -63,9 +64,9 @@ public class DefaultPrepAndExpectedTestCaseExtIT extends
         // maybe we need a KeepConnectionOpenOperationListener class?!
         connection = dbEnv.getConnection();
         databaseTester = new DefaultDatabaseTester(connection);
-        tc.setDatabaseTester(databaseTester);
+        setDatabaseTester(databaseTester);
 
-        tc.postTest();
+        postTest();
     }
 
     public void testFailRun() throws Exception {
@@ -73,8 +74,8 @@ public class DefaultPrepAndExpectedTestCaseExtIT extends
         String[] expectedDataFiles = {EXP_DATA_FILE_NAME};
         VerifyTableDefinition[] tables = {TEST_TABLE, SECOND_TABLE};
 
-        tc.configureTest(tables, prepDataFiles, expectedDataFiles);
-        tc.preTest();
+        configureTest(tables, prepDataFiles, expectedDataFiles);
+        preTest();
 
         // skip modifying data and just verify the insert
 
@@ -82,10 +83,10 @@ public class DefaultPrepAndExpectedTestCaseExtIT extends
         // maybe we need a KeepConnectionOpenOperationListener class?!
         connection = dbEnv.getConnection();
         databaseTester = new DefaultDatabaseTester(connection);
-        tc.setDatabaseTester(databaseTester);
+        setDatabaseTester(databaseTester);
 
         try {
-            tc.postTest();
+            postTest();
             fail("Did not catch expected exception:"
                     + " junit.framework.ComparisonFailure");
         } catch (ComparisonFailure e) {

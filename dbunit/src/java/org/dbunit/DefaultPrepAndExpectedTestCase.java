@@ -23,8 +23,6 @@ package org.dbunit;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.DataSetException;
@@ -37,7 +35,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Test case base class supporting prep data and expected data.
+ * Test case base class supporting prep data and expected data. Prep data is the
+ * data needed for the test to run. Expected data is the data needed to compare
+ * if the test ran successfully.
  * 
  * Use this class in two ways:
  * <ol>
@@ -134,9 +134,14 @@ import org.slf4j.LoggerFactory;
  * Put common data in one or more files and pass the needed ones in the correct
  * data file array.
  * 
- * <h4>Additional examples</h4>
- * 
- * For additional examples, refer to the ITs (listed in the See Also section).
+ * <h4>Notes</h4>
+ * <ol>
+ * <li>For additional examples, refer to the ITs (listed in the See Also
+ * section).</li>
+ * <li>To change the setup or teardown operation (e.g. change the teardown to
+ * org.dbunit.operation.DatabaseOperation.DELETE_ALL), set the setUpOperation or
+ * tearDownOperation property on the databaseTester.</li>
+ * </ol>
  * 
  * @see org.dbunit.DefaultPrepAndExpectedTestCaseDiIT
  * @see org.dbunit.DefaultPrepAndExpectedTestCaseExtIT
@@ -146,7 +151,7 @@ import org.slf4j.LoggerFactory;
  * @version $Revision$ $Date$
  * @since 2.4.8
  */
-public class DefaultPrepAndExpectedTestCase extends TestCase implements
+public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
         PrepAndExpectedTestCase {
     private final Logger LOG =
             LoggerFactory.getLogger(DefaultPrepAndExpectedTestCase.class);
@@ -184,6 +189,22 @@ public class DefaultPrepAndExpectedTestCase extends TestCase implements
      */
     public DefaultPrepAndExpectedTestCase(String name) {
         super(name);
+    }
+
+    /**
+     * {@inheritDoc} This implementation returns the databaseTester set by the
+     * test.
+     */
+    protected IDatabaseTester newDatabaseTester() throws Exception {
+        // questionable, but there is not a "setter" for any parent...
+        return databaseTester;
+    }
+
+    /**
+     * {@inheritDoc} Returns the prep dataset.
+     */
+    protected IDataSet getDataSet() throws Exception {
+        return prepDs;
     }
 
     /**
