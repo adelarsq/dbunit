@@ -209,8 +209,11 @@ public class DefaultPrepAndExpectedTestCase extends TestCase implements
      * {@inheritDoc}
      */
     public void postTest() throws Exception {
-        verifyData();
-        cleanupData();
+        try {
+            verifyData();
+        } finally {
+            cleanupData();
+        }
     }
 
     /**
