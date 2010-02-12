@@ -232,6 +232,15 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
     /**
      * {@inheritDoc}
      */
+    public void preTest(VerifyTableDefinition[] tables, String[] prepDataFiles,
+            String[] expectedDataFiles) throws Exception {
+        configureTest(tables, prepDataFiles, expectedDataFiles);
+        preTest();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void postTest() throws Exception {
         try {
             verifyData();

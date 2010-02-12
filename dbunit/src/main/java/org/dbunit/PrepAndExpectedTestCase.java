@@ -54,6 +54,20 @@ public interface PrepAndExpectedTestCase {
     void preTest() throws Exception;
 
     /**
+     * Convenience method to call configureTest() and preTest().
+     * 
+     * @param tables
+     *            Table definitions to verify after test execution.
+     * @param prepDataFiles
+     *            The prep data files to load as seed data.
+     * @param expectedDataFiles
+     *            The expected data files to load as expected data.
+     * @throws Exception
+     */
+    void preTest(VerifyTableDefinition[] tables, String[] prepDataFiles,
+            String[] expectedDataFiles) throws Exception;
+
+    /**
      * Execute post-test steps. Call this method after performing the test
      * steps.
      * 
