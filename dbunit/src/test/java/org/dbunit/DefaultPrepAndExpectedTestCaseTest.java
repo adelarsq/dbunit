@@ -7,8 +7,8 @@ import org.dbunit.util.fileloader.DataFileLoader;
 import org.dbunit.util.fileloader.FlatXmlDataFileLoader;
 
 public class DefaultPrepAndExpectedTestCaseTest extends TestCase {
-    private static final String PREP_DATA_FILE_NAME = "/flatXmlDataSetTest.xml";
-    private static final String EXP_DATA_FILE_NAME = "/flatXmlDataSetTest.xml";
+    private static final String PREP_DATA_FILE_NAME = "/xml/flatXmlDataSetTest.xml";
+    private static final String EXP_DATA_FILE_NAME = "/xml/flatXmlDataSetTest.xml";
 
     private final DataFileLoader dataFileLoader = new FlatXmlDataFileLoader();
     // private final IDatabaseTester databaseTester = new

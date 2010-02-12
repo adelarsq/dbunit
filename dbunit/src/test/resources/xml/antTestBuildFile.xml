@@ -9,11 +9,11 @@
   <property name="dbunit.profile.user" value="unknown"/>
   <property name="dbunit.profile.password" value="unknown"/>
 
-  <property name="testDataSet" value="src/xml/flatXmlDataSetTest.xml"/>
-  <property name="updateDataSet" value="src/xml/antTestDataSet.xml"/>
+  <property name="testDataSet" value="src/test/resources/xml/flatXmlDataSetTest.xml"/>
+  <property name="updateDataSet" value="src/test/resources/xml/antTestDataSet.xml"/>
   <property name="exportDataSet" value="target/xml/antExportDataSet.xml"/>
-  <property name="exportDtd" value="src/xml/antExport.dtd"/>
-  <property name="exportCsv" value="src/xml/antExportCsv"/>
+  <property name="exportDtd" value="src/test/resources/xml/antExport.dtd"/>
+  <property name="exportCsv" value="src/test/resources/xml/antExportCsv"/>
 
   <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" loaderref="dbunit"/>
   <typedef name="queryset" classname="org.dbunit.ant.QuerySet" loaderref="dbunit"/>

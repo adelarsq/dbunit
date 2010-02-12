@@ -42,8 +42,7 @@ public class TestUtils
 
     public static String getFileName(String fileName)
     {
-//        return "src/resources/" + fileName;
-        return "src/" + fileName;
+        return "src/test/resources/" + fileName;
     }
 
     public static File getFile(String fileName)

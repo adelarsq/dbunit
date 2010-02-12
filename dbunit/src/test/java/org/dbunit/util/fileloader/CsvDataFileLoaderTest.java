@@ -32,21 +32,21 @@ import org.dbunit.dataset.IDataSet;
  * @version $Revision$ $Date$
  * @since 2.4.8
  */
-public class FlatXmlDataFileLoaderTest extends TestCase {
-    FlatXmlDataFileLoader loader = null;
+public class CsvDataFileLoaderTest extends TestCase {
+    CsvDataFileLoader loader = null;
 
     /**
      * {@inheritDoc}
      */
     protected void setUp() throws Exception {
-        loader = new FlatXmlDataFileLoader();
+        loader = new CsvDataFileLoader();
     }
 
     /**
      * Test can load the specified file.
      */
     public void testLoad() throws DataSetException {
-        String filename = "/flatXmlDataSetTest.xml";
+        String filename = "/csv/orders/orders_row.csv";
         IDataSet ds = loader.load(filename);
         assertTrue("No tables found in dataset.", ds.getTableNames().length > 0);
         // DataSet loading tests verify data accuracy

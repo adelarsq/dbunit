@@ -342,53 +342,6 @@
 
   <build>
     <defaultGoal>install</defaultGoal>
-    <sourceDirectory>src/java</sourceDirectory>
-    <testSourceDirectory>src/test</testSourceDirectory>
-
-    <!--
-      TODO: move to M2's expected path and separate java from test (once
-      SCM is migrated to SVN...)
-    -->
-    <resources>
-      <resource>
-        <directory>.</directory>
-        <includes>
-          <include>LICENSE.txt</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>src/java</directory>
-        <includes>
-          <include>**/dataset.dtd</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>src/csv</directory>
-        <includes>
-          <include>**/cvs-tests.properties</include>
-        </includes>
-      </resource>
-
-    </resources>
-    <!--
-      TODO: that are some resources on src that should be on test...
-
-      <testResources> <testResource> </testResource> </testResources>
-    -->
-    
-    <!-- not ideal yet, but gets these files on test classpath -->
-    <testResources>
-      <testResource>
-        <directory>${project.basedir}/src/xml</directory>
-      </testResource>
-      <testResource>
-        <directory>${project.basedir}/src/csv</directory>
-      </testResource>
-      <testResource>
-        <directory>${project.basedir}/src/testresources</directory>
-      </testResource>
-    </testResources>
-
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -571,7 +524,7 @@
             </goals>
             <configuration>
               <srcFiles>
-                <srcFile>src/sql/${dbunit.profile.ddl}</srcFile>
+                <srcFile>src/test/resources/sql/${dbunit.profile.ddl}</srcFile>
               </srcFiles>
               <onError>continue</onError>
             </configuration>

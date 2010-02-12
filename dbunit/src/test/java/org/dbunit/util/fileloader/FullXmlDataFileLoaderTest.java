@@ -46,7 +46,7 @@ public class FullXmlDataFileLoaderTest extends TestCase {
      * Test can load the specified file.
      */
     public void testLoad() throws DataSetException {
-        String filename = "/xmlTableTest.xml";
+        String filename = "/xml/xmlTableTest.xml";
         IDataSet ds = loader.load(filename);
         assertTrue("No tables found in dataset.", ds.getTableNames().length > 0);
         // DataSet loading tests verify data accuracy

@@ -1,6 +1,6 @@
 <!-- logback config file for testing-->
 <configuration scan="true">
-  <contextName>dbunit</contextName> 
+  <contextName>dbunit</contextName>
 
   <logger name="org.dbunit" level="TRACE" />
 
