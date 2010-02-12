@@ -141,6 +141,9 @@ import org.slf4j.LoggerFactory;
  * <li>To change the setup or teardown operation (e.g. change the teardown to
  * org.dbunit.operation.DatabaseOperation.DELETE_ALL), set the setUpOperation or
  * tearDownOperation property on the databaseTester.</li>
+ * <li>To set DatabaseConfig features/properties, one way is to extend this
+ * class and override the setUpDatabaseConfig(DatabaseConfig config) method from
+ * DatabaseTestCase.</li>
  * </ol>
  * 
  * @see org.dbunit.DefaultPrepAndExpectedTestCaseDiIT
