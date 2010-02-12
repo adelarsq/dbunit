@@ -2,7 +2,7 @@
 <configuration scan="true">
   <contextName>dbunit</contextName>
 
-  <logger name="org.dbunit" level="TRACE" />
+  <logger name="org.dbunit" level="INFO" />
 
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
     <!-- NOTE: user must append slash in property -->
@@ -19,7 +19,7 @@
     </layout>
   </appender>
 
-  <root level="DEBUG">
+  <root level="INFO">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="FILE" />
   </root>
