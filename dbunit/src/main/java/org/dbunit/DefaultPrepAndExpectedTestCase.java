@@ -49,21 +49,30 @@ import org.slf4j.LoggerFactory;
  * 
  * <li>Extend it in a test class.</li>
  * <p>
- * Obtain IDatabaseTester and DataFileLoader instances and set them accordingly
- * (possibly dependency injecting them into the test class).
+ * Obtain IDatabaseTester and DataFileLoader instances (possibly dependency
+ * injecting them into the test class) and set them accordingly, probably in a
+ * setup type of method, such as:
  * 
  * <pre>
- * setDatabaseTester(databaseTester);
- * setDataFileLoader(dataFileLoader);
+ * &#064;Before
+ * public void setDbunitTestDependencies() {
+ *     setDatabaseTester(databaseTester);
+ *     setDataFileLoader(dataFileLoader);
+ * }
  * </pre>
  * 
  * </p>
  * </ol>
  * 
  * To setup, execute, and clean up tests, call the configureTest(), preTest(),
- * and postTest() methods. Where the test case calls them depends on data needs:
+ * and postTest() methods. Note there is a preTest() convenience method that
+ * takes the same parameters as the configureTest() method; use it instead of
+ * using both configureTest() and preTest().
+ * 
+ * Where the test case calls them depends on data needs:
  * <ul>
- * <li>For the whole test case, i.e. in setUp() and tearDown().</li>
+ * <li>For the whole test case, i.e. in setUp() and tearDown() or &#064;Before
+ * and &#064;After.</li>
  * <li>In each test method.</li>
  * <li>Or some combination of both test case setup/teardown and test methods.</li>
  * </ul>
@@ -83,14 +92,12 @@ import org.slf4j.LoggerFactory;
  *     String[] expectedDataFiles = {};
  *     VerifyTableDefinition[] tables = {};
  * 
- *     tc.configureTest(tables, prepDataFiles, expectedDataFiles);
- *     tc.preTest();
+ *     tc.preTest(tables, prepDataFiles, expectedDataFiles);
  * 
  *     // execute test
  * 
  *     tc.postTest();
  * }
- * 
  * </pre>
  * 
  * <h4>When all test methods share the same prep and/or expected data</h4>
@@ -109,8 +116,9 @@ import org.slf4j.LoggerFactory;
  *     String[] expectedDataFiles = {};
  *     VerifyTableDefinition[] tables = {};
  * 
- *     configureTest(tables, prepDataFiles, expectedDataFiles);
- *     preTest();
+ *     preTest(tables, prepDataFiles, expectedDataFiles);
+ * 
+ *     // call this if overriding setUp() and databaseTester &amp; dataFileLoader are already set.
  *     super.setUp();
  * }
  * 
