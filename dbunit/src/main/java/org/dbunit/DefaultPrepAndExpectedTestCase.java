@@ -319,10 +319,28 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
             LOG.info("Verifying table '{}'", tableName);
 
             LOG.debug("  Loading its rows from expected dataset");
-            ITable expectedTable = expectedDs.getTable(tableName);
+            ITable expectedTable = null;
+            try {
+                expectedTable = expectedDs.getTable(tableName);
+            } catch (DataSetException e) {
+                final String msg =
+                        "Problem obtaining table '" + tableName
+                                + "' from expected dataset";
+                LOG.error(msg, e);
+                throw new DataSetException(msg, e);
+            }
 
             LOG.debug("  Loading its rows from actual table");
-            ITable actualTable = connection.createTable(tableName);
+            ITable actualTable = null;
+            try {
+                actualTable = connection.createTable(tableName);
+            } catch (DataSetException e) {
+                final String msg =
+                        "Problem obtaining table '" + tableName
+                                + "' from actual dataset";
+                LOG.error(msg, e);
+                throw new DataSetException(msg, e);
+            }
 
             verifyData(expectedTable, actualTable, excludeColumns,
                     includeColumns);
