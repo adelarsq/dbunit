@@ -44,13 +44,13 @@ public class VerifyTableDefinition {
      * include all columns).
      * 
      * @param table
-     *            The name of the table.
+     *            The name of the table - required.
      * @param excludeColumns
      *            The columns in the table to ignore (filter out) in expected vs
-     *            actual comparisons.
+     *            actual comparisons; null or empty array to exclude no columns.
      */
     public VerifyTableDefinition(String table, String[] excludeColumns) {
-        this(table, excludeColumns, new String[] {});
+        this(table, excludeColumns, null);
     }
 
     /**
@@ -60,23 +60,16 @@ public class VerifyTableDefinition {
      *            The name of the table.
      * @param excludeColumns
      *            The columns in the table to ignore (filter out) in expected vs
-     *            actual comparisons.
+     *            actual comparisons; null or empty array to exclude no columns.
      * @param includeColumns
      *            The columns in the table to include in expected vs actual
-     *            comparisons.
+     *            comparisons; null to include all columns, empty array to
+     *            include no columns.
      */
     public VerifyTableDefinition(String table, String[] excludeColumns,
             String[] includeColumns) {
         if (table == null) {
             throw new IllegalArgumentException("table is null.");
-        }
-
-        if (excludeColumns == null) {
-            throw new IllegalArgumentException("excludeColumns is null.");
-        }
-
-        if (includeColumns == null) {
-            throw new IllegalArgumentException("includeColumns is null.");
         }
 
         tableName = table;

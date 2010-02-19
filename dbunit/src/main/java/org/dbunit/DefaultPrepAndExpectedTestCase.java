@@ -88,9 +88,9 @@ import org.slf4j.LoggerFactory;
  * 
  * &#064;Test
  * public void testExample() throws Exception {
- *     String[] prepDataFiles = {};
- *     String[] expectedDataFiles = {};
- *     VerifyTableDefinition[] tables = {};
+ *     String[] prepDataFiles = {}; // define prep files
+ *     String[] expectedDataFiles = {}; // define expected files
+ *     VerifyTableDefinition[] tables = {}; // define tables to verify
  * 
  *     tc.preTest(tables, prepDataFiles, expectedDataFiles);
  * 
@@ -112,9 +112,9 @@ import org.slf4j.LoggerFactory;
  *     setDatabaseTester(databaseTester);
  *     setDataFileLoader(dataFileLoader);
  * 
- *     String[] prepDataFiles = {};
- *     String[] expectedDataFiles = {};
- *     VerifyTableDefinition[] tables = {};
+ *     String[] prepDataFiles = {}; //define prep files
+ *     String[] expectedDataFiles = {}; // define expected files
+ *     VerifyTableDefinition[] tables = {}; //define tables to verify
  * 
  *     preTest(tables, prepDataFiles, expectedDataFiles);
  * 
@@ -363,7 +363,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      *            The column names to only include in comparison. See
      *            {@link org.dbunit.dataset.filter.DefaultColumnFilter#includeColumn(String)}
      *            .
-     * @throws DatabaseUnitException.
+     * @throws DatabaseUnitException
      */
     protected void verifyData(ITable expectedTable, ITable actualTable,
             String[] excludeColumns, String[] includeColumns)
@@ -429,9 +429,10 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      * @param table
      *            The table to apply the filters to.
      * @param excludeColumns
-     *            The exclude filters.
+     *            The exclude filters; use null or empty array to mean exclude
+     *            none.
      * @param includeColumns
-     *            The include filters.
+     *            The include filters; use null to mean include all.
      * @return The filtered table.
      * @throws DataSetException
      */
@@ -443,32 +444,27 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
             throw new IllegalArgumentException("table is null");
         }
 
-        if (excludeColumns == null) {
-            throw new IllegalArgumentException("excludeColumns is null");
-        }
-
-        if (includeColumns == null) {
-            throw new IllegalArgumentException("includeColumns is null");
-        }
-
-        // only apply the inclusion filters if the array is not empty,
-        // as dbunit interprets an empty inclusion filter array as one
+        // note: dbunit interprets an empty inclusion filter array as one
         // not wanting to compare anything!
-        if (includeColumns.length > 0) {
-            LOG.debug("applyColumnFilters: including columns={}",
+        if (includeColumns == null) {
+            LOG.debug("applyColumnFilters: including columns=(all)");
+        } else {
+            LOG.debug("applyColumnFilters: including columns='{}'",
                     new Object[] {includeColumns});
             filteredTable =
                     DefaultColumnFilter.includedColumnsTable(filteredTable,
                             includeColumns);
-        } else {
-            LOG.debug("applyColumnFilters: including columns=(all)");
         }
 
-        LOG.debug("applyColumnFilters: excluding columns={}",
-                new Object[] {excludeColumns});
-        filteredTable =
-                DefaultColumnFilter.excludedColumnsTable(filteredTable,
-                        excludeColumns);
+        if (excludeColumns == null || excludeColumns.length == 0) {
+            LOG.debug("applyColumnFilters: excluding columns=(none)");
+        } else {
+            LOG.debug("applyColumnFilters: excluding columns='{}'",
+                    new Object[] {excludeColumns});
+            filteredTable =
+                    DefaultColumnFilter.excludedColumnsTable(filteredTable,
+                            excludeColumns);
+        }
 
         return filteredTable;
     }

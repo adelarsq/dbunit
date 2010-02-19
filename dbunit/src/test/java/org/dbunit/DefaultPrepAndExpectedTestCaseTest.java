@@ -2,7 +2,10 @@ package org.dbunit;
 
 import junit.framework.TestCase;
 
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultTable;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
 import org.dbunit.util.fileloader.DataFileLoader;
 import org.dbunit.util.fileloader.FlatXmlDataFileLoader;
 
@@ -68,7 +71,19 @@ public class DefaultPrepAndExpectedTestCaseTest extends TestCase {
         // TODO implement test
     }
 
-    public void testApplyColumnFilters() {
-        // TODO implement test
+    // TODO implement test - doesn't test anything yet
+    public void testApplyColumnFiltersBothNull() throws DataSetException {
+        final ITable table = new DefaultTable("test_table");
+        final String[] excludeColumns = null;
+        final String[] includeColumns = null;
+        tc.applyColumnFilters(table, excludeColumns, includeColumns);
+    }
+
+    // TODO implement test - doesn't test anything yet
+    public void testApplyColumnFiltersBothNotNull() throws DataSetException {
+        final ITable table = new DefaultTable("test_table");
+        final String[] excludeColumns = {"COL1"};
+        final String[] includeColumns = {"COL2"};
+        tc.applyColumnFilters(table, excludeColumns, includeColumns);
     }
 }
