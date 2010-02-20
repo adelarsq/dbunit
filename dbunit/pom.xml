@@ -24,6 +24,12 @@
     <checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
     <logbackVersion>0.9.15</logbackVersion>
     <slf4jVersion>1.5.6</slf4jVersion>
+    <project.build.sourceEncoding>
+      UTF-8
+    </project.build.sourceEncoding>
+    <project.reporting.outputEncoding>
+      UTF-8
+    </project.reporting.outputEncoding>
   </properties>
 
   <scm>
@@ -615,7 +621,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <destDir>apidocs</destDir>
           <quiet>true</quiet>
           <stylesheet>maven</stylesheet>
           <tags>
