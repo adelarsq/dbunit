@@ -83,7 +83,6 @@ public abstract class AbstractTable implements ITable {
      * {@inheritDoc}
      */
     public String toString() {
-        ToStringBuilder.reflectionToString(this);
-        return super.toString();
+        return ToStringBuilder.reflectionToString(this);
     }
 }
