@@ -21,6 +21,8 @@
 
 package org.dbunit.dataset;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,13 +31,13 @@ import org.slf4j.LoggerFactory;
  * @version $Revision$
  * @since Feb 17, 2002
  */
-public class CompositeTable extends AbstractTable
-{
+public class CompositeTable extends AbstractTable {
 
     /**
      * Logger for this class
      */
-    private static final Logger logger = LoggerFactory.getLogger(CompositeTable.class);
+    private static final Logger logger =
+            LoggerFactory.getLogger(CompositeTable.class);
 
     private final ITableMetaData _metaData;
     private final ITable[] _tables;
@@ -44,18 +46,16 @@ public class CompositeTable extends AbstractTable
      * Creates a composite table that combines the specified metadata with the
      * specified table.
      */
-    public CompositeTable(ITableMetaData metaData, ITable table)
-    {
+    public CompositeTable(ITableMetaData metaData, ITable table) {
         _metaData = metaData;
-        _tables = new ITable[]{table};
+        _tables = new ITable[] {table};
     }
 
     /**
      * Creates a composite table that combines the specified metadata with the
      * specified tables.
      */
-    public CompositeTable(ITableMetaData metaData, ITable[] tables)
-    {
+    public CompositeTable(ITableMetaData metaData, ITable[] tables) {
         _metaData = metaData;
         _tables = tables;
     }
@@ -64,40 +64,35 @@ public class CompositeTable extends AbstractTable
      * Creates a composite table that combines the specified specified tables.
      * The metadata from the first table is used as metadata for the new table.
      */
-    public CompositeTable(ITable table1, ITable table2)
-    {
+    public CompositeTable(ITable table1, ITable table2) {
         _metaData = table1.getTableMetaData();
-        _tables = new ITable[]{table1, table2};
+        _tables = new ITable[] {table1, table2};
     }
 
     /**
-     * Creates a composite dataset that encapsulate the specified table with
-     * a new name.
+     * Creates a composite dataset that encapsulate the specified table with a
+     * new name.
      */
-    public CompositeTable(String newName, ITable table)
-            throws DataSetException
-    {
+    public CompositeTable(String newName, ITable table) throws DataSetException {
         ITableMetaData metaData = table.getTableMetaData();
-        _metaData = new DefaultTableMetaData(newName,
-                metaData.getColumns(), metaData.getPrimaryKeys());
-        _tables = new ITable[]{table};
+        _metaData =
+                new DefaultTableMetaData(newName, metaData.getColumns(),
+                        metaData.getPrimaryKeys());
+        _tables = new ITable[] {table};
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////////
     // ITable interface
 
-    public ITableMetaData getTableMetaData()
-    {
+    public ITableMetaData getTableMetaData() {
         return _metaData;
     }
 
-    public int getRowCount()
-    {
+    public int getRowCount() {
         logger.debug("getRowCount() - start");
 
         int totalCount = 0;
-        for (int i = 0; i < _tables.length; i++)
-        {
+        for (int i = 0; i < _tables.length; i++) {
             ITable table = _tables[i];
             totalCount += table.getRowCount();
         }
@@ -105,29 +100,41 @@ public class CompositeTable extends AbstractTable
         return totalCount;
     }
 
-    public Object getValue(int row, String columnName) throws DataSetException
-    {
-        if(logger.isDebugEnabled())
-            logger.debug("getValue(row={}, columnName={}) - start", Integer.toString(row), columnName);
+    public Object getValue(int row, String columnName) throws DataSetException {
+        if (logger.isDebugEnabled()) {
+            logger.debug("getValue(row={}, columnName={}) - start", Integer
+                    .toString(row), columnName);
+        }
 
-        if (row < 0)
-        {
+        if (row < 0) {
             throw new RowOutOfBoundsException(row + " < 0 ");
         }
 
         int totalCount = 0;
-        for (int i = 0; i < _tables.length; i++)
-        {
+        for (int i = 0; i < _tables.length; i++) {
             ITable table = _tables[i];
 
             int count = table.getRowCount();
-            if (totalCount + count > row)
-            {
+            if (totalCount + count > row) {
                 return table.getValue(row - totalCount, columnName);
             }
             totalCount += count;
         }
 
         throw new RowOutOfBoundsException(row + " > " + totalCount);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder(2000);
+
+        sb.append(getClass().getName()).append("[");
+        sb.append("_metaData=[").append(_metaData).append("], ");
+        sb.append("_tables=[").append(Arrays.toString(_tables)).append("]");
+        sb.append("]");
+
+        return sb.toString();
     }
 }

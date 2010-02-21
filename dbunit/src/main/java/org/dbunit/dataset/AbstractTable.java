@@ -20,7 +20,6 @@
  */
 package org.dbunit.dataset;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,12 +76,5 @@ public abstract class AbstractTable implements ITable {
 
         ITableMetaData metaData = getTableMetaData();
         return metaData.getColumnIndex(columnName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 }
