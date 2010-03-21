@@ -204,7 +204,7 @@ public class DateDataTypeTest extends AbstractDataTypeTest
         Object[] less = {
             null,
             new java.sql.Date(0),
-            "1974-23-06"
+            "1974-06-23"
         };
 
         Object[] greater = {
