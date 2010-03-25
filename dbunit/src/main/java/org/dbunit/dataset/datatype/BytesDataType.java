@@ -151,6 +151,9 @@ public class BytesDataType extends AbstractDataType
             try
             {
                 Blob blobValue = (Blob)value;
+                if (blobValue.length() == 0) {
+                    return null;
+                }
                 return blobValue.getBytes(1, (int)blobValue.length());
             }
             catch (SQLException e)
