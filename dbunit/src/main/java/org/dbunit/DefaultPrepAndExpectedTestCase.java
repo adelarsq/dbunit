@@ -206,7 +206,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      * {@inheritDoc} This implementation returns the databaseTester set by the
      * test.
      */
-    protected IDatabaseTester newDatabaseTester() throws Exception {
+    public IDatabaseTester newDatabaseTester() throws Exception {
         // questionable, but there is not a "setter" for any parent...
         return databaseTester;
     }
@@ -214,7 +214,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
     /**
      * {@inheritDoc} Returns the prep dataset.
      */
-    protected IDataSet getDataSet() throws Exception {
+    public IDataSet getDataSet() throws Exception {
         return prepDs;
     }
 
@@ -277,7 +277,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      * 
      * @throws Exception
      */
-    protected void setupData() throws Exception {
+    public void setupData() throws Exception {
         LOG.debug("setupData: setting prep dataset and inserting rows");
         if (databaseTester == null) {
             throw new IllegalStateException(
@@ -295,7 +295,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      * 
      * @throws Exception
      */
-    protected void verifyData() throws Exception {
+    public void verifyData() throws Exception {
         if (databaseTester == null) {
             throw new IllegalStateException(
                     "databaseTester is null; must configure or set it first");
@@ -303,47 +303,52 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
 
         IDatabaseConnection connection = databaseTester.getConnection();
 
-        int count = tableDefs.length;
-        LOG.info("verifyData: about to verify {} tables", new Integer(count));
-        if (count == 0) {
-            LOG.warn("No tables to verify;"
-                    + " no VerifyTableDefinitions specified");
-        }
-
-        for (int i = 0; i < count; i++) {
-            VerifyTableDefinition td = tableDefs[i];
-            String[] excludeColumns = td.getColumnExclusionFilters();
-            String[] includeColumns = td.getColumnInclusionFilters();
-            String tableName = td.getTableName();
-
-            LOG.info("Verifying table '{}'", tableName);
-
-            LOG.debug("  Loading its rows from expected dataset");
-            ITable expectedTable = null;
-            try {
-                expectedTable = expectedDs.getTable(tableName);
-            } catch (DataSetException e) {
-                final String msg =
-                        "Problem obtaining table '" + tableName
-                                + "' from expected dataset";
-                LOG.error(msg, e);
-                throw new DataSetException(msg, e);
+        try {
+            int count = tableDefs.length;
+            LOG.info("verifyData: about to verify {} tables",
+                    new Integer(count));
+            if (count == 0) {
+                LOG.warn("No tables to verify;"
+                        + " no VerifyTableDefinitions specified");
             }
 
-            LOG.debug("  Loading its rows from actual table");
-            ITable actualTable = null;
-            try {
-                actualTable = connection.createTable(tableName);
-            } catch (DataSetException e) {
-                final String msg =
-                        "Problem obtaining table '" + tableName
-                                + "' from actual dataset";
-                LOG.error(msg, e);
-                throw new DataSetException(msg, e);
-            }
+            for (int i = 0; i < count; i++) {
+                VerifyTableDefinition td = tableDefs[i];
+                String[] excludeColumns = td.getColumnExclusionFilters();
+                String[] includeColumns = td.getColumnInclusionFilters();
+                String tableName = td.getTableName();
 
-            verifyData(expectedTable, actualTable, excludeColumns,
-                    includeColumns);
+                LOG.info("Verifying table '{}'", tableName);
+
+                LOG.debug("  Loading its rows from expected dataset");
+                ITable expectedTable = null;
+                try {
+                    expectedTable = expectedDs.getTable(tableName);
+                } catch (DataSetException e) {
+                    final String msg =
+                            "Problem obtaining table '" + tableName
+                                    + "' from expected dataset";
+                    LOG.error(msg, e);
+                    throw new DataSetException(msg, e);
+                }
+
+                LOG.debug("  Loading its rows from actual table");
+                ITable actualTable = null;
+                try {
+                    actualTable = connection.createTable(tableName);
+                } catch (DataSetException e) {
+                    final String msg =
+                            "Problem obtaining table '" + tableName
+                                    + "' from actual dataset";
+                    LOG.error(msg, e);
+                    throw new DataSetException(msg, e);
+                }
+
+                verifyData(expectedTable, actualTable, excludeColumns,
+                        includeColumns);
+            }
+        } finally {
+            connection.close();
         }
     }
 
@@ -365,7 +370,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      *            .
      * @throws DatabaseUnitException
      */
-    protected void verifyData(ITable expectedTable, ITable actualTable,
+    public void verifyData(ITable expectedTable, ITable actualTable,
             String[] excludeColumns, String[] includeColumns)
             throws DatabaseUnitException {
         // Filter out the columns from the expected and actual results
@@ -398,7 +403,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      * @throws DataSetException
      *             On dbUnit errors.
      */
-    protected IDataSet makeCompositeDataSet(String[] dataFiles)
+    public IDataSet makeCompositeDataSet(String[] dataFiles)
             throws DataSetException {
         if (dataFileLoader == null) {
             throw new IllegalStateException(
@@ -436,7 +441,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      * @return The filtered table.
      * @throws DataSetException
      */
-    protected ITable applyColumnFilters(ITable table, String[] excludeColumns,
+    public ITable applyColumnFilters(ITable table, String[] excludeColumns,
             String[] includeColumns) throws DataSetException {
         ITable filteredTable = table;
 
