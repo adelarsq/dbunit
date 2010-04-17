@@ -34,6 +34,7 @@ public class AllTests extends TestSuite
     {
         TestSuite suite = new TestSuite();
         suite.addTest(org.dbunit.ext.db2.AllTests.suite());
+        suite.addTest(org.dbunit.ext.mckoi.AllTests.suite());
         suite.addTest(org.dbunit.ext.mssql.AllTests.suite());
         suite.addTest(org.dbunit.ext.mysql.AllTests.suite());
         suite.addTest(org.dbunit.ext.oracle.AllTests.suite());

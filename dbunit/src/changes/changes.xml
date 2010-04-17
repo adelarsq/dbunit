@@ -11,6 +11,7 @@
 
   <body>
     <release version="2.4.8" date="TBD" description="TBD">
+      <action dev="gommma" type="add" issue="2986323" due-to="luigitalamona">Added driver for Mckoi db.</action>
       <action dev="gommma" type="fix" issue="2887115" due-to="unwissender2009">SQL: "Create Domain" ... Data Types are not supported.</action>
       <action dev="jbhurst" type="add" issue="2875253" due-to="caseylucas">Additional refinements for Oracle SDO_GEOMETRY datatype</action>
       <action dev="jbhurst" type="add" issue="2921131" due-to="vlamp">Add timezone support for timestamp data type</action>
