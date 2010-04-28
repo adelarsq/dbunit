@@ -200,7 +200,7 @@
             <ul>
               <li><a href="apidocs/org/dbunit/ext/db2/Db2DataTypeFactory.html">org.dbunit.ext.db2.Db2DataTypeFactory</a></li>
               <li><a href="apidocs/org/dbunit/ext/h2/H2DataTypeFactory.html">org.dbunit.ext.h2.H2DataTypeFactory</a></li>
-              <li><a href="apidocs/org/dbunit/ext/hsqldb/HsqldbDataTypeFactory.html">org.dbunit.ext.db2.HsqldbDataTypeFactory</a></li>
+              <li><a href="apidocs/org/dbunit/ext/hsqldb/HsqldbDataTypeFactory.html">org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</a></li>
               <li><a href="apidocs/org/dbunit/ext/mckoi/MckoiDataTypeFactory.html">org.dbunit.ext.mckoi.MckoiDataTypeFactory</a></li>
               <li><a href="apidocs/org/dbunit/ext/mssql/MsSqlDataTypeFactory.html">org.dbunit.ext.mssql.MsSqlDataTypeFactory</a></li>
               <li><a href="apidocs/org/dbunit/ext/mysql/MySqlDataTypeFactory.html">org.dbunit.ext.mysql.MySqlDataTypeFactory</a></li>
