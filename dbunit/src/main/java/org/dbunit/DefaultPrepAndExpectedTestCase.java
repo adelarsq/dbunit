@@ -413,7 +413,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
         int count = dataFiles.length;
         LOG.debug("makeCompositeDataSet: dataFiles count=" + count);
         if (count == 0) {
-            LOG.warn("makeCompositeDataSet: Specified zero data files");
+            LOG.info("makeCompositeDataSet: Specified zero data files");
         }
 
         List list = new ArrayList();
