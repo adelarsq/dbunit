@@ -88,6 +88,8 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
         IResultSetTableFactory tableFactory = getResultSetTableFactory();
         IResultSetTable rsTable = tableFactory.createTable(resultName, sql, this);
+        logger.debug("createQueryTable: rowCount={}", new Integer(rsTable
+                .getRowCount()));
         return rsTable;
     }
 
