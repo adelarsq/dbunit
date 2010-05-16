@@ -63,20 +63,20 @@ public class DbUnitAssert
     public DbUnitAssert()
     {
     }
-    
+
     /**
      * Compare one table present in two datasets ignoring specified columns.
      * 
      * @param expectedDataset
-     *          First dataset.
+     *            First dataset.
      * @param actualDataset
-     *          Second dataset.
+     *            Second dataset.
      * @param tableName
-     *          Table name of the table to be compared.
+     *            Table name of the table to be compared.
      * @param ignoreCols
-     *          Columns to be ignored in comparison.
+     *            Columns to be ignored in comparison.
      * @throws org.dbunit.DatabaseUnitException
-     *           If an error occurs.
+     *             If an error occurs.
      */
     public void assertEqualsIgnoreCols(final IDataSet expectedDataset,
             final IDataSet actualDataset, final String tableName,
@@ -84,7 +84,7 @@ public class DbUnitAssert
     {
         if (logger.isDebugEnabled())
             logger.debug(
-                    "assertEqualsIgnoreCols(expectedDataset={}, actualDataset={}, tableName={}, ignoreCols={}) - start",
+                            "assertEqualsIgnoreCols(expectedDataset={}, actualDataset={}, tableName={}, ignoreCols={}) - start",
                     new Object[] { expectedDataset, actualDataset, tableName,
                             Arrays.asList(ignoreCols) });
 
@@ -96,13 +96,13 @@ public class DbUnitAssert
      * Compare the given tables ignoring specified columns.
      * 
      * @param expectedTable
-     *          First table.
+     *            First table.
      * @param actualTable
-     *          Second table.
+     *            Second table.
      * @param ignoreCols
-     *          Columns to be ignored in comparison.
+     *            Columns to be ignored in comparison.
      * @throws org.dbunit.DatabaseUnitException
-     *           If an error occurs.
+     *             If an error occurs.
      */
     public void assertEqualsIgnoreCols(final ITable expectedTable,
             final ITable actualTable, final String[] ignoreCols)
@@ -110,10 +110,10 @@ public class DbUnitAssert
     {
         if (logger.isDebugEnabled())
             logger
-            .debug(
-                    "assertEqualsIgnoreCols(expectedTable={}, actualTable={}, ignoreCols={}) - start",
-                    new Object[] { expectedTable, actualTable,
-                            Arrays.asList(ignoreCols) });
+                    .debug(
+                            "assertEqualsIgnoreCols(expectedTable={}, actualTable={}, ignoreCols={}) - start",
+                            new Object[] {expectedTable, actualTable,
+                                    Arrays.asList(ignoreCols)});
 
         final ITable expectedTableFiltered = DefaultColumnFilter
         .excludedColumnsTable(expectedTable, ignoreCols);
@@ -126,19 +126,19 @@ public class DbUnitAssert
      * Compare a table from a dataset with a table generated from an sql query.
      * 
      * @param expectedDataset
-     *          Dataset to retrieve the first table from.
+     *            Dataset to retrieve the first table from.
      * @param connection
-     *          Connection to use for the SQL statement.
+     *            Connection to use for the SQL statement.
      * @param sqlQuery
      *          SQL query that will build the data in returned second table rows.
      * @param tableName
-     *          Table name of the table to compare
+     *            Table name of the table to compare
      * @param ignoreCols
-     *          Columns to be ignored in comparison.
+     *            Columns to be ignored in comparison.
      * @throws DatabaseUnitException
-     *           If an error occurs while performing the comparison.
+     *             If an error occurs while performing the comparison.
      * @throws java.sql.SQLException
-     *           If an SQL error occurs.
+     *             If an SQL error occurs.
      */
     public void assertEqualsByQuery(final IDataSet expectedDataset,
             final IDatabaseConnection connection, final String sqlQuery,
@@ -147,7 +147,7 @@ public class DbUnitAssert
     {
         if (logger.isDebugEnabled())
             logger.debug(
-                    "assertEqualsByQuery(expectedDataset={}, connection={}, tableName={}, sqlQuery={}, ignoreCols={}) - start",
+                            "assertEqualsByQuery(expectedDataset={}, connection={}, tableName={}, sqlQuery={}, ignoreCols={}) - start",
                     new Object[] { expectedDataset, connection, tableName, sqlQuery,
                             ignoreCols });
 
@@ -160,19 +160,19 @@ public class DbUnitAssert
      * Compare a table with a table generated from an sql query.
      * 
      * @param expectedTable
-     *          Table containing all expected results.
+     *            Table containing all expected results.
      * @param connection
-     *          Connection to use for the SQL statement.
+     *            Connection to use for the SQL statement.
      * @param tableName
-     *          The name of the table to query from the database
+     *            The name of the table to query from the database
      * @param sqlQuery
      *          SQL query that will build the data in returned second table rows.
      * @param ignoreCols
-     *          Columns to be ignored in comparison.
+     *            Columns to be ignored in comparison.
      * @throws DatabaseUnitException
-     *           If an error occurs while performing the comparison.
+     *             If an error occurs while performing the comparison.
      * @throws java.sql.SQLException
-     *           If an SQL error occurs.
+     *             If an SQL error occurs.
      */
     public void assertEqualsByQuery(final ITable expectedTable,
             final IDatabaseConnection connection, final String tableName,
@@ -181,15 +181,15 @@ public class DbUnitAssert
     {
         if (logger.isDebugEnabled())
             logger.debug(
-                    "assertEqualsByQuery(expectedTable={}, connection={}, tableName={}, sqlQuery={}, ignoreCols={}) - start",
+                            "assertEqualsByQuery(expectedTable={}, connection={}, tableName={}, sqlQuery={}, ignoreCols={}) - start",
                     new Object[] { expectedTable, connection, tableName, sqlQuery,
                             ignoreCols });
 
         ITable expected = DefaultColumnFilter.excludedColumnsTable(expectedTable,
-                ignoreCols);
+                        ignoreCols);
         ITable queriedTable = connection.createQueryTable(tableName, sqlQuery);
         ITable actual = DefaultColumnFilter.excludedColumnsTable(queriedTable,
-                ignoreCols);
+                        ignoreCols);
         assertEquals(expected, actual);
     }
 
@@ -216,7 +216,7 @@ public class DbUnitAssert
     {
         if (logger.isDebugEnabled())
             logger.debug(
-                    "assertEquals(expectedDataSet={}, actualDataSet={}, failureHandler={}) - start",
+                            "assertEquals(expectedDataSet={}, actualDataSet={}, failureHandler={}) - start",
                     new Object[] { expectedDataSet, actualDataSet, failureHandler });
 
         // do not continue if same instance
@@ -261,9 +261,9 @@ public class DbUnitAssert
      * composing the primary keys.
      * 
      * @param expectedTable
-     *          Table containing all expected results.
+     *            Table containing all expected results.
      * @param actualTable
-     *          Table containing all actual results.
+     *            Table containing all actual results.
      * @throws DatabaseUnitException
      */
     public void assertEquals(ITable expectedTable, ITable actualTable)
@@ -287,22 +287,22 @@ public class DbUnitAssert
      * </pre></code>
      * 
      * @param expectedTable
-     *          Table containing all expected results.
+     *            Table containing all expected results.
      * @param actualTable
-     *          Table containing all actual results.
+     *            Table containing all actual results.
      * @param additionalColumnInfo
      *          The columns to be printed out if the assert fails because of a
      *          data mismatch. Provides some additional column values that may be
      *          useful to quickly identify the columns for which the mismatch
      *          occurred (for example a primary key column). Can be
-     *          <code>null</code>
+     *            <code>null</code>
      * @throws DatabaseUnitException
      */
     public void assertEquals(ITable expectedTable, ITable actualTable,
             Column[] additionalColumnInfo) throws DatabaseUnitException 
     {
         logger.debug(
-                "assertEquals(expectedTable={}, actualTable={}, additionalColumnInfo={}) - start",
+                        "assertEquals(expectedTable={}, actualTable={}, additionalColumnInfo={}) - start",
                 new Object[] { expectedTable, actualTable, additionalColumnInfo });
 
         FailureHandler failureHandler = null;
@@ -325,9 +325,9 @@ public class DbUnitAssert
      * </pre></code>
      * 
      * @param expectedTable
-     *          Table containing all expected results.
+     *            Table containing all expected results.
      * @param actualTable
-     *          Table containing all actual results.
+     *            Table containing all actual results.
      * @param failureHandler
      *          The failure handler used if the assert fails because of a data
      *          mismatch. Provides some additional information that may be useful
@@ -338,17 +338,18 @@ public class DbUnitAssert
      * @since 2.4
      */
     public void assertEquals(ITable expectedTable, ITable actualTable,
-            FailureHandler failureHandler) throws DatabaseUnitException 
+            FailureHandler failureHandler) throws DatabaseUnitException
     {
-        logger.debug(
-                "assertEquals(expectedTable={}, actualTable={}, failureHandler={}) - start",
-                new Object[] { expectedTable, actualTable, failureHandler });
+        logger.trace("assertEquals(expectedTable, actualTable, failureHandler) - start");
+        logger.debug("assertEquals: expectedTable={}", expectedTable);
+        logger.debug("assertEquals: actualTable={}", actualTable);
+        logger.debug("assertEquals: failureHandler={}", failureHandler);
 
         // Do not continue if same instance
         if (expectedTable == actualTable) {
             logger.debug(
-                    "The given tables reference the same object. Will return immediately. (Table={})",
-                    expectedTable);
+                            "The given tables reference the same object. Will return immediately. (Table={})",
+                            expectedTable);
             return;
         }
 
@@ -366,10 +367,15 @@ public class DbUnitAssert
         int actualRowsCount = actualTable.getRowCount();
         if (expectedRowsCount != actualRowsCount) {
             String msg = "row count (table=" + expectedTableName + ")";
-            throw failureHandler.createFailure(msg,
-                    String.valueOf(expectedRowsCount), String.valueOf(actualRowsCount));
+            Error error =
+                    failureHandler.createFailure(msg, String
+                            .valueOf(expectedRowsCount), String
+                            .valueOf(actualRowsCount));
+            logger.error(error.toString());
+            throw error;
         }
-        // if both tables are empty, it is not necessary to compare columns, as such
+        // if both tables are empty, it is not necessary to compare columns, as
+        // such
         // comparison
         // can fail if column metadata is different (which could occurs when
         // comparing empty tables)
@@ -383,13 +389,16 @@ public class DbUnitAssert
         Column[] actualColumns = Columns.getSortedColumns(actualMetaData);
 
         // Verify columns
-        Columns.ColumnDiff columnDiff = Columns.getColumnDiff(expectedMetaData,
-                actualMetaData);
+        Columns.ColumnDiff columnDiff =
+                Columns.getColumnDiff(expectedMetaData, actualMetaData);
         if (columnDiff.hasDifference()) {
             String message = columnDiff.getMessage();
-            throw failureHandler.createFailure(message, Columns
-                    .getColumnNamesAsString(expectedColumns), Columns
-                    .getColumnNamesAsString(actualColumns));
+            Error error =
+                    failureHandler.createFailure(message, Columns
+                            .getColumnNamesAsString(expectedColumns), Columns
+                            .getColumnNamesAsString(actualColumns));
+            logger.error(error.toString());
+            throw error;
         }
 
         // Get the datatypes to be used for comparing the sorted columns
@@ -417,7 +426,7 @@ public class DbUnitAssert
     {
         DefaultFailureHandler failureHandler = new DefaultFailureHandler(additionalColumnInfo);
         if (junitFailureFactory != null) {
-        	failureHandler.setFailureFactory(junitFailureFactory);
+            failureHandler.setFailureFactory(junitFailureFactory);
         }
         return failureHandler;
     }
@@ -442,12 +451,12 @@ public class DbUnitAssert
 
     /**
      * @param expectedTable
-     *          Table containing all expected results.
+     *            Table containing all expected results.
      * @param actualTable
-     *          Table containing all actual results.
+     *            Table containing all actual results.
      * @param comparisonCols
-     *          The columns to be compared, also including the correct
-     *          {@link DataType}s for comparison
+     *            The columns to be compared, also including the correct
+     *            {@link DataType}s for comparison
      * @param failureHandler
      *          The failure handler used if the assert fails because of a data
      *          mismatch. Provides some additional information that may be useful
@@ -459,27 +468,28 @@ public class DbUnitAssert
      */
     protected void compareData(ITable expectedTable, ITable actualTable,
             ComparisonColumn[] comparisonCols, FailureHandler failureHandler)
-    throws DataSetException 
+            throws DataSetException
     {
-        logger.debug("assertEquals(expectedTable={}, actualTable={}, "
-                + "comparisonCols={}, failureHandler={}) - start", new Object[] {
-                        expectedTable, actualTable, comparisonCols, failureHandler });
+        logger.debug("compareData(expectedTable={}, actualTable={}, "
+                + "comparisonCols={}, failureHandler={}) - start",
+                new Object[] {expectedTable, actualTable, comparisonCols,
+                        failureHandler});
 
         if (expectedTable == null) {
             throw new NullPointerException(
-            "The parameter 'expectedTable' must not be null");
+                    "The parameter 'expectedTable' must not be null");
         }
         if (actualTable == null) {
             throw new NullPointerException(
-            "The parameter 'actualTable' must not be null");
+                    "The parameter 'actualTable' must not be null");
         }
         if (comparisonCols == null) {
             throw new NullPointerException(
-            "The parameter 'comparisonCols' must not be null");
+                    "The parameter 'comparisonCols' must not be null");
         }
         if (failureHandler == null) {
             throw new NullPointerException(
-            "The parameter 'failureHandler' must not be null");
+                    "The parameter 'failureHandler' must not be null");
         }
 
         // iterate over all rows
@@ -495,21 +505,21 @@ public class DbUnitAssert
                 Object actualValue = actualTable.getValue(i, columnName);
 
                 // Compare the values
-                if(skipCompare(columnName, expectedValue, actualValue)){
-                    if(logger.isTraceEnabled()){
+                if (skipCompare(columnName, expectedValue, actualValue)) {
+                    if (logger.isTraceEnabled()) {
                         logger.trace( "ignoring comparison " + expectedValue + "=" +
                                 actualValue + " on column " + columnName);                        
                     }
                     continue;
                 }
-                
+
                 if (dataType.compare(expectedValue, actualValue) != 0) {
 
                     Difference diff = new Difference(
                             expectedTable, actualTable, 
                             i, columnName, 
                             expectedValue, actualValue);
-                    
+
                     // Handle the difference (throw error immediately or something else)
                     failureHandler.handle(diff);
                 }
@@ -539,8 +549,8 @@ public class DbUnitAssert
      * @param expectedColumns
      * @param actualColumns
      * @param failureHandler
-     *          The {@link FailureHandler} to be used when no datatype can be
-     *          determined
+     *            The {@link FailureHandler} to be used when no datatype can be
+     *            determined
      * @return The columns to be used for the assertion, including the correct
      *         datatype
      * @since 2.4
@@ -555,7 +565,7 @@ public class DbUnitAssert
             Column expectedColumn = expectedColumns[j];
             Column actualColumn = actualColumns[j];
             result[j] = new ComparisonColumn(expectedTableName, expectedColumn,
-                    actualColumn, failureHandler);
+                            actualColumn, failureHandler);
         }
         return result;
     }
@@ -597,7 +607,7 @@ public class DbUnitAssert
 
         /**
          * @param tableName
-         *          The table name which is only needed for debugging output
+         *            The table name which is only needed for debugging output
          * @param expectedColumn
          *          The expected column needed to resolve the {@link DataType} to
          *          use for the actual comparison
@@ -613,7 +623,7 @@ public class DbUnitAssert
             super();
             this.columnName = expectedColumn.getColumnName();
             this.dataType = getComparisonDataType(tableName, expectedColumn,
-                    actualColumn, failureHandler);
+                            actualColumn, failureHandler);
         }
 
         /**
@@ -632,7 +642,7 @@ public class DbUnitAssert
 
         /**
          * @param tableName
-         *          The table name which is only needed for debugging output
+         *            The table name which is only needed for debugging output
          * @param expectedColumn
          * @param actualColumn
          * @param failureHandler
@@ -646,7 +656,7 @@ public class DbUnitAssert
                 FailureHandler failureHandler) {
             if (logger.isDebugEnabled())
                 logger.debug(
-                        "getComparisonDataType(tableName={}, expectedColumn={}, actualColumn={}, failureHandler={}) - start",
+                                "getComparisonDataType(tableName={}, expectedColumn={}, actualColumn={}, failureHandler={}) - start",
                         new Object[] { tableName, expectedColumn, actualColumn,
                                 failureHandler });
 
