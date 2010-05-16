@@ -51,7 +51,7 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
     private static final Logger logger = LoggerFactory.getLogger(AbstractDatabaseConnection.class);
 
     private IDataSet _dataSet = null;
-    private DatabaseConfig _databaseConfig;
+    private final DatabaseConfig _databaseConfig;
 
     public AbstractDatabaseConnection()
     {
@@ -73,8 +73,8 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         return _dataSet;
     }
 
-    public IDataSet createDataSet(String[] tableNames) 
-            throws DataSetException, SQLException
+    public IDataSet createDataSet(String[] tableNames)
+    throws DataSetException, SQLException
     {
         logger.debug("createDataSet(tableNames={}) - start", tableNames);
 
@@ -82,13 +82,13 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
     }
 
     public ITable createQueryTable(String resultName, String sql)
-            throws DataSetException, SQLException
+    throws DataSetException, SQLException
     {
         logger.debug("createQueryTable(resultName={}, sql={}) - start", resultName, sql);
 
         IResultSetTableFactory tableFactory = getResultSetTableFactory();
         IResultSetTable rsTable = tableFactory.createTable(resultName, sql, this);
-        logger.debug("createQueryTable: rowCount={}", new Integer(rsTable
+        logger.debug("createQueryTable: rowCount={}", Integer.valueOf(rsTable
                 .getRowCount()));
         return rsTable;
     }
@@ -103,16 +103,16 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         return rsTable;
     }
 
-    
+
     public ITable createTable(String tableName) throws DataSetException,
-            SQLException 
+    SQLException
     {
         logger.debug("createTable(tableName={}) - start", tableName);
 
         if (tableName == null) {
             throw new NullPointerException("The parameter 'tableName' must not be null");
         }
-        
+
         String sql = "select * from " + tableName; // TODO Think about QualifiedTableNames here - needed or not?
         return this.createQueryTable(tableName, sql);
     }
@@ -146,11 +146,12 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
         try
         {
             resultSet = statement.executeQuery(sqlBuffer.toString());
-            if(resultSet.next())
+            if(resultSet.next()) {
                 return resultSet.getInt(1);
-            else
-                throw new DatabaseUnitRuntimeException("Select count did not return any results for table '" + 
+            } else {
+                throw new DatabaseUnitRuntimeException("Select count did not return any results for table '" +
                         tableName + "'. Statement: " + sqlBuffer.toString());
+            }
         }
         finally
         {
@@ -174,14 +175,14 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
     private IResultSetTableFactory getResultSetTableFactory()
     {
         return (IResultSetTableFactory)_databaseConfig.getProperty(DatabaseConfig.PROPERTY_RESULTSET_TABLE_FACTORY);
-        
+
     }
-    
+
     public String toString()
     {
-    	StringBuffer sb = new StringBuffer();
-    	sb.append("_databaseConfig=").append(_databaseConfig);
-    	sb.append(", _dataSet=").append(_dataSet);
-    	return sb.toString();
+        StringBuffer sb = new StringBuffer();
+        sb.append("_databaseConfig=").append(_databaseConfig);
+        sb.append(", _dataSet=").append(_dataSet);
+        return sb.toString();
     }
 }
