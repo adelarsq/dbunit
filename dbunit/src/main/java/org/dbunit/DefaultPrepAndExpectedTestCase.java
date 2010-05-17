@@ -253,6 +253,10 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
         try {
             verifyData();
         } finally {
+            // it is deliberate to have cleanup exceptions shadow verify
+            // failures so user knows db is probably in unknown state (for
+            // those not using an in-memory db or transaction rollback),
+            // otherwise would mask probable cause of subsequent test failures
             cleanupData();
         }
     }
