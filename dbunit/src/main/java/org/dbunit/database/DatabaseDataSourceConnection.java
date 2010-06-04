@@ -114,13 +114,18 @@ public class DatabaseDataSourceConnection extends AbstractDatabaseConnection
 
         if (_connection == null)
         {
-            if (_user != null)
+            try
             {
-                _connection = _dataSource.getConnection(_user, _password);
+                if (_user != null) {
+                    _connection = _dataSource.getConnection(_user, _password);
+                } else {
+                    _connection = _dataSource.getConnection();
+                }
             }
-            else
+            catch (SQLException e)
             {
-                _connection = _dataSource.getConnection();
+                logger.error("getConnection(): ", e);
+                throw e;
             }
         }
         return _connection;
