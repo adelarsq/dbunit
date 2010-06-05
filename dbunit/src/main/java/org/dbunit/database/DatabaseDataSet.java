@@ -61,7 +61,7 @@ public class DatabaseDataSet extends AbstractDataSet
 
     private final IDatabaseConnection _connection;
     private OrderedTableNameMap _tableMap = null;
-    
+
     private final ITableFilterSimple _tableFilter;
     private final ITableFilterSimple _oracleRecycleBinTableFilter;
 
@@ -72,10 +72,10 @@ public class DatabaseDataSet extends AbstractDataSet
      */
     DatabaseDataSet(IDatabaseConnection connection) throws SQLException
     {
-    	this(connection, connection.getConfig().getFeature(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES));
+        this(connection, connection.getConfig().getFeature(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES));
     }
 
-    
+
     /**
      * Creates a new database data set
      * @param connection The database connection
@@ -96,13 +96,13 @@ public class DatabaseDataSet extends AbstractDataSet
      * @throws SQLException
      * @since 2.4.3
      */
-    public DatabaseDataSet(IDatabaseConnection connection, boolean caseSensitiveTableNames, ITableFilterSimple tableFilter) 
+    public DatabaseDataSet(IDatabaseConnection connection, boolean caseSensitiveTableNames, ITableFilterSimple tableFilter)
     throws SQLException
     {
         super(caseSensitiveTableNames);
         if (connection == null) {
             throw new NullPointerException(
-                    "The parameter 'connection' must not be null");
+            "The parameter 'connection' must not be null");
         }
         _connection = connection;
         _tableFilter = tableFilter;
@@ -112,13 +112,13 @@ public class DatabaseDataSet extends AbstractDataSet
 
 
     static String getSelectStatement(String schema, ITableMetaData metaData, String escapePattern)
-            throws DataSetException
+    throws DataSetException
     {
-    	if (logger.isDebugEnabled())
-    	{
-    		logger.debug("getSelectStatement(schema={}, metaData={}, escapePattern={}) - start", 
-    				new Object[] { schema, metaData, escapePattern });
-    	}
+        if (logger.isDebugEnabled())
+        {
+            logger.debug("getSelectStatement(schema={}, metaData={}, escapePattern={}) - start",
+                    new Object[] { schema, metaData, escapePattern });
+        }
 
         Column[] columns = metaData.getColumns();
         Column[] primaryKeys = metaData.getPrimaryKeys();
@@ -127,7 +127,7 @@ public class DatabaseDataSet extends AbstractDataSet
             throw new DatabaseUnitRuntimeException("At least one column is required to build a valid select statement. "+
                     "Cannot load data for " + metaData);
         }
-        
+
         // select
         StringBuffer sqlBuffer = new StringBuffer(128);
         sqlBuffer.append("select ");
@@ -179,31 +179,34 @@ public class DatabaseDataSet extends AbstractDataSet
 
         try
         {
-        	logger.debug("Initializing the data set from the database...");
+            logger.debug("Initializing the data set from the database...");
 
-        	Connection jdbcConnection = _connection.getConnection();
+            Connection jdbcConnection = _connection.getConnection();
             DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
 
             String schema = _connection.getSchema();
-            
+
             if(SQLHelper.isSybaseDb(jdbcConnection.getMetaData()) && !jdbcConnection.getMetaData().getUserName().equals(schema) ){
                 logger.warn("For sybase the schema name should be equal to the user name. " +
-                		"Otherwise the DatabaseMetaData#getTables() method might not return any columns. " +
-                		"See dbunit tracker #1628896 and http://issues.apache.org/jira/browse/TORQUE-40?page=all");
+                        "Otherwise the DatabaseMetaData#getTables() method might not return any columns. " +
+                "See dbunit tracker #1628896 and http://issues.apache.org/jira/browse/TORQUE-40?page=all");
             }
-            
+
             DatabaseConfig config = _connection.getConfig();
             String[] tableType = (String[])config.getProperty(DatabaseConfig.PROPERTY_TABLE_TYPE);
             IMetadataHandler metadataHandler = (IMetadataHandler) config.getProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER);
 
             ResultSet resultSet = metadataHandler.getTables(databaseMetaData, schema, tableType);
-            
+
             if(logger.isDebugEnabled())
+            {
                 logger.debug(SQLHelper.getDatabaseInfo(jdbcConnection.getMetaData()));
-            
+                logger.debug("metadata resultset={}", resultSet);
+            }
+
             try
             {
-            	OrderedTableNameMap tableMap = super.createTableNameMap();
+                OrderedTableNameMap tableMap = super.createTableNameMap();
                 while (resultSet.next())
                 {
                     String schemaName = metadataHandler.getSchema(resultSet);
@@ -219,8 +222,8 @@ public class DatabaseDataSet extends AbstractDataSet
                         logger.debug("Skipping oracle recycle bin table '{}'", tableName);
                         continue;
                     }
-                    
-                    
+
+
                     QualifiedTableName qualifiedTableName = new QualifiedTableName(tableName, schemaName);
                     tableName = qualifiedTableName.getQualifiedNameIfEnabled(config);
 
@@ -245,10 +248,12 @@ public class DatabaseDataSet extends AbstractDataSet
     // AbstractDataSet class
 
     protected ITableIterator createIterator(boolean reversed)
-            throws DataSetException
+    throws DataSetException
     {
-    	if(logger.isDebugEnabled())
-    		logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("createIterator(reversed={}) - start", String.valueOf(reversed));
+        }
 
         String[] names = getTableNames();
         if (reversed)
@@ -278,7 +283,8 @@ public class DatabaseDataSet extends AbstractDataSet
         // Verify if table exist in the database
         if (!_tableMap.containsTable(tableName))
         {
-            logger.info("Table '{}' not found in tableMap={}", tableName, _tableMap);
+            logger.error("Table '{}' not found in tableMap={}", tableName,
+                    _tableMap);
             throw new NoSuchTableException(tableName);
         }
 
@@ -288,7 +294,7 @@ public class DatabaseDataSet extends AbstractDataSet
         {
             return metaData;
         }
-        
+
         // Create metadata and cache it
         metaData = new DatabaseTableMetaData(tableName, _connection, true, super.isCaseSensitiveTableNames());
         // Put the metadata object into the cache map
@@ -318,29 +324,31 @@ public class DatabaseDataSet extends AbstractDataSet
         }
     }
 
-    
+
     private static class OracleRecycleBinTableFilter implements ITableFilterSimple
     {
         private final DatabaseConfig _config;
 
-        public OracleRecycleBinTableFilter(DatabaseConfig config) 
+        public OracleRecycleBinTableFilter(DatabaseConfig config)
         {
             this._config = config;
         }
 
-        public boolean accept(String tableName) throws DataSetException 
+        public boolean accept(String tableName) throws DataSetException
         {
             // skip oracle 10g recycle bin system tables if enabled
             if(_config.getFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES)) {
                 // Oracle 10g workaround
                 // don't process system tables (oracle recycle bin tables) which
                 // are reported to the application due a bug in the oracle JDBC driver
-                if (tableName.startsWith("BIN$")) 
-                    return false; 
+                if (tableName.startsWith("BIN$"))
+                {
+                    return false;
+                }
             }
-            
+
             return true;
         }
     }
-    
+
 }
