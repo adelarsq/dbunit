@@ -20,6 +20,8 @@
  */
 package org.dbunit;
 
+import java.util.Arrays;
+
 /**
  * Defines a database table to verify (assert on data), specifying include and
  * exclude column filters.
@@ -87,5 +89,31 @@ public class VerifyTableDefinition {
 
     public String[] getColumnInclusionFilters() {
         return columnInclusionFilters;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString() {
+        String exclusionString = arrayToString(columnExclusionFilters);
+        String inclusionString = arrayToString(columnInclusionFilters);
+
+        StringBuilder sb = new StringBuilder(1000);
+        sb.append("tableName='").append(tableName).append("'");
+        sb.append(", columnExclusionFilters='").append(exclusionString)
+                .append("'");
+        sb.append(", columnInclusionFilters='").append(inclusionString)
+                .append("'");
+        return sb.toString();
+    }
+
+    protected String arrayToString(String[] array) {
+        String string;
+        if (array == null) {
+            string = "";
+        } else {
+            string = Arrays.toString(array);
+        }
+        return string;
     }
 }

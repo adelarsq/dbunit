@@ -265,12 +265,17 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      * {@inheritDoc}
      */
     public void cleanupData() throws Exception {
+        IDataSet dataset = new CompositeDataSet(prepDs, expectedDs);
+        String tableNames[] = dataset.getTableNames();
+        int count = tableNames.length;
+        LOG.info("cleanupData: about to clean up {} tables={}", new Integer(
+                count), tableNames);
+
         if (databaseTester == null) {
             throw new IllegalStateException(
                     "databaseTester is null; must configure or set it first");
         }
 
-        IDataSet dataset = new CompositeDataSet(prepDs, expectedDs);
         databaseTester.setDataSet(dataset);
         databaseTester.onTearDown();
     }
@@ -309,8 +314,8 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
 
         try {
             int count = tableDefs.length;
-            LOG.info("verifyData: about to verify {} tables",
-                    new Integer(count));
+            LOG.info("verifyData: about to verify {} tables={}", new Integer(
+                    count), tableDefs);
             if (count == 0) {
                 LOG.warn("No tables to verify;"
                         + " no VerifyTableDefinitions specified");
