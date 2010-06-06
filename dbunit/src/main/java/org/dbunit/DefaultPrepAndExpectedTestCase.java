@@ -278,6 +278,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
 
         databaseTester.setDataSet(dataset);
         databaseTester.onTearDown();
+        LOG.debug("verifyData: Clean up done");
     }
 
     /**
@@ -357,6 +358,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
                         includeColumns);
             }
         } finally {
+            LOG.debug("verifyData: Verification done, closing connection");
             connection.close();
         }
     }
