@@ -11,6 +11,7 @@
 
   <body>
     <release version="2.4.8" date="TBD" description="TBD">
+      <action dev="gommma" type="fix" issue="3022281" due-to="wujeksrujek">NPE when setting properties</action>
       <action dev="gommma" type="fix" issue="2993712" due-to="glesatsf">Wrong value for property "datatypeFactory"</action>
       <action dev="gommma" type="add" issue="2986323" due-to="luigitalamona">Added driver for Mckoi db.</action>
       <action dev="gommma" type="fix" issue="2887115" due-to="unwissender2009">SQL: "Create Domain" ... Data Types are not supported.</action>

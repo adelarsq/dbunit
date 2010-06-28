@@ -240,6 +240,9 @@ public class DatabaseConfig
         logger.trace("convertIfNeeded(property={}, value={}) - start", property, value);
 
         ConfigProperty prop = findByName(property);
+        if(prop==null) {
+            throw new NullPointerException("Did not find property with name '" + property + "'");
+        }
         Class allowedPropType = prop.getPropertyType();
 
         if(allowedPropType == Boolean.class || allowedPropType == boolean.class)
