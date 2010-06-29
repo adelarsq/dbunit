@@ -241,7 +241,7 @@ public class DatabaseConfig
 
         ConfigProperty prop = findByName(property);
         if(prop==null) {
-            throw new NullPointerException("Did not find property with name '" + property + "'");
+            throw new IllegalArgumentException("Did not find property with name '" + property + "'");
         }
         Class allowedPropType = prop.getPropertyType();
 
