@@ -99,8 +99,20 @@ public abstract class DataType
             "LONGVARBINARY", Types.LONGVARBINARY);
     public static final DataType BLOB = new BlobDataType();
 
+    //New JDBC 4.0 types:
+    //todo: ROWID = -8, NCLOB = 2011, SQLXML = 2009.
+
+    public static final DataType NCHAR = new StringDataType(
+            "NCHAR", -15);
+
+    public static final DataType NVARCHAR = new StringDataType(
+            "NVARCHAR", -9);
+
+    public static final DataType LONGNVARCHAR = new StringDataType(
+            "LONGNVARCHAR", -16);
+
     private static final DataType[] TYPES = {
-        VARCHAR, CHAR, LONGVARCHAR, CLOB, NUMERIC, DECIMAL, BOOLEAN, BIT, INTEGER,
+        VARCHAR, CHAR, LONGVARCHAR, NCHAR, NVARCHAR, LONGNVARCHAR, CLOB, NUMERIC, DECIMAL, BOOLEAN, BIT, INTEGER,
         TINYINT, SMALLINT, BIGINT, REAL, DOUBLE, FLOAT, DATE, TIME, TIMESTAMP,
         VARBINARY, BINARY, LONGVARBINARY, BLOB,
         //auxiliary types at the very end
