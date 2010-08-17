@@ -18,7 +18,7 @@ public class DefaultPrepAndExpectedTestCaseTest extends TestCase {
     // JdbcDatabaseTester(driverClass, connectionUrl);
 
     private final DefaultPrepAndExpectedTestCase tc =
-            new DefaultPrepAndExpectedTestCase();
+        new DefaultPrepAndExpectedTestCase();
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -48,6 +48,10 @@ public class DefaultPrepAndExpectedTestCaseTest extends TestCase {
     }
 
     public void testPostTest() {
+        // TODO implement test
+    }
+
+    public void testPostTest_false() {
         // TODO implement test
     }
 

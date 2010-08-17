@@ -68,12 +68,25 @@ public interface PrepAndExpectedTestCase {
             String[] expectedDataFiles) throws Exception;
 
     /**
-     * Execute post-test steps. Call this method after performing the test
+     * Execute all post-test steps. Call this method after performing the test
      * steps.
      * 
      * @throws Exception
      */
     void postTest() throws Exception;
+
+    /**
+     * Execute post-test steps. Call this method after performing the test
+     * steps.
+     * 
+     * @param verifyData
+     *            Specify true to perform verify data steps, false to not.
+     *            Useful to specify false when test has failure in progress
+     *            (e.g. an exception) and verifying data would fail, masking
+     *            original test failure.
+     * @throws Exception
+     */
+    void postTest(boolean verifyData) throws Exception;
 
     /**
      * Cleanup tables specified in prep and expected datasets, using the

@@ -163,9 +163,9 @@ import org.slf4j.LoggerFactory;
  * @since 2.4.8
  */
 public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
-        PrepAndExpectedTestCase {
+PrepAndExpectedTestCase {
     private final Logger LOG =
-            LoggerFactory.getLogger(DefaultPrepAndExpectedTestCase.class);
+        LoggerFactory.getLogger(DefaultPrepAndExpectedTestCase.class);
 
     private IDatabaseTester databaseTester;
     private DataFileLoader dataFileLoader;
@@ -223,7 +223,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      */
     public void configureTest(VerifyTableDefinition[] tables,
             String[] prepDataFiles, String[] expectedDataFiles)
-            throws Exception {
+    throws Exception {
         LOG.debug("configureTest: saving instance variables");
         this.prepDs = makeCompositeDataSet(prepDataFiles);
         this.expectedDs = makeCompositeDataSet(expectedDataFiles);
@@ -250,8 +250,17 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      * {@inheritDoc}
      */
     public void postTest() throws Exception {
+        postTest(true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void postTest(boolean verifyData) throws Exception {
         try {
-            verifyData();
+            if (verifyData) {
+                verifyData();
+            }
         } finally {
             // it is deliberate to have cleanup exceptions shadow verify
             // failures so user knows db is probably in unknown state (for
@@ -273,7 +282,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
 
         if (databaseTester == null) {
             throw new IllegalStateException(
-                    "databaseTester is null; must configure or set it first");
+            "databaseTester is null; must configure or set it first");
         }
 
         databaseTester.setDataSet(dataset);
@@ -291,7 +300,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
         LOG.debug("setupData: setting prep dataset and inserting rows");
         if (databaseTester == null) {
             throw new IllegalStateException(
-                    "databaseTester is null; must configure or set it first");
+            "databaseTester is null; must configure or set it first");
         }
 
         databaseTester.setDataSet(prepDs);
@@ -308,7 +317,7 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
     public void verifyData() throws Exception {
         if (databaseTester == null) {
             throw new IllegalStateException(
-                    "databaseTester is null; must configure or set it first");
+            "databaseTester is null; must configure or set it first");
         }
 
         IDatabaseConnection connection = databaseTester.getConnection();
@@ -336,8 +345,8 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
                     expectedTable = expectedDs.getTable(tableName);
                 } catch (DataSetException e) {
                     final String msg =
-                            "Problem obtaining table '" + tableName
-                                    + "' from expected dataset";
+                        "Problem obtaining table '" + tableName
+                        + "' from expected dataset";
                     LOG.error(msg, e);
                     throw new DataSetException(msg, e);
                 }
@@ -348,8 +357,8 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
                     actualTable = connection.createTable(tableName);
                 } catch (DataSetException e) {
                     final String msg =
-                            "Problem obtaining table '" + tableName
-                                    + "' from actual dataset";
+                        "Problem obtaining table '" + tableName
+                        + "' from actual dataset";
                     LOG.error(msg, e);
                     throw new DataSetException(msg, e);
                 }
@@ -383,23 +392,23 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      */
     public void verifyData(ITable expectedTable, ITable actualTable,
             String[] excludeColumns, String[] includeColumns)
-            throws DatabaseUnitException {
+    throws DatabaseUnitException {
         // Filter out the columns from the expected and actual results
         LOG.debug("Applying filters to expected table");
         ITable expectedFilteredTable =
-                applyColumnFilters(expectedTable, excludeColumns,
-                        includeColumns);
+            applyColumnFilters(expectedTable, excludeColumns,
+                    includeColumns);
         LOG.debug("Applying filters to actual table");
         ITable actualFilteredTable =
-                applyColumnFilters(actualTable, excludeColumns, includeColumns);
+            applyColumnFilters(actualTable, excludeColumns, includeColumns);
 
         LOG.debug("Sorting expected table");
         SortedTable expectedSortedTable =
-                new SortedTable(expectedFilteredTable);
+            new SortedTable(expectedFilteredTable);
         LOG.debug("Sorting actual table");
         SortedTable actualSortedTable =
-                new SortedTable(actualFilteredTable, expectedFilteredTable
-                        .getTableMetaData());
+            new SortedTable(actualFilteredTable, expectedFilteredTable
+                    .getTableMetaData());
 
         LOG.debug("Comparing expected table to actual table");
         Assertion.assertEquals(expectedSortedTable, actualSortedTable);
@@ -415,10 +424,10 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
      *             On dbUnit errors.
      */
     public IDataSet makeCompositeDataSet(String[] dataFiles)
-            throws DataSetException {
+    throws DataSetException {
         if (dataFileLoader == null) {
             throw new IllegalStateException(
-                    "dataFileLoader is null; must configure or set it first");
+            "dataFileLoader is null; must configure or set it first");
         }
 
         int count = dataFiles.length;
@@ -468,8 +477,8 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
             LOG.debug("applyColumnFilters: including columns='{}'",
                     new Object[] {includeColumns});
             filteredTable =
-                    DefaultColumnFilter.includedColumnsTable(filteredTable,
-                            includeColumns);
+                DefaultColumnFilter.includedColumnsTable(filteredTable,
+                        includeColumns);
         }
 
         if (excludeColumns == null || excludeColumns.length == 0) {
@@ -478,8 +487,8 @@ public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
             LOG.debug("applyColumnFilters: excluding columns='{}'",
                     new Object[] {excludeColumns});
             filteredTable =
-                    DefaultColumnFilter.excludedColumnsTable(filteredTable,
-                            excludeColumns);
+                DefaultColumnFilter.excludedColumnsTable(filteredTable,
+                        excludeColumns);
         }
 
         return filteredTable;
