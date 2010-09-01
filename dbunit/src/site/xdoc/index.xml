@@ -26,6 +26,10 @@
   <section name="News">
       <table border="1">
         <tr>
+          <td>2010-08-31</td>
+          <td>DbUnit project team is proud to deliver the new 2.4.8 release: please have a look at the <a href="changes-report.html#a2.4.8">changes</a> report for the release contents.</td>
+        </tr>
+        <tr>
           <td>2009-11-09</td>
           <td>DbUnit project team is proud to deliver the new 2.4.7 release: please have a look at the <a href="changes-report.html#a2.4.7">changes</a> report for the release contents.</td>
         </tr>
