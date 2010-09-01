@@ -6,11 +6,11 @@
   <artifactId>dbunit</artifactId>
   <version>2.4.9-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>DbUnit Framework</name>
+  <name>dbUnit Extension</name>
   <url>http://dbunit.sourceforge.net</url>
   <inceptionYear>2002</inceptionYear>
   <description>
-    DbUnit is a JUnit extension (also usable from Ant) targeted for database-driven projects that, among other things, puts your database into a known state between test runs. This is an excellent way to avoid the myriad of problems that can occur when one test case corrupts the database and causes subsequent tests to fail or exacerbate the damage.
+    dbUnit is a JUnit extension (also usable from Ant and Maven) targeted for database-driven projects that, among other things, puts your database into a known state between test runs. This is an excellent way to avoid the myriad of problems that can occur when one test case corrupts the database and causes subsequent tests to fail or exacerbate the damage.
   </description>
   <licenses>
     <license>
@@ -24,12 +24,8 @@
     <checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
     <logbackVersion>0.9.15</logbackVersion>
     <slf4jVersion>1.5.6</slf4jVersion>
-    <project.build.sourceEncoding>
-      UTF-8
-    </project.build.sourceEncoding>
-    <project.reporting.outputEncoding>
-      UTF-8
-    </project.reporting.outputEncoding>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <scm>
@@ -60,19 +56,19 @@
 
   <mailingLists>
     <mailingList>
-      <name>DbUnit User List</name>
+      <name>dbUnit User List</name>
       <subscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-user</subscribe>
       <unsubscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-user</unsubscribe>
       <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=dbunit-user</archive>
     </mailingList>
     <mailingList>
-      <name>DbUnit Developer List</name>
+      <name>dbUnit Developer List</name>
       <subscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-developer</subscribe>
       <unsubscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-developer</unsubscribe>
       <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=dbunit-developer</archive>
     </mailingList>
     <mailingList>
-      <name>DbUnit SVN Commit List</name>
+      <name>dbUnit SVN Commit List</name>
       <subscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-commit</subscribe>
       <unsubscribe>http://lists.sourceforge.net/lists/listinfo/dbunit-commit</unsubscribe>
       <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=dbunit-commit</archive>
@@ -152,7 +148,6 @@
       <organization>Oz Communication</organization>
       <roles>
         <role>Project Founder (inactive)</role>
-        <!--  <role>Java Developer</role> -->
       </roles>
     </developer>
     <developer>
@@ -160,7 +155,6 @@
       <id>bdrum</id>
       <roles>
         <role>Java Developer (inactive)</role>
-        <!--  <role>Original Ant Task Contributor</role> -->
       </roles>
     </developer>
     <developer>
@@ -170,7 +164,6 @@
       <organization>Master House S.r.l</organization>
       <roles>
         <role>Java Developer (inactive)</role>
-        <!--  <role>DB2 Contributor</role> -->
       </roles>
     </developer>
     <developer>
@@ -178,7 +171,6 @@
       <id>zieggy</id>
       <roles>
         <role>Java Developer (inactive)</role>
-        <!--  <role>Original Ant Task Contributor</role> -->
       </roles>
     </developer>
   </developers>
