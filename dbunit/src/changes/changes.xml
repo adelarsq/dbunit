@@ -10,7 +10,10 @@
   </properties>
 
   <body>
-    <release version="2.4.8" date="TBD" description="TBD">
+    <release version="next" date="in SCM" description="Additional toString()s, ">
+      <action dev="jeffjensen" type="add" due-to="jeffjensen">Add toString() methods to AbstractResultSetTable, ForwardOnlyResultSetTable, ScrollableResultSetTable.</action>
+    </release>
+    <release version="2.4.8" date="Sep 2, 2010" description="Bug fixes, timezone support, Oracle support improvements, new DataFileLoader, new PrepAndExpectedTestCase">
       <action dev="gommma" type="add" issue="3027485" due-to="Yishai">MSSQL JDBC Driver 3.0 doesn't work well</action>
       <action dev="gommma" type="fix" issue="3022281" due-to="wujeksrujek">NPE when setting properties</action>
       <action dev="gommma" type="fix" issue="2993712" due-to="glesatsf">Wrong value for property "datatypeFactory"</action>
@@ -19,9 +22,8 @@
       <action dev="jbhurst" type="add" issue="2875253" due-to="caseylucas">Additional refinements for Oracle SDO_GEOMETRY datatype</action>
       <action dev="jbhurst" type="add" issue="2921131" due-to="vlamp">Add timezone support for timestamp data type</action>
       <action dev="jbhurst" type="add" issue="2919427" due-to="dbamberghi (Daniele Bamberghi)">OracleDataTypeFactory recognises "SYS.XMLTYPE"</action>
-      <action dev="jeffjensen" type="add" issue="2938029" due-to="jeffjensen">Add "file loader" utility for various data file types</action>
+      <action dev="jeffjensen" type="add" issue="2938029" due-to="jeffjensen">Add "file loader" utility (DataFileLoader) for various data file types</action>
       <action dev="jeffjensen" type="add" due-to="jeffjensen">Add new TestCase that supports prepare and expected datasets: "DefaultPrepAndExpectedTestCase"</action>
-      <action dev="jeffjensen" type="add" due-to="jeffjensen">Add reflective toString() method to AbstractTable so all subclasses have detailed output in log statements.</action>
     </release>
     <release version="2.4.7" date="Nov 09, 2009" description="Bugfixes and some non breaking refactoring">
       <action dev="gommma" type="fix" issue="2685615" due-to="lumpynose">dtd for XmlDataSet</action>
