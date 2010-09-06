@@ -45,7 +45,7 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
     private static final Logger logger = LoggerFactory.getLogger(ForwardOnlyResultSetTable.class);
 
     private int _lastRow = -1;
-    private boolean _eot = false;   // End of table flag
+    private boolean _eot = false; // End of table flag
 
     public ForwardOnlyResultSetTable(ITableMetaData metaData,
             ResultSet resultSet) throws SQLException, DataSetException
@@ -65,7 +65,7 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
         super(tableName, selectStatement, connection);
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////////
     // ITable interface
 
     public int getRowCount()
@@ -107,5 +107,22 @@ public class ForwardOnlyResultSetTable extends AbstractResultSetTable
         {
             throw new DataSetException(e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder(2000);
+
+        sb.append(super.toString());
+        sb.append(", ");
+        sb.append(getClass().getName()).append("[");
+        sb.append("_eot=[").append(_eot).append("], ");
+        sb.append("_lastRow=[").append(_lastRow).append("]");
+        sb.append("]");
+
+        return sb.toString();
     }
 }

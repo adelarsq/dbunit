@@ -140,4 +140,20 @@ public class ScrollableResultSetTable extends AbstractResultSetTable
             throw new DataSetException(e);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder(2000);
+
+        sb.append(super.toString());
+        sb.append(", ");
+        sb.append(getClass().getName()).append("[");
+        sb.append("_rowCount=[").append(_rowCount).append("]");
+        sb.append("]");
+
+        return sb.toString();
+    }
 }

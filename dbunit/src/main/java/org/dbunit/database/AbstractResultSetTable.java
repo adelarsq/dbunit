@@ -168,4 +168,20 @@ public abstract class AbstractResultSetTable extends AbstractTable
             throw new DataSetException(e);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder(2000);
+
+        sb.append(getClass().getName()).append("[");
+        sb.append("_metaData=[").append(_metaData).append("], ");
+        sb.append("_resultSet=[").append(_resultSet).append("], ");
+        sb.append("_statement=[").append(_statement).append("]");
+        sb.append("]");
+
+        return sb.toString();
+    }
 }
