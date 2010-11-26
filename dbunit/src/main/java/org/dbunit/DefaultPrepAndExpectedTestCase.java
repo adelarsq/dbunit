@@ -327,7 +327,7 @@ PrepAndExpectedTestCase {
             LOG.info("verifyData: about to verify {} tables={}", new Integer(
                     count), tableDefs);
             if (count == 0) {
-                LOG.warn("No tables to verify;"
+                LOG.warn("verifyData: No tables to verify;"
                         + " no VerifyTableDefinitions specified");
             }
 
@@ -337,27 +337,29 @@ PrepAndExpectedTestCase {
                 String[] includeColumns = td.getColumnInclusionFilters();
                 String tableName = td.getTableName();
 
-                LOG.info("Verifying table '{}'", tableName);
+                LOG.info("verifyData: Verifying table '{}'", tableName);
 
-                LOG.debug("  Loading its rows from expected dataset");
+                LOG.debug("verifyData: Loading its rows from expected dataset");
                 ITable expectedTable = null;
                 try {
                     expectedTable = expectedDs.getTable(tableName);
-                } catch (DataSetException e) {
+                } catch (Exception e)
+                {
                     final String msg =
-                        "Problem obtaining table '" + tableName
+                            "verifyData: Problem obtaining table '" + tableName
                         + "' from expected dataset";
                     LOG.error(msg, e);
                     throw new DataSetException(msg, e);
                 }
 
-                LOG.debug("  Loading its rows from actual table");
+                LOG.debug("verifyData: Loading its rows from actual table");
                 ITable actualTable = null;
                 try {
                     actualTable = connection.createTable(tableName);
-                } catch (DataSetException e) {
+                } catch (Exception e)
+                {
                     final String msg =
-                        "Problem obtaining table '" + tableName
+                            "verifyData: Problem obtaining table '" + tableName
                         + "' from actual dataset";
                     LOG.error(msg, e);
                     throw new DataSetException(msg, e);
