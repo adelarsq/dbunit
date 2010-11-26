@@ -88,15 +88,17 @@ import org.slf4j.LoggerFactory;
  * 
  * &#064;Test
  * public void testExample() throws Exception {
- *     String[] prepDataFiles = {}; // define prep files
- *     String[] expectedDataFiles = {}; // define expected files
- *     VerifyTableDefinition[] tables = {}; // define tables to verify
+ *       try {
+ *           final String[] prepDataFiles = {}; // define prep files
+ *           final String[] expectedDataFiles = {}; // define expected files
+ *           final VerifyTableDefinition[] tables = {}; // define tables to verify
+ *
+ *           tc.preTest(tables, prepDataFiles, expectedDataFiles);
  * 
- *     tc.preTest(tables, prepDataFiles, expectedDataFiles);
- * 
- *     // execute test
- * 
- *     tc.postTest();
+ *           // execute test
+ *       } finally {
+ *           tc.postTest();
+ *       }
  * }
  * </pre>
  * 
