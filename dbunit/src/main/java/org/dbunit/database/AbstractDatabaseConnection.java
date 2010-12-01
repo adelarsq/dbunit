@@ -113,7 +113,11 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
             throw new NullPointerException("The parameter 'tableName' must not be null");
         }
 
-        String sql = "select * from " + tableName; // TODO Think about QualifiedTableNames here - needed or not?
+        // qualify with schema if configured
+        QualifiedTableName qualifiedTableName =
+                new QualifiedTableName(tableName, this.getSchema());
+        String qualifiedName = qualifiedTableName.getQualifiedName();
+        String sql = "select * from " + qualifiedName;
         return this.createQueryTable(tableName, sql);
     }
 
