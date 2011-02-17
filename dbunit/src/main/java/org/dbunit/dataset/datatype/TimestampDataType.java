@@ -21,15 +21,14 @@
 
 package org.dbunit.dataset.datatype;
 
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.dbunit.dataset.ITable;
 import org.slf4j.Logger;
@@ -43,8 +42,10 @@ import org.slf4j.LoggerFactory;
  */
 public class TimestampDataType extends AbstractDataType
 {
-
-    /**
+    private static final BigInteger ONE_BILLION = new BigInteger ("1000000000");
+    private static final Pattern TIMEZONE_REGEX = Pattern.compile("(.*)(?:\\W([+-][0-2][0-9][0-5][0-9]))");
+ 
+	/**
      * Logger for this class
      */
     private static final Logger logger = LoggerFactory.getLogger(TimestampDataType.class);
@@ -85,33 +86,60 @@ public class TimestampDataType extends AbstractDataType
 
         if (value instanceof String)
         {
-            String stringValue = (String)value;
+        	String stringValue = value.toString();
+           	String zoneValue = null;
+        	
+        	Matcher tzMatcher = TIMEZONE_REGEX.matcher(stringValue);
+        	if (tzMatcher.matches() && tzMatcher.group(2) != null) 
+        	{
+        		stringValue = tzMatcher.group(1);
+        		zoneValue = tzMatcher.group(2);
+        	}
 
-            String[] patterns = {
-            		"yyyy-MM-dd HH:mm:ss.SSS Z",
-            		"yyyy-MM-dd HH:mm:ss.SSS",
-            		"yyyy-MM-dd HH:mm:ss Z",
-            		"yyyy-MM-dd HH:mm:ss",
-            		"yyyy-MM-dd HH:mm Z",
-            		"yyyy-MM-dd HH:mm",
-            		"yyyy-MM-dd Z",
-            		"yyyy-MM-dd"
-            };
-
-            for (int i = 0; i < patterns.length; ++i) {
-            	String p = patterns[i];
+        	Timestamp ts = null;
+        	if (stringValue.length() == 10)
+            {
+                try
+                {
+                    long time = java.sql.Date.valueOf(stringValue).getTime();
+                    ts = new java.sql.Timestamp(time);
+                }
+                catch (IllegalArgumentException e)
+                {
+                    // Was not a java.sql.Date, let Timestamp handle this value
+                }
+            }
+        	if (ts == null) 
+        	{
 	            try
 	            {
-	            	DateFormat df = new SimpleDateFormat(p);
-	            	Date date = df.parse(stringValue);
-	            	return new java.sql.Timestamp(date.getTime());
+	                ts = java.sql.Timestamp.valueOf(stringValue);
 	            }
-	            catch (ParseException e)
+	            catch (IllegalArgumentException e)
 	            {
-	            	if (i < patterns.length) continue;
-	            	throw new TypeCastException(value, this, e);
+	                throw new TypeCastException(value, this, e);
 	            }
             }
+        	
+        	// Apply zone if any
+        	if (zoneValue != null)
+        	{
+        		BigInteger time = BigInteger.valueOf(ts.getTime() / 1000 * 1000).multiply(ONE_BILLION).add(BigInteger.valueOf(ts.getNanos()));
+    			int hours = Integer.parseInt(zoneValue.substring(1, 3));
+    			int minutes = Integer.parseInt(zoneValue.substring(3, 5));
+    			BigInteger offsetAsSeconds = BigInteger.valueOf((hours * 3600) + (minutes * 60));
+    			BigInteger offsetAsNanos = offsetAsSeconds.multiply(BigInteger.valueOf(1000)).multiply(ONE_BILLION);
+        		if (zoneValue.charAt(0) == '+') {
+        			time = time.subtract(offsetAsNanos);
+        		} else {
+           			time = time.add(offsetAsNanos);
+        		}
+    			BigInteger[] components = time.divideAndRemainder(ONE_BILLION);
+        		ts = new Timestamp(components[0].longValue());
+        		ts.setNanos(components[1].intValue());
+        	}
+        	
+        	return ts;
         }
 
         throw new TypeCastException(value, this);

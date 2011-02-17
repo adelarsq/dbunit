@@ -12,6 +12,7 @@
   <body>
     <release version="next" date="in SCM" description="Additional toString()s, ">
       <action dev="jeffjensen" type="add" due-to="jeffjensen">Add toString() methods to AbstractResultSetTable, ForwardOnlyResultSetTable, ScrollableResultSetTable.</action>
+      <action dev="rlogiacco" type="fix" issue="3071408" due-to="chrisphe">New Handling of Timestamp in 2.4.8 has error with subseconds</action>
     </release>
     <release version="2.4.8" date="Sep 2, 2010" description="Bug fixes, timezone support, Oracle support improvements, new DataFileLoader, new PrepAndExpectedTestCase">
       <action dev="gommma" type="add" issue="3027485" due-to="Yishai">MSSQL JDBC Driver 3.0 doesn't work well</action>
