@@ -88,8 +88,22 @@ public abstract class AbstractDatabaseConnection implements IDatabaseConnection
 
         IResultSetTableFactory tableFactory = getResultSetTableFactory();
         IResultSetTable rsTable = tableFactory.createTable(resultName, sql, this);
-        logger.debug("createQueryTable: rowCount={}", Integer.valueOf(rsTable
-                .getRowCount()));
+        if (logger.isDebugEnabled())
+        {
+            String rowCount = null;
+            try
+            {
+                int rowCountInt = rsTable.getRowCount();
+                rowCount = String.valueOf(rowCountInt);
+            }
+            catch (Exception e)
+            {
+                rowCount =
+                        "Unable to determine row count due to Exception: "
+                                + e.getLocalizedMessage();
+            }
+            logger.debug("createQueryTable: rowCount={}", rowCount);
+        }
         return rsTable;
     }
 
