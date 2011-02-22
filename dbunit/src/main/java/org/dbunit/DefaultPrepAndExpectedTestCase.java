@@ -94,8 +94,11 @@ import org.slf4j.LoggerFactory;
  *           final VerifyTableDefinition[] tables = {}; // define tables to verify
  *
  *           tc.preTest(tables, prepDataFiles, expectedDataFiles);
- * 
+ *
  *           // execute test
+ *       } catch (Exception e) {
+ *           log.error(&quot;Test error&quot;, e);
+ *           throw e;
  *       } finally {
  *           tc.postTest();
  *       }
