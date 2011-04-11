@@ -1,5 +1,7 @@
 package org.dbunit.ext.mssql;
 
+import java.sql.Types;
+
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import junit.framework.TestCase;
@@ -62,4 +64,14 @@ public class MsSqlDataTypeFactoryTest extends TestCase {
     	DataType expected = DataType.LONGVARCHAR;
     	DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
     	assertEquals("type", expected, actual);
-    }}
+    }
+
+    public void testCreateUniqueIdentifierType() throws Exception {
+        int sqlType = Types.CHAR;
+        String sqlTypeName = UniqueIdentifierType.UNIQUE_IDENTIFIER_TYPE;
+
+        DataType expected = DataType.CHAR;
+        DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
+        assertTrue(actual instanceof UniqueIdentifierType);
+    }
+}

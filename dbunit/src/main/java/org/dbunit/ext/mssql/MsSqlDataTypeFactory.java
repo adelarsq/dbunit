@@ -20,6 +20,7 @@
  */
 package org.dbunit.ext.mssql;
 
+import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -67,6 +68,14 @@ public class MsSqlDataTypeFactory extends DefaultDataTypeFactory
     		logger.debug("createDataType(sqlType={}, sqlTypeName={}) - start", String.valueOf(sqlType), sqlTypeName);
 
         // TODO : Process MS SQL Server custom datatype here
+        if(sqlType == Types.CHAR)
+        {
+            if (UniqueIdentifierType.UNIQUE_IDENTIFIER_TYPE.equals(sqlTypeName))
+            {
+                return new UniqueIdentifierType();
+            }
+        }
+
         switch(sqlType) {
             case NCHAR: return DataType.CHAR; // nchar
             case NVARCHAR: return DataType.VARCHAR; // nvarchar

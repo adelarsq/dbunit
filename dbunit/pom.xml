@@ -213,6 +213,13 @@
         <role>IDatabaseTester creator</role>
       </roles>
     </contributor>
+    <contributor>
+      <name>Darryl Pierce</name>
+      <email>mcpierceaim@users.sourceforge.net</email>
+      <roles>
+        <role>SQLServer uniqueidentifier column type</role>
+      </roles>
+    </contributor>
   </contributors>
 
 

@@ -36,6 +36,7 @@ public class AllTests extends TestSuite
 
         suite.addTest(new TestSuite(InsertIdentityOperationIT.class));
         suite.addTest(new TestSuite(MsSqlDataTypeFactoryTest.class));
+        suite.addTest(new TestSuite(UniqueIdentifierTypeTest.class));
 
         return suite;
     }
