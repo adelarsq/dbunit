@@ -70,7 +70,6 @@ public class MsSqlDataTypeFactoryTest extends TestCase {
         int sqlType = Types.CHAR;
         String sqlTypeName = UniqueIdentifierType.UNIQUE_IDENTIFIER_TYPE;
 
-        DataType expected = DataType.CHAR;
         DataType actual = createFactory().createDataType(sqlType, sqlTypeName);
         assertTrue(actual instanceof UniqueIdentifierType);
     }
