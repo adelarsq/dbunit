@@ -32,8 +32,8 @@ import com.mockobjects.sql.MockSingleRowResultSet;
  * <code>UniqueIdentifierTypeTest</code> ensures that the {@link UniqueIdentifierType} works as expected.
  *
  * @author Darryl L. Pierce <dpierce@redhat.com>
- *
  */
+// TODO add tests for setSqlValue(Object, int, PreparedStatement)
 public class UniqueIdentifierTypeTest extends TestCase {
     private UUID existingUuid;
     private UniqueIdentifierType uuidType;
