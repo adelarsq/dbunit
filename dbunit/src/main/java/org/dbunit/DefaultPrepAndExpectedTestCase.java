@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.Column;
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -292,7 +293,7 @@ PrepAndExpectedTestCase {
 
         databaseTester.setDataSet(dataset);
         databaseTester.onTearDown();
-        LOG.debug("verifyData: Clean up done");
+        LOG.debug("cleanupData: Clean up done");
     }
 
     /**
@@ -400,28 +401,33 @@ PrepAndExpectedTestCase {
     public void verifyData(ITable expectedTable, ITable actualTable,
             String[] excludeColumns, String[] includeColumns)
     throws DatabaseUnitException {
+        final String method = "verifyData: ";
         // Filter out the columns from the expected and actual results
-        LOG.debug("Applying filters to expected table");
+        LOG.debug(method + "Applying filters to expected table");
         ITable expectedFilteredTable =
             applyColumnFilters(expectedTable, excludeColumns,
                     includeColumns);
-        LOG.debug("Applying filters to actual table");
+        LOG.debug(method + "Applying filters to actual table");
         ITable actualFilteredTable =
             applyColumnFilters(actualTable, excludeColumns, includeColumns);
 
-        LOG.debug("Sorting expected table");
+        LOG.debug(method + "Sorting expected table");
         SortedTable expectedSortedTable =
             new SortedTable(expectedFilteredTable);
-        LOG.debug("Sorted expected table={}", expectedSortedTable);
+        LOG.debug(method + "Sorted expected table={}", expectedSortedTable);
 
-        LOG.debug("Sorting actual table");
+        LOG.debug(method + "Sorting actual table");
         SortedTable actualSortedTable =
             new SortedTable(actualFilteredTable, expectedFilteredTable
                     .getTableMetaData());
-        LOG.debug("Sorted actual table={}", actualSortedTable);
+        LOG.debug(method + "Sorted actual table={}", actualSortedTable);
 
-        LOG.debug("Comparing expected table to actual table");
-        Assertion.assertEquals(expectedSortedTable, actualSortedTable);
+        LOG.debug(method + "Comparing expected table to actual table");
+        Column[] additionalColumnInfo =
+            expectedTable.getTableMetaData().getColumns();
+
+        Assertion.assertEquals(expectedSortedTable, actualSortedTable,
+            additionalColumnInfo);
     }
 
     /**
