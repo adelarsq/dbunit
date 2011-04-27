@@ -412,10 +412,13 @@ PrepAndExpectedTestCase {
         LOG.debug("Sorting expected table");
         SortedTable expectedSortedTable =
             new SortedTable(expectedFilteredTable);
+        LOG.debug("Sorted expected table={}", expectedSortedTable);
+
         LOG.debug("Sorting actual table");
         SortedTable actualSortedTable =
             new SortedTable(actualFilteredTable, expectedFilteredTable
                     .getTableMetaData());
+        LOG.debug("Sorted actual table={}", actualSortedTable);
 
         LOG.debug("Comparing expected table to actual table");
         Assertion.assertEquals(expectedSortedTable, actualSortedTable);
