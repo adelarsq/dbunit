@@ -99,4 +99,8 @@ public class ColumnFilterTable implements ITable
         return this.originalTable.getTableMetaData();
     }
 
+    public String toString() 
+    {
+    	return this.originalTable.toString();
+    }
 }
