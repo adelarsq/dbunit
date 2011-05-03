@@ -314,11 +314,8 @@ PrepAndExpectedTestCase {
     }
 
     /**
-     * For the provided VerifyTableDefinitions, verify each table's actual
-     * results are as expected. Uses the connection from the provided
-     * databaseTester.
-     * 
-     * @throws Exception
+     * {@inheritDoc}
+     * Uses the connection from the provided databaseTester.
      */
     public void verifyData() throws Exception {
         if (databaseTester == null) {

@@ -89,6 +89,14 @@ public interface PrepAndExpectedTestCase {
     void postTest(boolean verifyData) throws Exception;
 
     /**
+     * For the provided VerifyTableDefinitions, verify each table's actual
+     * results are as expected.
+     * 
+     * @throws Exception
+     */
+    public void verifyData() throws Exception;
+
+   /**
      * Cleanup tables specified in prep and expected datasets, using the
      * provided databaseTester. See
      * {@link org.dbunit.IDatabaseTester#onTearDown()}.
