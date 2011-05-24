@@ -88,6 +88,9 @@ public class RefreshOperation extends AbstractOperation
         while (iterator.next())
         {
             ITable table = iterator.getTable();
+            
+            String tableName=table.getTableMetaData().getTableName();
+            logger.trace("execute: processing table='{}'", tableName);
 
             // Do not process empty table
             if (isEmpty(table))
@@ -119,6 +122,12 @@ public class RefreshOperation extends AbstractOperation
             	// and we reach the end of the table.  Ignore this error.
 
                 // end of table
+            }
+            catch (SQLException e)
+            {
+                final String msg =
+                    "Exception processing table name='" + tableName + "'";
+                throw new DatabaseUnitException(msg, e);
             }
             finally
             {
