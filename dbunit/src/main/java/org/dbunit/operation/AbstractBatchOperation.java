@@ -131,6 +131,9 @@ public abstract class AbstractBatchOperation extends AbstractOperation
         {
             ITable table = iterator.getTable();
 
+            String tableName=table.getTableMetaData().getTableName();
+            logger.trace("execute: processing table='{}'", tableName);
+
             // Do not process empty table
             if (isEmpty(table))
             {
@@ -205,6 +208,12 @@ public abstract class AbstractBatchOperation extends AbstractOperation
 
                 statement.executeBatch();
                 statement.clearBatch();
+            }
+            catch (SQLException e)
+            {
+                final String msg =
+                    "Exception processing table name='" + tableName + "'";
+                throw new DatabaseUnitException(msg, e);
             }
             finally
             {
