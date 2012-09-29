@@ -10,7 +10,7 @@
   </properties>
 
   <body>
-    <release version="next" date="in SCM" description="Additional toString()s, schema name usage, logging, timestamp, unique ID, table name in Operation exceptions.">
+    <release version="2.4.9" date="Sep 29, 2012" description="Additional toString()s, schema name usage, logging, timestamp, unique ID, table name in Operation exceptions.">
       <action dev="jeffjensen" type="add" due-to="jeffjensen">Add toString() methods to AbstractResultSetTable, ForwardOnlyResultSetTable, ScrollableResultSetTable, ColumnFilterTable.</action>
       <action dev="jeffjensen" type="update" due-to="jeffjensen">For DefaultPrepAndExpectedTestCase, catch, log, and rethrow all log messages to help with troubleshooting.  Tweak log messages.  Improve doc example.</action>
       <action dev="jeffjensen" type="fix" due-to="jeffjensen">Add schema name, if specified, to table name in query in AbstractDatabaseConnection.createTable().</action>
