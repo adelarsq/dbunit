@@ -103,6 +103,15 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
 
     public void testTypeCast() throws Exception
     {
+        // Useful when manually testing this for other timezones
+        // Default setting is to test from default timezone
+        // TimeZone testTimeZone = TimeZone.getTimeZone("America/New_York");
+        // TimeZone testTimeZone = TimeZone.getTimeZone("Europe/Berlin");
+        // TimeZone.setDefault(testTimeZone);
+        TimeZone currentTimeZone = TimeZone.getDefault();
+        int rawOffset = currentTimeZone.getRawOffset();
+        int hourOffset = rawOffset / 1000 / 60 / 60;
+
         Object[] values = {
             null,
             new Timestamp(1234),
@@ -128,13 +137,13 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
             new Timestamp(1234),
             new Timestamp(Date.valueOf((new Date(1234).toString())).getTime()),
             new Timestamp(1234),
-            makeTimestamp(1995, 0, 7, 1, 22, 41, 900, "America/New_York"),
-            makeTimestamp(1995, 0, 7, 1, 22, 41, 923, "America/New_York"),
+            makeTimestamp(1995, 0, 7, 1 - hourOffset, 22, 41, 900, "America/New_York"),
+            makeTimestamp(1995, 0, 7, 1 - hourOffset, 22, 41, 923, "America/New_York"),
             makeTimestamp(1995, 0, 7, 1, 22, 41, 900),
             makeTimestamp(1995, 0, 7, 1, 22, 41, 923),
-            makeTimestamp(1995, 0, 7, 1, 22, 41, "America/New_York"),
+            makeTimestamp(1995, 0, 7, 1 - hourOffset, 22, 41, "America/New_York"),
             makeTimestamp(1995, 0, 7, 1, 22, 41),
-            makeTimestamp(2008, 10, 27, 14, 52, 38, "Europe/Berlin")
+            makeTimestamp(2008, 10, 27, 14 - hourOffset, 52, 38, "Europe/Berlin")
         };
 
         assertEquals("actual vs expected count", values.length, expected.length);
