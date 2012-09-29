@@ -20,12 +20,20 @@
     </license>
   </licenses>
   <properties>
-    <compileSource>1.4</compileSource>
-    <checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
-    <logbackVersion>0.9.15</logbackVersion>
-    <slf4jVersion>1.5.6</slf4jVersion>
+    <!-- Maven configuration -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- General values -->
+    <compileSource>1.4</compileSource>
+    <checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
+
+    <!-- Maven plugin versions -->
+    <enforcerPluginVersion>1.1.1</enforcerPluginVersion>
+
+    <!-- Framework versions --> 
+    <logbackVersion>0.9.15</logbackVersion>
+    <slf4jVersion>1.5.6</slf4jVersion>
   </properties>
 
   <scm>
@@ -546,6 +554,26 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${enforcerPluginVersion}</version>
+        <executions>
+          <execution>
+            <id>enforce-versions</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <rules>
+            <requireJavaVersion>
+              <version>1.4</version>
+            </requireJavaVersion>
+          </rules>
+        </configuration>
       </plugin>
     </plugins>
   </build>
