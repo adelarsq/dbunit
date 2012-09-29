@@ -451,11 +451,6 @@
           <source>${compileSource}</source>
           <target>${compileSource}</target>
           <compilerVersion>${compileSource}</compilerVersion>
-          <!--
-            TODO somehow we must ensure that the used rt.jar is really a
-            1.4 and not higher, also for continuous integration
-          -->
-          <!--<executable>${JAVA_1_4_HOME}/bin/javac</executable>-->
           <debug>true</debug>
           <fork>true</fork>
         </configuration>
@@ -741,7 +736,6 @@
                 <source>${compileSource}</source>
                 <target>${compileSource}</target>
                 <compilerVersion>${compileSource}</compilerVersion>
-                <executable>${JAVA_1_4_HOME}/bin/javac</executable>
                 <debug>true</debug>
                 <fork>true</fork>
               </configuration>
