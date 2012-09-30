@@ -11,6 +11,7 @@
 
   <body>
     <release version="next" date="in SCM" description="">
+      <action dev="jeffjensen" type="fix" issue="3542576" due-to="(unknown)">Calls to JdbcDatabaseTester getConnection return new connect.</action>
       <action dev="jeffjensen" type="fix" issue="3545861" due-to="artbristol">CsvURLProducer swallows exception stack.</action>
       <action dev="jeffjensen" type="fix" issue="3554287" due-to="statalex">Trim CSV file column names.</action>
     </release>
