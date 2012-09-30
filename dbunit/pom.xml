@@ -673,7 +673,6 @@
           <reportSet>
             <reports>
               <report>changes-report</report>
-              <report>license</report>
             </reports>
           </reportSet>
         </reportSets>
