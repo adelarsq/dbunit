@@ -4,7 +4,7 @@
 
   <groupId>org.dbunit</groupId>
   <artifactId>dbunit</artifactId>
-  <version>2.4.9</version>
+  <version>2.4.10-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>dbUnit Extension</name>
   <url>http://dbunit.sourceforge.net</url>
@@ -37,9 +37,9 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/tags/dbunit-2.4.9</connection>
-    <developerConnection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/tags/dbunit-2.4.9</developerConnection>
-    <url>http://dbunit.svn.sourceforge.net/svnroot/dbunit/tags/dbunit-2.4.9</url>
+    <connection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk/dbunit</connection>
+    <developerConnection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk/dbunit</developerConnection>
+    <url>http://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk/dbunit</url>
   </scm>
   <issueManagement>
     <system>SourceForge</system>
