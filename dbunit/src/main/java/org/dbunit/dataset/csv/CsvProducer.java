@@ -114,7 +114,9 @@ public class CsvProducer implements IDataSetProducer {
             Column[] columns = new Column[readColumns.size()];
 
             for (int i = 0; i < readColumns.size(); i++) {
-                columns[i] = new Column((String) readColumns.get(i), DataType.UNKNOWN);
+                String columnName = (String) readColumns.get(i);
+                columnName = columnName.trim();
+                columns[i] = new Column(columnName, DataType.UNKNOWN);
             }
 
             String tableName = theDataFile.getName().substring(0, theDataFile.getName().indexOf(".csv"));
