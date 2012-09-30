@@ -150,9 +150,9 @@ public class CsvURLProducer implements IDataSetProducer {
             }
             _consumer.endTable();
         } catch (CsvParserException e) {
-        	throw new DataSetException("error parsing CSV for URL: '" + url + "'");
+        	throw new DataSetException("error parsing CSV for URL: '" + url + "'", e);
 		} catch (IOException e) {
-        	throw new DataSetException("I/O error parsing CSV for URL: '" + url + "'");
+        	throw new DataSetException("I/O error parsing CSV for URL: '" + url + "'", e);
 		}
 	}
 }
