@@ -10,7 +10,7 @@
   </properties>
 
   <body>
-    <release version="2.4.9" date="Sep 29, 2012" description="Additional toString()s, schema name usage, logging, timestamp, unique ID, table name in Operation exceptions, build with JDK 6.">
+    <release version="2.4.9" date="Sep 30, 2012" description="Additional toString()s, schema name usage, logging, timestamp, unique ID, table name in Operation exceptions, build with JDK 6.">
       <action dev="jeffjensen" type="add" issue="3573007" due-to="jeffjensen">Change build to use current compiler on path vs 1.4.  This is first dbUnit release done with JDK 6.  If you encounter problems, please open a bug tracker item.</action>
       <action dev="jeffjensen" type="add" due-to="jeffjensen">Add toString() methods to AbstractResultSetTable, ForwardOnlyResultSetTable, ScrollableResultSetTable, ColumnFilterTable.</action>
       <action dev="jeffjensen" type="update" due-to="jeffjensen">For DefaultPrepAndExpectedTestCase, catch, log, and rethrow all log messages to help with troubleshooting.  Tweak log messages.  Improve doc example.</action>
