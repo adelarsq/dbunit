@@ -10,6 +10,9 @@
   </properties>
 
   <body>
+    <release version="next" date="in SCM" description="">
+      <action dev="jeffjensen" type="fix" issue="3554287" due-to="statalex">Trim CSV file column names.</action>
+    </release>
     <release version="2.4.9" date="Sep 30, 2012" description="Additional toString()s, schema name usage, logging, timestamp, unique ID, table name in Operation exceptions, build with JDK 6.">
       <action dev="jeffjensen" type="add" issue="3573007" due-to="jeffjensen">Change build to use current compiler on path vs 1.4.  This is first dbUnit release done with JDK 6.  If you encounter problems, please open a bug tracker item.</action>
       <action dev="jeffjensen" type="add" due-to="jeffjensen">Add toString() methods to AbstractResultSetTable, ForwardOnlyResultSetTable, ScrollableResultSetTable, ColumnFilterTable.</action>
