@@ -684,16 +684,16 @@
     <snapshotRepository>
       <id>sourceforge</id>
       <name>SourceForge Snapshots Repo</name>
-      <url>scp://shell.sourceforge.net/home/groups/d/db/dbunit/htdocs/repo/snapshots</url>
+      <url>scp://shell.sourceforge.net/home/project-web/dbunit/htdocs/repo/snapshots</url>
     </snapshotRepository>
     <repository>
       <id>sourceforge</id>
       <name>SourceForge Releases Repo</name>
-      <url>scp://shell.sourceforge.net/home/groups/d/db/dbunit/htdocs/repo/official</url>
+      <url>scp://shell.sourceforge.net/home/project-web/dbunit/htdocs/repo/official</url>
     </repository>
     <site>
       <id>sourceforge</id>
-      <url>scp://shell.sourceforge.net/home/groups/d/db/dbunit/htdocs</url>
+      <url>scp://shell.sourceforge.net/home/project-web/dbunit/htdocs</url>
     </site>
   </distributionManagement>
 
