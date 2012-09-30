@@ -5,8 +5,10 @@
 <section>
 
     <h2>Migration guide</h2>
-        <p>To migrate from an older DbUnit release to a newer one you can find some useful information here.</p>
-        
+    <p>To migrate from an older DbUnit release to a newer one you can find some useful information here.</p>
+
+    <p>Be sure to review the <a href="changes-report.html">Changes Report</a> for more current details.</p>
+
     <subsection name="2.4.3 to 2.4.4">
       <p>There has been a very small change to the API.</p>
       <table border="1">
@@ -52,7 +54,7 @@
         </tr>
       </table>
     </subsection>
-        
+
     <subsection name="2.4.2 to 2.4.3">
       <p>There has been a very small change to the API.</p>
       <table border="1">
@@ -87,8 +89,6 @@
       </table>
     </subsection>
 
-
-
     <subsection name="2.2.x to 2.3.x">
       <p>There have been some smaller changes to the API from 2.2.x to 2.3.x with the effect that those versions are not source compatible.</p>
       <table border="1">
@@ -108,7 +108,7 @@
           (or copy-pasted) multiple times before.
           </td>
         </tr>
-        
+
         <tr>
           <td>1961269</td>
           <td><code>org.dbunit.dataset.datatype.IDataTypeFactory.createDataType(int sqlType, String sqlTypeName, String tableName, String columnName)</code></td>
@@ -121,7 +121,6 @@
         </tr>
       </table>
     </subsection>
-
 
 </section>
 </body>
