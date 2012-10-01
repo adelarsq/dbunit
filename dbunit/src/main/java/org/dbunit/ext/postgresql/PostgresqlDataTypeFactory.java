@@ -58,6 +58,11 @@ public class PostgresqlDataTypeFactory extends DefaultDataTypeFactory {
       return DATABASE_PRODUCTS;
     }
 
+    public static Collection getDatabaseProducts()
+    {
+        return DATABASE_PRODUCTS;
+    }
+
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException {
         logger.debug("createDataType(sqlType={}, sqlTypeName={})",
                      String.valueOf(sqlType), sqlTypeName);
@@ -71,6 +76,8 @@ public class PostgresqlDataTypeFactory extends DefaultDataTypeFactory {
             	return new IntervalType();
             else if ("inet".equals(sqlTypeName))
                 return new InetType();
+            else if("geometry".equals(sqlTypeName))
+               return new GeometryType();
             else
             {
                 // Finally check whether the user defined a custom datatype
