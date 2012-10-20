@@ -48,7 +48,6 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
     private String driverClass;
     private String password;
     private String username;
-    private IDatabaseConnection dbconnection = null;
 
     /**
      * Creates a new JdbcDatabaseTester with the specified properties.<br>
@@ -108,17 +107,15 @@ public class JdbcDatabaseTester extends AbstractDatabaseTester
     public IDatabaseConnection getConnection() throws Exception
     {
         logger.debug("getConnection() - start");
-        if(dbconnection == null){	
-	        assertNotNullNorEmpty( "connectionUrl", connectionUrl );
-	        Connection conn = null;
-	        if( username == null && password == null ){
-	            conn = DriverManager.getConnection( connectionUrl );
-	        }else{
-	            conn = DriverManager.getConnection( connectionUrl, username, password );
-	        }
-	        dbconnection =  new DatabaseConnection( conn, getSchema() );
+
+        assertNotNullNorEmpty( "connectionUrl", connectionUrl );
+        Connection conn = null;
+        if( username == null && password == null ){
+            conn = DriverManager.getConnection( connectionUrl );
+        }else{
+            conn = DriverManager.getConnection( connectionUrl, username, password );
         }
-        return dbconnection;
+        return new DatabaseConnection( conn, getSchema() );
     }
 
     public String toString()
