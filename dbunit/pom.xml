@@ -2,6 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+
   <groupId>org.dbunit</groupId>
   <artifactId>dbunit</artifactId>
   <version>2.4.10-SNAPSHOT</version>
@@ -56,7 +62,6 @@
     <!-- Framework versions --> 
     <logbackVersion>1.0.7</logbackVersion>
     <slf4jVersion>1.7.2</slf4jVersion>
-    <wagonSshVersion>2.2</wagonSshVersion>
   </properties>
 
   <prerequisites>
@@ -608,13 +613,6 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <goals>javadoc:javadoc site changes:announcement-generate assembly:assembly javadoc:jar source:jar deploy</goals>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <includes>
@@ -720,13 +718,6 @@
         </configuration>
       </plugin>
     </plugins>
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-         <artifactId>wagon-ssh</artifactId>
-         <version>${wagonSshVersion}</version>
-      </extension>
-    </extensions> 
   </build>
 
   <reporting>
@@ -844,16 +835,7 @@
   </reporting>
 
   <distributionManagement>
-    <snapshotRepository>
-      <id>sourceforge</id>
-      <name>SourceForge Snapshots Repo</name>
-      <url>scp://shell.sourceforge.net/home/project-web/dbunit/htdocs/repo/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>sourceforge</id>
-      <name>SourceForge Releases Repo</name>
-      <url>scp://shell.sourceforge.net/home/project-web/dbunit/htdocs/repo/official</url>
-    </repository>
+    <!-- distribution repos specified in parent -->
     <site>
       <id>sourceforge</id>
       <url>scp://shell.sourceforge.net/home/project-web/dbunit/htdocs</url>
@@ -1162,32 +1144,6 @@
            <version>1.1.118</version>
        </dependency>
       </dependencies>
-    </profile>
-    <profile>
-      <id>release-sign-artifacts</id>
-      <activation>
-        <property>
-          <name>performRelease</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
   </profiles>
 
