@@ -25,6 +25,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
   <properties>
     <!-- Maven configuration -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,6 +34,7 @@
     <!-- General values -->
     <compileSource>1.4</compileSource>
     <checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
+    <mavenVersion>3.0.4</mavenVersion>
 
     <!-- Maven plugin versions -->
     <assemblyPluginVersion>2.4</assemblyPluginVersion>
@@ -65,7 +67,7 @@
   </properties>
 
   <prerequisites>
-    <maven>2.2.1</maven>
+    <maven>${mavenVersion}</maven>
   </prerequisites>
 
   <scm>
@@ -711,9 +713,20 @@
         </executions>
         <configuration>
           <rules>
+            <!--
+            Links to rules:
+              1) http://maven.apache.org/enforcer/enforcer-rules/index.html
+              2) http://mojo.codehaus.org/extra-enforcer-rules/
+            -->
+            <requireMavenVersion>
+              <version>${mavenVersion}</version>
+            </requireMavenVersion>
             <requireJavaVersion>
-              <version>1.4</version>
+              <version>${compileSource}</version>
             </requireJavaVersion>
+            <requirePluginVersions>
+              <phases>compile</phases>
+            </requirePluginVersions>
           </rules>
         </configuration>
       </plugin>
