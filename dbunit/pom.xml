@@ -35,29 +35,29 @@
     <checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
 
     <!-- Maven plugin versions -->
-    <assemblyPluginVersion>2.3</assemblyPluginVersion>
+    <assemblyPluginVersion>2.4</assemblyPluginVersion>
     <changelogPluginVersion>2.2</changelogPluginVersion>
-    <changesPluginVersion>2.8</changesPluginVersion>
+    <changesPluginVersion>2.9</changesPluginVersion>
+    <checkstylePluginVersion>2.11</checkstylePluginVersion>
     <cleanPluginVersion>2.5</cleanPluginVersion>
-    <coberturaPluginVersion>2.5.2</coberturaPluginVersion>
-    <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
-    <compilerPluginVersion>2.5.1</compilerPluginVersion>
-    <deployPluginVersion>2.7</deployPluginVersion>
-    <enforcerPluginVersion>1.1.1</enforcerPluginVersion>
-    <failsafePluginVersion>2.12.4</failsafePluginVersion>
+    <coberturaPluginVersion>2.6</coberturaPluginVersion>
+    <compilerPluginVersion>3.1</compilerPluginVersion>
+    <deployPluginVersion>2.8.1</deployPluginVersion>
+    <enforcerPluginVersion>1.3.1</enforcerPluginVersion>
+    <failsafePluginVersion>2.16</failsafePluginVersion>
     <gpgPluginVersion>1.4</gpgPluginVersion>
-    <installPluginVersion>2.4</installPluginVersion>
+    <installPluginVersion>2.5.1</installPluginVersion>
     <jarPluginVersion>2.4</jarPluginVersion>
-    <javadocPluginVersion>2.9</javadocPluginVersion>
+    <javadocPluginVersion>2.9.1</javadocPluginVersion>
     <jdependPluginVersion>2.0-beta-2</jdependPluginVersion>
-    <jxrPluginVersion>2.3</jxrPluginVersion>
-    <pmdPluginVersion>2.7.1</pmdPluginVersion>
-    <projectInfoReportsPluginVersion>2.5.1</projectInfoReportsPluginVersion>
-    <releasePluginVersion>2.3.2</releasePluginVersion>
+    <jxrPluginVersion>2.4</jxrPluginVersion>
+    <pmdPluginVersion>3.0.1</pmdPluginVersion>
+    <projectInfoReportsPluginVersion>2.7</projectInfoReportsPluginVersion>
+    <releasePluginVersion>2.4.2</releasePluginVersion>
     <resourcesPluginVersion>2.6</resourcesPluginVersion>
+    <sitePluginVersion>3.3</sitePluginVersion>
     <sqlPluginVersion>1.5</sqlPluginVersion>
-    <surefirePluginVersion>2.12.4</surefirePluginVersion>
-    <sitePluginVersion>3.2</sitePluginVersion>
+    <surefirePluginVersion>2.16</surefirePluginVersion>
 
     <!-- Framework versions --> 
     <logbackVersion>1.0.7</logbackVersion>
