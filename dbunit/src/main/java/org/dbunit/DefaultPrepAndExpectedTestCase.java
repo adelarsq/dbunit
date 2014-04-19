@@ -171,7 +171,7 @@ import org.slf4j.LoggerFactory;
 public class DefaultPrepAndExpectedTestCase extends DBTestCase implements
 PrepAndExpectedTestCase {
     private final Logger LOG =
-        LoggerFactory.getLogger(DefaultPrepAndExpectedTestCase.class);
+            LoggerFactory.getLogger(DefaultPrepAndExpectedTestCase.class);
 
     private IDatabaseTester databaseTester;
     private DataFileLoader dataFileLoader;
@@ -229,7 +229,7 @@ PrepAndExpectedTestCase {
      */
     public void configureTest(VerifyTableDefinition[] tables,
             String[] prepDataFiles, String[] expectedDataFiles)
-    throws Exception {
+                    throws Exception {
         LOG.debug("configureTest: saving instance variables");
         this.prepDs = makeCompositeDataSet(prepDataFiles);
         this.expectedDs = makeCompositeDataSet(expectedDataFiles);
@@ -280,20 +280,26 @@ PrepAndExpectedTestCase {
      * {@inheritDoc}
      */
     public void cleanupData() throws Exception {
-        IDataSet dataset = new CompositeDataSet(prepDs, expectedDs);
-        String tableNames[] = dataset.getTableNames();
-        int count = tableNames.length;
-        LOG.info("cleanupData: about to clean up {} tables={}", new Integer(
-                count), tableNames);
+        try
+        {
+            IDataSet dataset = new CompositeDataSet(prepDs, expectedDs);
+            String tableNames[] = dataset.getTableNames();
+            int count = tableNames.length;
+            LOG.info("cleanupData: about to clean up {} tables={}", new Integer(
+                    count), tableNames);
 
-        if (databaseTester == null) {
-            throw new IllegalStateException(
-            "databaseTester is null; must configure or set it first");
+            if (databaseTester == null) {
+                throw new IllegalStateException(
+                        "databaseTester is null; must configure or set it first");
+            }
+
+            databaseTester.setDataSet(dataset);
+            databaseTester.onTearDown();
+            LOG.debug("cleanupData: Clean up done");
+        } catch (Exception e) {
+            LOG.error("cleanupData: Exception:", e);
+            throw e;
         }
-
-        databaseTester.setDataSet(dataset);
-        databaseTester.onTearDown();
-        LOG.debug("cleanupData: Clean up done");
     }
 
     /**
@@ -306,11 +312,19 @@ PrepAndExpectedTestCase {
         LOG.debug("setupData: setting prep dataset and inserting rows");
         if (databaseTester == null) {
             throw new IllegalStateException(
-            "databaseTester is null; must configure or set it first");
+                    "databaseTester is null; must configure or set it first");
         }
 
-        databaseTester.setDataSet(prepDs);
-        databaseTester.onSetup();
+        try
+        {
+            databaseTester.setDataSet(prepDs);
+            databaseTester.onSetup();
+        }
+        catch (Exception e)
+        {
+            LOG.error("setupData: Exception with setting up data:", e);
+            throw e;
+        }
     }
 
     /**
@@ -320,7 +334,7 @@ PrepAndExpectedTestCase {
     public void verifyData() throws Exception {
         if (databaseTester == null) {
             throw new IllegalStateException(
-            "databaseTester is null; must configure or set it first");
+                    "databaseTester is null; must configure or set it first");
         }
 
         IDatabaseConnection connection = databaseTester.getConnection();
@@ -350,7 +364,7 @@ PrepAndExpectedTestCase {
                 {
                     final String msg =
                             "verifyData: Problem obtaining table '" + tableName
-                        + "' from expected dataset";
+                            + "' from expected dataset";
                     LOG.error(msg, e);
                     throw new DataSetException(msg, e);
                 }
@@ -363,7 +377,7 @@ PrepAndExpectedTestCase {
                 {
                     final String msg =
                             "verifyData: Problem obtaining table '" + tableName
-                        + "' from actual dataset";
+                            + "' from actual dataset";
                     LOG.error(msg, e);
                     throw new DataSetException(msg, e);
                 }
@@ -371,6 +385,9 @@ PrepAndExpectedTestCase {
                 verifyData(expectedTable, actualTable, excludeColumns,
                         includeColumns);
             }
+        } catch (Exception e) {
+            LOG.error("verifyData: Exception:", e);
+            throw e;
         } finally {
             LOG.debug("verifyData: Verification done, closing connection");
             connection.close();
@@ -397,34 +414,34 @@ PrepAndExpectedTestCase {
      */
     public void verifyData(ITable expectedTable, ITable actualTable,
             String[] excludeColumns, String[] includeColumns)
-    throws DatabaseUnitException {
+                    throws DatabaseUnitException {
         final String method = "verifyData: ";
         // Filter out the columns from the expected and actual results
         LOG.debug(method + "Applying filters to expected table");
         ITable expectedFilteredTable =
-            applyColumnFilters(expectedTable, excludeColumns,
-                    includeColumns);
+                applyColumnFilters(expectedTable, excludeColumns,
+                        includeColumns);
         LOG.debug(method + "Applying filters to actual table");
         ITable actualFilteredTable =
-            applyColumnFilters(actualTable, excludeColumns, includeColumns);
+                applyColumnFilters(actualTable, excludeColumns, includeColumns);
 
         LOG.debug(method + "Sorting expected table");
         SortedTable expectedSortedTable =
-            new SortedTable(expectedFilteredTable);
+                new SortedTable(expectedFilteredTable);
         LOG.debug(method + "Sorted expected table={}", expectedSortedTable);
 
         LOG.debug(method + "Sorting actual table");
         SortedTable actualSortedTable =
-            new SortedTable(actualFilteredTable, expectedFilteredTable
-                    .getTableMetaData());
+                new SortedTable(actualFilteredTable, expectedFilteredTable
+                        .getTableMetaData());
         LOG.debug(method + "Sorted actual table={}", actualSortedTable);
 
         LOG.debug(method + "Comparing expected table to actual table");
         Column[] additionalColumnInfo =
-            expectedTable.getTableMetaData().getColumns();
+                expectedTable.getTableMetaData().getColumns();
 
         Assertion.assertEquals(expectedSortedTable, actualSortedTable,
-            additionalColumnInfo);
+                additionalColumnInfo);
     }
 
     /**
@@ -437,10 +454,10 @@ PrepAndExpectedTestCase {
      *             On dbUnit errors.
      */
     public IDataSet makeCompositeDataSet(String[] dataFiles)
-    throws DataSetException {
+            throws DataSetException {
         if (dataFileLoader == null) {
             throw new IllegalStateException(
-            "dataFileLoader is null; must configure or set it first");
+                    "dataFileLoader is null; must configure or set it first");
         }
 
         int count = dataFiles.length;
@@ -490,8 +507,8 @@ PrepAndExpectedTestCase {
             LOG.debug("applyColumnFilters: including columns='{}'",
                     new Object[] {includeColumns});
             filteredTable =
-                DefaultColumnFilter.includedColumnsTable(filteredTable,
-                        includeColumns);
+                    DefaultColumnFilter.includedColumnsTable(filteredTable,
+                            includeColumns);
         }
 
         if (excludeColumns == null || excludeColumns.length == 0) {
@@ -500,8 +517,8 @@ PrepAndExpectedTestCase {
             LOG.debug("applyColumnFilters: excluding columns='{}'",
                     new Object[] {excludeColumns});
             filteredTable =
-                DefaultColumnFilter.excludedColumnsTable(filteredTable,
-                        excludeColumns);
+                    DefaultColumnFilter.excludedColumnsTable(filteredTable,
+                            excludeColumns);
         }
 
         return filteredTable;
