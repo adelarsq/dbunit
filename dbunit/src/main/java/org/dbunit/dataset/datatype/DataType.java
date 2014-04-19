@@ -21,13 +21,13 @@
 
 package org.dbunit.dataset.datatype;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -91,11 +91,11 @@ public abstract class DataType
     public static final DataType TIME = new TimeDataType();
     public static final DataType TIMESTAMP = new TimestampDataType();
 
-    public static final DataType BINARY = new BytesDataType(
+    public static final DataType BINARY = new UuidAwareBytesDataType(
             "BINARY", Types.BINARY);
-    public static final DataType VARBINARY = new BytesDataType(
+    public static final DataType VARBINARY = new UuidAwareBytesDataType(
             "VARBINARY", Types.VARBINARY);
-    public static final DataType LONGVARBINARY = new BytesDataType(
+    public static final DataType LONGVARBINARY = new UuidAwareBytesDataType(
             "LONGVARBINARY", Types.LONGVARBINARY);
     public static final DataType BLOB = new BlobDataType();
 
