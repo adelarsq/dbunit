@@ -23,7 +23,6 @@ package org.dbunit.operation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
@@ -36,6 +35,7 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.RowOutOfBoundsException;
+import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.TypeCastException;
 
 import java.sql.SQLException;
@@ -119,7 +119,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
 
     public void execute(IDatabaseConnection connection, IDataSet dataSet)
             throws DatabaseUnitException, SQLException
-    {
+            {
         logger.debug("execute(connection={}, dataSet={}) - start", connection, dataSet);
 
         DatabaseConfig databaseConfig = connection.getConfig();
@@ -184,15 +184,30 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                             if (!ignoreMapping.get(j))
                             {
                                 Column column = columns[j];
-                            	try
-								{
-	                                statement.addValue(table.getValue(row, column.getColumnName()), column.getDataType());
-								}
+                                String columnName = column.getColumnName();
+                                try
+                                {
+                                    DataType dataType = column.getDataType();
+                                    Object value = table.getValue(row, columnName);
+
+                                    if (value == "")
+                                    {
+                                        handleColumnHasNoValue(tableName,
+                                                columnName);
+                                    }
+
+                                    statement.addValue(value, dataType);
+                                }
                                 catch (TypeCastException e)
-								{
-				                	throw new TypeCastException("Error casting value for table '" + table.getTableMetaData().getTableName() 
-				                			+"' and column '" + column.getColumnName() + "'", e);
-								}
+                                {
+                                    final String msg =
+                                            "Error casting value for table '"
+                                                    + tableName
+                                                    + "' and column '"
+                                                    + columnName + "'";
+                                    logger.error("execute: {}", msg);
+                                    throw new TypeCastException(msg, e);
+                                }
                             }
                         }
                         statement.addBatch();
@@ -200,8 +215,8 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                 }
                 catch (RowOutOfBoundsException e)
                 {
-                	// This exception occurs when records are exhausted
-                	// and we reach the end of the table.  Ignore this error
+                    // This exception occurs when records are exhausted
+                    // and we reach the end of the table.  Ignore this error
 
                     // end of table
                 }
@@ -212,27 +227,38 @@ public abstract class AbstractBatchOperation extends AbstractOperation
             catch (SQLException e)
             {
                 final String msg =
-                    "Exception processing table name='" + tableName + "'";
+                        "Exception processing table name='" + tableName + "'";
                 throw new DatabaseUnitException(msg, e);
             }
             finally
             {
-            	if (statement != null)
+                if (statement != null)
                 {
                     statement.close();
                 }
             }
         }
+            }
+
+    protected void handleColumnHasNoValue(String tableName, String columnName)
+    {
+        final String tableColumnName = tableName + "." + columnName;
+        final String msg =
+                "table.column=" + tableColumnName
+                        + " value is empty but must contain a value";
+        logger.error("execute: {}", msg);
+
+        throw new IllegalArgumentException(msg);
     }
-    
+
     public String toString()
     {
-    	StringBuffer sb = new StringBuffer();
-    	sb.append(getClass().getName()).append("[");
-    	sb.append("_reverseRowOrder=").append(this._reverseRowOrder);
-    	sb.append(", super=").append(super.toString());
-    	sb.append("]");
-    	return sb.toString();
+        StringBuffer sb = new StringBuffer();
+        sb.append(getClass().getName()).append("[");
+        sb.append("_reverseRowOrder=").append(this._reverseRowOrder);
+        sb.append(", super=").append(super.toString());
+        sb.append("]");
+        return sb.toString();
     }
-    
+
 }
