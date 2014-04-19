@@ -62,6 +62,7 @@
     <surefirePluginVersion>2.16</surefirePluginVersion>
 
     <!-- Framework versions --> 
+    <junitVersion>4.11</junitVersion>
     <logbackVersion>1.1.2</logbackVersion>
     <slf4jVersion>1.7.7</slf4jVersion>
   </properties>
@@ -304,7 +305,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.2</version>
+      <version>${junitVersion}</version>
     </dependency>
     <dependency>
       <groupId>commons-collections</groupId>
