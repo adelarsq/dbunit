@@ -32,7 +32,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!-- General values -->
-    <compileSource>1.4</compileSource>
+    <compileSource>1.5</compileSource>
     <checkstyle.excludes>org/dbunit/util/concurrent/*.java</checkstyle.excludes>
     <mavenVersion>3.0.4</mavenVersion>
 
