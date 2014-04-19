@@ -43,25 +43,32 @@ public class UniqueIdentifierType extends AbstractDataType {
         super(UNIQUE_IDENTIFIER_TYPE, Types.CHAR, UUID.class, false);
     }
 
+    @Override
     public Object typeCast(Object value) throws TypeCastException {
         return value.toString();
     }
 
+    @Override
     public Object getSqlValue(int column, ResultSet resultSet) throws SQLException, TypeCastException {
         String value = resultSet.getString(column);
 
         try {
-            return value != null && !value.isEmpty() ? UUID.fromString(value) : null;
+            return value != null && value.length() > 0 ? UUID.fromString(value)
+                    : null;
         } catch (NumberFormatException error) {
             throw new TypeCastException("Invalid UUID: " + value, error);
         }
     }
 
+    @Override
     public void setSqlValue(Object value, int column, PreparedStatement statement) throws SQLException,
-            TypeCastException {
+    TypeCastException {
         if (value == null)
+        {
             statement.setObject(column, null);
-        else
+        } else
+        {
             statement.setObject(column, value.toString());
+        }
     }
 }
