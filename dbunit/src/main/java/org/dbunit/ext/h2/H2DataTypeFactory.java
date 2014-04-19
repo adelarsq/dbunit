@@ -23,15 +23,6 @@ package org.dbunit.ext.h2;
 import java.util.Arrays;
 import java.util.Collection;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-import java.util.Arrays;
-import java.util.Collection;
-
-import java.util.Arrays;
-import java.util.Collection;
-
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.datatype.DataTypeException;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
@@ -48,7 +39,6 @@ import org.slf4j.LoggerFactory;
  */
 public class H2DataTypeFactory extends DefaultDataTypeFactory
 {
-
     /**
      * Logger for this class
      */
@@ -61,19 +51,26 @@ public class H2DataTypeFactory extends DefaultDataTypeFactory
     /**
      * @see org.dbunit.dataset.datatype.IDbProductRelatable#getValidDbProducts()
      */
+    @Override
     public Collection getValidDbProducts()
     {
-      return DATABASE_PRODUCTS;
+        return DATABASE_PRODUCTS;
     }
 
+    @Override
     public DataType createDataType(int sqlType, String sqlTypeName) throws DataTypeException
     {
-    	if(logger.isDebugEnabled())
-    		logger.debug("createDataType(sqlType={}, sqlTypeName={}) - start", String.valueOf(sqlType), sqlTypeName);
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("createDataType(sqlType={}, sqlTypeName={}) - start", String.valueOf(sqlType), sqlTypeName);
+        }
 
         if (sqlTypeName.equals("BOOLEAN"))
         {
             return DataType.BOOLEAN;
+        } else if ("UUID".equals(sqlTypeName))
+        {
+            return DataType.NVARCHAR;
         }
 
         return super.createDataType(sqlType, sqlTypeName);
