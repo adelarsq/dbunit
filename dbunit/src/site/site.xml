@@ -62,6 +62,11 @@
       <item name="DBUnit AT ohloh"   href="http://www.ohloh.net/p/dbunit"/>
     </menu>
 
+    <menu name="Obtaining dbUnit">
+      <item name="Maven Repositories" href="/repos.html"/>
+      <item name="Download"           href="/download.html"/>
+    </menu>
+
     <menu name="Overview">
       <item name="About DbUnit"      href="/index.html"/>
       <item name="Database Testing"  href="/intro.html"/>
