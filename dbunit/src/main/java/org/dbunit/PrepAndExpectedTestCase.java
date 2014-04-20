@@ -94,9 +94,9 @@ public interface PrepAndExpectedTestCase {
      * 
      * @throws Exception
      */
-    public void verifyData() throws Exception;
+    void verifyData() throws Exception;
 
-   /**
+    /**
      * Cleanup tables specified in prep and expected datasets, using the
      * provided databaseTester. See
      * {@link org.dbunit.IDatabaseTester#onTearDown()}.
