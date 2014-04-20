@@ -65,6 +65,9 @@
     <junitVersion>4.11</junitVersion>
     <logbackVersion>1.1.2</logbackVersion>
     <slf4jVersion>1.7.7</slf4jVersion>
+    
+    <!-- Other versions --> 
+    <wagonSshVersion>1.0</wagonSshVersion>
   </properties>
 
   <prerequisites>
@@ -509,6 +512,13 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <version>${sitePluginVersion}</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-ssh</artifactId>
+              <version>${wagonSshVersion}</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
