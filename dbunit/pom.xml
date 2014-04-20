@@ -78,7 +78,9 @@
   </scm>
   <issueManagement>
     <system>SourceForge</system>
-    <url>http://sourceforge.net/tracker/?group_id=47439</url>
+    <!-- old: <url>http://sourceforge.net/tracker/?group_id=47439</url> -->
+    <url>http://sourceforge.net/p/dbunit/bugs/</url>
+    <!-- features; how to have both? <url>http://sourceforge.net/p/dbunit/feature-requests/</url> -->
   </issueManagement>
   <ciManagement>
     <system>parabuild</system>
