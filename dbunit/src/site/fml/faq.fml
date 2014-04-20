@@ -738,6 +738,20 @@ PostgresqlDataTypeFactory factory = new PostgresqlDataTypeFactory(){
       </p>
       </answer>
     </faq>
+    <faq id="uuidAsBinary">
+      <question>
+     I am using UUIDs mapped to a binary column in the database, but encoding them in base64 for datasets is a bit awkward. Is there another way to use them in DbUnit datasets while being able to see the UUIDs clearly?
+      </question>
+      <answer>
+      <p>Use the special UUID syntax (uuid'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', where all the x's are the hex-encoded string value of your UUID):
+        <source>
+          <![CDATA[
+            <my_table uuid="uuid'029afe42-d8e7-11e2-aca1-50e549c9b654'" another_column="another column value"/>
+          ]]>
+        </source>
+      </p>
+      </answer>
+    </faq>
   </part>
 
 
