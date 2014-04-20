@@ -1,0 +1,37 @@
+  ---
+dbUnit Maven Repositories
+  ---
+Jeff Jensen
+  ---
+24 January 2010
+
+Maven Dependency
+
+ dbUnit releases are synced with Maven Central.  Just add a dependency:
+
+---
+<dependency>
+  <groupId>org.dbunit</groupId>
+  <artifactId>dbunit</artifactId>
+  <version>${dbunitVersion}</version>
+  <scope>test</scope>
+</dependency>
+---
+
+ Of course, set the correct version - 
+ either set a property as in the example or edit it directly.
+
+ To use the dbUnit snapshot Maven repository,
+ use the Sonatype OSS snapshot repository:
+
+---
+<repository>
+  <id>repo.dbunit.snapshots</id>
+  <name>dbUnit Maven snapshot repo</name>
+  <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+</repository>
+---
+
+ Note: it is a better practice to add the repo to your artifact manager,
+ such as Nexus, rather than add the repo to a POM.
+ 
