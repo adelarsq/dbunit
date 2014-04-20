@@ -45,6 +45,8 @@
              <td>uses a javax.sql.DataSource to create connections (with the aid of a DataSourceDatabaseTester).</td></tr>
          <tr><td valign="top"><a class="code">JndiBasedDBTestCase</a></td>
              <td>uses a javax.sql.DataSource located through JNDI (with the aid of a JndiDatabaseTester).</td></tr>
+         <tr><td valign="top"><a class="code">DefaultPrepAndExpectedTestCase</a></td>
+             <td>uses a configurable IDatabaseTester (allowing any connection type) with clear separation of prep and expected datasets.</td></tr>
       </table><br/>
       <p>
       Following is a sample implementation that returns a connection to a Hypersonic
@@ -68,6 +70,9 @@ public class SampleTest extends DBTestCase
     }
 }</source>
 </p>      
+<p>
+Alternatively, PrepAndExpectedTestCase: (see the class JavaDoc) TODO add example here
+</p>
       <h4>Step 3: (Optional) Implement getSetUpOperation() and getTearDownOperation()
         methods</h4>
       <p>By default, Dbunit performs a <a href="components.html#cleanInsert">CLEAN_INSERT</a>
