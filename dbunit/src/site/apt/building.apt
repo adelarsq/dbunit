@@ -9,9 +9,9 @@ Overview
 
   Building DbUnit is quite simple.  You need the following software installed:
 
-  * {{{http://java.sun.com/javase}Java SE SDK 1.4+}} (Java 1.4 is required by Maven 2 as well as DbUnit)
+  * {{{http://www.oracle.com/technetwork/java/javase/downloads/index.html}Java SE SDK 5+}}
 
-  * {{{http://maven.apache.org}Maven 2}}
+  * {{{http://maven.apache.org}Maven 3}}
 
   * Oracle ojdbc14.jar (see below)
 
@@ -50,7 +50,7 @@ mvn install:install-file \
 
 Generating the JAR
 
-  [[1]] Install Java SE SDK 1.4+, Maven 2 and the Oracle JDBC Driver.
+  [[1]] Install Java SE SDK, Maven, and the Oracle JDBC Driver.
 
   [[2]] Download DbUnit code, either current or released source (see <<Quick Links>> on left menu)
 
@@ -72,19 +72,21 @@ Using an IDE
 
 Contributing patches
 
-  If you are building DbUnit in order to contribute a patch, it is necessary to compile it using Java SE 1.4, which takes 3 adittional steps:
+  [[1]] Base your work off of master head.
 
-  [[1]] Create an environment variable called JAVA_1_4_HOME pointing to the root of the Java 1.4 installation
+  [[2]] The easier you make it for dbUnit committers to apply your changes,
+        the more likely they will apply your changes.
+        
+  [[3]] For problems, your changes should include tests proving the problem exists
+        and proving your changes fix it.
 
-  [[2]] Download JDBC {{{http://java.sun.com/products/jdbc/download.html}JDBC 2.0 Optional Package Binary}}
+  [[4]] For new features, your changes should include tests proving the feature
+        works.  Your tests should prove future changes do not break your feature.
 
-  [[3]] Run the command  <<<mvn install:install-file -DgroupId=javax.sql -DartifactId=jdbc-stdext -Dversion=2.0 -Dpackaging=jar -Dfile=_path_to_the_jdbc_2_0_stdext_jar_>>>
+  [[5]] Run Maven using the <<official>> profile, i.e., <<<mvn -Pofficial clean install>>>.
 
-  [[4]] Run Maven using the <<official>> profile, i.e., <<<mvn -Pofficial clean install>>>. You should also generate the IDE meta-data using this profiling (for instance, <<<mvn -Pofficial eclipse:eclipse>>>), and configure your IDE to use Java 1.4 for that project
-
-  [[5]] Once you finish your modifications, run <<<svn diff > name_of_the_patch_file>>> (or use your IDE) to generate a patch file and submit it on {{{http://sourceforge.net/tracker/?group_id=47439&atid=449493} DbUnit SourceForge site}}. Do not forget to include test cases!
-
-======
+  [[6]] Once you finish your modifications, create a patch and attach to the bug
+        or feature request SourceForge tracker item.
 
 Maintenance tasks
 
@@ -101,17 +103,29 @@ Maintenance tasks
 
 Updating the repository and site
 
-  Once new code is incorporated in the SVN code, it is necessary to update the Maven 2 repository with new snapshots, and also update the site. These 2 tasks can be done with a simple command:
+  Once new code is committed, it is necessary to update the Maven repository with new snapshots, and also update the site. These 2 tasks can be done with a simple command:
 
 ---
 mvn -Pofficial clean source:jar javadoc:jar deploy site:site site:deploy
 ---
 
-Cutting a release
+Releasing
 
- Cutting a release requires the following steps: creating a SVN tag, generating the artifacts, updating the site, uploading the artifacts into SourceForge, uploading the artifacts on {{{http://ibiblio.net/maven2}ibiblio}}, and sending the announcement emails.
+ Cutting a release requires the following steps:
 
- Fortunately, most of the steps can be automated by Maven. The first 3 steps can be achieved using {{{http://maven.apache.org/plugins/maven-release-plugin/}Maven Release Plugin}}, as follow:
+ [[1]] Create SCM tag
+
+ [[2]] Generate the artifacts
+
+ [[3]] Update the site
+
+ [[4]] Upload the artifacts into Sonatype OSS repository
+
+ [[5]] Send the announcement email
+
+ []
+ 
+ Fortunately, the steps are automated by Maven. The first 3 steps can be achieved using {{{http://maven.apache.org/plugins/maven-release-plugin/}Maven Release Plugin}}, as follows:
 
 ---
 mvn -Pofficial release:prepare
@@ -123,17 +137,12 @@ mvn -Pofficial release:prepare
 mvn -Pofficial release:perform
 ---
 
-  That last command has created all necessary files for the fourth and fifth steps in the <<<target/checkout/target>>> directory. So, for the fourth step, log in to SourceForge and upload the following files:
+  That last command has created all necessary files for the fourth step.
+  Run the Maven deploy goal to upload the artifacts to the remote repo:
 
-  * <dbunit-RELEASE.jar>
-
-  * <dbunit-RELEASE-sources.jar>
-
-  * <dbunit-RELEASE-javadoc.jar>
-
-  []
-
-  And for the fifth step, create a {{{http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&issuetype=3}Jira request}} and upload the <<<XXX/target/dbunit-RELEASE-bundle.jar>>>) file (see {{{http://maven.apache.org/guides/mini/guide-ibiblio-upload.html}Guide to uploading artifacts to The Central Repository}} for detailed instructions). NOTE: it is also necessary to create dbunit-RELEASE.tar.gz and dbunit-RELEASE.zip - I think Maven does that, but could not test by the time of the 2.2 release.
+---
+mvn deploy
+---
 
   The final step can also be done by Maven, using the {{{http://maven.apache.org/plugins/maven-changes-plugin/}Maven Changes Plugin}}:
 
