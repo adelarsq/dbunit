@@ -12,3 +12,9 @@ Download from Maven Central
   The preferred option is to use dbUnit as a dependency to your build.
 
   If you need to manually download dbUnit, please obtain it from Maven Central. 
+
+Download from SourceForge Files
+
+  The old dbUnit SourceForge files are here for reference:
+
+  {{{https://sourceforge.net/projects/dbunit/files/} https://sourceforge.net/projects/dbunit/files/}}
