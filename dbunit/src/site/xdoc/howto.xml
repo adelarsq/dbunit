@@ -27,17 +27,20 @@
       some data from your database.
       </p>
       <h4>Step 2: Extend the DBTestCase class</h4>
-      <p>Now you need to create a test class. The easiest way to use Dbunit is to
-      make your test class extend the DBTestCase class. DBTestCase
+      <p>Now you need to create a test class. One way to use Dbunit is to
+      have the test class extend the DBTestCase class. DBTestCase
       extends the JUnit TestCase class. A template method is required to be
       implemented: <a class="code">getDataSet()</a> to return the dataset
       you created in step 1. DBTestCase relies on a IDatabaseTester to do
       its work, the default configuration uses PropertiesBasedJdbcDatabaseTester, it locates
       configuration for the DriverManager within the Sytem properties.
       The simplest way to configure it would be in the constructor of your test class.
-      You may modify this behavior by overriding <a class="code">getDatabaseTester()</a>,</p>
+      You may modify this behavior by overriding <a class="code">getDatabaseTester()</a>,
       using one of the other 3 provided IDatabaseTester implementations or your own.
-      You may also use the other subclasses of DBTestCase described in the next table:
+      </p>
+      <p>
+      You may also use a subclasses of DBTestCase, such as one of these:
+      </p>
       <table>
          <tr><td valign="top"><a class="code">JdbcBasedDBTestCase</a></td>
              <td>uses a DriverManager to create connections (with the aid of a JdbcDatabaseTester).</td></tr>
@@ -47,9 +50,9 @@
              <td>uses a javax.sql.DataSource located through JNDI (with the aid of a JndiDatabaseTester).</td></tr>
          <tr><td valign="top"><a class="code">DefaultPrepAndExpectedTestCase</a></td>
              <td>uses a configurable IDatabaseTester (allowing any connection type) with clear separation of prep and expected datasets.</td></tr>
-      </table><br/>
+      </table>
       <p>
-      Following is a sample implementation that returns a connection to a Hypersonic
+      The following is a sample implementation that returns a connection to a Hypersonic
       database and a xml dataset:
       <source>
 public class SampleTest extends DBTestCase
