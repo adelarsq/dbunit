@@ -68,7 +68,7 @@
     <slf4jVersion>1.7.7</slf4jVersion>
     
     <!-- Other versions --> 
-    <wagonSshVersion>1.0</wagonSshVersion>
+    <wagonSshVersion>2.6</wagonSshVersion>
   </properties>
 
   <prerequisites>
