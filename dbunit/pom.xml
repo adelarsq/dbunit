@@ -30,6 +30,7 @@
     <!-- Maven configuration -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <project.scm.id>sourceforge</project.scm.id>
 
     <!-- General values -->
     <compileSource>1.5</compileSource>
@@ -75,9 +76,9 @@
   </prerequisites>
 
   <scm>
-    <connection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk/dbunit</connection>
-    <developerConnection>scm:svn:https://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk/dbunit</developerConnection>
-    <url>http://dbunit.svn.sourceforge.net/svnroot/dbunit/trunk/dbunit</url>
+    <connection>scm:git:http://git.code.sf.net/p/dbunit/code.git</connection>
+    <developerConnection>scm:git:https://git.code.sf.net/p/dbunit/code.git</developerConnection>
+    <url>http://sourceforge.net/p/dbunit/code.git/ci/master/tree/</url>
   </scm>
   <issueManagement>
     <system>SourceForge</system>
