@@ -10,7 +10,7 @@
   </properties>
 
   <body>
-    <release version="next" date="in SCM" description="CSV dataset, PostGres, Sonatype OSSRH, logging, Java 1.5, MySQL, UUIDs, autoincrement">
+    <release version="2.5.0" date="Apr 24, 2014" description="CSV dataset, PostGres, Sonatype OSSRH, logging, Java 1.5, MySQL, UUIDs, autoincrement, DTD implied columns">
       <action dev="jeffjensen" type="add" issue="3578765" due-to="jeffjensen">Use Sonatype OSSRH for snapshots and release sync to Central.</action>
       <action dev="jeffjensen" type="add" issue="3499513" due-to="MPriess">Add Postgres Geometry Type.</action>
       <action dev="jeffjensen" type="fix" issue="3545861" due-to="artbristol">CsvURLProducer swallows exception stack.</action>
