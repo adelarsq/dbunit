@@ -97,7 +97,7 @@ public class FlatDtdWriter //implements IDataSetConsumer
                 Column column = columns[j];
                 printOut.print("    ");
                 printOut.print(column.getColumnName());
-                if (column.getNullable() == Column.NO_NULLS)
+                if (column.getNullable() == Column.NO_NULLS  && column.getDefaultValue() == null)
                 {
                     printOut.print(" CDATA " + FlatDtdProducer.REQUIRED + "\n");
                 }

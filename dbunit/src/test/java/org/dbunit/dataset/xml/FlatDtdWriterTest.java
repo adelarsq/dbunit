@@ -28,6 +28,7 @@ public class FlatDtdWriterTest extends TestCase
                 "    COL0 CDATA #IMPLIED\n" +
                 "    COL1 CDATA #IMPLIED\n" +
                 "    COL2 CDATA #REQUIRED\n" +
+                "    COL3 CDATA #IMPLIED\n" + // Has default value
                 ">\n" +
                 "\n" +
                 "<!ELEMENT TABLE2 EMPTY>\n" +
@@ -35,6 +36,7 @@ public class FlatDtdWriterTest extends TestCase
                 "    COL0 CDATA #IMPLIED\n" +
                 "    COL1 CDATA #IMPLIED\n" +
                 "    COL2 CDATA #REQUIRED\n" +
+                "    COL3 CDATA #IMPLIED\n" + // Has default value
                 ">\n" +
                 "\n";
 
@@ -42,6 +44,7 @@ public class FlatDtdWriterTest extends TestCase
             new Column("COL0", DataType.UNKNOWN, Column.NULLABLE),
             new Column("COL1", DataType.UNKNOWN, Column.NULLABLE_UNKNOWN),
             new Column("COL2", DataType.UNKNOWN, Column.NO_NULLS),
+            new Column("COL3", DataType.UNKNOWN, DataType.UNKNOWN.toString(), Column.NO_NULLS, "default"),
         };
 
         DefaultTable table1 = new DefaultTable("TABLE1", columns);
