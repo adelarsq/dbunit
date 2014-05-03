@@ -7,11 +7,13 @@ Jeff Jensen
 
 Download from Maven Central
 
-  We no longer use the SourceForge files feature for downloads.
+  dbUnit no longer uses the SourceForge files feature for downloads.
 
   The preferred option is to use dbUnit as a dependency to your build.
 
-  If you need to manually download dbUnit, please obtain it from Maven Central. 
+  If you need to manually download dbUnit, please obtain it from Maven Central.
+  
+  Please refer to the {{{http://www.dbunit.org/repos.html} dbUnit Maven Repositories}} page for more information.
 
 Download from SourceForge Files
 
