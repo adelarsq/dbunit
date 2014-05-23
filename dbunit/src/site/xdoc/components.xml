@@ -296,7 +296,7 @@ dataSet.addReplacementObject("[NULL]", null);]]></source>
           <td>Deletes all rows of tables present in the specified dataset. If the dataset does not contains a particular table, but that table exists in the database, the database table is not affected. Table are truncated in reverse sequence.</td>
         </tr>
         <tr> 
-          <td><a name="truncate" href="apidocs/org/dbunit/operation/TruncateTableOperation.html">DatabaseOperation.TRUNCATE</a></td>
+          <td><a name="truncate" href="apidocs/org/dbunit/operation/TruncateTableOperation.html">DatabaseOperation.TRUNCATE_TABLE</a></td>
           <td>Truncate tables present in the specified dataset. If the dataset does not contains a particular table, but that table exists in the database, the database table is not affected. Table are truncated in reverse sequence. 
 
 </td>

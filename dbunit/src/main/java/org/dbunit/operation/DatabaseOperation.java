@@ -36,20 +36,36 @@ import java.sql.SQLException;
  */
 public abstract class DatabaseOperation
 {
+    /** @see DummyOperation */
     public static final DatabaseOperation NONE = new DummyOperation();
+    /** @see UpdateOperation */
     public static final DatabaseOperation UPDATE = new UpdateOperation();
+    /** @see InsertOperation */
     public static final DatabaseOperation INSERT = new InsertOperation();
+    /** @see RefreshOperation */
     public static final DatabaseOperation REFRESH = new RefreshOperation();
+    /** @see DeleteOperation */
     public static final DatabaseOperation DELETE = new DeleteOperation();
+    /** @see DeleteAllOperation */
     public static final DatabaseOperation DELETE_ALL = new DeleteAllOperation();
+    /** @see TruncateTableOperation */
     public static final DatabaseOperation TRUNCATE_TABLE = new TruncateTableOperation();
+    /**
+     * @see DeleteAllOperation
+     * @see InsertOperation
+     * @see CompositeOperation
+     */
     public static final DatabaseOperation CLEAN_INSERT = new CompositeOperation(
-            DELETE_ALL, INSERT);    
+            DELETE_ALL, INSERT);
+
+    /** @see TransactionOperation */
     public static final DatabaseOperation TRANSACTION(DatabaseOperation operation) {
-      return new TransactionOperation(operation);
+        return new TransactionOperation(operation);
     }
+
+    /** @see CloseConnectionOperation */
     public static final DatabaseOperation CLOSE_CONNECTION(DatabaseOperation operation) {
-      return new CloseConnectionOperation(operation);
+        return new CloseConnectionOperation(operation);
     }
 
     /**
@@ -64,14 +80,9 @@ public abstract class DatabaseOperation
 
     private static class DummyOperation extends DatabaseOperation
     {
+        @Override
         public void execute(IDatabaseConnection connection, IDataSet dataSet)
         {
         }
     }
 }
-
-
-
-
-
-
