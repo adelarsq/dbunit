@@ -257,7 +257,7 @@ public class TimestampDataTypeTest extends AbstractDataTypeTest
         Object[] less = {
             null,
             new java.sql.Date(0),
-            "1974-23-06 23:40:00.0"
+            "1974-06-23 23:40:00.0"
         };
 
         Object[] greater = {
