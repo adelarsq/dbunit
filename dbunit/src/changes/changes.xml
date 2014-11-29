@@ -11,7 +11,8 @@
 
   <body>
     <release version="next" date="in SCM" description="allowEmptyFields property, ">
-      <action dev="jeffjensen" type="add" issue="363" due-to="adko">Add allowEmptyFields feature flag/property to prevent fail-fast and allow empty fields.</action>
+      <action dev="jeffjensen" type="add" issue="363" due-to="adko">Add allowEmptyFields feature flag/property to prevent fail-fast and allow empty string fields.</action>
+      <action dev="jeffjensen" type="fix" issue="361" due-to="drissamri">BigIntegerDataType.setSqlValue() NPE when value is null.</action>
     </release>
     <release version="2.5.0" date="Apr 24, 2014" description="CSV dataset, PostGres, Sonatype OSSRH, logging, Java 1.5, MySQL, UUIDs, autoincrement, DTD implied columns">
       <action dev="jeffjensen" type="add" issue="3578765" due-to="jeffjensen">Use Sonatype OSSRH for snapshots and release sync to Central.</action>

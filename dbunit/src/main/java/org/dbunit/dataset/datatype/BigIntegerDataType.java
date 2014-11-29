@@ -119,6 +119,7 @@ public class BigIntegerDataType extends AbstractDataType
         }
 
         BigInteger val = (BigInteger) typeCast(value);
-        statement.setBigDecimal(column, new BigDecimal(val));
+        BigDecimal valueBigDecimal = (val == null) ? null : new BigDecimal(val);
+        statement.setBigDecimal(column, valueBigDecimal);
     }
 }

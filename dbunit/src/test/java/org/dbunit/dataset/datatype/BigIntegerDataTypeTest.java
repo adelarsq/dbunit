@@ -23,10 +23,13 @@ package org.dbunit.dataset.datatype;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.PreparedStatement;
 import java.sql.Types;
 
 import org.dbunit.database.ExtendedMockSingleRowResultSet;
+import org.dbunit.database.statement.MockPreparedStatement;
 import org.dbunit.dataset.ITable;
+import org.junit.Test;
 
 /**
  * @author Manuel Laflamme
@@ -278,5 +281,26 @@ public class BigIntegerDataTypeTest extends AbstractDataTypeTest
 
             assertEquals("value", expectedValue, actualValue);
         }
+    }
+
+    /** Issue 361: NPE when value is null. */
+    @Test
+    public void testSetSqlValue_Null() throws Exception
+    {
+        Object value = null;
+        int column = 1;
+        PreparedStatement statement = new MockPreparedStatement();
+
+        THIS_TYPE.setSqlValue(value, column, statement);
+    }
+
+    @Test
+    public void testSetSqlValue_Integer() throws Exception
+    {
+        Object value = 1;
+        int column = 1;
+        PreparedStatement statement = new MockPreparedStatement();
+
+        THIS_TYPE.setSqlValue(value, column, statement);
     }
 }
