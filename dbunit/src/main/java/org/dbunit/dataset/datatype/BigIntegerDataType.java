@@ -21,17 +21,16 @@
 
 package org.dbunit.dataset.datatype;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.dbunit.dataset.ITable;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+
+import org.dbunit.dataset.ITable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Inserts and reads {@link BigInteger} values into/from a database.
@@ -47,16 +46,18 @@ public class BigIntegerDataType extends AbstractDataType
     /**
      * Logger for this class
      */
-    private static final Logger logger = LoggerFactory.getLogger(BigIntegerDataType.class);
+    private static final Logger logger = LoggerFactory
+            .getLogger(BigIntegerDataType.class);
 
     public BigIntegerDataType()
     {
         super("BIGINT", Types.BIGINT, BigInteger.class, true);
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////////
     // DataType class
 
+    @Override
     public Object typeCast(Object value) throws TypeCastException
     {
         logger.debug("typeCast(value={}) - start", value);
@@ -68,15 +69,13 @@ public class BigIntegerDataType extends AbstractDataType
 
         if (value instanceof BigInteger)
         {
-            return (BigInteger)value;
-        }
-        else if(value instanceof BigDecimal)
+            return value;
+        } else if (value instanceof BigDecimal)
         {
-            return ((BigDecimal)value).toBigInteger();
-        }
-        else if (value instanceof Number)
+            return ((BigDecimal) value).toBigInteger();
+        } else if (value instanceof Number)
         {
-            long l = ((Number)value).longValue();
+            long l = ((Number) value).longValue();
             return new BigInteger(String.valueOf(l));
         }
 
@@ -84,18 +83,21 @@ public class BigIntegerDataType extends AbstractDataType
         {
             BigDecimal bd = new BigDecimal(value.toString());
             return bd.toBigInteger();
-        }
-        catch (java.lang.NumberFormatException e)
+        } catch (java.lang.NumberFormatException e)
         {
             throw new TypeCastException(value, this, e);
         }
     }
 
+    @Override
     public Object getSqlValue(int column, ResultSet resultSet)
             throws SQLException, TypeCastException
     {
-    	if(logger.isDebugEnabled())
-    		logger.debug("getSqlValue(column={}, resultSet={}) - start", new Integer(column), resultSet);
+        if (logger.isDebugEnabled())
+        {
+            logger.debug("getSqlValue(column={}, resultSet={}) - start",
+                    new Integer(column), resultSet);
+        }
 
         BigDecimal value = resultSet.getBigDecimal(column);
         if (resultSet.wasNull())
@@ -105,19 +107,18 @@ public class BigIntegerDataType extends AbstractDataType
         return value.toBigInteger();
     }
 
-    public void setSqlValue(Object value, int column, PreparedStatement statement)
-            throws SQLException, TypeCastException
+    @Override
+    public void setSqlValue(Object value, int column,
+            PreparedStatement statement) throws SQLException, TypeCastException
     {
-    	if(logger.isDebugEnabled())
-    		logger.debug("setSqlValue(value={}, column={}, statement={}) - start",
-        		new Object[]{value, new Integer(column), statement} );
+        if (logger.isDebugEnabled())
+        {
+            logger.debug(
+                    "setSqlValue(value={}, column={}, statement={}) - start",
+                    new Object[] {value, new Integer(column), statement});
+        }
 
-    	BigInteger val = (BigInteger)typeCast(value);
+        BigInteger val = (BigInteger) typeCast(value);
         statement.setBigDecimal(column, new BigDecimal(val));
     }
 }
-
-
-
-
-
