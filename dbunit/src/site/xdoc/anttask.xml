@@ -131,6 +131,15 @@
         </td>
         <td>No</td>
       </tr>
+      <tr>
+        <td>allowEmptyFields</td>
+        <td>Set the
+        <a href="properties.html#allowemptyfields">
+        allowEmptyFields</a>feature.
+        <b>@deprecated since 2.4. Use nested <a href="#dbconfig">dbconfig</a> element instead.</b>
+        </td>
+        <td>No</td>
+      </tr>
     </table>
     <h4>Parameters specified as nested elements</h4>
     <table cellspadding="0" border="1">

@@ -120,6 +120,23 @@
         </tr>
       </table> 
 
+      <a name="allowemptyfields"></a>
+      <h4>Allow Empty Fields</h4>
+      <table border="1">
+        <tr>
+          <td>Feature ID</td>
+          <td>http://www.dbunit.org/features/allowEmptyFields</td>
+        </tr>
+        <tr>
+          <td>Default</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>Description</td>
+          <td>Allow to call INSERT/UPDATE with empty strings ('').</td>
+        </tr>
+      </table>
+
       <br /><br />
 
       <h3>Properties</h3>

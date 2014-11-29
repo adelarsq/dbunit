@@ -124,6 +124,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
 
         DatabaseConfig databaseConfig = connection.getConfig();
         IStatementFactory factory = (IStatementFactory)databaseConfig.getProperty(DatabaseConfig.PROPERTY_STATEMENT_FACTORY);
+        boolean allowEmptyFields = connection.getConfig().getFeature(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS);
 
         // for each table
         ITableIterator iterator = iterator(dataSet);
@@ -190,7 +191,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                                     DataType dataType = column.getDataType();
                                     Object value = table.getValue(row, columnName);
 
-                                    if (value == "")
+                                    if (value == "" && !allowEmptyFields)
                                     {
                                         handleColumnHasNoValue(tableName,
                                                 columnName);

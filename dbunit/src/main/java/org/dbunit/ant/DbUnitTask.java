@@ -153,6 +153,11 @@ public class DbUnitTask extends Task
     private Boolean skipOracleRecycleBinTables = null;
 
     /**
+     * @deprecated since 2.5.1. Use {@link #dbConfig} instead. Only here because of backwards compatibility should be removed in the next major release.
+     */
+    private Boolean allowEmptyFields = null;
+
+    /**
      * Set the JDBC driver to be used.
      */
     public void setDriver(String driver)
@@ -541,6 +546,8 @@ public class DbUnitTask extends Task
             config.setFeature(DatabaseConfig.FEATURE_DATATYPE_WARNING, datatypeWarning.booleanValue());
         if(skipOracleRecycleBinTables!=null)
             config.setFeature(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES, skipOracleRecycleBinTables.booleanValue());
+        if(allowEmptyFields!=null)
+            config.setFeature(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, allowEmptyFields.booleanValue());
 
         if(escapePattern!=null)
         {

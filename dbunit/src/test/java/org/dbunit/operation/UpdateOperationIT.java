@@ -143,6 +143,142 @@ public class UpdateOperationIT extends AbstractDatabaseIT
         connection.verify();
     }
 
+    public void testExecuteWithBlanksDisabledAndEmptyString() throws Exception {
+        String schemaName = "schema";
+        String tableName = "table";
+
+        Column[] columns = new Column[]{
+            new Column("c3", DataType.VARCHAR),
+            new Column("c4", DataType.NUMERIC),
+        };
+        String[] primaryKeys = {"c4"};
+        DefaultTable table = new DefaultTable(new DefaultTableMetaData(
+                tableName, columns, primaryKeys));
+        table.addRow(new Object[]{"", "1"});
+        IDataSet dataSet = new DefaultDataSet(table);
+
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.setExpectedExecuteBatchCalls(0);
+        statement.setExpectedClearBatchCalls(0);
+        statement.setExpectedCloseCalls(1);
+
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(1);
+        factory.setupStatement(statement);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupSchema(schemaName);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // execute operation
+        connection.getConfig().setFeature(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, false);
+        try {
+            new UpdateOperation().execute(connection, dataSet);
+            fail("Update should not succedd");
+        } catch(IllegalArgumentException e) {
+            // ignore
+        } finally {
+	        statement.verify();
+	        factory.verify();
+	        connection.verify();
+        }
+    }
+
+    public void testExecuteWithBlanksDisabledAndNonEmptyStrings() throws Exception {
+        String schemaName = "schema";
+        String tableName = "table";
+        String[] expected = {
+                String.format("update %s.%s set c3 = 'not-empty' where c4 = 1", schemaName, tableName),
+                String.format("update %s.%s set c3 = NULL where c4 = 2", schemaName, tableName)
+        };
+
+        Column[] columns = new Column[]{
+            new Column("c3", DataType.VARCHAR),
+            new Column("c4", DataType.NUMERIC),
+        };
+        String[] primaryKeys = {"c4"};
+        DefaultTable table = new DefaultTable(new DefaultTableMetaData(
+                tableName, columns, primaryKeys));
+        table.addRow(new Object[]{"not-empty", "1"});
+        table.addRow(new Object[]{null, "2"});
+        IDataSet dataSet = new DefaultDataSet(table);
+
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.addExpectedBatchStrings(expected);
+        statement.setExpectedExecuteBatchCalls(1);
+        statement.setExpectedClearBatchCalls(1);
+        statement.setExpectedCloseCalls(1);
+
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(1);
+        factory.setupStatement(statement);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupSchema(schemaName);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // execute operation
+        connection.getConfig().setFeature(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, false);
+        new UpdateOperation().execute(connection, dataSet);
+
+        statement.verify();
+        factory.verify();
+        connection.verify();
+    }
+
+    public void testExecuteWithBlanksAllowed() throws Exception {
+        String schemaName = "schema";
+        String tableName = "table";
+        String[] expected = {
+            String.format("update %s.%s set c3 = 'not-empty' where c4 = 1", schemaName, tableName),
+            String.format("update %s.%s set c3 = NULL where c4 = 2", schemaName, tableName),
+            String.format("update %s.%s set c3 = '' where c4 = 3", schemaName, tableName),
+        };
+
+        Column[] columns = new Column[]{
+            new Column("c3", DataType.VARCHAR),
+            new Column("c4", DataType.NUMERIC),
+        };
+        String[] primaryKeys = {"c4"};
+        DefaultTable table = new DefaultTable(new DefaultTableMetaData(
+                tableName, columns, primaryKeys));
+        table.addRow(new Object[]{"not-empty", "1"});
+        table.addRow(new Object[]{null, "2"});
+        table.addRow(new Object[]{"", "3"});
+        IDataSet dataSet = new DefaultDataSet(table);
+
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.addExpectedBatchStrings(expected);
+        statement.setExpectedExecuteBatchCalls(1);
+        statement.setExpectedClearBatchCalls(1);
+        statement.setExpectedCloseCalls(1);
+
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(1);
+        factory.setupStatement(statement);
+
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupSchema(schemaName);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+
+        // execute operation
+        connection.getConfig().setFeature(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true);
+        new UpdateOperation().execute(connection, dataSet);
+
+        statement.verify();
+        factory.verify();
+        connection.verify();
+    }
+
     public void testExecuteWithEscapedName() throws Exception
     {
         String schemaName = "schema";

@@ -82,6 +82,8 @@ public class DatabaseConfig
         "http://www.dbunit.org/features/datatypeWarning";
     public static final String FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES =
         "http://www.dbunit.org/features/skipOracleRecycleBinTables";
+    public static final String FEATURE_ALLOW_EMPTY_FIELDS =
+            "http://www.dbunit.org/features/allowEmptyFields";
 
     /**
      * A list of all properties as {@link ConfigProperty} objects. 
@@ -102,6 +104,7 @@ public class DatabaseConfig
         new ConfigProperty(FEATURE_BATCHED_STATEMENTS, Boolean.class, false),
         new ConfigProperty(FEATURE_DATATYPE_WARNING, Boolean.class, false),
         new ConfigProperty(FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES, Boolean.class, false),
+        new ConfigProperty(FEATURE_ALLOW_EMPTY_FIELDS, Boolean.class, false),
     };
 
     /**
@@ -113,7 +116,8 @@ public class DatabaseConfig
         FEATURE_QUALIFIED_TABLE_NAMES,
         FEATURE_BATCHED_STATEMENTS,
         FEATURE_DATATYPE_WARNING,
-        FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES
+        FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES,
+        FEATURE_ALLOW_EMPTY_FIELDS
     };
     
     private static final DefaultDataTypeFactory DEFAULT_DATA_TYPE_FACTORY =
@@ -139,6 +143,7 @@ public class DatabaseConfig
         setFeature(FEATURE_QUALIFIED_TABLE_NAMES, false);
         setFeature(FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
         setFeature(FEATURE_DATATYPE_WARNING, true);
+        setFeature(FEATURE_ALLOW_EMPTY_FIELDS, false);
 
         setProperty(PROPERTY_STATEMENT_FACTORY, PREPARED_STATEMENT_FACTORY);
         setProperty(PROPERTY_RESULTSET_TABLE_FACTORY, RESULT_SET_TABLE_FACTORY);
