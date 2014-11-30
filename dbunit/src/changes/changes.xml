@@ -11,6 +11,7 @@
 
   <body>
     <release version="next" date="in SCM" description="allowEmptyFields property, ">
+      <action dev="jeffjensen" type="fix" issue="348" due-to="tm14258">DBUnit does not pick up column aliases.</action>
       <action dev="jeffjensen" type="add" issue="363" due-to="adko">Add allowEmptyFields feature flag/property to prevent fail-fast and allow empty string fields.</action>
       <action dev="jeffjensen" type="fix" issue="361" due-to="drissamri">BigIntegerDataType.setSqlValue() NPE when value is null.</action>
     </release>

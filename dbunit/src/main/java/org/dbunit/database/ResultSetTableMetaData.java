@@ -177,7 +177,7 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
 
         int columnType = rsMetaData.getColumnType(rsIndex);
         String columnTypeName = rsMetaData.getColumnTypeName(rsIndex);
-        String columnName = rsMetaData.getColumnName(rsIndex);
+        String columnName = rsMetaData.getColumnLabel(rsIndex);
         int isNullable = rsMetaData.isNullable(rsIndex);
 
         DataType dataType = dataTypeFactory.createDataType(
@@ -226,7 +226,7 @@ public class ResultSetTableMetaData extends AbstractTableMetaData
         String catalogName = rsMetaData.getCatalogName(rsIndex);
         String schemaName = rsMetaData.getSchemaName(rsIndex);
         String tableName = rsMetaData.getTableName(rsIndex);
-        String columnName = rsMetaData.getColumnName(rsIndex);
+        String columnName = rsMetaData.getColumnLabel(rsIndex);
         
         // Due to a bug in the DB2 JDBC driver we have to trim the names
         catalogName = trim(catalogName);
