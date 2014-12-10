@@ -191,7 +191,7 @@ public abstract class AbstractBatchOperation extends AbstractOperation
                                     DataType dataType = column.getDataType();
                                     Object value = table.getValue(row, columnName);
 
-                                    if (value == "" && !allowEmptyFields)
+                                    if ("".equals(value) && !allowEmptyFields)
                                     {
                                         handleColumnHasNoValue(tableName,
                                                 columnName);
