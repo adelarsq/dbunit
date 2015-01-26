@@ -20,26 +20,25 @@
  */
 package org.dbunit.dataset.excel;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.testutil.TestUtils;
 
 /**
- * @author Manuel Laflamme
- * @author Last changed by: $Author$
+ * @author Kazuhito Miura
  * @version $Revision$ $Date$
- * @since 2.2.0
+ * @since 2015/01/27
  */
-public class AllTests extends TestSuite
+public class XlsxTableTest extends XlsTableTest
 {
-    public static Test suite()
+    
+    public XlsxTableTest(String s)
     {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new TestSuite(XlsDataSetTest.class));
-        suite.addTest(new TestSuite(XlsTableTest.class));
-        suite.addTest(new TestSuite(XlsTableWriteTest.class));
-        suite.addTest(new TestSuite(XlsxDataSetTest.class));
-        suite.addTest(new TestSuite(XlsxTableTest.class));
-
-        return suite;
+        super(s);
     }
+
+    protected IDataSet createDataSet() throws Exception
+    {
+        return new XlsDataSet(TestUtils.getFile("xml/tableTest.xlsx"));
+    }
+
 }
