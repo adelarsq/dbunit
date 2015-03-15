@@ -26,7 +26,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.dbunit.dataset.AbstractDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableIterator;
@@ -71,8 +73,14 @@ public class XlsDataSet extends AbstractDataSet
     public XlsDataSet(InputStream in) throws IOException, DataSetException
     {
         _tables = super.createTableNameMap();
-        
-        HSSFWorkbook workbook = new HSSFWorkbook(in);
+
+        Workbook workbook;
+        try {
+            workbook = WorkbookFactory.create(in);
+        } catch (InvalidFormatException e) {
+            throw new IOException(e);
+        }
+		
         int sheetCount = workbook.getNumberOfSheets();
         for (int i = 0; i < sheetCount; i++)
         {

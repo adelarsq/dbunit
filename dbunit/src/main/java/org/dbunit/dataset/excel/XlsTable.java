@@ -28,11 +28,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.dbunit.dataset.AbstractTable;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
@@ -58,12 +58,12 @@ class XlsTable extends AbstractTable
     private static final Logger logger = LoggerFactory.getLogger(XlsTable.class);
 
     private final ITableMetaData _metaData;
-    private final HSSFSheet _sheet;
+    private final Sheet _sheet;
     
     private final DecimalFormatSymbols symbols = new DecimalFormatSymbols();
     
 
-    public XlsTable(String sheetName, HSSFSheet sheet) throws DataSetException
+    public XlsTable(String sheetName, Sheet sheet) throws DataSetException
     {
         int rowCount = sheet.getLastRowNum();
         if (rowCount >= 0 && sheet.getRow(0) != null)
@@ -81,14 +81,14 @@ class XlsTable extends AbstractTable
         symbols.setDecimalSeparator('.');
     }
 
-    static ITableMetaData createMetaData(String tableName, HSSFRow sampleRow)
+    static ITableMetaData createMetaData(String tableName, Row sampleRow)
     {
         logger.debug("createMetaData(tableName={}, sampleRow={}) - start", tableName, sampleRow);
 
         List columnList = new ArrayList();
         for (int i = 0; ; i++)
         {
-            HSSFCell cell = sampleRow.getCell(i);
+            Cell cell = sampleRow.getCell(i);
             if (cell == null)
             {
                 break;
@@ -139,7 +139,7 @@ class XlsTable extends AbstractTable
         assertValidRowIndex(row);
 
         int columnIndex = getColumnIndex(column);
-        HSSFCell cell = _sheet.getRow(row + 1).getCell(columnIndex);
+        Cell cell = _sheet.getRow(row + 1).getCell(columnIndex);
         if (cell == null)
         {
             return null;
@@ -148,9 +148,9 @@ class XlsTable extends AbstractTable
         int type = cell.getCellType();
         switch (type)
         {
-            case HSSFCell.CELL_TYPE_NUMERIC:
-                HSSFCellStyle style = cell.getCellStyle();
-                if (HSSFDateUtil.isCellDateFormatted(cell))
+            case Cell.CELL_TYPE_NUMERIC:
+                CellStyle style = cell.getCellStyle();
+                if (DateUtil.isCellDateFormatted(cell))
                 {
                     return getDateValue(cell);
                 }
@@ -164,20 +164,20 @@ class XlsTable extends AbstractTable
                     return getNumericValue(cell);
                 }
 
-            case HSSFCell.CELL_TYPE_STRING:
+            case Cell.CELL_TYPE_STRING:
                 return cell.getRichStringCellValue().getString();
 
-            case HSSFCell.CELL_TYPE_FORMULA:
+            case Cell.CELL_TYPE_FORMULA:
                 throw new DataTypeException("Formula not supported at row=" +
                         row + ", column=" + column);
 
-            case HSSFCell.CELL_TYPE_BLANK:
+            case Cell.CELL_TYPE_BLANK:
                 return null;
 
-            case HSSFCell.CELL_TYPE_BOOLEAN:
+            case Cell.CELL_TYPE_BOOLEAN:
                 return cell.getBooleanCellValue() ? Boolean.TRUE : Boolean.FALSE;
 
-            case HSSFCell.CELL_TYPE_ERROR:
+            case Cell.CELL_TYPE_ERROR:
                 throw new DataTypeException("Error at row=" + row +
                         ", column=" + column);
 
@@ -187,7 +187,7 @@ class XlsTable extends AbstractTable
         }
     }
     
-    protected Object getDateValueFromJavaNumber(HSSFCell cell) 
+    protected Object getDateValueFromJavaNumber(Cell cell) 
     {
         logger.debug("getDateValueFromJavaNumber(cell={}) - start", cell);
         
@@ -198,12 +198,12 @@ class XlsTable extends AbstractTable
 //        return new Long(numericValueBd.unscaledValue().longValue());
     }
     
-    protected Object getDateValue(HSSFCell cell) 
+    protected Object getDateValue(Cell cell) 
     {
         logger.debug("getDateValue(cell={}) - start", cell);
         
         double numericValue = cell.getNumericCellValue();
-        Date date = HSSFDateUtil.getJavaDate(numericValue);
+        Date date = DateUtil.getJavaDate(numericValue);
         // Add the timezone offset again because it was subtracted automatically by Apache-POI (we need UTC)
         long tzOffset = TimeZone.getDefault().getOffset(date.getTime());
         date = new Date(date.getTime() + tzOffset);
@@ -253,7 +253,7 @@ class XlsTable extends AbstractTable
         return result;
     }
     
-    protected BigDecimal getNumericValue(HSSFCell cell)
+    protected BigDecimal getNumericValue(Cell cell)
     {
         logger.debug("getNumericValue(cell={}) - start", cell);
 
