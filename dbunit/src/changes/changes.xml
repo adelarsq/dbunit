@@ -10,7 +10,7 @@
   </properties>
 
   <body>
-    <release version="next" date="in SCM" description="allowEmptyFields property, column aliases POI 3.11, ">
+    <release version="2.5.1" date="April 11, 2015" description="allowEmptyFields property, column aliases POI 3.11, ">
       <action dev="jeffjensen" type="update" issue="PR-6" due-to="kazuhito-m">Upgrade Apache POI library from "3.2-FINAL" to "3.11".  Pull request 6, Enhancement 161.</action>
       <action dev="jeffjensen" type="fix" issue="348" due-to="tm14258">dBUnit does not pick up column aliases.</action>
       <action dev="jeffjensen" type="add" issue="363" due-to="adko">Add allowEmptyFields feature flag/property to prevent fail-fast and allow empty string fields.</action>
