@@ -10,6 +10,9 @@
   </properties>
 
   <body>
+    <release version="in scm" date="next" description="Lost dbunit.org,">
+      <action dev="jeffjensen" type="update" issue="367">dbunit.org domain owner did not renew it; fix links.</action>
+    </release>
     <release version="2.5.1" date="April 11, 2015" description="allowEmptyFields property, column aliases POI 3.11, ">
       <action dev="jeffjensen" type="update" issue="PR-6" due-to="kazuhito-m">Upgrade Apache POI library from "3.2-FINAL" to "3.11".  Pull request 6, Enhancement 161.</action>
       <action dev="jeffjensen" type="fix" issue="348" due-to="tm14258">dBUnit does not pick up column aliases.</action>

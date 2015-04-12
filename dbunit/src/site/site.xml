@@ -4,7 +4,7 @@
   <bannerLeft>
     <name>${project.name}</name>
     <src>/images/dbunit-logo.jpg</src>
-    <href>http://www.dbunit.org</href>
+    <href>http://dbunit.sourceforge.net</href>
   </bannerLeft>
 
   <bannerRight>
@@ -40,12 +40,12 @@
 
     <breadcrumbs>
       <item name="JUnit" href="http://www.junit.org/index.htm"/>
-      <item name="DBUnit" href="http://www.dbunit.org"/>
+      <item name="DBUnit" href="http://dbunit.sourceforge.net/"/>
     </breadcrumbs>
 
     <links>
       <item name="JUnit" href="http://www.junit.org/index.htm"/>
-      <item name="DBUnit" href="http://www.dbunit.org"/>
+      <item name="DBUnit" href="http://dbunit.sourceforge.net/"/>
     </links>
 
     <menu name="Quick Links">
