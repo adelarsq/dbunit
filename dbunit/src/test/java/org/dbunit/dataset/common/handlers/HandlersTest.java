@@ -249,7 +249,7 @@ public class HandlersTest extends TestCase {
 
 
     public void testUnquotedHandler() throws IllegalInputCharacterException, PipelineException {
-        String accepted = "_1234567890abcdefghilmnopqrstuvzxywjABCDEFGHILMNOPQRSTUVZXYWJ()/&%$£|-_.:;+*<>";
+        String accepted = "_1234567890abcdefghilmnopqrstuvzxywjABCDEFGHILMNOPQRSTUVZXYWJ()/&%$|-_.:;+*<>";
         String notAccepted = " \t\\";
 
         PipelineComponent acceptHandler = IsAlnumHandler.ACCEPT();
