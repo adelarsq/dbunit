@@ -117,8 +117,10 @@ public class InsertOperation extends AbstractBatchOperation
         BitSet ignoreMapping = new BitSet();
         for (int i = 0; i < columns.length; i++)
         {
-            Object value = table.getValue(row, columns[i].getColumnName());
-            if (value == ITable.NO_VALUE)
+            Column column = columns[i];
+            Object value = table.getValue(row, column.getColumnName());
+            if (value == ITable.NO_VALUE
+                || (value == null && column.getNullable() == Column.NO_NULLS && column.getDefaultValue() != null))
             {
                 ignoreMapping.set(i);
             }
