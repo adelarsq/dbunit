@@ -583,6 +583,50 @@ public class InsertOperationIT extends AbstractDatabaseIT
 
     }
 
+    public void testDefaultValues() throws Exception
+    {
+        String schemaName = "schema";
+        String tableName = "table";
+        String[] expected = {
+            "insert into schema.table (c1, c3, c4) values (NULL, NULL, NULL)"
+        };
+  
+        // setup table
+        Column[] columns = new Column[]{
+            new Column("c1", DataType.NUMERIC, Column.NO_NULLS), // Disallow null, no default
+            new Column("c2", DataType.NUMERIC, DataType.NUMERIC.toString(), Column.NO_NULLS, "2"), // Disallow null, default
+            new Column("c3", DataType.NUMERIC, Column.NULLABLE), // Allow null, no default
+            new Column("c4", DataType.NUMERIC, DataType.NUMERIC.toString(), Column.NULLABLE, "4"), // Allow null, default
+        };
+        DefaultTable table = new DefaultTable(tableName, columns);
+        table.addRow(new Object[]{null, null, null, null});
+        IDataSet dataSet = new DefaultDataSet(table);
+  
+        // setup mock objects
+        MockBatchStatement statement = new MockBatchStatement();
+        statement.addExpectedBatchStrings(expected);
+        statement.setExpectedExecuteBatchCalls(1);
+        statement.setExpectedClearBatchCalls(1);
+        statement.setExpectedCloseCalls(1);
+  
+        MockStatementFactory factory = new MockStatementFactory();
+        factory.setExpectedCreatePreparedStatementCalls(1);
+        factory.setupStatement(statement);
+  
+        MockDatabaseConnection connection = new MockDatabaseConnection();
+        connection.setupDataSet(dataSet);
+        connection.setupSchema(schemaName);
+        connection.setupStatementFactory(factory);
+        connection.setExpectedCloseCalls(0);
+  
+        // execute operation
+        new InsertOperation().execute(connection, dataSet);
+  
+        statement.verify();
+        factory.verify();
+        connection.verify();
+    }
+
     public void testExecute() throws Exception
     {
         Reader in = TestUtils.getFileReader("xml/insertOperationTest.xml");
