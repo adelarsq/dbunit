@@ -306,6 +306,19 @@ class XlsTable extends AbstractTable
         return result;
         
     }
-    
+
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getName()).append("[");
+        sb.append("_metaData=").append(
+                this._metaData == null ? "null" : this._metaData.toString());
+        sb.append(", _sheet=").append(
+                this._sheet == null ? "null" : "" + this._sheet);
+        sb.append(", symbols=").append(
+                this.symbols == null ? "null" : "" + this.symbols);
+        sb.append("]");
+        return sb.toString();
+    }
 }
 

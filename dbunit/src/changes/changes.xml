@@ -10,7 +10,8 @@
   </properties>
 
   <body>
-    <release version="in scm" date="next" description="Lost dbunit.org,">
+    <release version="in scm" date="next" description="Lost dbunit.org, toString() tables, ">
+      <action dev="jeffjensen" type="add" issue="187">Add toString() to XlsTable and StreamingIterator.</action>
       <action dev="jeffjensen" type="update" issue="367">dbunit.org domain owner did not renew it; fix links.</action>
     </release>
     <release version="2.5.1" date="April 11, 2015" description="allowEmptyFields property, column aliases POI 3.11, ">

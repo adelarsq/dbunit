@@ -252,6 +252,21 @@ public class StreamingIterator implements ITableIterator
             return _rowValues[getColumnIndex(columnName)];
         }
 
+        public String toString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.append(getClass().getName()).append("[");
+            sb.append("_metaData=")
+                    .append(this._metaData == null ? "null" : this._metaData
+                            .toString());
+            sb.append(", _eot=").append(this._eot);
+            sb.append(", _lastRow=").append(this._lastRow);
+            sb.append(", _rowValues=").append(
+                    this._rowValues == null ? "null" : this._rowValues
+                            .toString());
+            sb.append("]");
+            return sb.toString();
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
