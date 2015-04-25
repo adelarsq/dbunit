@@ -120,7 +120,7 @@ public class InsertOperation extends AbstractBatchOperation
             Column column = columns[i];
             Object value = table.getValue(row, column.getColumnName());
             if (value == ITable.NO_VALUE
-                || (value == null && column.getNullable() == Column.NO_NULLS && column.getDefaultValue() != null))
+                || (value == null && column.isNotNullable() && column.hasDefaultValue()))
             {
                 ignoreMapping.set(i);
             }

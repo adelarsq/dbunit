@@ -131,6 +131,16 @@ public class Column
         _autoIncrement = autoIncrement;
     }
 
+    public boolean hasDefaultValue()
+    {
+        return _defaultValue != null;
+    }
+    
+    public boolean isNotNullable()
+    {
+        return _nullable== Column.NO_NULLS;
+    }
+    
     /**
      * Returns this column name.
      */
