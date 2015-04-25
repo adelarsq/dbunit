@@ -25,7 +25,8 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.HashSet;
+import java.util.Locale;
 import org.dbunit.DatabaseUnitRuntimeException;
 import org.dbunit.dataset.AbstractDataSet;
 import org.dbunit.dataset.Column;
@@ -61,6 +62,7 @@ public class DatabaseDataSet extends AbstractDataSet
 
     private final IDatabaseConnection _connection;
     private OrderedTableNameMap _tableMap = null;
+    private SchemaSet _schemaSet = new SchemaSet(isCaseSensitiveTableNames());
 
     private final ITableFilterSimple _tableFilter;
     private final ITableFilterSimple _oracleRecycleBinTableFilter;
@@ -168,11 +170,20 @@ public class DatabaseDataSet extends AbstractDataSet
     /**
      * Get all the table names form the database that are not system tables.
      */
-    private void initialize() throws DataSetException
+    private void initialize(String schema) throws DataSetException
     {
         logger.debug("initialize() - start");
 
-        if (_tableMap != null)
+        DatabaseConfig config = _connection.getConfig();
+        boolean qualifiedTableNamesActive = Boolean.TRUE == config.getProperty(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES);
+        
+        if(schema == null || !qualifiedTableNamesActive)
+    {
+      // If FEATURE_QUALIFIED_TABLE_NAMES is inactive or no schema did have been provided
+      schema = getDefaultSchema();
+    }
+        
+        if (_tableMap != null && _schemaSet.contains(schema))
         {
             return;
         }
@@ -184,15 +195,12 @@ public class DatabaseDataSet extends AbstractDataSet
             Connection jdbcConnection = _connection.getConnection();
             DatabaseMetaData databaseMetaData = jdbcConnection.getMetaData();
 
-            String schema = _connection.getSchema();
-
             if(SQLHelper.isSybaseDb(jdbcConnection.getMetaData()) && !jdbcConnection.getMetaData().getUserName().equals(schema) ){
                 logger.warn("For sybase the schema name should be equal to the user name. " +
                         "Otherwise the DatabaseMetaData#getTables() method might not return any columns. " +
                 "See dbunit tracker #1628896 and http://issues.apache.org/jira/browse/TORQUE-40?page=all");
             }
 
-            DatabaseConfig config = _connection.getConfig();
             String[] tableType = (String[])config.getProperty(DatabaseConfig.PROPERTY_TABLE_TYPE);
             IMetadataHandler metadataHandler = (IMetadataHandler) config.getProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER);
 
@@ -206,7 +214,10 @@ public class DatabaseDataSet extends AbstractDataSet
 
             try
             {
-                OrderedTableNameMap tableMap = super.createTableNameMap();
+        if (_tableMap == null) {
+          _tableMap = super.createTableNameMap();
+        }
+        _schemaSet.add(schema);
                 while (resultSet.next())
                 {
                     String schemaName = metadataHandler.getSchema(resultSet);
@@ -222,16 +233,16 @@ public class DatabaseDataSet extends AbstractDataSet
                         logger.debug("Skipping oracle recycle bin table '{}'", tableName);
                         continue;
                     }
-
+                    if (schema == null && !_schemaSet.contains(schemaName)) {
+                      _schemaSet.add(schemaName);
+                    }
 
                     QualifiedTableName qualifiedTableName = new QualifiedTableName(tableName, schemaName);
                     tableName = qualifiedTableName.getQualifiedNameIfEnabled(config);
 
                     // Put the table into the table map
-                    tableMap.add(tableName, null);
+                    _tableMap.add(tableName, null);
                 }
-
-                _tableMap = tableMap;
             }
             finally
             {
@@ -243,6 +254,10 @@ public class DatabaseDataSet extends AbstractDataSet
             throw new DataSetException(e);
         }
     }
+
+  private String getDefaultSchema() {
+    return _connection.getSchema();
+  }
 
     ////////////////////////////////////////////////////////////////////////////
     // AbstractDataSet class
@@ -269,7 +284,7 @@ public class DatabaseDataSet extends AbstractDataSet
 
     public String[] getTableNames() throws DataSetException
     {
-        initialize();
+        initialize(null);
 
         return _tableMap.getTableNames();
     }
@@ -278,7 +293,9 @@ public class DatabaseDataSet extends AbstractDataSet
     {
         logger.debug("getTableMetaData(tableName={}) - start", tableName);
 
-        initialize();
+        QualifiedTableName qualifiedTableName = new QualifiedTableName(tableName, getDefaultSchema());
+        
+        initialize(qualifiedTableName.getSchema());
 
         // Verify if table exist in the database
         if (!_tableMap.containsTable(tableName))
@@ -307,7 +324,9 @@ public class DatabaseDataSet extends AbstractDataSet
     {
         logger.debug("getTable(tableName={}) - start", tableName);
 
-        initialize();
+        QualifiedTableName qualifiedTableName = new QualifiedTableName(tableName, getDefaultSchema());
+        
+        initialize(qualifiedTableName.getSchema());
 
         try
         {
@@ -324,6 +343,44 @@ public class DatabaseDataSet extends AbstractDataSet
         }
     }
 
+    private static class SchemaSet extends HashSet<String>
+    {
+        private static final long serialVersionUID = 1L;
+
+        private static final String NULL_REPLACEMENT =
+                "NULL_REPLACEMENT_HASHKEY";
+
+        private boolean isCaseSensitive;
+
+        private SchemaSet(boolean isCaseSensitive)
+        {
+            this.isCaseSensitive = isCaseSensitive;
+        }
+
+        @Override
+        public boolean contains(Object o)
+        {
+            return super.contains(normalizeSchema(o));
+        }
+
+        @Override
+        public boolean add(String e)
+        {
+            return super.add(normalizeSchema(e));
+        }
+
+        private String normalizeSchema(Object source)
+        {
+            if (source == null)
+            {
+                return NULL_REPLACEMENT;
+            } else if (isCaseSensitive)
+            {
+                return source.toString().toUpperCase(Locale.ENGLISH);
+            }
+            return source.toString();
+        }
+    }
 
     private static class OracleRecycleBinTableFilter implements ITableFilterSimple
     {
@@ -350,5 +407,4 @@ public class DatabaseDataSet extends AbstractDataSet
             return true;
         }
     }
-
 }

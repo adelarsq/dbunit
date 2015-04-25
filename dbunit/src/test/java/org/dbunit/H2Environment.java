@@ -40,12 +40,15 @@ import java.sql.Statement;
  */
 public class H2Environment extends DatabaseEnvironment
 {
+    public static final String USERNAME_DEFAULT = "sa";
+    public static final String PASSWORD_DEFAULT = "";
+
     public H2Environment(DatabaseProfile profile) throws Exception
     {
         super(profile);
 
         // Creates required tables into the hypersonic in-memory database
-        File ddlFile = TestUtils.getFile("sql/h2.sql");
+        File ddlFile =  TestUtils.getFile("sql/h2.sql");
         Connection connection = getConnection().getConnection();
 
         executeDdlFile(ddlFile, connection);
@@ -83,10 +86,15 @@ public class H2Environment extends DatabaseEnvironment
 
     public static Connection createJdbcConnection(String databaseName) throws Exception
     {
+        return createJdbcConnection(databaseName, USERNAME_DEFAULT, PASSWORD_DEFAULT);
+    }
+
+    public static Connection createJdbcConnection(String databaseName,
+            String username, String password) throws Exception
+    {
         Class.forName("org.h2.Driver");
-        Connection connection = DriverManager.getConnection(
-                "jdbc:h2:mem:" + databaseName, "sa", "");
-        return connection;
+        return DriverManager.getConnection("jdbc:h2:mem:" + databaseName,
+                username, password);
     }
 
     public void closeConnection() throws Exception
@@ -122,8 +130,4 @@ public class H2Environment extends DatabaseEnvironment
         }
 
     }
-
 }
-
-
-

@@ -10,7 +10,8 @@
   </properties>
 
   <body>
-    <release version="in scm" date="next" description="Lost dbunit.org, toString() tables, respect DEFAULTs, ">
+    <release version="in scm" date="next" description="Lost dbunit.org, toString() tables, respect DEFAULTs, multi-schema, ">
+      <action dev="jeffjensen" type="fix" issue="368" due-to="warwing">Multi schema support in FlatXmlDataSets.</action>
       <action dev="jeffjensen" type="add" issue="185"  due-to=" mattias78">Do not explicitly insert null into NOT NULL columns with DEFAULT.</action>
       <action dev="jeffjensen" type="add" issue="187">Add toString() to XlsTable and StreamingIterator.</action>
       <action dev="jeffjensen" type="update" issue="367">dbunit.org domain owner did not renew it; fix links.</action>
