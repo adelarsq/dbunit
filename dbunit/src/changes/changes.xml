@@ -15,6 +15,7 @@
       <action dev="jeffjensen" type="add" issue="185"  due-to=" mattias78">Do not explicitly insert null into NOT NULL columns with DEFAULT.</action>
       <action dev="jeffjensen" type="add" issue="187">Add toString() to XlsTable and StreamingIterator.</action>
       <action dev="jeffjensen" type="update" issue="367">dbunit.org domain owner did not renew it; fix links.</action>
+      <action dev="jeffjensen" type="update">Make AbstractDataFileLoader.loadDataSet public and pull up to DataFileLoader interface.</action>
     </release>
     <release version="2.5.1" date="April 11, 2015" description="allowEmptyFields property, column aliases POI 3.11, ">
       <action dev="jeffjensen" type="update" issue="PR-6" due-to="kazuhito-m">Upgrade Apache POI library from "3.2-FINAL" to "3.11".  Pull request 6, Enhancement 161.</action>

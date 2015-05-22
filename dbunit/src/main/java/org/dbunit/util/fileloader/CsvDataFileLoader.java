@@ -69,7 +69,7 @@ public class CsvDataFileLoader extends AbstractDataFileLoader {
     /**
      * {@inheritDoc}
      */
-    protected IDataSet loadDataSet(URL url) throws DataSetException,
+    public IDataSet loadDataSet(URL url) throws DataSetException,
             IOException {
         IDataSet ds = new CsvURLDataSet(url);
 

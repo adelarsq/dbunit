@@ -20,9 +20,12 @@
  */
 package org.dbunit.util.fileloader;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
 
 import org.dbunit.DatabaseUnitRuntimeException;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 
 /**
@@ -36,9 +39,10 @@ import org.dbunit.dataset.IDataSet;
  */
 public interface DataFileLoader {
     /**
-     * Load the specified filename from the classpath into a dbUnit dataset. If
-     * filename == null or "", then returns an empty
-     * {@link org.dbunit.dataset.DefaultDataSet}.
+     * Load the specified String filename from the classpath into a dbUnit
+     * dataset. If filename == null or "", then returns an empty
+     * {@link org.dbunit.dataset.DefaultDataSet}. The type of dbUnit dataset
+     * created is delegated to the implementing subclass.
      * 
      * @param filename
      *            The dbUnit file to load, in the format for the loader
@@ -49,6 +53,21 @@ public interface DataFileLoader {
      *             when file load errors occur.
      */
     IDataSet load(String fileName);
+
+    /**
+     * Load the specified URL file into a dbUnit dataset. The type of dbUnit
+     * dataset created is delegated to the implementing subclass.
+     * 
+     * @param url
+     *            The dbUnit data file url.
+     * @return dbUnit dataset of the corresponding input file type.
+     * @throws DataSetException
+     *             On data errors.
+     * @throws IOException
+     *             On file errors.
+     * @since 2.4.8
+     */
+    IDataSet loadDataSet(URL url) throws DataSetException, IOException;
 
     /**
      * Add the specified replacement objects to existing ones for use with

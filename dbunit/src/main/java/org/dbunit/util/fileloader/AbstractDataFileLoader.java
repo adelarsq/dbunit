@@ -131,24 +131,7 @@ public abstract class AbstractDataFileLoader implements DataFileLoader {
         return ds;
     }
 
-    /**
-     * Make the dbUnit dataset ({@link org.dbunit.dataset.IDataSet}) from the
-     * input stream of a dbUnit data file. The type of dbUnit dataset created is
-     * delegated to the implementing subclass.
-     * 
-     * @param url
-     *            The dbUnit data file url.
-     * @return dbUnit dataset of the corresponding input file type.
-     * @throws DataSetException
-     *             On data errors.
-     * @throws IOException
-     *             On file errors.
-     * @since 2.4.8
-     */
-    protected abstract IDataSet loadDataSet(URL url) throws DataSetException,
-            IOException;
-
-    /**
+    /** 
      * Add the replacements in the maps (objects and substrings) to the
      * specified dataset.
      * 
