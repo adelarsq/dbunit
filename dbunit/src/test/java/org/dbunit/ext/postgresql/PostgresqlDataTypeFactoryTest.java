@@ -29,6 +29,7 @@ import org.dbunit.dataset.datatype.IntegerDataType;
  *
  * @author Jarvis Cochrane (jarvis@cochrane.com.au)
  * @author Roberto Lo Giacco (rlogiacco@users.sourceforge.ent)
+ * @author Martin Gollogly (zemertz@gmail.com)
  * @since 2.4.5 (Apr 27, 2009)
  */
 public class PostgresqlDataTypeFactoryTest extends TestCase {
@@ -74,6 +75,19 @@ public class PostgresqlDataTypeFactoryTest extends TestCase {
 
         DataType result = instance.createDataType(sqlType, sqlTypeName);
         assertTrue(result instanceof InetType);
+    }
+    
+
+    public void testCreateCitextType() throws Exception {
+
+        PostgresqlDataTypeFactory instance = new PostgresqlDataTypeFactory();
+
+        // Test CITEXT type created properly
+        int sqlType = Types.OTHER;
+        String sqlTypeName = "citext";
+
+        DataType result = instance.createDataType(sqlType, sqlTypeName);
+        assertTrue(result instanceof CitextType);
     }
 
     public void testCreateEnumType() throws Exception {

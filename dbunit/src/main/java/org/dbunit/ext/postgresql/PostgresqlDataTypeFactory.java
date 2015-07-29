@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jarvis Cochrane (jarvis@cochrane.com.au)
  * @author manuel.laflamme
+ * @author Martin Gollogly (zemertz@gmail.com)
  * @since 2.4.5 (Apr 27, 2009)
  */
 public class PostgresqlDataTypeFactory extends DefaultDataTypeFactory {
@@ -78,6 +79,8 @@ public class PostgresqlDataTypeFactory extends DefaultDataTypeFactory {
                 return new InetType();
             else if("geometry".equals(sqlTypeName))
                return new GeometryType();
+            else if("citext".equals(sqlTypeName))
+                return new CitextType();
             else
             {
                 // Finally check whether the user defined a custom datatype
